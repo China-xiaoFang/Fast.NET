@@ -1,4 +1,4 @@
-﻿namespace Hello.NET.Infrastructure.Util;
+﻿namespace Hello.NET.Iaas.Util;
 
 public static class Base64Util
 {

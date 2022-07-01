@@ -1,4 +1,4 @@
-﻿namespace Hello.NET.Infrastructure.Extension;
+﻿namespace Hello.NET.Iaas.Extension;
 
 /// <summary>
 /// DateTime扩展

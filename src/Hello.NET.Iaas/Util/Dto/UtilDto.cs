@@ -1,4 +1,4 @@
-﻿namespace Hello.NET.Infrastructure.Util.Dto;
+﻿namespace Hello.NET.Iaas.Util.Dto;
 
 /// <summary>
 /// 枚举的Entity类

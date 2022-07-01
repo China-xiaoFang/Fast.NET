@@ -1,4 +1,7 @@
-﻿namespace Hello.NET.Infrastructure.Util;
+﻿using Hello.NET.Iaas.Extension;
+using Hello.NET.Iaas.Util.Dto;
+
+namespace Hello.NET.Iaas.Util;
 
 /// <summary>
 /// 枚举工具类

@@ -1,4 +1,4 @@
-﻿namespace Hello.NET.Infrastructure.Util;
+﻿namespace Hello.NET.Iaas.Util;
 
 /// <summary>
 /// 代码生成帮助类

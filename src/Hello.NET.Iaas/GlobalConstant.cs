@@ -1,4 +1,4 @@
-﻿namespace Hello.NET.Infrastructure;
+﻿namespace Hello.NET.Iaas;
 
 /// <summary>
 /// 常用常量
