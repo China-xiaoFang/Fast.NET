@@ -6,11 +6,12 @@
     <Nullable>disable</Nullable>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>2.0.1</VersionPrefix>
 	  <AssemblyName>Hello.NET.Iaas</AssemblyName>
-	  <PackageProjectUrl>https://gitee.com/Net-18K/hello.net/tree/master/src/Hello.NET.Infrastructure</PackageProjectUrl>
+	  <PackageProjectUrl>https://gitee.com/Net-18K/hello.net/tree/master/src/Hello.NET.Iaas</PackageProjectUrl>
 	  <PackageIcon>Heelo.NET.JPG</PackageIcon>
 	  <Authors>1.8K仔</Authors>
+	  <Description>基于常用方法，让.NET 开发更简单，更快捷，更容易。</Description>
   </PropertyGroup>
 
   <ItemGroup>
