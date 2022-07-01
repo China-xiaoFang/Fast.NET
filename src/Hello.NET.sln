@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hello.NET.Web", "Hello.NET.Web\Hello.NET.Web.csproj", "{3A455085-466D-4D29-963B-F26ED63BB948}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hello.NET.Web", "Hello.NET.Web\Hello.NET.Web.csproj", "{3A455085-466D-4D29-963B-F26ED63BB948}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hello.NET.Infrastructure", "Hello.NET.Infrastructure\Hello.NET.Infrastructure.csproj", "{0C46AEEE-1C6A-491C-AFF0-A4F82A830989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hello.NET.Iaas", "Hello.NET.Iaas\Hello.NET.Iaas.csproj", "{0C46AEEE-1C6A-491C-AFF0-A4F82A830989}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
