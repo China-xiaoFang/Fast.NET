@@ -9,13 +9,13 @@
     <VersionPrefix>2.0.3</VersionPrefix>
 	  <AssemblyName>Hello.NET.Iaas</AssemblyName>
 	  <PackageProjectUrl>https://gitee.com/Net-18K/hello.net/tree/master/src/Hello.NET.Iaas</PackageProjectUrl>
-	  <PackageIcon>Heelo.NET.JPG</PackageIcon>
+	  <PackageIcon>Heelo.NET.jpg</PackageIcon>
 	  <Authors>1.8K仔</Authors>
 	  <Description>基于常用方法，让.NET 开发更简单，更快捷，更容易。</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="E:\Pictures\头像\Heelo.NET.JPG">
+    <None Include="E:\Pictures\头像\Heelo.NET.jpg">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
