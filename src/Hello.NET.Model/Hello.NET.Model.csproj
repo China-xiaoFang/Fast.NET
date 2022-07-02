@@ -10,4 +10,9 @@
     <ProjectReference Include="..\Hello.NET.Core\Hello.NET.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EnumFactory\" />
+    <Folder Include="ModelFactory\" />
+  </ItemGroup>
+
 </Project>
