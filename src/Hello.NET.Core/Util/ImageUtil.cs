@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 using Furion.RemoteRequest.Extensions;
-using Hello.NET.Iaas.Extension;
+using Encoder = System.Drawing.Imaging.Encoder;
 
 namespace Hello.NET.Core.Util;
 

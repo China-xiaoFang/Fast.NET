@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Furion.RemoteRequest.Extensions;
+﻿using Furion.RemoteRequest.Extensions;
 
 namespace Hello.NET.Core.Util;
 
