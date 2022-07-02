@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Furion.DependencyInjection;
 
 namespace Hello.NET.Core.Captcha.General;
 

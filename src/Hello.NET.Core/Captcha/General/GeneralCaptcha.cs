@@ -1,10 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
-using System.Text;
-using Furion.DependencyInjection;
 using Hello.NET.Core.Captcha.ClickWord;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Hello.NET.Core.Captcha.General;
 

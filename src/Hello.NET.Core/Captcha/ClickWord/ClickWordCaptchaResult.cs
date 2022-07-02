@@ -1,6 +1,4 @@
-﻿using Furion.DependencyInjection;
-
-namespace Hello.NET.Core.Captcha.ClickWord;
+﻿namespace Hello.NET.Core.Captcha.ClickWord;
 
 /// <summary>
 /// 验证码输出参数

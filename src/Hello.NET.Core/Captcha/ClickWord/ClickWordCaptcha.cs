@@ -2,11 +2,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.Versioning;
-using Furion;
-using Furion.DependencyInjection;
 using Furion.JsonSerialization;
-using Hello.NET.Core.Cache;
-using Yitter.IdGenerator;
 
 namespace Hello.NET.Core.Captcha.ClickWord;
 
