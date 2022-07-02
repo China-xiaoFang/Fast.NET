@@ -6,7 +6,7 @@
     <Nullable>disable</Nullable>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <VersionPrefix>2.0.2</VersionPrefix>
+    <VersionPrefix>2.0.3</VersionPrefix>
 	  <AssemblyName>Hello.NET.Iaas</AssemblyName>
 	  <PackageProjectUrl>https://gitee.com/Net-18K/hello.net/tree/master/src/Hello.NET.Iaas</PackageProjectUrl>
 	  <PackageIcon>Heelo.NET.JPG</PackageIcon>

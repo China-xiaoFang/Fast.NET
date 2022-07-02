@@ -1,6 +1,4 @@
-﻿using Hello.NET.Iaas.Extension;
-
-namespace Hello.NET.Iaas.Util;
+﻿namespace Hello.NET.Iaas.Util;
 
 /// <summary>
 /// String工具类
