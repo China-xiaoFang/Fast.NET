@@ -1,8 +1,4 @@
-﻿using System.Reflection;
-using Furion.DependencyInjection;
-using Microsoft.Extensions.Caching.Memory;
-
-namespace Hello.NET.Core.Cache;
+﻿namespace Hello.NET.Core.Cache;
 
 /// <summary>
 /// 内存缓存

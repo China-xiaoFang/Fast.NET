@@ -1,6 +1,4 @@
-﻿using Furion.ConfigurableOptions;
-
-namespace Hello.NET.Core.Cache;
+﻿namespace Hello.NET.Core.Cache;
 
 /// <summary>
 /// 缓存配置

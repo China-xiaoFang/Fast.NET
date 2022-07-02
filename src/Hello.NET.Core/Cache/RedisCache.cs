@@ -1,6 +1,4 @@
 ﻿using CSRedis;
-using Furion.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Hello.NET.Core.Cache;
 
