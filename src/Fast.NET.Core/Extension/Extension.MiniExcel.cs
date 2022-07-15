@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using MiniExcelLibs;
-using Newtonsoft.Json;
 
 namespace Fast.NET.Core.Extension;
 
@@ -36,7 +35,7 @@ public static class Extension
         // 是否为Json字符串
         if (attr.IsJson)
         {
-            result = JsonConvert.SerializeObject(value);
+            result = value.ToJsonString();
         }
         else if (property.PropertyType.IsEnum || value is Enum)
         {
