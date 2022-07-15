@@ -9,7 +9,7 @@ global using System.Web;
 global using System.Reflection;
 global using System.ComponentModel;
 global using System.Security.Cryptography;
-global using Hello.NET.Iaas.Extension;
+global using Fast.NET.Iaas.Extension;
 global using SqlSugar;
 global using Furion;
 global using Yitter.IdGenerator;
