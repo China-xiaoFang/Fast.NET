@@ -1,6 +1,4 @@
-﻿using Fast.NET.Iaas.Extension;
-
-namespace Fast.NET.Iaas.Util;
+﻿namespace Fast.NET.Iaas.Util;
 
 /// <summary>
 /// 枚举工具类

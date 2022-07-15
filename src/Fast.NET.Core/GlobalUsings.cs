@@ -24,3 +24,7 @@ global using System.Linq.Expressions;
 global using System.Linq.Dynamic.Core;
 global using Furion.FriendlyException;
 global using Microsoft.Extensions.Hosting;
+global using Fast.NET.Iaas;
+global using Fast.NET.Iaas.Util;
+global using Fast.NET.Core.Extension;
+global using Fast.NET.Core.AttributeFilter;
