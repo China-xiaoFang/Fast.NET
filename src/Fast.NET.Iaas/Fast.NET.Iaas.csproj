@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <VersionPrefix>2.1.0</VersionPrefix>
+	  <AssemblyName>Fast.NET.Iaas</AssemblyName>
+	  <PackageProjectUrl>https://gitee.com/Net-18K/fast.net/tree/master/src/Fast.NET.Iaas</PackageProjectUrl>
+	  <PackageIcon>Fast.NET.jpg</PackageIcon>
+	  <Authors>1.8K仔</Authors>
+	  <Description>基于常用方法，让.NET 开发更简单，更快捷，更容易。无任何第三方包引用。</Description>
+	  <RepositoryUrl>https://gitee.com/Net-18K/fast.net/tree/master/src/Fast.NET.Iaas</RepositoryUrl>
+	  <RepositoryType>Gitee</RepositoryType>
+	  <PackageReleaseNotes>重命名为Fast.NET.Iaas</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="E:\Pictures\Fast.NET.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
