@@ -13,9 +13,10 @@ public enum AdminTypeEnum
 
     /// <summary>
     /// 管理员
+    /// 每个租户有一个账号，方便管理租户系统
     /// </summary>
-    [Description("管理员")]
-    Admin = 2,
+    [Description("系统管理员")]
+    SystemAdmin = 2,
 
     /// <summary>
     /// 租户管理员

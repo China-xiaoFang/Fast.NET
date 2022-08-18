@@ -3,6 +3,127 @@ using MiniExcelLibs;
 
 namespace Fast.NET.Core.Extension;
 
+/// <summary>
+/// MiniExcel 列导出属性
+/// </summary>
+[AttributeUsage(AttributeTargets.Property)]
+public class MiniExcelColumn : Attribute
+{
+    public MiniExcelColumn()
+    {
+    }
+
+    public MiniExcelColumn(string ColumnDescription)
+    {
+        this.ColumnDescription = ColumnDescription;
+    }
+
+    public MiniExcelColumn(string ColumnDescription, int Sort)
+    {
+        this.ColumnDescription = ColumnDescription;
+        this.Sort = Sort;
+    }
+
+    /// <summary>
+    /// 列描述
+    /// </summary>
+    public string ColumnDescription { get; set; }
+
+    /// <summary>
+    /// 导出导入是否忽略，优先级高于 IsExportIgnore 和 IsImportIgnore
+    /// 默认False
+    /// </summary>
+    public bool IsIgnore { get; set; } = false;
+
+    /// <summary>
+    /// 导出是否忽略
+    /// 默认False
+    /// </summary>
+    public bool IsExportIgnore { get; set; } = false;
+
+    /// <summary>
+    /// 导入是否忽略
+    /// </summary>
+    public bool IsImportIgnore { get; set; } = false;
+
+    /// <summary>
+    /// 是否深度处理List，只处理一层，如果为True，则循环List进行处理
+    /// 默认False
+    /// 注意：开启深度处理List如果为对象
+    /// </summary>
+    public bool IsListDeep { get; set; } = false;
+
+    /// <summary>
+    /// List集合是否换行
+    /// 默认只支持 string int bool double decimal dateTime long
+    /// 暂且不支持Object类型
+    /// </summary>
+    public bool IsListLine { get; set; } = false;
+
+    /// <summary>
+    /// 是否为Json字符串
+    /// 默认False
+    /// </summary>
+    public bool IsJson { get; set; } = false;
+
+    /// <summary>
+    /// 排序
+    /// 从1开始
+    /// </summary>
+    public int Sort { get; set; }
+
+    /// <summary>
+    /// True描述
+    /// 默认是
+    /// </summary>
+    public string TrueDesc { get; set; }
+
+    /// <summary>
+    /// False描述
+    /// 默认否
+    /// </summary>
+    public string FalseDesc { get; set; }
+
+    /// <summary>
+    /// DateTime转换
+    /// 默认 yyyy-MM-dd HH:mm:ss
+    /// </summary>
+    public string ConvertDateTime { get; set; } = "yyyy-MM-dd HH:mm:ss";
+}
+
+/// <summary>
+/// MiniExcel 列验证
+/// 默认验证是否为空，支持正则表达式验证
+/// </summary>
+[AttributeUsage(AttributeTargets.Property)]
+public class MiniExcelRequired : Attribute
+{
+    public MiniExcelRequired()
+    {
+    }
+
+    public MiniExcelRequired(string ErrorMessage)
+    {
+        this.ErrorMessage = ErrorMessage;
+    }
+
+    public MiniExcelRequired(string ErrorMessage, string Regex)
+    {
+        this.ErrorMessage = ErrorMessage;
+        this.Regex = Regex;
+    }
+
+    /// <summary>
+    /// 错误消息
+    /// </summary>
+    public string ErrorMessage { get; set; }
+
+    /// <summary>
+    /// 正则表达式
+    /// </summary>
+    public string Regex { get; set; }
+}
+
 public class MiniExcelRowInfo<T>
 {
     /// <summary>
@@ -173,11 +294,16 @@ public static class Extension
                     value = ExportTypeDispose(attr, property, value);
                 }
 
-                itemResult.Insert(attr.Sort > 0 ? attr.Sort - 1 : itemResult.Count,
-                    new DictionaryDto {Key = attr.ColumnDescription ?? property.Name, Value = value});
+                itemResult.Add(new DictionaryDto
+                {
+                    Key = attr.ColumnDescription ?? property.Name,
+                    Value = value,
+                    Sort = attr.Sort > 0 ? attr.Sort - 1 : itemResult.Count
+                });
             }
 
-            result.Add(itemResult.ToDictionary(dictionaryDto => dictionaryDto.Key, dictionaryDto => dictionaryDto.Value));
+            result.Add(itemResult.OrderBy(ob => ob.Sort)
+                .ToDictionary(dictionaryDto => dictionaryDto.Key, dictionaryDto => dictionaryDto.Value));
         }
 
         return result;
@@ -345,20 +471,25 @@ public static class Extension
     {
         return GetMiniExcelImportData<T>((await stream.QueryAsync()).Cast<IDictionary<string, object>>());
     }
+}
+
+/// <summary>
+/// 字典Dto
+/// </summary>
+public class DictionaryDto
+{
+    /// <summary>
+    /// Key
+    /// </summary>
+    public string Key { get; set; }
 
     /// <summary>
-    /// 字典Dto
+    /// Value
     /// </summary>
-    private class DictionaryDto
-    {
-        /// <summary>
-        /// Key
-        /// </summary>
-        public string Key { get; set; }
+    public object Value { get; set; }
 
-        /// <summary>
-        /// Value
-        /// </summary>
-        public object Value { get; set; }
-    }
+    /// <summary>
+    /// Sort
+    /// </summary>
+    public int Sort { get; set; }
 }
