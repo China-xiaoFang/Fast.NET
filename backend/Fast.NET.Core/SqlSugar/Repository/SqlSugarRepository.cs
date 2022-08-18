@@ -1,4 +1,12 @@
-﻿namespace Fast.NET.Core.SqlSugar.Repository;
+﻿/*
+ * SqlSugar简单仓储实现类，支持软删除，以及联合Cache CRUD
+ *
+ * Author: 1.8K仔
+ * DateTime：2022-07-24
+ *
+ */
+
+namespace Fast.NET.Core.SqlSugar.Repository;
 
 /// <summary>
 /// 非泛型 SqlSugar 仓储
@@ -51,13 +59,19 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// </summary>
     /// <param name="sqlSugarRepository"></param>
     /// <param name="db"></param>
-    public SqlSugarRepository(ISqlSugarRepository sqlSugarRepository, ISqlSugarClient db)
+    /// <param name="sqlSugarCacheRepository"></param>
+    /// <param name="sqlSugarFalseDeleteRepository"></param>
+    public SqlSugarRepository(ISqlSugarRepository sqlSugarRepository, ISqlSugarClient db,
+        ISqlSugarCacheRepository<TEntity> sqlSugarCacheRepository,
+        ISqlSugarFalseDeleteRepository<TEntity> sqlSugarFalseDeleteRepository)
     {
         _sqlSugarRepository = sqlSugarRepository;
         _db = db.LoadSqlSugar<TEntity>();
         //_db = ((SqlSugarClient) db).GetConnection(GlobalContext.ConnectionInfo.DefaultConnectionId);
-        DynamicContext = Context = _db;
+        Context = _db;
         Ado = _db.Ado;
+        Cache = sqlSugarCacheRepository;
+        FalseDelete = sqlSugarFalseDeleteRepository;
     }
 
     /// <summary>
@@ -71,23 +85,63 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     public virtual ISqlSugarClient Context { get; }
 
     /// <summary>
-    /// 动态数据库上下文
-    /// </summary>
-    public virtual dynamic DynamicContext { get; }
-
-    /// <summary>
     /// 原生 Ado 对象
     /// </summary>
     public virtual IAdo Ado { get; }
+
+    /// <summary>
+    /// 软删除 仓储接口
+    /// </summary>
+    public ISqlSugarFalseDeleteRepository<TEntity> FalseDelete { get; }
+
+    /// <summary>
+    /// Cache 仓储接口
+    /// </summary>
+    public ISqlSugarCacheRepository<TEntity> Cache { get; }
+
+    #region Function
+
+    /// <summary>
+    /// 构建查询分析器
+    /// </summary>
+    /// <returns></returns>
+    public virtual ISugarQueryable<TEntity> AsQueryable()
+    {
+        return Entities;
+    }
+
+    /// <summary>
+    /// 构建查询分析器
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <returns></returns>
+    public virtual ISugarQueryable<TEntity> AsQueryable(Expression<Func<TEntity, bool>> whereExpression)
+    {
+        return Entities.Where(whereExpression);
+    }
+
+    /// <summary>
+    /// 切换仓储
+    /// </summary>
+    /// <typeparam name="TChangeEntity">实体类型</typeparam>
+    /// <returns>仓储</returns>
+    public virtual ISqlSugarRepository<TChangeEntity> Change<TChangeEntity>() where TChangeEntity : class, new()
+    {
+        return _sqlSugarRepository.Change<TChangeEntity>();
+    }
+
+    #endregion
+
+    #region Select
 
     /// <summary>
     /// 获取总数
     /// </summary>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    public int Count(Expression<Func<TEntity, bool>> whereExpression)
+    public int Count(Expression<Func<TEntity, bool>> whereExpression = null)
     {
-        return Entities.Count(whereExpression);
+        return Entities.WhereIF(whereExpression != null, whereExpression).Count();
     }
 
     /// <summary>
@@ -95,9 +149,9 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// </summary>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    public Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression)
+    public Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression = null)
     {
-        return Entities.CountAsync(whereExpression);
+        return Entities.WhereIF(whereExpression != null, whereExpression).CountAsync();
     }
 
     /// <summary>
@@ -121,17 +175,27 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     }
 
     /// <summary>
-    /// 通过主键获取实体
+    /// 根据主键获取实体
     /// </summary>
     /// <param name="Id"></param>
     /// <returns></returns>
-    public TEntity Single(dynamic Id)
+    public TEntity Single(object Id)
     {
         return Entities.InSingle(Id);
     }
 
     /// <summary>
-    /// 获取一个实体
+    /// 根据主键获取实体
+    /// </summary>
+    /// <param name="Id"></param>
+    /// <returns></returns>
+    public Task<TEntity> SingleAsync(object Id)
+    {
+        return Entities.InSingleAsync(Id);
+    }
+
+    /// <summary>
+    /// 根据条件获取实体
     /// </summary>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
@@ -141,7 +205,7 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     }
 
     /// <summary>
-    /// 获取一个实体
+    /// 根据条件获取实体
     /// </summary>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
@@ -174,9 +238,9 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// 获取列表
     /// </summary>
     /// <returns></returns>
-    public List<TEntity> ToList()
+    public Task<List<TEntity>> ToListAsync()
     {
-        return Entities.ToList();
+        return Entities.ToListAsync();
     }
 
     /// <summary>
@@ -187,28 +251,6 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.Where(whereExpression).ToList();
-    }
-
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <param name="orderByExpression"></param>
-    /// <param name="orderByType"></param>
-    /// <returns></returns>
-    public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression,
-        Expression<Func<TEntity, object>> orderByExpression = null, OrderByType orderByType = OrderByType.Asc)
-    {
-        return Entities.OrderByIF(orderByExpression != null, orderByExpression, orderByType).Where(whereExpression).ToList();
-    }
-
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <returns></returns>
-    public Task<List<TEntity>> ToListAsync()
-    {
-        return Entities.ToListAsync();
     }
 
     /// <summary>
@@ -228,11 +270,107 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// <param name="orderByExpression"></param>
     /// <param name="orderByType"></param>
     /// <returns></returns>
-    public Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression,
-        Expression<Func<TEntity, object>> orderByExpression = null, OrderByType orderByType = OrderByType.Asc)
+    public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression,
+        Expression<Func<TEntity, object>> orderByExpression, OrderByType orderByType = OrderByType.Asc)
     {
-        return Entities.OrderByIF(orderByExpression != null, orderByExpression, orderByType).Where(whereExpression).ToListAsync();
+        return Entities.Where(whereExpression).OrderBy(orderByExpression, orderByType).ToList();
     }
+
+    /// <summary>
+    /// 获取列表
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <param name="orderByExpression"></param>
+    /// <param name="orderByType"></param>
+    /// <returns></returns>
+    public Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression,
+        Expression<Func<TEntity, object>> orderByExpression, OrderByType orderByType = OrderByType.Asc)
+    {
+        return Entities.Where(whereExpression).OrderBy(orderByExpression, orderByType).ToListAsync();
+    }
+
+    /// <summary>
+    /// 查询是否存在
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <returns></returns>
+    public bool IsExists(Expression<Func<TEntity, bool>> whereExpression)
+    {
+        return Entities.Any(whereExpression);
+    }
+
+    /// <summary>
+    /// 查询是否存在
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <returns></returns>
+    public Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> whereExpression)
+    {
+        return Entities.AnyAsync(whereExpression);
+    }
+
+    /// <summary>
+    /// 根据表达式查询多条记录
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public virtual ISugarQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
+    {
+        return AsQueryable(predicate);
+    }
+
+    /// <summary>
+    /// 根据表达式查询多条记录
+    /// </summary>
+    /// <param name="condition"></param>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public virtual ISugarQueryable<TEntity> Where(bool condition, Expression<Func<TEntity, bool>> predicate)
+    {
+        return AsQueryable().WhereIF(condition, predicate);
+    }
+
+    /// <summary>
+    /// 直接返回数据库结果
+    /// </summary>
+    /// <returns></returns>
+    public virtual List<TEntity> AsEnumerable()
+    {
+        return AsQueryable().ToList();
+    }
+
+    /// <summary>
+    /// 直接返回数据库结果
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public virtual List<TEntity> AsEnumerable(Expression<Func<TEntity, bool>> predicate)
+    {
+        return AsQueryable(predicate).ToList();
+    }
+
+    /// <summary>
+    /// 直接返回数据库结果
+    /// </summary>
+    /// <returns></returns>
+    public virtual Task<List<TEntity>> AsAsyncEnumerable()
+    {
+        return AsQueryable().ToListAsync();
+    }
+
+    /// <summary>
+    /// 直接返回数据库结果
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public virtual Task<List<TEntity>> AsAsyncEnumerable(Expression<Func<TEntity, bool>> predicate)
+    {
+        return AsQueryable(predicate).ToListAsync();
+    }
+
+    #endregion
+
+    #region Add
 
     /// <summary>
     /// 新增一条记录
@@ -242,36 +380,6 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     public virtual int Insert(TEntity entity)
     {
         return _db.Insertable(entity).ExecuteCommand();
-    }
-
-    /// <summary>
-    /// 新增多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
-    public virtual int Insert(params TEntity[] entities)
-    {
-        return _db.Insertable(entities).ExecuteCommand();
-    }
-
-    /// <summary>
-    /// 新增多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
-    public virtual int Insert(IEnumerable<TEntity> entities)
-    {
-        return _db.Insertable(entities.ToArray()).ExecuteCommand();
-    }
-
-    /// <summary>
-    /// 新增一条记录返回自增Id
-    /// </summary>
-    /// <param name="insertObj"></param>
-    /// <returns></returns>
-    public int InsertReturnIdentity(TEntity insertObj)
-    {
-        return _db.Insertable(insertObj).ExecuteReturnIdentity();
     }
 
     /// <summary>
@@ -289,9 +397,29 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// </summary>
     /// <param name="entities"></param>
     /// <returns></returns>
+    public virtual int Insert(params TEntity[] entities)
+    {
+        return _db.Insertable(entities).ExecuteCommand();
+    }
+
+    /// <summary>
+    /// 新增多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
     public virtual Task<int> InsertAsync(params TEntity[] entities)
     {
         return _db.Insertable(entities).ExecuteCommandAsync();
+    }
+
+    /// <summary>
+    /// 新增多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public virtual int Insert(IEnumerable<TEntity> entities)
+    {
+        return _db.Insertable(entities.ToArray()).ExecuteCommand();
     }
 
     /// <summary>
@@ -312,11 +440,56 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// <summary>
     /// 新增一条记录返回自增Id
     /// </summary>
+    /// <param name="insertObj"></param>
+    /// <returns></returns>
+    public int InsertReturnIdentity(TEntity insertObj)
+    {
+        return _db.Insertable(insertObj).ExecuteReturnIdentity();
+    }
+
+    /// <summary>
+    /// 新增一条记录返回自增Id
+    /// </summary>
+    /// <param name="insertObj"></param>
+    /// <returns></returns>
+    public Task<int> InsertReturnIdentityAsync(TEntity insertObj)
+    {
+        return _db.Insertable(insertObj).ExecuteReturnIdentityAsync();
+    }
+
+    /// <summary>
+    /// 新增一条记录返回Long类型的Id
+    /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public async Task<long> InsertReturnIdentityAsync(TEntity entity)
+    public long ExecuteReturnBigIdentity(TEntity entity)
+    {
+        return _db.Insertable(entity).ExecuteReturnBigIdentity();
+    }
+
+    /// <summary>
+    /// 新增一条记录返回Long类型的Id
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    public async Task<long> ExecuteReturnBigIdentityAsync(TEntity entity)
     {
         return await _db.Insertable(entity).ExecuteReturnBigIdentityAsync();
+    }
+
+    #endregion
+
+    #region Update
+
+    /// <summary>
+    /// 更新一条记录
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
+    /// <returns></returns>
+    public virtual int Update(TEntity entity, bool isNoUpdateNull = false)
+    {
+        return _db.Updateable(entity).IgnoreColumns(isNoUpdateNull).ExecuteCommand();
     }
 
     /// <summary>
@@ -324,9 +497,9 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public virtual int Update(TEntity entity)
+    public virtual Task<int> UpdateAsync(TEntity entity)
     {
-        return _db.Updateable(entity).ExecuteCommand();
+        return _db.Updateable(entity).ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -344,21 +517,30 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// </summary>
     /// <param name="entities"></param>
     /// <returns></returns>
+    public virtual Task<int> UpdateAsync(params TEntity[] entities)
+    {
+        return _db.Updateable(entities).ExecuteCommandAsync();
+    }
+
+    /// <summary>
+    /// 更新多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
     public virtual int Update(IEnumerable<TEntity> entities)
     {
         return _db.Updateable(entities.ToArray()).ExecuteCommand();
     }
 
     /// <summary>
-    /// 更新一条记录
+    /// 更新多条记录
     /// </summary>
-    /// <param name="entity"></param>
+    /// <param name="entities"></param>
     /// <returns></returns>
-    public virtual Task<int> UpdateAsync(TEntity entity)
+    public virtual Task<int> UpdateAsync(IEnumerable<TEntity> entities)
     {
-        return _db.Updateable(entity).ExecuteCommandAsync();
+        return _db.Updateable(entities.ToArray()).ExecuteCommandAsync();
     }
-
 
     /// <summary>
     /// 无主键更新一条记录
@@ -404,25 +586,9 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
         return _db.Updateable(entity).WhereColumns(columns).ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 更新多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
-    public virtual Task<int> UpdateAsync(params TEntity[] entities)
-    {
-        return _db.Updateable(entities).ExecuteCommandAsync();
-    }
+    #endregion
 
-    /// <summary>
-    /// 更新多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
-    public virtual Task<int> UpdateAsync(IEnumerable<TEntity> entities)
-    {
-        return _db.Updateable(entities.ToArray()).ExecuteCommandAsync();
-    }
+    #region Delete
 
     /// <summary>
     /// 删除一条记录
@@ -504,111 +670,57 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
         return await _db.Deleteable<TEntity>().Where(whereExpression).ExecuteCommandAsync();
     }
 
+    #endregion
+}
+
+/// <summary>
+/// SqlSugar 缓存仓储实现类
+/// </summary>
+/// <typeparam name="TEntity"></typeparam>
+public class SqlSugarCacheRepository<TEntity> : ISqlSugarCacheRepository<TEntity> where TEntity : class, new()
+{
     /// <summary>
-    /// 查询是否存在
+    /// 初始化 SqlSugar 客户端
     /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
-    public bool IsExists(Expression<Func<TEntity, bool>> whereExpression)
+    private readonly ISqlSugarClient _db;
+
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    /// <param name="db"></param>
+    public SqlSugarCacheRepository(ISqlSugarClient db)
     {
-        return Entities.Any(whereExpression);
+        _db = db.LoadSqlSugar<TEntity>();
     }
 
     /// <summary>
-    /// 查询是否存在
+    /// 实体集合
     /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
-    public Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> whereExpression)
+    public virtual ISugarQueryable<TEntity> Entities => _db.Queryable<TEntity>();
+}
+
+/// <summary>
+/// SqlSugar 软删除仓储实现类
+/// </summary>
+/// <typeparam name="TEntity"></typeparam>
+public class SqlSugarFalseDeleteRepository<TEntity> : ISqlSugarFalseDeleteRepository<TEntity> where TEntity : class, new()
+{
+    /// <summary>
+    /// 初始化 SqlSugar 客户端
+    /// </summary>
+    private readonly ISqlSugarClient _db;
+
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    /// <param name="db"></param>
+    public SqlSugarFalseDeleteRepository(ISqlSugarClient db)
     {
-        return Entities.AnyAsync(whereExpression);
+        _db = db.LoadSqlSugar<TEntity>();
     }
 
     /// <summary>
-    /// 根据表达式查询多条记录
+    /// 实体集合
     /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    public virtual ISugarQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
-    {
-        return AsQueryable(predicate);
-    }
-
-    /// <summary>
-    /// 根据表达式查询多条记录
-    /// </summary>
-    /// <param name="condition"></param>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    public virtual ISugarQueryable<TEntity> Where(bool condition, Expression<Func<TEntity, bool>> predicate)
-    {
-        return AsQueryable().WhereIF(condition, predicate);
-    }
-
-    /// <summary>
-    /// 构建查询分析器
-    /// </summary>
-    /// <returns></returns>
-    public virtual ISugarQueryable<TEntity> AsQueryable()
-    {
-        return Entities;
-    }
-
-    /// <summary>
-    /// 构建查询分析器
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    public virtual ISugarQueryable<TEntity> AsQueryable(Expression<Func<TEntity, bool>> predicate)
-    {
-        return Entities.Where(predicate);
-    }
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <returns></returns>
-    public virtual List<TEntity> AsEnumerable()
-    {
-        return AsQueryable().ToList();
-    }
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    public virtual List<TEntity> AsEnumerable(Expression<Func<TEntity, bool>> predicate)
-    {
-        return AsQueryable(predicate).ToList();
-    }
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <returns></returns>
-    public virtual Task<List<TEntity>> AsAsyncEnumerable()
-    {
-        return AsQueryable().ToListAsync();
-    }
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    public virtual Task<List<TEntity>> AsAsyncEnumerable(Expression<Func<TEntity, bool>> predicate)
-    {
-        return AsQueryable(predicate).ToListAsync();
-    }
-
-    /// <summary>
-    /// 切换仓储
-    /// </summary>
-    /// <typeparam name="TChangeEntity">实体类型</typeparam>
-    /// <returns>仓储</returns>
-    public virtual ISqlSugarRepository<TChangeEntity> Change<TChangeEntity>() where TChangeEntity : class, new()
-    {
-        return _sqlSugarRepository.Change<TChangeEntity>();
-    }
+    public virtual ISugarQueryable<TEntity> Entities => _db.Queryable<TEntity>();
 }
