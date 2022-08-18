@@ -1,6 +1,6 @@
 ﻿/*
  * Author 1.8K仔
- * Hello.NET.Iaas 常用Using引用
+ * Fast.NET.Iaas 常用Using引用
  * 此文件为了减少代码，将所有的Using引用，全部放在此处
  */
 

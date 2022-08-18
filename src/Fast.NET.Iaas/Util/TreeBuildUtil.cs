@@ -33,24 +33,28 @@ public class TreeBuildUtil<T> where T : ITreeNode
     /// <summary>
     /// 顶级节点的父节点Id(默认0)
     /// </summary>
-    private readonly long _rootParentId = 0L;
+    // ReSharper disable once RedundantDefaultMemberInitializer
+    private long _rootParentId = 0L;
+
+    /// <summary>
+    /// 设置根节点方法
+    /// 查询数据可以设置其他节点为根节点，避免父节点永远是0，查询不到数据的问题
+    /// </summary>
+    public void SetRootParentId(long rootParentId)
+    {
+        _rootParentId = rootParentId;
+    }
 
     /// <summary>
     /// 构造树节点
     /// </summary>
     /// <param name="nodes"></param>
     /// <returns></returns>
-    public List<T> DoTreeBuild(List<T> nodes)
+    public List<T> Build(List<T> nodes)
     {
-        nodes.ForEach(u => BuildChildNodes(nodes, u, new List<T>()));
-
-        var results = new List<T>();
-        nodes.ForEach(u =>
-        {
-            if (_rootParentId == u.GetPid())
-                results.Add(u);
-        });
-        return results;
+        var result = nodes.Where(i => i.GetPid() == _rootParentId).ToList();
+        result.ForEach(u => BuildChildNodes(nodes, u));
+        return result;
     }
 
     /// <summary>
@@ -58,17 +62,10 @@ public class TreeBuildUtil<T> where T : ITreeNode
     /// </summary>
     /// <param name="totalNodes"></param>
     /// <param name="node"></param>
-    /// <param name="childNodeLists"></param>
-    private void BuildChildNodes(List<T> totalNodes, T node, List<T> childNodeLists)
+    private void BuildChildNodes(List<T> totalNodes, T node)
     {
-        var nodeSubLists = new List<T>();
-        totalNodes.ForEach(u =>
-        {
-            if (u.GetPid().Equals(node.GetId()))
-                nodeSubLists.Add(u);
-        });
-        nodeSubLists.ForEach(u => BuildChildNodes(totalNodes, u, new List<T>()));
-        childNodeLists.AddRange(nodeSubLists);
-        node.SetChildren(childNodeLists);
+        var nodeSubList = totalNodes.Where(i => i.GetPid() == node.GetId()).ToList();
+        nodeSubList.ForEach(u => BuildChildNodes(totalNodes, u));
+        node.SetChildren(nodeSubList);
     }
 }

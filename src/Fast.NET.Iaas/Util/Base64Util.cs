@@ -49,7 +49,7 @@ public static class Base64Util
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Base64Utility.ToBase64: {ex}");
+            Console.WriteLine($"Base64Util.ToBase64: {ex}");
         }
 
         return string.Empty;
@@ -77,7 +77,7 @@ public static class Base64Util
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Base64Utility.Base64ToString: {ex}");
+            Console.WriteLine($"Base64Util.Base64ToString: {ex}");
         }
 
         return result;
