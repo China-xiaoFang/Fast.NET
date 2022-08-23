@@ -9,11 +9,11 @@ public enum SysDataBaseTypeEnum
     /// Admin库
     /// </summary>
     [Description("Admin库")]
-    Default = 1,
+    Admin = 1,
 
     /// <summary>
-    /// 业务库
+    /// 租户库
     /// </summary>
-    [Description("业务库")]
-    Business = 2
+    [Description("租户库")]
+    Tenant = 2
 }
