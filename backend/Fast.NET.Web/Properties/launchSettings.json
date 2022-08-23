@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Hello.NET.Web": {
+    "Fast.NET.Web": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

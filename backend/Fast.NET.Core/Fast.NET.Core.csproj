@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Fast.NET.Iaas\Fast.NET.Iaas.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AdminFactory\ServiceFactory\" />
+  </ItemGroup>
+
 </Project>

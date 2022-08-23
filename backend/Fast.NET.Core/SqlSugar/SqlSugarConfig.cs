@@ -1,8 +1,6 @@
-﻿using Fast.NET.Core.AdminFactory.EnumFactory;
-using Fast.NET.Core.AdminFactory.ModelFactory;
+﻿using Fast.NET.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.NET.Core.BaseFactory;
 using Fast.NET.Core.BaseFactory.Const;
-using Fast.NET.Core.Cache;
 using Fast.NET.Core.SqlSugar.Extension;
 using Fast.NET.Core.SqlSugar.Internal;
 using static Furion.App;
@@ -20,42 +18,69 @@ public static class SqlSugarConfig
     public static readonly ICache _cache = GetService<ICache>();
 
     /// <summary>
-    /// 默认Db Type
+    /// 反射获取所有的数据库Model
     /// </summary>
-    private static readonly Type _defaultDb = typeof(IDefaultDb);
+    /// <returns></returns>
+    private static (string key, SysDataBaseTypeEnum type) ReflexGetAllTEntity(string name)
+    {
+        // 先从缓存获取
+        var result = _cache.Get<List<(string key, SysDataBaseTypeEnum type)>>(CommonConst.CACHE_KEY_MODEL_DB_TYPE);
 
-    /// <summary>
-    /// 业务Db Type
-    /// </summary>
-    private static readonly Type _businessDb = typeof(IBusinessDb);
+        if (result != null && result.Any())
+        {
+            var entityInfo = result.FirstOrDefault(f => f.key == name);
+            if (entityInfo.key.IsEmpty())
+            {
+                throw Oops.Oh(ErrorCodeEnum.SugarModelError);
+            }
+
+            return entityInfo;
+        }
+        else
+        {
+            // 获取所有实现了接口的类的类型
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(sl => sl.GetTypes().Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity))));
+
+            // 遍历获取到的类型集合
+            // 获取数据库类型，如果没有则默认是Admin库
+            result = types.Select(type => new ValueTuple<string, SysDataBaseTypeEnum>(type.Name,
+                type.GetCustomAttribute<DataBaseTypeAttribute>(true)?.SysDataBaseType ?? SysDataBaseTypeEnum.Admin)).ToList();
+
+            var entityInfo = result.FirstOrDefault(f => f.key == name);
+            if (entityInfo.key.IsEmpty())
+            {
+                throw Oops.Oh(ErrorCodeEnum.SugarModelError);
+            }
+
+            return entityInfo;
+        }
+    }
 
     public static ISqlSugarClient LoadSqlSugar<TEntity>(this ISqlSugarClient db) where TEntity : class, new()
     {
         var _db = (SqlSugarClient) db;
+
+        var dbType = ReflexGetAllTEntity(typeof(TEntity).Name);
+
         // 默认Db
         var defaultDb = _db.GetConnection(GlobalContext.ConnectionInfo.ConnectionId);
 
-        // 判断 TEntity 的DB
-        var type = typeof(TEntity);
-        if (type.IsAssignableFrom(_defaultDb))
+        switch (dbType.type)
         {
-            return defaultDb;
+            case SysDataBaseTypeEnum.Admin:
+                return defaultDb;
+            case SysDataBaseTypeEnum.Tenant:
+                // 获取租户Id
+                var tenantId = GlobalContext.GetTenantId();
+
+                // 这里每次都获取一下数据库信息，方便跨库连接
+                GlobalContext.BusinessDbInfo = GetDbInfo(defaultDb, SysDataBaseTypeEnum.Tenant, tenantId);
+
+                return GetSqlSugarClient(_db, GlobalContext.BusinessDbInfo);
+            default:
+                throw Oops.Oh(ErrorCodeEnum.SugarModelError);
         }
-
-        // ReSharper disable once InvertIf
-        if (type.IsAssignableFrom(_businessDb))
-        {
-            // 获取租户Id
-            var tenantId = GlobalContext.GetTenantId();
-
-            // 这里每次都获取一下数据库信息，方便跨库连接
-            GlobalContext.BusinessDbInfo = GetDbInfo(defaultDb, SysDataBaseTypeEnum.Business, tenantId);
-
-            return GetSqlSugarClient(_db, GlobalContext.BusinessDbInfo);
-        }
-
-        // SqlSugar配置错误，请Model是否继承接口
-        throw Oops.Oh("SqlSugar config error, please Check whether the Model inherits the interface!");
     }
 
     /// <summary>
@@ -110,7 +135,7 @@ public static class SqlSugarConfig
             _cache.Set($"{CommonConst.CACHE_KEY_TENANT_DB_INFO}{tenantId}", dbInfoList);
         }
 
-        var db = dbInfoList.FirstOrDefault(f => f.DataBaseType == dbType);
+        var db = dbInfoList.FirstOrDefault(f => f.DbType == dbType);
         if (db == null)
         {
             throw Oops.Oh("租户数据库配置异常！");
@@ -127,7 +152,7 @@ public static class SqlSugarConfig
     /// <returns></returns>
     private static ISqlSugarClient GetSqlSugarClient(SqlSugarClient _db, SysTenantDataBaseModel dbInfo)
     {
-        var connectionId = $"{dbInfo.DataBaseType}_{dbInfo.TenantId}";
+        var connectionId = $"{dbInfo.DbType}_{dbInfo.TenantId}";
 
         if (_db.IsAnyConnection(connectionId))
             return _db.GetConnection(connectionId);

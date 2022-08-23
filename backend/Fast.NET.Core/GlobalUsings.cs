@@ -1,6 +1,6 @@
 ﻿/*
  * Author 1.8K仔
- * Hello.NET.Core 常用Using引用
+ * Fast.NET.Core 常用Using引用
  * 此文件为了减少代码，将所有的Using引用，全部放在此处
  */
 
@@ -28,3 +28,9 @@ global using Fast.NET.Iaas;
 global using Fast.NET.Iaas.Util;
 global using Fast.NET.Core.Extension;
 global using Fast.NET.Core.AttributeFilter;
+global using Fast.NET.Core.AdminFactory.BaseModelFactory;
+global using Fast.NET.Core.AdminFactory.EnumFactory;
+global using Fast.NET.Core.AdminFactory.ModelFactory;
+global using Fast.NET.Core.Cache;
+global using Fast.NET.Core.SqlSugar.Repository;
+global using Fast.NET.Core.Util;

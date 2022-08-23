@@ -1,5 +1,6 @@
 ﻿using Fast.NET.Core.AdminFactory.EnumFactory;
 using Fast.NET.Core.AdminFactory.ModelFactory;
+using Fast.NET.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.NET.Core.BaseFactory.Const;
 using Microsoft.Extensions.Configuration;
 using static Furion.App;

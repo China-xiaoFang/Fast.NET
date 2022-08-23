@@ -10,7 +10,7 @@ public class CommonConst
     /// <summary>
     /// 默认管理员密码
     /// </summary>
-    public const string DEFAULT_ADMIN_PASSWORD = "Hello.Net";
+    public const string DEFAULT_ADMIN_PASSWORD = "Fast.Net";
 
     /// <summary>
     /// 用户缓存
@@ -53,22 +53,22 @@ public class CommonConst
     public const string CACHE_KEY_ONLINE_USER = "onlineUser";
 
     /// <summary>
-    /// 微信Token缓存
-    /// </summary>
-    public const string CACHE_KEY_WE_CHAT_ACCESS_TOKEN = "weChatAccessToken_";
-
-    /// <summary>
     /// 数据库信息缓存
     /// </summary>
     public const string CACHE_KEY_TENANT_DB_INFO = "tenantDbInfo_";
 
     /// <summary>
+    /// Model Type信息缓存
+    /// </summary>
+    public const string CACHE_KEY_MODEL_DB_TYPE = "modelDbType";
+
+    /// <summary>
     /// 所有ModelDll信息缓存
     /// </summary>
-    public const string CACHE_KEY_MODEL_DLL = "_modelDll";
+    public const string CACHE_KEY_MODEL_DLL = "modelDll";
 
     /// <summary>
     /// Model Type信息缓存
     /// </summary>
-    public const string CACHE_KEY_MODEL_TYPE = "_modelType";
+    public const string CACHE_KEY_MODEL_TYPE = "modelType";
 }
