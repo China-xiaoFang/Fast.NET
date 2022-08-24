@@ -1,4 +1,4 @@
-﻿namespace Fast.NET.Core.Captcha;
+﻿namespace Fast.NET.Core.Util.Captcha;
 
 public class CaptchaConst
 {

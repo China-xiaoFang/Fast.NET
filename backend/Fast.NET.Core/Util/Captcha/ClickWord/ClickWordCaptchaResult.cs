@@ -1,4 +1,4 @@
-﻿namespace Fast.NET.Core.Captcha.ClickWord;
+﻿namespace Fast.NET.Core.Util.Captcha.ClickWord;
 
 /// <summary>
 /// 验证码输出参数

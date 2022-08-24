@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fast.NET.Core.Captcha.ClickWord;
+namespace Fast.NET.Core.Util.Captcha.ClickWord;
 
 /// <summary>
 /// 点击验证码输入参数

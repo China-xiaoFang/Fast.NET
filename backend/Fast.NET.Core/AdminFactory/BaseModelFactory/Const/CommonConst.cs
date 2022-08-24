@@ -1,4 +1,4 @@
-﻿namespace Fast.NET.Core.BaseFactory.Const;
+﻿namespace Fast.NET.Core.AdminFactory.BaseModelFactory.Const;
 
 public class CommonConst
 {
@@ -60,15 +60,5 @@ public class CommonConst
     /// <summary>
     /// Model Type信息缓存
     /// </summary>
-    public const string CACHE_KEY_MODEL_DB_TYPE = "modelDbType";
-
-    /// <summary>
-    /// 所有ModelDll信息缓存
-    /// </summary>
-    public const string CACHE_KEY_MODEL_DLL = "modelDll";
-
-    /// <summary>
-    /// Model Type信息缓存
-    /// </summary>
-    public const string CACHE_KEY_MODEL_TYPE = "modelType";
+    public const string CACHE_KEY_MODEL_DB_TYPE = "_modelDbType";
 }

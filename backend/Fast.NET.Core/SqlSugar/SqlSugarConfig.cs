@@ -1,9 +1,7 @@
-﻿using Fast.NET.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.NET.Core.BaseFactory;
-using Fast.NET.Core.BaseFactory.Const;
+﻿using Fast.NET.Core.AdminFactory.BaseModelFactory.Const;
+using Fast.NET.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.NET.Core.SqlSugar.Extension;
 using Fast.NET.Core.SqlSugar.Internal;
-using static Furion.App;
 
 namespace Fast.NET.Core.SqlSugar;
 
@@ -18,46 +16,60 @@ public static class SqlSugarConfig
     public static readonly ICache _cache = GetService<ICache>();
 
     /// <summary>
+    /// 反射获取所有的数据库Model Type
+    /// </summary>
+    /// <returns></returns>
+    private static IEnumerable<(string className, SysDataBaseTypeEnum dbType, Type type)> ReflexGetAllTEntityList()
+    {
+        // 程序入口Exe文件名称
+        var appName = WebHostEnvironment.ApplicationName;
+
+        // 先从缓存获取
+        var entityType =
+            _cache.Get<List<(string className, SysDataBaseTypeEnum dbType, Type type)>>(
+                $"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
+        if (entityType != null && entityType.Any())
+            return entityType;
+
+        // 获取所有实现了接口的类的类型
+        var types = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(sl => sl.GetTypes().Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity))));
+
+        // 遍历获取到的类型集合
+        // 获取数据库类型，如果没有则默认是Admin库
+        entityType = types.Select(type => new ValueTuple<string, SysDataBaseTypeEnum, Type>(type.Name,
+            type.GetCustomAttribute<DataBaseTypeAttribute>(true)?.SysDataBaseType ?? SysDataBaseTypeEnum.Admin, type)).ToList();
+        // 放入缓存
+        _cache.Set($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}", entityType);
+
+        return entityType;
+    }
+
+    /// <summary>
     /// 反射获取所有的数据库Model
     /// </summary>
     /// <returns></returns>
-    private static (string key, SysDataBaseTypeEnum type) ReflexGetAllTEntity(string name)
+    private static (string key, SysDataBaseTypeEnum dbType, Type type) ReflexGetAllTEntity(string name)
     {
-        // 先从缓存获取
-        var result = _cache.Get<List<(string key, SysDataBaseTypeEnum type)>>(CommonConst.CACHE_KEY_MODEL_DB_TYPE);
-
-        if (result != null && result.Any())
+        var entityInfo = ReflexGetAllTEntityList().FirstOrDefault(f => f.className == name);
+        if (entityInfo.className.IsEmpty())
         {
-            var entityInfo = result.FirstOrDefault(f => f.key == name);
-            if (entityInfo.key.IsEmpty())
-            {
-                throw Oops.Oh(ErrorCodeEnum.SugarModelError);
-            }
-
-            return entityInfo;
+            throw Oops.Oh(ErrorCodeEnum.SugarModelError);
         }
-        else
-        {
-            // 获取所有实现了接口的类的类型
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(sl => sl.GetTypes().Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity))));
 
-            // 遍历获取到的类型集合
-            // 获取数据库类型，如果没有则默认是Admin库
-            result = types.Select(type => new ValueTuple<string, SysDataBaseTypeEnum>(type.Name,
-                type.GetCustomAttribute<DataBaseTypeAttribute>(true)?.SysDataBaseType ?? SysDataBaseTypeEnum.Admin)).ToList();
-
-            var entityInfo = result.FirstOrDefault(f => f.key == name);
-            if (entityInfo.key.IsEmpty())
-            {
-                throw Oops.Oh(ErrorCodeEnum.SugarModelError);
-            }
-
-            return entityInfo;
-        }
+        return entityInfo;
     }
 
-    public static ISqlSugarClient LoadSqlSugar<TEntity>(this ISqlSugarClient db) where TEntity : class, new()
+    /// <summary>
+    /// LoadSqlSugar，支持传入租户Id，获取租户Id的DbClient
+    /// 默认是当前登录用户的租户Id
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <param name="db"></param>
+    /// <param name="tenantId"></param>
+    /// <returns></returns>
+    public static ISqlSugarClient LoadSqlSugar<TEntity>(this ISqlSugarClient db, long? tenantId = null)
+        where TEntity : class, new()
     {
         var _db = (SqlSugarClient) db;
 
@@ -66,18 +78,21 @@ public static class SqlSugarConfig
         // 默认Db
         var defaultDb = _db.GetConnection(GlobalContext.ConnectionInfo.ConnectionId);
 
-        switch (dbType.type)
+        switch (dbType.dbType)
         {
             case SysDataBaseTypeEnum.Admin:
                 return defaultDb;
             case SysDataBaseTypeEnum.Tenant:
-                // 获取租户Id
-                var tenantId = GlobalContext.GetTenantId();
+                if (tenantId.IsNullOrZero())
+                {
+                    // 获取租户Id
+                    tenantId = GlobalContext.GetTenantId();
+                }
 
                 // 这里每次都获取一下数据库信息，方便跨库连接
-                GlobalContext.BusinessDbInfo = GetDbInfo(defaultDb, SysDataBaseTypeEnum.Tenant, tenantId);
+                GlobalContext.TenantDbInfo = GetDbInfo(defaultDb, SysDataBaseTypeEnum.Tenant, tenantId.ParseToLong());
 
-                return GetSqlSugarClient(_db, GlobalContext.BusinessDbInfo);
+                return GetSqlSugarClient(_db, GlobalContext.TenantDbInfo);
             default:
                 throw Oops.Oh(ErrorCodeEnum.SugarModelError);
         }
@@ -91,16 +106,14 @@ public static class SqlSugarConfig
         // 程序入口Exe文件名称
         var appName = WebHostEnvironment.ApplicationName;
 
-        // 清楚Model缓存
-        _cache.Del($"{appName}{CommonConst.CACHE_KEY_MODEL_TYPE}");
-        _cache.Del($"{appName}{CommonConst.CACHE_KEY_MODEL_DLL}");
+        // 清除ModelType缓存
+        _cache.Del($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
 
         var connectConfig = new ConnectionConfig
         {
             ConfigId = GlobalContext.ConnectionInfo.ConnectionId, // 此链接标志，用以后面切库使用
             ConnectionString = GlobalContext.ConnectionInfo.Connection, // 核心库连接字符串
             DbType = GlobalContext.ConnectionInfo.DbType,
-            //IsShardSameThread = true,
             IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
             InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
             //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
@@ -135,10 +148,10 @@ public static class SqlSugarConfig
             _cache.Set($"{CommonConst.CACHE_KEY_TENANT_DB_INFO}{tenantId}", dbInfoList);
         }
 
-        var db = dbInfoList.FirstOrDefault(f => f.DbType == dbType);
+        var db = dbInfoList.FirstOrDefault(f => f.SysDbType == dbType);
         if (db == null)
         {
-            throw Oops.Oh("租户数据库配置异常！");
+            throw Oops.Oh(ErrorCodeEnum.TenantDbError);
         }
 
         return db;
@@ -152,7 +165,7 @@ public static class SqlSugarConfig
     /// <returns></returns>
     private static ISqlSugarClient GetSqlSugarClient(SqlSugarClient _db, SysTenantDataBaseModel dbInfo)
     {
-        var connectionId = $"{dbInfo.DbType}_{dbInfo.TenantId}";
+        var connectionId = $"{dbInfo.SysDbType}_{dbInfo.TenantId}";
 
         if (_db.IsAnyConnection(connectionId))
             return _db.GetConnection(connectionId);
@@ -201,7 +214,7 @@ public static class SqlSugarConfig
             case DbType.Custom:
                 break;
             default:
-                throw Oops.Oh("数据库Type 配置异常！");
+                throw Oops.Oh(ErrorCodeEnum.DbTypeError);
         }
 
         db.AddConnection(new ConnectionConfig
@@ -209,7 +222,6 @@ public static class SqlSugarConfig
             ConfigId = connectionId, // 此链接标志，用以后面切库使用
             ConnectionString = connectionStr, // 租户库连接字符串
             DbType = dbInfo.DbType,
-            //IsShardSameThread = true,
             IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
             InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
             //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
@@ -220,18 +232,6 @@ public static class SqlSugarConfig
         // 过滤器
         LoadSugarFilter(_db);
     }
-
-    /// <summary>
-    /// 日志Model集合
-    /// </summary>
-    private static readonly List<string> _logModelList = new List<string>
-    {
-        //nameof(SysLogVisModel),
-        //nameof(SysLogExModel),
-        //nameof(SysLogOpModel),
-        //nameof(DingDingSendLogModel),
-        //nameof(SysScheduledServerOpLogModel)
-    };
 
     /// <summary>
     /// 加载过滤器
@@ -252,7 +252,7 @@ public static class SqlSugarConfig
                 if (sql.StartsWith("UPDATE") || sql.StartsWith("INSERT"))
                 {
                     // 如果是两个Log表，则不输出
-                    if (sql.Contains("[sys_log_op]") || sql.Contains("[sys_log_ex]"))
+                    if (sql.Contains("[Sys_Log_Op]") || sql.Contains("[Sys_Log_Ex]"))
                         return;
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                 }
@@ -271,58 +271,28 @@ public static class SqlSugarConfig
             };
         }
 
-        // 程序入口Exe文件名称
-        var appName = WebHostEnvironment.ApplicationName;
-
-        var modelTypeList = _cache.Get<List<Type>>($"{appName}{CommonConst.CACHE_KEY_MODEL_TYPE}");
-        if (modelTypeList == null || !modelTypeList.Any())
-        {
-            var modelDllList = _cache.Get<List<string>>($"{appName}{CommonConst.CACHE_KEY_MODEL_DLL}");
-            if (modelDllList == null || !modelDllList.Any())
-            {
-                modelDllList = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.Model.dll").ToList();
-                // 排除 Zy.NET.Base.Model.dll
-                modelDllList = modelDllList.Where(wh => !wh.EndsWith("Zy.NET.Base.Model.dll")).ToList();
-                _cache.Set($"{appName}{CommonConst.CACHE_KEY_MODEL_DLL}", modelDllList);
-            }
-
-            modelTypeList = new List<Type>();
-
-            foreach (var dll in modelDllList)
-            {
-                modelTypeList.AddRange(Assembly.LoadFrom(dll).GetTypes().Where(wh =>
-                    wh.GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault() != null));
-            }
-
-            _cache.Set($"{appName}{CommonConst.CACHE_KEY_MODEL_TYPE}", modelTypeList);
-        }
-
-        foreach (var type in modelTypeList)
+        // 这里可以根据字段判断也可以根据接口判断，如果是租户Id，建议根据接口判断，如果是IsDeleted，建议根据名称判断，方便别的表也可以实现
+        foreach (var (_, _, type) in ReflexGetAllTEntityList())
         {
             // 配置多租户全局过滤器
-            // 判断实体中是否包含TenantId属性
-            if (!type.GetProperty(ClaimConst.TENANT_ID).IsEmpty())
+            // 判断实体是否继承了租户基类接口
+            if (type.GetInterfaces().Contains(typeof(IBaseTenant)))
             {
-                // 判断如果Type为5张日志表，超管默认可以查看所有
-                if (!(_logModelList.Contains(type.Name) && GlobalContext.IsSuperAdmin))
-                {
-                    // 构建动态Lambda
-                    var lambda = DynamicExpressionParser.ParseLambda(new[] {Expression.Parameter(type, "it")}, typeof(bool),
-                        $"{nameof(DBEntityTenant.TenantId)} ==  @0 OR ( @1 AND @2 )", GlobalContext.GetTenantId(false),
-                        GlobalContext.IsSuperAdmin, GlobalContext.SystemSettings.SuperAdminViewAllData);
-                    // 将Lambda传入过滤器
-                    _db.QueryFilter.Add(new TableFilterItem<object>(type, lambda));
-                }
+                // 构建动态Lambda
+                var lambda = DynamicExpressionParser.ParseLambda(new[] {Expression.Parameter(type, "it")}, typeof(bool),
+                    $"{nameof(BaseTenant.TenantId)} ==  @0 OR @1 ", GlobalContext.GetTenantId(false), GlobalContext.IsSuperAdmin);
+                // 将Lambda传入过滤器
+                _db.QueryFilter.Add(new TableFilterItem<object>(type, lambda));
             }
 
             // 配置加删除全局过滤器
-            // 判断实体中是否存在IsDeleted
+            // 判断实体是否继承了基类
             // ReSharper disable once InvertIf
             if (!type.GetProperty(ClaimConst.DELETE_FIELD).IsEmpty())
             {
                 // 构建动态Lambda
                 var lambda = DynamicExpressionParser.ParseLambda(new[] {Expression.Parameter(type, "it")}, typeof(bool),
-                    $"{nameof(DEntityBase.IsDeleted)} ==  @0", false);
+                    $"{nameof(BaseTEntity.IsDeleted)} ==  @0", false);
                 // 将Lambda传入过滤器
                 _db.QueryFilter.Add(new TableFilterItem<object>(type, lambda) {IsJoinQuery = true});
             }

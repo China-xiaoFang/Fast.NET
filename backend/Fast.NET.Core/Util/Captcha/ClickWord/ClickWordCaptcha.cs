@@ -2,10 +2,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.Versioning;
-using Fast.NET.Core.Cache;
 using Furion.JsonSerialization;
 
-namespace Fast.NET.Core.Captcha.ClickWord;
+namespace Fast.NET.Core.Util.Captcha.ClickWord;
 
 /// <summary>
 /// 点选验证码

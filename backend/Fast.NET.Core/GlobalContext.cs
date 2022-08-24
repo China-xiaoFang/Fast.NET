@@ -1,9 +1,6 @@
-﻿using Fast.NET.Core.AdminFactory.EnumFactory;
-using Fast.NET.Core.AdminFactory.ModelFactory;
+﻿using Fast.NET.Core.AdminFactory.BaseModelFactory.Const;
 using Fast.NET.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.NET.Core.BaseFactory.Const;
 using Microsoft.Extensions.Configuration;
-using static Furion.App;
 
 namespace Fast.NET.Core;
 
@@ -33,11 +30,6 @@ public static class GlobalContext
     public static long UserId => (User?.FindFirst(ClaimConst.CLAINM_USERID)?.Value).ParseToLong();
 
     /// <summary>
-    /// 任务调度用户Id
-    /// </summary>
-    public static long ScheduledUserId => HttpContext == null ? 0 : HttpContext.Request.Headers["UserId"].ParseToLong();
-
-    /// <summary>
     /// 当前用户账号
     /// </summary>
     public static string UserAccount => (User?.FindFirst(ClaimConst.CLAINM_ACCOUNT)?.Value).ParseToString();
@@ -59,11 +51,6 @@ public static class GlobalContext
             return User.FindFirst(ClaimConst.CLAINM_SUPERADMIN)?.Value == AdminTypeEnum.SuperAdmin.GetHashCode().ParseToString();
         }
     }
-
-    /// <summary>
-    /// 任务调度是否超级管理员
-    /// </summary>
-    public static bool IsScheduledSuperAdmin { get; set; }
 
     ///// <summary>
     ///// 当前用户信息
@@ -94,31 +81,20 @@ public static class GlobalContext
     //}
 
     /// <summary>
-    /// 系统参数设定
-    /// </summary>
-    public static SystemSettingsDto SystemSettings { get; set; }
-
-    /// <summary>
     /// 数据库配置信息
     /// </summary>
     public static ConnectionDto ConnectionInfo { get; set; }
 
     /// <summary>
-    /// 默认库Db Name
+    /// 租户库Db Info
     /// </summary>
-    public static string DefaultDbName => "Zy.Admin.Net";
-
-    /// <summary>
-    /// 业务库Db Info
-    /// </summary>
-    public static SysTenantDataBaseModel BusinessDbInfo { get; set; }
+    public static SysTenantDataBaseModel TenantDbInfo { get; set; }
 
     /// <summary>
     /// 设置配置文件
     /// </summary>
     public static void SetConfigInfo()
     {
-        SystemSettings = Configuration.GetSection("SystemSettings").Get<SystemSettingsDto>();
         ConnectionInfo = Configuration.GetSection("ConnectionStrings").Get<ConnectionDto>();
     }
 
@@ -149,40 +125,6 @@ public static class GlobalContext
 
         return 0;
     }
-
-    /// <summary>
-    /// 获取用户Id
-    /// </summary>
-    /// <param name="isThrow">是否抛出错误</param>
-    /// <returns></returns>
-    public static long GetUserId(bool isThrow = true)
-    {
-        if (!UserId.IsNullOrZero())
-        {
-            return UserId;
-        }
-
-        if (!ScheduledUserId.IsNullOrZero())
-        {
-            return ScheduledUserId;
-        }
-
-        if (isThrow)
-            throw Oops.Oh("租户系统异常！");
-
-        return 0;
-    }
-}
-
-/// <summary>
-/// 系统设定Dto
-/// </summary>
-public class SystemSettingsDto
-{
-    /// <summary>
-    /// 超级管理员是否可以查看所有数据
-    /// </summary>
-    public bool SuperAdminViewAllData { get; set; }
 }
 
 /// <summary>

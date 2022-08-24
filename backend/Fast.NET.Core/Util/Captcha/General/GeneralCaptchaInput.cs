@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fast.NET.Core.Captcha.General;
+namespace Fast.NET.Core.Util.Captcha.General;
 
 /// <summary>
 /// 常规验证码输入

@@ -1,4 +1,4 @@
-﻿namespace Fast.NET.Core.Captcha.General;
+﻿namespace Fast.NET.Core.Util.Captcha.General;
 
 public interface IGeneralCaptcha
 {

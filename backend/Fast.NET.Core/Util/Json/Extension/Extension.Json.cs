@@ -1,7 +1,7 @@
 ﻿using Furion.JsonSerialization;
 using Newtonsoft.Json.Linq;
 
-namespace Fast.NET.Core.Extension;
+namespace Fast.NET.Core.Util.Json.Extension;
 
 /// <summary>
 /// Json 扩展

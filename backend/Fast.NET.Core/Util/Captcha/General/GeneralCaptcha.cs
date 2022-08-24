@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
-using Fast.NET.Core.Captcha.ClickWord;
+using Fast.NET.Core.Util.Captcha.ClickWord;
 
-namespace Fast.NET.Core.Captcha.General;
+namespace Fast.NET.Core.Util.Captcha.General;
 
 /// <summary>
 /// 常规验证码

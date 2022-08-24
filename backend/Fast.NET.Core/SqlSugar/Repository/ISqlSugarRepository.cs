@@ -66,7 +66,7 @@ public interface ISqlSugarRepository<TEntity> where TEntity : class, new()
     ISugarQueryable<TEntity> AsQueryable(Expression<Func<TEntity, bool>> whereExpression);
 
     /// <summary>
-    /// 切换仓储
+    /// 切换仓储/切换租户仓储
     /// </summary>
     /// <typeparam name="TChangeEntity">实体类型</typeparam>
     /// <returns>仓储</returns>

@@ -32,7 +32,13 @@ public class SysTenantDataBaseModel : BaseTEntity
     public string DbPwd { get; set; }
 
     /// <summary>
-    /// 数据库类型，用于区分使用的是那个数据库
+    /// 系统数据库类型
+    /// </summary>
+    [SugarColumn(ColumnDescription = "系统数据库类型", ColumnDataType = "tinyint", IsNullable = false)]
+    public SysDataBaseTypeEnum SysDbType { get; set; }
+
+    /// <summary>
+    /// 数据库类型，用于区分使用的是那个类型的数据库
     /// </summary>
     [SugarColumn(ColumnDescription = "数据库类型", ColumnDataType = "tinyint", IsNullable = false)]
     public DbType DbType { get; set; }

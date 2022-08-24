@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using Furion.RemoteRequest.Extensions;
 using UAParser;
 
-namespace Fast.NET.Core.Util;
+namespace Fast.NET.Core.Util.Http;
 
 /// <summary>
 /// HTTP网络工具
@@ -234,7 +234,9 @@ public static class HttpNewUtil
             var clientInfo = parser.Parse(UserAgent);
             var result = new UserAgentInfoModel
             {
-                PhoneModel = clientInfo.Device.ToString(), OS = clientInfo.OS.ToString(), Browser = clientInfo.UA.ToString()
+                PhoneModel = clientInfo.Device.ToString(),
+                OS = clientInfo.OS.ToString(),
+                Browser = clientInfo.UA.ToString()
             };
             return result;
         }
@@ -244,7 +246,7 @@ public static class HttpNewUtil
         }
     }
 
-    private static readonly char[] reserveChar = {'/', '?', '*', ':', '|', '\\', '<', '>', '\"'};
+    private static readonly char[] reserveChar = { '/', '?', '*', ':', '|', '\\', '<', '>', '\"' };
 
     /// <summary>
     /// 远程路径Encode处理,会保证开头是/，结尾也是/
