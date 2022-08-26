@@ -45,7 +45,6 @@ global using Fast.Core.Util.Http;
 global using Fast.Core.Util.Json;
 global using Fast.Core.Util.Json.Extension;
 global using Fast.Core.Util.Json.JsonConverter;
-global using Fast.Core.Util.Json.Util;
 global using Fast.Core.Util.MiniExcel;
 global using Fast.Core.Util.MiniExcel.AttributeFilter;
 global using Fast.Core.Util.MiniExcel.Extension;
