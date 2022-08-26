@@ -3,7 +3,7 @@
 /// <summary>
 /// 递增主键实体基类
 /// </summary>
-public abstract class AutoIncrementEntity : IDbEntity
+public abstract class AutoIncrementEntity : IPrimaryKeyEntity<int>, IDbEntity
 {
     /// <summary>
     /// 主键Id

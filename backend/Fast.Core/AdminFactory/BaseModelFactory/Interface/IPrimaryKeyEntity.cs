@@ -1,14 +1,15 @@
-﻿namespace Fast.Core.AdminFactory.BaseModelFactory;
+﻿namespace Fast.Core.AdminFactory.BaseModelFactory.Interface;
 
 /// <summary>
-/// 主键实体基类
+/// 主键接口
 /// </summary>
-public abstract class PrimaryKeyEntity : IPrimaryKeyEntity<long>, IDbEntity
+/// <typeparam name="T"></typeparam>
+public interface IPrimaryKeyEntity<T>
 {
     /// <summary>
     /// 主键Id
     /// </summary>
     [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true)]
     // 注意是在这里定义你的公共实体
-    public virtual long Id { get; set; }
+    T Id { get; set; }
 }

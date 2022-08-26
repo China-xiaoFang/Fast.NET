@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
-using Fast.Core.Util.Captcha.ClickWord;
 
 namespace Fast.Core.Util.Captcha.General;
 

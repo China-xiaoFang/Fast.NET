@@ -1,14 +1,4 @@
-﻿using Fast.Core.AdminFactory.BaseModelFactory;
-using Fast.Core.AdminFactory.BaseModelFactory.Const;
-using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.Core.AttributeFilter;
-using Fast.Core.Cache;
-using Fast.Core.SqlSugar.Extension;
-using Fast.Core.SqlSugar.Internal;
-using Fast.Iaas.Extension;
-
-namespace Fast.Core.SqlSugar;
+﻿namespace Fast.Core.SqlSugar;
 
 /// <summary>
 /// SqlSugar配置

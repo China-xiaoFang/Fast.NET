@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.AdminFactory.BaseModelFactory;
+﻿namespace Fast.Core.AdminFactory.BaseModelFactory.Interface;
 
 /// <summary>
 /// 所有的数据库Model，都应该继承此接口

@@ -1,8 +1,4 @@
-﻿using Fast.Core.AdminFactory.BaseModelFactory;
-using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AttributeFilter;
-
-namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 
 /// <summary>
 /// 租户App授权信息表Model类

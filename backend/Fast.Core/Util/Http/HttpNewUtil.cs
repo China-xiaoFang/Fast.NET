@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using Fast.Iaas.Extension;
 using Furion.RemoteRequest.Extensions;
 using UAParser;
 
@@ -19,7 +18,7 @@ public static class HttpNewUtil
         get
         {
             var result = string.Empty;
-            if (App.HttpContext != null)
+            if (HttpContext != null)
             {
                 result = GetWebClientIp();
             }
@@ -73,19 +72,19 @@ public static class HttpNewUtil
     /// <returns></returns>
     private static string GetWebRemoteIp()
     {
-        if (App.HttpContext == null)
+        if (HttpContext == null)
             return string.Empty;
-        if (App.HttpContext.Connection.RemoteIpAddress == null)
+        if (HttpContext.Connection.RemoteIpAddress == null)
             return string.Empty;
-        var ip = App.HttpContext.Connection.RemoteIpAddress.ToString();
-        if (App.HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
+        var ip = HttpContext.Connection.RemoteIpAddress.ToString();
+        if (HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
         {
-            ip = App.HttpContext.Request.Headers["X-Real-IP"].FirstOrDefault();
+            ip = HttpContext.Request.Headers["X-Real-IP"].FirstOrDefault();
         }
 
-        if (ip.IsEmpty() && App.HttpContext.Request.Headers.ContainsKey("X-Forwarded-For"))
+        if (ip.IsEmpty() && HttpContext.Request.Headers.ContainsKey("X-Forwarded-For"))
         {
-            ip = App.HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
         }
 
         return ip;
@@ -98,7 +97,7 @@ public static class HttpNewUtil
     {
         get
         {
-            string userAgent = App.HttpContext?.Request?.Headers["User-Agent"];
+            string userAgent = HttpContext?.Request?.Headers["User-Agent"];
 
             return userAgent;
         }
@@ -111,9 +110,9 @@ public static class HttpNewUtil
     {
         get
         {
-            var url = new StringBuilder().Append(App.HttpContext?.Request?.Scheme).Append("://")
-                .Append(App.HttpContext?.Request?.Host).Append(App.HttpContext?.Request?.PathBase)
-                .Append(App.HttpContext?.Request?.Path).Append(App.HttpContext?.Request?.QueryString).ToString();
+            var url = new StringBuilder().Append(HttpContext?.Request?.Scheme).Append("://").Append(HttpContext?.Request?.Host)
+                .Append(HttpContext?.Request?.PathBase).Append(HttpContext?.Request?.Path)
+                .Append(HttpContext?.Request?.QueryString).ToString();
             return url;
         }
     }
@@ -235,9 +234,7 @@ public static class HttpNewUtil
             var clientInfo = parser.Parse(UserAgent);
             var result = new UserAgentInfoModel
             {
-                PhoneModel = clientInfo.Device.ToString(),
-                OS = clientInfo.OS.ToString(),
-                Browser = clientInfo.UA.ToString()
+                PhoneModel = clientInfo.Device.ToString(), OS = clientInfo.OS.ToString(), Browser = clientInfo.UA.ToString()
             };
             return result;
         }
@@ -247,7 +244,7 @@ public static class HttpNewUtil
         }
     }
 
-    private static readonly char[] reserveChar = { '/', '?', '*', ':', '|', '\\', '<', '>', '\"' };
+    private static readonly char[] reserveChar = {'/', '?', '*', ':', '|', '\\', '<', '>', '\"'};
 
     /// <summary>
     /// 远程路径Encode处理,会保证开头是/，结尾也是/

@@ -2,7 +2,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.Versioning;
-using Fast.Core.Cache;
 using Furion.JsonSerialization;
 
 namespace Fast.Core.Util.Captcha.ClickWord;
@@ -41,11 +40,11 @@ public class ClickWordCaptcha : IClickWordCaptcha, ITransient
 
         Color[] colorArray = {Color.Black, Color.DarkBlue, Color.Green, Color.Orange, Color.Brown, Color.DarkCyan, Color.Purple};
 
-        var bgImagesDir = Path.Combine(App.WebHostEnvironment.WebRootPath, "Captcha/Image");
+        var bgImagesDir = Path.Combine(WebHostEnvironment.WebRootPath, "Captcha/Image");
         var bgImagesFiles = Directory.GetFiles(bgImagesDir);
 
         // 字体来自：https://www.zcool.com.cn/special/zcoolfonts/
-        var fontsDir = Path.Combine(App.WebHostEnvironment.WebRootPath, "Captcha/Font");
+        var fontsDir = Path.Combine(WebHostEnvironment.WebRootPath, "Captcha/Font");
         var fontFiles = new DirectoryInfo(fontsDir)?.GetFiles()?.Where(m => m.Extension.ToLower() == ".ttf")
             ?.Select(m => m.FullName).ToArray();
 

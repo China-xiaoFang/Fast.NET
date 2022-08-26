@@ -1,5 +1,4 @@
-﻿using Fast.Iaas.Extension;
-using Furion.JsonSerialization;
+﻿using Furion.JsonSerialization;
 
 namespace Fast.Core.Util;
 

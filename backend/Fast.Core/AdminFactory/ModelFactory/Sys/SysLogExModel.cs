@@ -1,14 +1,11 @@
-﻿using Fast.Core.AdminFactory.BaseModelFactory;
-using Fast.Core.AttributeFilter;
-
-namespace Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 
 /// <summary>
 /// 系统异常日志表Model类
 /// </summary>
 [SugarTable("Sys_Log_Ex", "系统异常日志表")]
 [DataBaseType]
-public class SysLogExModel : AutoIncrementEntity, IBaseTenant
+public class SysLogExModel : BaseLogEntity, IBaseTenant
 {
     /// <summary>
     /// 操作人账号

@@ -11,10 +11,10 @@ public enum ErrorCodeEnum
 
     [ErrorCodeItemMetadata("SqlSugar config error, please Check whether the Model inherits the interface!")]
     SugarModelError,
-    
+
     [ErrorCodeItemMetadata("租户数据库配置异常！")]
     TenantDbError,
-    
+
     [ErrorCodeItemMetadata("数据库Type 配置异常！")]
     DbTypeError,
 }

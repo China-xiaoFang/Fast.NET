@@ -1,8 +1,4 @@
-﻿using Fast.Core.AdminFactory.BaseModelFactory.Const;
-using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.Iaas.Extension;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Fast.Core;
 

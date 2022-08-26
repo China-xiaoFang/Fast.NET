@@ -19,7 +19,7 @@ public static class WeatherUtil
         var weatherOutPut = await $"{_getWeatherUrl}?city={cityName}".SetClient("weatherCdn").GetAsAsync<WeatherOutPut>();
         if (weatherOutPut.Status != 1000 || weatherOutPut.Desc != "OK")
         {
-            return new WeatherInfoOutPut { Success = false, Desc = weatherOutPut.Desc };
+            return new WeatherInfoOutPut {Success = false, Desc = weatherOutPut.Desc};
         }
 
         weatherOutPut.Data.Success = true;

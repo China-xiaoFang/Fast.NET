@@ -1,5 +1,4 @@
-﻿using Fast.Iaas.Extension;
-using DbType = System.Data.DbType;
+﻿using DbType = System.Data.DbType;
 
 namespace Fast.Core.SqlSugar.Internal;
 

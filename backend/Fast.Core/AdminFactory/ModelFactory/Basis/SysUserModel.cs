@@ -1,8 +1,4 @@
-﻿using Fast.Core.AdminFactory.BaseModelFactory;
-using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AttributeFilter;
-
-namespace Fast.Core.AdminFactory.ModelFactory.Basis;
+﻿namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
 /// <summary>
 /// 系统用户表Model类
@@ -74,7 +70,7 @@ public class SysUserModel : BaseEntity
     /// <summary>
     /// 最后登录Ip
     /// </summary>
-    [SugarColumn(ColumnDescription = "最后登录Ip", ColumnDataType = "datetimeoffset", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "最后登录Ip", ColumnDataType = "Nvarchar(15)", IsNullable = true)]
     public string LastLoginIp { get; set; }
 
     /// <summary>
