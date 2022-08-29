@@ -26,28 +26,10 @@ public class SysLogOpModel : BaseLogEntity
     public YesOrNotEnum Success { get; set; }
 
     /// <summary>
-    /// 具体消息
-    /// </summary>
-    [SugarColumn(ColumnDescription = "具体消息", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
-    public string Message { get; set; }
-
-    /// <summary>
-    /// 地址
-    /// </summary>
-    [SugarColumn(ColumnDescription = "地址", ColumnDataType = "Nvarchar(500)", IsNullable = true)]
-    public string Location { get; set; }
-
-    /// <summary>
-    /// 请求地址
-    /// </summary>
-    [SugarColumn(ColumnDescription = "请求地址", ColumnDataType = "Nvarchar(100)", IsNullable = true)]
-    public string Url { get; set; }
-
-    /// <summary>
     /// 操作名称
     /// </summary>
     [SugarColumn(ColumnDescription = "操作名称", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
-    public string OpName { get; set; }
+    public string OperationName { get; set; }
 
     /// <summary>
     /// 类名
@@ -60,6 +42,12 @@ public class SysLogOpModel : BaseLogEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "方法名", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
     public string MethodName { get; set; }
+
+    /// <summary>
+    /// 请求地址
+    /// </summary>
+    [SugarColumn(ColumnDescription = "请求地址", ColumnDataType = "Nvarchar(100)", IsNullable = true)]
+    public string Url { get; set; }
 
     /// <summary>
     /// 请求方式（GET POST PUT DELETE)
@@ -80,10 +68,16 @@ public class SysLogOpModel : BaseLogEntity
     public string Result { get; set; }
 
     /// <summary>
+    /// 地址
+    /// </summary>
+    [SugarColumn(ColumnDescription = "地址", ColumnDataType = "Nvarchar(500)", IsNullable = true)]
+    public string Location { get; set; }
+
+    /// <summary>
     /// 耗时（毫秒）
     /// </summary>
     [SugarColumn(ColumnDescription = "耗时（毫秒）", IsNullable = true)]
-    public long ElapsedTime { get; set; }
+    public long? ElapsedTime { get; set; }
 
     /// <summary>
     /// 操作时间

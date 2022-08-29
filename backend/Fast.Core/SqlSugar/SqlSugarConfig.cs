@@ -8,52 +8,12 @@ public static class SqlSugarConfig
     /// <summary>
     /// 缓存配置
     /// </summary>
-    public static readonly ICache _cache = GetService<ICache>();
+    private static readonly ICache _cache = GetService<ICache>();
 
     /// <summary>
-    /// 反射获取所有的数据库Model Type
+    /// 数据库配置
     /// </summary>
-    /// <returns></returns>
-    private static IEnumerable<(string className, SysDataBaseTypeEnum dbType, Type type)> ReflexGetAllTEntityList()
-    {
-        // 程序入口Exe文件名称
-        var appName = WebHostEnvironment.ApplicationName;
-
-        // 先从缓存获取
-        var entityType =
-            _cache.Get<List<(string className, SysDataBaseTypeEnum dbType, Type type)>>(
-                $"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
-        if (entityType != null && entityType.Any())
-            return entityType;
-
-        // 获取所有实现了接口的类的类型
-        var types = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(sl => sl.GetTypes().Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity))));
-
-        // 遍历获取到的类型集合
-        // 获取数据库类型，如果没有则默认是Admin库
-        entityType = types.Select(type => new ValueTuple<string, SysDataBaseTypeEnum, Type>(type.Name,
-            type.GetCustomAttribute<DataBaseTypeAttribute>(true)?.SysDataBaseType ?? SysDataBaseTypeEnum.Admin, type)).ToList();
-        // 放入缓存
-        _cache.Set($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}", entityType);
-
-        return entityType;
-    }
-
-    /// <summary>
-    /// 反射获取所有的数据库Model
-    /// </summary>
-    /// <returns></returns>
-    private static (string key, SysDataBaseTypeEnum dbType, Type type) ReflexGetAllTEntity(string name)
-    {
-        var entityInfo = ReflexGetAllTEntityList().FirstOrDefault(f => f.className == name);
-        if (entityInfo.className.IsEmpty())
-        {
-            throw Oops.Oh(ErrorCodeEnum.SugarModelError);
-        }
-
-        return entityInfo;
-    }
+    private static readonly ConnectionStringsOptions connectionStringsOptions = GetOptions<ConnectionStringsOptions>();
 
     /// <summary>
     /// LoadSqlSugar，支持传入租户Id，获取租户Id的DbClient
@@ -71,7 +31,7 @@ public static class SqlSugarConfig
         var dbType = ReflexGetAllTEntity(typeof(TEntity).Name);
 
         // 默认Db
-        var defaultDb = _db.GetConnection(GlobalContext.ConnectionInfo.ConnectionId);
+        var defaultDb = _db.GetConnection(connectionStringsOptions.DefaultConnectionId);
 
         switch (dbType.dbType)
         {
@@ -106,9 +66,10 @@ public static class SqlSugarConfig
 
         var connectConfig = new ConnectionConfig
         {
-            ConfigId = GlobalContext.ConnectionInfo.ConnectionId, // 此链接标志，用以后面切库使用
-            ConnectionString = GlobalContext.ConnectionInfo.Connection, // 核心库连接字符串
-            DbType = GlobalContext.ConnectionInfo.DbType,
+            ConfigId = connectionStringsOptions.DefaultConnectionId, // 此链接标志，用以后面切库使用
+            ConnectionString = connectionStringsOptions.DefaultConnection, // 核心库连接字符串
+            //DbType = (DbType) Enum.Parse(typeof(DbType), connectionStringsOptions.DefaultDbType).ParseToInt(),
+            DbType = connectionStringsOptions.DefaultDbType,
             IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
             InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
             //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
@@ -226,6 +187,51 @@ public static class SqlSugarConfig
 
         // 过滤器
         LoadSugarFilter(_db);
+    }
+
+    /// <summary>
+    /// 反射获取所有的数据库Model Type
+    /// </summary>
+    /// <returns></returns>
+    private static IEnumerable<(string className, SysDataBaseTypeEnum dbType, Type type)> ReflexGetAllTEntityList()
+    {
+        // 程序入口Exe文件名称
+        var appName = WebHostEnvironment.ApplicationName;
+
+        // 先从缓存获取
+        var entityType =
+            _cache.Get<List<(string className, SysDataBaseTypeEnum dbType, Type type)>>(
+                $"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
+        if (entityType != null && entityType.Any())
+            return entityType;
+
+        // 获取所有实现了接口的类的类型
+        var types = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(sl => sl.GetTypes().Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity))));
+
+        // 遍历获取到的类型集合
+        // 获取数据库类型，如果没有则默认是Admin库
+        entityType = types.Select(type => new ValueTuple<string, SysDataBaseTypeEnum, Type>(type.Name,
+            type.GetCustomAttribute<DataBaseTypeAttribute>(true)?.SysDataBaseType ?? SysDataBaseTypeEnum.Admin, type)).ToList();
+        // 放入缓存
+        _cache.Set($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}", entityType);
+
+        return entityType;
+    }
+
+    /// <summary>
+    /// 反射获取所有的数据库Model
+    /// </summary>
+    /// <returns></returns>
+    private static (string key, SysDataBaseTypeEnum dbType, Type type) ReflexGetAllTEntity(string name)
+    {
+        var entityInfo = ReflexGetAllTEntityList().FirstOrDefault(f => f.className == name);
+        if (entityInfo.className.IsEmpty())
+        {
+            throw Oops.Oh(ErrorCodeEnum.SugarModelError);
+        }
+
+        return entityInfo;
     }
 
     /// <summary>

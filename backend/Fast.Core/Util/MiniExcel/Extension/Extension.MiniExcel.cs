@@ -3,19 +3,6 @@ using MiniExcelLibs;
 
 namespace Fast.Core.Util.MiniExcel.Extension;
 
-public class MiniExcelRowInfo<T>
-{
-    /// <summary>
-    /// 行编号
-    /// </summary>
-    public int RowNumber { get; set; }
-
-    /// <summary>
-    /// 值
-    /// </summary>
-    public T Value { get; set; }
-}
-
 /// <summary>
 /// MiniExcel扩展类
 /// </summary>

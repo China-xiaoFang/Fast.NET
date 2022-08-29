@@ -4,6 +4,6 @@
 /// 禁用操作日志
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
-public class DisableOpLog : Attribute
+public class DisableOpLogAttribute : Attribute
 {
 }

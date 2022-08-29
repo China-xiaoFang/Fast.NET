@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Fast.Core;
+﻿namespace Fast.Core;
 
 /// <summary>
 /// 通用上下文
@@ -50,6 +48,19 @@ public static class GlobalContext
         }
     }
 
+    /// <summary>
+    /// 是否系统管理员
+    /// </summary>
+    public static bool IsSystemAdmin
+    {
+        get
+        {
+            if (User == null)
+                return false;
+            return User.FindFirst(ClaimConst.CLAINM_SUPERADMIN)?.Value == AdminTypeEnum.SystemAdmin.GetHashCode().ParseToString();
+        }
+    }
+
     ///// <summary>
     ///// 当前用户信息
     ///// </summary>
@@ -79,22 +90,9 @@ public static class GlobalContext
     //}
 
     /// <summary>
-    /// 数据库配置信息
-    /// </summary>
-    public static ConnectionDto ConnectionInfo { get; set; }
-
-    /// <summary>
     /// 租户库Db Info
     /// </summary>
     public static SysTenantDataBaseModel TenantDbInfo { get; set; }
-
-    /// <summary>
-    /// 设置配置文件
-    /// </summary>
-    public static void SetConfigInfo()
-    {
-        ConnectionInfo = Configuration.GetSection("ConnectionStrings").Get<ConnectionDto>();
-    }
 
     /// <summary>
     /// 获取租户Id
@@ -126,22 +124,75 @@ public static class GlobalContext
 }
 
 /// <summary>
-/// 数据库Dto
+/// 数据库配置
 /// </summary>
-public class ConnectionDto
+public class ConnectionStringsOptions : IConfigurableOptions
 {
     /// <summary>
     /// 连接Id
     /// </summary>
-    public string ConnectionId { get; set; }
+    public string DefaultConnectionId { get; set; }
 
     /// <summary>
     /// 连接字符串
     /// </summary>
-    public string Connection { get; set; }
+    public string DefaultConnection { get; set; }
 
     /// <summary>
     /// 数据库类型
     /// </summary>
-    public DbType DbType { get; set; }
+    public DbType DefaultDbType { get; set; }
+}
+
+/// <summary>
+/// 系统配置
+/// </summary>
+public class SystemSettingsOptions : IConfigurableOptions
+{
+    /// <summary>
+    /// 最大请求Body Size
+    /// </summary>
+    public long MaxRequestBodySize { get; set; }
+}
+
+/// <summary>
+/// 上传文件配置
+/// </summary>
+public class UploadFileOptions : IConfigurableOptions
+{
+    /// <summary>
+    /// 头像
+    /// </summary>
+    public FileDescription Avatar { get; set; }
+
+    /// <summary>
+    /// 编辑器
+    /// </summary>
+    public FileDescription Editor { get; set; }
+
+    /// <summary>
+    /// 默认
+    /// </summary>
+    public FileDescription Default { get; set; }
+
+    /// <summary>
+    /// 文件参数
+    /// </summary>
+    public class FileDescription
+    {
+        /// <summary>
+        /// 路径
+        /// </summary>
+        public string path { get; set; }
+
+        /// <summary>
+        /// 大小
+        /// </summary>
+        public long maxSize { get; set; }
+
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public string[] contentType { get; set; }
+    }
 }

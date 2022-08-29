@@ -74,6 +74,12 @@ public class SysUserModel : BaseEntity
     public string LastLoginIp { get; set; }
 
     /// <summary>
+    /// 最后登录时间
+    /// </summary>
+    [SugarColumn(ColumnDescription = "最后登录时间", ColumnDataType = "datetimeoffset", IsNullable = true)]
+    public DateTime? LastLoginTime { get; set; }
+
+    /// <summary>
     /// 管理员类型
     /// </summary>
     [SugarColumn(ColumnDescription = "管理员类型", IsNullable = false)]
