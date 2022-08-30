@@ -49,7 +49,7 @@ public static class SqlSugarConfig
 
                 return GetSqlSugarClient(_db, GlobalContext.TenantDbInfo);
             default:
-                throw Oops.Oh(ErrorCodeEnum.SugarModelError);
+                throw Oops.Oh(ErrorCode.SugarModelError);
         }
     }
 
@@ -107,7 +107,7 @@ public static class SqlSugarConfig
         var db = dbInfoList.FirstOrDefault(f => f.SysDbType == dbType);
         if (db == null)
         {
-            throw Oops.Oh(ErrorCodeEnum.TenantDbError);
+            throw Oops.Oh(ErrorCode.TenantDbError);
         }
 
         return db;
@@ -170,7 +170,7 @@ public static class SqlSugarConfig
             case DbType.Custom:
                 break;
             default:
-                throw Oops.Oh(ErrorCodeEnum.DbTypeError);
+                throw Oops.Oh(ErrorCode.DbTypeError);
         }
 
         db.AddConnection(new ConnectionConfig
@@ -228,7 +228,7 @@ public static class SqlSugarConfig
         var entityInfo = ReflexGetAllTEntityList().FirstOrDefault(f => f.className == name);
         if (entityInfo.className.IsEmpty())
         {
-            throw Oops.Oh(ErrorCodeEnum.SugarModelError);
+            throw Oops.Oh(ErrorCode.SugarModelError);
         }
 
         return entityInfo;

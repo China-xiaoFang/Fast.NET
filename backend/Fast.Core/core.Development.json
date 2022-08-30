@@ -1,10 +1,9 @@
 {
-  // Êı¾İ¿âÁ¬½Ó×Ö·û´®
+  // æ•°æ®åº“è¿æ¥å­—ç¬¦ä¸²
   "ConnectionStrings": {
     "DefaultConnectionId": 1,
-    "DefaultConnection":
-      "Data Source=127.0.0.1; Initial Catalog=Fast.Saas; User ID=sa;Password=123456;MultipleActiveResultSets=true;max pool size=100;",
-    "DefaultDbType": "SqlServer" // MySql 0£¬SqlServer 1£¬Sqlite 2£¬Oracle 3
+    "DefaultConnection": "Data Source=127.0.0.1; Initial Catalog=Fast.Saas; User ID=sa;Password=123456;MultipleActiveResultSets=true;max pool size=100;",
+    "DefaultDbType": "SqlServer" // MySql 0ï¼ŒSqlServer 1ï¼ŒSqlite 2ï¼ŒOracle 3
   },
   "Cache": {
     "CacheType": "RedisCache", // MemoryCache
@@ -12,44 +11,51 @@
   },
   "AllowedHosts": "*",
   "AppSettings": {
-    "InjectSpecificationDocument": true //ÊÇ·ñ¿ªÆôswagger
+    "InjectSpecificationDocument": true //æ˜¯å¦å¼€å¯swagger
   },
   "SystemSettings": {
-    // ×î´óÇëÇóBody Size£¬µ¥Î»ÊÇ×Ö½Ú£¨byte£© 1kb=1024byte,´Ë´¦ÏŞÖÆ512MB
+    // æœ€å¤§è¯·æ±‚Body Sizeï¼Œå•ä½æ˜¯å­—èŠ‚ï¼ˆbyteï¼‰ 1kb=1024byte,æ­¤å¤„é™åˆ¶512MB
     "MaxRequestBodySize": 536870912
   },
   "SnowId": {
-    "WorkerId": "1" // È¡Öµ·¶Î§0~63,Ä¬ÈÏ1
+    "WorkerId": "1" // å–å€¼èŒƒå›´0~63,é»˜è®¤1
   },
-  // Èç¹ûÇ°¶Ë²»´úÀíµÄ»°£¬ÓÖÊÇAxiosÇëÇóµÄ»°£¬ĞèÒªÌí¼ÓÒÔÏÂ´úÂë
+  // å¦‚æœå‰ç«¯ä¸ä»£ç†çš„è¯ï¼Œåˆæ˜¯Axiosè¯·æ±‚çš„è¯ï¼Œéœ€è¦æ·»åŠ ä»¥ä¸‹ä»£ç 
   "CorsAccessorSettings": {
-    "WithExposedHeaders": ["Content-Disposition"]
+    "WithExposedHeaders": [ "Content-Disposition" ]
   },
   "JWTSettings": {
-    "ValidateIssuerSigningKey": true, // ÊÇ·ñÑéÖ¤ÃÜÔ¿£¬bool ÀàĞÍ£¬Ä¬ÈÏtrue
-    "IssuerSigningKey": "OXTuaqWnnkuTuGVThcm5Dbm2RlLRk5FVLC55XVZWJBZG1pbBg==", // ÃÜÔ¿£¬string ÀàĞÍ£¬±ØĞëÊÇ¸´ÔÓÃÜÔ¿£¬³¤¶È´óÓÚ16
-    "ValidateIssuer": true, // ÊÇ·ñÑéÖ¤Ç©·¢·½£¬bool ÀàĞÍ£¬Ä¬ÈÏtrue
-    "ValidIssuer": "Fast", // Ç©·¢·½£¬string ÀàĞÍ
-    "ValidateAudience": true, // ÊÇ·ñÑéÖ¤Ç©ÊÕ·½£¬bool ÀàĞÍ£¬Ä¬ÈÏtrue
-    "ValidAudience": "Fast", // Ç©ÊÕ·½£¬string ÀàĞÍ
-    "ValidateLifetime": true, // ÊÇ·ñÑéÖ¤¹ıÆÚÊ±¼ä£¬bool ÀàĞÍ£¬Ä¬ÈÏtrue£¬½¨Òétrue
-    "ExpiredTime": 30, // ¹ıÆÚÊ±¼ä£¬long ÀàĞÍ£¬µ¥Î»·ÖÖÓ£¬Ä¬ÈÏ30·ÖÖÓ
-    "ClockSkew": 5 // ¹ıÆÚÊ±¼äÈİ´íÖµ£¬long ÀàĞÍ£¬µ¥Î»Ãë£¬Ä¬ÈÏ5Ãë
+    "ValidateIssuerSigningKey": true, // æ˜¯å¦éªŒè¯å¯†é’¥ï¼Œbool ç±»å‹ï¼Œé»˜è®¤true
+    "IssuerSigningKey": "OXTuaqWnnkuTuGVThcm5Dbm2RlLRk5FVLC55XVZWJBZG1pbBg==", // å¯†é’¥ï¼Œstring ç±»å‹ï¼Œå¿…é¡»æ˜¯å¤æ‚å¯†é’¥ï¼Œé•¿åº¦å¤§äº16
+    "ValidateIssuer": true, // æ˜¯å¦éªŒè¯ç­¾å‘æ–¹ï¼Œbool ç±»å‹ï¼Œé»˜è®¤true
+    "ValidIssuer": "Fast", // ç­¾å‘æ–¹ï¼Œstring ç±»å‹
+    "ValidateAudience": true, // æ˜¯å¦éªŒè¯ç­¾æ”¶æ–¹ï¼Œbool ç±»å‹ï¼Œé»˜è®¤true
+    "ValidAudience": "Fast", // ç­¾æ”¶æ–¹ï¼Œstring ç±»å‹
+    "ValidateLifetime": true, // æ˜¯å¦éªŒè¯è¿‡æœŸæ—¶é—´ï¼Œbool ç±»å‹ï¼Œé»˜è®¤trueï¼Œå»ºè®®true
+    "ExpiredTime": 30, // è¿‡æœŸæ—¶é—´ï¼Œlong ç±»å‹ï¼Œå•ä½åˆ†é’Ÿï¼Œé»˜è®¤30åˆ†é’Ÿ
+    "ClockSkew": 5 // è¿‡æœŸæ—¶é—´å®¹é”™å€¼ï¼Œlong ç±»å‹ï¼Œå•ä½ç§’ï¼Œé»˜è®¤5ç§’
+  },
+  // å¤šè¯­è¨€
+  "LocalizationSettings": {
+    "SupportedCultures": [ "zh-CN", "en-US" ], // é…ç½®æ”¯æŒçš„è¯­è¨€åˆ—è¡¨
+    "DefaultCulture": "zh-CN", // é…ç½®é»˜è®¤è¯­è¨€ï¼Œå¦‚æœä¸é…ç½®ï¼Œå– SupportedCultures çš„ç¬¬ä¸€é¡¹
+    "LanguageFilePrefix": "Lang",
+    "AssemblyName": "Fast.Core"
   },
   "UploadFile": {
-    // Í·Ïñ
+    // å¤´åƒ
     "Avatar": {
       "path": "Upload/Avatar",
       "maxSize": 1048576,
-      "contentType": ["image/jpg", "image/png", "image/jpeg", "image/gif"]
+      "contentType": [ "image/jpg", "image/png", "image/jpeg", "image/gif" ]
     },
-    // ¸»ÎÄ±¾
+    // å¯Œæ–‡æœ¬
     "Editor": {
       "path": "Upload/Editor",
       "maxSize": 1048576,
-      "contentType": ["image/jpg", "image/png", "image/jpeg", "image/gif"]
+      "contentType": [ "image/jpg", "image/png", "image/jpeg", "image/gif" ]
     },
-    // Ä¬ÈÏ
+    // é»˜è®¤
     "Default": {
       "path": "Upload/Default",
       "maxSize": 41943040,
@@ -74,9 +80,8 @@
     "GroupOpenApiInfos": [
       {
         "Group": "Default",
-        "Title": "Fast.NETÍ¨ÓÃÈ¨ÏŞ¹ÜÀíÆ½Ì¨",
-        "Description":
-          "Ç°ºó¶Ë·ÖÀë¼Ü¹¹£¬¿ªÏä¼´ÓÃ£¬½ôËæÇ°ÑØ¼¼Êõ¡£<br/>×÷ÕßBy 1.8K ×Ğ<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
+        "Title": "Fast.NETé€šç”¨æƒé™ç®¡ç†å¹³å°",
+        "Description": "å‰åç«¯åˆ†ç¦»æ¶æ„ï¼Œå¼€ç®±å³ç”¨ï¼Œç´§éšå‰æ²¿æŠ€æœ¯ã€‚<br/>ä½œè€…By 1.8K ä»”<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
         "Version": "1.0.0"
       }
     ]

@@ -117,7 +117,7 @@ public static class GlobalContext
         }
 
         if (isThrow)
-            throw Oops.Oh("租户系统异常！");
+            throw Oops.Oh(ErrorCode.TenantSysError);
 
         return 0;
     }

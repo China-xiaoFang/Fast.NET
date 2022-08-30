@@ -78,8 +78,9 @@ builder.Services.AddResponseCompression(options =>
 // JWT validation.
 builder.Services.AddJwt<JwtHandler>(enableGlobalAuthorize: false);
 
-// Add XML format support.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    // Register multiple languages.
+    .AddAppLocalization();
 
 builder.Services.AddDataValidation();
 
@@ -163,6 +164,9 @@ app.UseResponseCompression();
 
 // Mandatory Https.
 app.UseHttpsRedirection();
+
+// Multilingual configuration must be performed before route registration.
+app.UseAppLocalization();
 
 app.UseStaticFiles();
 
