@@ -1,8 +1,12 @@
 {
   // 数据库连接字符串
   "ConnectionStrings": {
-    "DefaultConnectionId": 1,
-    "DefaultConnection": "Data Source=127.0.0.1; Initial Catalog=Fast.Saas; User ID=sa;Password=123456;MultipleActiveResultSets=true;max pool size=100;",
+    "DefaultConnectionId": "Fast",
+    "DefaultServiceIp": "127.0.0.1", // 服务器Ip
+    "DefaultPort": "1433", // 端口号
+    "DefaultDbName": "Fast.Saas", // 数据库名称
+    "DefaultDbUser": "sa", // 数据库用户
+    "DefaultDbPwd": "123456", // 数据库密码
     "DefaultDbType": "SqlServer" // MySql 0，SqlServer 1，Sqlite 2，Oracle 3
   },
   "Cache": {
@@ -22,7 +26,7 @@
   },
   // 如果前端不代理的话，又是Axios请求的话，需要添加以下代码
   "CorsAccessorSettings": {
-    "WithExposedHeaders": [ "Content-Disposition" ]
+    "WithExposedHeaders": ["Content-Disposition"]
   },
   "JWTSettings": {
     "ValidateIssuerSigningKey": true, // 是否验证密钥，bool 类型，默认true
@@ -37,7 +41,7 @@
   },
   // 多语言
   "LocalizationSettings": {
-    "SupportedCultures": [ "zh-CN", "en-US" ], // 配置支持的语言列表
+    "SupportedCultures": ["zh-CN", "en-US"], // 配置支持的语言列表
     "DefaultCulture": "zh-CN", // 配置默认语言，如果不配置，取 SupportedCultures 的第一项
     "LanguageFilePrefix": "Lang",
     "AssemblyName": "Fast.Core"
@@ -47,13 +51,13 @@
     "Avatar": {
       "path": "Upload/Avatar",
       "maxSize": 1048576,
-      "contentType": [ "image/jpg", "image/png", "image/jpeg", "image/gif" ]
+      "contentType": ["image/jpg", "image/png", "image/jpeg", "image/gif"]
     },
     // 富文本
     "Editor": {
       "path": "Upload/Editor",
       "maxSize": 1048576,
-      "contentType": [ "image/jpg", "image/png", "image/jpeg", "image/gif" ]
+      "contentType": ["image/jpg", "image/png", "image/jpeg", "image/gif"]
     },
     // 默认
     "Default": {
@@ -81,7 +85,8 @@
       {
         "Group": "Default",
         "Title": "Fast.NET通用权限管理平台",
-        "Description": "前后端分离架构，开箱即用，紧随前沿技术。<br/>作者By 1.8K 仔<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
+        "Description":
+          "前后端分离架构，开箱即用，紧随前沿技术。<br/>作者By 1.8K 仔<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
         "Version": "1.0.0"
       }
     ]

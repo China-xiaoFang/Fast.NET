@@ -308,6 +308,20 @@ public interface ISqlSugarRepository<TEntity> where TEntity : class, new()
     Task<long> ExecuteReturnBigIdentityAsync(TEntity entity);
 
     /// <summary>
+    /// 新增一条记录返回新增的数据
+    /// </summary>
+    /// <param name="insertObj"></param>
+    /// <returns></returns>
+    TEntity InsertReturnEntity(TEntity insertObj);
+
+    /// <summary>
+    /// 新增一条记录返回新增的数据
+    /// </summary>
+    /// <param name="insertObj"></param>
+    /// <returns></returns>
+    Task<TEntity> InsertReturnEntityAsync(TEntity insertObj);
+
+    /// <summary>
     /// 更新一条记录
     /// </summary>
     /// <param name="entity"></param>

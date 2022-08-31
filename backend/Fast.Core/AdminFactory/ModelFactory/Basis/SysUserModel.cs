@@ -40,8 +40,8 @@ public class SysUserModel : BaseEntity
     /// <summary>
     /// 生日
     /// </summary>
-    [SugarColumn(ColumnDescription = "生日", ColumnDataType = "datetimeoffset", IsNullable = false)]
-    public DateTime Birthday { get; set; }
+    [SugarColumn(ColumnDescription = "生日", ColumnDataType = "datetimeoffset", IsNullable = true)]
+    public DateTime? Birthday { get; set; }
 
     /// <summary>
     /// 性别

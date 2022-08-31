@@ -8,6 +8,6 @@ public class BaseTEntity : BaseEntity, IBaseTenant
     /// <summary>
     /// 租户Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户Id")]
+    [SugarColumn(ColumnDescription = "租户Id", IsNullable = true)]
     public virtual long? TenantId { get; set; }
 }

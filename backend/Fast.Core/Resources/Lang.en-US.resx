@@ -120,8 +120,23 @@
   <data name="SqlSugar配置错误，请检查 Model 是否继承了接口!" xml:space="preserve">
     <value>SqlSugar config error, please Check whether the Model inherits the interface!</value>
   </data>
+  <data name="已存在同主机租户信息！" xml:space="preserve">
+    <value>Tenant information about the same host already exists!</value>
+  </data>
+  <data name="已存在同名租户信息！" xml:space="preserve">
+    <value>Tenant information with the same name already exists!</value>
+  </data>
   <data name="数据库Type 配置异常！" xml:space="preserve">
     <value>The database Type configuration is abnormal!</value>
+  </data>
+  <data name="租户信息不存在！" xml:space="preserve">
+    <value>Tenant information does not exist!</value>
+  </data>
+  <data name="租户数据库信息不存在！" xml:space="preserve">
+    <value>Tenant database information does not exist!</value>
+  </data>
+  <data name="租户数据库已存在！" xml:space="preserve">
+    <value>The tenant database already exists!</value>
   </data>
   <data name="租户数据库配置异常！" xml:space="preserve">
     <value>The tenant database configuration is abnormal!</value>

@@ -1,4 +1,6 @@
-﻿namespace Fast.Core.SqlSugar;
+﻿using Fast.Core.AdminFactory.ServiceFactory.InitDataBase;
+
+namespace Fast.Core.SqlSugar;
 
 /// <summary>
 /// SqlSugar配置
@@ -54,6 +56,66 @@ public static class SqlSugarConfig
     }
 
     /// <summary>
+    /// 反射获取所有的数据库Model Type
+    /// </summary>
+    /// <returns></returns>
+    public static List<(string className, SysDataBaseTypeEnum dbType, Type type)> ReflexGetAllTEntityList()
+    {
+        var excludeBaseTypes = new List<Type>
+        {
+            typeof(IBaseEntity),
+            typeof(IBaseLogEntity),
+            typeof(IBaseTenant),
+            typeof(AutoIncrementEntity),
+            typeof(BaseEntity),
+            typeof(BaseLogEntity),
+            typeof(BaseTenant),
+            typeof(BaseTEntity),
+            typeof(PrimaryKeyEntity),
+        };
+
+        // 程序入口Exe文件名称
+        var appName = WebHostEnvironment.ApplicationName;
+
+        // 先从缓存获取
+        var entityTypeList =
+            _cache.Get<List<(string className, SysDataBaseTypeEnum dbType, Type type)>>(
+                $"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
+        if (entityTypeList != null && entityTypeList.Any())
+            return entityTypeList;
+
+        // 获取所有实现了接口的类的类型
+        var types = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(sl => sl.GetTypes().Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity))))
+            // 排除BaseEntity
+            .Where(wh => !excludeBaseTypes.Contains(wh));
+
+        // 遍历获取到的类型集合
+        // 获取数据库类型，如果没有则默认是Admin库
+        entityTypeList = types.Select(type => new ValueTuple<string, SysDataBaseTypeEnum, Type>(type.Name,
+            type.GetCustomAttribute<DataBaseTypeAttribute>(true)?.SysDataBaseType ?? SysDataBaseTypeEnum.Admin, type)).ToList();
+        // 放入缓存
+        _cache.Set($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}", entityTypeList);
+
+        return entityTypeList;
+    }
+
+    /// <summary>
+    /// 反射获取所有的数据库Model
+    /// </summary>
+    /// <returns></returns>
+    public static (string key, SysDataBaseTypeEnum dbType, Type type) ReflexGetAllTEntity(string name)
+    {
+        var entityType = ReflexGetAllTEntityList().FirstOrDefault(f => f.className == name);
+        if (entityType.className.IsEmpty())
+        {
+            throw Oops.Oh(ErrorCode.SugarModelError);
+        }
+
+        return entityType;
+    }
+
+    /// <summary>
     /// 初始化SqlSugar配置
     /// </summary>
     public static void InitSqlSugar(this IServiceCollection services)
@@ -64,11 +126,22 @@ public static class SqlSugarConfig
         // 清除ModelType缓存
         _cache.Del($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
 
+        // 得到连接字符串
+        var connectionStr = GetConnectionStr(new SysTenantDataBaseModel
+        {
+            ServiceIp = connectionStringsOptions.DefaultServiceIp,
+            Port = connectionStringsOptions.DefaultPort,
+            DbName = connectionStringsOptions.DefaultDbName,
+            DbUser = connectionStringsOptions.DefaultDbUser,
+            DbPwd = connectionStringsOptions.DefaultDbPwd,
+            SysDbType = SysDataBaseTypeEnum.Admin,
+            DbType = connectionStringsOptions.DefaultDbType
+        });
+
         var connectConfig = new ConnectionConfig
         {
             ConfigId = connectionStringsOptions.DefaultConnectionId, // 此链接标志，用以后面切库使用
-            ConnectionString = connectionStringsOptions.DefaultConnection, // 核心库连接字符串
-            //DbType = (DbType) Enum.Parse(typeof(DbType), connectionStringsOptions.DefaultDbType).ParseToInt(),
+            ConnectionString = connectionStr, // 核心库连接字符串
             DbType = connectionStringsOptions.DefaultDbType,
             IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
             InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
@@ -85,6 +158,8 @@ public static class SqlSugarConfig
         }
 
         services.AddSqlSugar(connectConfig, (Action<ISqlSugarClient>) ConfigAction);
+
+        GetService<IInitDataBaseService>().InitDataBase();
     }
 
     /// <summary>
@@ -94,13 +169,13 @@ public static class SqlSugarConfig
     /// <param name="dbType"></param>
     /// <param name="tenantId"></param>
     /// <returns></returns>
-    public static SysTenantDataBaseModel GetDbInfo(SqlSugarProvider _db, SysDataBaseTypeEnum dbType, long tenantId)
+    private static SysTenantDataBaseModel GetDbInfo(SqlSugarProvider _db, SysDataBaseTypeEnum dbType, long tenantId)
     {
         // 数据库信息缓存
         var dbInfoList = _cache.Get<List<SysTenantDataBaseModel>>($"{CommonConst.CACHE_KEY_TENANT_DB_INFO}{tenantId}");
         if (dbInfoList == null || !dbInfoList.Any())
         {
-            dbInfoList = _db.Queryable<SysTenantDataBaseModel>().Where(wh => wh.TenantId == tenantId).ToList();
+            dbInfoList = _db.Queryable<SysTenantDataBaseModel>().Where(wh => wh.TenantId == tenantId).Filter(null, true).ToList();
             _cache.Set($"{CommonConst.CACHE_KEY_TENANT_DB_INFO}{tenantId}", dbInfoList);
         }
 
@@ -130,24 +205,20 @@ public static class SqlSugarConfig
         return _db.GetConnection(connectionId);
     }
 
-    /// <summary>
-    /// 添加数据库
-    /// </summary>
-    /// <param name="db"></param>
-    /// <param name="connectionId"></param>
-    /// <param name="dbInfo"></param>
-    public static void AddDataBase(SqlSugarClient db, string connectionId, SysTenantDataBaseModel dbInfo)
+
+    private static string GetConnectionStr(SysTenantDataBaseModel dbInfo)
     {
         var connectionStr = "";
-
-        // TODO:这里要根据数据库的类型来拼接链接字符串，目前暂时支持Sql Server
+        // TODO:这里要根据数据库的类型来拼接链接字符串，目前暂时支持Sql Server 和 MySql
         switch (dbInfo.DbType)
         {
             case DbType.MySql:
+                connectionStr =
+                    $"Data Source={dbInfo.ServiceIp};Database={dbInfo.DbName};User ID={dbInfo.DbUser};Password={dbInfo.DbPwd};pooling=true;port={dbInfo.Port};sslmode=none;CharSet=utf8;Convert Zero Datetime=True;Allow Zero Datetime=True;";
                 break;
             case DbType.SqlServer:
                 connectionStr =
-                    $"Data Source={dbInfo.ServiceIp}; Initial Catalog={dbInfo.DbName}; User ID={dbInfo.DbUser};Password={dbInfo.DbPwd};MultipleActiveResultSets=true;max pool size=100;";
+                    $"Data Source={dbInfo.ServiceIp};Initial Catalog={dbInfo.DbName};User ID={dbInfo.DbUser};Password={dbInfo.DbPwd};MultipleActiveResultSets=true;max pool size=100;";
                 break;
             case DbType.Sqlite:
                 break;
@@ -169,14 +240,28 @@ public static class SqlSugarConfig
                 break;
             case DbType.Custom:
                 break;
+            case DbType.QuestDB:
+            case DbType.HG:
+            case DbType.ClickHouse:
             default:
                 throw Oops.Oh(ErrorCode.DbTypeError);
         }
 
+        return connectionStr;
+    }
+
+    /// <summary>
+    /// 添加数据库
+    /// </summary>
+    /// <param name="db"></param>
+    /// <param name="connectionId"></param>
+    /// <param name="dbInfo"></param>
+    private static void AddDataBase(SqlSugarClient db, string connectionId, SysTenantDataBaseModel dbInfo)
+    {
         db.AddConnection(new ConnectionConfig
         {
             ConfigId = connectionId, // 此链接标志，用以后面切库使用
-            ConnectionString = connectionStr, // 租户库连接字符串
+            ConnectionString = GetConnectionStr(dbInfo), // 租户库连接字符串
             DbType = dbInfo.DbType,
             IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
             InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
@@ -187,51 +272,6 @@ public static class SqlSugarConfig
 
         // 过滤器
         LoadSugarFilter(_db);
-    }
-
-    /// <summary>
-    /// 反射获取所有的数据库Model Type
-    /// </summary>
-    /// <returns></returns>
-    private static IEnumerable<(string className, SysDataBaseTypeEnum dbType, Type type)> ReflexGetAllTEntityList()
-    {
-        // 程序入口Exe文件名称
-        var appName = WebHostEnvironment.ApplicationName;
-
-        // 先从缓存获取
-        var entityType =
-            _cache.Get<List<(string className, SysDataBaseTypeEnum dbType, Type type)>>(
-                $"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
-        if (entityType != null && entityType.Any())
-            return entityType;
-
-        // 获取所有实现了接口的类的类型
-        var types = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(sl => sl.GetTypes().Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity))));
-
-        // 遍历获取到的类型集合
-        // 获取数据库类型，如果没有则默认是Admin库
-        entityType = types.Select(type => new ValueTuple<string, SysDataBaseTypeEnum, Type>(type.Name,
-            type.GetCustomAttribute<DataBaseTypeAttribute>(true)?.SysDataBaseType ?? SysDataBaseTypeEnum.Admin, type)).ToList();
-        // 放入缓存
-        _cache.Set($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}", entityType);
-
-        return entityType;
-    }
-
-    /// <summary>
-    /// 反射获取所有的数据库Model
-    /// </summary>
-    /// <returns></returns>
-    private static (string key, SysDataBaseTypeEnum dbType, Type type) ReflexGetAllTEntity(string name)
-    {
-        var entityInfo = ReflexGetAllTEntityList().FirstOrDefault(f => f.className == name);
-        if (entityInfo.className.IsEmpty())
-        {
-            throw Oops.Oh(ErrorCode.SugarModelError);
-        }
-
-        return entityInfo;
     }
 
     /// <summary>
@@ -262,7 +302,7 @@ public static class SqlSugarConfig
                     Console.ForegroundColor = ConsoleColor.Blue;
 
                 PrintToMiniProfiler("SqlSugar", "Info", SqlProfiler.ParameterFormat(sql, pars));
-                Console.WriteLine("\r\n\r\n" + SqlProfiler.ParameterFormat(sql, pars));
+                Console.WriteLine($"\r\n\r\n{SqlProfiler.ParameterFormat(sql, pars)}\r\nTime：{_db.Ado.SqlExecutionTime}");
             };
 
             _db.Aop.OnError = exp =>
@@ -271,6 +311,58 @@ public static class SqlSugarConfig
                 Console.WriteLine($"\r\n\r\n错误 Sql语句：{SqlProfiler.ParameterFormat(exp.Sql, exp.Parametres)}");
             };
         }
+
+        // Model基类处理
+        _db.Aop.DataExecuting = (oldValue, entityInfo) =>
+        {
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+            switch (entityInfo.OperationType)
+            {
+                // 新增操作
+                case DataFilterType.InsertByObject:
+                    // 主键（long）赋值雪花Id
+                    if (entityInfo.EntityColumnInfo.IsPrimarykey &&
+                        entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
+                    {
+                        if (EntityValueCheck(ClaimConst.ID_FIELD, new List<dynamic> {null, 0}, entityInfo))
+                            entityInfo.SetValue(YitIdHelper.NextId());
+                    }
+
+                    // 创建时间
+                    SetEntityValue(ClaimConst.CREATEDTIME_FIELD, new List<dynamic> {null}, DateTime.Now, ref entityInfo);
+
+                    // 判断是否存在用户信息
+                    if (User != null)
+                    {
+                        // 租户Id
+                        SetEntityValue(ClaimConst.TENANTID_FIELD, new List<dynamic> {null, 0}, GlobalContext.TenantId,
+                            ref entityInfo);
+
+                        // 创建者Id
+                        SetEntityValue(ClaimConst.CREATEDUSERID_FIELD, new List<dynamic> {null, 0}, GlobalContext.UserId,
+                            ref entityInfo);
+
+                        // 创建者名称
+                        SetEntityValue(ClaimConst.CREATEDUSERNAME_FIELD, new List<dynamic> {null, ""}, GlobalContext.UserName,
+                            ref entityInfo);
+                    }
+
+                    break;
+                // 更新操作
+                case DataFilterType.UpdateByObject:
+                    // 更新时间
+                    SetEntityValue(ClaimConst.UPDATEDTIME_FIELD, new List<dynamic> {null}, DateTime.Now, ref entityInfo);
+
+                    // 更新者Id
+                    SetEntityValue(ClaimConst.UPDATEDUSERID_FIELD, new List<dynamic> {null, 0}, GlobalContext.UserId,
+                        ref entityInfo);
+
+                    // 更新者名称
+                    SetEntityValue(ClaimConst.UPDATEDUSERNAME_FIELD, new List<dynamic> {null, ""}, GlobalContext.UserName,
+                        ref entityInfo);
+                    break;
+            }
+        };
 
         // 这里可以根据字段判断也可以根据接口判断，如果是租户Id，建议根据接口判断，如果是IsDeleted，建议根据名称判断，方便别的表也可以实现
         foreach (var (_, _, type) in ReflexGetAllTEntityList())
@@ -281,7 +373,7 @@ public static class SqlSugarConfig
             {
                 // 构建动态Lambda
                 var lambda = DynamicExpressionParser.ParseLambda(new[] {Expression.Parameter(type, "it")}, typeof(bool),
-                    $"{nameof(BaseTenant.TenantId)} ==  @0 OR @1 ", GlobalContext.GetTenantId(false), GlobalContext.IsSuperAdmin);
+                    $"{nameof(BaseTenant.TenantId)} == @0 OR @1 ", GlobalContext.GetTenantId(false), GlobalContext.IsSuperAdmin);
                 // 将Lambda传入过滤器
                 _db.QueryFilter.Add(new TableFilterItem<object>(type, lambda));
             }
@@ -293,10 +385,64 @@ public static class SqlSugarConfig
             {
                 // 构建动态Lambda
                 var lambda = DynamicExpressionParser.ParseLambda(new[] {Expression.Parameter(type, "it")}, typeof(bool),
-                    $"{nameof(BaseTEntity.IsDeleted)} ==  @0", false);
+                    $"{nameof(BaseTEntity.IsDeleted)} == @0", false);
                 // 将Lambda传入过滤器
                 _db.QueryFilter.Add(new TableFilterItem<object>(type, lambda) {IsJoinQuery = true});
             }
+        }
+    }
+
+    /// <summary>
+    /// 设置Entity Value
+    /// </summary>
+    /// <param name="fieldName"></param>
+    /// <param name="emptyList"></param>
+    /// <param name="setValue"></param>
+    /// <param name="entityInfo"></param>
+    /// <param name="propertyName"></param>
+    private static void SetEntityValue(string fieldName, ICollection<dynamic> emptyList, dynamic setValue,
+        ref DataFilterModel entityInfo, string propertyName = null)
+    {
+        // 属性名称如果为Null，则默认为字段名称
+        propertyName ??= fieldName;
+
+        // 判断属性名称是否等于传入的字段名称
+        if (entityInfo.PropertyName != fieldName)
+            return;
+        if (EntityValueCheck(propertyName, emptyList, entityInfo))
+            entityInfo.SetValue(setValue);
+    }
+
+    /// <summary>
+    /// Entity Value 检测
+    /// </summary>
+    /// <param name="propertyName"></param>
+    /// <param name="emptyList"></param>
+    /// <param name="entityInfo"></param>
+    /// <returns></returns>
+    private static bool EntityValueCheck(string propertyName, ICollection<dynamic> emptyList, DataFilterModel entityInfo)
+    {
+        try
+        {
+            // 转换为动态类型
+            var dynamicEntityInfo = (dynamic) entityInfo.EntityValue;
+            var value = propertyName switch
+            {
+                ClaimConst.ID_FIELD => dynamicEntityInfo.Id,
+                ClaimConst.CLAINM_TENANTID => dynamicEntityInfo.TenantId,
+                ClaimConst.CREATEDTIME_FIELD => dynamicEntityInfo.CreatedTime,
+                ClaimConst.CREATEDUSERID_FIELD => dynamicEntityInfo.CreatedUserId,
+                ClaimConst.CREATEDUSERNAME_FIELD => dynamicEntityInfo.CreatedUserName,
+                ClaimConst.UPDATEDTIME_FIELD => dynamicEntityInfo.UpdatedTime,
+                ClaimConst.UPDATEDUSERID_FIELD => dynamicEntityInfo.UpdatedUserId,
+                ClaimConst.UPDATEDUSERNAME_FIELD => dynamicEntityInfo.UpdatedUserName,
+                _ => throw new NotImplementedException(),
+            };
+            return emptyList.Any(empty => empty == value);
+        }
+        catch (Exception)
+        {
+            return false;
         }
     }
 }

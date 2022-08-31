@@ -48,8 +48,10 @@ public static class Extensions
         // 注册非泛型仓储
         services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
 
-        // 注册 SqlSugar 仓储
+        // 注册 SqlSugar 
         services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
+        services.AddScoped(typeof(ISqlSugarCacheRepository<>), typeof(SqlSugarCacheRepository<>));
+        services.AddScoped(typeof(ISqlSugarFalseDeleteRepository<>), typeof(SqlSugarFalseDeleteRepository<>));
 
         return services;
     }

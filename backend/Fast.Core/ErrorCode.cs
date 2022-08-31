@@ -35,4 +35,34 @@ public enum ErrorCode
     /// </summary>
     [ErrorCodeItemMetadata("租户系统异常！")]
     TenantSysError,
+
+    /// <summary>
+    /// 已存在同名租户信息！
+    /// </summary>
+    [ErrorCodeItemMetadata("已存在同名租户信息！")]
+    TenantRepeatError,
+
+    /// <summary>
+    /// 已存在同主机租户信息！
+    /// </summary>
+    [ErrorCodeItemMetadata("已存在同主机租户信息！")]
+    TenantWebUrlRepeatError,
+
+    /// <summary>
+    /// 租户信息不存在！
+    /// </summary>
+    [ErrorCodeItemMetadata("租户信息不存在！")]
+    TenantNotExistError,
+
+    /// <summary>
+    /// 租户数据库信息不存在！
+    /// </summary>
+    [ErrorCodeItemMetadata("租户数据库信息不存在！")]
+    TenantDbNotExistError,
+
+    /// <summary>
+    /// 租户数据库已存在！
+    /// </summary>
+    [ErrorCodeItemMetadata("租户数据库已存在！")]
+    TenantDataBaseRepeatError,
 }

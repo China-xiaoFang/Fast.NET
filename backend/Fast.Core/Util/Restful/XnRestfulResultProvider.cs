@@ -1,7 +1,6 @@
 ﻿using Furion.DataValidation;
 using Furion.UnifyResult;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Fast.Core.Util.Restful;

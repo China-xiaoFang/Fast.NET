@@ -8,7 +8,7 @@ public static class GlobalContext
     /// <summary>
     /// 当前租户Id
     /// </summary>
-    public static long TenantId => (User?.FindFirst(ClaimConst.TENANT_ID)?.Value).ParseToLong();
+    public static long TenantId => (User?.FindFirst(ClaimConst.CLAINM_TENANTID)?.Value).ParseToLong();
 
     /// <summary>
     /// 任务调度租户Id
@@ -134,9 +134,29 @@ public class ConnectionStringsOptions : IConfigurableOptions
     public string DefaultConnectionId { get; set; }
 
     /// <summary>
-    /// 连接字符串
+    /// 服务器Ip地址
     /// </summary>
-    public string DefaultConnection { get; set; }
+    public string DefaultServiceIp { get; set; }
+
+    /// <summary>
+    /// 端口号
+    /// </summary>
+    public string DefaultPort { get; set; }
+
+    /// <summary>
+    /// 数据库名称
+    /// </summary>
+    public string DefaultDbName { get; set; }
+
+    /// <summary>
+    /// 数据库用户
+    /// </summary>
+    public string DefaultDbUser { get; set; }
+
+    /// <summary>
+    /// 数据库密码
+    /// </summary>
+    public string DefaultDbPwd { get; set; }
 
     /// <summary>
     /// 数据库类型

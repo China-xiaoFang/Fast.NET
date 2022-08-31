@@ -13,6 +13,11 @@ public class CommonConst
     public const string DEFAULT_ADMIN_PASSWORD = "Fast888888";
 
     /// <summary>
+    /// 默认头像地址
+    /// </summary>
+    public const string DEFAULT_Avatar_URL = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logn.png";
+
+    /// <summary>
     /// 用户缓存
     /// </summary>
     public const string CACHE_KEY_USER = "user_";

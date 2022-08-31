@@ -67,7 +67,6 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     {
         _sqlSugarRepository = sqlSugarRepository;
         _db = db.LoadSqlSugar<TEntity>();
-        //_db = ((SqlSugarClient) db).GetConnection(GlobalContext.ConnectionInfo.DefaultConnectionId);
         Context = _db;
         Ado = _db.Ado;
         Cache = sqlSugarCacheRepository;
@@ -475,6 +474,26 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     public async Task<long> ExecuteReturnBigIdentityAsync(TEntity entity)
     {
         return await _db.Insertable(entity).ExecuteReturnBigIdentityAsync();
+    }
+
+    /// <summary>
+    /// 新增一条记录返回新增的数据
+    /// </summary>
+    /// <param name="insertObj"></param>
+    /// <returns></returns>
+    public TEntity InsertReturnEntity(TEntity insertObj)
+    {
+        return _db.Insertable(insertObj).ExecuteReturnEntity();
+    }
+
+    /// <summary>
+    /// 新增一条记录返回新增的数据
+    /// </summary>
+    /// <param name="insertObj"></param>
+    /// <returns></returns>
+    public Task<TEntity> InsertReturnEntityAsync(TEntity insertObj)
+    {
+        return _db.Insertable(insertObj).ExecuteReturnEntityAsync();
     }
 
     #endregion

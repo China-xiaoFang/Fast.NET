@@ -1,12 +1,7 @@
 ﻿using System.Diagnostics;
 using Furion.EventBus;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using HttpDeleteAttribute = Fast.Core.AttributeFilter.Http.HttpDeleteAttribute;
-using HttpGetAttribute = Fast.Core.AttributeFilter.Http.HttpGetAttribute;
-using HttpPostAttribute = Fast.Core.AttributeFilter.Http.HttpPostAttribute;
-using HttpPutAttribute = Fast.Core.AttributeFilter.Http.HttpPutAttribute;
 
 namespace Fast.Core.Filter;
 

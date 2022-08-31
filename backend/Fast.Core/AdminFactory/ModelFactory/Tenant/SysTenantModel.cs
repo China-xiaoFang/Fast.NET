@@ -51,7 +51,6 @@ public class SysTenantModel : BaseEntity
 
     /// <summary>
     /// WebUrl
-    /// 必须采用Https
     /// </summary>
     [SugarColumn(ColumnDescription = "WebUrl", ColumnDataType = "Nvarchar(max)", IsNullable = false, IsJson = true)]
     public List<string> WebUrl { get; set; }

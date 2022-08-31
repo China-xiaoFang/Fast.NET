@@ -3,7 +3,7 @@
 /// <summary>
 /// IBaseRecordEntity 接口定义
 /// </summary>
-public interface IBaseLogEntity
+public interface IBaseLogEntity : IDbEntity
 {
     /// <summary>
     /// 手机型号

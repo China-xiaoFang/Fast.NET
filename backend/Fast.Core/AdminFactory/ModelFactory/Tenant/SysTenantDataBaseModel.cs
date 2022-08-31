@@ -8,10 +8,16 @@
 public class SysTenantDataBaseModel : BaseTEntity
 {
     /// <summary>
-    /// 服务器Ip地址，可带端口
+    /// 服务器Ip地址
     /// </summary>
-    [SugarColumn(ColumnDescription = "服务器Ip地址，可带端口", ColumnDataType = "Nvarchar(24)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "服务器Ip地址", ColumnDataType = "Nvarchar(15)", IsNullable = false)]
     public string ServiceIp { get; set; }
+
+    /// <summary>
+    /// 端口号
+    /// </summary>
+    [SugarColumn(ColumnDescription = "端口号", ColumnDataType = "Nvarchar(5)", IsNullable = false)]
+    public string Port { get; set; }
 
     /// <summary>
     /// 数据库名称

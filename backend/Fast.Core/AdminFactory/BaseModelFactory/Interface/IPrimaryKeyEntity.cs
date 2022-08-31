@@ -9,7 +9,5 @@ public interface IPrimaryKeyEntity<T>
     /// <summary>
     /// 主键Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true)]
-    // 注意是在这里定义你的公共实体
     T Id { get; set; }
 }
