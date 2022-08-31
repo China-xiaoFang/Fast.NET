@@ -60,6 +60,8 @@ public class InitDataBaseService : IInitDataBaseService, ITransient
             };
             superAdminTenantInfo = await _db.Insertable(superAdminTenantInfo).ExecuteReturnEntityAsync();
 
+            // TODO：这里存在线程或者事务锁表问题，待解决
+
             // 初始化租户业务库信息
             await _db.Insertable(new SysTenantDataBaseModel
             {
