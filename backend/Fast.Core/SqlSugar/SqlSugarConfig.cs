@@ -146,18 +146,17 @@ public static class SqlSugarConfig
             IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
             InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
             //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
+            ConfigureExternalServices = GetSugarExternalServices(connectionStringsOptions.DefaultDbType)
         };
 
         // Sugar Action
-        void ConfigAction(ISqlSugarClient db)
+        void ConfigAction(SqlSugarClient _db)
         {
-            SqlSugarProvider _db = db.AsTenant().GetConnection(connectConfig.ConfigId);
-
             // 过滤器
-            LoadSugarFilter(_db);
+            //LoadSugarFilter(_db);
         }
 
-        services.AddSqlSugar(connectConfig, (Action<ISqlSugarClient>) ConfigAction);
+        services.AddSqlSugar(connectConfig, ConfigAction);
 
         GetService<IInitDataBaseService>().InitDataBase();
     }
@@ -205,11 +204,74 @@ public static class SqlSugarConfig
         return _db.GetConnection(connectionId);
     }
 
+    /// <summary>
+    /// 添加数据库
+    /// </summary>
+    /// <param name="db"></param>
+    /// <param name="connectionId"></param>
+    /// <param name="dbInfo"></param>
+    private static void AddDataBase(SqlSugarClient db, string connectionId, SysTenantDataBaseModel dbInfo)
+    {
+        db.AddConnection(new ConnectionConfig
+        {
+            ConfigId = connectionId, // 此链接标志，用以后面切库使用
+            ConnectionString = GetConnectionStr(dbInfo), // 租户库连接字符串
+            DbType = dbInfo.DbType,
+            IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
+            InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
+            //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
+            ConfigureExternalServices = GetSugarExternalServices(dbInfo.DbType)
+        });
 
+        var _db = db.GetConnection(connectionId);
+
+        // 过滤器
+        LoadSugarFilter(_db);
+    }
+
+    /// <summary>
+    /// 目前暂时支持Sql Server 和 MySql
+    /// </summary>
+    /// <param name="dbType"></param>
+    /// <returns></returns>
+    private static ConfigureExternalServices GetSugarExternalServices(DbType dbType)
+    {
+        var externalServices = new ConfigureExternalServices
+        {
+            EntityService = (propertyInfo, columnInfo) =>
+            {
+                // 这里的所有数据库类型，默认是根据SqlServer配置的
+                var columnDbType = columnInfo.DataType?.ToUpper();
+                if (columnDbType == null)
+                    return;
+                // String
+                if (columnDbType.StartsWith("NVARCHAR"))
+                {
+                    var length = columnDbType.Substring("NVARCHAR(".Length, columnDbType.Length - "NVARCHAR(".Length - 1);
+                    SetDbTypeNvarchar(dbType, length, ref columnInfo);
+                }
+
+                // DateTime
+                if (columnDbType == "DATETIMEOFFSET")
+                {
+                    SetDbTypeDateTime(dbType, ref columnInfo);
+                }
+            }
+        };
+        return externalServices;
+    }
+
+    #region 各种类型数据库兼容
+
+    /// <summary>
+    /// 得到数据库连接字符串
+    /// </summary>
+    /// <param name="dbInfo"></param>
+    /// <returns></returns>
     private static string GetConnectionStr(SysTenantDataBaseModel dbInfo)
     {
         var connectionStr = "";
-        // TODO:这里要根据数据库的类型来拼接链接字符串，目前暂时支持Sql Server 和 MySql
+        // 目前暂时支持Sql Server 和 MySql
         switch (dbInfo.DbType)
         {
             case DbType.MySql:
@@ -251,28 +313,99 @@ public static class SqlSugarConfig
     }
 
     /// <summary>
-    /// 添加数据库
+    /// 设置Nvarchar类型
     /// </summary>
-    /// <param name="db"></param>
-    /// <param name="connectionId"></param>
-    /// <param name="dbInfo"></param>
-    private static void AddDataBase(SqlSugarClient db, string connectionId, SysTenantDataBaseModel dbInfo)
+    /// <param name="dbType"></param>
+    /// <param name="length"></param>
+    /// <param name="columnInfo"></param>
+    private static void SetDbTypeNvarchar(DbType dbType, string length, ref EntityColumnInfo columnInfo)
     {
-        db.AddConnection(new ConnectionConfig
+        switch (dbType)
         {
-            ConfigId = connectionId, // 此链接标志，用以后面切库使用
-            ConnectionString = GetConnectionStr(dbInfo), // 租户库连接字符串
-            DbType = dbInfo.DbType,
-            IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
-            InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
-            //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
-        });
-
-        var _db = db.GetConnection(connectionId);
-
-        // 过滤器
-        LoadSugarFilter(_db);
+            case DbType.MySql:
+                columnInfo.DataType = length == "MAX" ? "longtext" : $"varchar({length})";
+                break;
+            case DbType.SqlServer:
+                columnInfo.DataType = $"Nvarchar({length})";
+                break;
+            case DbType.Sqlite:
+                break;
+            case DbType.Oracle:
+                break;
+            case DbType.PostgreSQL:
+                break;
+            case DbType.Dm:
+                break;
+            case DbType.Kdbndp:
+                break;
+            case DbType.Oscar:
+                break;
+            case DbType.MySqlConnector:
+                break;
+            case DbType.Access:
+                break;
+            case DbType.OpenGauss:
+                break;
+            case DbType.QuestDB:
+                break;
+            case DbType.HG:
+                break;
+            case DbType.ClickHouse:
+                break;
+            case DbType.Custom:
+                break;
+            default:
+                throw Oops.Oh(ErrorCode.DbTypeError);
+        }
     }
+
+    /// <summary>
+    /// 设置DateTime类型
+    /// </summary>
+    /// <param name="dbType"></param>
+    /// <param name="columnInfo"></param>
+    private static void SetDbTypeDateTime(DbType dbType, ref EntityColumnInfo columnInfo)
+    {
+        switch (dbType)
+        {
+            case DbType.MySql:
+                columnInfo.DataType = "datetime";
+                break;
+            case DbType.SqlServer:
+                columnInfo.DataType = "datetimeoffset";
+                break;
+            case DbType.Sqlite:
+                break;
+            case DbType.Oracle:
+                break;
+            case DbType.PostgreSQL:
+                break;
+            case DbType.Dm:
+                break;
+            case DbType.Kdbndp:
+                break;
+            case DbType.Oscar:
+                break;
+            case DbType.MySqlConnector:
+                break;
+            case DbType.Access:
+                break;
+            case DbType.OpenGauss:
+                break;
+            case DbType.QuestDB:
+                break;
+            case DbType.HG:
+                break;
+            case DbType.ClickHouse:
+                break;
+            case DbType.Custom:
+                break;
+            default:
+                throw Oops.Oh(ErrorCode.DbTypeError);
+        }
+    }
+
+    #endregion
 
     /// <summary>
     /// 加载过滤器

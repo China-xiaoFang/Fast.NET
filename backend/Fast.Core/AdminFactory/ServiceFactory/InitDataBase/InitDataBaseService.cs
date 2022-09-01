@@ -13,7 +13,7 @@ public class InitDataBaseService : IInitDataBaseService, ITransient
 
     public InitDataBaseService(ISqlSugarClient db, IOptions<ConnectionStringsOptions> connectionStringsOptions)
     {
-        _db = ((SqlSugarClient) db).GetConnection(connectionStringsOptions.Value.DefaultConnectionId);
+        _db = db.AsTenant().GetConnection(connectionStringsOptions.Value.DefaultConnectionId);
         _connectionStringsOptions = connectionStringsOptions.Value;
     }
 
@@ -59,8 +59,6 @@ public class InitDataBaseService : IInitDataBaseService, ITransient
                 LogoUrl = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logn.png"
             };
             superAdminTenantInfo = await _db.Insertable(superAdminTenantInfo).ExecuteReturnEntityAsync();
-
-            // TODO：这里存在线程或者事务锁表问题，待解决
 
             // 初始化租户业务库信息
             await _db.Insertable(new SysTenantDataBaseModel

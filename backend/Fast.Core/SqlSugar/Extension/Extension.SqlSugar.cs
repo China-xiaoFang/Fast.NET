@@ -29,7 +29,7 @@ public static class Extensions
         Action<SqlSugarClient> buildAction = default)
     {
         // 注册 SqlSugar 客户端
-        services.AddScoped<ISqlSugarClient>(u =>
+        services.AddScoped<ISqlSugarClient>(_ =>
         {
             var sqlSugarClient = new SqlSugarClient(configs.ToList());
             buildAction?.Invoke(sqlSugarClient);
@@ -38,7 +38,7 @@ public static class Extensions
         });
 
         // 添加多库事务
-        services.AddScoped<ITenant>(u =>
+        services.AddScoped<ITenant>(_ =>
         {
             var tenant = new SqlSugarClient(configs.ToList());
             buildAction?.Invoke(tenant);
