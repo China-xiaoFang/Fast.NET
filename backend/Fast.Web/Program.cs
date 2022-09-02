@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using Fast.Core;
+using Fast.Core.AdminFactory.ServiceFactory.InitDataBase;
 using Fast.Core.Cache;
 using Fast.Core.EventSubscriber;
 using Fast.Core.Filter;
@@ -105,7 +106,7 @@ builder.Services.AddJsonOptions(options =>
 builder.Services.AddViewEngine();
 
 // Init sqlSugar.
-builder.Services.InitSqlSugar();
+builder.Services.SqlSugarClientConfigure();
 
 // Add Instant Messaging.
 builder.Services.AddSignalR();
@@ -190,5 +191,8 @@ app.UseInject(string.Empty);
 //});
 
 app.MapControllers();
+
+// 初始化数据库
+App.GetService<IInitDataBaseService>().InitDataBase();
 
 app.Run();

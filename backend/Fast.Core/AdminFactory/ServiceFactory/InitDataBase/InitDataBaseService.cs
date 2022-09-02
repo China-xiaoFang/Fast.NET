@@ -10,11 +10,14 @@ public class InitDataBaseService : IInitDataBaseService, ITransient
 {
     private readonly ISqlSugarClient _db;
     private readonly ConnectionStringsOptions _connectionStringsOptions;
+    private readonly ISysTenantService _sysTenantService;
 
-    public InitDataBaseService(ISqlSugarClient db, IOptions<ConnectionStringsOptions> connectionStringsOptions)
+    public InitDataBaseService(ISqlSugarClient db, IOptions<ConnectionStringsOptions> connectionStringsOptions,
+        ISysTenantService sysTenantService)
     {
         _db = db.AsTenant().GetConnection(connectionStringsOptions.Value.DefaultConnectionId);
         _connectionStringsOptions = connectionStringsOptions.Value;
+        _sysTenantService = sysTenantService;
     }
 
     /// <summary>
@@ -36,7 +39,7 @@ public class InitDataBaseService : IInitDataBaseService, ITransient
               
             ");
             // 获取所有数据库Model
-            var entityTypeList = SqlSugarConfig.ReflexGetAllTEntityList();
+            var entityTypeList = SqlSugarSetup.EntityHelper.ReflexGetAllTEntityList();
 
             // 创建核心业务库的所有表
             foreach (var (_, _, type) in entityTypeList.Where(wh => wh.dbType == SysDataBaseTypeEnum.Admin))
@@ -74,7 +77,7 @@ public class InitDataBaseService : IInitDataBaseService, ITransient
             }).ExecuteCommandAsync();
 
             // 初始化新租户数据
-            await GetService<ISysTenantService>().InitNewTenant(superAdminTenantInfo,
+            await _sysTenantService.InitNewTenant(superAdminTenantInfo,
                 entityTypeList.Where(wh => wh.dbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.type), true);
 
             sw.Stop();

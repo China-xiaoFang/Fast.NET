@@ -86,7 +86,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
             throw Oops.Bah(ErrorCode.TenantDbNotExistError);
 
         // 获取所有数据库Model
-        var entityTypeList = SqlSugarConfig.ReflexGetAllTEntityList();
+        var entityTypeList = SqlSugarSetup.EntityHelper.ReflexGetAllTEntityList();
 
         // 初始化数据
         await InitNewTenant(newTenantInfo,

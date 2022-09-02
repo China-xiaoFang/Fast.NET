@@ -6,7 +6,7 @@
  *
  */
 
-namespace Fast.Core.SqlSugar.Repository;
+namespace Fast.Core.SqlSugar;
 
 /// <summary>
 /// 非泛型 SqlSugar 仓储

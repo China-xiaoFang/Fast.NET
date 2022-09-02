@@ -15,7 +15,7 @@ public class LogEventSubscriber : IEventSubscriber
     public async Task CreateOpLog(EventHandlerExecutingContext context)
     {
         using var scope = Services.CreateScope();
-        var _repository = scope.ServiceProvider.GetRequiredService<SqlSugarRepository<SysLogOpModel>>();
+        var _repository = scope.ServiceProvider.GetRequiredService<ISqlSugarRepository<SysLogOpModel>>();
         var log = (SysLogOpModel) context.Source.Payload;
         await _repository.InsertAsync(log);
     }
@@ -24,7 +24,7 @@ public class LogEventSubscriber : IEventSubscriber
     public async Task CreateExLog(EventHandlerExecutingContext context)
     {
         using var scope = Services.CreateScope();
-        var _repository = scope.ServiceProvider.GetRequiredService<SqlSugarRepository<SysLogExModel>>();
+        var _repository = scope.ServiceProvider.GetRequiredService<ISqlSugarRepository<SysLogExModel>>();
         var log = (SysLogExModel) context.Source.Payload;
         await _repository.InsertAsync(log);
     }
@@ -33,7 +33,7 @@ public class LogEventSubscriber : IEventSubscriber
     public async Task CreateVisLog(EventHandlerExecutingContext context)
     {
         using var scope = Services.CreateScope();
-        var _repository = scope.ServiceProvider.GetRequiredService<SqlSugarRepository<SysLogVisModel>>();
+        var _repository = scope.ServiceProvider.GetRequiredService<ISqlSugarRepository<SysLogVisModel>>();
         var log = (SysLogVisModel) context.Source.Payload;
         await _repository.InsertAsync(log);
     }
@@ -42,7 +42,7 @@ public class LogEventSubscriber : IEventSubscriber
     public async Task UpdateUserLoginInfo(EventHandlerExecutingContext context)
     {
         using var scope = Services.CreateScope();
-        var _repository = scope.ServiceProvider.GetRequiredService<SqlSugarRepository<SysUserModel>>();
+        var _repository = scope.ServiceProvider.GetRequiredService<ISqlSugarRepository<SysUserModel>>();
         var log = (SysUserModel) context.Source.Payload;
         await _repository.Context.Updateable(log).UpdateColumns(m => new {m.LastLoginTime, m.LastLoginIp}).ExecuteCommandAsync();
     }
