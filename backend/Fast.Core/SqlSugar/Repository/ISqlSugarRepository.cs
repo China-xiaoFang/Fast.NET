@@ -1,5 +1,5 @@
 ﻿/*
- * SqlSugar简单仓储接口定义类，支持软删除，以及联合Cache CRUD
+ * SqlSugar简单仓储接口定义类
  *
  * Author: 1.8K仔
  * DateTime：2022-07-24
@@ -41,16 +41,6 @@ public interface ISqlSugarRepository<TEntity> where TEntity : class, new()
     /// 原生 Ado 对象
     /// </summary>
     IAdo Ado { get; }
-
-    /// <summary>
-    /// 软删除 仓储接口
-    /// </summary>
-    ISqlSugarFalseDeleteRepository<TEntity> FalseDelete { get; }
-
-    /// <summary>
-    /// Cache 仓储接口
-    /// </summary>
-    ISqlSugarCacheRepository<TEntity> Cache { get; }
 
     /// <summary>
     /// 构建查询分析器
@@ -451,20 +441,4 @@ public interface ISqlSugarRepository<TEntity> where TEntity : class, new()
     /// <param name="whereExpression"></param>
     /// <returns></returns>
     Task<int> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression);
-}
-
-/// <summary>
-/// SqlSugar 缓存仓储接口定义
-/// </summary>
-/// <typeparam name="TEntity"></typeparam>
-public interface ISqlSugarCacheRepository<TEntity> where TEntity : class, new()
-{
-}
-
-/// <summary>
-/// SqlSugar 软删除仓储接口定义
-/// </summary>
-/// <typeparam name="TEntity"></typeparam>
-public interface ISqlSugarFalseDeleteRepository<TEntity> where TEntity : class, new()
-{
 }

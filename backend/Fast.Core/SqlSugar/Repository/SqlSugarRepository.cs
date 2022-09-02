@@ -1,5 +1,5 @@
 ﻿/*
- * SqlSugar简单仓储实现类，支持软删除，以及联合Cache CRUD
+ * SqlSugar简单仓储实现类
  *
  * Author: 1.8K仔
  * DateTime：2022-07-24
@@ -59,18 +59,12 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// </summary>
     /// <param name="sqlSugarRepository"></param>
     /// <param name="db"></param>
-    /// <param name="sqlSugarCacheRepository"></param>
-    /// <param name="sqlSugarFalseDeleteRepository"></param>
-    public SqlSugarRepository(ISqlSugarRepository sqlSugarRepository, ISqlSugarClient db,
-        ISqlSugarCacheRepository<TEntity> sqlSugarCacheRepository,
-        ISqlSugarFalseDeleteRepository<TEntity> sqlSugarFalseDeleteRepository)
+    public SqlSugarRepository(ISqlSugarRepository sqlSugarRepository, ISqlSugarClient db)
     {
         _sqlSugarRepository = sqlSugarRepository;
         _db = db.LoadSqlSugar<TEntity>();
         Context = _db;
         Ado = _db.Ado;
-        Cache = sqlSugarCacheRepository;
-        FalseDelete = sqlSugarFalseDeleteRepository;
     }
 
     /// <summary>
@@ -87,16 +81,6 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// 原生 Ado 对象
     /// </summary>
     public virtual IAdo Ado { get; }
-
-    /// <summary>
-    /// 软删除 仓储接口
-    /// </summary>
-    public ISqlSugarFalseDeleteRepository<TEntity> FalseDelete { get; }
-
-    /// <summary>
-    /// Cache 仓储接口
-    /// </summary>
-    public ISqlSugarCacheRepository<TEntity> Cache { get; }
 
     #region Function
 
@@ -690,56 +674,4 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     }
 
     #endregion
-}
-
-/// <summary>
-/// SqlSugar 缓存仓储实现类
-/// </summary>
-/// <typeparam name="TEntity"></typeparam>
-public class SqlSugarCacheRepository<TEntity> : ISqlSugarCacheRepository<TEntity> where TEntity : class, new()
-{
-    /// <summary>
-    /// 初始化 SqlSugar 客户端
-    /// </summary>
-    private readonly ISqlSugarClient _db;
-
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="db"></param>
-    public SqlSugarCacheRepository(ISqlSugarClient db)
-    {
-        _db = db.LoadSqlSugar<TEntity>();
-    }
-
-    /// <summary>
-    /// 实体集合
-    /// </summary>
-    public virtual ISugarQueryable<TEntity> Entities => _db.Queryable<TEntity>();
-}
-
-/// <summary>
-/// SqlSugar 软删除仓储实现类
-/// </summary>
-/// <typeparam name="TEntity"></typeparam>
-public class SqlSugarFalseDeleteRepository<TEntity> : ISqlSugarFalseDeleteRepository<TEntity> where TEntity : class, new()
-{
-    /// <summary>
-    /// 初始化 SqlSugar 客户端
-    /// </summary>
-    private readonly ISqlSugarClient _db;
-
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="db"></param>
-    public SqlSugarFalseDeleteRepository(ISqlSugarClient db)
-    {
-        _db = db.LoadSqlSugar<TEntity>();
-    }
-
-    /// <summary>
-    /// 实体集合
-    /// </summary>
-    public virtual ISugarQueryable<TEntity> Entities => _db.Queryable<TEntity>();
 }

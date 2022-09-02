@@ -50,8 +50,6 @@ public static class Extensions
 
         // 注册 SqlSugar 
         services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
-        services.AddScoped(typeof(ISqlSugarCacheRepository<>), typeof(SqlSugarCacheRepository<>));
-        services.AddScoped(typeof(ISqlSugarFalseDeleteRepository<>), typeof(SqlSugarFalseDeleteRepository<>));
 
         return services;
     }
