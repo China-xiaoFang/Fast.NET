@@ -1,4 +1,5 @@
-﻿using Fast.Core.AdminFactory.ServiceFactory.InitDataBase;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using SystemDbType = System.Data.DbType;
 
 namespace Fast.Core.SqlSugar;
@@ -522,8 +523,38 @@ public static class SqlSugarSetup
         {
             var externalServices = new ConfigureExternalServices
             {
+                EntityNameService = (type, entityInfo) =>
+                {
+                    // Table Name 配置，如果使用SqlSugar的规范，其实这里是不会走的
+                    var tableAttribute = type.GetCustomAttribute<TableAttribute>();
+                    if (tableAttribute != null)
+                    {
+                        entityInfo.DbTableName = tableAttribute.Name;
+                    }
+                },
                 EntityService = (propertyInfo, columnInfo) =>
                 {
+                    // 主键配置，如果使用SqlSugar的规范，其实这里是不会走的
+                    var keyAttribute = propertyInfo.GetCustomAttribute<KeyAttribute>();
+                    if (keyAttribute != null)
+                    {
+                        columnInfo.IsPrimarykey = true;
+                    }
+
+                    // 列名配置，如果使用SqlSugar的规范，其实这里是不会走的
+                    var columnAttribute = propertyInfo.GetCustomAttribute<ColumnAttribute>();
+                    if (columnAttribute != null)
+                    {
+                        columnInfo.DbColumnName = columnAttribute.Name;
+                    }
+
+                    // 可空类型配置
+                    if (propertyInfo.PropertyType.IsGenericType &&
+                        propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        columnInfo.IsNullable = true;
+                    }
+
                     // 这里的所有数据库类型，默认是根据SqlServer配置的
                     var columnDbType = columnInfo.DataType?.ToUpper();
                     if (columnDbType == null)
@@ -645,6 +676,22 @@ public static class SqlSugarSetup
 /// </summary>
 public static class Extensions
 {
+    /// <summary>
+    /// 获取SugarTable特性中的TableName
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static string GetSugarTableName(this Type type)
+    {
+        var sugarTable = type.GetCustomAttribute<SugarTable>();
+        if (sugarTable != null && !sugarTable.TableName.IsEmpty())
+        {
+            return sugarTable.TableName;
+        }
+
+        return type.Name;
+    }
+
     /// <summary>
     /// SqlSugar分页扩展
     /// </summary>
