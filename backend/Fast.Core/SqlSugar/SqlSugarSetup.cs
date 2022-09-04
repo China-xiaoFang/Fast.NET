@@ -525,6 +525,9 @@ public static class SqlSugarSetup
             {
                 EntityNameService = (type, entityInfo) =>
                 {
+                    // 全局开启创建表按照字段排序，避免重复代码
+                    entityInfo.IsCreateTableFiledSort = true;
+
                     // Table Name 配置，如果使用SqlSugar的规范，其实这里是不会走的
                     var tableAttribute = type.GetCustomAttribute<TableAttribute>();
                     if (tableAttribute != null)
