@@ -192,7 +192,7 @@ app.UseInject(string.Empty);
 
 app.MapControllers();
 
-// 初始化数据库
-App.GetService<IInitDataBaseService>().InitDataBase();
+// It is recommended to disable the initialization of the database except for the first time.
+Task.Run(async () => { await App.GetService<IInitDataBaseService>().InitDataBase(); });
 
 app.Run();

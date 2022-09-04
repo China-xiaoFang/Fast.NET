@@ -62,14 +62,26 @@ public class SysTenantModel : BaseEntity
     public string LogoUrl { get; set; }
 
     /// <summary>
-    /// 租户系统管理员用户
+    /// 系统管理员用户
     /// </summary>
     [SugarColumn(IsIgnore = true)]
-    public SysUserModel SysAdminUserModel { get; set; }
+    public SysUserModel SystemAdminUser { get; set; }
+
+    /// <summary>
+    /// 租户管理员用户
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public SysUserModel TenantAdminUser { get; set; }
 
     /// <summary>
     /// App授权信息
     /// </summary>
-    [SugarColumn(IsIgnore = true)]
+    [Navigate(NavigateType.OneToMany, nameof(SysTenantAppInfoModel.TenantId))]
     public List<SysTenantAppInfoModel> AppList { get; set; }
+
+    /// <summary>
+    /// 数据库信息
+    /// </summary>
+    [Navigate(NavigateType.OneToMany, nameof(SysTenantDataBaseModel.TenantId))]
+    public List<SysTenantDataBaseModel> DataBaseList { get; set; }
 }

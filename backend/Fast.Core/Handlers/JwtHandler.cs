@@ -16,9 +16,7 @@ public class JwtHandler : AppAuthorizeHandler
     {
         // 自动刷新Token
         if (JWTEncryption.AutoRefreshToken(context, context.GetCurrentHttpContext()))
-        {
             await AuthorizeHandleAsync(context);
-        }
         else
             context.Fail(); // 授权失败
     }

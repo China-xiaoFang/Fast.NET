@@ -11,11 +11,48 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
 {
     private readonly ISqlSugarRepository<SysTenantModel> _repository;
     private readonly ICache _cache;
+    private readonly ISqlSugarClient _tenant;
 
-    public SysTenantService(ISqlSugarRepository<SysTenantModel> repository, ICache cache)
+    public SysTenantService(ISqlSugarRepository<SysTenantModel> repository, ICache cache, ISqlSugarClient tenant)
     {
         _repository = repository;
         _cache = cache;
+        _tenant = tenant;
+    }
+
+    /// <summary>
+    /// 获取所有租户信息
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    [NonAction]
+    public async Task<List<SysTenantModel>> GetAllTenantInfo(Expression<Func<SysTenantModel, bool>> predicate = null)
+    {
+        // 先从缓存获取
+        var tenantList = await _cache.GetAsync<List<SysTenantModel>>(CommonConst.CACHE_KEY_TENANT_INFO);
+
+        if (tenantList != null && tenantList.Any())
+            return predicate == null ? tenantList : tenantList.Where(predicate.Compile()).ToList();
+
+        // 获取租户基本信息
+        tenantList = await _repository.Context.Queryable<SysTenantModel>().WhereIF(predicate != null, predicate)
+            .Includes(app => app.AppList).Includes(db => db.DataBaseList).ToListAsync();
+        // 获取租户两个管理员信息
+        // 注：这里如果租户过多的话可能存在卡顿
+        foreach (var tenant in tenantList)
+        {
+            // 加载租户数据库Db
+            var _db = _tenant.LoadSqlSugar<SysUserModel>(tenant.Id);
+            // 查询两个管理员信息
+            var userList = await _db.Queryable<SysUserModel>().Where(wh =>
+                (wh.AdminType == AdminTypeEnum.SystemAdmin || wh.AdminType == AdminTypeEnum.TenantAdmin)).ToListAsync();
+            tenant.SystemAdminUser = userList.First(f => f.AdminType == AdminTypeEnum.SystemAdmin);
+            tenant.TenantAdminUser = userList.First(f => f.AdminType == AdminTypeEnum.TenantAdmin);
+        }
+
+        await _cache.SetAsync(CommonConst.CACHE_KEY_TENANT_INFO, tenantList);
+
+        return predicate == null ? tenantList : tenantList.Where(predicate.Compile()).ToList();
     }
 
     /// <summary>
@@ -26,7 +63,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
     [HttpGet("sysTenant/page")]
     public async Task<PageResult<TenantOutput>> QueryTenantPageList([FromQuery] QueryTenantInput input)
     {
-        return await _repository.Context.Queryable<SysTenantModel>().Where(wh => wh.TenantType != TenantTypeEnum.System)
+        return await _repository.Where(wh => wh.TenantType != TenantTypeEnum.System)
             .WhereIF(!input.Name.IsEmpty(), wh => wh.Name.Contains(input.Name))
             .WhereIF(!input.AdminName.IsEmpty(), wh => wh.AdminName.Contains(input.AdminName))
             .WhereIF(!input.Phone.IsEmpty(), wh => wh.Phone.Contains(input.Phone)).OrderBy(ob => ob.CreatedTime)
@@ -106,7 +143,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
     [NonAction]
     public async Task InitNewTenant(SysTenantModel newTenant, IEnumerable<Type> entityTypeList, bool isInit = false)
     {
-        var _db = GetService<ISqlSugarClient>().LoadSqlSugar<SysUserModel>(newTenant.Id);
+        var _db = _tenant.LoadSqlSugar<SysUserModel>(newTenant.Id);
 
         // 初始化数据库
         _db.DbMaintenance.CreateDatabase();

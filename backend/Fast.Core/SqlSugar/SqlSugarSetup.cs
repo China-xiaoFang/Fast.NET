@@ -261,7 +261,12 @@ public static class SqlSugarSetup
                 _db.Aop.OnLogExecuted = (sql, pars) =>
                 {
                     if (sql.StartsWith("SELECT"))
+                    {
+                        // 如果是系统表则不输出，避免安全起见
+                        if (sql.Contains("information_schema.TABLES"))
+                            return;
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    }
 
                     if (sql.StartsWith("UPDATE") || sql.StartsWith("INSERT"))
                     {

@@ -1,4 +1,5 @@
-﻿using Furion.EventBus;
+﻿using Fast.Core.EventSubscriber;
+using Furion.EventBus;
 using Furion.Logging;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -23,7 +24,7 @@ public class LogExceptionHandler : IGlobalExceptionHandler, ISingleton
 
         if (!isValidationException)
         {
-            await _eventPublisher.PublishAsync(new ChannelEventSource("Create:ExLog",
+            await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:ExLog",
                 new SysLogExModel
                 {
                     Account = GlobalContext.UserAccount,

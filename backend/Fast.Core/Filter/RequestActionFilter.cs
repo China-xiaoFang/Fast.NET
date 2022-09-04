@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Fast.Core.EventSubscriber;
 using Furion.EventBus;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -59,7 +60,7 @@ public class RequestActionFilter : IAsyncActionFilter
         var userAgentInfo = HttpNewUtil.UserAgentInfo();
         var wanInfo = HttpNewUtil.WanInfo(HttpNewUtil.Ip).Result;
 
-        await _eventPublisher.PublishAsync(new ChannelEventSource("Create:OpLog",
+        await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:OpLog", GlobalContext.TenantId,
             new SysLogOpModel
             {
                 Account = GlobalContext.UserAccount,
