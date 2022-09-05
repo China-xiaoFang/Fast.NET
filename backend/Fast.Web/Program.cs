@@ -119,6 +119,8 @@ builder.Services.AddEventBus(eventBuilder =>
 {
     // Register as a Log subscriber.
     eventBuilder.AddSubscriber<LogEventSubscriber>();
+    // Subscribing to EventBus caught no exception.
+    eventBuilder.UnobservedTaskExceptionHandler = (sender, eventArgs) => { Log.Error(eventArgs.Exception.ToString()); };
 });
 
 #region Logging, error level logging, create a log file every day.
