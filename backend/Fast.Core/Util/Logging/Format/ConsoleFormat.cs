@@ -15,7 +15,7 @@ public class ConsoleFormat : ConsoleFormatter, IDisposable
 
     private void ReloadLoggerOptions(CustomColorOptions options) => _formatterOptions = options;
 
-    public ConsoleForamt(IOptionsMonitor<CustomColorOptions> options) : base("custom_format") =>
+    public ConsoleFormat(IOptionsMonitor<CustomColorOptions> options) : base("custom_format") =>
         (_optionsReloadToken, _formatterOptions) = (options.OnChange(ReloadLoggerOptions), options.CurrentValue);
 
 
