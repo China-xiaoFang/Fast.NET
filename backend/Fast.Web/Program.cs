@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using Fast.Core;
+using Fast.Core.AdminFactory.ServiceFactory.InitDataBase;
 using Fast.Core.Cache;
 using Fast.Core.EventSubscriber;
 using Fast.Core.Filter;
@@ -105,7 +106,7 @@ builder.Services.AddJsonOptions(options =>
 builder.Services.AddViewEngine();
 
 // Init sqlSugar.
-builder.Services.InitSqlSugar();
+builder.Services.SqlSugarClientConfigure();
 
 // Add Instant Messaging.
 builder.Services.AddSignalR();
@@ -118,6 +119,8 @@ builder.Services.AddEventBus(eventBuilder =>
 {
     // Register as a Log subscriber.
     eventBuilder.AddSubscriber<LogEventSubscriber>();
+    // Subscribing to EventBus caught no exception.
+    eventBuilder.UnobservedTaskExceptionHandler = (sender, eventArgs) => { Log.Error(eventArgs.Exception.ToString()); };
 });
 
 #region Logging, error level logging, create a log file every day.
@@ -190,5 +193,8 @@ app.UseInject(string.Empty);
 //});
 
 app.MapControllers();
+
+// It is recommended to disable the initialization of the database except for the first time.
+Task.Run(async () => { await App.GetService<IInitDataBaseService>().InitDataBase(); });
 
 app.Run();

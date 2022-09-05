@@ -8,6 +8,13 @@ namespace Fast.Core.AdminFactory.ServiceFactory.Tenant;
 public interface ISysTenantService
 {
     /// <summary>
+    /// 获取所有租户信息
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    Task<List<SysTenantModel>> GetAllTenantInfo(Expression<Func<SysTenantModel, bool>> predicate = null);
+
+    /// <summary>
     /// 分页查询租户信息
     /// </summary>
     /// <param name="input"></param>

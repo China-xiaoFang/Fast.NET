@@ -1,4 +1,6 @@
-﻿namespace Fast.Core;
+﻿using Fast.Core.AdminFactory.ServiceFactory.Tenant;
+
+namespace Fast.Core;
 
 /// <summary>
 /// 通用上下文
@@ -7,8 +9,29 @@ public static class GlobalContext
 {
     /// <summary>
     /// 当前租户Id
+    /// 两种获取方式
+    /// 一种是带了Token，直接从Token中获取，优先
+    /// 一种是根据请求标头中的Fast-NET-Origin带过来的Url去获取
     /// </summary>
-    public static long TenantId => (User?.FindFirst(ClaimConst.CLAINM_TENANTID)?.Value).ParseToLong();
+    public static long TenantId
+    {
+        get
+        {
+            if (User != null)
+            {
+                return (User?.FindFirst(ClaimConst.CLAINM_TENANTID)?.Value).ParseToLong();
+            }
+
+            if (HttpContext != null)
+            {
+                return (GetService<ISysTenantService>()
+                    .GetAllTenantInfo(wh => wh.Id == HttpContext.Request.Headers["Fast-NET-Origin"].ParseToLong()).Result
+                    .FirstOrDefault()?.Id).ParseToLong();
+            }
+
+            return 0L;
+        }
+    }
 
     /// <summary>
     /// 任务调度租户Id
@@ -95,7 +118,8 @@ public static class GlobalContext
     public static SysTenantDataBaseModel TenantDbInfo { get; set; }
 
     /// <summary>
-    /// 获取租户Id
+    /// 获取租户Id，
+    /// 复杂业务请用此方法
     /// </summary>
     /// <param name="isThrow">是否抛出错误</param>
     /// <returns></returns>
