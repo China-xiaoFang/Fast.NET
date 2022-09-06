@@ -4,14 +4,12 @@ namespace Fast.Core.EventSubscriber;
 
 public class LogEventSubscriber : IEventSubscriber
 {
-    public LogEventSubscriber(IServiceProvider services, ISqlSugarClient sqlSugarClient)
+    public LogEventSubscriber(IServiceProvider services)
     {
         Services = services;
-        _sqlSugarClient = sqlSugarClient;
     }
 
     private readonly IServiceProvider Services;
-    private readonly ISqlSugarClient _sqlSugarClient;
 
     [EventSubscribe("Create:ExLog")]
     public async Task CreateExLog(EventHandlerExecutingContext context)
@@ -28,9 +26,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
-            var _repository = _sqlSugarClient.LoadSqlSugar<SysLogOpModel>(source.TenantId);
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogOpModel>(source.TenantId);
             var log = (SysLogOpModel) context.Source.Payload;
-            await _repository.Insertable(log).ExecuteCommandAsync();
+            await _db.Insertable(log).ExecuteCommandAsync();
         }
     }
 
@@ -40,9 +38,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
-            var _repository = _sqlSugarClient.LoadSqlSugar<SysLogVisModel>(source.TenantId);
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogVisModel>(source.TenantId);
             var log = (SysLogVisModel) context.Source.Payload;
-            await _repository.Insertable(log).ExecuteCommandAsync();
+            await _db.Insertable(log).ExecuteCommandAsync();
         }
     }
 
@@ -52,9 +50,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
-            var _repository = _sqlSugarClient.LoadSqlSugar<SysUserModel>(source.TenantId);
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysUserModel>(source.TenantId);
             var log = (SysUserModel) context.Source.Payload;
-            await _repository.Updateable(log).UpdateColumns(m => new {m.LastLoginTime, m.LastLoginIp}).ExecuteCommandAsync();
+            await _db.Updateable(log).UpdateColumns(m => new {m.LastLoginTime, m.LastLoginIp}).ExecuteCommandAsync();
         }
     }
 }
