@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.Util.Restful.Internal;
+﻿namespace Fast.Core.Filter.Restful.Internal;
 
 /// <summary>
 /// RESTful风格---小诺返回格式

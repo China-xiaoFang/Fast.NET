@@ -3,7 +3,7 @@ using Furion.UnifyResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Fast.Core.Util.Restful;
+namespace Fast.Core.Filter.Restful;
 
 /// <summary>
 /// 规范化RESTful风格返回值
