@@ -126,6 +126,9 @@
   <data name="已存在同名租户信息！" xml:space="preserve">
     <value>Tenant information with the same name already exists!</value>
   </data>
+  <data name="接口请求过于频繁，请稍后再试！" xml:space="preserve">
+    <value>Interface request is too frequent, please try again later!</value>
+  </data>
   <data name="数据库Type 配置异常！" xml:space="preserve">
     <value>The database Type configuration is abnormal!</value>
   </data>

@@ -47,6 +47,7 @@ global using HttpPostAttribute = Fast.Core.AttributeFilter.Http.HttpPostAttribut
 global using HttpPutAttribute = Fast.Core.AttributeFilter.Http.HttpPutAttribute;
 global using HttpDeleteAttribute = Fast.Core.AttributeFilter.Http.HttpDeleteAttribute;
 global using Fast.Core.Cache;
+global using Fast.Core.Filter.RequestLimit.AttributeFilter;
 global using Fast.Core.Filter.Restful.Extension;
 global using Fast.Core.Filter.Restful.Internal;
 global using Fast.Core.SqlSugar;

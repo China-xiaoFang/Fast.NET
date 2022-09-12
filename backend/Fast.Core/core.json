@@ -39,6 +39,10 @@
     "ExpiredTime": 30, // 过期时间，long 类型，单位分钟，默认30分钟
     "ClockSkew": 5 // 过期时间容错值，long 类型，单位秒，默认5秒
   },
+  // 异常配置
+  "FriendlyExceptionSettings": {
+    "HideErrorCode": true // 隐藏错误码
+  },
   // 多语言
   "LocalizationSettings": {
     "SupportedCultures": ["zh-CN", "en-US"], // 配置支持的语言列表
