@@ -19,7 +19,9 @@
   },
   "SystemSettings": {
     // 最大请求Body Size，单位是字节（byte） 1kb=1024byte,此处限制512MB
-    "MaxRequestBodySize": 536870912
+    "MaxRequestBodySize": 536870912,
+    // 初始化数据库
+    "InitDataBase": true
   },
   "SnowId": {
     "WorkerId": "1" // 取值范围0~63,默认1

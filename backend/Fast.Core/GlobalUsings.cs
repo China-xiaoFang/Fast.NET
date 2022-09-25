@@ -62,4 +62,3 @@ global using Fast.Core.Util.Json.JsonConverter;
 global using Fast.Core.Util.MiniExcel;
 global using Fast.Core.Util.MiniExcel.AttributeFilter;
 global using Fast.Core.Util.MiniExcel.Extension;
-global using Fast.Core.Util.SnowflakeId.Extension;
