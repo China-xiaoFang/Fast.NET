@@ -83,16 +83,7 @@ public static class ServiceCollection
         builder.Services.AddRunStyle(r => r.UseDefault());
 
         // Customize the console log output template.
-        //builder.Logging.AddConsoleFormatter(options =>
-        //{
-        //    options.MessageFormat = (logMsg) =>
-        //    {
-        //        var stringBuilder = new StringBuilder();
-        //        stringBuilder.Append(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss dddd"));
-
-        //        return stringBuilder.ToString();
-        //    };
-        //});
+        builder.Logging.AddConsoleFormatter(options => { options.DateFormat = "yyyy-MM-dd hh:mm:ss(zzz) dddd"; });
 
         // Config.
         builder.Services.AddConfigurableOptions();
@@ -204,7 +195,7 @@ public static class ServiceCollection
 
         app.MapControllers();
 
-        if (GetOptions<SystemSettingsOptions>()?.InitDataBase == true)
+        if (GlobalContext.SystemSettings?.InitDataBase == true)
         {
             // It is recommended to disable the initialization of the database except for the first time.
             Task.Run(async () => { await GetService<IInitDataBaseService>().InitDataBase(); });

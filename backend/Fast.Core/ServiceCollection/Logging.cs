@@ -21,13 +21,13 @@ public static class Logging
         {
             services.AddLogging(loggingBuilder =>
             {
-                loggingBuilder.AddFile($"logs/error/{logFileFormat}.log", options => { SetLogOptions(options, LogLevel.Error); });
+                loggingBuilder.AddFile($"logs/error/{logFileFormat}_0.log", options => { SetLogOptions(options, LogLevel.Error); });
                 // Environments other than the development environment are not logged.
                 if (!HostEnvironment.IsDevelopment())
                     return;
-                loggingBuilder.AddFile($"logs/info/{logFileFormat}.log",
+                loggingBuilder.AddFile($"logs/info/{logFileFormat}_0.log",
                     options => { SetLogOptions(options, LogLevel.Information); });
-                loggingBuilder.AddFile($"logs/warn/{logFileFormat}.log",
+                loggingBuilder.AddFile($"logs/warn/{logFileFormat}_0.log",
                     options => { SetLogOptions(options, LogLevel.Warning); });
             });
         }
@@ -42,7 +42,7 @@ public static class Logging
     {
         options.WriteFilter = logMsg => logMsg.LogLevel == logLevel;
         options.FileNameRule = fileName => string.Format(fileName, DateTime.UtcNow);
-        options.FileSizeLimitBytes = 10 * 1024;
+        options.FileSizeLimitBytes = 10 * 1024 * 1024; // 10MB
         options.MessageFormat = logMsg =>
         {
             var msg = new List<string>

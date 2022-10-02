@@ -19,7 +19,7 @@ public static class LimitUploadedFiles
     {
         if (!isRun)
             return;
-        var sysSetOptions = GetOptions<SystemSettingsOptions>();
+        var sysSetOptions = GlobalContext.SystemSettings;
         if (sysSetOptions == null || sysSetOptions.MaxRequestBodySize.IsNullOrZero())
             return;
         var maxRequestBodySize = sysSetOptions.MaxRequestBodySize;
