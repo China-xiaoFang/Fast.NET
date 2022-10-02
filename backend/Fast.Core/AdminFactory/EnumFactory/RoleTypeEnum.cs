@@ -8,12 +8,12 @@ public enum RoleTypeEnum
     /// <summary>
     /// 租户普通角色
     /// </summary>
-    [Description("租户普通角色")]
+    [Description("租户普通")]
     NormalRole = 0,
 
     /// <summary>
     /// 租户管理员角色
     /// </summary>
-    [Description("租户管理员角色")]
+    [Description("租户管理员")]
     AdminRole = 1,
 }
