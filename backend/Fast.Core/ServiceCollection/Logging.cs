@@ -15,7 +15,7 @@ public static class Logging
     /// <param name="services"></param>
     /// <param name="logFileFormat">日志文件格式</param>
     /// <param name="isRun"></param>
-    public static void AddLogging(this IServiceCollection services, string logFileFormat = "0:yyyy-MM-dd", bool isRun = true)
+    public static void AddLogging(this IServiceCollection services, string logFileFormat = "{0:yyyy-MM-dd}", bool isRun = true)
     {
         if (isRun)
         {
@@ -25,9 +25,9 @@ public static class Logging
                 // Environments other than the development environment are not logged.
                 if (!HostEnvironment.IsDevelopment())
                     return;
-                loggingBuilder.AddFile($"logs/info/{logFileFormat}_.log",
+                loggingBuilder.AddFile($"logs/info/{logFileFormat}.log",
                     options => { SetLogOptions(options, LogLevel.Information); });
-                loggingBuilder.AddFile($"logs/warn/{logFileFormat}_.log",
+                loggingBuilder.AddFile($"logs/warn/{logFileFormat}.log",
                     options => { SetLogOptions(options, LogLevel.Warning); });
             });
         }

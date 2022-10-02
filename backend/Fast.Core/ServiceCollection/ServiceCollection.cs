@@ -3,6 +3,7 @@ using Fast.Core.Filter;
 using Fast.Core.Filter.Restful;
 using Fast.Core.Handlers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
 
 namespace Fast.Core.ServiceCollection;
 
@@ -60,7 +61,7 @@ public static class ServiceCollection
     /// <summary>
     /// 日志文件格式
     /// </summary>
-    public static string LogFileFormat { get; set; } = "0:yyyy-MM-dd";
+    public static string LogFileFormat { get; set; } = "{0:yyyy-MM-dd}";
 
     /// <summary>
     /// 日志文件
@@ -80,6 +81,18 @@ public static class ServiceCollection
     {
         // Run style.
         builder.Services.AddRunStyle(r => r.UseDefault());
+
+        // Customize the console log output template.
+        //builder.Logging.AddConsoleFormatter(options =>
+        //{
+        //    options.MessageFormat = (logMsg) =>
+        //    {
+        //        var stringBuilder = new StringBuilder();
+        //        stringBuilder.Append(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss dddd"));
+
+        //        return stringBuilder.ToString();
+        //    };
+        //});
 
         // Config.
         builder.Services.AddConfigurableOptions();

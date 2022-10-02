@@ -8,7 +8,7 @@ namespace Fast.Core.Filter.RequestLimit;
 /// </summary>
 public class RequestLimitFilter : IRequestLimitFilter, ISingleton
 {
-    private readonly ICache _cache;
+    private static ICache _cache => GetService<ICache>();
 
     /// <summary>
     /// 缓存前缀
@@ -19,11 +19,6 @@ public class RequestLimitFilter : IRequestLimitFilter, ISingleton
     /// 并发控制配置
     /// </summary>
     private readonly SemaphoreSlim _semaphore = new(1, 1);
-
-    public RequestLimitFilter(ICache cache)
-    {
-        _cache = cache;
-    }
 
     /// <summary>
     /// 异步调用

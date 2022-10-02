@@ -5,6 +5,7 @@ using Fast.Core.Filter.RequestLimit.Internal;
 using Furion.EventBus;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Fast.Core.Filter;
 
@@ -19,7 +20,7 @@ public class RequestActionFilter : IAsyncActionFilter
     /// <summary>
     /// 默认限制秒
     /// </summary>
-    public const int _defaultSecond = 1;
+    public const int _defaultSecond = 600;
 
     /// <summary>
     /// 默认限制次数
@@ -37,6 +38,8 @@ public class RequestActionFilter : IAsyncActionFilter
         var httpRequest = context.HttpContext.Request;
         var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
 
+        var requestParam = context.ActionArguments.Count < 1 ? null : context.ActionArguments;
+
         var limitCount = _defaultLimit;
         var limitSecond = _defaultSecond;
         var limitKey = $"{httpRequest.Method}{httpRequest.Path}";
@@ -50,8 +53,12 @@ public class RequestActionFilter : IAsyncActionFilter
             // 判断限制Key是否为接口请求参数
             if (requestLimitAttribute.Key != null)
             {
-                // 接口请求参数
-                limitKey = "请求参数";
+                // 接口请求参数中的Key如果是空，则还是用默认的
+                var requestKey = requestParam?.FirstOrDefault(f => f.Key == requestLimitAttribute.Key);
+                if (requestKey != null)
+                {
+                    limitKey = requestKey.Value.ToString();
+                }
             }
         }
 
@@ -62,7 +69,7 @@ public class RequestActionFilter : IAsyncActionFilter
         var isAllowed = await _requestLimitFilter.InvokeAsync(requestLimitContext);
 
         if (!isAllowed)
-            throw Oops.Bah(ErrorCode.ApiLimitError);
+            throw Oops.Oh(429);
 
         var sw = new Stopwatch();
         sw.Start();
@@ -104,7 +111,7 @@ public class RequestActionFilter : IAsyncActionFilter
         var userAgentInfo = HttpNewUtil.UserAgentInfo();
         var wanInfo = HttpNewUtil.WanInfo(HttpNewUtil.Ip).Result;
 
-        await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:OpLog", 123,
+        await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:OpLog", 666666,
             new SysLogOpModel
             {
                 Account = GlobalContext.UserAccount,
@@ -115,7 +122,7 @@ public class RequestActionFilter : IAsyncActionFilter
                 MethodName = actionDescriptor?.ActionName,
                 Url = httpRequest.Path,
                 ReqMethod = httpRequest.Method,
-                Param = context.ActionArguments.Count < 1 ? "" : context.ActionArguments.ToJsonString(),
+                Param = requestParam == null ? "" : requestParam.ToJsonString(),
                 Result = isRequestSucceed
                     ? actionContext.Result?.GetType() == typeof(JsonResult) ? actionContext.Result.ToJsonString() : ""
                     : actionContext.Exception.Message,
