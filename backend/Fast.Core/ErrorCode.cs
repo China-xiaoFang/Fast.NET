@@ -65,4 +65,10 @@ public enum ErrorCode
     /// </summary>
     [ErrorCodeItemMetadata("租户数据库已存在！")]
     TenantDataBaseRepeatError,
+
+    /// <summary>
+    /// 接口请求过于频繁，请稍后再试！
+    /// </summary>
+    [ErrorCodeItemMetadata("接口请求过于频繁，请稍后再试！")]
+    ApiLimitError,
 }

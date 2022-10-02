@@ -3,7 +3,7 @@ using Furion.UnifyResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Fast.Core.Util.Restful;
+namespace Fast.Core.Filter.Restful;
 
 /// <summary>
 /// 规范化RESTful风格返回值
@@ -82,6 +82,19 @@ public class XnRestfulResultProvider : IUnifyResultProvider
 
         switch (statusCode)
         {
+            // 处理 429 状态码
+            case StatusCodes.Status429TooManyRequests:
+                await context.Response.WriteAsJsonAsync(
+                    new XnRestfulResult<object>
+                    {
+                        Code = StatusCodes.Status429TooManyRequests,
+                        Success = false,
+                        Data = null,
+                        Message = "429 频繁请求",
+                        Extras = UnifyContext.Take(),
+                        Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                    }, GetOptions<JsonOptions>()?.JsonSerializerOptions);
+                break;
             // 处理 401 状态码
             case StatusCodes.Status401Unauthorized:
                 await context.Response.WriteAsJsonAsync(

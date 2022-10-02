@@ -47,6 +47,9 @@ global using HttpPostAttribute = Fast.Core.AttributeFilter.Http.HttpPostAttribut
 global using HttpPutAttribute = Fast.Core.AttributeFilter.Http.HttpPutAttribute;
 global using HttpDeleteAttribute = Fast.Core.AttributeFilter.Http.HttpDeleteAttribute;
 global using Fast.Core.Cache;
+global using Fast.Core.Filter.RequestLimit.AttributeFilter;
+global using Fast.Core.Filter.Restful.Extension;
+global using Fast.Core.Filter.Restful.Internal;
 global using Fast.Core.SqlSugar;
 global using Fast.Core.Util;
 global using Fast.Core.Util.Captcha;
@@ -59,6 +62,3 @@ global using Fast.Core.Util.Json.JsonConverter;
 global using Fast.Core.Util.MiniExcel;
 global using Fast.Core.Util.MiniExcel.AttributeFilter;
 global using Fast.Core.Util.MiniExcel.Extension;
-global using Fast.Core.Util.SnowflakeId.Extension;
-global using Fast.Core.Util.Restful.Extension;
-global using Fast.Core.Util.Restful.Internal;

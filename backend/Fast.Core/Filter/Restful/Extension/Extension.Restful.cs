@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.Util.Restful.Extension;
+﻿namespace Fast.Core.Filter.Restful.Extension;
 
 /// <summary>
 /// Restful风格返回扩展

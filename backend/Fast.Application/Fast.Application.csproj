@@ -16,7 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Fast.Core\Fast.Core.csproj" />
+	  <ProjectReference Include="..\Fast.Model\Fast.Model.csproj" />
 	</ItemGroup>
 
 </Project>
