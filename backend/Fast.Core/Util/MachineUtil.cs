@@ -183,7 +183,7 @@ public static class MachineUtil
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
         var url = "http://whois.pconline.com.cn/ipJson.jsp";
-        var stream = await url.GetAsStreamAsync();
+        var (stream, _) = await url.GetAsStreamAsync();
         var streamReader = new StreamReader(stream, Encoding.GetEncoding("GBK"));
         var html = streamReader.ReadToEnd();
         var tmp = html[(html.IndexOf("({") + 2)..].Split(",");

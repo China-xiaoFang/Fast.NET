@@ -21,7 +21,7 @@ public static class ImageUtil
     public static async Task<byte[]> GetBytesFromUrl(this string url)
     {
         // 得到图片流
-        var stream = await url.GetAsStreamAsync();
+        var (stream, _) = await url.GetAsStreamAsync();
         using var binaryReader = new BinaryReader(stream);
         // 读取二进制文件流
         var resultBytes = binaryReader.ReadBytes(stream.Length.ParseToInt());
