@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.Extensions.Configuration;
 using SystemDbType = System.Data.DbType;
 
 namespace Fast.Core.SqlSugar;
@@ -10,14 +11,15 @@ namespace Fast.Core.SqlSugar;
 public static class SqlSugarSetup
 {
     /// <summary>
-    /// 缓存配置
+    /// 缓存 Entity 类型
     /// </summary>
-    private static readonly ICache _cache = GetService<ICache>();
+    private static List<(string className, SysDataBaseTypeEnum dbType, Type type)> _cacheEntityTypeList { get; set; }
 
     /// <summary>
     /// 数据库配置
     /// </summary>
-    private static readonly ConnectionStringsOptions connectionStringsOptions = GetOptions<ConnectionStringsOptions>();
+    private static readonly ConnectionStringsOptions connectionStringsOptions =
+        Configuration.GetSection("ConnectionStrings").Get<ConnectionStringsOptions>();
 
     /// <summary>
     /// SqlSugarClient的配置
@@ -25,11 +27,8 @@ public static class SqlSugarSetup
     /// </summary>
     public static void SqlSugarClientConfigure(this IServiceCollection services)
     {
-        // 程序入口Exe文件名称
-        var appName = WebHostEnvironment.ApplicationName;
-
         // 清除ModelType缓存
-        _cache.Del($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
+        _cacheEntityTypeList = null;
 
         // 得到连接字符串
         var connectionStr = DataBaseHelper.GetConnectionStr(new SysTenantDataBaseModel
@@ -124,6 +123,7 @@ public static class SqlSugarSetup
         /// <returns></returns>
         public static SysTenantDataBaseModel GetDbInfo(ISqlSugarClient _db, SysDataBaseTypeEnum dbType, long tenantId)
         {
+            var _cache = GetService<ICache>();
             // 数据库信息缓存
             var dbInfoList = _cache.Get<List<SysTenantDataBaseModel>>($"{CommonConst.CACHE_KEY_TENANT_DB_INFO}{tenantId}");
             if (dbInfoList == null || !dbInfoList.Any())
@@ -199,13 +199,8 @@ public static class SqlSugarSetup
                 typeof(PrimaryKeyEntity),
             };
 
-            // 程序入口Exe文件名称
-            var appName = WebHostEnvironment.ApplicationName;
-
             // 先从缓存获取
-            var entityTypeList =
-                _cache.Get<List<(string className, SysDataBaseTypeEnum dbType, Type type)>>(
-                    $"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}");
+            var entityTypeList = _cacheEntityTypeList;
             if (entityTypeList != null && entityTypeList.Any())
                 return entityTypeList;
 
@@ -221,7 +216,7 @@ public static class SqlSugarSetup
                     type.GetCustomAttribute<DataBaseTypeAttribute>(true)?.SysDataBaseType ?? SysDataBaseTypeEnum.Admin, type))
                 .ToList();
             // 放入缓存
-            _cache.Set($"{appName}{CommonConst.CACHE_KEY_MODEL_DB_TYPE}", entityTypeList);
+            _cacheEntityTypeList = entityTypeList;
 
             return entityTypeList;
         }

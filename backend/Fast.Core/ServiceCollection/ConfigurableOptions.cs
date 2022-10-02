@@ -1,4 +1,6 @@
-﻿namespace Fast.Core.ServiceCollection;
+﻿using Microsoft.Extensions.Configuration;
+
+namespace Fast.Core.ServiceCollection;
 
 /// <summary>
 /// 可配置选项
@@ -19,6 +21,7 @@ public static class ConfigurableOptions
         service.AddConfigurableOptions<CacheOptions>();
         // System config.
         service.AddConfigurableOptions<SystemSettingsOptions>();
+        GlobalContext.SystemSettings = Configuration.GetSection("SystemSettings").Get<SystemSettingsOptions>();
         // Upload file config.
         service.AddConfigurableOptions<UploadFileOptions>();
     }

@@ -61,9 +61,4 @@ public class CommonConst
     /// 数据库信息缓存
     /// </summary>
     public const string CACHE_KEY_TENANT_DB_INFO = "tenantDbInfo_";
-
-    /// <summary>
-    /// Model Type信息缓存
-    /// </summary>
-    public const string CACHE_KEY_MODEL_DB_TYPE = "_modelDbType";
 }

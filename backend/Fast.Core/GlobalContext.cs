@@ -145,6 +145,11 @@ public static class GlobalContext
 
         return 0;
     }
+
+    /// <summary>
+    /// 系统配置
+    /// </summary>
+    public static SystemSettingsOptions SystemSettings { get; set; }
 }
 
 /// <summary>
