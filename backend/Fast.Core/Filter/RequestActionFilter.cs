@@ -136,7 +136,8 @@ public class RequestActionFilter : IAsyncActionFilter
         isAllowed = await _requestLimitFilter.InvokeAsync(requestLimitContext);
 
         if (!isAllowed)
-            throw Oops.Oh(429);
+            // 抛出StatusCode为429的异常
+            throw Oops.Oh(ErrorCode.ApiLimitError).StatusCode(429);
 
         return requestLimitContext;
     }
