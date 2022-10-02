@@ -20,10 +20,16 @@ public class RequestLimitContext
     /// </summary>
     public int Count { get; set; }
 
-    public RequestLimitContext(string key, int second, int count)
+    /// <summary>
+    /// 是否检查
+    /// </summary>
+    public bool IsCheck { get; set; }
+
+    public RequestLimitContext(int second, int count, string? key, bool isCheck = true)
     {
         Key = key;
         Second = second;
         Count = count;
+        IsCheck = isCheck;
     }
 }

@@ -28,6 +28,9 @@ public class RequestLimitFilter : IRequestLimitFilter, ISingleton
     /// <returns></returns>
     public async Task<bool> InvokeAsync(RequestLimitContext context, CancellationToken cancellation = default)
     {
+        if (!context.IsCheck)
+            return true;
+
         cancellation.ThrowIfCancellationRequested();
 
         // 控制并发
@@ -64,6 +67,9 @@ public class RequestLimitFilter : IRequestLimitFilter, ISingleton
     /// <returns></returns>
     public async Task AfterCheckAsync(RequestLimitContext context, CancellationToken cancellation = default)
     {
+        if (!context.IsCheck)
+            return;
+
         cancellation.ThrowIfCancellationRequested();
 
         // 控制并发
