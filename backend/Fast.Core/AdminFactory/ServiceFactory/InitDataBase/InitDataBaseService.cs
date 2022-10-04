@@ -9,14 +9,11 @@ namespace Fast.Core.AdminFactory.ServiceFactory.InitDataBase;
 public class InitDataBaseService : IInitDataBaseService, ITransient
 {
     private readonly ISqlSugarClient _db;
-    private readonly ConnectionStringsOptions _connectionStringsOptions;
     private readonly ISysTenantService _sysTenantService;
 
-    public InitDataBaseService(ISqlSugarClient db, IOptions<ConnectionStringsOptions> connectionStringsOptions,
-        ISysTenantService sysTenantService)
+    public InitDataBaseService(ISqlSugarClient db, ISysTenantService sysTenantService)
     {
-        _db = db.AsTenant().GetConnection(connectionStringsOptions.Value.DefaultConnectionId);
-        _connectionStringsOptions = connectionStringsOptions.Value;
+        _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
         _sysTenantService = sysTenantService;
     }
 
@@ -70,13 +67,13 @@ public class InitDataBaseService : IInitDataBaseService, ITransient
         // 初始化租户业务库信息
         await _db.Insertable(new SysTenantDataBaseModel
         {
-            ServiceIp = _connectionStringsOptions.DefaultServiceIp,
-            Port = _connectionStringsOptions.DefaultPort,
+            ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
+            Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
             DbName = $"Fast.Main_{superAdminTenantInfo.Id}",
-            DbUser = _connectionStringsOptions.DefaultDbUser,
-            DbPwd = _connectionStringsOptions.DefaultDbPwd,
+            DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
+            DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
             SysDbType = SysDataBaseTypeEnum.Tenant,
-            DbType = _connectionStringsOptions.DefaultDbType,
+            DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
             TenantId = superAdminTenantInfo.Id
         }).ExecuteCommandAsync();
 

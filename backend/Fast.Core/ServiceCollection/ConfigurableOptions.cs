@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Fast.Core.ServiceCollection;
+﻿namespace Fast.Core.ServiceCollection;
 
 /// <summary>
 /// 可配置选项
@@ -16,13 +14,12 @@ public static class ConfigurableOptions
     public static void AddConfigurableOptions(this IServiceCollection service)
     {
         // Database config.
-        service.AddConfigurableOptions<ConnectionStringsOptions>();
+        GlobalContext.ConnectionStringsOptions = GetConfig<ConnectionStringsOptions>("ConnectionStrings");
         // Cache config.
-        service.AddConfigurableOptions<CacheOptions>();
+        GlobalContext.CacheOptions = GetConfig<CacheOptions>("Cache");
         // System config.
-        service.AddConfigurableOptions<SystemSettingsOptions>();
-        GlobalContext.SystemSettings = Configuration.GetSection("SystemSettings").Get<SystemSettingsOptions>();
+        GlobalContext.SystemSettingsOptions = GetConfig<SystemSettingsOptions>("SystemSettings");
         // Upload file config.
-        service.AddConfigurableOptions<UploadFileOptions>();
+        GlobalContext.UploadFileOptions = GetConfig<UploadFileOptions>("UploadFile");
     }
 }

@@ -7,9 +7,9 @@ namespace Fast.Core.Cache;
 /// </summary>
 public class RedisCache : ICache, ISingleton
 {
-    public RedisCache(IOptions<CacheOptions> cacheOptions)
+    public RedisCache()
     {
-        var csRedis = new CSRedisClient(cacheOptions.Value.RedisConnectionString);
+        var csRedis = new CSRedisClient(GlobalContext.CacheOptions.RedisConnectionString);
         RedisHelper.Initialization(csRedis);
     }
 

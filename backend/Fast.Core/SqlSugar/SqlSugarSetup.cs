@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.Extensions.Configuration;
 using SystemDbType = System.Data.DbType;
 
 namespace Fast.Core.SqlSugar;
@@ -16,12 +15,6 @@ public static class SqlSugarSetup
     private static List<(string className, SysDataBaseTypeEnum dbType, Type type)> _cacheEntityTypeList { get; set; }
 
     /// <summary>
-    /// 数据库配置
-    /// </summary>
-    private static readonly ConnectionStringsOptions connectionStringsOptions =
-        Configuration.GetSection("ConnectionStrings").Get<ConnectionStringsOptions>();
-
-    /// <summary>
     /// SqlSugarClient的配置
     /// Client不能单例注入
     /// </summary>
@@ -33,24 +26,25 @@ public static class SqlSugarSetup
         // 得到连接字符串
         var connectionStr = DataBaseHelper.GetConnectionStr(new SysTenantDataBaseModel
         {
-            ServiceIp = connectionStringsOptions.DefaultServiceIp,
-            Port = connectionStringsOptions.DefaultPort,
-            DbName = connectionStringsOptions.DefaultDbName,
-            DbUser = connectionStringsOptions.DefaultDbUser,
-            DbPwd = connectionStringsOptions.DefaultDbPwd,
+            ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
+            Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
+            DbName = GlobalContext.ConnectionStringsOptions.DefaultDbName,
+            DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
+            DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
             SysDbType = SysDataBaseTypeEnum.Admin,
-            DbType = connectionStringsOptions.DefaultDbType
+            DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType
         });
 
         var connectConfig = new ConnectionConfig
         {
-            ConfigId = connectionStringsOptions.DefaultConnectionId, // 此链接标志，用以后面切库使用
+            ConfigId = GlobalContext.ConnectionStringsOptions.DefaultConnectionId, // 此链接标志，用以后面切库使用
             ConnectionString = connectionStr, // 核心库连接字符串
-            DbType = connectionStringsOptions.DefaultDbType,
+            DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
             IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
             InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
             //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
-            ConfigureExternalServices = DataBaseHelper.GetSugarExternalServices(connectionStringsOptions.DefaultDbType)
+            ConfigureExternalServices =
+                DataBaseHelper.GetSugarExternalServices(GlobalContext.ConnectionStringsOptions.DefaultDbType)
         };
 
         // 注册 SqlSugarClient
@@ -86,7 +80,7 @@ public static class SqlSugarSetup
         var dbType = EntityHelper.ReflexGetAllTEntity(typeof(TEntity).Name);
 
         // 默认Db
-        var defaultDb = _db.GetConnection(connectionStringsOptions.DefaultConnectionId);
+        var defaultDb = _db.GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
 
         switch (dbType.dbType)
         {

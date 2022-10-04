@@ -195,7 +195,7 @@ public static class ServiceCollection
 
         app.MapControllers();
 
-        if (GlobalContext.SystemSettings?.InitDataBase == true)
+        if (GlobalContext.SystemSettingsOptions?.InitDataBase == true)
         {
             // It is recommended to disable the initialization of the database except for the first time.
             Task.Run(async () => { await GetService<IInitDataBaseService>().InitDataBase(); });

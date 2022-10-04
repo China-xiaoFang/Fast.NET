@@ -69,9 +69,8 @@ public class RequestActionFilter : IAsyncActionFilter
     /// <summary>
     /// 请求限制
     /// </summary>
-    private async Task<RequestLimitContext> OnActionRequestLimitAsync(HttpRequest httpRequest,
-        ActionDescriptor actionDescriptor, IDictionary<string, object> requestParam, long tenantId, long userId,
-        string ip)
+    private async Task<RequestLimitContext> OnActionRequestLimitAsync(HttpRequest httpRequest, ActionDescriptor actionDescriptor,
+        IDictionary<string, object> requestParam, long tenantId, long userId, string ip)
     {
         // 是否被允许访问
         var isAllowed = true;
