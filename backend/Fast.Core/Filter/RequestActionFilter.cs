@@ -21,7 +21,7 @@ public class RequestActionFilter : IAsyncActionFilter
     /// <summary>
     /// 默认限制秒
     /// </summary>
-    public const int _defaultSecond = 600;
+    public const int _defaultSecond = 1;
 
     /// <summary>
     /// 默认限制次数

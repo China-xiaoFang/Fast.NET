@@ -33,6 +33,8 @@ public class RunStyleBuilder
         ");
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine(@"
+        持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！
+
         期待您的PR，让.NET更好！
         ");
     }

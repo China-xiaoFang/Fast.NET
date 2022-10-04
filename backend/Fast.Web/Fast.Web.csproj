@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fast.Application\Fast.Application.csproj" />
+    <ProjectReference Include="..\Fast.Scheduler\Fast.Scheduler.csproj" />
   </ItemGroup>
 
   <ItemGroup>
