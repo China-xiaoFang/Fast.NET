@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using Fast.Core;
-using Fast.Core.AdminFactory.BaseModelFactory.Const;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
+using Fast.Core.Const;
 using Fast.Core.SqlSugar;
 using Fast.Iaas.Util;
 using Furion.DependencyInjection;
@@ -69,7 +69,9 @@ public class DataBaseJobWorker : ISpareTimeWorker
             {
                 Id = ClaimConst.DEFAULT_SUPERADMIN_TENANT_ID,
                 Name = "Fast.NET",
+                NamePinYin = "FastNet",
                 ShortName = "Fast",
+                ShortNamePinYin = "Fast",
                 Secret = StringUtil.GetGuid(),
                 AdminName = "租户管理员",
                 Email = "email@gmail.com",
@@ -85,7 +87,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             {
                 ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
                 Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
-                DbName = $"Fast.Main_{superAdminTenantInfo.Id}",
+                DbName = $"Fast.Main_{superAdminTenantInfo.ShortNamePinYin}",
                 DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
                 DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
                 SysDbType = SysDataBaseTypeEnum.Tenant,

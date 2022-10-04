@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.AdminFactory.BaseModelFactory.Const;
+﻿namespace Fast.Core.Const;
 
 public class ClaimConst
 {

@@ -1,6 +1,4 @@
-﻿using Fast.Core.AdminFactory.ServiceFactory.Tenant;
-
-namespace Fast.Core;
+﻿namespace Fast.Core;
 
 /// <summary>
 /// 通用上下文

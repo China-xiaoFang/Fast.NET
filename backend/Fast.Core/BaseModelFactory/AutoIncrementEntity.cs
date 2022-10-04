@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.AdminFactory.BaseModelFactory;
+﻿namespace Fast.Core.BaseModelFactory;
 
 /// <summary>
 /// 递增主键实体基类

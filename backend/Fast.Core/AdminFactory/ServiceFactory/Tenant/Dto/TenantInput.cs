@@ -13,6 +13,11 @@ public class QueryTenantInput : PageInputBase
     public virtual string Name { get; set; }
 
     /// <summary>
+    /// 公司简称
+    /// </summary>
+    public string ShortName { get; set; }
+
+    /// <summary>
     /// 管理员名称
     /// </summary>
     public virtual string AdminName { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.AdminFactory.BaseModelFactory.Dto;
+﻿namespace Fast.Core.BaseModelFactory.Dto;
 
 /// <summary>
 /// 通用分页输入参数

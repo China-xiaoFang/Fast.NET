@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.AdminFactory.BaseModelFactory.Interface;
+﻿namespace Fast.Core.BaseModelFactory.Interface;
 
 /// <summary>
 /// BaseTEntity 接口定义类

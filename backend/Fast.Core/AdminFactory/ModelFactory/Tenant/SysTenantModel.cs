@@ -14,10 +14,22 @@ public class SysTenantModel : BaseEntity
     public string Name { get; set; }
 
     /// <summary>
+    /// 租户公司名称（拼音）
+    /// </summary>
+    [SugarColumn(ColumnDescription = "租户公司名称（拼音）", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string NamePinYin { get; set; }
+
+    /// <summary>
     /// 租户公司简称
     /// </summary>
     [SugarColumn(ColumnDescription = "租户公司简称", ColumnDataType = "Nvarchar(30)", IsNullable = false)]
     public string ShortName { get; set; }
+
+    /// <summary>
+    /// 租户公司简称（拼音）
+    /// </summary>
+    [SugarColumn(ColumnDescription = "租户公司简称（拼音）", ColumnDataType = "Nvarchar(30)", IsNullable = false)]
+    public string ShortNamePinYin { get; set; }
 
     /// <summary>
     /// 租户密钥

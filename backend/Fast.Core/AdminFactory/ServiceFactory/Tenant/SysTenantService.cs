@@ -65,6 +65,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
     {
         return await _repository.Where(wh => wh.TenantType != TenantTypeEnum.System)
             .WhereIF(!input.Name.IsEmpty(), wh => wh.Name.Contains(input.Name))
+            .WhereIF(!input.ShortName.IsEmpty(), wh => wh.ShortName.Contains(input.ShortName))
             .WhereIF(!input.AdminName.IsEmpty(), wh => wh.AdminName.Contains(input.AdminName))
             .WhereIF(!input.Phone.IsEmpty(), wh => wh.Phone.Contains(input.Phone)).OrderBy(ob => ob.CreatedTime)
             .OrderByIF(input.IsOrderBy, input.OrderByStr).Select<TenantOutput>().ToXnPagedListAsync(input.PageNo, input.PageSize);
@@ -79,7 +80,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
     public async Task AddTenant(AddTenantInput input)
     {
         // 判断租户信息是否存在
-        if (await _repository.AnyAsync(wh => wh.Name == input.Name || wh.Email == input.Email))
+        if (await _repository.AnyAsync(wh => wh.Name == input.Name || wh.ShortName == input.ShortName || wh.Email == input.Email))
             throw Oops.Bah(ErrorCode.TenantRepeatError);
 
         var model = input.Adapt<SysTenantModel>();

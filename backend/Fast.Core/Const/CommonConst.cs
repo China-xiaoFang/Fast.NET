@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.AdminFactory.BaseModelFactory.Const;
+﻿namespace Fast.Core.Const;
 
 public class CommonConst
 {
@@ -61,4 +61,25 @@ public class CommonConst
     /// 数据库信息缓存
     /// </summary>
     public const string CACHE_KEY_TENANT_DB_INFO = "tenantDbInfo_";
+
+    /// <summary>
+    /// 正则表达式字符串
+    /// </summary>
+    public class RegexStr
+    {
+        /// <summary>
+        /// 中文、英文、数字包括下划线
+        /// </summary>
+        public const string ChEnNum_ = "/^[\u4E00-\u9FA5A-Za-z0-9_]+$/";
+
+        /// <summary>
+        /// 中文、英文、数字但不包括下划线等符号
+        /// </summary>
+        public const string ChEnNum = "^[\u4E00-\u9FA5A-Za-z0-9]+$";
+
+        /// <summary>
+        /// 中文
+        /// </summary>
+        public const string Chinese = "^[\u4e00-\u9fa5]{0,}$";
+    }
 }

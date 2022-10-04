@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.AdminFactory.BaseModelFactory;
+﻿namespace Fast.Core.BaseModelFactory;
 
 /// <summary>
 /// 租户基类
