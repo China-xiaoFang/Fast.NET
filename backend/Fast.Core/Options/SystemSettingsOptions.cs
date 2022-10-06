@@ -14,4 +14,14 @@ public class SystemSettingsOptions
     /// 初始化数据库
     /// </summary>
     public bool InitDataBase { get; set; }
+
+    /// <summary>
+    /// 系统环境
+    /// </summary>
+    public EnvironmentEnum Environment { get; set; }
+
+    /// <summary>
+    /// 演示环境请求禁止前缀
+    /// </summary>
+    public List<HttpRequestPrefixEnum> DemoEnvReqDisable { get; set; }
 }

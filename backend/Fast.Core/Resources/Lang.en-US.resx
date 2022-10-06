@@ -144,6 +144,9 @@
   <data name="服务器内部错误" xml:space="preserve">
     <value>Internal Server Error</value>
   </data>
+  <data name="演示环境，禁止操作！" xml:space="preserve">
+    <value>Demo environment, do not operate!</value>
+  </data>
   <data name="租户信息不存在！" xml:space="preserve">
     <value>Tenant information does not exist!</value>
   </data>
@@ -161,5 +164,8 @@
   </data>
   <data name="系统内部错误，请联系管理员处理！" xml:space="preserve">
     <value>System internal error, please contact the administrator!</value>
+  </data>
+  <data name="系统配置错误，请检查系统配置！" xml:space="preserve">
+    <value>System configuration error, please check the system configuration!</value>
   </data>
 </root>

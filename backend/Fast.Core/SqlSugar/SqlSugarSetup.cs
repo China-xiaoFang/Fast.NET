@@ -266,7 +266,9 @@ public static class SqlSugarSetup
                     }
 
                     if (sql.StartsWith("DELETE"))
+                    {
                         Console.ForegroundColor = ConsoleColor.Blue;
+                    }
 
                     PrintToMiniProfiler("SqlSugar", "Info", ParameterFormat(sql, pars));
                     Console.WriteLine($"\r\n\r\n{ParameterFormat(sql, pars)}\r\nTime：{_db.Ado.SqlExecutionTime}");
@@ -278,6 +280,7 @@ public static class SqlSugarSetup
                     Console.WriteLine($"\r\n\r\n错误 Sql语句：{ParameterFormat(exp.Sql, exp.Parametres)}");
                 };
             }
+
 
             // Model基类处理
             _db.Aop.DataExecuting = (oldValue, entityInfo) =>

@@ -39,6 +39,16 @@ public class RequestActionFilter : IAsyncActionFilter
         var httpRequest = context.HttpContext.Request;
         var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
 
+        // 演示环境判断
+        if (GlobalContext.SystemSettingsOptions.Environment == EnvironmentEnum.Demonstration)
+        {
+            if (GlobalContext.SystemSettingsOptions.DemoEnvReqDisable.Select(sl => sl.ToString())
+                .Any(wh => actionDescriptor?.ActionName.Contains(wh) == true))
+            {
+                throw Oops.Bah(ErrorCode.DemoEnvNoOperate);
+            }
+        }
+
         // 请求参数
         var requestParam = context.ActionArguments.Count < 1 ? null : context.ActionArguments;
 

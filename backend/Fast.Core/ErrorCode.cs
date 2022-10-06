@@ -7,6 +7,18 @@
 public enum ErrorCode
 {
     /// <summary>
+    /// 系统配置错误，请检查系统配置！
+    /// </summary>
+    [ErrorCodeItemMetadata("系统配置错误，请检查系统配置！")]
+    ConfigError,
+
+    /// <summary>
+    /// 演示环境，禁止操作！
+    /// </summary>
+    [ErrorCodeItemMetadata("演示环境，禁止操作！")]
+    DemoEnvNoOperate,
+
+    /// <summary>
     /// 系统内部错误，请联系管理员处理！
     /// </summary>
     [ErrorCodeItemMetadata("系统内部错误，请联系管理员处理！")]

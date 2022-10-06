@@ -21,5 +21,9 @@ public static class ConfigurableOptions
         GlobalContext.SystemSettingsOptions = GetConfig<SystemSettingsOptions>("SystemSettings");
         // Upload file config.
         GlobalContext.UploadFileOptions = GetConfig<UploadFileOptions>("UploadFile");
+
+        // Check
+        if (GlobalContext.SystemSettingsOptions.Environment.IsNullOrZero())
+            throw Oops.Oh(ErrorCode.ConfigError);
     }
 }
