@@ -1,5 +1,4 @@
-﻿using Fast.Core.AdminFactory.ServiceFactory.InitDataBase;
-using Fast.Core.Filter;
+﻿using Fast.Core.Filter;
 using Fast.Core.Filter.Restful;
 using Fast.Core.Handlers;
 using Microsoft.AspNetCore.Builder;
@@ -72,6 +71,11 @@ public static class ServiceCollection
     /// 事件总线
     /// </summary>
     public static bool EventBusService { get; set; } = true;
+
+    /// <summary>
+    /// 任务调度
+    /// </summary>
+    public static bool Scheduler { get; set; } = true;
 
     /// <summary>
     /// 运行程序
@@ -149,6 +153,12 @@ public static class ServiceCollection
         // Init sqlSugar.
         builder.Services.SqlSugarClientConfigure();
 
+        if (Scheduler)
+        {
+            // Register the task scheduling service.
+            builder.Services.AddTaskScheduler();
+        }
+
         var app = builder.Build();
 
         // Add the status code interception middleware.
@@ -194,12 +204,6 @@ public static class ServiceCollection
         });
 
         app.MapControllers();
-
-        if (GlobalContext.SystemSettings?.InitDataBase == true)
-        {
-            // It is recommended to disable the initialization of the database except for the first time.
-            Task.Run(async () => { await GetService<IInitDataBaseService>().InitDataBase(); });
-        }
 
         app.Run();
     }

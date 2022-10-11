@@ -1,5 +1,4 @@
 ﻿using Fast.Core.EventSubscriber;
-using Furion.Logging;
 
 namespace Fast.Core.ServiceCollection;
 

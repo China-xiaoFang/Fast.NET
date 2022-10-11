@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.Extensions.Configuration;
 using SystemDbType = System.Data.DbType;
 
 namespace Fast.Core.SqlSugar;
@@ -16,12 +15,6 @@ public static class SqlSugarSetup
     private static List<(string className, SysDataBaseTypeEnum dbType, Type type)> _cacheEntityTypeList { get; set; }
 
     /// <summary>
-    /// 数据库配置
-    /// </summary>
-    private static readonly ConnectionStringsOptions connectionStringsOptions =
-        Configuration.GetSection("ConnectionStrings").Get<ConnectionStringsOptions>();
-
-    /// <summary>
     /// SqlSugarClient的配置
     /// Client不能单例注入
     /// </summary>
@@ -33,24 +26,25 @@ public static class SqlSugarSetup
         // 得到连接字符串
         var connectionStr = DataBaseHelper.GetConnectionStr(new SysTenantDataBaseModel
         {
-            ServiceIp = connectionStringsOptions.DefaultServiceIp,
-            Port = connectionStringsOptions.DefaultPort,
-            DbName = connectionStringsOptions.DefaultDbName,
-            DbUser = connectionStringsOptions.DefaultDbUser,
-            DbPwd = connectionStringsOptions.DefaultDbPwd,
+            ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
+            Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
+            DbName = GlobalContext.ConnectionStringsOptions.DefaultDbName,
+            DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
+            DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
             SysDbType = SysDataBaseTypeEnum.Admin,
-            DbType = connectionStringsOptions.DefaultDbType
+            DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType
         });
 
         var connectConfig = new ConnectionConfig
         {
-            ConfigId = connectionStringsOptions.DefaultConnectionId, // 此链接标志，用以后面切库使用
+            ConfigId = GlobalContext.ConnectionStringsOptions.DefaultConnectionId, // 此链接标志，用以后面切库使用
             ConnectionString = connectionStr, // 核心库连接字符串
-            DbType = connectionStringsOptions.DefaultDbType,
+            DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
             IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
             InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
             //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
-            ConfigureExternalServices = DataBaseHelper.GetSugarExternalServices(connectionStringsOptions.DefaultDbType)
+            ConfigureExternalServices =
+                DataBaseHelper.GetSugarExternalServices(GlobalContext.ConnectionStringsOptions.DefaultDbType)
         };
 
         // 注册 SqlSugarClient
@@ -86,7 +80,7 @@ public static class SqlSugarSetup
         var dbType = EntityHelper.ReflexGetAllTEntity(typeof(TEntity).Name);
 
         // 默认Db
-        var defaultDb = _db.GetConnection(connectionStringsOptions.DefaultConnectionId);
+        var defaultDb = _db.GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
 
         switch (dbType.dbType)
         {
@@ -272,7 +266,9 @@ public static class SqlSugarSetup
                     }
 
                     if (sql.StartsWith("DELETE"))
+                    {
                         Console.ForegroundColor = ConsoleColor.Blue;
+                    }
 
                     PrintToMiniProfiler("SqlSugar", "Info", ParameterFormat(sql, pars));
                     Console.WriteLine($"\r\n\r\n{ParameterFormat(sql, pars)}\r\nTime：{_db.Ado.SqlExecutionTime}");
@@ -284,6 +280,7 @@ public static class SqlSugarSetup
                     Console.WriteLine($"\r\n\r\n错误 Sql语句：{ParameterFormat(exp.Sql, exp.Parametres)}");
                 };
             }
+
 
             // Model基类处理
             _db.Aop.DataExecuting = (oldValue, entityInfo) =>
@@ -324,14 +321,14 @@ public static class SqlSugarSetup
                     // 更新操作
                     case DataFilterType.UpdateByObject:
                         // 更新时间
-                        SetEntityValue(ClaimConst.UPDATEDTIME_FIELD, new List<dynamic> {null}, DateTime.Now, ref entityInfo);
+                        SetEntityValue(ClaimConst.UPDATEDTIME_FIELD, null, DateTime.Now, ref entityInfo);
 
                         // 更新者Id
-                        SetEntityValue(ClaimConst.UPDATEDUSERID_FIELD, new List<dynamic> {null, 0}, GlobalContext.UserId,
+                        SetEntityValue(ClaimConst.UPDATEDUSERID_FIELD, null, GlobalContext.UserId,
                             ref entityInfo);
 
                         // 更新者名称
-                        SetEntityValue(ClaimConst.UPDATEDUSERNAME_FIELD, new List<dynamic> {null, ""}, GlobalContext.UserName,
+                        SetEntityValue(ClaimConst.UPDATEDUSERNAME_FIELD, null, GlobalContext.UserName,
                             ref entityInfo);
                         break;
                 }
@@ -412,7 +409,7 @@ public static class SqlSugarSetup
                     ClaimConst.UPDATEDUSERNAME_FIELD => dynamicEntityInfo.UpdatedUserName,
                     _ => throw new NotImplementedException(),
                 };
-                return emptyList.Any(empty => empty == value);
+                return emptyList == null || emptyList.Any(empty => empty == value);
             }
             catch (Exception)
             {

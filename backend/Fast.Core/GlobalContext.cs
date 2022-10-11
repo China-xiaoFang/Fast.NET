@@ -1,6 +1,4 @@
-﻿using Fast.Core.AdminFactory.ServiceFactory.Tenant;
-
-namespace Fast.Core;
+﻿namespace Fast.Core;
 
 /// <summary>
 /// 通用上下文
@@ -147,106 +145,22 @@ public static class GlobalContext
     }
 
     /// <summary>
+    /// 数据库配置
+    /// </summary>
+    public static ConnectionStringsOptions ConnectionStringsOptions { get; set; }
+
+    /// <summary>
+    /// 缓存配置
+    /// </summary>
+    public static CacheOptions CacheOptions { get; set; }
+
+    /// <summary>
     /// 系统配置
     /// </summary>
-    public static SystemSettingsOptions SystemSettings { get; set; }
-}
-
-/// <summary>
-/// 数据库配置
-/// </summary>
-public class ConnectionStringsOptions : IConfigurableOptions
-{
-    /// <summary>
-    /// 连接Id
-    /// </summary>
-    public string DefaultConnectionId { get; set; }
+    public static SystemSettingsOptions SystemSettingsOptions { get; set; }
 
     /// <summary>
-    /// 服务器Ip地址
+    /// 上传文件配置
     /// </summary>
-    public string DefaultServiceIp { get; set; }
-
-    /// <summary>
-    /// 端口号
-    /// </summary>
-    public string DefaultPort { get; set; }
-
-    /// <summary>
-    /// 数据库名称
-    /// </summary>
-    public string DefaultDbName { get; set; }
-
-    /// <summary>
-    /// 数据库用户
-    /// </summary>
-    public string DefaultDbUser { get; set; }
-
-    /// <summary>
-    /// 数据库密码
-    /// </summary>
-    public string DefaultDbPwd { get; set; }
-
-    /// <summary>
-    /// 数据库类型
-    /// </summary>
-    public DbType DefaultDbType { get; set; }
-}
-
-/// <summary>
-/// 系统配置
-/// </summary>
-public class SystemSettingsOptions : IConfigurableOptions
-{
-    /// <summary>
-    /// 最大请求Body Size
-    /// </summary>
-    public long MaxRequestBodySize { get; set; }
-
-    /// <summary>
-    /// 初始化数据库
-    /// </summary>
-    public bool InitDataBase { get; set; }
-}
-
-/// <summary>
-/// 上传文件配置
-/// </summary>
-public class UploadFileOptions : IConfigurableOptions
-{
-    /// <summary>
-    /// 头像
-    /// </summary>
-    public FileDescription Avatar { get; set; }
-
-    /// <summary>
-    /// 编辑器
-    /// </summary>
-    public FileDescription Editor { get; set; }
-
-    /// <summary>
-    /// 默认
-    /// </summary>
-    public FileDescription Default { get; set; }
-
-    /// <summary>
-    /// 文件参数
-    /// </summary>
-    public class FileDescription
-    {
-        /// <summary>
-        /// 路径
-        /// </summary>
-        public string path { get; set; }
-
-        /// <summary>
-        /// 大小
-        /// </summary>
-        public long maxSize { get; set; }
-
-        /// <summary>
-        /// 类型
-        /// </summary>
-        public string[] contentType { get; set; }
-    }
+    public static UploadFileOptions UploadFileOptions { get; set; }
 }

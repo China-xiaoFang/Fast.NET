@@ -21,7 +21,11 @@
     // 最大请求Body Size，单位是字节（byte） 1kb=1024byte,此处限制512MB
     "MaxRequestBodySize": 536870912,
     // 初始化数据库
-    "InitDataBase": true
+    "InitDataBase": true,
+    // 系统环境
+    "Environment": "Development",
+    // 演示环境请求禁止前缀
+    "DemoEnvReqDisable": ["add", "edit", "delete", "export", "import"]
   },
   "SnowId": {
     "WorkerId": "1" // 取值范围0~63,默认1

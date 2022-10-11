@@ -21,7 +21,8 @@ public static class Logging
         {
             services.AddLogging(loggingBuilder =>
             {
-                loggingBuilder.AddFile($"logs/error/{logFileFormat}_0.log", options => { SetLogOptions(options, LogLevel.Error); });
+                loggingBuilder.AddFile($"logs/error/{logFileFormat}_0.log",
+                    options => { SetLogOptions(options, LogLevel.Error); });
                 // Environments other than the development environment are not logged.
                 if (!HostEnvironment.IsDevelopment())
                     return;
