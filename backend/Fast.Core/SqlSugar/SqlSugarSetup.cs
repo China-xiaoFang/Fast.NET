@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SystemDbType = System.Data.DbType;
 
@@ -321,14 +321,14 @@ public static class SqlSugarSetup
                     // 更新操作
                     case DataFilterType.UpdateByObject:
                         // 更新时间
-                        SetEntityValue(ClaimConst.UPDATEDTIME_FIELD, new List<dynamic> {null}, DateTime.Now, ref entityInfo);
+                        SetEntityValue(ClaimConst.UPDATEDTIME_FIELD, null, DateTime.Now, ref entityInfo);
 
                         // 更新者Id
-                        SetEntityValue(ClaimConst.UPDATEDUSERID_FIELD, new List<dynamic> {null, 0}, GlobalContext.UserId,
+                        SetEntityValue(ClaimConst.UPDATEDUSERID_FIELD, null, GlobalContext.UserId,
                             ref entityInfo);
 
                         // 更新者名称
-                        SetEntityValue(ClaimConst.UPDATEDUSERNAME_FIELD, new List<dynamic> {null, ""}, GlobalContext.UserName,
+                        SetEntityValue(ClaimConst.UPDATEDUSERNAME_FIELD, null, GlobalContext.UserName,
                             ref entityInfo);
                         break;
                 }
@@ -409,7 +409,7 @@ public static class SqlSugarSetup
                     ClaimConst.UPDATEDUSERNAME_FIELD => dynamicEntityInfo.UpdatedUserName,
                     _ => throw new NotImplementedException(),
                 };
-                return emptyList.Any(empty => empty == value);
+                return emptyList == null || emptyList.Any(empty => empty == value);
             }
             catch (Exception)
             {
