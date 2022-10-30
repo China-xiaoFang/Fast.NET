@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
-using Fast.Core.EventSubscriber;
-using Fast.Core.Filter.RequestLimit;
-using Fast.Core.Filter.RequestLimit.Internal;
+using Fast.SqlSugar;
 using Furion.EventBus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -40,9 +38,9 @@ public class RequestActionFilter : IAsyncActionFilter
         var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
 
         // 演示环境判断
-        if (GlobalContext.SystemSettingsOptions.Environment == EnvironmentEnum.Demonstration)
+        if (SysGlobalContext.SystemSettingsOptions.Environment == EnvironmentEnum.Demonstration)
         {
-            if (GlobalContext.SystemSettingsOptions.DemoEnvReqDisable.Select(sl => sl.ToString())
+            if (SysGlobalContext.SystemSettingsOptions.DemoEnvReqDisable.Select(sl => sl.ToString())
                 .Any(wh => actionDescriptor?.ActionName.Contains(wh) == true))
             {
                 throw Oops.Bah(ErrorCode.DemoEnvNoOperate);
@@ -56,8 +54,8 @@ public class RequestActionFilter : IAsyncActionFilter
         var userAgentInfo = HttpNewUtil.UserAgentInfo();
         var wanInfo = await HttpNewUtil.WanInfo(HttpNewUtil.Ip);
 
-        var tenantId = GlobalContext.GetTenantId(false);
-        var userId = GlobalContext.UserId;
+        var tenantId = SugarGlobalContext.GetTenantId(false);
+        var userId = SugarGlobalContext.UserId;
 
         // 接口限流
         var requestLimitContext =
@@ -182,8 +180,8 @@ public class RequestActionFilter : IAsyncActionFilter
         await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:OpLog", tenantId,
             new SysLogOpModel
             {
-                Account = GlobalContext.UserAccount,
-                Name = GlobalContext.UserName,
+                Account = SugarGlobalContext.UserAccount,
+                Name = SugarGlobalContext.UserName,
                 Success = isRequestSucceed ? YesOrNotEnum.Y : YesOrNotEnum.N,
                 OperationName = operationName,
                 ClassName = context.Controller.ToString(),

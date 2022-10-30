@@ -1,6 +1,7 @@
 ﻿using Fast.Core.Filter;
-using Fast.Core.Filter.Restful;
 using Fast.Core.Handlers;
+using Fast.Restful;
+using Fast.SqlSugar.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 

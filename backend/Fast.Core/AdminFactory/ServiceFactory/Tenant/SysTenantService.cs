@@ -124,11 +124,11 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
             throw Oops.Bah(ErrorCode.TenantDbNotExistError);
 
         // 获取所有数据库Model
-        var entityTypeList = SqlSugarSetup.EntityHelper.ReflexGetAllTEntityList();
+        var entityTypeList = EntityHelper.ReflexGetAllTEntityList();
 
         // 初始化数据
         await InitNewTenant(newTenantInfo,
-            entityTypeList.Where(wh => wh.dbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.type));
+            entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.Type));
 
         // 删除缓存
         await _cache.DelAsync(CommonConst.CACHE_KEY_TENANT_INFO);
@@ -186,6 +186,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
             // 初始化超级管理员
             await _db.Insertable(new SysUserModel
             {
+                Id = ClaimConst.Default_SuperAdmin_Id,
                 Account = "SuperAdmin",
                 Password = MD5Encryption.Encrypt(CommonConst.DEFAULT_ADMIN_PASSWORD),
                 Name = "超级管理员",

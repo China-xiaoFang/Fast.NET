@@ -1,4 +1,4 @@
-﻿using Fast.Core.EventSubscriber;
+﻿using Fast.SqlSugar;
 using Furion.EventBus;
 using Furion.Logging;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -27,8 +27,8 @@ public class LogExceptionHandler : IGlobalExceptionHandler, ISingleton
             await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:ExLog",
                 new SysLogExModel
                 {
-                    Account = GlobalContext.UserAccount,
-                    Name = GlobalContext.UserName,
+                    Account = SugarGlobalContext.UserAccount,
+                    Name = SugarGlobalContext.UserName,
                     ClassName = context.Exception.TargetSite?.DeclaringType?.FullName,
                     MethodName = context.Exception.TargetSite?.Name,
                     ExceptionName = context.Exception.Message,
@@ -37,7 +37,7 @@ public class LogExceptionHandler : IGlobalExceptionHandler, ISingleton
                     StackTrace = context.Exception.StackTrace,
                     ParamsObj = context.Exception.TargetSite?.GetParameters().ToString(),
                     ExceptionTime = DateTime.Now,
-                    TenantId = GlobalContext.TenantId
+                    TenantId = SugarGlobalContext.TenantId
                 }));
 
             // 写日志文件

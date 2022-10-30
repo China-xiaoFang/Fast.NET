@@ -13,17 +13,13 @@ public static class ConfigurableOptions
     /// <param name="service"></param>
     public static void AddConfigurableOptions(this IServiceCollection service)
     {
-        // Database config.
-        GlobalContext.ConnectionStringsOptions = GetConfig<ConnectionStringsOptions>("ConnectionStrings");
-        // Cache config.
-        GlobalContext.CacheOptions = GetConfig<CacheOptions>("Cache");
         // System config.
-        GlobalContext.SystemSettingsOptions = GetConfig<SystemSettingsOptions>("SystemSettings");
+        SysGlobalContext.SystemSettingsOptions = GetConfig<SystemSettingsOptions>("SystemSettings");
         // Upload file config.
-        GlobalContext.UploadFileOptions = GetConfig<UploadFileOptions>("UploadFile");
+        SysGlobalContext.UploadFileOptions = GetConfig<UploadFileOptions>("UploadFile");
 
         // Check
-        if (GlobalContext.SystemSettingsOptions.Environment.IsNullOrZero())
+        if (SysGlobalContext.SystemSettingsOptions.Environment.IsNullOrZero())
             throw Oops.Oh(ErrorCode.ConfigError);
     }
 }

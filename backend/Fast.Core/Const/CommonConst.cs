@@ -58,11 +58,6 @@ public class CommonConst
     public const string CACHE_KEY_ONLINE_USER = "onlineUser";
 
     /// <summary>
-    /// 数据库信息缓存
-    /// </summary>
-    public const string CACHE_KEY_TENANT_DB_INFO = "tenantDbInfo_";
-
-    /// <summary>
     /// 正则表达式字符串
     /// </summary>
     public class RegexStr

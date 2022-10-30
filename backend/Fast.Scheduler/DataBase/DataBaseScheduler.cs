@@ -3,9 +3,13 @@ using Fast.Core;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
-using Fast.Core.Const;
-using Fast.Core.SqlSugar;
 using Fast.Iaas.Util;
+using Fast.SqlSugar;
+using Fast.SqlSugar.Const;
+using Fast.SqlSugar.Enum;
+using Fast.SqlSugar.Extension;
+using Fast.SqlSugar.Helper;
+using Fast.SqlSugar.Model;
 using Furion.DependencyInjection;
 using Furion.TaskScheduler;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +30,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
     [SpareTime(3000, "初始化数据库", DoOnce = true, StartNow = true)]
     public async Task InitDataBast(SpareTimer timer, long count)
     {
-        if (GlobalContext.SystemSettingsOptions?.InitDataBase != true)
+        if (SysGlobalContext.SystemSettingsOptions?.InitDataBase != true)
             return;
 
         await Scoped.CreateAsync(async (_, scope) =>
@@ -36,7 +40,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             var db = service.GetService<ISqlSugarClient>();
 
             // ReSharper disable once PossibleNullReferenceException
-            var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
+            var _db = db.AsTenant().GetConnection(SugarGlobalContext.ConnectionStringsOptions.DefaultConnectionId);
             var _sysTenantService = service.GetService<ISysTenantService>();
 
             // 创建核心业务库
@@ -58,16 +62,16 @@ public class DataBaseJobWorker : ISpareTimeWorker
               
             ");
             // 获取所有数据库Model
-            var entityTypeList = SqlSugarSetup.EntityHelper.ReflexGetAllTEntityList();
+            var entityTypeList = EntityHelper.ReflexGetAllTEntityList();
 
             // 创建核心业务库的所有表
-            _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.dbType == SysDataBaseTypeEnum.Admin).Select(sl => sl.type)
+            _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Admin).Select(sl => sl.Type)
                 .ToArray());
 
             // 初始化租户信息
             var superAdminTenantInfo = new SysTenantModel
             {
-                Id = ClaimConst.DEFAULT_SUPERADMIN_TENANT_ID,
+                Id = ClaimConst.Default_SuperAdmin_Tenant_Id,
                 Name = "Fast.NET",
                 NamePinYin = "FastNet",
                 ShortName = "Fast",
@@ -85,20 +89,20 @@ public class DataBaseJobWorker : ISpareTimeWorker
             // 初始化租户业务库信息
             await _db.Insertable(new SysTenantDataBaseModel
             {
-                ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
-                Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
+                ServiceIp = SugarGlobalContext.ConnectionStringsOptions.DefaultServiceIp,
+                Port = SugarGlobalContext.ConnectionStringsOptions.DefaultPort,
                 DbName = $"Fast.Main_{superAdminTenantInfo.ShortNamePinYin}",
-                DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
-                DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
+                DbUser = SugarGlobalContext.ConnectionStringsOptions.DefaultDbUser,
+                DbPwd = SugarGlobalContext.ConnectionStringsOptions.DefaultDbPwd,
                 SysDbType = SysDataBaseTypeEnum.Tenant,
-                DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
+                DbType = SugarGlobalContext.ConnectionStringsOptions.DefaultDbType,
                 TenantId = superAdminTenantInfo.Id
             }).ExecuteCommandAsync();
 
             // 初始化新租户数据
             // ReSharper disable once PossibleNullReferenceException
             await _sysTenantService.InitNewTenant(superAdminTenantInfo,
-                entityTypeList.Where(wh => wh.dbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.type), true);
+                entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.Type), true);
 
             sw.Stop();
 
