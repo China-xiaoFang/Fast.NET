@@ -1,9 +1,0 @@
-{
-  // 缓存
-  "Cache": {
-    // 缓存类型
-    "CacheType": "RedisCache", // MemoryCache
-    // Redis缓存连接字符串
-    "RedisConnectionString": "127.0.0.1:6379,password=,defaultDatabase=2"
-  }
-}
