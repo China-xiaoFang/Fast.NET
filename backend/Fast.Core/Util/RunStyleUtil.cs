@@ -1,4 +1,6 @@
-﻿namespace Fast.Core.Util;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Fast.Core.Util;
 
 public static class RunStyleExtension
 {

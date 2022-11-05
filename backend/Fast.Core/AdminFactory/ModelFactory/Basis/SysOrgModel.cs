@@ -1,4 +1,8 @@
-﻿namespace Fast.Core.AdminFactory.ModelFactory.Basis;
+﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.SqlSugar.AttributeFilter;
+using Fast.Core.SqlSugar.BaseModel;
+
+namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
 /// <summary>
 /// 系统组织架构表Model类

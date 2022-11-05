@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.ServiceCollection;
 

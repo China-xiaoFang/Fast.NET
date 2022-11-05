@@ -1,5 +1,9 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Web;
+using Fast.Core.Json.Extension;
 using Furion.RemoteRequest.Extensions;
 using UAParser;
 
@@ -18,7 +22,7 @@ public static class HttpNewUtil
         get
         {
             var result = string.Empty;
-            if (HttpContext != null)
+            if (App.HttpContext != null)
             {
                 result = GetWebClientIp();
             }
@@ -72,19 +76,19 @@ public static class HttpNewUtil
     /// <returns></returns>
     private static string GetWebRemoteIp()
     {
-        if (HttpContext == null)
+        if (App.HttpContext == null)
             return string.Empty;
-        if (HttpContext.Connection.RemoteIpAddress == null)
+        if (App.HttpContext.Connection.RemoteIpAddress == null)
             return string.Empty;
-        var ip = HttpContext.Connection.RemoteIpAddress.ToString();
-        if (HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
+        var ip = App.HttpContext.Connection.RemoteIpAddress.ToString();
+        if (App.HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
         {
-            ip = HttpContext.Request.Headers["X-Real-IP"].FirstOrDefault();
+            ip = App.HttpContext.Request.Headers["X-Real-IP"].FirstOrDefault();
         }
 
-        if (ip.IsEmpty() && HttpContext.Request.Headers.ContainsKey("X-Forwarded-For"))
+        if (ip.IsEmpty() && App.HttpContext.Request.Headers.ContainsKey("X-Forwarded-For"))
         {
-            ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            ip = App.HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
         }
 
         return ip;
@@ -97,7 +101,7 @@ public static class HttpNewUtil
     {
         get
         {
-            string userAgent = HttpContext?.Request?.Headers["User-Agent"];
+            string userAgent = App.HttpContext?.Request.Headers["User-Agent"];
 
             return userAgent;
         }
@@ -110,9 +114,9 @@ public static class HttpNewUtil
     {
         get
         {
-            var url = new StringBuilder().Append(HttpContext?.Request?.Scheme).Append("://").Append(HttpContext?.Request?.Host)
-                .Append(HttpContext?.Request?.PathBase).Append(HttpContext?.Request?.Path)
-                .Append(HttpContext?.Request?.QueryString).ToString();
+            var url = new StringBuilder().Append(App.HttpContext?.Request.Scheme).Append("://")
+                .Append(App.HttpContext?.Request.Host).Append(App.HttpContext?.Request.PathBase)
+                .Append(App.HttpContext?.Request.Path).Append(App.HttpContext?.Request.QueryString).ToString();
             return url;
         }
     }

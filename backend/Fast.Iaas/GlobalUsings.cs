@@ -14,3 +14,4 @@ global using System.Globalization;
 global using System.Text.RegularExpressions;
 global using System.Collections.Concurrent;
 global using System.Security.Cryptography;
+global using Fast.Iaas.Extension;

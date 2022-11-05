@@ -1,4 +1,7 @@
-﻿namespace Fast.Core.AdminFactory.ServiceFactory;
+﻿using Furion.DependencyInjection;
+using Furion.DynamicApiController;
+
+namespace Fast.Core.AdminFactory.ServiceFactory;
 
 public class TestService : IDynamicApiController, ITransient
 {

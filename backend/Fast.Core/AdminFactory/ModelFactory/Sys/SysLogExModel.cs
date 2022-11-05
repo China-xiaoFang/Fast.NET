@@ -1,4 +1,8 @@
-﻿namespace Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Core.SqlSugar.AttributeFilter;
+using Fast.Core.SqlSugar.BaseModel;
+using Fast.Core.SqlSugar.BaseModel.Interface;
+
+namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 
 /// <summary>
 /// 系统异常日志表Model类

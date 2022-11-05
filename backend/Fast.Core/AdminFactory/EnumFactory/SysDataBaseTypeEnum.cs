@@ -1,4 +1,6 @@
-﻿namespace Fast.Core.AdminFactory.EnumFactory;
+﻿using System.ComponentModel;
+
+namespace Fast.Core.AdminFactory.EnumFactory;
 
 /// <summary>
 /// 系统Db类型枚举

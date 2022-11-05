@@ -1,4 +1,6 @@
-﻿namespace Fast.Core.AdminFactory.EnumFactory;
+﻿using System.ComponentModel;
+
+namespace Fast.Core.AdminFactory.EnumFactory;
 
 /// <summary>
 /// 数据权限类型枚举

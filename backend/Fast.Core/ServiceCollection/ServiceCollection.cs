@@ -1,7 +1,10 @@
 ﻿using Fast.Core.Filter;
-using Fast.Core.Filter.Restful;
 using Fast.Core.Handlers;
+using Fast.Core.Restful;
+using Fast.Core.SqlSugar.Setup;
+using Fast.Core.Util;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Core.ServiceCollection;
@@ -60,7 +63,7 @@ public static class ServiceCollection
     /// <summary>
     /// 日志文件格式
     /// </summary>
-    public static string LogFileFormat { get; set; } = "{0:yyyy-MM-dd}";
+    public static string LogFileFormat { get; set; } = "{0:yyyy}-{0:MM}-{0:dd}";
 
     /// <summary>
     /// 日志文件

@@ -1,4 +1,5 @@
 ﻿#nullable enable
+
 using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Fast.Core.AttributeFilter.Http;

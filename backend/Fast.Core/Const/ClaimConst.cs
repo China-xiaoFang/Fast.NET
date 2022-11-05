@@ -1,84 +1,62 @@
 ﻿namespace Fast.Core.Const;
 
+/// <summary>
+/// 授权声明常量
+/// </summary>
 public class ClaimConst
 {
     /// <summary>
     /// 默认超级管理员Id
     /// </summary>
-    public const long DEFAULT_SUPERADMIN_ID = 888888;
+    public const long Default_SuperAdmin_Id = 888888;
 
     /// <summary>
     /// 默认超级管理员租户Id
     /// </summary>
-    public const long DEFAULT_SUPERADMIN_TENANT_ID = 666666;
+    public const long Default_SuperAdmin_Tenant_Id = 666666;
 
     /// <summary>
     /// 用户Id
     /// </summary>
-    public const string CLAINM_USERID = "UserId";
+    public const string UserId = "UserId";
 
     /// <summary>
     /// 账号
     /// </summary>
-    public const string CLAINM_ACCOUNT = "Account";
+    public const string Account = "Account";
 
     /// <summary>
     /// 名称
     /// </summary>
-    public const string CLAINM_NAME = "Name";
+    public const string Name = "Name";
 
     /// <summary>
     /// 是否超级管理
     /// </summary>
-    public const string CLAINM_SUPERADMIN = "SuperAdmin";
+    public const string IsSuperAdmin = "IsSuperAdmin";
 
     /// <summary>
     /// 租户Id
     /// </summary>
-    public const string CLAINM_TENANTID = "TenantId";
+    public const string TenantId = "TenantId";
 
     /// <summary>
-    /// Id字段
+    /// 站点
     /// </summary>
-    public const string ID_FIELD = "Id";
+    public const string Origin = "Fast-Net-Origin";
 
     /// <summary>
-    /// 创建时间字段
+    /// 环境编码
     /// </summary>
-    public const string CREATEDTIME_FIELD = "CreatedTime";
+    public const string EnvironmentCode = "Environment-Code";
 
     /// <summary>
-    /// 创建者Id字段
+    /// 环境名称
     /// </summary>
-    public const string CREATEDUSERID_FIELD = "CreatedUserId";
+    public const string EnvironmentName = "Environment-Name";
 
     /// <summary>
-    /// 创建者名称字段
+    /// 接口版本
     /// </summary>
-    public const string CREATEDUSERNAME_FIELD = "CreatedUserName";
-
-    /// <summary>
-    /// 更新时间字段
-    /// </summary>
-    public const string UPDATEDTIME_FIELD = "UpdatedTime";
-
-    /// <summary>
-    /// 更新者Id字段
-    /// </summary>
-    public const string UPDATEDUSERID_FIELD = "UpdatedUserId";
-
-    /// <summary>
-    /// 更新者名称字段
-    /// </summary>
-    public const string UPDATEDUSERNAME_FIELD = "UpdatedUserName";
-
-    /// <summary>
-    /// 删除字段
-    /// </summary>
-    public const string DELETE_FIELD = "IsDeleted";
-
-    /// <summary>
-    /// 租户Id字段
-    /// </summary>
-    public const string TENANTID_FIELD = "TenantId";
+    public const string ApiVersion = "Api-Version";
 }

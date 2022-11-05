@@ -1,4 +1,6 @@
-﻿namespace Fast.Core;
+﻿using Furion.FriendlyException;
+
+namespace Fast.Core;
 
 /// <summary>
 /// 异常Code枚举
@@ -6,24 +8,6 @@
 [ErrorCodeType]
 public enum ErrorCode
 {
-    /// <summary>
-    /// 系统配置错误，请检查系统配置！
-    /// </summary>
-    [ErrorCodeItemMetadata("系统配置错误，请检查系统配置！")]
-    ConfigError,
-
-    /// <summary>
-    /// 演示环境，禁止操作！
-    /// </summary>
-    [ErrorCodeItemMetadata("演示环境，禁止操作！")]
-    DemoEnvNoOperate,
-
-    /// <summary>
-    /// 系统内部错误，请联系管理员处理！
-    /// </summary>
-    [ErrorCodeItemMetadata("系统内部错误，请联系管理员处理！")]
-    SystemError,
-
     /// <summary>
     /// SqlSugar配置错误，请检查 Model 是否继承了接口!
     /// </summary>
@@ -47,6 +31,24 @@ public enum ErrorCode
     /// </summary>
     [ErrorCodeItemMetadata("租户系统异常！")]
     TenantSysError,
+
+    /// <summary>
+    /// 系统配置错误，请检查系统配置！
+    /// </summary>
+    [ErrorCodeItemMetadata("系统配置错误，请检查系统配置！")]
+    ConfigError,
+
+    /// <summary>
+    /// 演示环境，禁止操作！
+    /// </summary>
+    [ErrorCodeItemMetadata("演示环境，禁止操作！")]
+    DemoEnvNoOperate,
+
+    /// <summary>
+    /// 系统内部错误，请联系管理员处理！
+    /// </summary>
+    [ErrorCodeItemMetadata("系统内部错误，请联系管理员处理！")]
+    SystemError,
 
     /// <summary>
     /// 已存在同名租户信息！

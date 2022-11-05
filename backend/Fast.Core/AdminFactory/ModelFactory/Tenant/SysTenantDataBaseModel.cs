@@ -1,4 +1,8 @@
-﻿namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.SqlSugar.AttributeFilter;
+using Fast.Core.SqlSugar.BaseModel;
+
+namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 
 /// <summary>
 /// 系统租户数据库Model类

@@ -1,5 +1,7 @@
 ﻿using Furion.Logging;
 using Furion.Templates;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Core.ServiceCollection;
@@ -15,7 +17,8 @@ public static class Logging
     /// <param name="services"></param>
     /// <param name="logFileFormat">日志文件格式</param>
     /// <param name="isRun"></param>
-    public static void AddLogging(this IServiceCollection services, string logFileFormat = "{0:yyyy-MM-dd}", bool isRun = true)
+    public static void AddLogging(this IServiceCollection services, string logFileFormat = "{0:yyyy}-{0:MM}-{0:dd}",
+        bool isRun = true)
     {
         if (isRun)
         {
@@ -24,7 +27,7 @@ public static class Logging
                 loggingBuilder.AddFile($"logs/error/{logFileFormat}_0.log",
                     options => { SetLogOptions(options, LogLevel.Error); });
                 // Environments other than the development environment are not logged.
-                if (!HostEnvironment.IsDevelopment())
+                if (!App.HostEnvironment.IsDevelopment())
                     return;
                 loggingBuilder.AddFile($"logs/info/{logFileFormat}_0.log",
                     options => { SetLogOptions(options, LogLevel.Information); });
@@ -48,13 +51,16 @@ public static class Logging
         {
             var msg = new List<string>
             {
-                $"##日志时间## {DateTime.Now:yyyy-MM-dd HH:mm:ss}", $"##日志等级## {logLevel}", $"##日志内容## {logMsg.Message}",
+                $"{logMsg.LogName}",
+                $"##日志时间## {DateTime.Now:yyyy-MM-dd HH:mm:ss}",
+                $"##日志等级## {logLevel}",
+                $"##日志内容## {logMsg.Message}",
             };
             if (!string.IsNullOrEmpty(logMsg.Exception?.ToString()))
                 msg.Add($"##异常信息## {logMsg.Exception}");
 
             // Generating template strings.
-            var template = TP.Wrapper($"{logMsg.LogName}", "", msg.ToArray());
+            var template = TP.Wrapper("Fast.NET", "", msg.ToArray());
             return template;
         };
     }

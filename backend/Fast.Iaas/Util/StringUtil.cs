@@ -1,6 +1,4 @@
-﻿using Fast.Iaas.Extension;
-
-namespace Fast.Iaas.Util;
+﻿namespace Fast.Iaas.Util;
 
 /// <summary>
 /// String工具类

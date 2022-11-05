@@ -4,7 +4,8 @@ using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
 using Fast.Core.Const;
-using Fast.Core.SqlSugar;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Core.SqlSugar.Helper;
 using Fast.Iaas.Util;
 using Furion.DependencyInjection;
 using Furion.TaskScheduler;
@@ -58,16 +59,16 @@ public class DataBaseJobWorker : ISpareTimeWorker
               
             ");
             // 获取所有数据库Model
-            var entityTypeList = SqlSugarSetup.EntityHelper.ReflexGetAllTEntityList();
+            var entityTypeList = EntityHelper.ReflexGetAllTEntityList();
 
             // 创建核心业务库的所有表
-            _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.dbType == SysDataBaseTypeEnum.Admin).Select(sl => sl.type)
+            _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Admin).Select(sl => sl.Type)
                 .ToArray());
 
             // 初始化租户信息
             var superAdminTenantInfo = new SysTenantModel
             {
-                Id = ClaimConst.DEFAULT_SUPERADMIN_TENANT_ID,
+                Id = ClaimConst.Default_SuperAdmin_Tenant_Id,
                 Name = "Fast.NET",
                 NamePinYin = "FastNet",
                 ShortName = "Fast",
@@ -98,7 +99,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             // 初始化新租户数据
             // ReSharper disable once PossibleNullReferenceException
             await _sysTenantService.InitNewTenant(superAdminTenantInfo,
-                entityTypeList.Where(wh => wh.dbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.type), true);
+                entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.Type), true);
 
             sw.Stop();
 

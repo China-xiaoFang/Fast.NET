@@ -1,30 +1,53 @@
-﻿namespace Fast.Core;
+﻿using System.ComponentModel;
+using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.AdminFactory.ModelFactory.Tenant;
+using Fast.Core.AdminFactory.ServiceFactory.Tenant;
+using Fast.Core.Cache.Options;
+using Fast.Core.Options;
+using Fast.Core.SqlSugar.Options;
+using Furion.FriendlyException;
+
+namespace Fast.Core;
 
 /// <summary>
-/// 通用上下文
+/// 系统通用上下文
 /// </summary>
-public static class GlobalContext
+public class GlobalContext
 {
     /// <summary>
     /// 当前租户Id
-    /// 两种获取方式
-    /// 一种是带了Token，直接从Token中获取，优先
-    /// 一种是根据请求标头中的Fast-NET-Origin带过来的Url去获取
     /// </summary>
     public static long TenantId
     {
         get
         {
-            if (User != null)
+            if (App.User != null)
             {
-                return (User?.FindFirst(ClaimConst.CLAINM_TENANTID)?.Value).ParseToLong();
+                // 获取Token中的
+                return (App.User?.FindFirst(ClaimConst.TenantId)?.Value).ParseToLong();
             }
 
-            if (HttpContext != null)
+            if (App.HttpContext != null)
             {
-                return (GetService<ISysTenantService>()
-                    .GetAllTenantInfo(wh => wh.Id == HttpContext.Request.Headers["Fast-NET-Origin"].ParseToLong()).Result
-                    .FirstOrDefault()?.Id).ParseToLong();
+                // 获取请求头中Base64加密的租户Id
+                var headersTenantId = App.HttpContext.Request.Headers[ClaimConst.TenantId].ParseToString().Base64ToString()
+                    .ParseToLong();
+                if (!headersTenantId.IsNullOrZero())
+                {
+                    return headersTenantId;
+                }
+
+                // 获取请求头中的站点Url
+                var headersWebUrl = App.HttpContext.Request.Headers[ClaimConst.Origin].ParseToString();
+                if (!headersWebUrl.IsEmpty())
+                {
+                    var tenantInfo = App.GetService<ISysTenantService>().GetAllTenantInfo(wh => wh.WebUrl.Contains(headersWebUrl))
+                        .Result;
+                    if (tenantInfo is {Count: > 0})
+                    {
+                        return tenantInfo[0].Id;
+                    }
+                }
             }
 
             return 0L;
@@ -32,29 +55,26 @@ public static class GlobalContext
     }
 
     /// <summary>
-    /// 任务调度租户Id
+    /// 其他租户Id
+    /// 根据业务自定义设置的租户Id
+    /// 请谨慎使用
     /// </summary>
-    public static long ScheduledTenantId => HttpContext == null ? 0 : HttpContext.Request.Headers["TenantId"].ParseToLong();
-
-    /// <summary>
-    /// 支付回调租户Id
-    /// </summary>
-    public static long PayTenantId { get; set; }
+    public static long OtherTenantId { get; set; }
 
     /// <summary>
     /// 当前用户Id
     /// </summary>
-    public static long UserId => (User?.FindFirst(ClaimConst.CLAINM_USERID)?.Value).ParseToLong();
+    public static long UserId => (App.User?.FindFirst(ClaimConst.UserId)?.Value).ParseToLong();
 
     /// <summary>
     /// 当前用户账号
     /// </summary>
-    public static string UserAccount => (User?.FindFirst(ClaimConst.CLAINM_ACCOUNT)?.Value).ParseToString();
+    public static string UserAccount => (App.User?.FindFirst(ClaimConst.Account)?.Value).ParseToString();
 
     /// <summary>
     /// 当前用户名称
     /// </summary>
-    public static string UserName => (User?.FindFirst(ClaimConst.CLAINM_NAME)?.Value).ParseToString();
+    public static string UserName => (App.User?.FindFirst(ClaimConst.Name)?.Value).ParseToString();
 
     /// <summary>
     /// 是否超级管理员
@@ -63,9 +83,9 @@ public static class GlobalContext
     {
         get
         {
-            if (User == null)
+            if (App.User == null)
                 return false;
-            return User.FindFirst(ClaimConst.CLAINM_SUPERADMIN)?.Value == AdminTypeEnum.SuperAdmin.GetHashCode().ParseToString();
+            return App.User.FindFirst(ClaimConst.IsSuperAdmin)?.Value == AdminTypeEnum.SuperAdmin.GetHashCode().ParseToString();
         }
     }
 
@@ -76,9 +96,22 @@ public static class GlobalContext
     {
         get
         {
-            if (User == null)
+            if (App.User == null)
                 return false;
-            return User.FindFirst(ClaimConst.CLAINM_SUPERADMIN)?.Value == AdminTypeEnum.SystemAdmin.GetHashCode().ParseToString();
+            return App.User.FindFirst(ClaimConst.IsSuperAdmin)?.Value == AdminTypeEnum.SystemAdmin.GetHashCode().ParseToString();
+        }
+    }
+
+    /// <summary>
+    /// 是否租户管理员
+    /// </summary>
+    public static bool IsTenantAdmin
+    {
+        get
+        {
+            if (App.User == null)
+                return false;
+            return App.User.FindFirst(ClaimConst.IsSuperAdmin)?.Value == AdminTypeEnum.TenantAdmin.GetHashCode().ParseToString();
         }
     }
 
@@ -111,11 +144,6 @@ public static class GlobalContext
     //}
 
     /// <summary>
-    /// 租户库Db Info
-    /// </summary>
-    public static SysTenantDataBaseModel TenantDbInfo { get; set; }
-
-    /// <summary>
     /// 获取租户Id，
     /// 复杂业务请用此方法
     /// </summary>
@@ -128,14 +156,9 @@ public static class GlobalContext
             return TenantId;
         }
 
-        if (!ScheduledTenantId.IsNullOrZero())
+        if (!OtherTenantId.IsNullOrZero())
         {
-            return ScheduledTenantId;
-        }
-
-        if (!PayTenantId.IsNullOrZero())
-        {
-            return PayTenantId;
+            return OtherTenantId;
         }
 
         if (isThrow)
@@ -143,6 +166,11 @@ public static class GlobalContext
 
         return 0;
     }
+
+    /// <summary>
+    /// 租户库Db Info
+    /// </summary>
+    public static SysTenantDataBaseModel TenantDbInfo { get; set; }
 
     /// <summary>
     /// 数据库配置
@@ -163,4 +191,86 @@ public static class GlobalContext
     /// 上传文件配置
     /// </summary>
     public static UploadFileOptions UploadFileOptions { get; set; }
+}
+
+/// <summary>
+/// 环境枚举
+/// </summary>
+public enum EnvironmentEnum
+{
+    /// <summary>
+    /// 生产
+    /// </summary>
+    [Description("生产")]
+    Production = 1,
+
+    /// <summary>
+    /// 预生产
+    /// </summary>
+    [Description("预生产")]
+    PreProduction = 2,
+
+    /// <summary>
+    /// 演示
+    /// </summary>
+    [Description("演示")]
+    Demonstration = 3,
+
+    /// <summary>
+    /// 测试
+    /// </summary>
+    [Description("测试")]
+    Test = 4,
+
+    /// <summary>
+    /// 开发
+    /// </summary>
+    [Description("开发")]
+    Development = 5,
+}
+
+/// <summary>
+/// Http请求前缀枚举
+/// </summary>
+public enum HttpRequestPrefixEnum
+{
+    /// <summary>
+    /// 登录
+    /// </summary>
+    login,
+
+    /// <summary>
+    /// 查询
+    /// </summary>
+    list,
+
+    /// <summary>
+    /// 分页
+    /// </summary>
+    page,
+
+    /// <summary>
+    /// 添加
+    /// </summary>
+    add,
+
+    /// <summary>
+    /// 编辑
+    /// </summary>
+    edit,
+
+    /// <summary>
+    /// 删除
+    /// </summary>
+    delete,
+
+    /// <summary>
+    /// 导出
+    /// </summary>
+    export,
+
+    /// <summary>
+    /// 导入
+    /// </summary>
+    import,
 }

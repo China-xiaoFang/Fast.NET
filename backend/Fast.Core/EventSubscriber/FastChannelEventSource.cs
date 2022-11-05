@@ -1,4 +1,6 @@
-﻿using Furion.EventBus;
+﻿using Furion.DependencyInjection;
+using Furion.EventBus;
+using Newtonsoft.Json;
 
 namespace Fast.Core.EventSubscriber;
 
@@ -26,8 +28,8 @@ public sealed class FastChannelEventSource : IEventSource
     /// <summary>
     /// 取消任务Token
     /// </summary>
-    [Newtonsoft.Json.JsonIgnore]
     [JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
     public CancellationToken CancellationToken { get; set; }
 
     /// <summary>

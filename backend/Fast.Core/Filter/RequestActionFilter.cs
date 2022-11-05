@@ -1,9 +1,17 @@
 ﻿using System.Diagnostics;
+using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.AdminFactory.ModelFactory.Sys;
+using Fast.Core.AttributeFilter;
 using Fast.Core.EventSubscriber;
-using Fast.Core.Filter.RequestLimit;
-using Fast.Core.Filter.RequestLimit.Internal;
+using Fast.Core.Json.Extension;
+using Fast.Core.RequestLimit.AttributeFilter;
+using Fast.Core.RequestLimit.Filter;
+using Fast.Core.RequestLimit.Internal;
+using Fast.Core.Util.Http;
 using Furion.EventBus;
+using Furion.FriendlyException;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -67,6 +75,15 @@ public class RequestActionFilter : IAsyncActionFilter
         sw.Start();
         var actionContext = await next();
         sw.Stop();
+
+        // 响应报文头增加环境变量
+        context.HttpContext.Response.Headers[ClaimConst.EnvironmentCode] =
+            $"{GlobalContext.SystemSettingsOptions.Environment.ParseToInt()}";
+        context.HttpContext.Response.Headers[ClaimConst.EnvironmentName] =
+            GlobalContext.SystemSettingsOptions.Environment.ParseToString();
+
+        // 响应报文头增加接口版本
+        context.HttpContext.Response.Headers[ClaimConst.ApiVersion] = GlobalContext.SystemSettingsOptions.ApiVersion;
 
         // 限流次数增加
         await _requestLimitFilter.AfterCheckAsync(requestLimitContext);

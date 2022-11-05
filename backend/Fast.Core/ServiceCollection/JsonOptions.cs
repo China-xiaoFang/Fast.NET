@@ -1,5 +1,9 @@
 ﻿using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using Fast.Core.Json.JsonConverter;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.ServiceCollection;
 
@@ -21,7 +25,7 @@ public static class JsonOptions
         {
             service.AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.AddDateFormatString(dateTimeFormat);
+                options.JsonSerializerOptions.Converters.AddDateTimeTypeConverters(dateTimeFormat);
                 // Configuring too long integer types to return to the front end can cause a loss of precision.
                 options.JsonSerializerOptions.Converters.Add(new LongJsonConverter());
                 options.JsonSerializerOptions.Converters.Add(new DecimalJsonConverter());
