@@ -1,4 +1,7 @@
-﻿namespace Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
+﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.SqlSugar.BaseModel.Dto;
+
+namespace Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
 
 /// <summary>
 /// 租户输出

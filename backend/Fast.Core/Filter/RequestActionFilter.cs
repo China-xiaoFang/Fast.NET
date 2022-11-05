@@ -1,7 +1,17 @@
 ﻿using System.Diagnostics;
-using Fast.SqlSugar;
+using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.AdminFactory.ModelFactory.Sys;
+using Fast.Core.AttributeFilter;
+using Fast.Core.EventSubscriber;
+using Fast.Core.Json.Extension;
+using Fast.Core.RequestLimit.AttributeFilter;
+using Fast.Core.RequestLimit.Filter;
+using Fast.Core.RequestLimit.Internal;
+using Fast.Core.Util.Http;
 using Furion.EventBus;
+using Furion.FriendlyException;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -38,9 +48,9 @@ public class RequestActionFilter : IAsyncActionFilter
         var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
 
         // 演示环境判断
-        if (SysGlobalContext.SystemSettingsOptions.Environment == EnvironmentEnum.Demonstration)
+        if (GlobalContext.SystemSettingsOptions.Environment == EnvironmentEnum.Demonstration)
         {
-            if (SysGlobalContext.SystemSettingsOptions.DemoEnvReqDisable.Select(sl => sl.ToString())
+            if (GlobalContext.SystemSettingsOptions.DemoEnvReqDisable.Select(sl => sl.ToString())
                 .Any(wh => actionDescriptor?.ActionName.Contains(wh) == true))
             {
                 throw Oops.Bah(ErrorCode.DemoEnvNoOperate);
@@ -54,8 +64,8 @@ public class RequestActionFilter : IAsyncActionFilter
         var userAgentInfo = HttpNewUtil.UserAgentInfo();
         var wanInfo = await HttpNewUtil.WanInfo(HttpNewUtil.Ip);
 
-        var tenantId = SugarGlobalContext.GetTenantId(false);
-        var userId = SugarGlobalContext.UserId;
+        var tenantId = GlobalContext.GetTenantId(false);
+        var userId = GlobalContext.UserId;
 
         // 接口限流
         var requestLimitContext =
@@ -65,6 +75,15 @@ public class RequestActionFilter : IAsyncActionFilter
         sw.Start();
         var actionContext = await next();
         sw.Stop();
+
+        // 响应报文头增加环境变量
+        context.HttpContext.Response.Headers[ClaimConst.EnvironmentCode] =
+            $"{GlobalContext.SystemSettingsOptions.Environment.ParseToInt()}";
+        context.HttpContext.Response.Headers[ClaimConst.EnvironmentName] =
+            GlobalContext.SystemSettingsOptions.Environment.ParseToString();
+
+        // 响应报文头增加接口版本
+        context.HttpContext.Response.Headers[ClaimConst.ApiVersion] = GlobalContext.SystemSettingsOptions.ApiVersion;
 
         // 限流次数增加
         await _requestLimitFilter.AfterCheckAsync(requestLimitContext);
@@ -180,8 +199,8 @@ public class RequestActionFilter : IAsyncActionFilter
         await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:OpLog", tenantId,
             new SysLogOpModel
             {
-                Account = SugarGlobalContext.UserAccount,
-                Name = SugarGlobalContext.UserName,
+                Account = GlobalContext.UserAccount,
+                Name = GlobalContext.UserName,
                 Success = isRequestSucceed ? YesOrNotEnum.Y : YesOrNotEnum.N,
                 OperationName = operationName,
                 ClassName = context.Controller.ToString(),

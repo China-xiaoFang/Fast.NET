@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.ServiceCollection;
 
@@ -19,7 +20,7 @@ public static class LimitUploadedFiles
     {
         if (!isRun)
             return;
-        var sysSetOptions = SysGlobalContext.SystemSettingsOptions;
+        var sysSetOptions = GlobalContext.SystemSettingsOptions;
         if (sysSetOptions == null || sysSetOptions.MaxRequestBodySize.IsNullOrZero())
             return;
         var maxRequestBodySize = sysSetOptions.MaxRequestBodySize;

@@ -1,4 +1,10 @@
-﻿namespace Fast.Core.ServiceCollection;
+﻿using Fast.Core.Cache.Options;
+using Fast.Core.Options;
+using Fast.Core.SqlSugar.Options;
+using Furion.FriendlyException;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Fast.Core.ServiceCollection;
 
 /// <summary>
 /// 可配置选项
@@ -13,13 +19,17 @@ public static class ConfigurableOptions
     /// <param name="service"></param>
     public static void AddConfigurableOptions(this IServiceCollection service)
     {
+        // Database config.
+        GlobalContext.ConnectionStringsOptions = App.GetConfig<ConnectionStringsOptions>("ConnectionStrings");
+        // Cache config.
+        GlobalContext.CacheOptions = App.GetConfig<CacheOptions>("Cache");
         // System config.
-        SysGlobalContext.SystemSettingsOptions = GetConfig<SystemSettingsOptions>("SystemSettings");
+        GlobalContext.SystemSettingsOptions = App.GetConfig<SystemSettingsOptions>("SystemSettings");
         // Upload file config.
-        SysGlobalContext.UploadFileOptions = GetConfig<UploadFileOptions>("UploadFile");
+        GlobalContext.UploadFileOptions = App.GetConfig<UploadFileOptions>("UploadFile");
 
         // Check
-        if (SysGlobalContext.SystemSettingsOptions.Environment.IsNullOrZero())
+        if (GlobalContext.SystemSettingsOptions.Environment.IsNullOrZero())
             throw Oops.Oh(ErrorCode.ConfigError);
     }
 }

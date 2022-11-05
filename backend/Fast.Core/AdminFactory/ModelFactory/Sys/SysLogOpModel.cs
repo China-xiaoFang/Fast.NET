@@ -1,4 +1,8 @@
-﻿namespace Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.SqlSugar.AttributeFilter;
+using Fast.Core.SqlSugar.BaseModel;
+
+namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 
 /// <summary>
 /// 系统操作日志表Model类

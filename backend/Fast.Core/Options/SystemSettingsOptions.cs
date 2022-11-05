@@ -6,6 +6,11 @@
 public class SystemSettingsOptions
 {
     /// <summary>
+    /// 接口版本
+    /// </summary>
+    public string ApiVersion { get; set; }
+
+    /// <summary>
     /// 最大请求Body Size
     /// </summary>
     public long MaxRequestBodySize { get; set; }

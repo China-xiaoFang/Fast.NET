@@ -1,5 +1,4 @@
-﻿using Fast.SqlSugar;
-using Furion.Authorization;
+﻿using Furion.Authorization;
 using Furion.DataEncryption;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +41,7 @@ public class JwtHandler : AppAuthorizeHandler
     private static async Task<bool> CheckAuthorizationAsync(DefaultHttpContext httpContext)
     {
         // 超级管理员跳过判断
-        if (SugarGlobalContext.IsSuperAdmin)
+        if (GlobalContext.IsSuperAdmin)
             return true;
 
         return true;

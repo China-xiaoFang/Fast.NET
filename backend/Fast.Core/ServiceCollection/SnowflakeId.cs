@@ -1,4 +1,7 @@
-﻿namespace Fast.Core.ServiceCollection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Yitter.IdGenerator;
+
+namespace Fast.Core.ServiceCollection;
 
 /// <summary>
 /// 雪花Id
@@ -14,7 +17,7 @@ public static class SnowflakeId
     public static void AddSnowflakeId(this IServiceCollection services, string snowIdWorkerId = "1")
     {
         // 设置雪花Id的workerId，确保每个实例workerId都应不同
-        var workerId = ushort.Parse(Configuration["SnowId:WorkerId"] ?? snowIdWorkerId);
+        var workerId = ushort.Parse(App.Configuration["SnowId:WorkerId"] ?? snowIdWorkerId);
         YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = workerId});
     }
 }

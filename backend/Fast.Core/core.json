@@ -1,16 +1,26 @@
 {
   // 数据库连接字符串
   "ConnectionStrings": {
+    // 默认库连接Id
     "DefaultConnectionId": "Fast",
-    "DefaultServiceIp": "127.0.0.1", // 服务器Ip
-    "DefaultPort": "1433", // 端口号
-    "DefaultDbName": "Fast.Saas", // 数据库名称
-    "DefaultDbUser": "sa", // 数据库用户
-    "DefaultDbPwd": "123456", // 数据库密码
+    // 默认库服务器Ip
+    "DefaultServiceIp": "127.0.0.1",
+    // 默认库端口号
+    "DefaultPort": "1433",
+    // 默认库数据库名称
+    "DefaultDbName": "Fast.Saas",
+    // 默认库数据库用户
+    "DefaultDbUser": "sa",
+    // 默认库数据库密码
+    "DefaultDbPwd": "123456",
+    // 默认库服务器类型
     "DefaultDbType": "SqlServer" // MySql 0，SqlServer 1，Sqlite 2，Oracle 3
   },
+  // 缓存
   "Cache": {
+    // 缓存类型
     "CacheType": "RedisCache", // MemoryCache
+    // Redis缓存连接字符串
     "RedisConnectionString": "127.0.0.1:6379,password=,defaultDatabase=2"
   },
   "AllowedHosts": "*",
@@ -18,6 +28,8 @@
     "InjectSpecificationDocument": true //是否开启swagger
   },
   "SystemSettings": {
+    // 接口版本
+    "ApiVersion": "v1.0.0",
     // 最大请求Body Size，单位是字节（byte） 1kb=1024byte,此处限制512MB
     "MaxRequestBodySize": 536870912,
     // 初始化数据库

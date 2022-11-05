@@ -3,13 +3,10 @@ using Fast.Core;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
+using Fast.Core.Const;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Core.SqlSugar.Helper;
 using Fast.Iaas.Util;
-using Fast.SqlSugar;
-using Fast.SqlSugar.Const;
-using Fast.SqlSugar.Enum;
-using Fast.SqlSugar.Extension;
-using Fast.SqlSugar.Helper;
-using Fast.SqlSugar.Model;
 using Furion.DependencyInjection;
 using Furion.TaskScheduler;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +27,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
     [SpareTime(3000, "初始化数据库", DoOnce = true, StartNow = true)]
     public async Task InitDataBast(SpareTimer timer, long count)
     {
-        if (SysGlobalContext.SystemSettingsOptions?.InitDataBase != true)
+        if (GlobalContext.SystemSettingsOptions?.InitDataBase != true)
             return;
 
         await Scoped.CreateAsync(async (_, scope) =>
@@ -40,7 +37,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             var db = service.GetService<ISqlSugarClient>();
 
             // ReSharper disable once PossibleNullReferenceException
-            var _db = db.AsTenant().GetConnection(SugarGlobalContext.ConnectionStringsOptions.DefaultConnectionId);
+            var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
             var _sysTenantService = service.GetService<ISysTenantService>();
 
             // 创建核心业务库
@@ -89,13 +86,13 @@ public class DataBaseJobWorker : ISpareTimeWorker
             // 初始化租户业务库信息
             await _db.Insertable(new SysTenantDataBaseModel
             {
-                ServiceIp = SugarGlobalContext.ConnectionStringsOptions.DefaultServiceIp,
-                Port = SugarGlobalContext.ConnectionStringsOptions.DefaultPort,
+                ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
+                Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
                 DbName = $"Fast.Main_{superAdminTenantInfo.ShortNamePinYin}",
-                DbUser = SugarGlobalContext.ConnectionStringsOptions.DefaultDbUser,
-                DbPwd = SugarGlobalContext.ConnectionStringsOptions.DefaultDbPwd,
+                DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
+                DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
                 SysDbType = SysDataBaseTypeEnum.Tenant,
-                DbType = SugarGlobalContext.ConnectionStringsOptions.DefaultDbType,
+                DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
                 TenantId = superAdminTenantInfo.Id
             }).ExecuteCommandAsync();
 

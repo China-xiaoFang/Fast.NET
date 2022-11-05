@@ -1,5 +1,17 @@
-﻿using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
+﻿using System.Linq.Expressions;
+using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.AdminFactory.ModelFactory.Basis;
+using Fast.Core.AdminFactory.ModelFactory.Tenant;
+using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
+using Fast.Core.Restful.Extension;
+using Fast.Core.Restful.Internal;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Core.SqlSugar.Helper;
 using Furion.DataEncryption;
+using Furion.DependencyInjection;
+using Furion.DynamicApiController;
+using Furion.FriendlyException;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Core.AdminFactory.ServiceFactory.Tenant;
 
