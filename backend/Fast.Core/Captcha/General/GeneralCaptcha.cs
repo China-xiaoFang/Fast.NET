@@ -93,7 +93,7 @@ public class GeneralCaptcha : IGeneralCaptcha, ITransient
 
             // 缓存验证码正确集合
             var cacheOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(30));
-            _memoryCache.Set(CaptchaConst.CACHE_KEY_CODE + Guid.NewGuid().ToString("N"), code, cacheOptions);
+            _memoryCache.Set(CaptchaConst.VerCode + Guid.NewGuid().ToString("N"), code, cacheOptions);
 
             // 将验证码图片写入内存流
             bmp.Save(ms, ImageFormat.Png);
@@ -110,7 +110,7 @@ public class GeneralCaptcha : IGeneralCaptcha, ITransient
     {
         var res = new ClickWordCaptchaResult();
 
-        var code = _memoryCache.Get(CaptchaConst.CACHE_KEY_CODE + input.Token);
+        var code = _memoryCache.Get(CaptchaConst.VerCode + input.Token);
         if (code == null)
         {
             res.repCode = "6110";
@@ -125,7 +125,7 @@ public class GeneralCaptcha : IGeneralCaptcha, ITransient
             return res;
         }
 
-        _memoryCache.Remove(CaptchaConst.CACHE_KEY_CODE + input.Token);
+        _memoryCache.Remove(CaptchaConst.VerCode + input.Token);
         res.repCode = "0000";
         res.repMsg = "验证成功";
         return res;

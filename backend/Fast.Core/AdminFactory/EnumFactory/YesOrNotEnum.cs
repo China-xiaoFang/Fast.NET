@@ -5,6 +5,7 @@ namespace Fast.Core.AdminFactory.EnumFactory;
 /// <summary>
 /// 是否枚举
 /// </summary>
+[FastEnum("是否枚举")]
 public enum YesOrNotEnum
 {
     /// <summary>

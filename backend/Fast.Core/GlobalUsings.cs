@@ -6,6 +6,7 @@
 
 global using Fast.Iaas.Util;
 global using Fast.Iaas.Extension;
+global using Fast.Core.AttributeFilter;
 global using HttpGetAttribute = Fast.Core.AttributeFilter.Http.HttpGetAttribute;
 global using HttpPostAttribute = Fast.Core.AttributeFilter.Http.HttpPostAttribute;
 global using HttpPutAttribute = Fast.Core.AttributeFilter.Http.HttpPutAttribute;

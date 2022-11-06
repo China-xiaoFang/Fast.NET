@@ -21,6 +21,11 @@ public class SystemSettingsOptions
     public bool InitDataBase { get; set; }
 
     /// <summary>
+    /// 同步枚举字典
+    /// </summary>
+    public bool SyncEnumDict { get; set; }
+
+    /// <summary>
     /// 系统环境
     /// </summary>
     public EnvironmentEnum Environment { get; set; }

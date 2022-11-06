@@ -1,8 +1,9 @@
 ﻿namespace Fast.Core.Cache.Enum;
 
 /// <summary>
-/// 缓存类型
+/// 缓存类型枚举
 /// </summary>
+[FastEnum("缓存类型枚举")]
 public enum CacheTypeEnum
 {
     /// <summary>

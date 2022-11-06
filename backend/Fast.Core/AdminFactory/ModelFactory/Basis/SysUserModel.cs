@@ -14,7 +14,8 @@ public class SysUserModel : BaseEntity
     /// <summary>
     /// 账号
     /// </summary>
-    [SugarColumn(ColumnDescription = "账号", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "账号", ColumnDataType = "Nvarchar(20)", IsNullable = false,
+        UniqueGroupNameList = new[] {nameof(Account)})]
     public string Account { get; set; }
 
     /// <summary>

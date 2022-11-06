@@ -5,6 +5,7 @@ namespace Fast.Core.AdminFactory.EnumFactory;
 /// <summary>
 /// 系统Db类型枚举
 /// </summary>
+[FastEnum("系统Db类型枚举")]
 public enum SysDataBaseTypeEnum
 {
     /// <summary>

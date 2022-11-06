@@ -21,11 +21,11 @@ static class SqlSugarClientHelper
     {
         var _cache = App.GetService<ICache>();
         // 数据库信息缓存
-        var dbInfoList = _cache.Get<List<SysTenantDataBaseModel>>($"{CacheConst.CACHE_KEY_TENANT_DB_INFO}{tenantId}");
+        var dbInfoList = _cache.Get<List<SysTenantDataBaseModel>>($"{CacheConst.TenantDbInfo}{tenantId}");
         if (dbInfoList == null || !dbInfoList.Any())
         {
             dbInfoList = _db.Queryable<SysTenantDataBaseModel>().Where(wh => wh.TenantId == tenantId).Filter(null, true).ToList();
-            _cache.Set($"{CacheConst.CACHE_KEY_TENANT_DB_INFO}{tenantId}", dbInfoList);
+            _cache.Set($"{CacheConst.TenantDbInfo}{tenantId}", dbInfoList);
         }
 
         var db = dbInfoList.FirstOrDefault(f => f.SysDbType == dbType);

@@ -5,6 +5,7 @@ namespace Fast.Core.AdminFactory.EnumFactory;
 /// <summary>
 /// 数据权限类型枚举
 /// </summary>
+[FastEnum("数据权限类型枚举")]
 public enum DataScopeTypeEnum
 {
     /// <summary>

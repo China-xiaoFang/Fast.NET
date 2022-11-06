@@ -5,6 +5,7 @@ namespace Fast.Core.AdminFactory.EnumFactory;
 /// <summary>
 /// 性别枚举
 /// </summary>
+[FastEnum("性别枚举")]
 public enum GenderEnum
 {
     /// <summary>

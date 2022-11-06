@@ -107,7 +107,7 @@ public class ClickWordCaptcha : IClickWordCaptcha, ITransient
         rtnResult.repData.token = StringUtil.GetGuid();
 
         // 缓存验证码正确位置集合
-        _cache.Set(CaptchaConst.CACHE_KEY_CODE + rtnResult.repData.token, rtnResult.repData.point, TimeSpan.FromSeconds(30));
+        _cache.Set(CaptchaConst.VerCode + rtnResult.repData.token, rtnResult.repData.point, TimeSpan.FromSeconds(30));
 
         rtnResult.repData.point = null; // 清空位置信息
         return rtnResult;
@@ -201,7 +201,7 @@ public class ClickWordCaptcha : IClickWordCaptcha, ITransient
     {
         var res = new ClickWordCaptchaResult();
 
-        var rightVCodePos = _cache.Get<List<PointPosModel>>(CaptchaConst.CACHE_KEY_CODE + input.Token);
+        var rightVCodePos = _cache.Get<List<PointPosModel>>(CaptchaConst.VerCode + input.Token);
         if (rightVCodePos == null)
         {
             res.repCode = "6110";
@@ -232,7 +232,7 @@ public class ClickWordCaptcha : IClickWordCaptcha, ITransient
             return Task.FromResult<dynamic>(res);
         }
 
-        _cache.Remove(CaptchaConst.CACHE_KEY_CODE + input.Token);
+        _cache.Remove(CaptchaConst.VerCode + input.Token);
         res.repCode = "0000";
         res.repMsg = "验证成功";
         return Task.FromResult<dynamic>(res);

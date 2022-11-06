@@ -41,7 +41,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
     public async Task<List<SysTenantModel>> GetAllTenantInfo(Expression<Func<SysTenantModel, bool>> predicate = null)
     {
         // 先从缓存获取
-        var tenantList = await _cache.GetAsync<List<SysTenantModel>>(CommonConst.CACHE_KEY_TENANT_INFO);
+        var tenantList = await _cache.GetAsync<List<SysTenantModel>>(CacheConst.TenantInfo);
 
         if (tenantList != null && tenantList.Any())
             return predicate == null ? tenantList : tenantList.Where(predicate.Compile()).ToList();
@@ -62,7 +62,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
             tenant.TenantAdminUser = userList.First(f => f.AdminType == AdminTypeEnum.TenantAdmin);
         }
 
-        await _cache.SetAsync(CommonConst.CACHE_KEY_TENANT_INFO, tenantList);
+        await _cache.SetAsync(CacheConst.TenantInfo, tenantList);
 
         return predicate == null ? tenantList : tenantList.Where(predicate.Compile()).ToList();
     }
@@ -114,7 +114,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
 
         await _repository.InsertAsync(model);
         // 删除缓存
-        await _cache.DelAsync(CommonConst.CACHE_KEY_TENANT_INFO);
+        await _cache.DelAsync(CacheConst.TenantInfo);
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
             entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.Type));
 
         // 删除缓存
-        await _cache.DelAsync(CommonConst.CACHE_KEY_TENANT_INFO);
+        await _cache.DelAsync(CacheConst.TenantInfo);
     }
 
     /// <summary>
@@ -198,12 +198,12 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
             // 初始化超级管理员
             await _db.Insertable(new SysUserModel
             {
-                Id = ClaimConst.Default_SuperAdmin_Id,
+                Id = ClaimConst.DefaultSuperAdminId,
                 Account = "SuperAdmin",
-                Password = MD5Encryption.Encrypt(CommonConst.DEFAULT_ADMIN_PASSWORD),
+                Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
                 Name = "超级管理员",
                 NickName = "超级管理员",
-                Avatar = CommonConst.DEFAULT_Avatar_URL,
+                Avatar = CommonConst.Default_Avatar_Url,
                 Sex = GenderEnum.Unknown,
                 Email = "superAdmin@18kboy.icu",
                 Phone = "18888888888",
@@ -215,10 +215,10 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
         await _db.Insertable(new SysUserModel
         {
             Account = "SystemAdmin",
-            Password = MD5Encryption.Encrypt(CommonConst.DEFAULT_ADMIN_PASSWORD),
+            Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
             Name = "系统管理员",
             NickName = "系统管理员",
-            Avatar = CommonConst.DEFAULT_Avatar_URL,
+            Avatar = CommonConst.Default_Avatar_Url,
             Sex = GenderEnum.Unknown,
             Email = "systemAdmin@18kboy.icu",
             Phone = "15188888888",
@@ -229,10 +229,10 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
         var newAdminUser = new SysUserModel
         {
             Account = newTenant.Email,
-            Password = MD5Encryption.Encrypt(CommonConst.DEFAULT_ADMIN_PASSWORD),
+            Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
             Name = newTenant.AdminName,
             NickName = newTenant.AdminName,
-            Avatar = CommonConst.DEFAULT_Avatar_URL,
+            Avatar = CommonConst.Default_Avatar_Url,
             Sex = GenderEnum.Unknown,
             Email = newTenant.Email,
             Phone = newTenant.Phone,
@@ -258,7 +258,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
         await _db.Insertable(new SysRoleDataScopeModel {SysRoleId = newAdminRole.Id, SysOrgId = newAdminOrg.Id,})
             .ExecuteCommandAsync();
 
-        await _cache.DelAsync(CommonConst.CACHE_KEY_USER_DATA_SCOPE);
-        await _cache.DelAsync(CommonConst.CACHE_KEY_DATA_SCOPE);
+        await _cache.DelAsync(CacheConst.UserDataScope);
+        await _cache.DelAsync(CacheConst.DataScope);
     }
 }

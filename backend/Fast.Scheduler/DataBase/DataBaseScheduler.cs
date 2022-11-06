@@ -1,8 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using Fast.Core;
 using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
+using Fast.Core.AttributeFilter;
+using Fast.Core.Cache;
 using Fast.Core.Const;
 using Fast.Core.SqlSugar.Extension;
 using Fast.Core.SqlSugar.Helper;
@@ -24,11 +28,15 @@ public class DataBaseJobWorker : ISpareTimeWorker
     /// </summary>
     /// <param name="timer"></param>
     /// <param name="count"></param>
-    [SpareTime(3000, "初始化数据库", DoOnce = true, StartNow = true)]
+    [SpareTime(100, "初始化数据库", DoOnce = true, StartNow = true)]
     public async Task InitDataBast(SpareTimer timer, long count)
     {
         if (GlobalContext.SystemSettingsOptions?.InitDataBase != true)
+        {
+            // 同步枚举字典，手动执行是因为怕数据库还没有生成完毕。
+            SpareTime.Start("同步枚举字典");
             return;
+        }
 
         await Scoped.CreateAsync(async (_, scope) =>
         {
@@ -47,7 +55,11 @@ public class DataBaseJobWorker : ISpareTimeWorker
             if (await _db.Ado.GetIntAsync(
                     $"SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_NAME = '{typeof(SysTenantModel).GetSugarTableName()}'") >
                 0)
+            {
+                // 同步枚举字典，手动执行是因为怕数据库还没有生成完毕。
+                SpareTime.Start("同步枚举字典");
                 return;
+            }
 
             var sw = new Stopwatch();
             sw.Start();
@@ -68,7 +80,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             // 初始化租户信息
             var superAdminTenantInfo = new SysTenantModel
             {
-                Id = ClaimConst.Default_SuperAdmin_Tenant_Id,
+                Id = ClaimConst.DefaultSuperAdminTenantId,
                 Name = "Fast.NET",
                 NamePinYin = "FastNet",
                 ShortName = "Fast",
@@ -107,6 +119,141 @@ public class DataBaseJobWorker : ISpareTimeWorker
             Console.WriteLine(@$"
             
              数据库初始化完成！
+             用时（毫秒）：{sw.ElapsedMilliseconds}
+              
+            ");
+
+            // 同步枚举字典，手动执行是因为怕数据库还没有生成完毕。
+            SpareTime.Start("同步枚举字典");
+        });
+    }
+
+    /// <summary>
+    /// 同步枚举字典
+    /// </summary>
+    /// <param name="timer"></param>
+    /// <param name="count"></param>
+    [SpareTime(100, "同步枚举字典", DoOnce = true, StartNow = false)]
+    public async Task SyncEnumDict(SpareTimer timer, long count)
+    {
+        if (GlobalContext.SystemSettingsOptions?.SyncEnumDict != true)
+            return;
+
+        await Scoped.CreateAsync(async (_, scope) =>
+        {
+            var service = scope.ServiceProvider;
+
+            var _cache = service.GetService<ICache>();
+
+            var db = service.GetService<ISqlSugarClient>();
+
+            // ReSharper disable once PossibleNullReferenceException
+            var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
+
+            var sw = new Stopwatch();
+            sw.Start();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(@"
+            
+             同步枚举字典中......
+              
+            ");
+
+            // 获取所有的实现了枚举特性的枚举类
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(sl =>
+                sl.GetTypes().Where(wh => wh.IsEnum && wh.GetCustomAttribute<FastEnumAttribute>() != null));
+
+            var typeModels = new List<SysDictTypeModel>();
+            var dataModels = new List<SysDictDataModel>();
+
+            var typeIdIndex = 1000000001;
+            var dataIdIndex = 2000000001;
+
+            // 遍历获取到的类型集合
+            foreach (var type in types)
+            {
+                // 获取中文名称
+                var enumAtt = type.GetCustomAttribute<FastEnumAttribute>();
+
+                // 去重枚举类尾部的Enum
+                var typeName = type.Name.Remove(type.Name.LastIndexOf("Enum", StringComparison.Ordinal));
+
+                var typeChName = enumAtt?.ChName ?? typeName;
+
+                var typeInfo = new SysDictTypeModel
+                {
+                    Id = typeIdIndex,
+                    Code = typeName,
+                    ChName = typeChName,
+                    EnName = enumAtt?.EnName ?? typeName,
+                    Level = SysLevelEnum.Default,
+                    Sort = -1,
+                    Remark = enumAtt?.Remark ?? typeChName
+                };
+                typeIdIndex += 1;
+                typeModels.Add(typeInfo);
+
+                // 获取枚举详情
+                var enumInfos = type.EnumToList();
+
+                var dataSort = 1;
+
+                foreach (var dataInfo in enumInfos)
+                {
+                    dataModels.Add(new SysDictDataModel
+                    {
+                        Id = dataIdIndex,
+                        TypeId = typeInfo.Id,
+                        ChValue = dataInfo.Describe ?? dataInfo.Name,
+                        EnValue = dataInfo.Name,
+                        Code = $"{dataInfo.Value}",
+                        Sort = dataSort,
+                        Remark = dataInfo.Describe ?? dataInfo.Name,
+                    });
+                    dataIdIndex += 1;
+                    dataSort += 1;
+                }
+            }
+
+            // 开启事务
+            _db.Ado.BeginTran();
+            try
+            {
+                // 查询所有的默认级别枚举字典的类型Id
+                var orgTypeId = await _db.Queryable<SysDictTypeModel>().Where(wh => wh.Level == SysLevelEnum.Default)
+                    .Select(sl => sl.Id).ToListAsync();
+
+                // 删除所有的默认级别枚举字典类型
+                await _db.Deleteable<SysDictTypeModel>().Where(wh => wh.Level == SysLevelEnum.Default).ExecuteCommandAsync();
+
+                // 删除所有的默认级别枚举字典数据
+                await _db.Deleteable<SysDictDataModel>().Where(wh => orgTypeId.Contains(wh.TypeId)).ExecuteCommandAsync();
+
+                // 加入数据库
+                await _db.Insertable(typeModels).ExecuteCommandAsync();
+                await _db.Insertable(dataModels).ExecuteCommandAsync();
+
+                // 删除缓存中的数据
+                // ReSharper disable once PossibleNullReferenceException
+                await _cache.DelAsync(CacheConst.SysDictInfo);
+
+                // 提交事务
+                _db.Ado.CommitTran();
+            }
+            catch (Exception)
+            {
+                // 回滚事务
+                _db.Ado.RollbackTran();
+                throw;
+            }
+
+            sw.Stop();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(@$"
+            
+             同步枚举字典完成！
              用时（毫秒）：{sw.ElapsedMilliseconds}
               
             ");

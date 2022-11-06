@@ -8,12 +8,12 @@ public class ClaimConst
     /// <summary>
     /// 默认超级管理员Id
     /// </summary>
-    public const long Default_SuperAdmin_Id = 888888;
+    public const long DefaultSuperAdminId = 888888;
 
     /// <summary>
     /// 默认超级管理员租户Id
     /// </summary>
-    public const long Default_SuperAdmin_Tenant_Id = 666666;
+    public const long DefaultSuperAdminTenantId = 666666;
 
     /// <summary>
     /// 用户Id
