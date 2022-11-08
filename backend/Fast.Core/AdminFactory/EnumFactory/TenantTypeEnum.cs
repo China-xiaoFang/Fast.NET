@@ -5,6 +5,7 @@ namespace Fast.Core.AdminFactory.EnumFactory;
 /// <summary>
 /// 租户类型枚举
 /// </summary>
+[FastEnum("租户类型枚举")]
 public enum TenantTypeEnum
 {
     /// <summary>

@@ -5,6 +5,7 @@ namespace Fast.Core.AdminFactory.EnumFactory;
 /// <summary>
 /// App应用枚举
 /// </summary>
+[FastEnum("App应用枚举")]
 public enum AppTypeEnum
 {
     /// <summary>

@@ -3,8 +3,9 @@
 namespace Fast.Core.AdminFactory.EnumFactory;
 
 /// <summary>
-/// 公共状态
+/// 公共状态枚举
 /// </summary>
+[FastEnum("公共状态枚举")]
 public enum CommonStatusEnum
 {
     /// <summary>

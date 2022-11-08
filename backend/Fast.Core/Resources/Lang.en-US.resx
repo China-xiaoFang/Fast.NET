@@ -168,4 +168,7 @@
   <data name="系统配置错误，请检查系统配置！" xml:space="preserve">
     <value>System configuration error, please check the system configuration!</value>
   </data>
+  <data name="请求成功" xml:space="preserve">
+    <value>Request succeeded</value>
+  </data>
 </root>

@@ -3,8 +3,9 @@
 namespace Fast.Core.AdminFactory.EnumFactory;
 
 /// <summary>
-/// 登陆类型
+/// 登陆类型枚举
 /// </summary>
+[FastEnum("登陆类型枚举")]
 public enum LoginTypeEnum
 {
     /// <summary>

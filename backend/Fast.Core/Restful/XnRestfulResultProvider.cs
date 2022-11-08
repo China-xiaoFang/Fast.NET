@@ -27,8 +27,8 @@ public class XnRestfulResultProvider : IUnifyResultProvider
         {
             Code = metadata.StatusCode,
             Success = false,
-            Data = null,
-            Message = metadata.Errors,
+            Data = metadata.Errors,
+            Message = "系统内部错误，请联系管理员处理！",
             Extras = UnifyContext.Take(),
             Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
         });

@@ -3,8 +3,9 @@
 namespace Fast.Core.AdminFactory.EnumFactory;
 
 /// <summary>
-/// 账号类型
+/// 账号类型枚举
 /// </summary>
+[FastEnum("账号类型枚举")]
 public enum AdminTypeEnum
 {
     /// <summary>

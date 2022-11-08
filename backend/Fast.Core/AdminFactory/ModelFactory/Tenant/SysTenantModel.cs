@@ -15,7 +15,8 @@ public class SysTenantModel : BaseEntity
     /// <summary>
     /// 租户公司名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户公司名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "租户公司名称", ColumnDataType = "Nvarchar(50)", IsNullable = false,
+        UniqueGroupNameList = new[] {nameof(Name)})]
     public string Name { get; set; }
 
     /// <summary>
