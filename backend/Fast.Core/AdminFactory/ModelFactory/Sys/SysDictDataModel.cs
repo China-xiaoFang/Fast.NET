@@ -32,8 +32,8 @@ public class SysDictDataModel : BaseEntity
     /// <summary>
     /// 编码
     /// </summary>
-    [SugarColumn(ColumnDescription = "编码", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Code { get; set; }
+    [SugarColumn(ColumnDescription = "编码", IsNullable = false)]
+    public int Code { get; set; }
 
     /// <summary>
     /// 顺序

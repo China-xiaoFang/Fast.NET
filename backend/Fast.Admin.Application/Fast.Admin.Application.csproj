@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
+
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,13 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="logs\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Fast.Admin.Application\Fast.Admin.Application.csproj" />
-		<ProjectReference Include="..\Fast.Application\Fast.Application.csproj" />
-		<ProjectReference Include="..\Fast.Scheduler\Fast.Scheduler.csproj" />
+	  <ProjectReference Include="..\Fast.Core\Fast.Core.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -18,5 +18,5 @@ public class SysDictDataInfo
     /// <summary>
     /// 编码
     /// </summary>
-    public string Code { get; set; }
+    public int Code { get; set; }
 }

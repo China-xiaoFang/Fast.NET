@@ -207,7 +207,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
                         TypeId = typeInfo.Id,
                         ChValue = dataInfo.Describe ?? dataInfo.Name,
                         EnValue = dataInfo.Name,
-                        Code = $"{dataInfo.Value}",
+                        Code = dataInfo.Value,
                         Sort = dataSort,
                         Remark = dataInfo.Describe ?? dataInfo.Name,
                     });

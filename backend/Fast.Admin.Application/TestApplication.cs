@@ -1,11 +1,15 @@
 ﻿using Fast.Core.Operation.Dict;
 using Fast.Core.Operation.Dict.Dto;
-using Furion.DependencyInjection;
 using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Fast.Core.AdminFactory.ServiceFactory;
+namespace Fast.Admin.Application;
 
-public class TestService : IDynamicApiController, ITransient
+/// <summary>
+/// 测试接口
+/// </summary>
+[ApiDescriptionSettings(Name = "Test", Order = 100)]
+public class TestApplication : IDynamicApiController
 {
     /// <summary>
     /// 测试接口

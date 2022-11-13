@@ -9,7 +9,6 @@ using Fast.Core.SqlSugar.Extension;
 using Fast.Core.SqlSugar.Helper;
 using Furion.DataEncryption;
 using Furion.DependencyInjection;
-using Furion.DynamicApiController;
 using Furion.FriendlyException;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,8 +17,7 @@ namespace Fast.Core.AdminFactory.ServiceFactory.Tenant;
 /// <summary>
 /// 租户服务
 /// </summary>
-[ApiDescriptionSettings(Name = "Tenant", Order = 100)]
-public class SysTenantService : ISysTenantService, IDynamicApiController, ITransient
+public class SysTenantService : ISysTenantService, ITransient
 {
     private readonly ISqlSugarRepository<SysTenantModel> _repository;
     private readonly ICache _cache;
@@ -72,8 +70,7 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpGet("sysTenant/page")]
-    public async Task<PageResult<TenantOutput>> QueryTenantPageList([FromQuery] QueryTenantInput input)
+    public async Task<PageResult<TenantOutput>> QueryTenantPageList(QueryTenantInput input)
     {
         return await _repository.Where(wh => wh.TenantType != TenantTypeEnum.System)
             .WhereIF(!input.Name.IsEmpty(), wh => wh.Name.Contains(input.Name))
@@ -88,7 +85,6 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("sysTenant/add")]
     public async Task AddTenant(AddTenantInput input)
     {
         // 判断租户信息是否存在
@@ -122,7 +118,6 @@ public class SysTenantService : ISysTenantService, IDynamicApiController, ITrans
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("sysTenant/initTenantInfo")]
     public async Task InitTenantInfo(InitTenantInfoInput input)
     {
         // 判断是否存在租户
