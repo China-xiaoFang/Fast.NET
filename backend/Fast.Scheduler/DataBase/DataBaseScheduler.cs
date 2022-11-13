@@ -93,7 +93,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
                 Phone = "15288888888",
                 TenantType = TenantTypeEnum.System,
                 WebUrl = new List<string> {"http:fast.18kboy.icu", "http:127.0.0.1:8080"},
-                LogoUrl = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logn.png"
+                LogoUrl = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logo.png"
             };
             superAdminTenantInfo = await _db.Insertable(superAdminTenantInfo).ExecuteReturnEntityAsync();
 
