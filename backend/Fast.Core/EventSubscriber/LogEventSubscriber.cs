@@ -54,8 +54,8 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
-            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysUserModel>(source.TenantId);
-            var log = (SysUserModel) context.Source.Payload;
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<TenUserModel>(source.TenantId);
+            var log = (TenUserModel) context.Source.Payload;
             await _db.Updateable(log).UpdateColumns(m => new {m.LastLoginTime, m.LastLoginIp}).ExecuteCommandAsync();
         }
     }

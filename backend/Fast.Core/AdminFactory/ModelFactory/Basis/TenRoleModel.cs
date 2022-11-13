@@ -5,24 +5,12 @@ using Fast.Core.SqlSugar.BaseModel;
 namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
 /// <summary>
-/// 系统组织架构表Model类
+/// 租户角色表Model类
 /// </summary>
-[SugarTable("Sys_Org", "系统组织架构表")]
+[SugarTable("Ten_Role", "租户角色表")]
 [DataBaseType(SysDataBaseTypeEnum.Tenant)]
-public class SysOrgModel : BaseEntity
+public class TenRoleModel : BaseEntity
 {
-    /// <summary>
-    /// 父级Id
-    /// </summary>
-    [SugarColumn(ColumnDescription = "父级Id", IsNullable = false)]
-    public long ParentId { get; set; }
-
-    /// <summary>
-    /// 父级Id集合
-    /// </summary>
-    [SugarColumn(ColumnDescription = "父级Id集合", IsNullable = false, IsJson = true)]
-    public List<long> ParentIds { get; set; }
-
     /// <summary>
     /// 名称
     /// </summary>
@@ -36,22 +24,16 @@ public class SysOrgModel : BaseEntity
     public string Code { get; set; }
 
     /// <summary>
-    /// 联系人
-    /// </summary>
-    [SugarColumn(ColumnDescription = "联系人", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string Contacts { get; set; }
-
-    /// <summary>
-    /// 电话
-    /// </summary>
-    [SugarColumn(ColumnDescription = "电话", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
-    public string Tel { get; set; }
-
-    /// <summary>
     /// 排序
     /// </summary>
     [SugarColumn(ColumnDescription = "排序", IsNullable = false)]
     public int Sort { get; set; }
+
+    /// <summary>
+    /// 数据范围类型
+    /// </summary>
+    [SugarColumn(ColumnDescription = "数据范围类型", IsNullable = false)]
+    public DataScopeTypeEnum DataScopeType { get; set; }
 
     /// <summary>
     /// 备注
@@ -64,4 +46,10 @@ public class SysOrgModel : BaseEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "状态", IsNullable = false)]
     public CommonStatusEnum Status { get; set; } = CommonStatusEnum.Enable;
+
+    /// <summary>
+    /// 角色类型
+    /// </summary>
+    [SugarColumn(ColumnDescription = "角色类型", IsNullable = false)]
+    public RoleTypeEnum RoleType { get; set; }
 }

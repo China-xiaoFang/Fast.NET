@@ -188,6 +188,11 @@ public class GlobalContext
     public static SystemSettingsOptions SystemSettingsOptions { get; set; }
 
     /// <summary>
+    /// 版权信息
+    /// </summary>
+    public static CopyrightInfoOptions CopyrightInfoOptions { get; set; }
+
+    /// <summary>
     /// 上传文件配置
     /// </summary>
     public static UploadFileOptions UploadFileOptions { get; set; }

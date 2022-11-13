@@ -5,11 +5,11 @@ using Fast.Core.SqlSugar.BaseModel.Interface;
 namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
 /// <summary>
-/// 系统用户角色表Model类
+/// 租户用户角色表Model类
 /// </summary>
-[SugarTable("Sys_User_Role", "系统用户角色表")]
+[SugarTable("Ten_User_Role", "租户用户角色表")]
 [DataBaseType(SysDataBaseTypeEnum.Tenant)]
-public class SysUserRoleModel : IDbEntity
+public class TenUserRoleModel : IDbEntity
 {
     /// <summary>
     /// 用户Id

@@ -5,11 +5,11 @@ using Fast.Core.SqlSugar.BaseModel;
 namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
 /// <summary>
-/// 系统文件表Model类
+/// 租户文件表Model类
 /// </summary>
-[SugarTable("Sys_File", "系统文件表")]
+[SugarTable("Ten_File", "租户文件表")]
 [DataBaseType(SysDataBaseTypeEnum.Tenant)]
-public class SysFileModel : BaseEntity
+public class TenFileModel : BaseEntity
 {
     /// <summary>
     /// 存储位置

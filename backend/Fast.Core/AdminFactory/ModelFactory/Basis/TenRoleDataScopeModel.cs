@@ -5,17 +5,17 @@ using Fast.Core.SqlSugar.BaseModel.Interface;
 namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
 /// <summary>
-/// 系统用户数据范围表Model类
+/// 租户角色数据范围表Model类
 /// </summary>
-[SugarTable("Sys_User_Data_Scope", "系统用户数据范围表")]
+[SugarTable("Ten_Role_Data_Scope", "租户角色数据范围表")]
 [DataBaseType(SysDataBaseTypeEnum.Tenant)]
-public class SysUserDataScopeModel : IDbEntity
+public class TenRoleDataScopeModel : IDbEntity
 {
     /// <summary>
-    /// 用户Id
+    /// 角色Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "用户Id", IsNullable = false)]
-    public long SysUserId { get; set; }
+    [SugarColumn(ColumnDescription = "角色Id", IsNullable = false)]
+    public long SysRoleId { get; set; }
 
     /// <summary>
     /// 机构Id

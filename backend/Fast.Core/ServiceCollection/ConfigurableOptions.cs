@@ -25,6 +25,8 @@ public static class ConfigurableOptions
         GlobalContext.CacheOptions = App.GetConfig<CacheOptions>("Cache");
         // System config.
         GlobalContext.SystemSettingsOptions = App.GetConfig<SystemSettingsOptions>("SystemSettings");
+        // Copyright Info
+        GlobalContext.CopyrightInfoOptions = App.GetConfig<CopyrightInfoOptions>("CopyrightInfo");
         // Upload file config.
         GlobalContext.UploadFileOptions = App.GetConfig<UploadFileOptions>("UploadFile");
 

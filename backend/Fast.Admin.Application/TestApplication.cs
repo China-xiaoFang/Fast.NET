@@ -1,4 +1,8 @@
-﻿using Fast.Core.Operation.Dict;
+﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.Const;
+using Fast.Core.Operation.Config;
+using Fast.Core.Operation.Config.Dto;
+using Fast.Core.Operation.Dict;
 using Fast.Core.Operation.Dict.Dto;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +35,30 @@ public class TestApplication : IDynamicApiController
     public async Task<SysDictTypeInfo> TestDict(string name = "AdminType")
     {
         var result = await DictOperation.GetDictionaryAsync(name);
+        return result;
+    }
+
+    /// <summary>
+    /// 测试静态配置获取
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [HttpGet("/test/testConfig", "测试静态配置获取")]
+    public async Task<ConfigInfo> TestConfig(string name = ConfigConst.Copyright.ICPCode)
+    {
+        var result = await ConfigOperation.GetConfigAsync(name);
+        return result;
+    }
+
+    /// <summary>
+    /// 测试静态配置获取
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [HttpGet("/test/testTenConfig", "测试静态配置获取")]
+    public async Task<ConfigInfo> TestTenConfig(string name = ConfigConst.Tenant.WebName)
+    {
+        var result = await ConfigOperation.GetConfigAsync(name, SysConfigTypeEnum.Tenant);
         return result;
     }
 }

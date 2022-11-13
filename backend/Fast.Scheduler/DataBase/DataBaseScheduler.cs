@@ -7,6 +7,8 @@ using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
 using Fast.Core.AttributeFilter;
 using Fast.Core.Cache;
+using Fast.Core.CodeFirst;
+using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Const;
 using Fast.Core.SqlSugar.Extension;
 using Fast.Core.SqlSugar.Helper;
@@ -107,6 +109,25 @@ public class DataBaseJobWorker : ISpareTimeWorker
                 DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
                 TenantId = superAdminTenantInfo.Id
             }).ExecuteCommandAsync();
+
+            // 初始化租户库种子数据
+            var seedDataTypes = SeedDataProgram.GetSeedDataType(typeof(ISystemSeedData));
+
+            // 开启事务
+            _db.Ado.BeginTran();
+            try
+            {
+                SeedDataProgram.ExecSeedData(_db, seedDataTypes);
+
+                // 提交事务
+                _db.Ado.CommitTran();
+            }
+            catch (Exception)
+            {
+                // 回滚事务
+                _db.Ado.RollbackTran();
+                throw;
+            }
 
             // 初始化新租户数据
             // ReSharper disable once PossibleNullReferenceException

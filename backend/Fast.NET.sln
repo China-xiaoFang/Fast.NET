@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Application", "Fast.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Model", "Fast.Model\Fast.Model.csproj", "{C973229E-4D0B-4AA9-91C6-3E2D459C82E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Admin.Application", "Fast.Admin.Application\Fast.Admin.Application.csproj", "{3D0854A7-A2DC-4C06-9FE8-257AD8F00DD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Admin.Application", "Fast.Admin.Application\Fast.Admin.Application.csproj", "{3D0854A7-A2DC-4C06-9FE8-257AD8F00DD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

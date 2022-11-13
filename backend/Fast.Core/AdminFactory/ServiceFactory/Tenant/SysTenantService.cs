@@ -3,6 +3,8 @@ using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Basis;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
+using Fast.Core.CodeFirst;
+using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Restful.Extension;
 using Fast.Core.Restful.Internal;
 using Fast.Core.SqlSugar.Extension;
@@ -52,9 +54,9 @@ public class SysTenantService : ISysTenantService, ITransient
         foreach (var tenant in tenantList)
         {
             // 加载租户数据库Db
-            var _db = _tenant.LoadSqlSugar<SysUserModel>(tenant.Id);
+            var _db = _tenant.LoadSqlSugar<TenUserModel>(tenant.Id);
             // 查询两个管理员信息
-            var userList = await _db.Queryable<SysUserModel>().Where(wh =>
+            var userList = await _db.Queryable<TenUserModel>().Where(wh =>
                 (wh.AdminType == AdminTypeEnum.SystemAdmin || wh.AdminType == AdminTypeEnum.TenantAdmin)).ToListAsync();
             tenant.SystemAdminUser = userList.First(f => f.AdminType == AdminTypeEnum.SystemAdmin);
             tenant.TenantAdminUser = userList.First(f => f.AdminType == AdminTypeEnum.TenantAdmin);
@@ -151,21 +153,21 @@ public class SysTenantService : ISysTenantService, ITransient
     [NonAction]
     public async Task InitNewTenant(SysTenantModel newTenant, IEnumerable<Type> entityTypeList, bool isInit = false)
     {
-        var _db = _tenant.LoadSqlSugar<SysUserModel>(newTenant.Id);
+        var _db = _tenant.LoadSqlSugar<TenUserModel>(newTenant.Id);
 
         // 初始化数据库
         _db.DbMaintenance.CreateDatabase();
 
         // 判断是否存在用户表
         if (await _db.Ado.GetIntAsync(
-                $"SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_NAME = '{typeof(SysUserModel).GetSugarTableName()}'") >
+                $"SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_NAME = '{typeof(TenUserModel).GetSugarTableName()}'") >
             0)
             throw Oops.Bah(ErrorCode.TenantDataBaseRepeatError);
 
         _db.CodeFirst.InitTables(entityTypeList.ToArray());
 
         // 初始化公司（组织架构）
-        var newAdminOrg = new SysOrgModel
+        var newAdminOrg = new TenOrgModel
         {
             ParentId = 0,
             ParentIds = new List<long> {0},
@@ -176,7 +178,7 @@ public class SysTenantService : ISysTenantService, ITransient
         };
         newAdminOrg = await _db.Insertable(newAdminOrg).ExecuteReturnEntityAsync();
 
-        var newAdminRole = new SysRoleModel
+        var newAdminRole = new TenRoleModel
         {
             Name = RoleTypeEnum.AdminRole.GetDescription(),
             Code = "manager_role",
@@ -191,7 +193,7 @@ public class SysTenantService : ISysTenantService, ITransient
         if (isInit)
         {
             // 初始化超级管理员
-            await _db.Insertable(new SysUserModel
+            await _db.Insertable(new TenUserModel
             {
                 Id = ClaimConst.DefaultSuperAdminId,
                 Account = "SuperAdmin",
@@ -207,7 +209,7 @@ public class SysTenantService : ISysTenantService, ITransient
         }
 
         // 初始化租户系统管理员
-        await _db.Insertable(new SysUserModel
+        await _db.Insertable(new TenUserModel
         {
             Account = "SystemAdmin",
             Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
@@ -221,7 +223,7 @@ public class SysTenantService : ISysTenantService, ITransient
         }).ExecuteCommandAsync();
 
         // 初始化租户管理员，账号以邮箱号码为准
-        var newAdminUser = new SysUserModel
+        var newAdminUser = new TenUserModel
         {
             Account = newTenant.Email,
             Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
@@ -236,24 +238,43 @@ public class SysTenantService : ISysTenantService, ITransient
         newAdminUser = await _db.Insertable(newAdminUser).ExecuteReturnEntityAsync();
 
         // 初始化职工
-        await _db.Insertable(new SysEmpModel
+        await _db.Insertable(new TenEmpModel
         {
             Id = newAdminUser.Id, JobNum = "10001", OrgId = newAdminOrg.Id, OrgName = newAdminOrg.Name
         }).ExecuteCommandAsync();
 
         // 初始化用户角色
-        await _db.Insertable(new SysUserRoleModel {SysUserId = newAdminUser.Id, SysRoleId = newAdminRole.Id})
+        await _db.Insertable(new TenUserRoleModel {SysUserId = newAdminUser.Id, SysRoleId = newAdminRole.Id})
             .ExecuteCommandAsync();
 
         // 初始化用户数据范围
-        await _db.Insertable(new SysUserDataScopeModel {SysUserId = newAdminUser.Id, SysOrgId = newAdminOrg.Id,})
+        await _db.Insertable(new TenUserDataScopeModel {SysUserId = newAdminUser.Id, SysOrgId = newAdminOrg.Id,})
             .ExecuteCommandAsync();
 
         // 初始化角色数据范围
-        await _db.Insertable(new SysRoleDataScopeModel {SysRoleId = newAdminRole.Id, SysOrgId = newAdminOrg.Id,})
+        await _db.Insertable(new TenRoleDataScopeModel {SysRoleId = newAdminRole.Id, SysOrgId = newAdminOrg.Id,})
             .ExecuteCommandAsync();
 
         await _cache.DelAsync(CacheConst.UserDataScope);
         await _cache.DelAsync(CacheConst.DataScope);
+
+        // 初始化业务库种子数据
+        var seedDataTypes = SeedDataProgram.GetSeedDataType(typeof(ITenantSeedData));
+
+        // 开启事务
+        _db.Ado.BeginTran();
+        try
+        {
+            SeedDataProgram.ExecSeedData(_db.Ado.Context, seedDataTypes);
+
+            // 提交事务
+            _db.Ado.CommitTran();
+        }
+        catch (Exception)
+        {
+            // 回滚事务
+            _db.Ado.RollbackTran();
+            throw;
+        }
     }
 }

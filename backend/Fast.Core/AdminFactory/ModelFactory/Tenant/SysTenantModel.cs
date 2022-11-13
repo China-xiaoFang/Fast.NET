@@ -83,13 +83,13 @@ public class SysTenantModel : BaseEntity
     /// 系统管理员用户
     /// </summary>
     [SugarColumn(IsIgnore = true)]
-    public SysUserModel SystemAdminUser { get; set; }
+    public TenUserModel SystemAdminUser { get; set; }
 
     /// <summary>
     /// 租户管理员用户
     /// </summary>
     [SugarColumn(IsIgnore = true)]
-    public SysUserModel TenantAdminUser { get; set; }
+    public TenUserModel TenantAdminUser { get; set; }
 
     /// <summary>
     /// App授权信息
