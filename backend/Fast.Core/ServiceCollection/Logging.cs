@@ -16,23 +16,24 @@ public static class Logging
     /// </summary>
     /// <param name="services"></param>
     /// <param name="logFileFormat">日志文件格式</param>
+    /// <param name="fileSizeLimitBytes">日志文件大小 控制每一个日志文件最大存储大小，默认无限制，单位是 B，也就是 1024 才等于 1KB</param>
     /// <param name="isRun"></param>
     public static void AddLogging(this IServiceCollection services, string logFileFormat = "{0:yyyy}-{0:MM}-{0:dd}",
-        bool isRun = true)
+        long fileSizeLimitBytes = 10 * 1024 * 1024, bool isRun = true)
     {
         if (isRun)
         {
             services.AddLogging(loggingBuilder =>
             {
                 loggingBuilder.AddFile($"logs/error/{logFileFormat}_0.log",
-                    options => { SetLogOptions(options, LogLevel.Error); });
+                    options => { SetLogOptions(options, LogLevel.Error, fileSizeLimitBytes); });
                 // Environments other than the development environment are not logged.
                 if (!App.HostEnvironment.IsDevelopment())
                     return;
                 loggingBuilder.AddFile($"logs/info/{logFileFormat}_0.log",
-                    options => { SetLogOptions(options, LogLevel.Information); });
+                    options => { SetLogOptions(options, LogLevel.Information, fileSizeLimitBytes); });
                 loggingBuilder.AddFile($"logs/warn/{logFileFormat}_0.log",
-                    options => { SetLogOptions(options, LogLevel.Warning); });
+                    options => { SetLogOptions(options, LogLevel.Warning, fileSizeLimitBytes); });
             });
         }
     }
@@ -42,11 +43,12 @@ public static class Logging
     /// </summary>
     /// <param name="options"></param>
     /// <param name="logLevel"></param>
-    private static void SetLogOptions(FileLoggerOptions options, LogLevel logLevel)
+    /// <param name="fileSizeLimitBytes">日志文件大小 控制每一个日志文件最大存储大小，默认无限制，单位是 B，也就是 1024 才等于 1KB</param>
+    private static void SetLogOptions(FileLoggerOptions options, LogLevel logLevel, long fileSizeLimitBytes)
     {
         options.WriteFilter = logMsg => logMsg.LogLevel == logLevel;
         options.FileNameRule = fileName => string.Format(fileName, DateTime.UtcNow);
-        options.FileSizeLimitBytes = 10 * 1024 * 1024; // 10MB
+        options.FileSizeLimitBytes = fileSizeLimitBytes;
         options.MessageFormat = logMsg =>
         {
             var msg = new List<string>

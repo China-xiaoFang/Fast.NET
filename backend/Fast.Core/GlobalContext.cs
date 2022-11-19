@@ -196,6 +196,11 @@ public class GlobalContext
     /// 上传文件配置
     /// </summary>
     public static UploadFileOptions UploadFileOptions { get; set; }
+
+    /// <summary>
+    /// 服务配置集合
+    /// </summary>
+    public static ServiceCollectionOptions ServiceCollectionOptions { get; set; }
 }
 
 /// <summary>
