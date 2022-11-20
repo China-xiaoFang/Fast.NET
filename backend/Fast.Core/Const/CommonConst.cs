@@ -18,7 +18,7 @@ public class CommonConst
     /// <summary>
     /// 默认头像地址
     /// </summary>
-    public const string Default_Avatar_Url = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logn.png";
+    public const string Default_Avatar_Url = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logo.png";
 
     /// <summary>
     /// 正则表达式字符串

@@ -16,84 +16,22 @@ namespace Fast.Core.ServiceCollection;
 public static class ServiceCollection
 {
     /// <summary>
-    /// 添加上传文件大小限制
-    /// </summary>
-    public static bool LimitUploadedFile { get; set; } = true;
-
-    /// <summary>
-    /// 添加Gzip Brotli 压缩
-    /// </summary>
-    public static bool GzipBrotliCompression { get; set; } = true;
-
-    /// <summary>
-    /// 启用JWT
-    /// </summary>
-    public static bool JWT { get; set; } = true;
-
-    /// <summary>
-    /// 多语言
-    /// </summary>
-    public static bool AppLocalization { get; set; } = true;
-
-    /// <summary>
-    /// 数据验证
-    /// </summary>
-    public static bool DataValidation { get; set; } = true;
-
-    /// <summary>
-    /// JSON序列化格式
-    /// </summary>
-    public static string JsonOptionFormat { get; set; } = "yyyy-MM-dd HH:mm:ss";
-
-    /// <summary>
-    /// JSON序列化
-    /// </summary>
-    public static bool JsonOptions { get; set; } = true;
-
-    /// <summary>
-    /// 雪花Id WorkerId 
-    /// </summary>
-    public static string SnowIdWorkerId { get; set; } = "1";
-
-    /// <summary>
-    /// 即时通讯
-    /// </summary>
-    public static bool SignalR { get; set; } = true;
-
-    /// <summary>
-    /// 日志文件格式
-    /// </summary>
-    public static string LogFileFormat { get; set; } = "{0:yyyy}-{0:MM}-{0:dd}";
-
-    /// <summary>
-    /// 日志文件
-    /// </summary>
-    public static bool Log { get; set; } = true;
-
-    /// <summary>
-    /// 事件总线
-    /// </summary>
-    public static bool EventBusService { get; set; } = true;
-
-    /// <summary>
-    /// 任务调度
-    /// </summary>
-    public static bool Scheduler { get; set; } = true;
-
-    /// <summary>
     /// 运行程序
     /// </summary>
     /// <param name="builder"></param>
     public static void RunProgram(this WebApplicationBuilder builder)
     {
+        // Config.
+        builder.Services.AddConfigurableOptions();
+
+        // Get service Collection Options.
+        var serviceCollectionOptions = GlobalContext.ServiceCollectionOptions;
+
         // Run style.
         builder.Services.AddRunStyle(r => r.UseDefault());
 
         // Customize the console log output template.
         builder.Logging.AddConsoleFormatter(options => { options.DateFormat = "yyyy-MM-dd hh:mm:ss(zzz) dddd"; });
-
-        // Config.
-        builder.Services.AddConfigurableOptions();
 
         // Cross origin.
         builder.Services.AddCorsAccessor();
@@ -102,15 +40,15 @@ public static class ServiceCollection
         builder.Services.AddRemoteRequest();
 
         // Limit the size of uploaded files
-        builder.Services.AddLimitUploadedFile(LimitUploadedFile);
+        builder.Services.AddLimitUploadedFile(serviceCollectionOptions.LimitUploadedFile);
 
         // Gzip brotli compression.
-        builder.Services.AddGzipBrotliCompression(GzipBrotliCompression);
+        builder.Services.AddGzipBrotliCompression(serviceCollectionOptions.GzipBrotliCompression);
 
         // JWT validation.
-        builder.Services.AddJwt<JwtHandler>(enableGlobalAuthorize: JWT);
+        builder.Services.AddJwt<JwtHandler>(enableGlobalAuthorize: serviceCollectionOptions.JWT);
 
-        if (AppLocalization)
+        if (serviceCollectionOptions.AppLocalization)
         {
             builder.Services.AddControllersWithViews()
                 // Register multiple languages.
@@ -121,7 +59,7 @@ public static class ServiceCollection
             builder.Services.AddControllersWithViews();
         }
 
-        if (DataValidation)
+        if (serviceCollectionOptions.DataValidation)
         {
             // Global data validation.
             builder.Services.AddDataValidation();
@@ -134,29 +72,30 @@ public static class ServiceCollection
         builder.Services.AddInjectWithUnifyResult<XnRestfulResultProvider>();
 
         // Add json options.
-        builder.Services.AddJsonOptions(JsonOptionFormat, JsonOptions);
+        builder.Services.AddJsonOptions(serviceCollectionOptions.JsonOptionDateTimeFormat, serviceCollectionOptions.JsonOptions);
 
         builder.Services.AddViewEngine();
 
-        if (SignalR)
+        if (serviceCollectionOptions.SignalR)
         {
             // Add Instant Messaging.
             builder.Services.AddSignalR();
         }
 
         // Add Snowflakes Id.
-        builder.Services.AddSnowflakeId(SnowIdWorkerId);
+        builder.Services.AddSnowflakeId(serviceCollectionOptions.SnowIdWorkerId);
 
         // Logging, error level logging, create a log file every day.
-        builder.Services.AddLogging(LogFileFormat, Log);
+        builder.Services.AddLogging(serviceCollectionOptions.LogFileFormat, serviceCollectionOptions.LogFileSizeLimitBytes,
+            serviceCollectionOptions.Log);
 
         // Sign up for EventBus.
-        builder.Services.AddEventBusService(EventBusService);
+        builder.Services.AddEventBusService(serviceCollectionOptions.EventBusService);
 
         // Init sqlSugar.
         builder.Services.SqlSugarClientConfigure();
 
-        if (Scheduler)
+        if (serviceCollectionOptions.Scheduler)
         {
             // Register the task scheduling service.
             builder.Services.AddTaskScheduler();
@@ -167,7 +106,7 @@ public static class ServiceCollection
         // Add the status code interception middleware.
         app.UseUnifyResultStatusCodes();
 
-        if (GzipBrotliCompression)
+        if (serviceCollectionOptions.GzipBrotliCompression)
         {
             // Enable compression.
             app.UseResponseCompression();
@@ -176,7 +115,7 @@ public static class ServiceCollection
         // Mandatory Https.
         app.UseHttpsRedirection();
 
-        if (AppLocalization)
+        if (serviceCollectionOptions.AppLocalization)
         {
             // Multilingual configuration must be performed before route registration.
             app.UseAppLocalization();
@@ -198,7 +137,7 @@ public static class ServiceCollection
 
         app.UseEndpoints(endpoints =>
         {
-            if (SignalR)
+            if (serviceCollectionOptions.SignalR)
             {
                 //// Register the hub.
                 //endpoints.MapHub<ChatHub>("/hubs/chathub");

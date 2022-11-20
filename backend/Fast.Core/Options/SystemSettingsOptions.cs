@@ -11,6 +11,11 @@ public class SystemSettingsOptions
     public string ApiVersion { get; set; }
 
     /// <summary>
+    /// Web版本
+    /// </summary>
+    public string WebVersion { get; set; }
+
+    /// <summary>
     /// 最大请求Body Size
     /// </summary>
     public long MaxRequestBodySize { get; set; }

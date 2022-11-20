@@ -19,12 +19,16 @@ public static class ConfigurableOptions
     /// <param name="service"></param>
     public static void AddConfigurableOptions(this IServiceCollection service)
     {
+        // Service collection config.
+        GlobalContext.ServiceCollectionOptions = App.GetConfig<ServiceCollectionOptions>("ServiceCollection");
         // Database config.
         GlobalContext.ConnectionStringsOptions = App.GetConfig<ConnectionStringsOptions>("ConnectionStrings");
         // Cache config.
         GlobalContext.CacheOptions = App.GetConfig<CacheOptions>("Cache");
         // System config.
         GlobalContext.SystemSettingsOptions = App.GetConfig<SystemSettingsOptions>("SystemSettings");
+        // Copyright Info
+        GlobalContext.CopyrightInfoOptions = App.GetConfig<CopyrightInfoOptions>("CopyrightInfo");
         // Upload file config.
         GlobalContext.UploadFileOptions = App.GetConfig<UploadFileOptions>("UploadFile");
 

@@ -30,6 +30,8 @@
   "SystemSettings": {
     // 接口版本
     "ApiVersion": "v1.0.0",
+    // Web版本
+    "WebVersion": "v1.0.0",
     // 最大请求Body Size，单位是字节（byte） 1kb=1024byte,此处限制512MB
     "MaxRequestBodySize": 536870912,
     // 初始化数据库
@@ -40,6 +42,21 @@
     "Environment": "Development",
     // 演示环境请求禁止前缀
     "DemoEnvReqDisable": ["add", "edit", "delete", "export", "import"]
+  },
+  // 版权信息
+  "CopyrightInfo": {
+    // ICP备案编号
+    "ICPCode": "陇ICP备2020003856号-2",
+    // ICP备案Url
+    "ICPUrl": "http://beian.miit.gov.cn/?token=59bd618e-d4d5-4ed9-b5e7-a014213154e8",
+    // 公安备案编号
+    "PublicCode": "甘公网安备 62090202000505号",
+    // 公安备案Url
+    "PublicUrl": "http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=62090202000505",
+    // 版权信息
+    "CRCode": "Copyright © {0} Created by Fast.NET",
+    // 版权Url
+    "CRUrl": "https://gitee.com/Net-18K/fast.net"
   },
   "SnowId": {
     "WorkerId": "1" // 取值范围0~63,默认1

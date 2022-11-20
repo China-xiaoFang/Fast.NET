@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections;
+using System.Data;
+using System.Linq.Expressions;
 using System.Reflection;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.SqlSugar.Dto;
@@ -65,6 +67,70 @@ public static class Extension
         }
 
         return type.Name;
+    }
+
+    /// <summary>
+    /// 转为DataTable
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public static List<DataTable> ToDataTable<T>(this List<T> list)
+    {
+        var result = new List<DataTable>();
+
+        // 判断是否为空
+        if (list == null || !list.Any())
+            return result;
+
+        var type = typeof(T);
+        if (type.Name == "Object")
+        {
+            type = list[0].GetType();
+        }
+
+        // 获取所有属性
+        var properties = type.GetProperties();
+        foreach (var item in list)
+        {
+            var dataTable = new DataTable();
+
+            // 表名赋值
+            dataTable.TableName = type.GetSugarTableName();
+
+            var tempList = new ArrayList();
+
+            foreach (var property in properties)
+            {
+                var colType = property.PropertyType;
+                // 泛型
+                if (colType.IsGenericType && colType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    colType = colType.GetGenericArguments()[0];
+                }
+
+                // 获取Sugar列特性
+                var sugarColumn = property.GetCustomAttribute<SugarColumn>(false);
+
+                // 判断忽略列
+                if (sugarColumn?.IsIgnore == true)
+                {
+                    continue;
+                }
+
+                var columnName = sugarColumn?.ColumnName ?? property.Name;
+
+                dataTable.Columns.Add(columnName, colType);
+
+                tempList.Add(property.GetValue(item, null));
+            }
+
+            dataTable.LoadDataRow(tempList.ToArray(), true);
+
+            result.Add(dataTable);
+        }
+
+        return result;
     }
 
     /// <summary>

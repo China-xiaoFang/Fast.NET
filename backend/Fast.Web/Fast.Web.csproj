@@ -20,6 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Fast.Admin.Application\Fast.Admin.Application.csproj" />
 		<ProjectReference Include="..\Fast.Application\Fast.Application.csproj" />
 		<ProjectReference Include="..\Fast.Scheduler\Fast.Scheduler.csproj" />
 	</ItemGroup>
