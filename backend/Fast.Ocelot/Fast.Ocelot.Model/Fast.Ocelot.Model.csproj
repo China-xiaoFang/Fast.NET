@@ -15,4 +15,8 @@
 		<NoWarn>1701;1702;1591</NoWarn>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Fast.Core\Fast.Core\Fast.Core.csproj" />
+	</ItemGroup>
+
 </Project>

@@ -137,7 +137,7 @@ static class DataBaseHelper
         switch (dbType)
         {
             case DbType.MySql:
-                columnInfo.DataType = length == "MAX" ? "longtext" : $"varchar({length})";
+                columnInfo.DataType = length.ToLower() == "max" ? "longtext" : $"varchar({length})";
                 break;
             case DbType.SqlServer:
                 columnInfo.DataType = $"Nvarchar({length})";

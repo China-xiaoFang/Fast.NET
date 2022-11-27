@@ -17,6 +17,8 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Fast.Core\Fast.Core\Fast.Core.csproj" />
+	  <ProjectReference Include="..\Fast.Model\Fast.Model.csproj" />
+	  <ProjectReference Include="..\Fast.Ocelot\Fast.Ocelot.Model\Fast.Ocelot.Model.csproj" />
 	</ItemGroup>
 
 </Project>

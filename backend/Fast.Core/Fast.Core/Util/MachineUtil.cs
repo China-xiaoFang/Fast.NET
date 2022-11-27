@@ -65,14 +65,14 @@ public static class MachineUtil
         ////int Send, Received;
         ////while (true)
         ////{
-        ////    var tmp = networkInfo.GetInternetSpeed(1000);
-        ////    if (tmp.Send > 0 || tmp.Received > 0)
-        ////    {
-        ////        Send = tmp.Send;
-        ////        Received = tmp.Received;
-        ////        break;
-        ////    }
-        ////    Thread.Sleep(500);
+        ////   var tmp = networkInfo.GetInternetSpeed(1000);
+        ////   if (tmp.Send > 0 || tmp.Received > 0)
+        ////   {
+        ////       Send = tmp.Send;
+        ////       Received = tmp.Received;
+        ////       break;
+        ////   }
+        ////   Thread.Sleep(500);
         ////}
 
         return new
