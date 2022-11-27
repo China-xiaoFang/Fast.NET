@@ -5,9 +5,13 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Web", "Fast.Web\Fast.Web.csproj", "{3A455085-466D-4D29-963B-F26ED63BB948}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Iaas", "Fast.Iaas\Fast.Iaas.csproj", "{0C46AEEE-1C6A-491C-AFF0-A4F82A830989}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fast.Core", "Fast.Core", "{E7BD41DD-770D-403A-8D51-495AAE7662E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Core", "Fast.Core\Fast.Core.csproj", "{858860C2-F46E-41D0-A8CD-70D7BBFE1237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Iaas", "Fast.Core\Fast.Iaas\Fast.Iaas.csproj", "{0C46AEEE-1C6A-491C-AFF0-A4F82A830989}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Core", "Fast.Core\Fast.Core\Fast.Core.csproj", "{858860C2-F46E-41D0-A8CD-70D7BBFE1237}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Admin.Application", "Fast.Core\Fast.Admin.Application\Fast.Admin.Application.csproj", "{3D0854A7-A2DC-4C06-9FE8-257AD8F00DD2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Scheduler", "Fast.Scheduler\Fast.Scheduler.csproj", "{94F0C64A-26B3-4717-9AFF-1E197518932F}"
 EndProject
@@ -15,7 +19,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Application", "Fast.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Model", "Fast.Model\Fast.Model.csproj", "{C973229E-4D0B-4AA9-91C6-3E2D459C82E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Admin.Application", "Fast.Admin.Application\Fast.Admin.Application.csproj", "{3D0854A7-A2DC-4C06-9FE8-257AD8F00DD2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fast.Ocelot", "Fast.Ocelot", "{2599641C-8EA3-41F9-8687-7DAA8D4AD5DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Ocelot.Web", "Fast.Ocelot\Fast.Ocelot.Web\Fast.Ocelot.Web.csproj", "{ADD5F86F-D3E9-4A79-BF5B-C98665BD5C15}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Ocelot.Application", "Fast.Ocelot\Fast.Ocelot.Application\Fast.Ocelot.Application.csproj", "{E007527A-B745-46C8-85DF-DC0DD97D238D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Ocelot.Service", "Fast.Ocelot\Fast.Ocelot.Service\Fast.Ocelot.Service.csproj", "{0AA2BA69-B547-4886-A776-B6C52A87BE9B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Ocelot.Model", "Fast.Ocelot\Fast.Ocelot.Model\Fast.Ocelot.Model.csproj", "{FC75FA00-B90D-4DAF-8A8C-0A0C652C10A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,9 +63,34 @@ Global
 		{3D0854A7-A2DC-4C06-9FE8-257AD8F00DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D0854A7-A2DC-4C06-9FE8-257AD8F00DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D0854A7-A2DC-4C06-9FE8-257AD8F00DD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC75FA00-B90D-4DAF-8A8C-0A0C652C10A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC75FA00-B90D-4DAF-8A8C-0A0C652C10A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC75FA00-B90D-4DAF-8A8C-0A0C652C10A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC75FA00-B90D-4DAF-8A8C-0A0C652C10A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA2BA69-B547-4886-A776-B6C52A87BE9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA2BA69-B547-4886-A776-B6C52A87BE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA2BA69-B547-4886-A776-B6C52A87BE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA2BA69-B547-4886-A776-B6C52A87BE9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E007527A-B745-46C8-85DF-DC0DD97D238D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E007527A-B745-46C8-85DF-DC0DD97D238D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E007527A-B745-46C8-85DF-DC0DD97D238D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E007527A-B745-46C8-85DF-DC0DD97D238D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADD5F86F-D3E9-4A79-BF5B-C98665BD5C15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADD5F86F-D3E9-4A79-BF5B-C98665BD5C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADD5F86F-D3E9-4A79-BF5B-C98665BD5C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADD5F86F-D3E9-4A79-BF5B-C98665BD5C15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0C46AEEE-1C6A-491C-AFF0-A4F82A830989} = {E7BD41DD-770D-403A-8D51-495AAE7662E3}
+		{858860C2-F46E-41D0-A8CD-70D7BBFE1237} = {E7BD41DD-770D-403A-8D51-495AAE7662E3}
+		{3D0854A7-A2DC-4C06-9FE8-257AD8F00DD2} = {E7BD41DD-770D-403A-8D51-495AAE7662E3}
+		{FC75FA00-B90D-4DAF-8A8C-0A0C652C10A2} = {2599641C-8EA3-41F9-8687-7DAA8D4AD5DA}
+		{0AA2BA69-B547-4886-A776-B6C52A87BE9B} = {2599641C-8EA3-41F9-8687-7DAA8D4AD5DA}
+		{E007527A-B745-46C8-85DF-DC0DD97D238D} = {2599641C-8EA3-41F9-8687-7DAA8D4AD5DA}
+		{ADD5F86F-D3E9-4A79-BF5B-C98665BD5C15} = {2599641C-8EA3-41F9-8687-7DAA8D4AD5DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4261BB-E228-45EE-8B97-B915C19C8A4F}
