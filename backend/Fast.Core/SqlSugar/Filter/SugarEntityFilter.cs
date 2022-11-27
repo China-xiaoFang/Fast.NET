@@ -4,6 +4,7 @@ using Fast.Core.SqlSugar.BaseModel;
 using Fast.Core.SqlSugar.BaseModel.Interface;
 using Fast.Core.SqlSugar.Const;
 using Fast.Core.SqlSugar.Helper;
+using Furion.Logging;
 using Microsoft.Extensions.Hosting;
 using Yitter.IdGenerator;
 using SystemDbType = System.Data.DbType;
@@ -51,12 +52,47 @@ static class SugarEntityFilter
 
                 App.PrintToMiniProfiler("SqlSugar", "Info", ParameterFormat(sql, pars));
                 Console.WriteLine($"\r\n\r\n{ParameterFormat(sql, pars)}\r\nTime：{_db.Ado.SqlExecutionTime}");
+
+                // 执行时间判断
+                if (_db.Ado.SqlExecutionTime.TotalSeconds > GlobalContext.SystemSettingsOptions.SugarSqlExecMaxSeconds)
+                {
+                    // 代码CS文件名称
+                    var fileName = _db.Ado.SqlStackTrace.FirstFileName;
+                    // 代码行数
+                    var fileLine = _db.Ado.SqlStackTrace.FirstLine;
+                    // 方法名称
+                    var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
+                    // 消息
+                    var message =
+                        $"Sql执行时间超过 {GlobalContext.SystemSettingsOptions.SugarSqlExecMaxSeconds} 秒，建议优化。\r\nFileName：{fileName}\r\nFileLine：{fileLine}\r\nFirstMethodName：{firstMethodName}\r\nSql：{ParameterFormat(sql, pars)}\r\nSqlExecutionTime：{_db.Ado.SqlExecutionTime}";
+
+                    // 控制台输出
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"\r\n\r\n{message}");
+
+                    // 写日志文件
+                    Log.Warning(message);
+                }
             };
 
             _db.Aop.OnError = exp =>
             {
+                // 代码CS文件名称
+                var fileName = _db.Ado.SqlStackTrace.FirstFileName;
+                // 代码行数
+                var fileLine = _db.Ado.SqlStackTrace.FirstLine;
+                // 方法名称
+                var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
+                // 消息
+                var message =
+                    $"Sql 执行异常\r\nFileName：{fileName}\r\nFileLine：{fileLine}\r\nFirstMethodName：{firstMethodName}\r\nSql：{ParameterFormat(exp.Sql, exp.Parametres)}";
+
+                // 控制台输出
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"\r\n\r\n错误 Sql语句：{ParameterFormat(exp.Sql, exp.Parametres)}");
+                Console.WriteLine($"\r\n\r\n{message}");
+
+                // 写日志文件
+                Log.Error(message);
             };
         }
 

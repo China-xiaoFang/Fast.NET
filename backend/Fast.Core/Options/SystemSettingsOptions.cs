@@ -39,4 +39,9 @@ public class SystemSettingsOptions
     /// 演示环境请求禁止前缀
     /// </summary>
     public List<HttpRequestPrefixEnum> DemoEnvReqDisable { get; set; }
+
+    /// <summary>
+    /// SqlSugar Sql执行最大秒数，如果超过记录警告日志
+    /// </summary>
+    public double SugarSqlExecMaxSeconds { get; set; }
 }
