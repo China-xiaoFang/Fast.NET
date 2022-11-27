@@ -147,6 +147,9 @@
   <data name="演示环境，禁止操作！" xml:space="preserve">
     <value>Demo environment, do not operate!</value>
   </data>
+  <data name="租户WebUrl必须是Https协议！" xml:space="preserve">
+    <value>Tenant WebUrl must be Https!</value>
+  </data>
   <data name="租户信息不存在！" xml:space="preserve">
     <value>Tenant information does not exist!</value>
   </data>

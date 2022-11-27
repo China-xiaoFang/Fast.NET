@@ -21,26 +21,26 @@ public class OcelotRoute : BaseEntity
     /// <summary>
     /// 下游的路由模板，即真实处理请求的路径模板 
     ///</summary>
-    [SugarColumn(ColumnDescription = "下游的路由模板，即真实处理请求的路径模板", ColumnDataType = "Nvarchar(MAX)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "下游的路由模板，即真实处理请求的路径模板", ColumnDataType = "Nvarchar(max)", IsNullable = false)]
     public string DownstreamPathTemplate { get; set; }
 
     /// <summary>
     /// 上游请求的模板，即用户真实请求的链接 
     ///</summary>
-    [SugarColumn(ColumnDescription = "上游请求的模板，即用户真实请求的链接", ColumnDataType = "Nvarchar(MAX)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "上游请求的模板，即用户真实请求的链接", ColumnDataType = "Nvarchar(max)", IsNullable = false)]
     public string UpstreamPathTemplate { get; set; }
 
     /// <summary>
     /// 上游请求的http方法（数组：GET、POST、PUT） 
     ///</summary>
-    [SugarColumn(ColumnDescription = "上游请求的http方法（数组：GET、POST、PUT）", ColumnDataType = "Nvarchar(MAX)", IsNullable = false,
+    [SugarColumn(ColumnDescription = "上游请求的http方法（数组：GET、POST、PUT）", ColumnDataType = "Nvarchar(max)", IsNullable = false,
         IsJson = true)]
     public List<string> UpstreamHttpMethod { get; set; }
 
     /// <summary>
     /// 下游请求的http方法（数组：GET、POST、PUT） 
     ///</summary>
-    [SugarColumn(ColumnDescription = "下游请求的http方法（数组：GET、POST、PUT）", ColumnDataType = "Nvarchar(MAX)", IsNullable = false,
+    [SugarColumn(ColumnDescription = "下游请求的http方法（数组：GET、POST、PUT）", ColumnDataType = "Nvarchar(max)", IsNullable = false,
         IsJson = true)]
     public List<string> DownstreamHttpMethod { get; set; }
 
@@ -239,13 +239,13 @@ public class OcelotRoute : BaseEntity
     /// <summary>
     /// Ip允许列表
     ///</summary>
-    [SugarColumn(ColumnDescription = "Ip允许列表", ColumnDataType = "Nvarchar(MAX)", IsNullable = false, IsJson = true)]
+    [SugarColumn(ColumnDescription = "Ip允许列表", ColumnDataType = "Nvarchar(max)", IsNullable = false, IsJson = true)]
     public string SecurityIpAllowedList { get; set; }
 
     /// <summary>
     /// Ip屏蔽列表
     ///</summary>
-    [SugarColumn(ColumnDescription = "Ip屏蔽列表", ColumnDataType = "Nvarchar(MAX)", IsNullable = false, IsJson = true)]
+    [SugarColumn(ColumnDescription = "Ip屏蔽列表", ColumnDataType = "Nvarchar(max)", IsNullable = false, IsJson = true)]
     public string SecurityIpBlockedList { get; set; }
 
     /// <summary>

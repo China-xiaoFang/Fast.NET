@@ -41,7 +41,7 @@
     // 系统环境
     "Environment": "Development",
     // 演示环境请求禁止前缀
-    "DemoEnvReqDisable": [ "add", "edit", "delete", "export", "import" ],
+    "DemoEnvReqDisable": ["add", "edit", "delete", "export", "import"],
     // SqlSugar Sql执行最大秒数，如果超过记录警告日志
     "SugarSqlExecMaxSeconds": 30
   },
@@ -65,7 +65,7 @@
   },
   // 如果前端不代理的话，又是Axios请求的话，需要添加以下代码
   "CorsAccessorSettings": {
-    "WithExposedHeaders": [ "Content-Disposition" ]
+    "WithExposedHeaders": ["Content-Disposition"]
   },
   "JWTSettings": {
     "ValidateIssuerSigningKey": true, // 是否验证密钥，bool 类型，默认true
@@ -80,11 +80,11 @@
   },
   // 异常配置
   "FriendlyExceptionSettings": {
-    "HideErrorCode": true // 隐藏错误码
+    "HideErrorCode": false // 隐藏错误码
   },
   // 多语言
   "LocalizationSettings": {
-    "SupportedCultures": [ "zh-CN", "en-US" ], // 配置支持的语言列表
+    "SupportedCultures": ["zh-CN", "en-US"], // 配置支持的语言列表
     "DefaultCulture": "zh-CN", // 配置默认语言，如果不配置，取 SupportedCultures 的第一项
     "LanguageFilePrefix": "Lang",
     "AssemblyName": "Fast.Core"
@@ -94,13 +94,13 @@
     "Avatar": {
       "path": "Upload/Avatar",
       "maxSize": 1048576,
-      "contentType": [ "image/jpg", "image/png", "image/jpeg", "image/gif" ]
+      "contentType": ["image/jpg", "image/png", "image/jpeg", "image/gif"]
     },
     // 富文本
     "Editor": {
       "path": "Upload/Editor",
       "maxSize": 1048576,
-      "contentType": [ "image/jpg", "image/png", "image/jpeg", "image/gif" ]
+      "contentType": ["image/jpg", "image/png", "image/jpeg", "image/gif"]
     },
     // 默认
     "Default": {
@@ -128,7 +128,8 @@
       {
         "Group": "Default",
         "Title": "Fast.NET通用权限管理平台",
-        "Description": "前后端分离架构，开箱即用，紧随前沿技术。<br/>作者By 1.8K 仔<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
+        "Description":
+          "前后端分离架构，开箱即用，紧随前沿技术。<br/>作者By 1.8K 仔<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
         "Version": "1.0.0"
       }
     ]

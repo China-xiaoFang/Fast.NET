@@ -62,6 +62,6 @@ public class TenFileModel : BaseEntity
     /// <summary>
     /// 图片缩略图
     /// </summary>
-    [SugarColumn(ColumnDescription = "文件下载路径", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "文件下载路径", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
     public string Thumbnail { get; set; }
 }

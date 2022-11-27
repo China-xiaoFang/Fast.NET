@@ -38,7 +38,7 @@ public class GlobalContext
                 }
 
                 // 获取请求头中的站点Url
-                var headersWebUrl = App.HttpContext.Request.Headers[ClaimConst.Origin].ParseToString();
+                var headersWebUrl = OriginUrl;
                 if (!headersWebUrl.IsEmpty())
                 {
                     var tenantInfo = App.GetService<ISysTenantService>().GetAllTenantInfo(wh => wh.WebUrl.Contains(headersWebUrl))
@@ -75,6 +75,11 @@ public class GlobalContext
     /// 当前用户名称
     /// </summary>
     public static string UserName => (App.User?.FindFirst(ClaimConst.Name)?.Value).ParseToString();
+
+    /// <summary>
+    /// 请求来源Url
+    /// </summary>
+    public static string OriginUrl => App.HttpContext.Request.Headers[ClaimConst.Origin].ParseToString();
 
     /// <summary>
     /// 是否超级管理员

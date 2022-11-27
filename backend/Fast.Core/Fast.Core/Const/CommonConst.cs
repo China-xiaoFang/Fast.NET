@@ -39,5 +39,20 @@ public class CommonConst
         /// 中文
         /// </summary>
         public const string Chinese = "^[\u4e00-\u9fa5]{0,}$";
+
+        /// <summary>
+        /// Http地址判断
+        /// </summary>
+        public const string HttpUrl = "/(http):\\/\\/([\\w.]+\\/?)\\S*/";
+
+        /// <summary>
+        /// Https地址判断
+        /// </summary>
+        public const string HttpsUrl = "/(https):\\/\\/([\\w.]+\\/?)\\S*/";
+
+        /// <summary>
+        /// Http或者Https地址判断
+        /// </summary>
+        public const string HttpOrHttpsUrl = "/(http|https):\\/\\/([\\w.]+\\/?)\\S*/";
     }
 }

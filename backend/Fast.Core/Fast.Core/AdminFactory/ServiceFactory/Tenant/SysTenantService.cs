@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Basis;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
@@ -13,6 +14,7 @@ using Furion.DataEncryption;
 using Furion.DependencyInjection;
 using Furion.FriendlyException;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace Fast.Core.AdminFactory.ServiceFactory.Tenant;
 
@@ -47,8 +49,8 @@ public class SysTenantService : ISysTenantService, ITransient
             return predicate == null ? tenantList : tenantList.Where(predicate.Compile()).ToList();
 
         // 获取租户基本信息
-        tenantList = await _repository.Context.Queryable<SysTenantModel>().WhereIF(predicate != null, predicate)
-            .Includes(app => app.AppList).Includes(db => db.DataBaseList).ToListAsync();
+        tenantList = await _repository.Context.Queryable<SysTenantModel>().Includes(app => app.AppList)
+            .Includes(db => db.DataBaseList).ToListAsync();
         // 获取租户两个管理员信息
         // 注：这里如果租户过多的话可能存在卡顿
         foreach (var tenant in tenantList)
@@ -75,12 +77,35 @@ public class SysTenantService : ISysTenantService, ITransient
     public async Task<PageResult<TenantOutput>> QueryTenantPageList(QueryTenantInput input)
     {
         return await _repository.Where(wh => wh.TenantType != TenantTypeEnum.System)
-            .WhereIF(!input.Name.IsEmpty(), wh => wh.Name.Contains(input.Name))
-            .WhereIF(!input.ShortName.IsEmpty(), wh => wh.ShortName.Contains(input.ShortName))
+            .WhereIF(!input.Name.IsEmpty(), wh => wh.ChName.Contains(input.Name))
+            .WhereIF(!input.ShortName.IsEmpty(), wh => wh.ChShortName.Contains(input.ShortName))
             .WhereIF(!input.AdminName.IsEmpty(), wh => wh.AdminName.Contains(input.AdminName))
             .WhereIF(!input.Phone.IsEmpty(), wh => wh.Phone.Contains(input.Phone)).OrderBy(ob => ob.CreatedTime)
             .OrderByIF(input.IsOrderBy, input.OrderByStr).Select<TenantOutput>().ToXnPagedListAsync(input.PageNo, input.PageSize);
     }
+
+    /// <summary>
+    /// Web站点初始化
+    /// </summary>
+    /// <returns></returns>
+    public async Task<WebSiteInitOutput> WebSiteInit()
+    {
+        // webUel
+        var webUrl = GlobalContext.OriginUrl;
+
+        // 根据主机Host判断，是否存在该租户
+        var tenantList = await GetAllTenantInfo(wh => wh.WebUrl.Contains(webUrl));
+
+        if (tenantList is not {Count: > 0})
+            throw Oops.Bah(ErrorCode.TenantNotExistError);
+
+        // 获取第一个
+        var tenantInfo = tenantList[0];
+
+        return tenantInfo.Adapt<WebSiteInitOutput>();
+    }
+
+    #region 租户操作
 
     /// <summary>
     /// 添加租户
@@ -89,9 +114,23 @@ public class SysTenantService : ISysTenantService, ITransient
     /// <returns></returns>
     public async Task AddTenant(AddTenantInput input)
     {
+        // WebUrl，必须是Https
+        if (!App.WebHostEnvironment.IsDevelopment())
+        {
+            if (input.WebUrl.Any(url => !Regex.IsMatch(url, CommonConst.RegexStr.HttpsUrl)))
+            {
+                throw Oops.Bah(ErrorCode.TenantWebUrlHttpsError);
+            }
+        }
+
         // 判断租户信息是否存在
-        if (await _repository.AnyAsync(wh => wh.Name == input.Name || wh.ShortName == input.ShortName || wh.Email == input.Email))
+        if (await _repository.AnyAsync(wh =>
+                wh.ChName == input.Name || wh.ChShortName == input.ShortName || wh.Email == input.Email))
             throw Oops.Bah(ErrorCode.TenantRepeatError);
+
+        // 判断租户的WebUrl是否存在
+        if (await _repository.AnyAsync(wh => SqlFunc.ContainsArray(wh.WebUrl, input.WebUrl)))
+            throw Oops.Bah(ErrorCode.TenantWebUrlRepeatError);
 
         var model = input.Adapt<SysTenantModel>();
         model.Secret = StringUtil.GetGuid();
@@ -171,7 +210,7 @@ public class SysTenantService : ISysTenantService, ITransient
         {
             ParentId = 0,
             ParentIds = new List<long> {0},
-            Name = newTenant.Name,
+            Name = newTenant.ChName,
             Code = "org_hq",
             Contacts = newTenant.AdminName,
             Tel = newTenant.Phone
@@ -277,4 +316,6 @@ public class SysTenantService : ISysTenantService, ITransient
             throw;
         }
     }
+
+    #endregion
 }

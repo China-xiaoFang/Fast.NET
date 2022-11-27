@@ -13,29 +13,29 @@ namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 public class SysTenantModel : BaseEntity
 {
     /// <summary>
-    /// 租户公司名称
+    /// 租户公司中文名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户公司名称", ColumnDataType = "Nvarchar(50)", IsNullable = false,
-        UniqueGroupNameList = new[] {nameof(Name)})]
-    public string Name { get; set; }
+    [SugarColumn(ColumnDescription = "租户公司中文名称", ColumnDataType = "Nvarchar(50)", IsNullable = false,
+        UniqueGroupNameList = new[] {nameof(ChName)})]
+    public string ChName { get; set; }
 
     /// <summary>
-    /// 租户公司名称（拼音）
+    /// 租户公司英文名称（拼音）
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户公司名称（拼音）", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string NamePinYin { get; set; }
+    [SugarColumn(ColumnDescription = "租户公司英文名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string EnName { get; set; }
 
     /// <summary>
-    /// 租户公司简称
+    /// 租户公司中文简称
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户公司简称", ColumnDataType = "Nvarchar(30)", IsNullable = false)]
-    public string ShortName { get; set; }
+    [SugarColumn(ColumnDescription = "租户公司中文简称", ColumnDataType = "Nvarchar(30)", IsNullable = false)]
+    public string ChShortName { get; set; }
 
     /// <summary>
-    /// 租户公司简称（拼音）
+    /// 租户公司英文简称
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户公司简称（拼音）", ColumnDataType = "Nvarchar(30)", IsNullable = false)]
-    public string ShortNamePinYin { get; set; }
+    [SugarColumn(ColumnDescription = "租户公司英文简称", ColumnDataType = "Nvarchar(30)", IsNullable = false)]
+    public string EnShortName { get; set; }
 
     /// <summary>
     /// 租户密钥

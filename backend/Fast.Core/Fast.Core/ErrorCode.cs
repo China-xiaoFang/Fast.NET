@@ -85,4 +85,10 @@ public enum ErrorCode
     /// </summary>
     [ErrorCodeItemMetadata("接口请求过于频繁，请稍后再试！")]
     ApiLimitError,
+
+    /// <summary>
+    /// 租户WebUrl必须是Https协议！
+    /// </summary>
+    [ErrorCodeItemMetadata("租户WebUrl必须是Https协议！")]
+    TenantWebUrlHttpsError,
 }

@@ -26,6 +26,12 @@ public interface ISysTenantService
     Task<PageResult<TenantOutput>> QueryTenantPageList([FromQuery] QueryTenantInput input);
 
     /// <summary>
+    /// Web站点初始化
+    /// </summary>
+    /// <returns></returns>
+    Task<WebSiteInitOutput> WebSiteInit();
+
+    /// <summary>
     /// 添加租户
     /// </summary>
     /// <param name="input"></param>

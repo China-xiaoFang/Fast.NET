@@ -80,7 +80,7 @@
   },
   // 异常配置
   "FriendlyExceptionSettings": {
-    "HideErrorCode": true // 隐藏错误码
+    "HideErrorCode": false // 隐藏错误码
   },
   // 多语言
   "LocalizationSettings": {
