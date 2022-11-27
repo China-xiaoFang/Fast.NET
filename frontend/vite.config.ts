@@ -102,7 +102,7 @@ export default ({ mode }) => {
 			vue({
 				script: {
 					// 开启ref转换
-					refTransform: true,
+					// refTransform: true,
 				},
 			}),
 			vueSetupExtend(),

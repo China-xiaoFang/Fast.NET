@@ -1,22 +1,57 @@
-// 统一的请求发送
+/**
+ * 客户端请求Axios处理
+ * 所有的请求统一走此处
+ */
+
 import axios from "axios";
 import { Modal, message, notification } from "ant-design-vue";
 import sysConfig from "@/config/index";
 import tool from "@/utils/tool";
 
+// 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
+declare module "axios" {
+	interface AxiosResponse<T = any> {
+		/**
+		 * Code 状态码
+		 */
+		code: number;
+		/**
+		 * 是否成功
+		 */
+		success: boolean;
+		/**
+		 * 数据
+		 */
+		data: T;
+		/**
+		 * 消息
+		 */
+		message: string;
+		/**
+		 * 附加数据
+		 */
+		extras: any;
+		/**
+		 * 时间戳
+		 */
+		timestamp: number;
+	}
+	export function create(config?: AxiosRequestConfig): AxiosInstance;
+}
+
 // 以下这些code需要重新登录
-const reloadCodes = [401, 1011007, 1011008];
+const reloadCodes = [401];
 const errorCodeMap = {
 	400: "发出的请求有错误，服务器没有进行新建或修改数据的操作。",
 	401: "用户没有权限（令牌、用户名、密码错误）。",
 	403: "用户得到授权，但是访问是被禁止的。",
-	404: "发出的请求针对的是不存在的记录，服务器没有进行操作。",
+	404: "The requested resource does not exist（请求的资源不存在）",
 	406: "请求的格式不可得。",
 	410: "请求的资源被永久删除，且不会再得到的。",
 	422: "当创建一个对象时，发生一个验证错误。",
-	500: "服务器发生错误，请检查服务器。",
+	500: "Internal Server Error（服务器内部错误）",
 	502: "网关错误。",
-	503: "服务不可用，服务器暂时过载或维护。",
+	503: "Service unavailable, server temporarily overloaded or maintained（服务不可用，服务器暂时过载或维护）",
 	504: "网关超时。",
 };
 // 定义一个重新登录弹出窗的变量
@@ -30,7 +65,7 @@ const service = axios.create({
 // HTTP request 拦截器
 service.interceptors.request.use(
 	(config) => {
-		const token = tool.data.get("TOKEN");
+		const token = tool.cache.get("TOKEN");
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] =
 				sysConfig.TOKEN_PREFIX + token;
@@ -39,6 +74,8 @@ service.interceptors.request.use(
 			config.params = config.params || {};
 			config.params._ = new Date().getTime();
 		}
+		// 带上来源
+		config.headers[sysConfig.ORIGIN_NAME] = window.location.origin;
 		Object.assign(config.headers, sysConfig.HEADERS);
 		return config;
 	},
@@ -56,10 +93,10 @@ const error = () => {
 		content: "登录已失效， 请重新登录",
 		onOk: () => {
 			loginBack.value = false;
-			tool.data.remove("TOKEN");
-			tool.data.remove("USER_INFO");
-			tool.data.remove("MENU");
-			tool.data.remove("PERMISSIONS");
+			tool.cache.remove("TOKEN");
+			tool.cache.remove("USER_INFO");
+			tool.cache.remove("MENU");
+			tool.cache.remove("PERMISSIONS");
 			window.location.reload();
 		},
 	});
@@ -86,16 +123,8 @@ service.interceptors.response.use(
 			return;
 		}
 		if (code !== 200) {
-			const customErrorMessage = response.config.customErrorMessage;
-			message.error(customErrorMessage || data.msg);
+			message.error(data.message);
 			return Promise.reject(data);
-			// 自定义错误提示，覆盖后端返回的message
-			// 使用示例：
-			// export function customerList (data) {
-			//   return request('list', data, 'get', {
-			//     customErrorMessage: '自定义错误消息提示'
-			//   });
-			// }
 		} else {
 			// 统一成功提示
 			const responseUrl = response.config.url;
@@ -124,7 +153,7 @@ service.interceptors.response.use(
 				}
 			});
 		}
-		return Promise.resolve(data.data);
+		return Promise.resolve(data);
 	},
 	(error) => {
 		if (error) {
@@ -139,12 +168,32 @@ service.interceptors.response.use(
 	}
 );
 
-export const baseRequest = (url, value = {}, method = "post", options = {}) => {
+/**
+ * 基础请求
+ * @param url
+ * @param value
+ * @param method get post put delete
+ * @param options
+ * @returns
+ */
+export const baseRequest = (
+	url: string,
+	value: any = {},
+	method: string,
+	options: any = {}
+) => {
 	url = sysConfig.API_URL + url;
 	if (method === "post") {
 		return service.post(url, value, options);
 	} else if (method === "get") {
 		return service.get(url, {
+			params: value,
+			...options,
+		});
+	} else if (method === "put") {
+		return service.put(url, value, options);
+	} else if (method === "delete") {
+		return service.delete(url, {
 			params: value,
 			...options,
 		});
