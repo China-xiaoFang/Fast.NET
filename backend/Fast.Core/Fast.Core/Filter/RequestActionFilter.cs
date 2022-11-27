@@ -68,7 +68,7 @@ public class RequestActionFilter : IAsyncActionFilter
 
         // 接口限流
         var requestLimitContext =
-            await OnActionRequestLimitAsync(httpRequest, actionDescriptor, requestParam, tenantId, userId, wanInfo.Ip);
+            await OnActionRequestLimitAsync(context.HttpContext.Response,httpRequest, actionDescriptor, requestParam, tenantId, userId, wanInfo.Ip);
 
         var sw = new Stopwatch();
         sw.Start();
@@ -95,7 +95,7 @@ public class RequestActionFilter : IAsyncActionFilter
     /// <summary>
     /// 请求限制
     /// </summary>
-    private async Task<RequestLimitContext> OnActionRequestLimitAsync(HttpRequest httpRequest, ActionDescriptor actionDescriptor,
+    private async Task<RequestLimitContext> OnActionRequestLimitAsync(HttpResponse httpResponse,HttpRequest httpRequest, ActionDescriptor actionDescriptor,
         IDictionary<string, object> requestParam, long tenantId, long userId, string ip)
     {
         // 是否被允许访问
@@ -160,11 +160,13 @@ public class RequestActionFilter : IAsyncActionFilter
         // 检查接口限流
         isAllowed = await _requestLimitFilter.InvokeAsync(requestLimitContext);
 
-        if (!isAllowed)
-            // 抛出StatusCode为429的异常
-            throw Oops.Oh(ErrorCode.ApiLimitError).StatusCode(429);
+        if (isAllowed)
+            return requestLimitContext;
 
-        return requestLimitContext;
+        // 抛出StatusCode为429的异常
+        httpResponse.StatusCode = StatusCodes.Status429TooManyRequests;
+        throw Oops.Bah(ErrorCode.ApiLimitError);
+
     }
 
     /// <summary>
