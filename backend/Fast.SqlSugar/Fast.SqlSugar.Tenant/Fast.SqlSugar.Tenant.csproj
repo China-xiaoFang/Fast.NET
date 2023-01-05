@@ -4,7 +4,17 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<VersionPrefix>1.0.0</VersionPrefix>
+		<AssemblyName>Fast.SqlSugar.Tenant</AssemblyName>
+		<PackageProjectUrl>https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.SqlSugar/Fast.SqlSugar.Tenant</PackageProjectUrl>
+		<PackageIcon>Fast.png</PackageIcon>
+		<Authors>1.8K仔</Authors>
+		<Description>基于SqlSugar扩展的多租户版本和单体版本的Orm扩展包，让.NET 开发更简单，更快捷，更容易。</Description>
+		<RepositoryUrl>https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.SqlSugar/Fast.SqlSugar.Tenant</RepositoryUrl>
+		<RepositoryType>Gitee</RepositoryType>
+		<PackageReleaseNotes>添加租户版本的SqlSugar扩展，仓储扩展方法待优化</PackageReleaseNotes>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
@@ -25,6 +35,13 @@
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.24" />
 		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Fast.png">
+	    <PackagePath>\</PackagePath>
+	    <Pack>True</Pack>
+	  </None>
 	</ItemGroup>
 
 </Project>
