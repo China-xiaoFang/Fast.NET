@@ -1,0 +1,89 @@
+﻿using System.ComponentModel;
+using System.Reflection;
+using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel;
+using Fast.SqlSugar.Tenant.BaseModel.Interface;
+using Fast.SqlSugar.Tenant.Internal.Dto;
+using Fast.SqlSugar.Tenant.Internal.Enum;
+using SqlSugar;
+
+namespace Fast.SqlSugar.Tenant.Helper;
+
+/// <summary>
+/// 实体类帮助类
+/// </summary>
+public static class EntityHelper
+{
+    /// <summary>
+    /// 缓存 Entity 类型
+    /// </summary>
+    private static List<SugarEntityTypeInfo> _cacheEntityTypeList { get; set; }
+
+    /// <summary>
+    /// 清空缓存 Entity 类型
+    /// </summary>
+    public static void ClearCacheEntityType()
+    {
+        _cacheEntityTypeList = null;
+    }
+
+    /// <summary>
+    /// 反射获取所有的数据库Model Type
+    /// </summary>
+    /// <returns></returns>
+    public static List<SugarEntityTypeInfo> ReflexGetAllTEntityList()
+    {
+        var excludeBaseTypes = new List<Type>
+        {
+            typeof(IDbEntity),
+            typeof(IBaseEntity),
+            typeof(IBaseLogEntity),
+            typeof(IBaseTenant),
+            typeof(IdentityEntity),
+            typeof(BaseEntity),
+            typeof(BaseTenant),
+            typeof(BaseTEntity),
+            typeof(PrimaryKeyEntity),
+        };
+
+        // 先从缓存获取
+        var entityTypeList = _cacheEntityTypeList;
+        if (entityTypeList != null && entityTypeList.Any())
+            return entityTypeList;
+
+        // 获取所有实现了接口的类的类型
+        var types = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(sl => sl.GetTypes().Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity))))
+            // 排除BaseEntity
+            .Where(wh => !excludeBaseTypes.Contains(wh));
+
+        // 遍历获取到的类型集合
+        entityTypeList = (from type in types
+            let dbTypeAttribute = type.GetCustomAttribute<SugarDbTypeAttribute>(true)
+            let dbType = dbTypeAttribute?.DbType ?? SugarDbTypeEnum.Tenant.GetHashCode()
+            let dbTypeName =
+                dbTypeAttribute?.DbTypeName ?? SugarDbTypeEnum.Tenant.GetType().GetMember(SugarDbTypeEnum.Tenant.ToString())
+                    .FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()?.Description
+            select new SugarEntityTypeInfo(type.Name, dbType, dbTypeName, type)).ToList();
+        // 放入缓存
+        _cacheEntityTypeList = entityTypeList;
+
+        return entityTypeList;
+    }
+
+    /// <summary>
+    /// 反射获取所有的数据库Model
+    /// </summary>
+    /// <returns></returns>
+    public static SugarEntityTypeInfo ReflexGetAllTEntity(string name)
+    {
+        var entityType = ReflexGetAllTEntityList().FirstOrDefault(f => f.ClassName == name);
+        if (entityType == null)
+        {
+            // SqlSugar配置错误，请检查 Model 是否继承了接口！
+            throw new SqlSugarException("SqlSugar config error, please Check whether the Model inherits the interface!");
+        }
+
+        return entityType;
+    }
+}

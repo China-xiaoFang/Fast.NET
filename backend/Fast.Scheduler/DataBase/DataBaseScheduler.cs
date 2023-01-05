@@ -83,16 +83,16 @@ public class DataBaseJobWorker : ISpareTimeWorker
             var superAdminTenantInfo = new SysTenantModel
             {
                 Id = ClaimConst.DefaultSuperAdminTenantId,
-                Name = "Fast.NET",
-                NamePinYin = "FastNet",
-                ShortName = "Fast",
-                ShortNamePinYin = "Fast",
+                ChName = "Fast.NET",
+                EnName = "Fast.Net",
+                ChShortName = "Fast",
+                EnShortName = "Fast",
                 Secret = StringUtil.GetGuid(),
                 AdminName = "租户管理员",
                 Email = "email@gmail.com",
                 Phone = "15288888888",
                 TenantType = TenantTypeEnum.System,
-                WebUrl = new List<string> {"http:fast.18kboy.icu", "http:127.0.0.1:8080"},
+                WebUrl = new List<string> {"http://fast.18kboy.icu", "http://127.0.0.1:2001"},
                 LogoUrl = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logo.png"
             };
             superAdminTenantInfo = await _db.Insertable(superAdminTenantInfo).ExecuteReturnEntityAsync();
@@ -102,7 +102,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             {
                 ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
                 Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
-                DbName = $"Fast.Main_{superAdminTenantInfo.ShortNamePinYin}",
+                DbName = $"Fast.Main_{superAdminTenantInfo.EnShortName}",
                 DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
                 DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
                 SysDbType = SysDataBaseTypeEnum.Tenant,

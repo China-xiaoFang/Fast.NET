@@ -9,7 +9,7 @@
 		// 允许在JS文件中报错，通常与allowJS一起使用
 		"checkJs": true,
 		// 指定编译后代码使用的模块化规范。
-		"module": "ES6",
+		"module": "ES2022",
 		// 指定ECMAScript目标版本
 		"target": "ES6",
 		// 模块解析策略，ts默认用node的解析策略，即相对的方式导入
