@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Fast.SqlSugar.Tenant": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:63566;http://localhost:63567"
+    }
+  }
+}
