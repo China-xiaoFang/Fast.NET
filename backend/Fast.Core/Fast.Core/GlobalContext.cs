@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel;
 using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
-using Fast.Core.Cache.Options;
-using Fast.Core.Options;
-using Fast.Core.SqlSugar.Options;
-using Furion.FriendlyException;
+using Fast.Core.Internal.Options;
+using Fast.Core.ServiceCollection.Cache.Options;
+using Fast.SqlSugar.Tenant;
 
 namespace Fast.Core;
 
@@ -59,7 +57,11 @@ public class GlobalContext
     /// 根据业务自定义设置的租户Id
     /// 请谨慎使用
     /// </summary>
-    public static long OtherTenantId { get; set; }
+    public static long CustomTenantId
+    {
+        get => SugarContext.CustomTenantId;
+        set => SugarContext.CustomTenantId = value;
+    }
 
     /// <summary>
     /// 当前用户Id
@@ -156,31 +158,8 @@ public class GlobalContext
     /// <returns></returns>
     public static long GetTenantId(bool isThrow = true)
     {
-        if (!TenantId.IsNullOrZero())
-        {
-            return TenantId;
-        }
-
-        if (!OtherTenantId.IsNullOrZero())
-        {
-            return OtherTenantId;
-        }
-
-        if (isThrow)
-            throw Oops.Oh(ErrorCode.TenantSysError);
-
-        return 0;
+        return SugarContext.GetTenantId(isThrow);
     }
-
-    /// <summary>
-    /// 租户库Db Info
-    /// </summary>
-    public static SysTenantDataBaseModel TenantDbInfo { get; set; }
-
-    /// <summary>
-    /// 数据库配置
-    /// </summary>
-    public static ConnectionStringsOptions ConnectionStringsOptions { get; set; }
 
     /// <summary>
     /// 缓存配置

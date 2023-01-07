@@ -46,8 +46,7 @@ public class SugarDbTypeAttribute : Attribute
     /// Sugar数据库类型特征，区分是那个数据库，默认是Default库（0）
     /// </summary>
     /// <param name="dbType">数据库类型（SugarDbTypeEnum类型）</param>
-    /// <param name="dbTypeName">数据库类型名称</param>
-    public SugarDbTypeAttribute(SugarDbTypeEnum dbType, string dbTypeName = null)
+    public SugarDbTypeAttribute(SugarDbTypeEnum dbType)
     {
         DbType = dbType.GetHashCode();
         DbTypeName = dbType.GetType().GetMember(SugarDbTypeEnum.Default.ToString() ?? string.Empty).FirstOrDefault()

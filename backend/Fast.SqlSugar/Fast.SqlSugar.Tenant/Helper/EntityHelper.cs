@@ -60,9 +60,9 @@ public static class EntityHelper
         // 遍历获取到的类型集合
         entityTypeList = (from type in types
             let dbTypeAttribute = type.GetCustomAttribute<SugarDbTypeAttribute>(true)
-            let dbType = dbTypeAttribute?.DbType ?? SugarDbTypeEnum.Tenant.GetHashCode()
+            let dbType = dbTypeAttribute?.DbType ?? SugarDbTypeEnum.Default.GetHashCode()
             let dbTypeName =
-                dbTypeAttribute?.DbTypeName ?? SugarDbTypeEnum.Tenant.GetType().GetMember(SugarDbTypeEnum.Tenant.ToString())
+                dbTypeAttribute?.DbTypeName ?? SugarDbTypeEnum.Default.GetType().GetMember(SugarDbTypeEnum.Default.ToString())
                     .FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()?.Description
             select new SugarEntityTypeInfo(type.Name, dbType, dbTypeName, type)).ToList();
         // 放入缓存

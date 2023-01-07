@@ -1,6 +1,5 @@
 ﻿using Fast.SqlSugar.Tenant.AttributeFilter;
 using Fast.SqlSugar.Tenant.BaseModel;
-using Fast.SqlSugar.Tenant.Internal.Enum;
 using SqlSugar;
 
 namespace Fast.SqlSugar.Tenant.SugarEntity;
@@ -9,7 +8,7 @@ namespace Fast.SqlSugar.Tenant.SugarEntity;
 /// 系统租户数据库Model类
 /// </summary>
 [SugarTable("Sys_Tenant_Database", "系统租户数据库表")]
-[SugarDbType(SugarDbTypeEnum.Tenant)]
+[SugarDbType]
 public class SysTenantDataBaseModel : BaseTEntity
 {
     /// <summary>

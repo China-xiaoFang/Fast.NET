@@ -108,8 +108,8 @@ public static class SqlSugarSetup
             DbName = SugarContext.ConnectionStringsOptions.DefaultDbName,
             DbUser = SugarContext.ConnectionStringsOptions.DefaultDbUser,
             DbPwd = SugarContext.ConnectionStringsOptions.DefaultDbPwd,
-            SugarSysDbType = SugarDbTypeEnum.Tenant.GetHashCode(),
-            SugarDbTypeName = SugarDbTypeEnum.Tenant.GetType().GetMember(SugarDbTypeEnum.Tenant.ToString() ?? string.Empty)
+            SugarSysDbType = SugarDbTypeEnum.Default.GetHashCode(),
+            SugarDbTypeName = SugarDbTypeEnum.Default.GetType().GetMember(SugarDbTypeEnum.Default.ToString() ?? string.Empty)
                 .FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()?.Description,
             DbType = SugarContext.ConnectionStringsOptions.DefaultDbType
         });
@@ -151,7 +151,7 @@ public static class SqlSugarSetup
         // ReSharper disable once PossibleNullReferenceException
         var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
 
-        // 创建租户库
+        // 创建默认库
         _db.DbMaintenance.CreateDatabase();
 
         // 查询表是否存在
@@ -163,8 +163,8 @@ public static class SqlSugarSetup
         // 获取所有数据库Model
         var entityTypeList = EntityHelper.ReflexGetAllTEntityList();
 
-        // 创建租户库的所有表
-        _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Tenant.GetHashCode())
+        // 创建默认库的所有表
+        _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Default.GetHashCode())
             .Select(sl => sl.Type).ToArray());
     }
 }

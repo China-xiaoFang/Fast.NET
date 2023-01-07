@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Web;
-using Fast.Core.Json.Extension;
+using Fast.Core.Util.Json.Extension;
 using Furion.RemoteRequest.Extensions;
 using UAParser;
 

@@ -1,6 +1,7 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.Operation.Dict.Dto;
+using Fast.SqlSugar.Tenant;
 using Furion.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -69,7 +70,7 @@ public static class DictOperation
                 var db = service.GetService<ISqlSugarClient>();
 
                 // ReSharper disable once PossibleNullReferenceException
-                var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
+                var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
 
                 // 获取所有数据
                 var data = await _db.Queryable<SysDictTypeModel>().Where(wh => wh.Status == CommonStatusEnum.Enable).Includes(i =>

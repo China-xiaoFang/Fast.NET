@@ -1,6 +1,6 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel;
+using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 
@@ -8,7 +8,7 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 /// 系统字典类型表Model类
 /// </summary>
 [SugarTable("Sys_Config", "系统字典类型表")]
-[DataBaseType]
+[SugarDbType]
 public class SysConfigModel : BaseEntity
 {
     /// <summary>

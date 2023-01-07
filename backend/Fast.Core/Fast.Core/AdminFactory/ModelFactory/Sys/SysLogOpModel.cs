@@ -1,6 +1,7 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel;
+using Fast.Core.AdminFactory.ModelFactory.BaseModel;
+using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.Internal.Enum;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 
@@ -8,7 +9,7 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 /// 系统操作日志表Model类
 /// </summary>
 [SugarTable("Sys_Log_Op", "系统操作日志表")]
-[DataBaseType(SysDataBaseTypeEnum.Tenant)]
+[SugarDbType(SugarDbTypeEnum.Tenant)]
 public class SysLogOpModel : BaseLogEntity
 {
     /// <summary>

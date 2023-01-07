@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
-using Fast.Core.Restful.Internal;
+using Fast.Core.Util.Restful.Internal;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Core.AdminFactory.ServiceFactory.Tenant;

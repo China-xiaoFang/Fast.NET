@@ -1,6 +1,7 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel;
+using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel;
+using Fast.SqlSugar.Tenant.Internal.Enum;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
@@ -8,7 +9,7 @@ namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 /// 租户角色表Model类
 /// </summary>
 [SugarTable("Ten_Role", "租户角色表")]
-[DataBaseType(SysDataBaseTypeEnum.Tenant)]
+[SugarDbType(SugarDbTypeEnum.Tenant)]
 public class TenRoleModel : BaseEntity
 {
     /// <summary>

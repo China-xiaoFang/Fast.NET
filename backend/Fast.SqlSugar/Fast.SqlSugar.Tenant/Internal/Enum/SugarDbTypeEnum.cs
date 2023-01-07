@@ -8,16 +8,16 @@ namespace Fast.SqlSugar.Tenant.Internal.Enum;
 public enum SugarDbTypeEnum
 {
     /// <summary>
-    /// 租户库
-    /// </summary>
-    [Description("租户库")]
-    Tenant = 0,
-
-    /// <summary>
     /// 默认库
     /// </summary>
     [Description("默认库")]
-    Default = 1,
+    Default = 0,
+
+    /// <summary>
+    /// 租户库
+    /// </summary>
+    [Description("租户库")]
+    Tenant = 1,
 
     /// <summary>
     /// Admin库
