@@ -1,6 +1,6 @@
-﻿using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel;
-using Fast.Core.SqlSugar.BaseModel.Interface;
+﻿using Fast.Core.AdminFactory.ModelFactory.BaseModel;
+using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel.Interface;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 
@@ -8,7 +8,7 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 /// 系统异常日志表Model类
 /// </summary>
 [SugarTable("Sys_Log_Ex", "系统异常日志表")]
-[DataBaseType]
+[SugarDbType]
 public class SysLogExModel : BaseLogEntity, IBaseTenant
 {
     /// <summary>

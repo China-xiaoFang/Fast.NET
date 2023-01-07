@@ -1,6 +1,6 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel;
+﻿using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel;
+using Fast.SqlSugar.Tenant.Internal.Enum;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
@@ -8,7 +8,7 @@ namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 /// 系统字典类型表Model类
 /// </summary>
 [SugarTable("Ten_Config", "租户配置表")]
-[DataBaseType(SysDataBaseTypeEnum.Tenant)]
+[SugarDbType(SugarDbTypeEnum.Tenant)]
 public class TenConfigModel : BaseEntity
 {
     /// <summary>

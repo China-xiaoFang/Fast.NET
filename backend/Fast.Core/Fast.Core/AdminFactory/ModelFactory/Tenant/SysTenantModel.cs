@@ -1,7 +1,8 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Basis;
-using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel;
+using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel;
+using Fast.SqlSugar.Tenant.SugarEntity;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 
@@ -9,7 +10,7 @@ namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 /// 租户信息表Model类
 /// </summary>
 [SugarTable("Sys_Tenant", "租户信息表")]
-[DataBaseType]
+[SugarDbType]
 public class SysTenantModel : BaseEntity
 {
     /// <summary>

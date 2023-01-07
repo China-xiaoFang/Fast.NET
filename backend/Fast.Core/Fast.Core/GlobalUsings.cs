@@ -6,14 +6,14 @@
 
 global using Fast.Iaas.Util;
 global using Fast.Iaas.Extension;
-global using Fast.Core.AttributeFilter;
-global using HttpGetAttribute = Fast.Core.AttributeFilter.Http.HttpGetAttribute;
-global using HttpPostAttribute = Fast.Core.AttributeFilter.Http.HttpPostAttribute;
-global using HttpPutAttribute = Fast.Core.AttributeFilter.Http.HttpPutAttribute;
-global using HttpDeleteAttribute = Fast.Core.AttributeFilter.Http.HttpDeleteAttribute;
+global using Fast.Core.Internal.AttributeFilter;
+global using HttpGetAttribute = Fast.Core.Internal.AttributeFilter.Http.HttpGetAttribute;
+global using HttpPostAttribute = Fast.Core.Internal.AttributeFilter.Http.HttpPostAttribute;
+global using HttpPutAttribute = Fast.Core.Internal.AttributeFilter.Http.HttpPutAttribute;
+global using HttpDeleteAttribute = Fast.Core.Internal.AttributeFilter.Http.HttpDeleteAttribute;
 global using Furion;
 global using Mapster;
 global using SqlSugar;
-global using Fast.Core.Cache;
+global using Fast.Core.ServiceCollection.Cache;
 global using Fast.Core.Const;
-global using Fast.Core.SqlSugar.Repository;
+global using Fast.SqlSugar.Tenant.Repository;

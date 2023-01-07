@@ -1,6 +1,5 @@
-﻿using Fast.Core.Cache.Options;
-using Fast.Core.Options;
-using Fast.Core.SqlSugar.Options;
+﻿using Fast.Core.Internal.Options;
+using Fast.Core.ServiceCollection.Cache.Options;
 using Furion.FriendlyException;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,8 +20,6 @@ public static class ConfigurableOptions
     {
         // Service collection config.
         GlobalContext.ServiceCollectionOptions = App.GetConfig<ServiceCollectionOptions>("ServiceCollection");
-        // Database config.
-        GlobalContext.ConnectionStringsOptions = App.GetConfig<ConnectionStringsOptions>("ConnectionStrings");
         // Cache config.
         GlobalContext.CacheOptions = App.GetConfig<CacheOptions>("Cache");
         // System config.

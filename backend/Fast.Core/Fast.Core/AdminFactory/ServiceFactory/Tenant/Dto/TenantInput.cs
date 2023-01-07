@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.SqlSugar.BaseModel.Dto;
+using Fast.SqlSugar.Tenant.BaseModel.Dto;
 
 namespace Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
 

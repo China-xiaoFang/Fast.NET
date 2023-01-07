@@ -6,10 +6,12 @@ using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
 using Fast.Core.CodeFirst;
 using Fast.Core.CodeFirst.Internal;
-using Fast.Core.Restful.Extension;
-using Fast.Core.Restful.Internal;
-using Fast.Core.SqlSugar.Extension;
-using Fast.Core.SqlSugar.Helper;
+using Fast.Core.Util.Restful.Extension;
+using Fast.Core.Util.Restful.Internal;
+using Fast.SqlSugar.Tenant.Extension;
+using Fast.SqlSugar.Tenant.Helper;
+using Fast.SqlSugar.Tenant.Internal.Enum;
+using Fast.SqlSugar.Tenant.SugarEntity;
 using Furion.DataEncryption;
 using Furion.DependencyInjection;
 using Furion.FriendlyException;
@@ -167,8 +169,8 @@ public class SysTenantService : ISysTenantService, ITransient
             throw Oops.Bah(ErrorCode.TenantNotExistError);
 
         // 查询是否存在数据库信息
-        if (!await _repository.Context.Queryable<SysTenantDataBaseModel>()
-                .AnyAsync(wh => wh.TenantId == input.Id && wh.SysDbType == SysDataBaseTypeEnum.Tenant))
+        if (!await _repository.Context.Queryable<SysTenantDataBaseModel>().AnyAsync(wh =>
+                wh.TenantId == input.Id && wh.SugarSysDbType == SugarDbTypeEnum.Tenant.GetHashCode()))
             throw Oops.Bah(ErrorCode.TenantDbNotExistError);
 
         // 获取所有数据库Model
@@ -176,7 +178,7 @@ public class SysTenantService : ISysTenantService, ITransient
 
         // 初始化数据
         await InitNewTenant(newTenantInfo,
-            entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.Type));
+            entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Tenant.GetHashCode()).Select(sl => sl.Type));
 
         // 删除缓存
         await _cache.DelAsync(CacheConst.TenantInfo);
@@ -301,18 +303,18 @@ public class SysTenantService : ISysTenantService, ITransient
         var seedDataTypes = SeedDataProgram.GetSeedDataType(typeof(ITenantSeedData));
 
         // 开启事务
-        _db.Ado.BeginTran();
+        await _db.Ado.BeginTranAsync();
         try
         {
             SeedDataProgram.ExecSeedData(_db.Ado.Context, seedDataTypes);
 
             // 提交事务
-            _db.Ado.CommitTran();
+            await _db.Ado.CommitTranAsync();
         }
         catch (Exception)
         {
             // 回滚事务
-            _db.Ado.RollbackTran();
+            await _db.Ado.RollbackTranAsync();
             throw;
         }
     }

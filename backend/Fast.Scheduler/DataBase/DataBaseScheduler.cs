@@ -5,14 +5,17 @@ using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
-using Fast.Core.AttributeFilter;
-using Fast.Core.Cache;
 using Fast.Core.CodeFirst;
 using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Const;
-using Fast.Core.SqlSugar.Extension;
-using Fast.Core.SqlSugar.Helper;
+using Fast.Core.Internal.AttributeFilter;
+using Fast.Core.ServiceCollection.Cache;
 using Fast.Iaas.Util;
+using Fast.SqlSugar.Tenant;
+using Fast.SqlSugar.Tenant.Extension;
+using Fast.SqlSugar.Tenant.Helper;
+using Fast.SqlSugar.Tenant.Internal.Enum;
+using Fast.SqlSugar.Tenant.SugarEntity;
 using Furion.DependencyInjection;
 using Furion.TaskScheduler;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,7 +50,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             var db = service.GetService<ISqlSugarClient>();
 
             // ReSharper disable once PossibleNullReferenceException
-            var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
+            var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
             var _sysTenantService = service.GetService<ISysTenantService>();
 
             // 创建核心业务库
@@ -76,8 +79,8 @@ public class DataBaseJobWorker : ISpareTimeWorker
             var entityTypeList = EntityHelper.ReflexGetAllTEntityList();
 
             // 创建核心业务库的所有表
-            _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Admin).Select(sl => sl.Type)
-                .ToArray());
+            _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Default.GetHashCode())
+                .Select(sl => sl.Type).ToArray());
 
             // 初始化租户信息
             var superAdminTenantInfo = new SysTenantModel
@@ -100,13 +103,13 @@ public class DataBaseJobWorker : ISpareTimeWorker
             // 初始化租户业务库信息
             await _db.Insertable(new SysTenantDataBaseModel
             {
-                ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
-                Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
+                ServiceIp = SugarContext.ConnectionStringsOptions.DefaultServiceIp,
+                Port = SugarContext.ConnectionStringsOptions.DefaultPort,
                 DbName = $"Fast.Main_{superAdminTenantInfo.EnShortName}",
-                DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
-                DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
-                SysDbType = SysDataBaseTypeEnum.Tenant,
-                DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
+                DbUser = SugarContext.ConnectionStringsOptions.DefaultDbUser,
+                DbPwd = SugarContext.ConnectionStringsOptions.DefaultDbPwd,
+                SugarSysDbType = SugarDbTypeEnum.Tenant.GetHashCode(),
+                DbType = SugarContext.ConnectionStringsOptions.DefaultDbType,
                 TenantId = superAdminTenantInfo.Id
             }).ExecuteCommandAsync();
 
@@ -114,25 +117,25 @@ public class DataBaseJobWorker : ISpareTimeWorker
             var seedDataTypes = SeedDataProgram.GetSeedDataType(typeof(ISystemSeedData));
 
             // 开启事务
-            _db.Ado.BeginTran();
+            await _db.Ado.BeginTranAsync();
             try
             {
                 SeedDataProgram.ExecSeedData(_db, seedDataTypes);
 
                 // 提交事务
-                _db.Ado.CommitTran();
+                await _db.Ado.CommitTranAsync();
             }
             catch (Exception)
             {
                 // 回滚事务
-                _db.Ado.RollbackTran();
+                await _db.Ado.RollbackTranAsync();
                 throw;
             }
 
             // 初始化新租户数据
             // ReSharper disable once PossibleNullReferenceException
             await _sysTenantService.InitNewTenant(superAdminTenantInfo,
-                entityTypeList.Where(wh => wh.DbType == SysDataBaseTypeEnum.Tenant).Select(sl => sl.Type), true);
+                entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Tenant.GetHashCode()).Select(sl => sl.Type), true);
 
             sw.Stop();
 
@@ -169,7 +172,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             var db = service.GetService<ISqlSugarClient>();
 
             // ReSharper disable once PossibleNullReferenceException
-            var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
+            var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
 
             var sw = new Stopwatch();
             sw.Start();
@@ -182,8 +185,8 @@ public class DataBaseJobWorker : ISpareTimeWorker
             ");
 
             // 获取所有的实现了枚举特性的枚举类
-            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(sl =>
-                sl.GetTypes().Where(wh => wh.IsEnum && wh.GetCustomAttribute<FastEnumAttribute>() != null));
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(sl => sl.GetTypes().Where(wh =>
+                wh.IsEnum && (wh.GetCustomAttribute<FastEnumAttribute>() != null || wh.Name == nameof(SugarDbTypeEnum))));
 
             var typeModels = new List<SysDictTypeModel>();
             var dataModels = new List<SysDictDataModel>();
@@ -238,7 +241,7 @@ public class DataBaseJobWorker : ISpareTimeWorker
             }
 
             // 开启事务
-            _db.Ado.BeginTran();
+            await _db.Ado.BeginTranAsync();
             try
             {
                 // 查询所有的默认级别枚举字典的类型Id
@@ -260,12 +263,12 @@ public class DataBaseJobWorker : ISpareTimeWorker
                 await _cache.DelAsync(CacheConst.SysDictInfo);
 
                 // 提交事务
-                _db.Ado.CommitTran();
+                await _db.Ado.CommitTranAsync();
             }
             catch (Exception)
             {
                 // 回滚事务
-                _db.Ado.RollbackTran();
+                await _db.Ado.RollbackTranAsync();
                 throw;
             }
 

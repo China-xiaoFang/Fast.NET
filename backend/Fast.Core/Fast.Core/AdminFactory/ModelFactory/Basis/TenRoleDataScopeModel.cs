@@ -1,6 +1,6 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel.Interface;
+﻿using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel.Interface;
+using Fast.SqlSugar.Tenant.Internal.Enum;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 
@@ -8,7 +8,7 @@ namespace Fast.Core.AdminFactory.ModelFactory.Basis;
 /// 租户角色数据范围表Model类
 /// </summary>
 [SugarTable("Ten_Role_Data_Scope", "租户角色数据范围表")]
-[DataBaseType(SysDataBaseTypeEnum.Tenant)]
+[SugarDbType(SugarDbTypeEnum.Tenant)]
 public class TenRoleDataScopeModel : IDbEntity
 {
     /// <summary>

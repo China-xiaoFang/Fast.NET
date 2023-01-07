@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using Fast.Core.Json.JsonConverter;
+using Fast.Core.Util.Json.JsonConverter;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.ServiceCollection;
