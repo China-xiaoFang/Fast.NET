@@ -1,5 +1,7 @@
 ﻿using Fast.Core.AdminFactory.ModelFactory.Basis;
 using Fast.Core.CodeFirst.Internal;
+using Fast.Core.Const;
+using SqlSugar;
 
 namespace Fast.Core.CodeFirst.SeedData;
 
