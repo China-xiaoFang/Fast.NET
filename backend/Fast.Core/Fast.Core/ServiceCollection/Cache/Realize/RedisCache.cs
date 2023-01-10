@@ -1,4 +1,5 @@
 ﻿using CSRedis;
+using Fast.Core.ServiceCollection.Cache.Internal;
 using Furion.DependencyInjection;
 
 namespace Fast.Core.ServiceCollection.Cache.Realize;
@@ -6,7 +7,7 @@ namespace Fast.Core.ServiceCollection.Cache.Realize;
 /// <summary>
 /// Redis缓存
 /// </summary>
-public class RedisCache : ICache, ISingleton
+public class RedisCache : ICacheInternal, ISingleton
 {
     public RedisCache()
     {
@@ -91,6 +92,6 @@ public class RedisCache : ICache, ISingleton
 
     public List<string> GetAllKeys()
     {
-        return RedisHelper.Keys("").ToList();
+        return RedisHelper.Keys("*").ToList();
     }
 }

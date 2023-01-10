@@ -1,4 +1,6 @@
-﻿namespace Fast.Core.Internal.Options;
+﻿using Fast.Core.AdminFactory.EnumFactory;
+
+namespace Fast.Core.Internal.Options;
 
 /// <summary>
 /// 系统配置
