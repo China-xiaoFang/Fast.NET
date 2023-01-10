@@ -143,8 +143,9 @@ public static class EnumUtil
     /// <returns></returns>
     public static string GetDescription(this Enum value)
     {
-        return value.GetType().GetMember(value.ToString()).FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()
+        var description = value.GetType().GetMember(value.ToString()).FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()
             ?.Description;
+        return description ?? value.ToString();
     }
 
     /// <summary>
@@ -154,8 +155,10 @@ public static class EnumUtil
     /// <returns></returns>
     public static string GetDescription(this object value)
     {
-        return value.GetType().GetMember(value.ToString() ?? string.Empty).FirstOrDefault()
+        var description = value.GetType().GetMember(value.ToString() ?? string.Empty).FirstOrDefault()
             ?.GetCustomAttribute<DescriptionAttribute>()?.Description;
+
+        return description ?? value.GetType().Name;
     }
 
     /// <summary>

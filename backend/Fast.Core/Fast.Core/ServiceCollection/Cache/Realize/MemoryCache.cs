@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
+using Fast.Core.ServiceCollection.Cache.Internal;
 using Furion.DependencyInjection;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -7,7 +9,7 @@ namespace Fast.Core.ServiceCollection.Cache.Realize;
 /// <summary>
 /// 内存缓存
 /// </summary>
-public class MemoryCache : ICache, ISingleton
+public class MemoryCache : ICacheInternal, ISingleton
 {
     private readonly IMemoryCache _memoryCache;
 
@@ -111,11 +113,8 @@ public class MemoryCache : ICache, ISingleton
         var keys = new List<string>();
         if (cacheItems == null)
             return keys;
-        return cacheItems.Select(u => u.ToString()).ToList();
-        //foreach (DictionaryEntry cacheItem in cacheItems)
-        //{
-        //    keys.Add(cacheItem.Key.ToString());
-        //}
-        //return keys;
+        //return cacheItems.Select(u => u.ToString()).ToList();
+        keys.AddRange(from DictionaryEntry cacheItem in cacheItems select cacheItem.Key.ToString());
+        return keys;
     }
 }
