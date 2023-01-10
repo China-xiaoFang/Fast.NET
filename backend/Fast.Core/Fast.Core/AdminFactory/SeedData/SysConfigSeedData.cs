@@ -2,7 +2,7 @@
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.CodeFirst.Internal;
 
-namespace Fast.Core.CodeFirst.SeedData;
+namespace Fast.Core.AdminFactory.SeedData;
 
 /// <summary>
 /// 系统配置种子数据
