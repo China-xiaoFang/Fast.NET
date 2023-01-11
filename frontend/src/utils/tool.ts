@@ -2,6 +2,8 @@
  * 工具集
  */
 
+import { v4 as uuidV4 } from "uuid";
+
 /**
  * 缓存前缀
  */
@@ -169,6 +171,28 @@ export function generateStr(len = 18, hex = 36) {
 	return res.substr(0, len);
 }
 
+/**
+ * 生成UUID
+ */
+export function generateUUID(): string {
+	return uuidV4();
+}
+
+/**
+ * 获取UUID
+ */
+export function getUUID(): string {
+	// 判断是否存在uuid
+	let uuid = cacheGet("UUID");
+	if (!uuid) {
+		// 生成uuid
+		uuid = generateUUID();
+		// 放入缓存
+		cacheSet("UUID", uuid);
+	}
+	return uuid;
+}
+
 const tool = {
 	cache: {
 		set: cacheSet,
@@ -187,6 +211,8 @@ const tool = {
 	debounce: debounce,
 	throttle: throttle,
 	generateStr: generateStr,
+	generateUUID: generateUUID,
+	getUUID: getUUID,
 };
 
 export default tool;

@@ -17,6 +17,9 @@ const DEFAULT_CONFIG = {
 	// Token前缀，注意最后有个空格，如不需要需设置空字符串 // Bearer
 	TOKEN_PREFIX: "Bearer ",
 
+	// UUID
+	UUID: "Fast-Net-UUID",
+
 	// 追加其他头
 	HEADERS: {},
 

@@ -77,6 +77,8 @@ service.interceptors.request.use(
 		}
 		// 带上来源
 		config.headers[sysConfig.ORIGIN_NAME] = window.location.origin;
+		// 带上UUID
+		config.headers[sysConfig.UUID] = tool.getUUID();
 		Object.assign(config.headers, sysConfig.HEADERS);
 		return config;
 	},
