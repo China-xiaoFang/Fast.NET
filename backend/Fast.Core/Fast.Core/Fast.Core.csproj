@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -30,13 +30,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-		<PackageReference Include="Furion" Version="4.7.3" />
-		<PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="4.7.3" />
-		<PackageReference Include="Furion.Extras.ObjectMapper.Mapster" Version="4.7.3" />
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+		<PackageReference Include="Furion" Version="4.8.4.12" />
+		<PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="4.8.4.12" />
+		<PackageReference Include="Furion.Extras.ObjectMapper.Mapster" Version="4.8.4.12" />
 		<PackageReference Include="UAParser" Version="3.1.47" />
-		<PackageReference Include="CSRedisCore" Version="3.8.669" />
-		<PackageReference Include="MiniExcel" Version="1.28.5" />
+		<PackageReference Include="CSRedisCore" Version="3.8.670" />
+		<PackageReference Include="MiniExcel" Version="1.30.0" />
 	</ItemGroup>
 
 	<ItemGroup>

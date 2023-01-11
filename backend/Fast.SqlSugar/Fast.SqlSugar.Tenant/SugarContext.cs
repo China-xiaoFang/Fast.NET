@@ -72,7 +72,7 @@ public class SugarContext
     /// <summary>
     /// 日志
     /// </summary>
-    public static class Log
+    internal static class Log
     {
         public static void Information(string message)
         {
