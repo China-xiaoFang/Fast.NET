@@ -83,6 +83,11 @@ public class GlobalContext
     public static string OriginUrl => App.HttpContext.Request.Headers[ClaimConst.Origin].ParseToString();
 
     /// <summary>
+    /// 请求客户端UUID，唯一标识，不安全
+    /// </summary>
+    public static string UUID => App.HttpContext.Request.Headers[ClaimConst.UUID].ParseToString();
+
+    /// <summary>
     /// 是否超级管理员
     /// </summary>
     public static bool IsSuperAdmin

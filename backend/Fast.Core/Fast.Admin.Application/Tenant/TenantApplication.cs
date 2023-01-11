@@ -1,5 +1,6 @@
 ﻿using Fast.Core.AdminFactory.ServiceFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
+using Fast.Core.ServiceCollection.RequestLimit.AttributeFilter;
 using Fast.Core.Util.Restful.Internal;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,7 @@ namespace Fast.Admin.Application.Tenant;
 /// <summary>
 /// 租户接口
 /// </summary>
-[ApiDescriptionSettings(Name = "Tenant", Order = 100)]
+[ApiDescriptionSettings(Name = "Tenant", Order = 100), RequestLimit(false)]
 public class TenantApplication : IDynamicApiController
 {
     private readonly ISysTenantService _sysTenantService;

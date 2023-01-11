@@ -46,6 +46,11 @@ public class ClaimConst
     public const string Origin = "Fast-Net-Origin";
 
     /// <summary>
+    /// UUID
+    /// </summary>
+    public const string UUID = "Fast-Net-UUID";
+
+    /// <summary>
     /// 环境编码
     /// </summary>
     public const string EnvironmentCode = "Environment-Code";

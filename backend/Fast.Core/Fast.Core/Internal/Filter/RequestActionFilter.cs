@@ -128,7 +128,7 @@ public class RequestActionFilter : IAsyncActionFilter
                         // 判断限制Key是否为接口请求参数
                         if (requestLimitAttribute.Key != null)
                         {
-                            // 接口请求参数中的Key如果是空，则直接用Ip
+                            // 接口请求参数中的Key如果是空，则直接用Ip或者UUID，这里建议用UUID
                             var requestKey = requestParam?.FirstOrDefault(f => f.Key == requestLimitAttribute.Key);
                             if (requestKey != null)
                             {
@@ -136,14 +136,16 @@ public class RequestActionFilter : IAsyncActionFilter
                             }
                             else
                             {
-                                limitKey += $"_{ip}";
+                                limitKey += $"_{GlobalContext.UUID}";
                             }
                         }
 
                         break;
                     case RequestLimitTypeEnum.Ip:
-                    default:
                         limitKey += $"_{ip}";
+                        break;
+                    default:
+                        limitKey += $"_{GlobalContext.UUID}";
                         break;
                 }
             }
