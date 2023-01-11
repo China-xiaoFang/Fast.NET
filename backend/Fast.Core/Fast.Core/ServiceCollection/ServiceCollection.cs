@@ -1,8 +1,8 @@
-﻿using Fast.Core.Filter;
-using Fast.Core.Handlers;
-using Fast.Core.Restful;
-using Fast.Core.SqlSugar.Setup;
+﻿using Fast.Core.Handlers;
+using Fast.Core.Internal.Filter;
 using Fast.Core.Util;
+using Fast.Core.Util.Restful;
+using Furion.Schedule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -82,9 +82,6 @@ public static class ServiceCollection
             builder.Services.AddSignalR();
         }
 
-        // Add Snowflakes Id.
-        builder.Services.AddSnowflakeId(serviceCollectionOptions.SnowIdWorkerId);
-
         // Logging, error level logging, create a log file every day.
         builder.Services.AddLogging(serviceCollectionOptions.LogFileFormat, serviceCollectionOptions.LogFileSizeLimitBytes,
             serviceCollectionOptions.Log);
@@ -93,12 +90,22 @@ public static class ServiceCollection
         builder.Services.AddEventBusService(serviceCollectionOptions.EventBusService);
 
         // Init sqlSugar.
-        builder.Services.SqlSugarClientConfigure();
+        builder.Services.AddSqlSugarClientService();
 
         if (serviceCollectionOptions.Scheduler)
         {
             // Register the task scheduling service.
-            builder.Services.AddTaskScheduler();
+            builder.Services.AddSchedule(options =>
+            {
+                // Enabled job log.
+                options.JobDetail.LogEnabled = true;
+
+                // Add the task scheduling job execution scheduler.
+                options.AddMonitor<SchedulerJobMonitorFilter>();
+
+                // Scan all task scheduling jobs.
+                options.AddJob(App.EffectiveTypes.ScanToBuilders());
+            });
         }
 
         var app = builder.Build();
@@ -122,6 +129,13 @@ public static class ServiceCollection
         }
 
         app.UseStaticFiles();
+
+
+        if (serviceCollectionOptions.Scheduler)
+        {
+            // Start the task scheduling UI.
+            app.UseScheduleUI();
+        }
 
         app.UseRouting();
 

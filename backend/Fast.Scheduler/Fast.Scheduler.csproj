@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -16,6 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Fast.Core\Fast.CodeFirst\Fast.CodeFirst.csproj" />
 	  <ProjectReference Include="..\Fast.Core\Fast.Core\Fast.Core.csproj" />
 	  <ProjectReference Include="..\Fast.Model\Fast.Model.csproj" />
 	  <ProjectReference Include="..\Fast.Ocelot\Fast.Ocelot.Model\Fast.Ocelot.Model.csproj" />

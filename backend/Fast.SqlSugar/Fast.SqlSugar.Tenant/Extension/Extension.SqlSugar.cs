@@ -33,7 +33,7 @@ public static class Extension
         var defaultDb = _db.GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
 
         // 判断是否为租户库
-        if (dbType.DbType == SugarDbTypeEnum.Tenant.GetHashCode())
+        if (dbType.DbType == SugarDbTypeEnum.Default.GetHashCode())
         {
             return defaultDb;
         }

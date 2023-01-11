@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Ocelot.Model", "Fast.O
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fast.SqlSugar", "Fast.SqlSugar", "{1F07F4D6-4C19-491F-AA43-0F0D74CC0EEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.SqlSugar.Tenant", "Fast.SqlSugar\Fast.SqlSugar.Tenant\Fast.SqlSugar.Tenant.csproj", "{CE54D1A8-6BF3-4CB2-A044-C8F99DCAF935}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.SqlSugar.Tenant", "Fast.SqlSugar\Fast.SqlSugar.Tenant\Fast.SqlSugar.Tenant.csproj", "{CE54D1A8-6BF3-4CB2-A044-C8F99DCAF935}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.CodeFirst", "Fast.Core\Fast.CodeFirst\Fast.CodeFirst.csproj", "{0DC8D1FA-3F3E-4169-AFA2-CFE431D0213A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{CE54D1A8-6BF3-4CB2-A044-C8F99DCAF935}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE54D1A8-6BF3-4CB2-A044-C8F99DCAF935}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE54D1A8-6BF3-4CB2-A044-C8F99DCAF935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DC8D1FA-3F3E-4169-AFA2-CFE431D0213A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DC8D1FA-3F3E-4169-AFA2-CFE431D0213A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DC8D1FA-3F3E-4169-AFA2-CFE431D0213A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DC8D1FA-3F3E-4169-AFA2-CFE431D0213A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +106,7 @@ Global
 		{0AA2BA69-B547-4886-A776-B6C52A87BE9B} = {2599641C-8EA3-41F9-8687-7DAA8D4AD5DA}
 		{FC75FA00-B90D-4DAF-8A8C-0A0C652C10A2} = {2599641C-8EA3-41F9-8687-7DAA8D4AD5DA}
 		{CE54D1A8-6BF3-4CB2-A044-C8F99DCAF935} = {1F07F4D6-4C19-491F-AA43-0F0D74CC0EEB}
+		{0DC8D1FA-3F3E-4169-AFA2-CFE431D0213A} = {E7BD41DD-770D-403A-8D51-495AAE7662E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4261BB-E228-45EE-8B97-B915C19C8A4F}

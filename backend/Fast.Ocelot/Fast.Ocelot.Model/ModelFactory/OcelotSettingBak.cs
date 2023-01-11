@@ -1,5 +1,5 @@
-﻿using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel;
+﻿using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel;
 using SqlSugar;
 
 namespace Fast.Ocelot.Model.ModelFactory;
@@ -8,7 +8,7 @@ namespace Fast.Ocelot.Model.ModelFactory;
 /// 配置备份
 ///</summary>
 [SugarTable("Ocelot_Setting_Bak", "网关配置备份表")]
-[DataBaseType]
+[SugarDbType]
 public class OcelotSettingBak : BaseEntity
 {
     /// <summary>

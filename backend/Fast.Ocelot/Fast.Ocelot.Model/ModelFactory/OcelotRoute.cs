@@ -1,6 +1,6 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.SqlSugar.AttributeFilter;
-using Fast.Core.SqlSugar.BaseModel;
+using Fast.SqlSugar.Tenant.AttributeFilter;
+using Fast.SqlSugar.Tenant.BaseModel;
 using SqlSugar;
 
 namespace Fast.Ocelot.Model.ModelFactory;
@@ -9,7 +9,7 @@ namespace Fast.Ocelot.Model.ModelFactory;
 /// 网关路由表
 /// </summary>
 [SugarTable("Ocelot_Route", "网关路由表")]
-[DataBaseType]
+[SugarDbType]
 public class OcelotRoute : BaseEntity
 {
     /// <summary>

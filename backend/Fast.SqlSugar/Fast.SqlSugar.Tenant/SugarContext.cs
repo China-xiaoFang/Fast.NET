@@ -72,21 +72,42 @@ public class SugarContext
     /// <summary>
     /// 日志
     /// </summary>
-    public static class Log
+    internal static class Log
     {
         public static void Information(string message)
         {
-            ActionLogInformation?.Invoke(message);
+            if (ActionLogInformation == null)
+            {
+                Console.WriteLine($"Fast.SqlSugar.Information：{message}");
+            }
+            else
+            {
+                ActionLogInformation?.Invoke(message);
+            }
         }
 
         public static void Warning(string message)
         {
-            ActionLogWarning?.Invoke(message);
+            if (ActionLogWarning == null)
+            {
+                Console.WriteLine($"Fast.SqlSugar.Warning：{message}");
+            }
+            else
+            {
+                ActionLogWarning?.Invoke(message);
+            }
         }
 
         public static void Error(string message)
         {
-            ActionLogError?.Invoke(message);
+            if (ActionLogError == null)
+            {
+                Console.WriteLine($"Fast.SqlSugar.Error：{message}");
+            }
+            else
+            {
+                ActionLogError?.Invoke(message);
+            }
         }
     }
 
@@ -217,7 +238,7 @@ public class SugarContext
             {
                 return FuncGetTenantId();
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 return 0L;
             }
@@ -242,7 +263,7 @@ public class SugarContext
             {
                 return FuncGetUserId();
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 return 0L;
             }
@@ -260,7 +281,7 @@ public class SugarContext
             {
                 return FuncGetUserName();
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 return null;
             }
@@ -278,7 +299,7 @@ public class SugarContext
             {
                 return FuncGetIsSuperAdmin();
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 return false;
             }
@@ -296,7 +317,7 @@ public class SugarContext
             {
                 return FuncGetIsSystemAdmin();
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 return false;
             }
@@ -314,7 +335,7 @@ public class SugarContext
             {
                 return FuncGetIsTenantAdmin();
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 return false;
             }

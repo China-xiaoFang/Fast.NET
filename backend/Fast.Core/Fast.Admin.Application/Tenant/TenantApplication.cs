@@ -1,6 +1,6 @@
 ﻿using Fast.Core.AdminFactory.ServiceFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
-using Fast.Core.Restful.Internal;
+using Fast.Core.Util.Restful.Internal;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +35,7 @@ public class TenantApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpGet("sysTenant/page")]
+    [HttpGet("sysTenant/page", "分页查询租户信息")]
     public async Task<PageResult<TenantOutput>> QueryTenantPageList([FromQuery] QueryTenantInput input)
     {
         return await _sysTenantService.QueryTenantPageList(input);
@@ -46,7 +46,7 @@ public class TenantApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("sysTenant/add")]
+    [HttpPost("sysTenant/add", "添加租户")]
     public async Task AddTenant(AddTenantInput input)
     {
         await _sysTenantService.AddTenant(input);
@@ -57,7 +57,7 @@ public class TenantApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("sysTenant/initTenantInfo")]
+    [HttpPost("sysTenant/initTenantInfo", "初始化租户信息")]
     public async Task InitTenantInfo(InitTenantInfoInput input)
     {
         await _sysTenantService.InitTenantInfo(input);

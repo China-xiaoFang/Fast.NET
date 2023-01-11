@@ -1,11 +1,8 @@
-﻿using System.ComponentModel;
-using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
-using Fast.Core.Cache.Options;
-using Fast.Core.Options;
-using Fast.Core.SqlSugar.Options;
-using Furion.FriendlyException;
+using Fast.Core.Internal.Options;
+using Fast.Core.ServiceCollection.Cache.Options;
+using Fast.SqlSugar.Tenant;
 
 namespace Fast.Core;
 
@@ -59,7 +56,11 @@ public class GlobalContext
     /// 根据业务自定义设置的租户Id
     /// 请谨慎使用
     /// </summary>
-    public static long OtherTenantId { get; set; }
+    public static long CustomTenantId
+    {
+        get => SugarContext.CustomTenantId;
+        set => SugarContext.CustomTenantId = value;
+    }
 
     /// <summary>
     /// 当前用户Id
@@ -156,31 +157,8 @@ public class GlobalContext
     /// <returns></returns>
     public static long GetTenantId(bool isThrow = true)
     {
-        if (!TenantId.IsNullOrZero())
-        {
-            return TenantId;
-        }
-
-        if (!OtherTenantId.IsNullOrZero())
-        {
-            return OtherTenantId;
-        }
-
-        if (isThrow)
-            throw Oops.Oh(ErrorCode.TenantSysError);
-
-        return 0;
+        return SugarContext.GetTenantId(isThrow);
     }
-
-    /// <summary>
-    /// 租户库Db Info
-    /// </summary>
-    public static SysTenantDataBaseModel TenantDbInfo { get; set; }
-
-    /// <summary>
-    /// 数据库配置
-    /// </summary>
-    public static ConnectionStringsOptions ConnectionStringsOptions { get; set; }
 
     /// <summary>
     /// 缓存配置
@@ -206,86 +184,4 @@ public class GlobalContext
     /// 服务配置集合
     /// </summary>
     public static ServiceCollectionOptions ServiceCollectionOptions { get; set; }
-}
-
-/// <summary>
-/// 环境枚举
-/// </summary>
-public enum EnvironmentEnum
-{
-    /// <summary>
-    /// 生产
-    /// </summary>
-    [Description("生产")]
-    Production = 1,
-
-    /// <summary>
-    /// 预生产
-    /// </summary>
-    [Description("预生产")]
-    PreProduction = 2,
-
-    /// <summary>
-    /// 演示
-    /// </summary>
-    [Description("演示")]
-    Demonstration = 3,
-
-    /// <summary>
-    /// 测试
-    /// </summary>
-    [Description("测试")]
-    Test = 4,
-
-    /// <summary>
-    /// 开发
-    /// </summary>
-    [Description("开发")]
-    Development = 5,
-}
-
-/// <summary>
-/// Http请求前缀枚举
-/// </summary>
-public enum HttpRequestPrefixEnum
-{
-    /// <summary>
-    /// 登录
-    /// </summary>
-    login,
-
-    /// <summary>
-    /// 查询
-    /// </summary>
-    list,
-
-    /// <summary>
-    /// 分页
-    /// </summary>
-    page,
-
-    /// <summary>
-    /// 添加
-    /// </summary>
-    add,
-
-    /// <summary>
-    /// 编辑
-    /// </summary>
-    edit,
-
-    /// <summary>
-    /// 删除
-    /// </summary>
-    delete,
-
-    /// <summary>
-    /// 导出
-    /// </summary>
-    export,
-
-    /// <summary>
-    /// 导入
-    /// </summary>
-    import,
 }
