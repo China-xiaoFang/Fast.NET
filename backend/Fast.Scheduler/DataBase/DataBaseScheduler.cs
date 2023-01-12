@@ -113,7 +113,7 @@ public class DataBaseJobWorker : IJob
             Email = "email@gmail.com",
             Phone = "15288888888",
             TenantType = TenantTypeEnum.System,
-            WebUrl = new List<string> {"http://fast.18kboy.icu", "http://127.0.0.1:2001"},
+            WebUrl = new List<string> {"http://fast.18kboy.icu", "http://127.0.0.1:2001", "http://localhost:2001"},
             LogoUrl = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logo.png"
         };
         superAdminTenantInfo = await _db.Insertable(superAdminTenantInfo).ExecuteReturnEntityAsync();

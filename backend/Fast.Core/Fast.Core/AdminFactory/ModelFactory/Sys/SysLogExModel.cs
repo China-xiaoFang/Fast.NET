@@ -1,4 +1,4 @@
-﻿using Fast.Core.AdminFactory.ModelFactory.BaseModel;
+﻿using Fast.Core.BaseModel;
 using Fast.SqlSugar.Tenant.AttributeFilter;
 using Fast.SqlSugar.Tenant.BaseModel.Interface;
 

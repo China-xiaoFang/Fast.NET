@@ -1,7 +1,7 @@
 ﻿using Fast.Core.Util.Http;
 using Fast.SqlSugar.Tenant.BaseModel.Interface;
 
-namespace Fast.Core.AdminFactory.ModelFactory.BaseModel;
+namespace Fast.Core.BaseModel;
 
 /// <summary>
 /// 记录基类实现
