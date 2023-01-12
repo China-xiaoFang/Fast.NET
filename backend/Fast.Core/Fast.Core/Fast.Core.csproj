@@ -50,4 +50,8 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="AdminFactory\ServiceFactory\User\Dto\" />
+	</ItemGroup>
+
 </Project>
