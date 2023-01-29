@@ -42,8 +42,10 @@
     "InitDataBase": true,
     // 同步枚举字典
     "SyncEnumDict": true,
+    // 接口限流
+    "RequestLimit": true,
     // 系统环境
-    "Environment": "Development",
+    "Environment": "Production",
     // 演示环境请求禁止前缀
     "DemoEnvReqDisable": [ "add", "edit", "delete", "export", "import" ]
   },

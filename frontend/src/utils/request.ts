@@ -54,6 +54,7 @@ const errorCodeMap = {
 	502: "网关错误。",
 	503: "Service unavailable, server temporarily overloaded or maintained（服务不可用，服务器暂时过载或维护）",
 	504: "网关超时。",
+	default: "Request timeout（请求超时）",
 };
 // 定义一个重新登录弹出窗的变量
 const loginBack = ref(false);
@@ -160,13 +161,14 @@ service.interceptors.response.use(
 	},
 	(error) => {
 		if (error) {
-			const status = error?.response?.status;
+			const res = error?.response || null || null;
+			const status = res?.status ?? "default";
 			const description = errorCodeMap[status];
 			notification.error({
 				message: "请求错误",
 				description,
 			});
-			return Promise.reject(status);
+			return Promise.reject(res?.data);
 		}
 	}
 );

@@ -14,7 +14,7 @@ public class RequestLimitFilter : IRequestLimitFilter, ISingleton
     /// <summary>
     /// 缓存前缀
     /// </summary>
-    private const string _cachePrefix = "requestLimit_";
+    private const string _cachePrefix = "requestLimit:";
 
     /// <summary>
     /// 并发控制配置

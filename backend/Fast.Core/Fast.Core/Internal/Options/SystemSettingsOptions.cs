@@ -33,6 +33,11 @@ public class SystemSettingsOptions
     public bool SyncEnumDict { get; set; }
 
     /// <summary>
+    /// 接口限流
+    /// </summary>
+    public bool RequestLimit { get; set; }
+
+    /// <summary>
     /// 系统环境
     /// </summary>
     public EnvironmentEnum Environment { get; set; }

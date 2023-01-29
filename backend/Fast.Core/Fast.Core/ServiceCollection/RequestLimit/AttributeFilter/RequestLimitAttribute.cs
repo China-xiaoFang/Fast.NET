@@ -38,7 +38,7 @@ public class RequestLimitAttribute : Attribute
         IsCheck = isCheck;
     }
 
-    public RequestLimitAttribute(int second, int count, string? key,
+    public RequestLimitAttribute(int second, int count, string? key = null,
         RequestLimitTypeEnum requestLimitType = RequestLimitTypeEnum.User, bool isCheck = true)
     {
         Key = key;
