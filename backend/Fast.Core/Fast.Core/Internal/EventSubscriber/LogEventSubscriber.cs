@@ -4,7 +4,7 @@ using Fast.SqlSugar.Tenant.Extension;
 using Furion.EventBus;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.ServiceCollection.EventSubscriber;
+namespace Fast.Core.Internal.EventSubscriber;
 
 public class LogEventSubscriber : IEventSubscriber
 {

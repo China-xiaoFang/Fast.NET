@@ -4,7 +4,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Web;
 using Fast.Core.Util.Json.Extension;
+using Furion.DependencyInjection;
 using Furion.RemoteRequest.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using UAParser;
 
 namespace Fast.Core.Util.Http;
@@ -218,11 +220,28 @@ public static class HttpNewUtil
     /// <returns></returns>
     public static async Task<WhoisIPInfoModel> WanInfo(string ip)
     {
-        var url = $"http://whois.pconline.com.cn/ipJson.jsp?ip={ip}";
-        var resultStr = await url.GetAsStringAsync();
-        resultStr = resultStr[(resultStr.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..].TrimEnd();
-        resultStr = resultStr[..^3];
-        var result = resultStr.ToObject<WhoisIPInfoModel>();
+        WhoisIPInfoModel result = null;
+        var ipInfoCacheKey = $"IpInfo:{ip}";
+        await Scoped.CreateAsync(async (_, scope) =>
+        {
+            var _cache = scope.ServiceProvider.GetService<ICache>();
+
+            // 尝试从缓存中获取
+            result = await _cache.GetAsync<WhoisIPInfoModel>(ipInfoCacheKey);
+            if (result == null)
+            {
+                var url = $"http://whois.pconline.com.cn/ipJson.jsp?ip={ip}";
+                var resultStr = await url.GetAsStringAsync();
+                resultStr = resultStr[(resultStr.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
+                    .TrimEnd();
+                resultStr = resultStr[..^3];
+                result = resultStr.ToObject<WhoisIPInfoModel>();
+
+                // 设置缓存，默认缓存30分钟
+                await _cache.SetAsync(ipInfoCacheKey, result, new TimeSpan(0, 30, 0));
+            }
+        });
+
         return result;
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.ServiceCollection.EventSubscriber;
+using Fast.Core.Internal.EventSubscriber;
 using Fast.Core.ServiceCollection.RequestLimit.AttributeFilter;
 using Fast.Core.ServiceCollection.RequestLimit.Filter;
 using Fast.Core.ServiceCollection.RequestLimit.Internal;
