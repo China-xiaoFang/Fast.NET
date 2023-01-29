@@ -172,6 +172,26 @@ service.interceptors.response.use(
 );
 
 /**
+ * Get 请求
+ * @param url
+ * @param value
+ * @param options
+ * @returns
+ */
+export const get = (url: string, value: any = {}, options: any = {}) =>
+	baseRequest(url, value, "get", options);
+
+/**
+ * Post 请求
+ * @param url
+ * @param value
+ * @param options
+ * @returns
+ */
+export const post = (url: string, value: any = {}, options: any = {}) =>
+	baseRequest(url, value, "post", options);
+
+/**
  * 基础请求
  * @param url
  * @param value

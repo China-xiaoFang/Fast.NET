@@ -28,6 +28,14 @@ const DEFAULT_CONFIG = {
 
 	// 语言
 	LANG: "zh-cn",
+
+	// HTML页面
+	HTML_PAGE: {
+		// 404页面
+		404: "/html/40x.html",
+		// 500页面
+		500: "/html/50x.html",
+	},
 };
 
 export default DEFAULT_CONFIG;

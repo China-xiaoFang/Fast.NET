@@ -1,4 +1,4 @@
-import { baseRequest } from "@/utils/request";
+import { get } from "@/utils/request";
 
 export default {
 	/**
@@ -6,6 +6,6 @@ export default {
 	 * @returns
 	 */
 	webSiteInit() {
-		return baseRequest("/webSiteInit", null, "get");
+		return get("/webSiteInit", null);
 	},
 };
