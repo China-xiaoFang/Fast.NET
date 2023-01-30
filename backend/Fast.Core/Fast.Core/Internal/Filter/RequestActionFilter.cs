@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.ServiceCollection.EventSubscriber;
+using Fast.Core.Internal.EventSubscriber;
 using Fast.Core.ServiceCollection.RequestLimit.AttributeFilter;
 using Fast.Core.ServiceCollection.RequestLimit.Filter;
 using Fast.Core.ServiceCollection.RequestLimit.Internal;
@@ -98,17 +98,15 @@ public class RequestActionFilter : IAsyncActionFilter
     private async Task<RequestLimitContext> OnActionRequestLimitAsync(HttpResponse httpResponse, HttpRequest httpRequest,
         ActionDescriptor actionDescriptor, IDictionary<string, object> requestParam, long tenantId, long userId, string ip)
     {
-        // 是否被允许访问
-        var isAllowed = true;
         // 是否检查限流限制
-        var isCheck = true;
+        var isCheck = GlobalContext.SystemSettingsOptions.RequestLimit;
 
         var limitCount = _defaultLimit;
         var limitSecond = _defaultSecond;
-        var limitKey = $"{httpRequest.Method}{httpRequest.Path}";
+        var limitKey = $"{httpRequest.Method}{httpRequest.Path}:";
 
-        // 接口限流，判断是否存在特性，如果不存在则使用默认的配置
-        if (actionDescriptor?.EndpointMetadata.FirstOrDefault(metadata => metadata.GetType() == typeof(RequestLimitAttribute)) is
+        // 接口限流，判断是否存在特性，如果不存在则使用默认的配置，这里采用就近原则
+        if (actionDescriptor?.EndpointMetadata.LastOrDefault(metadata => metadata.GetType() == typeof(RequestLimitAttribute)) is
             RequestLimitAttribute requestLimitAttribute)
         {
             isCheck = requestLimitAttribute.IsCheck;
@@ -119,16 +117,16 @@ public class RequestActionFilter : IAsyncActionFilter
                 switch (requestLimitAttribute.RequestLimitType)
                 {
                     case RequestLimitTypeEnum.Tenant:
-                        limitKey += $"_{tenantId}";
+                        limitKey += $"{tenantId}";
                         break;
                     case RequestLimitTypeEnum.User:
-                        limitKey += $"_{tenantId}_{userId}";
+                        limitKey += $"{tenantId}:{userId}";
                         break;
                     case RequestLimitTypeEnum.Other:
                         // 判断限制Key是否为接口请求参数
-                        if (requestLimitAttribute.Key != null)
+                        if (requestLimitAttribute.Key == null)
                         {
-                            // 接口请求参数中的Key如果是空，则直接用Ip
+                            // 接口请求参数中的Key如果是空，则直接用Ip或者UUID，这里建议用UUID
                             var requestKey = requestParam?.FirstOrDefault(f => f.Key == requestLimitAttribute.Key);
                             if (requestKey != null)
                             {
@@ -136,29 +134,31 @@ public class RequestActionFilter : IAsyncActionFilter
                             }
                             else
                             {
-                                limitKey += $"_{ip}";
+                                limitKey += $":{GlobalContext.UUID}";
                             }
                         }
 
                         break;
                     case RequestLimitTypeEnum.Ip:
+                        limitKey += $"{ip}";
+                        break;
                     default:
-                        limitKey += $"_{ip}";
+                        limitKey += $"{GlobalContext.UUID}";
                         break;
                 }
             }
         }
         else
         {
-            // 如果没有配置规则，则默认根据Ip来
-            limitKey += $"_{ip}";
+            // 如果没有配置规则，则默认根据UUID来
+            limitKey += $"{GlobalContext.UUID}";
         }
 
         // 检查接口限流上下文参数
         var requestLimitContext = new RequestLimitContext(limitSecond, limitCount, limitKey, isCheck);
 
         // 检查接口限流
-        isAllowed = await _requestLimitFilter.InvokeAsync(requestLimitContext);
+        var isAllowed = await _requestLimitFilter.InvokeAsync(requestLimitContext);
 
         if (isAllowed)
             return requestLimitContext;

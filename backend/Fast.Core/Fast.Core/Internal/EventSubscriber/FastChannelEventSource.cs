@@ -2,7 +2,7 @@
 using Furion.EventBus;
 using Newtonsoft.Json;
 
-namespace Fast.Core.ServiceCollection.EventSubscriber;
+namespace Fast.Core.Internal.EventSubscriber;
 
 /// <summary>
 /// Fast.NET 自定义事件总线载体

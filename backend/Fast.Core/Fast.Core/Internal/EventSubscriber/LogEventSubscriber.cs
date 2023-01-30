@@ -4,7 +4,7 @@ using Fast.SqlSugar.Tenant.Extension;
 using Furion.EventBus;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.ServiceCollection.EventSubscriber;
+namespace Fast.Core.Internal.EventSubscriber;
 
 public class LogEventSubscriber : IEventSubscriber
 {
@@ -21,6 +21,7 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         var _repository = scope.ServiceProvider.GetRequiredService<ISqlSugarRepository<SysLogExModel>>();
         var log = (SysLogExModel) context.Source.Payload;
+        log.RecordCreate();
         await _repository.InsertAsync(log);
     }
 
@@ -32,7 +33,7 @@ public class LogEventSubscriber : IEventSubscriber
         {
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogOpModel>(source.TenantId);
             var log = (SysLogOpModel) context.Source.Payload;
-            await _db.Insertable(log).ExecuteCommandAsync();
+            await _db.Insertable(log).CallEntityMethod(m => m.RecordCreate()).ExecuteCommandAsync();
         }
     }
 
@@ -44,7 +45,7 @@ public class LogEventSubscriber : IEventSubscriber
         {
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogVisModel>(source.TenantId);
             var log = (SysLogVisModel) context.Source.Payload;
-            await _db.Insertable(log).ExecuteCommandAsync();
+            await _db.Insertable(log).CallEntityMethod(m => m.RecordCreate()).ExecuteCommandAsync();
         }
     }
 
@@ -57,6 +58,32 @@ public class LogEventSubscriber : IEventSubscriber
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<TenUserModel>(source.TenantId);
             var log = (TenUserModel) context.Source.Payload;
             await _db.Updateable(log).UpdateColumns(m => new {m.LastLoginTime, m.LastLoginIp}).ExecuteCommandAsync();
+        }
+    }
+
+    [EventSubscribe("Create:SchedulerJobLog")]
+    public async Task CreateSchedulerJobLog(EventHandlerExecutingContext context)
+    {
+        using var scope = Services.CreateScope();
+        if (context.Source is FastChannelEventSource source)
+        {
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>()
+                .LoadSqlSugar<SysLogSchedulerJobModel>(source.TenantId);
+            var log = (SysLogSchedulerJobModel) context.Source.Payload;
+            await _db.Insertable(log).ExecuteCommandAsync();
+        }
+    }
+
+    [EventSubscribe("Update:SchedulerJobLog")]
+    public async Task UpdateSchedulerJobLog(EventHandlerExecutingContext context)
+    {
+        using var scope = Services.CreateScope();
+        if (context.Source is FastChannelEventSource source)
+        {
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>()
+                .LoadSqlSugar<SysLogSchedulerJobModel>(source.TenantId);
+            var log = (SysLogSchedulerJobModel) context.Source.Payload;
+            await _db.Updateable(log).ExecuteCommandAsync();
         }
     }
 }

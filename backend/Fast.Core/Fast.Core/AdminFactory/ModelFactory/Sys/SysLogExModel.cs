@@ -1,4 +1,4 @@
-﻿using Fast.Core.AdminFactory.ModelFactory.BaseModel;
+﻿using Fast.Core.BaseModel;
 using Fast.SqlSugar.Tenant.AttributeFilter;
 using Fast.SqlSugar.Tenant.BaseModel.Interface;
 
@@ -36,12 +36,6 @@ public class SysLogExModel : BaseLogEntity, IBaseTenant
     public string MethodName { get; set; }
 
     /// <summary>
-    /// 异常名称
-    /// </summary>
-    [SugarColumn(ColumnDescription = "异常名称", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
-    public string ExceptionName { get; set; }
-
-    /// <summary>
     /// 异常信息
     /// </summary>
     [SugarColumn(ColumnDescription = "异常信息", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
@@ -54,10 +48,10 @@ public class SysLogExModel : BaseLogEntity, IBaseTenant
     public string ExceptionSource { get; set; }
 
     /// <summary>
-    /// 堆栈信息
+    /// 异常堆栈信息
     /// </summary>
-    [SugarColumn(ColumnDescription = "堆栈信息", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
-    public string StackTrace { get; set; }
+    [SugarColumn(ColumnDescription = "异常堆栈信息", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
+    public string ExceptionStackTrace { get; set; }
 
     /// <summary>
     /// 参数对象

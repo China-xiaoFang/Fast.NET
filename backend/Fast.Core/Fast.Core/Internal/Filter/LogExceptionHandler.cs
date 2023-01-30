@@ -1,5 +1,5 @@
 ﻿using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.ServiceCollection.EventSubscriber;
+using Fast.Core.Internal.EventSubscriber;
 using Furion.DependencyInjection;
 using Furion.EventBus;
 using Furion.FriendlyException;
@@ -34,10 +34,9 @@ public class LogExceptionHandler : IGlobalExceptionHandler, ISingleton
                     Name = GlobalContext.UserName,
                     ClassName = context.Exception.TargetSite?.DeclaringType?.FullName,
                     MethodName = context.Exception.TargetSite?.Name,
-                    ExceptionName = context.Exception.Message,
                     ExceptionMsg = context.Exception.Message,
                     ExceptionSource = context.Exception.Source,
-                    StackTrace = context.Exception.StackTrace,
+                    ExceptionStackTrace = context.Exception.StackTrace,
                     ParamsObj = context.Exception.TargetSite?.GetParameters().ToString(),
                     ExceptionTime = DateTime.Now,
                     TenantId = GlobalContext.TenantId

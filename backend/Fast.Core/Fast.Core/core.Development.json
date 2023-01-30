@@ -42,6 +42,8 @@
     "InitDataBase": true,
     // 同步枚举字典
     "SyncEnumDict": true,
+    // 接口限流
+    "RequestLimit": true,
     // 系统环境
     "Environment": "Development",
     // 演示环境请求禁止前缀

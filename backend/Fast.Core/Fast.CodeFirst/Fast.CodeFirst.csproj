@@ -19,4 +19,8 @@
 	  <ProjectReference Include="..\Fast.Core\Fast.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Folder Include="SeedData\" />
+	</ItemGroup>
+
 </Project>

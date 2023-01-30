@@ -17,6 +17,9 @@ const DEFAULT_CONFIG = {
 	// Token前缀，注意最后有个空格，如不需要需设置空字符串 // Bearer
 	TOKEN_PREFIX: "Bearer ",
 
+	// UUID
+	UUID: "Fast-Net-UUID",
+
 	// 追加其他头
 	HEADERS: {},
 
@@ -25,6 +28,14 @@ const DEFAULT_CONFIG = {
 
 	// 语言
 	LANG: "zh-cn",
+
+	// HTML页面
+	HTML_PAGE: {
+		// 404页面
+		404: "/html/40x.html",
+		// 500页面
+		500: "/html/50x.html",
+	},
 };
 
 export default DEFAULT_CONFIG;

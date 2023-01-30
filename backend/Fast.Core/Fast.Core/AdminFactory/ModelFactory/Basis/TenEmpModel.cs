@@ -22,10 +22,4 @@ public class TenEmpModel : PrimaryKeyEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "机构Id", IsNullable = false)]
     public long OrgId { get; set; }
-
-    /// <summary>
-    /// 机构名称
-    /// </summary>
-    [SugarColumn(ColumnDescription = "机构名称", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string OrgName { get; set; }
 }

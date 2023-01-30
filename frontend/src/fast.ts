@@ -1,4 +1,3 @@
-import VueStorage from "vue-ls";
 import tool from "./utils/tool";
 import errorHandler from "./utils/errorHandler";
 

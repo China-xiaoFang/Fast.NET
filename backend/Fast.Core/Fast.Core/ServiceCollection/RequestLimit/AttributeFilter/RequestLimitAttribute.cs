@@ -33,7 +33,12 @@ public class RequestLimitAttribute : Attribute
     /// </summary>
     public RequestLimitTypeEnum RequestLimitType { get; set; }
 
-    public RequestLimitAttribute(int second, int count, string? key,
+    public RequestLimitAttribute(bool isCheck)
+    {
+        IsCheck = isCheck;
+    }
+
+    public RequestLimitAttribute(int second, int count, string? key = null,
         RequestLimitTypeEnum requestLimitType = RequestLimitTypeEnum.User, bool isCheck = true)
     {
         Key = key;

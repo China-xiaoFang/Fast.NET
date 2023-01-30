@@ -279,10 +279,8 @@ public class SysTenantService : ISysTenantService, ITransient
         newAdminUser = await _db.Insertable(newAdminUser).ExecuteReturnEntityAsync();
 
         // 初始化职工
-        await _db.Insertable(new TenEmpModel
-        {
-            Id = newAdminUser.Id, JobNum = "10001", OrgId = newAdminOrg.Id, OrgName = newAdminOrg.Name
-        }).ExecuteCommandAsync();
+        await _db.Insertable(new TenEmpModel {Id = newAdminUser.Id, JobNum = "10001", OrgId = newAdminOrg.Id})
+            .ExecuteCommandAsync();
 
         // 初始化用户角色
         await _db.Insertable(new TenUserRoleModel {SysUserId = newAdminUser.Id, SysRoleId = newAdminRole.Id})

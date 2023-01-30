@@ -2,6 +2,8 @@
  * 工具集
  */
 
+import { v4 as uuidV4 } from "uuid";
+
 /**
  * 缓存前缀
  */
@@ -169,6 +171,70 @@ export function generateStr(len = 18, hex = 36) {
 	return res.substr(0, len);
 }
 
+/**
+ * 生成UUID
+ */
+export function generateUUID(): string {
+	return uuidV4();
+}
+
+/**
+ * 获取UUID
+ */
+export function getUUID(): string {
+	// 判断是否存在uuid
+	let uuid = cacheGet("UUID");
+	if (!uuid) {
+		// 生成uuid
+		uuid = generateUUID();
+		// 放入缓存
+		cacheSet("UUID", uuid);
+	}
+	return uuid;
+}
+
+/**
+ * 检测字符串是否为正确的Url地址
+ * @param url
+ * @returns
+ */
+export function checkUrl(url: string): boolean {
+	//url= 协议://(ftp的登录信息)[IP|域名](:端口号)(/或?请求参数)
+	var strRegex =
+		"^((https|http|ftp)://)?" + //(https或http或ftp):// 可有可无
+		"(([\\w_!~*'()\\.&=+$%-]+: )?[\\w_!~*'()\\.&=+$%-]+@)?" + //ftp的user@  可有可无
+		"(([0-9]{1,3}\\.){3}[0-9]{1,3}" + // IP形式的URL- 3位数字.3位数字.3位数字.3位数字
+		"|" + // 允许IP和DOMAIN（域名）
+		"(localhost)|" + //匹配localhost
+		"([\\w_!~*'()-]+\\.)*" + // 域名- 至少一个[英文或数字_!~*\'()-]加上.
+		"\\w+\\." + // 一级域名 -英文或数字  加上.
+		"[a-zA-Z]{1,6})" + // 顶级域名- 1-6位英文
+		"(:[0-9]{1,5})?" + // 端口- :80 ,1-5位数字
+		"((/?)|" + // url无参数结尾 - 斜杆或这没有
+		"(/[\\w_!~*'()\\.;?:@&=+$,%#-]+)+/?)$"; //请求参数结尾- 英文或数字和[]内的各种字符
+
+	var regex = new RegExp(strRegex, "i"); //i不区分大小写
+	//将url做uri转码后再匹配，解除请求参数中的中文和空字符影响
+	if (regex.test(encodeURI(url))) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * 跳转Html页面
+ * @param {string} url
+ */
+export function toHtmlPage(url: string) {
+	// 判断是否为正确的Url地址
+	if (checkUrl(url)) {
+		window.location.replace(url);
+	} else {
+		window.location.replace(`${window.location.origin}${url}`);
+	}
+}
+
 const tool = {
 	cache: {
 		set: cacheSet,
@@ -187,6 +253,10 @@ const tool = {
 	debounce: debounce,
 	throttle: throttle,
 	generateStr: generateStr,
+	generateUUID: generateUUID,
+	getUUID: getUUID,
+	checkUrl: checkUrl,
+	toHtmlPage: toHtmlPage,
 };
 
 export default tool;
