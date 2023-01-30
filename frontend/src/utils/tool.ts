@@ -3,6 +3,12 @@
  */
 
 import { v4 as uuidV4 } from "uuid";
+import {
+	base64ImgToFile,
+	toBase64,
+	base64ToStr,
+	getBase64ByFile,
+} from "./base64";
 
 /**
  * 缓存前缀
@@ -257,6 +263,10 @@ const tool = {
 	getUUID: getUUID,
 	checkUrl: checkUrl,
 	toHtmlPage: toHtmlPage,
+	base64ImgToFile: base64ImgToFile,
+	toBase64: toBase64,
+	base64ToStr: base64ToStr,
+	getBase64ByFile: getBase64ByFile,
 };
 
 export default tool;

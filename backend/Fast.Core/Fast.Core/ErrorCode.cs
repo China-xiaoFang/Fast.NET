@@ -67,4 +67,16 @@ public enum ErrorCode
     /// </summary>
     [ErrorCodeItemMetadata("租户WebUrl必须是Https协议！")]
     TenantWebUrlHttpsError,
+
+    /// <summary>
+    /// 登录方式错误！
+    /// </summary>
+    [ErrorCodeItemMetadata("不是一个有效的登录方式！")]
+    LoginMethodInvalid,
+
+    /// <summary>
+    /// 不是一个有效的邮箱地址！
+    /// </summary>
+    [ErrorCodeItemMetadata("不是一个有效的邮箱地址！")]
+    EmailAddressInvalid,
 }

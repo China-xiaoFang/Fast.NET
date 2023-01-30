@@ -1,5 +1,4 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ServiceFactory.Tenant;
 using Fast.Core.Internal.Options;
 using Fast.Core.ServiceCollection.Cache.Options;
 using Fast.SqlSugar.Tenant;
@@ -18,7 +17,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User != null)
+            if (App.User is {Identity.IsAuthenticated: true})
             {
                 // 获取Token中的
                 return (App.User?.FindFirst(ClaimConst.TenantId)?.Value).ParseToLong();
@@ -34,17 +33,17 @@ public class GlobalContext
                     return headersTenantId;
                 }
 
-                // 获取请求头中的站点Url
-                var headersWebUrl = OriginUrl;
-                if (!headersWebUrl.IsEmpty())
-                {
-                    var tenantInfo = App.GetService<ISysTenantService>().GetAllTenantInfo(wh => wh.WebUrl.Contains(headersWebUrl))
-                        .Result;
-                    if (tenantInfo is {Count: > 0})
-                    {
-                        return tenantInfo[0].Id;
-                    }
-                }
+                //// 获取请求头中的站点Url
+                //var headersWebUrl = OriginUrl;
+                //if (!headersWebUrl.IsEmpty())
+                //{
+                //    var tenantInfo = App.GetService<ISysTenantService>().GetAllTenantInfo(wh => wh.WebUrl.Contains(headersWebUrl))
+                //        .Result;
+                //    if (tenantInfo is {Count: > 0})
+                //    {
+                //        return tenantInfo[0].Id;
+                //    }
+                //}
             }
 
             return 0L;
@@ -94,9 +93,9 @@ public class GlobalContext
     {
         get
         {
-            if (App.User == null)
+            if (App.User is {Identity.IsAuthenticated: true})
                 return false;
-            return App.User.FindFirst(ClaimConst.IsSuperAdmin)?.Value == AdminTypeEnum.SuperAdmin.GetHashCode().ParseToString();
+            return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.SuperAdmin.GetHashCode().ParseToString();
         }
     }
 
@@ -107,9 +106,9 @@ public class GlobalContext
     {
         get
         {
-            if (App.User == null)
+            if (App.User is {Identity.IsAuthenticated: true})
                 return false;
-            return App.User.FindFirst(ClaimConst.IsSuperAdmin)?.Value == AdminTypeEnum.SystemAdmin.GetHashCode().ParseToString();
+            return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.SystemAdmin.GetHashCode().ParseToString();
         }
     }
 
@@ -120,9 +119,9 @@ public class GlobalContext
     {
         get
         {
-            if (App.User == null)
+            if (App.User is {Identity.IsAuthenticated: true})
                 return false;
-            return App.User.FindFirst(ClaimConst.IsSuperAdmin)?.Value == AdminTypeEnum.TenantAdmin.GetHashCode().ParseToString();
+            return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.TenantAdmin.GetHashCode().ParseToString();
         }
     }
 

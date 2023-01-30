@@ -1,7 +1,6 @@
 import loginApi from "@/api/auth/loginApi";
 import { Modal, message } from "ant-design-vue";
-import tool from "@/utils/tool";
-import sysConfig from "@/config/index";
+import store from "@/store";
 
 export default {
 	init(app) {
@@ -13,7 +12,12 @@ export default {
 			.then((res) => {
 				if (res.success) {
 					// 缓存请求到的数据
-					tool.cache.set("WebSiteInfo", res.data);
+					app.config.globalProperties.$tool.cache.set(
+						app.config.globalProperties.$cacheKey.WEB_SITE_INFO,
+						res.data
+					);
+					// 设置全局存储
+					store.commit("setWebSiteInfo", res.data);
 					// 设置站点图标和站点名称
 					let faviconScript = document.createElement("link");
 					faviconScript.rel = "icon";
@@ -32,12 +36,19 @@ export default {
 				}
 			})
 			.catch((err) => {
+				// 删除缓存
+				app.config.globalProperties.$tool.cache.remove(
+					app.config.globalProperties.$cacheKey.WEB_SITE_INFO
+				);
 				initLoading();
 				Modal.error({
 					title: "不知名的主机访问！",
 					content: err.message,
 					onOk() {
-						tool.toHtmlPage(sysConfig.HTML_PAGE[404]);
+						app.config.globalProperties.$tool.toHtmlPage(
+							app.config.globalProperties.$sysConfig
+								.HTML_PAGE[404]
+						);
 					},
 				});
 			});

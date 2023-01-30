@@ -1,16 +1,14 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue'
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'HelloWorld',
-    component: HelloWorld,
-  },
-]
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+
+import systemRouter from "./systemRouter";
+
+// 系统路由
+const routes = [...systemRouter];
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
+	// 此方式不带 # 号 // createWebHashHistory()带#号
+	history: createWebHistory(),
+	routes,
+});
 
-export default router
+export default router;

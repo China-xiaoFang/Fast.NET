@@ -104,7 +104,10 @@ public class SysTenantService : ISysTenantService, ITransient
         // 获取第一个
         var tenantInfo = tenantList[0];
 
-        return tenantInfo.Adapt<WebSiteInitOutput>();
+        var result = tenantInfo.Adapt<WebSiteInitOutput>();
+        result.TenantId = tenantInfo.Id.ToString().ToBase64();
+
+        return result;
     }
 
     #region 租户操作

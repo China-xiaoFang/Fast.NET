@@ -7,6 +7,8 @@ import axios from "axios";
 import { Modal, message, notification } from "ant-design-vue";
 import sysConfig from "@/config/index";
 import tool from "@/utils/tool";
+import cacheKey from "@/config/cacheKey";
+import store from "@/store";
 
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
 declare module "axios" {
@@ -67,7 +69,7 @@ const service = axios.create({
 // HTTP request 拦截器
 service.interceptors.request.use(
 	(config) => {
-		const token = tool.cache.get("TOKEN");
+		const token = tool.cache.get(cacheKey.TOKEN);
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] =
 				sysConfig.TOKEN_PREFIX + token;
@@ -75,6 +77,11 @@ service.interceptors.request.use(
 		if (!sysConfig.REQUEST_CACHE && config.method === "get") {
 			config.params = config.params || {};
 			config.params._ = new Date().getTime();
+		}
+		// 带上租户Id
+		const tenantId = store.state["webSiteInfo"]?.base64TenantId;
+		if (tenantId) {
+			config.headers[sysConfig.TENANT_ID_NAME] = tenantId;
 		}
 		// 带上来源
 		config.headers[sysConfig.ORIGIN_NAME] = window.location.origin;
@@ -97,10 +104,10 @@ const error = () => {
 		content: "登录已失效， 请重新登录",
 		onOk: () => {
 			loginBack.value = false;
-			tool.cache.remove("TOKEN");
-			tool.cache.remove("USER_INFO");
-			tool.cache.remove("MENU");
-			tool.cache.remove("PERMISSIONS");
+			tool.cache.remove(cacheKey.TOKEN);
+			tool.cache.remove(cacheKey.USER_INFO);
+			tool.cache.remove(cacheKey.MENU);
+			tool.cache.remove(cacheKey.PERMISSIONS);
 			window.location.reload();
 		},
 	});
@@ -126,7 +133,8 @@ service.interceptors.response.use(
 			}
 			return;
 		}
-		if (code !== 200) {
+		// 200 为有返回值，204 为无返回值
+		if (code !== 200 && code !== 204) {
 			message.error(data.message);
 			return Promise.reject(data);
 		} else {
@@ -207,7 +215,6 @@ export const baseRequest = (
 	method: string,
 	options: any = {}
 ) => {
-	url = sysConfig.API_URL + url;
 	if (method === "post") {
 		return service.post(url, value, options);
 	} else if (method === "get") {

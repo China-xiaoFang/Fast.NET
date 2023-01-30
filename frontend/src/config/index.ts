@@ -2,11 +2,11 @@ const DEFAULT_CONFIG = {
 	// 首页地址
 	DASHBOARD_URL: "/index",
 
-	// 接口地址
-	API_URL: import.meta.env.VITE_API_BASEURL,
+	// 请求超时，30秒
+	TIMEOUT: 1000 * 10,
 
-	// 请求超时
-	TIMEOUT: 10000,
+	// TenantId
+	TENANT_ID_NAME: "Fast-NET-TenantId",
 
 	// OriginName
 	ORIGIN_NAME: "Fast-Net-Origin",

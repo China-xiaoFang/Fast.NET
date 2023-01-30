@@ -129,6 +129,12 @@
   <data name="SqlSugar配置错误，请检查 Model 是否继承了接口!" xml:space="preserve">
     <value>SqlSugar config error, please Check whether the Model inherits the interface!</value>
   </data>
+  <data name="不是一个有效的登录方式！" xml:space="preserve">
+    <value>Not a valid way to log in!</value>
+  </data>
+  <data name="不是一个有效的邮箱地址！" xml:space="preserve">
+    <value>Not a valid email address!</value>
+  </data>
   <data name="已存在同主机租户信息！" xml:space="preserve">
     <value>Tenant information about the same host already exists!</value>
   </data>

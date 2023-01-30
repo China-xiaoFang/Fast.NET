@@ -5,6 +5,7 @@ using Fast.Core.Operation.Config.Dto;
 using Fast.Core.Operation.Dict;
 using Fast.Core.Operation.Dict.Dto;
 using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Admin.Application;
@@ -12,7 +13,7 @@ namespace Fast.Admin.Application;
 /// <summary>
 /// 测试接口
 /// </summary>
-[ApiDescriptionSettings(Name = "Test", Order = 100)]
+[ApiDescriptionSettings(ApiGroupConst.Default, Name = "Test", Order = 100), AllowAnonymous]
 public class TestApplication : IDynamicApiController
 {
     /// <summary>

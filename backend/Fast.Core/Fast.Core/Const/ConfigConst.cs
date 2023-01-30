@@ -65,5 +65,10 @@ public class ConfigConst
         /// 验证码开关
         /// </summary>
         public const string VerCodeSwitch = "Ten_VerCodeSwitch";
+
+        /// <summary>
+        /// Token过期时间
+        /// </summary>
+        public const string TokenExpiredTime = "Ten_TokenExpiredTime";
     }
 }

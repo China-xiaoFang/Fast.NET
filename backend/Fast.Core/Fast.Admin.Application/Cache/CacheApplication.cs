@@ -1,5 +1,6 @@
 ﻿using Fast.Core.AdminFactory.ServiceFactory.Cache;
 using Fast.Core.AdminFactory.ServiceFactory.Cache.Dto;
+using Fast.Core.Const;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,7 @@ namespace Fast.Admin.Application.Cache;
 /// <summary>
 /// 缓存接口
 /// </summary>
-[ApiDescriptionSettings(Name = "Cache", Order = 100)]
+[ApiDescriptionSettings(ApiGroupConst.Web, Name = "Cache", Order = 100)]
 public class CacheApplication : IDynamicApiController
 {
     private readonly ICacheService _cacheService;

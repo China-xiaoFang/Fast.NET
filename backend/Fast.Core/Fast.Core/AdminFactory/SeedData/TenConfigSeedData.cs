@@ -54,6 +54,15 @@ public class TenConfigSeedData : ITenantSeedData
                 Value = "true",
                 Remark = "true 开；false 关；用于登录界面验证码。"
             },
+            new()
+            {
+                Id = 1000000005,
+                Code = ConfigConst.Tenant.TokenExpiredTime,
+                ChName = "Token过期时间（分钟）",
+                EnName = "Token Expired Time",
+                Value = "30",
+                Remark = "单位分钟"
+            },
         };
         await _db.Insertable(data).ExecuteCommandAsync();
     }
