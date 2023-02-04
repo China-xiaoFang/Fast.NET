@@ -7,6 +7,9 @@ import axios from "axios";
 import { Modal, message, notification } from "ant-design-vue";
 import sysConfig from "@/config/index";
 import tool from "@/utils/tool";
+import cacheKey from "@/config/cacheKey";
+import store from "@/store";
+import { translate as $t } from "@/locales";
 
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
 declare module "axios" {
@@ -42,19 +45,19 @@ declare module "axios" {
 // 以下这些code需要重新登录
 const reloadCodes = [401];
 const errorCodeMap = {
-	400: "发出的请求有错误，服务器没有进行新建或修改数据的操作。",
-	401: "用户没有权限（令牌、用户名、密码错误）。",
-	403: "用户得到授权，但是访问是被禁止的。",
-	404: "The requested resource does not exist（请求的资源不存在）",
-	406: "请求的格式不可得。",
-	410: "请求的资源被永久删除，且不会再得到的。",
-	422: "当创建一个对象时，发生一个验证错误。",
-	429: "The request is too frequent, please try again later（请求过于频繁，请稍后再试）",
-	500: "Internal Server Error（服务器内部错误）",
-	502: "网关错误。",
-	503: "Service unavailable, server temporarily overloaded or maintained（服务不可用，服务器暂时过载或维护）",
-	504: "网关超时。",
-	default: "Request timeout（请求超时）",
+	400: $t("requestError.400"),
+	401: $t("requestError.401"),
+	403: $t("requestError.403"),
+	404: $t("requestError.404"),
+	406: $t("requestError.406"),
+	410: $t("requestError.410"),
+	422: $t("requestError.422"),
+	429: $t("requestError.429"),
+	500: $t("requestError.500"),
+	502: $t("requestError.502"),
+	503: $t("requestError.503"),
+	504: $t("requestError.504"),
+	default: $t("requestError.default"),
 };
 // 定义一个重新登录弹出窗的变量
 const loginBack = ref(false);
@@ -67,7 +70,7 @@ const service = axios.create({
 // HTTP request 拦截器
 service.interceptors.request.use(
 	(config) => {
-		const token = tool.cache.get("TOKEN");
+		const token = tool.cache.get(cacheKey.TOKEN);
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] =
 				sysConfig.TOKEN_PREFIX + token;
@@ -75,6 +78,11 @@ service.interceptors.request.use(
 		if (!sysConfig.REQUEST_CACHE && config.method === "get") {
 			config.params = config.params || {};
 			config.params._ = new Date().getTime();
+		}
+		// 带上租户Id
+		const tenantId = store.state["webSiteInfo"]?.base64TenantId;
+		if (tenantId) {
+			config.headers[sysConfig.TENANT_ID_NAME] = tenantId;
 		}
 		// 带上来源
 		config.headers[sysConfig.ORIGIN_NAME] = window.location.origin;
@@ -92,15 +100,15 @@ service.interceptors.request.use(
 const error = () => {
 	loginBack.value = true;
 	Modal.error({
-		title: "提示：",
-		okText: "重新登录",
-		content: "登录已失效， 请重新登录",
+		title: $t("message.title"),
+		okText: $t("login.reLogin"),
+		content: $t("login.loginInvalidation"),
 		onOk: () => {
 			loginBack.value = false;
-			tool.cache.remove("TOKEN");
-			tool.cache.remove("USER_INFO");
-			tool.cache.remove("MENU");
-			tool.cache.remove("PERMISSIONS");
+			tool.cache.remove(cacheKey.TOKEN);
+			tool.cache.remove(cacheKey.USER_INFO);
+			tool.cache.remove(cacheKey.MENU);
+			tool.cache.remove(cacheKey.PERMISSIONS);
 			window.location.reload();
 		},
 	});
@@ -114,7 +122,7 @@ service.interceptors.response.use(
 			if (response.status === 200) {
 				return response;
 			} else {
-				message.warning("文件下载失败或此文件不存在");
+				message.warning($t("requestError.fileError"));
 				return;
 			}
 		}
@@ -126,7 +134,8 @@ service.interceptors.response.use(
 			}
 			return;
 		}
-		if (code !== 200) {
+		// 200 为有返回值，204 为无返回值
+		if (code !== 200 && code !== 204) {
 			message.error(data.message);
 			return Promise.reject(data);
 		} else {
@@ -165,7 +174,7 @@ service.interceptors.response.use(
 			const status = res?.status ?? "default";
 			const description = errorCodeMap[status];
 			notification.error({
-				message: "请求错误",
+				message: $t("requestError.requestError"),
 				description,
 			});
 			return Promise.reject(res?.data);
@@ -207,7 +216,6 @@ export const baseRequest = (
 	method: string,
 	options: any = {}
 ) => {
-	url = sysConfig.API_URL + url;
 	if (method === "post") {
 		return service.post(url, value, options);
 	} else if (method === "get") {

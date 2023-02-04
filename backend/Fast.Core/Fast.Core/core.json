@@ -79,7 +79,6 @@
     "ValidateAudience": true, // 是否验证签收方，bool 类型，默认true
     "ValidAudience": "Fast", // 签收方，string 类型
     "ValidateLifetime": true, // 是否验证过期时间，bool 类型，默认true，建议true
-    "ExpiredTime": 30, // 过期时间，long 类型，单位分钟，默认30分钟
     "ClockSkew": 5 // 过期时间容错值，long 类型，单位秒，默认5秒
   },
   // 异常配置
@@ -88,7 +87,7 @@
   },
   // 多语言
   "LocalizationSettings": {
-    "SupportedCultures": [ "zh-CN", "en-US" ], // 配置支持的语言列表
+    "SupportedCultures": [ "zh-CN", "en" ], // 配置支持的语言列表
     "DefaultCulture": "zh-CN", // 配置默认语言，如果不配置，取 SupportedCultures 的第一项
     "LanguageFilePrefix": "Lang",
     "AssemblyName": "Fast.Core"
@@ -132,6 +131,12 @@
       {
         "Group": "Default",
         "Title": "Fast.NET通用权限管理平台",
+        "Description": "前后端分离架构，开箱即用，紧随前沿技术。<br/>作者By 1.8K 仔<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
+        "Version": "1.0.0"
+      },
+      {
+        "Group": "Web",
+        "Title": "Fast.NET.Web API",
         "Description": "前后端分离架构，开箱即用，紧随前沿技术。<br/>作者By 1.8K 仔<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
         "Version": "1.0.0"
       }

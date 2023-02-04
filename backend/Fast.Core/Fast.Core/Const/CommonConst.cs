@@ -54,5 +54,11 @@ public class CommonConst
         /// Http或者Https地址判断
         /// </summary>
         public const string HttpOrHttpsUrl = "/(http|https):\\/\\/([\\w.]+\\/?)\\S*/";
+
+        /// <summary>
+        /// 邮箱地址判断
+        /// </summary>
+        public const string EmailAddress =
+            "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
     }
 }

@@ -31,19 +31,24 @@ public class ClaimConst
     public const string Name = "Name";
 
     /// <summary>
-    /// 是否超级管理
+    /// 管理员类型
     /// </summary>
-    public const string IsSuperAdmin = "IsSuperAdmin";
+    public const string AdminType = "AdminType";
 
     /// <summary>
     /// 租户Id
     /// </summary>
-    public const string TenantId = "TenantId";
+    public const string TenantId = "Fast-NET-TenantId";
 
     /// <summary>
     /// 站点
     /// </summary>
     public const string Origin = "Fast-Net-Origin";
+
+    /// <summary>
+    /// 刷新Token
+    /// </summary>
+    public const string RefreshToken = "Fast-Net-Access-Token";
 
     /// <summary>
     /// UUID

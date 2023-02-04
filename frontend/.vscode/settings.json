@@ -30,5 +30,10 @@
 	// 保存到额时候用使用 prettier进行格式化
 	"editor.formatOnSave": true,
 	// css文件忽略警告
-	"css.lint.unknownAtRules": "ignore"
+	"css.lint.unknownAtRules": "ignore",
+	"i18n-ally.localesPaths": [
+		"src/locales",
+		"public/tinymce/langs",
+		"src/locales/lang"
+	]
 }

@@ -2,6 +2,7 @@
 using Furion.DataValidation;
 using Furion.DependencyInjection;
 using Furion.FriendlyException;
+using Furion.Localization;
 using Furion.UnifyResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
             Code = metadata.StatusCode,
             Success = false,
             Data = metadata.Errors,
-            Message = "系统内部错误，请联系管理员处理！",
+            Message = L.Text["系统内部错误，请联系管理员处理！"].Value,
             Extras = UnifyContext.Take(),
             Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
         });
@@ -47,7 +48,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
             Code = context.Result is EmptyResult ? StatusCodes.Status204NoContent : StatusCodes.Status200OK, // 处理没有返回值情况 204
             Success = true,
             Data = data,
-            Message = "请求成功",
+            Message = L.Text["请求成功"].Value,
             Extras = UnifyContext.Take(),
             Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
         });
@@ -94,7 +95,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
                         Code = StatusCodes.Status429TooManyRequests,
                         Success = false,
                         Data = null,
-                        Message = "429 频繁请求",
+                        Message = L.Text["429 频繁请求"].Value,
                         Extras = UnifyContext.Take(),
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                     }, App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
@@ -107,7 +108,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
                         Code = StatusCodes.Status401Unauthorized,
                         Success = false,
                         Data = null,
-                        Message = "401 未经授权",
+                        Message = L.Text["401 未经授权"].Value,
                         Extras = UnifyContext.Take(),
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                     }, App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
@@ -120,7 +121,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
                         Code = StatusCodes.Status403Forbidden,
                         Success = false,
                         Data = null,
-                        Message = "403 禁止访问",
+                        Message = L.Text["403 禁止访问"].Value,
                         Extras = UnifyContext.Take(),
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                     }, App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
