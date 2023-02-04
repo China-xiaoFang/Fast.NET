@@ -10,6 +10,22 @@ export default {
 		// 这里存放数据
 		return {
 			test: "登录页面",
+			columns: [
+				{
+					title: "Name",
+					dataIndex: "name",
+					filters: [
+						{
+							text: "filter1",
+							value: "filter1",
+						},
+					],
+				},
+				{
+					title: "Age",
+					dataIndex: "age",
+				},
+			],
 		};
 	},
 	// 监听属性 类似于data概念
@@ -27,7 +43,7 @@ export default {
 				})
 				.then((res) => {
 					if (res.success) {
-						this.$message.info("登录成功！");
+						this.$message.success(this.$t("login.loginSuccess"));
 					}
 				});
 		},

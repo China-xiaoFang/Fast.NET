@@ -1,10 +1,11 @@
 import loginApi from "@/api/auth/loginApi";
 import { Modal, message } from "ant-design-vue";
 import store from "@/store";
+import { translate as $t } from "@/locales";
 
 export default {
 	init(app) {
-		const initLoading = message.loading("系统初始化中，请耐心等待", 0);
+		const initLoading = message.loading($t("message.systemInit"), 0);
 
 		// 根据Host判断是否为真实的租户
 		loginApi
@@ -30,8 +31,8 @@ export default {
 				} else {
 					initLoading();
 					Modal.error({
-						title: "不知名的主机访问！",
-						content: "未知的站点，请确认访问的站点是否正确！",
+						title: $t("message.hostError"),
+						content: $t("message.webSiteError"),
 					});
 				}
 			})
@@ -42,7 +43,7 @@ export default {
 				);
 				initLoading();
 				Modal.error({
-					title: "不知名的主机访问！",
+					title: $t("message.hostError"),
 					content: err.message,
 					onOk() {
 						app.config.globalProperties.$tool.toHtmlPage(

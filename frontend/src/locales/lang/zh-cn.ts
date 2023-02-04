@@ -1,6 +1,29 @@
 import "dayjs/locale/zh-cn";
 
 export default {
+	requestError: {
+		400: "发出的请求有错误，服务器没有进行新建或修改数据的操作",
+		401: "用户没有权限（令牌、用户名、密码错误）",
+		403: "用户得到授权，但是访问是被禁止的",
+		404: "请求的资源不存在",
+		406: "请求的格式不可得",
+		410: "请求的资源被永久删除，且不会再得到的",
+		422: "当创建一个对象时，发生一个验证错误",
+		429: "请求过于频繁，请稍后再试",
+		500: "服务器内部错误",
+		502: "网关错误",
+		503: "服务不可用，服务器暂时过载或维护",
+		504: "网关超时",
+		default: "请求超时",
+		requestError: "请求错误",
+		fileError: "文件下载失败或此文件不存在",
+	},
+	message: {
+		title: "提示：",
+		systemInit: "系统初始化中，请耐心等待",
+		hostError: "不知名的主机访问！",
+		webSiteError: "未知的站点，请确认访问的站点是否正确！",
+	},
 	common: {
 		searchButton: "查询",
 		resetButton: "重置",
@@ -18,6 +41,9 @@ export default {
 		bizUser: "人员",
 	},
 	login: {
+		loginSuccess: "登录成功！",
+		reLogin: "重新登录",
+		loginInvalidation: "登录已失效， 请重新登录",
 		signInTitle: "用户登录",
 		forgetPassword: "忘记密码",
 		signIn: "登录",
