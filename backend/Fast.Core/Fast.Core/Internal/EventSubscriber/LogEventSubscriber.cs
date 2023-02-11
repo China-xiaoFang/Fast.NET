@@ -1,5 +1,5 @@
-﻿using Fast.Core.AdminFactory.ModelFactory.Basis;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Core.AdminFactory.ModelFactory.Sys;
+using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.SqlSugar.Tenant.Extension;
 using Furion.EventBus;
 using Microsoft.Extensions.DependencyInjection;

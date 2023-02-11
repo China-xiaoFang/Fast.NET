@@ -3,7 +3,7 @@ using Fast.SqlSugar.Tenant.AttributeFilter;
 using Fast.SqlSugar.Tenant.BaseModel;
 using Fast.SqlSugar.Tenant.Internal.Enum;
 
-namespace Fast.Core.AdminFactory.ModelFactory.Basis;
+namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 
 /// <summary>
 /// 租户用户表Model类

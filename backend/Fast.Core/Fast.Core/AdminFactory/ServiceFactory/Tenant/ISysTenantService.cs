@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
+using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
 using Fast.Core.Util.Restful.Internal;
 using Microsoft.AspNetCore.Mvc;

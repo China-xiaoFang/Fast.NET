@@ -1,5 +1,6 @@
-﻿using Fast.Core.AdminFactory.ModelFactory.Basis;
+﻿using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.CodeFirst.Internal;
+using Fast.Core.Const;
 
 namespace Fast.Core.AdminFactory.SeedData;
 

@@ -3,7 +3,6 @@ using System.Reflection;
 using Fast.Core;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant;
 using Fast.Core.CodeFirst;
 using Fast.Core.CodeFirst.Internal;

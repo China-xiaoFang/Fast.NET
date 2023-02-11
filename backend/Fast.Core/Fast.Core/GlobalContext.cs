@@ -1,4 +1,5 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.Const;
 using Fast.Core.Internal.Options;
 using Fast.Core.ServiceCollection.Cache.Options;
 using Fast.SqlSugar.Tenant;

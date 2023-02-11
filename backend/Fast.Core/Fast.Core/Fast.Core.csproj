@@ -40,14 +40,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Fast.SqlSugar\Fast.SqlSugar.Tenant\Fast.SqlSugar.Tenant.csproj" />
-	  <ProjectReference Include="..\Fast.Iaas\Fast.Iaas.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Update="Resources\Lang.en-US.resx">
 			<Generator></Generator>
 		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Fast.NuGet\Fast.Iaas\Fast.Iaas.csproj" />
+	  <ProjectReference Include="..\..\Fast.NuGet\Fast.SqlSugar\Fast.SqlSugar.Tenant\Fast.SqlSugar.Tenant.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

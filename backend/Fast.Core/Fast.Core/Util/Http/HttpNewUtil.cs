@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Web;
+using Fast.Core.ServiceCollection.Cache;
 using Fast.Core.Util.Json.Extension;
 using Furion.DependencyInjection;
 using Furion.RemoteRequest.Extensions;

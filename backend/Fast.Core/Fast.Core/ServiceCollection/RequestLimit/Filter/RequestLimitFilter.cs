@@ -1,4 +1,5 @@
-﻿using Fast.Core.ServiceCollection.RequestLimit.Internal;
+﻿using Fast.Core.ServiceCollection.Cache;
+using Fast.Core.ServiceCollection.RequestLimit.Internal;
 using Furion.DependencyInjection;
 
 namespace Fast.Core.ServiceCollection.RequestLimit.Filter;

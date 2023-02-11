@@ -1,4 +1,5 @@
 ﻿using Fast.Core.AdminFactory.ServiceFactory.Cache.Dto;
+using Fast.Core.ServiceCollection.Cache;
 using Furion.DependencyInjection;
 using Microsoft.Extensions.Caching.Memory;
 

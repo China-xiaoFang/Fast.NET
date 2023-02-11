@@ -16,11 +16,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Fast.Core\Fast.Core.csproj" />
+		<Folder Include="SeedData\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="SeedData\" />
+	  <ProjectReference Include="..\Fast.Core\Fast.Core.csproj" />
 	</ItemGroup>
 
 </Project>

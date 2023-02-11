@@ -1,6 +1,7 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.CodeFirst.Internal;
+using Fast.Core.Const;
 
 namespace Fast.Core.AdminFactory.SeedData;
 

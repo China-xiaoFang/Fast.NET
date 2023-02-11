@@ -1,5 +1,6 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
+using Fast.Core.Const;
 using Fast.Core.Internal.EventSubscriber;
 using Furion.EventBus;
 using Furion.Schedule;

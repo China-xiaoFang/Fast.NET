@@ -2,7 +2,7 @@
 using Fast.SqlSugar.Tenant.BaseModel;
 using Fast.SqlSugar.Tenant.Internal.Enum;
 
-namespace Fast.Core.AdminFactory.ModelFactory.Basis;
+namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 
 /// <summary>
 /// 租户员工表Model类

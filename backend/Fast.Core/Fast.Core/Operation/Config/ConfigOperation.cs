@@ -1,7 +1,9 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Basis;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
+using Fast.Core.AdminFactory.ModelFactory.Tenant;
+using Fast.Core.Const;
 using Fast.Core.Operation.Config.Dto;
+using Fast.Core.ServiceCollection.Cache;
 using Fast.SqlSugar.Tenant;
 using Fast.SqlSugar.Tenant.Extension;
 using Furion.DependencyInjection;

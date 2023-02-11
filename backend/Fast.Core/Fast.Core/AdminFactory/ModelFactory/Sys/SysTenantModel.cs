@@ -1,10 +1,10 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Basis;
+using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.SqlSugar.Tenant.AttributeFilter;
 using Fast.SqlSugar.Tenant.BaseModel;
 using Fast.SqlSugar.Tenant.SugarEntity;
 
-namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
+namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 
 /// <summary>
 /// 租户信息表Model类

@@ -2,20 +2,20 @@
 using Fast.SqlSugar.Tenant.BaseModel.Interface;
 using Fast.SqlSugar.Tenant.Internal.Enum;
 
-namespace Fast.Core.AdminFactory.ModelFactory.Basis;
+namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 
 /// <summary>
-/// 租户角色数据范围表Model类
+/// 租户用户数据范围表Model类
 /// </summary>
-[SugarTable("Ten_Role_Data_Scope", "租户角色数据范围表")]
+[SugarTable("Ten_User_Data_Scope", "租户用户数据范围表")]
 [SugarDbType(SugarDbTypeEnum.Tenant)]
-public class TenRoleDataScopeModel : IDbEntity
+public class TenUserDataScopeModel : IDbEntity
 {
     /// <summary>
-    /// 角色Id
+    /// 用户Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "角色Id", IsNullable = false)]
-    public long SysRoleId { get; set; }
+    [SugarColumn(ColumnDescription = "用户Id", IsNullable = false)]
+    public long SysUserId { get; set; }
 
     /// <summary>
     /// 机构Id

@@ -2,7 +2,7 @@
 using Fast.SqlSugar.Tenant.BaseModel;
 using Fast.SqlSugar.Tenant.Internal.Enum;
 
-namespace Fast.Core.AdminFactory.ModelFactory.Basis;
+namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 
 /// <summary>
 /// 系统字典类型表Model类
