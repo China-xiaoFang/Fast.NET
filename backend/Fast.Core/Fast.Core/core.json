@@ -45,7 +45,7 @@
     // 接口限流
     "RequestLimit": true,
     // 系统环境
-    "Environment": "Production",
+    "Environment": "Development",
     // 演示环境请求禁止前缀
     "DemoEnvReqDisable": [ "add", "edit", "delete", "export", "import" ]
   },
@@ -87,7 +87,7 @@
   },
   // 多语言
   "LocalizationSettings": {
-    "SupportedCultures": [ "zh-CN", "en" ], // 配置支持的语言列表
+    "SupportedCultures": [ "zh-CN", "en-US" ], // 配置支持的语言列表
     "DefaultCulture": "zh-CN", // 配置默认语言，如果不配置，取 SupportedCultures 的第一项
     "LanguageFilePrefix": "Lang",
     "AssemblyName": "Fast.Core"
