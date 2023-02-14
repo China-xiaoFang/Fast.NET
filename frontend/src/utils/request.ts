@@ -10,6 +10,7 @@ import tool from "@/utils/tool";
 import cacheKey from "@/config/cacheKey";
 import store from "@/store";
 import { translate as $t } from "@/locales";
+import { AESDecrypt, AESEncrypt } from "./AES";
 
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
 declare module "axios" {
@@ -71,14 +72,32 @@ const service = axios.create({
 service.interceptors.request.use(
 	(config) => {
 		const token = tool.cache.get(cacheKey.TOKEN);
+		const time = new Date();
+		const timestamp = time.getTime();
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] =
 				sysConfig.TOKEN_PREFIX + token;
 		}
 		if (!sysConfig.REQUEST_CACHE && config.method === "get") {
 			config.params = config.params || {};
-			config.params._ = new Date().getTime();
+			config.params._ = timestamp;
 		}
+		// Post请求，Data AES加密
+		// if (config.data) {
+		// 	console.debug(`HTTP Request Param("${config.url}")`, config.data);
+		// 	let dataStr = JSON.stringify(config.data);
+		// 	let decryptData = AESEncrypt(
+		// 		dataStr,
+		// 		`Fast.NET.XnRestful.${timestamp}`,
+		// 		`FIV${timestamp}`
+		// 	);
+		// 	// 组装请求格式
+		// 	config.data = {
+		// 		data: decryptData,
+		// 		time: time,
+		// 		timestamp: timestamp,
+		// 	};
+		// }
 		// 带上租户Id
 		const tenantId = store.state["webSiteInfo"]?.base64TenantId;
 		if (tenantId) {
@@ -126,7 +145,7 @@ service.interceptors.response.use(
 				return;
 			}
 		}
-		const data = response.data;
+		let data = response.data;
 		const code = data.code;
 		if (reloadCodes.includes(code)) {
 			if (!loginBack.value) {
@@ -136,7 +155,11 @@ service.interceptors.response.use(
 		}
 		// 200 为有返回值，204 为无返回值
 		if (code !== 200 && code !== 204) {
-			message.error(data.message);
+			if (typeof data.message == "object" && data.message) {
+				message.error(JSON.stringify(data.message));
+			} else {
+				message.error(data.message);
+			}
 			return Promise.reject(data);
 		} else {
 			// 统一成功提示
@@ -166,6 +189,13 @@ service.interceptors.response.use(
 				}
 			});
 		}
+		// 处理AES加密
+		data.data = AESDecrypt(
+			data.data,
+			`Fast.NET.XnRestful.${data.timestamp}`,
+			`FIV${data.timestamp}`
+		);
+		console.debug(`HTTP Result Data("${response.config.url}")`, data);
 		return Promise.resolve(data);
 	},
 	(error) => {

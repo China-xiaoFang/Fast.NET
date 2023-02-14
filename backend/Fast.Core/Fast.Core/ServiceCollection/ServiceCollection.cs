@@ -4,6 +4,7 @@ using Fast.Core.Util;
 using Fast.Core.Util.Restful;
 using Furion.Schedule;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -57,6 +58,12 @@ public static class ServiceCollection
         else
         {
             builder.Services.AddControllersWithViews();
+        }
+
+        if (serviceCollectionOptions.RequestAESDecrypt)
+        {
+            // Request AES decryption middleware. Must precede data validation.
+            builder.Services.AddMvcFilter<AESDecryptActionFilter>();
         }
 
         if (serviceCollectionOptions.DataValidation)
@@ -122,6 +129,13 @@ public static class ServiceCollection
         // Mandatory Https.
         app.UseHttpsRedirection();
 
+        // Enable backward reading.
+        app.Use((context, next) =>
+        {
+            context.Request.EnableBuffering();
+            return next(context);
+        });
+
         if (serviceCollectionOptions.AppLocalization)
         {
             // Multilingual configuration must be performed before route registration.
@@ -129,7 +143,6 @@ public static class ServiceCollection
         }
 
         app.UseStaticFiles();
-
 
         if (serviceCollectionOptions.Scheduler)
         {

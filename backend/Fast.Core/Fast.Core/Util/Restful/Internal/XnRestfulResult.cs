@@ -35,6 +35,11 @@ public class XnRestfulResult<T>
     public object Extras { get; set; }
 
     /// <summary>
+    /// 时间
+    /// </summary>
+    public DateTime Time { get; set; }
+
+    /// <summary>
     /// 时间戳
     /// </summary>
     public long Timestamp { get; set; }

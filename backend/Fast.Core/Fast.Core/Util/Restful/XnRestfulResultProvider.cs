@@ -1,8 +1,11 @@
-﻿using Fast.Core.Util.Restful.Internal;
+﻿using Fast.Core.Util.Json.Extension;
+using Fast.Core.Util.Restful.Internal;
+using Furion.DataEncryption;
 using Furion.DataValidation;
 using Furion.DependencyInjection;
 using Furion.FriendlyException;
 using Furion.Localization;
+using Furion.Logging;
 using Furion.UnifyResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +20,49 @@ namespace Fast.Core.Util.Restful;
 public class XnRestfulResultProvider : IUnifyResultProvider
 {
     /// <summary>
+    /// 获取规范化RESTful风格AES加密的返回值
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="success"></param>
+    /// <param name="data"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private XnRestfulResult<object> GetXnRestfulResult(int code, bool success, object data, object message)
+    {
+        // 时间
+        var time = DateTimeOffset.UtcNow;
+
+        // 时间戳
+        var timestamp = time.ToUnixTimeMilliseconds();
+
+        var resultData = data;
+
+        // 判断是否成功
+        if (success && data != null)
+        {
+            if (GlobalContext.ServiceCollectionOptions.RequestAESDecrypt)
+            {
+                var dataJsonStr = data.ToJsonString();
+                resultData = AESUtil.AESEncrypt(dataJsonStr, $"Fast.NET.XnRestful.{timestamp}", $"FIV{timestamp}");
+
+                // 写日志文件
+                Log.Debug($"HTTP Request AES 加密详情：\r\n\t源数据：{dataJsonStr}\r\n\tAES加密：{resultData}");
+            }
+        }
+
+        return new XnRestfulResult<object>
+        {
+            Code = code,
+            Success = success,
+            Data = resultData,
+            Message = message,
+            Extras = UnifyContext.Take(),
+            Time = time.LocalDateTime,
+            Timestamp = timestamp
+        };
+    }
+
+    /// <summary>
     /// 异常返回值
     /// </summary>
     /// <param name="context"></param>
@@ -24,15 +70,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
     /// <returns></returns>
     public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata)
     {
-        return new JsonResult(new XnRestfulResult<object>
-        {
-            Code = metadata.StatusCode,
-            Success = false,
-            Data = metadata.Errors,
-            Message = L.Text["系统内部错误，请联系管理员处理！"].Value,
-            Extras = UnifyContext.Take(),
-            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        });
+        return new JsonResult(GetXnRestfulResult(metadata.StatusCode, false, metadata.Errors, L.Text["系统内部错误，请联系管理员处理！"].Value));
     }
 
     /// <summary>
@@ -43,15 +81,10 @@ public class XnRestfulResultProvider : IUnifyResultProvider
     /// <returns></returns>
     public IActionResult OnSucceeded(ActionExecutedContext context, object data)
     {
-        return new JsonResult(new XnRestfulResult<object>
-        {
-            Code = context.Result is EmptyResult ? StatusCodes.Status204NoContent : StatusCodes.Status200OK, // 处理没有返回值情况 204
-            Success = true,
-            Data = data,
-            Message = L.Text["请求成功"].Value,
-            Extras = UnifyContext.Take(),
-            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        });
+        return new JsonResult(GetXnRestfulResult(
+            // 处理没有返回值情况 204
+            context.Result is EmptyResult ? StatusCodes.Status204NoContent : StatusCodes.Status200OK, true, data,
+            L.Text["请求成功"].Value));
     }
 
     /// <summary>
@@ -62,15 +95,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
     /// <returns></returns>
     public IActionResult OnValidateFailed(ActionExecutingContext context, ValidationMetadata metadata)
     {
-        return new JsonResult(new XnRestfulResult<object>
-        {
-            Code = StatusCodes.Status400BadRequest,
-            Success = false,
-            Data = null,
-            Message = metadata.ValidationResult,
-            Extras = UnifyContext.Take(),
-            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        });
+        return new JsonResult(GetXnRestfulResult(StatusCodes.Status400BadRequest, false, null, metadata.ValidationResult));
     }
 
     /// <summary>
@@ -90,41 +115,20 @@ public class XnRestfulResultProvider : IUnifyResultProvider
             // 处理 429 状态码
             case StatusCodes.Status429TooManyRequests:
                 await context.Response.WriteAsJsonAsync(
-                    new XnRestfulResult<object>
-                    {
-                        Code = StatusCodes.Status429TooManyRequests,
-                        Success = false,
-                        Data = null,
-                        Message = L.Text["429 频繁请求"].Value,
-                        Extras = UnifyContext.Take(),
-                        Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                    }, App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
+                    GetXnRestfulResult(StatusCodes.Status429TooManyRequests, false, null, L.Text["429 频繁请求"].Value),
+                    App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
                 break;
             // 处理 401 状态码
             case StatusCodes.Status401Unauthorized:
                 await context.Response.WriteAsJsonAsync(
-                    new XnRestfulResult<object>
-                    {
-                        Code = StatusCodes.Status401Unauthorized,
-                        Success = false,
-                        Data = null,
-                        Message = L.Text["401 未经授权"].Value,
-                        Extras = UnifyContext.Take(),
-                        Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                    }, App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
+                    GetXnRestfulResult(StatusCodes.Status401Unauthorized, false, null, L.Text["401 未经授权"].Value),
+                    App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
                 break;
             // 处理 403 状态码
             case StatusCodes.Status403Forbidden:
                 await context.Response.WriteAsJsonAsync(
-                    new XnRestfulResult<object>
-                    {
-                        Code = StatusCodes.Status403Forbidden,
-                        Success = false,
-                        Data = null,
-                        Message = L.Text["403 禁止访问"].Value,
-                        Extras = UnifyContext.Take(),
-                        Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                    }, App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
+                    GetXnRestfulResult(StatusCodes.Status403Forbidden, false, null, L.Text["403 禁止访问"].Value),
+                    App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
                 break;
         }
     }

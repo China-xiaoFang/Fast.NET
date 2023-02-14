@@ -31,6 +31,11 @@ public class ServiceCollectionOptions
     public bool AppLocalization { get; set; } = true;
 
     /// <summary>
+    /// 请求AES解密
+    /// </summary>
+    public bool RequestAESDecrypt { get; set; } = true;
+
+    /// <summary>
     /// 数据验证
     /// </summary>
     public bool DataValidation { get; set; } = true;
