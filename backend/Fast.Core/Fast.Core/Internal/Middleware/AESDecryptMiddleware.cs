@@ -3,42 +3,38 @@ using Fast.Core.Util.Json.Extension;
 using Fast.Core.Util.Restful.Internal;
 using Furion.Logging;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Fast.Core.Internal.Filter;
+namespace Fast.Core.Internal.Middleware;
 
 /// <summary>
-/// AES解密过滤器
+/// AES解密中间件
 /// </summary>
-public class AESDecryptActionFilter : IAsyncActionFilter
+public class AESDecryptMiddleware
 {
-    /// <summary>
-    /// AES解密
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="next"></param>
-    /// <returns></returns>
-    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    private readonly RequestDelegate _next;
+
+    public AESDecryptMiddleware(RequestDelegate next)
     {
-        var httpRequest = context.HttpContext.Request;
+        _next = next;
+    }
 
+    public async Task InvokeAsync(HttpContext context)
+    {
         // 允许读取请求的Body
-        httpRequest.EnableBuffering();
+        context.Request.EnableBuffering();
 
-        // 重置指针
-        httpRequest.Body.Position = 0;
-
-        switch (httpRequest.Method)
+        switch (context.Request.Method)
         {
             case "GET":
+                // 目前Get请求暂时没想到好的实现方式
                 break;
             case "POST":
             case "PUT":
             case "DELETE":
-                if (httpRequest.Path.HasValue)
+                if (context.Request.Path.HasValue)
                 {
                     // 请求参数
-                    using var streamReader = new StreamReader(httpRequest.Body, Encoding.UTF8);
+                    using var streamReader = new StreamReader(context.Request.Body, Encoding.UTF8);
                     var requestParam = await streamReader.ReadToEndAsync();
 
                     // JSON序列化
@@ -53,14 +49,12 @@ public class AESDecryptActionFilter : IAsyncActionFilter
                         // 写入解密参数
                         var memoryStream = new MemoryStream();
                         var streamWriter = new StreamWriter(memoryStream);
+                        // 写入
                         await streamWriter.WriteAsync(decryptData);
                         await streamWriter.FlushAsync();
-
-                        // 写入
-                        httpRequest.Body = memoryStream;
-
+                        context.Request.Body = memoryStream;
                         // 重置指针
-                        httpRequest.Body.Position = 0;
+                        context.Request.Body.Position = 0;
 
                         // 写日志文件
                         Log.Debug($"HTTP Request AES 解密详情：\r\n\t密文：{encryptParameter.Data}\r\n\t数据源：{decryptData}");
@@ -71,6 +65,6 @@ public class AESDecryptActionFilter : IAsyncActionFilter
         }
 
         // 抛给下一个过滤器
-        await next();
+        await _next(context);
     }
 }

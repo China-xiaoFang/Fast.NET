@@ -1,10 +1,10 @@
 ﻿using Fast.Core.Handlers;
 using Fast.Core.Internal.Filter;
+using Fast.Core.Internal.Middleware;
 using Fast.Core.Util;
 using Fast.Core.Util.Restful;
 using Furion.Schedule;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -58,12 +58,6 @@ public static class ServiceCollection
         else
         {
             builder.Services.AddControllersWithViews();
-        }
-
-        if (serviceCollectionOptions.RequestAESDecrypt)
-        {
-            // Request AES decryption middleware. Must precede data validation.
-            builder.Services.AddMvcFilter<AESDecryptActionFilter>();
         }
 
         if (serviceCollectionOptions.DataValidation)
@@ -120,6 +114,12 @@ public static class ServiceCollection
         // Add the status code interception middleware.
         app.UseUnifyResultStatusCodes();
 
+        if (serviceCollectionOptions.RequestAESDecrypt)
+        {
+            // Request AES decryption middleware.
+            app.UseMiddleware<AESDecryptMiddleware>();
+        }
+
         if (serviceCollectionOptions.GzipBrotliCompression)
         {
             // Enable compression.
@@ -128,13 +128,6 @@ public static class ServiceCollection
 
         // Mandatory Https.
         app.UseHttpsRedirection();
-
-        // Enable backward reading.
-        app.Use((context, next) =>
-        {
-            context.Request.EnableBuffering();
-            return next(context);
-        });
 
         if (serviceCollectionOptions.AppLocalization)
         {
@@ -149,6 +142,9 @@ public static class ServiceCollection
             // Start the task scheduling UI.
             app.UseScheduleUI();
         }
+
+        // Enable backward reading.
+        app.EnableBuffering();
 
         app.UseRouting();
 

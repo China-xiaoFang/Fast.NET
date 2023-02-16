@@ -72,8 +72,7 @@ const service = axios.create({
 service.interceptors.request.use(
 	(config) => {
 		const token = tool.cache.get(cacheKey.TOKEN);
-		const time = new Date();
-		const timestamp = time.getTime();
+		const timestamp = new Date().getTime();
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] =
 				sysConfig.TOKEN_PREFIX + token;
@@ -82,22 +81,21 @@ service.interceptors.request.use(
 			config.params = config.params || {};
 			config.params._ = timestamp;
 		}
-		// Post请求，Data AES加密
-		// if (config.data) {
-		// 	console.debug(`HTTP Request Param("${config.url}")`, config.data);
-		// 	let dataStr = JSON.stringify(config.data);
-		// 	let decryptData = AESEncrypt(
-		// 		dataStr,
-		// 		`Fast.NET.XnRestful.${timestamp}`,
-		// 		`FIV${timestamp}`
-		// 	);
-		// 	// 组装请求格式
-		// 	config.data = {
-		// 		data: decryptData,
-		// 		time: time,
-		// 		timestamp: timestamp,
-		// 	};
-		// }
+		// Request Body，Data AES加密
+		if (config.data) {
+			console.debug(`HTTP Request Param("${config.url}")`, config.data);
+			let dataStr = JSON.stringify(config.data);
+			let decryptData = AESEncrypt(
+				dataStr,
+				`Fast.NET.XnRestful.${timestamp}`,
+				`FIV${timestamp}`
+			);
+			// 组装请求格式
+			config.data = {
+				data: decryptData,
+				timestamp: timestamp,
+			};
+		}
 		// 带上租户Id
 		const tenantId = store.state["webSiteInfo"]?.base64TenantId;
 		if (tenantId) {
