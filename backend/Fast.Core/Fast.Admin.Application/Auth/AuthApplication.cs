@@ -30,4 +30,27 @@ public class AuthApplication : IDynamicApiController
     {
         await _tenAuthService.WebLogin(input);
     }
+
+    /// <summary>
+    /// 测试Get请求参数加密
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    [HttpGet("testGet1", "Web登录"), AllowAnonymous, DisableOpLog]
+    public async Task TestGet1(string account, string password)
+    {
+        await _tenAuthService.WebLogin(new WebLoginInput {Account = account, Password = password});
+    }
+
+    /// <summary>
+    /// 测试Get请求参数加密
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    [HttpGet("testGet2", "Web登录"), AllowAnonymous, DisableOpLog]
+    public async Task TestGet2([FromQuery] WebLoginInput input)
+    {
+        await _tenAuthService.WebLogin(input);
+    }
 }

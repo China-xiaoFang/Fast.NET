@@ -47,6 +47,32 @@ export default {
 					}
 				});
 		},
+		testGet1(account, loginMethod) {
+			loginApi
+				.testGet1({
+					account: account,
+					password: "123456",
+					loginMethod: loginMethod,
+				})
+				.then((res) => {
+					if (res.success) {
+						this.$message.success(this.$t("login.loginSuccess"));
+					}
+				});
+		},
+		testGet2(account, loginMethod) {
+			loginApi
+				.testGet2({
+					account: account,
+					password: "123456",
+					loginMethod: loginMethod,
+				})
+				.then((res) => {
+					if (res.success) {
+						this.$message.success(this.$t("login.loginSuccess"));
+					}
+				});
+		},
 	},
 	// 生命周期 - 创建完成（可以访问当前this实例）
 	created() {

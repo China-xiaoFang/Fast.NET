@@ -12,8 +12,18 @@
 		>
 		<br />
 		<br />
-		<a-button type="primary" @click="login('18888888888', 3)"
+		<a-button type="primary" @click="login('18888888888', 1)"
 			>测试手机登录</a-button
+		>
+		<br />
+		<br />
+		<a-button type="primary" @click="testGet1('SuperAdmin', 1)"
+			>测试Get请求参数加密</a-button
+		>
+		<br />
+		<br />
+		<a-button type="primary" @click="testGet2('SuperAdmin', 1)"
+			>测试Get请求参数加密</a-button
 		>
 		<br />
 		<br />

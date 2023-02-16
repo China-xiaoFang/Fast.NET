@@ -77,24 +77,32 @@ service.interceptors.request.use(
 			config.headers[sysConfig.TOKEN_NAME] =
 				sysConfig.TOKEN_PREFIX + token;
 		}
-		if (!sysConfig.REQUEST_CACHE && config.method === "get") {
-			config.params = config.params || {};
-			config.params._ = timestamp;
-		}
-		// Request Body，Data AES加密
-		if (config.data) {
-			console.debug(`HTTP Request Param("${config.url}")`, config.data);
-			let dataStr = JSON.stringify(config.data);
+		// Request Data AES加密
+		let requestData = config.params || config.data;
+		let dataStr = JSON.stringify(requestData);
+		if (dataStr != null && dataStr != "" && dataStr != "{}") {
+			console.debug(`HTTP Request Param("${config.url}")`, requestData);
 			let decryptData = AESEncrypt(
 				dataStr,
 				`Fast.NET.XnRestful.${timestamp}`,
 				`FIV${timestamp}`
 			);
 			// 组装请求格式
-			config.data = {
+			requestData = {
 				data: decryptData,
 				timestamp: timestamp,
 			};
+			if (config.method === "get") {
+				config.params = requestData;
+			} else {
+				config.data = requestData;
+			}
+		} else {
+			// Get 请求缓存
+			if (!sysConfig.REQUEST_CACHE && config.method === "get") {
+				config.params = config.params || {};
+				config.params._ = timestamp;
+			}
 		}
 		// 带上租户Id
 		const tenantId = store.state["webSiteInfo"]?.base64TenantId;
@@ -218,7 +226,7 @@ service.interceptors.response.use(
  * @returns
  */
 export const get = (url: string, value: any = {}, options: any = {}) =>
-	baseRequest(url, value, "get", options);
+	baseRequest("get", url, value, options);
 
 /**
  * Post 请求
@@ -228,7 +236,7 @@ export const get = (url: string, value: any = {}, options: any = {}) =>
  * @returns
  */
 export const post = (url: string, value: any = {}, options: any = {}) =>
-	baseRequest(url, value, "post", options);
+	baseRequest("post", url, value, options);
 
 /**
  * 基础请求
@@ -239,9 +247,9 @@ export const post = (url: string, value: any = {}, options: any = {}) =>
  * @returns
  */
 export const baseRequest = (
+	method: string,
 	url: string,
 	value: any = {},
-	method: string,
 	options: any = {}
 ) => {
 	if (method === "post") {

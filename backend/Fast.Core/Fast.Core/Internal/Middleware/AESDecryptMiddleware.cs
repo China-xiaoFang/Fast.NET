@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Web;
 using Fast.Core.Util.Json.Extension;
 using Fast.Core.Util.Restful.Internal;
 using Furion.Logging;
@@ -26,7 +27,31 @@ public class AESDecryptMiddleware
         switch (context.Request.Method)
         {
             case "GET":
-                // 目前Get请求暂时没想到好的实现方式
+                if (context.Request.QueryString.HasValue)
+                {
+                    var queryParam = context.Request.QueryString.Value;
+
+                    // ReSharper disable once PossibleNullReferenceException
+                    var queryParamDic = queryParam.TrimStart('?').Split('&').Select(sl => sl.Split('='))
+                        .ToDictionary(keyArr => keyArr[0].ToLower(), keyArr => HttpUtility.UrlDecode(keyArr[1]));
+
+                    if (queryParamDic.TryGetValue(nameof(XnRestfulResult<string>.Data).ToLower(), out var queryDataStr) &&
+                        queryParamDic.TryGetValue(nameof(XnRestfulResult<string>.Timestamp).ToLower(), out var queryTimestamp))
+                    {
+                        // AES解密
+                        var decryptData = AESUtil.AESDecrypt(queryDataStr, $"Fast.NET.XnRestful.{queryTimestamp}",
+                            $"FIV{queryTimestamp}");
+
+                        // 替换请求参数
+                        context.Request.QueryString =
+                            new QueryString(
+                                $"?{string.Join("&", decryptData.ToObject<Dictionary<string, object>>().Select(sl => $"{sl.Key}={sl.Value}"))}");
+
+                        // 写日志文件
+                        Log.Debug($"HTTP Request AES 解密详情：\r\n\t密文：{queryDataStr}\r\n\t数据源：{decryptData}");
+                    }
+                }
+
                 break;
             case "POST":
             case "PUT":
