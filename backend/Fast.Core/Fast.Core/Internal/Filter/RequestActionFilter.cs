@@ -49,18 +49,42 @@ public class RequestActionFilter : IAsyncActionFilter
             return;
 
         // 根据请求方式获取操作名称，如果没有，默认为类名-方法名
-        var operationName = httpRequest.Method switch
+        string operationName;
+        HttpRequestActionEnum? operationAction = null;
+        switch (httpRequest.Method)
         {
-            "GET" => (actionDescriptor?.EndpointMetadata.FirstOrDefault(
-                metadata => metadata.GetType() == typeof(HttpGetAttribute)) as HttpGetAttribute)?.OperationName,
-            "POST" => (actionDescriptor?.EndpointMetadata.FirstOrDefault(metadata =>
-                metadata.GetType() == typeof(HttpPostAttribute)) as HttpPostAttribute)?.OperationName,
-            "PUT" => (actionDescriptor?.EndpointMetadata.FirstOrDefault(
-                metadata => metadata.GetType() == typeof(HttpPutAttribute)) as HttpPutAttribute)?.OperationName,
-            "DELETE" => (actionDescriptor?.EndpointMetadata.FirstOrDefault(metadata =>
-                metadata.GetType() == typeof(HttpDeleteAttribute)) as HttpDeleteAttribute)?.OperationName,
-            _ => $"{context.Controller} - {actionDescriptor?.ActionName}"
-        };
+            case "GET":
+                var httpGetAttribute =
+                    (actionDescriptor?.EndpointMetadata.FirstOrDefault(metadata => metadata.GetType() == typeof(HttpGetAttribute))
+                        as HttpGetAttribute);
+                operationName = httpGetAttribute?.OperationName;
+                operationAction = httpGetAttribute?.Action;
+                break;
+            case "POST":
+                var httpPostAttribute =
+                    (actionDescriptor?.EndpointMetadata.FirstOrDefault(
+                        metadata => metadata.GetType() == typeof(HttpPostAttribute)) as HttpPostAttribute);
+                operationName = httpPostAttribute?.OperationName;
+                operationAction = httpPostAttribute?.Action;
+                break;
+            case "PUT":
+                var httpPutAttribute =
+                    (actionDescriptor?.EndpointMetadata.FirstOrDefault(metadata => metadata.GetType() == typeof(HttpPutAttribute))
+                        as HttpPutAttribute);
+                operationName = httpPutAttribute?.OperationName;
+                operationAction = httpPutAttribute?.Action;
+                break;
+            case "DELETE":
+                var httpDeleteAttribute =
+                    (actionDescriptor?.EndpointMetadata.FirstOrDefault(metadata =>
+                        metadata.GetType() == typeof(HttpDeleteAttribute)) as HttpDeleteAttribute);
+                operationName = httpDeleteAttribute?.OperationName;
+                operationAction = httpDeleteAttribute?.Action;
+                break;
+            default:
+                operationName = $"{context.Controller} - {actionDescriptor?.ActionName}";
+                break;
+        }
 
         //记录请求日志
         await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:OpLog", GlobalContext.GetTenantId(false),
@@ -69,6 +93,7 @@ public class RequestActionFilter : IAsyncActionFilter
                 Account = GlobalContext.UserAccount,
                 Name = GlobalContext.UserName,
                 Success = isRequestSucceed ? YesOrNotEnum.Y : YesOrNotEnum.N,
+                OperationAction = operationAction,
                 OperationName = operationName,
                 ClassName = context.Controller.ToString(),
                 MethodName = actionDescriptor?.ActionName,

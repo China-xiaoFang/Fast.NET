@@ -1,4 +1,5 @@
-﻿using Fast.Core.AdminFactory.ServiceFactory.Tenant;
+﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.AdminFactory.ServiceFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
 using Fast.Core.Const;
 using Fast.Core.Internal.Restful.Internal;
@@ -25,7 +26,7 @@ public class TenantApplication : IDynamicApiController
     /// Web站点初始化
     /// </summary>
     /// <returns></returns>
-    [HttpGet("webSiteInit", "Web站点初始化"), AllowAnonymous, DisableOpLog]
+    [HttpGet("webSiteInit", "Web站点初始化", HttpRequestActionEnum.Query), AllowAnonymous, DisableOpLog]
     public async Task<WebSiteInitOutput> WebSiteInit()
     {
         return await _sysTenantService.WebSiteInit();
@@ -36,7 +37,7 @@ public class TenantApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpGet("sysTenant/page", "分页查询租户信息")]
+    [HttpGet("sysTenant/page", "分页查询租户信息", HttpRequestActionEnum.Query)]
     public async Task<PageResult<TenantOutput>> QueryTenantPageList([FromQuery] QueryTenantInput input)
     {
         return await _sysTenantService.QueryTenantPageList(input);
@@ -47,7 +48,7 @@ public class TenantApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("sysTenant/add", "添加租户")]
+    [HttpPost("sysTenant/add", "添加租户", HttpRequestActionEnum.Add)]
     public async Task AddTenant(AddTenantInput input)
     {
         await _sysTenantService.AddTenant(input);
@@ -58,7 +59,7 @@ public class TenantApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("sysTenant/initTenantInfo", "初始化租户信息")]
+    [HttpPost("sysTenant/initTenantInfo", "初始化租户信息", HttpRequestActionEnum.Add)]
     public async Task InitTenantInfo(InitTenantInfoInput input)
     {
         await _sysTenantService.InitTenantInfo(input);

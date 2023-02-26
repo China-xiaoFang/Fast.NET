@@ -31,6 +31,12 @@ public class SysLogOpModel : BaseLogEntity
     public YesOrNotEnum Success { get; set; }
 
     /// <summary>
+    /// 操作行为
+    /// </summary>
+    [SugarColumn(ColumnDescription = "操作行为", IsNullable = true)]
+    public HttpRequestActionEnum? OperationAction { get; set; }
+
+    /// <summary>
     /// 操作名称
     /// </summary>
     [SugarColumn(ColumnDescription = "操作名称", ColumnDataType = "Nvarchar(200)", IsNullable = true)]

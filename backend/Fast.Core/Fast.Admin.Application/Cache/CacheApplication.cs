@@ -1,4 +1,5 @@
-﻿using Fast.Core.AdminFactory.ServiceFactory.Cache;
+﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.AdminFactory.ServiceFactory.Cache;
 using Fast.Core.AdminFactory.ServiceFactory.Cache.Dto;
 using Fast.Core.Const;
 using Furion.DynamicApiController;
@@ -23,7 +24,7 @@ public class CacheApplication : IDynamicApiController
     /// 获取缓存类型
     /// </summary>
     /// <returns></returns>
-    [HttpGet("cache/getCacheType", "获取缓存类型")]
+    [HttpGet("cache/getCacheType", "获取缓存类型", HttpRequestActionEnum.Query)]
     public string GetCacheType()
     {
         return _cacheService.GetCacheType();
@@ -33,7 +34,7 @@ public class CacheApplication : IDynamicApiController
     /// 获取所有缓存Key
     /// </summary>
     /// <returns></returns>
-    [HttpGet("cache/getAllCacheKey", "获取所有缓存Key")]
+    [HttpGet("cache/getAllCacheKey", "获取所有缓存Key", HttpRequestActionEnum.Query)]
     public List<string> GetAllCacheKey()
     {
         return _cacheService.GetAllCacheKey();
@@ -44,7 +45,7 @@ public class CacheApplication : IDynamicApiController
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    [HttpGet("cache/getCacheValue", "获取缓存值")]
+    [HttpGet("cache/getCacheValue", "获取缓存值", HttpRequestActionEnum.Query)]
     public async Task<string> GetCacheValue(string key)
     {
         return await _cacheService.GetCacheValue(key);
@@ -55,7 +56,7 @@ public class CacheApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPut("cache/editCacheValue", "设置缓存值")]
+    [HttpPut("cache/editCacheValue", "设置缓存值", HttpRequestActionEnum.Edit)]
     public async Task EditCacheValue(EditCacheValueInput input)
     {
         await _cacheService.EditCacheValue(input);
@@ -66,7 +67,7 @@ public class CacheApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpDelete("cache/deleteCacheValue", "删除缓存")]
+    [HttpDelete("cache/deleteCacheValue", "删除缓存", HttpRequestActionEnum.Delete)]
     public async Task DeleteCacheValue(DeleteCacheValueInput input)
     {
         await _cacheService.DeleteCacheValue(input);
