@@ -52,7 +52,7 @@ export default {
 		accountError: "Please input a user account",
 		PWPlaceholder: "Please input a password",
 		PWError: "Please input a password",
-		validLaceholder: "Please input a valid",
+		validPlaceholder: "Please input a valid",
 		validError: "Please input a valid",
 		accountPassword: "Account Password",
 		phoneSms: "Phone SMS",

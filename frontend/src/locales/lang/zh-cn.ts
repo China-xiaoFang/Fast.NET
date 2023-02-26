@@ -52,7 +52,7 @@ export default {
 		accountError: "请输入账号",
 		PWPlaceholder: "请输入密码",
 		PWError: "请输入密码",
-		validLaceholder: "请输入验证码",
+		validPlaceholder: "请输入验证码",
 		validError: "请输入验证码",
 		accountPassword: "账号密码",
 		phoneSms: "手机号登录",

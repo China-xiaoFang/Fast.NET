@@ -16,7 +16,7 @@
 	},
 	// .vue 文件格式化程序
 	"[vue]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "Vue.volar"
 	},
 	"[json]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"

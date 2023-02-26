@@ -27,7 +27,7 @@ const DEFAULT_CONFIG = {
 	REQUEST_CACHE: false,
 
 	// 语言
-	LANG: "zh-cn",
+	LANG: "zh-CN",
 
 	// HTML页面
 	HTML_PAGE: {
