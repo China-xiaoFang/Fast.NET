@@ -1,7 +1,7 @@
 ﻿using Fast.Core.AdminFactory.ServiceFactory.Tenant;
 using Fast.Core.AdminFactory.ServiceFactory.Tenant.Dto;
 using Fast.Core.Const;
-using Fast.Core.Util.Restful.Internal;
+using Fast.Core.Internal.Restful.Internal;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

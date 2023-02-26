@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.Util.Restful.Internal;
+﻿namespace Fast.Core.Internal.Restful.Internal;
 
 /// <summary>
 /// 统一分页返回结果类

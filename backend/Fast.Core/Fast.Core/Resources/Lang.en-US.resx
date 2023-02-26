@@ -120,8 +120,8 @@
   <data name="401 未经授权" xml:space="preserve">
     <value>401 Unauthorized</value>
   </data>
-  <data name="403 禁止访问" xml:space="preserve">
-    <value>403 Forbidden Access</value>
+  <data name="403 演示环境，禁止操作！" xml:space="preserve">
+    <value>403 Demo environment, do not operate!</value>
   </data>
   <data name="429 频繁请求" xml:space="preserve">
     <value>429 Frequent requests</value>
@@ -149,9 +149,6 @@
   </data>
   <data name="服务器内部错误" xml:space="preserve">
     <value>Internal Server Error</value>
-  </data>
-  <data name="演示环境，禁止操作！" xml:space="preserve">
-    <value>Demo environment, do not operate!</value>
   </data>
   <data name="租户WebUrl必须是Https协议！" xml:space="preserve">
     <value>Tenant WebUrl must be Https!</value>

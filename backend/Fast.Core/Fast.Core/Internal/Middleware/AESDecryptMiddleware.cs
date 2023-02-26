@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Web;
+using Fast.Core.Internal.Restful.Internal;
 using Fast.Core.Util.Json.Extension;
-using Fast.Core.Util.Restful.Internal;
 using Furion.Logging;
 using Microsoft.AspNetCore.Http;
 
@@ -27,6 +27,7 @@ public class AESDecryptMiddleware
         switch (context.Request.Method)
         {
             case "GET":
+            case "DELETE":
                 if (context.Request.QueryString.HasValue)
                 {
                     var queryParam = context.Request.QueryString.Value;
@@ -55,7 +56,6 @@ public class AESDecryptMiddleware
                 break;
             case "POST":
             case "PUT":
-            case "DELETE":
                 if (context.Request.Path.HasValue)
                 {
                     // 请求参数

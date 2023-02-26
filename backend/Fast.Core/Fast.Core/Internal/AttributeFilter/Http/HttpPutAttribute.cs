@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using Fast.Core.AdminFactory.EnumFactory;
 using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Fast.Core.Internal.AttributeFilter.Http;
@@ -17,6 +18,11 @@ public class HttpPutAttribute : HttpMethodAttribute
     public string? OperationName { get; }
 
     /// <summary>
+    /// Interface/method operation action
+    /// </summary>
+    public HttpRequestActionEnum? Action { get; }
+
+    /// <summary>
     /// Creates a new <see cref="HttpPutAttribute"/>.
     /// </summary>
     public HttpPutAttribute() : base(_supportedMethods)
@@ -33,6 +39,8 @@ public class HttpPutAttribute : HttpMethodAttribute
         {
             throw new ArgumentNullException(nameof(template));
         }
+
+        Action = HttpRequestActionEnum.Edit;
     }
 
     /// <summary>
@@ -48,5 +56,24 @@ public class HttpPutAttribute : HttpMethodAttribute
         }
 
         OperationName = operationName ?? throw new ArgumentNullException(nameof(operationName));
+        Action = HttpRequestActionEnum.Edit;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="HttpPutAttribute"/> with the given route template.
+    /// </summary>
+    /// <param name="template">The route template. May not be null.</param>
+    /// <param name="operationName">Interface/method operation name. May not be null.</param>
+    /// <param name="action">Interface/method operation action. May not be null.</param>
+    public HttpPutAttribute(string template, string operationName, HttpRequestActionEnum action) : base(_supportedMethods,
+        template)
+    {
+        if (template == null)
+        {
+            throw new ArgumentNullException(nameof(template));
+        }
+
+        OperationName = operationName ?? throw new ArgumentNullException(nameof(operationName));
+        Action = action;
     }
 }

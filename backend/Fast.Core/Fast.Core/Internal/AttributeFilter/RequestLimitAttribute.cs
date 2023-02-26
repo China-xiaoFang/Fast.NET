@@ -1,5 +1,5 @@
 ﻿#nullable enable
-namespace Fast.Core.ServiceCollection.RequestLimit.AttributeFilter;
+namespace Fast.Core.Internal.AttributeFilter;
 
 /// <summary>
 /// 请求限制特性
@@ -32,6 +32,11 @@ public class RequestLimitAttribute : Attribute
     /// 请求限制类型
     /// </summary>
     public RequestLimitTypeEnum RequestLimitType { get; set; }
+
+    public RequestLimitAttribute()
+    {
+        IsCheck = true;
+    }
 
     public RequestLimitAttribute(bool isCheck)
     {
@@ -69,9 +74,4 @@ public enum RequestLimitTypeEnum
     /// Ip
     /// </summary>
     Ip = 3,
-
-    /// <summary>
-    /// 其他，自定义
-    /// </summary>
-    Other = 99,
 }

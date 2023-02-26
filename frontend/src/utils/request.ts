@@ -92,7 +92,7 @@ service.interceptors.request.use(
 				data: decryptData,
 				timestamp: timestamp,
 			};
-			if (config.method === "get") {
+			if (config.method === "get" || config.method === "delete") {
 				config.params = requestData;
 			} else {
 				config.data = requestData;
@@ -225,7 +225,7 @@ service.interceptors.response.use(
  * @param options
  * @returns
  */
-export const get = (url: string, value: any = {}, options: any = {}) =>
+export const getRequest = (url: string, value: any = {}, options: any = {}) =>
 	baseRequest("get", url, value, options);
 
 /**
@@ -235,8 +235,31 @@ export const get = (url: string, value: any = {}, options: any = {}) =>
  * @param options
  * @returns
  */
-export const post = (url: string, value: any = {}, options: any = {}) =>
+export const postRequest = (url: string, value: any = {}, options: any = {}) =>
 	baseRequest("post", url, value, options);
+
+/**
+ * Put 请求
+ * @param url
+ * @param value
+ * @param options
+ * @returns
+ */
+export const putRequest = (url: string, value: any = {}, options: any = {}) =>
+	baseRequest("put", url, value, options);
+
+/**
+ * Delete 请求
+ * @param url
+ * @param value
+ * @param options
+ * @returns
+ */
+export const deleteRequest = (
+	url: string,
+	value: any = {},
+	options: any = {}
+) => baseRequest("delete", url, value, options);
 
 /**
  * 基础请求

@@ -1,15 +1,61 @@
 ﻿using System.Linq.Expressions;
-using Fast.Core.Util.Restful.Internal;
+using Fast.Core.Internal.Restful.Internal;
+using Fast.Core.Util.Json.Extension;
 using Fast.SqlSugar.Tenant.Extension;
 using Fast.SqlSugar.Tenant.Internal.Dto;
+using Furion.Logging;
+using Furion.UnifyResult;
 
-namespace Fast.Core.Util.Restful.Extension;
+namespace Fast.Core.Internal.Restful.Extension;
 
 /// <summary>
 /// Restful风格返回扩展
 /// </summary>
 public static class Extension
 {
+    /// <summary>
+    /// 获取规范化RESTful风格AES加密的返回值
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="success"></param>
+    /// <param name="data"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static XnRestfulResult<object> GetXnRestfulResult(int code, bool success, object data, object message)
+    {
+        // 时间
+        var time = DateTimeOffset.UtcNow;
+
+        // 时间戳
+        var timestamp = time.ToUnixTimeMilliseconds();
+
+        var resultData = data;
+
+        // 判断是否成功
+        if (success && data != null)
+        {
+            if (GlobalContext.ServiceCollectionOptions.RequestAESDecrypt)
+            {
+                var dataJsonStr = data.ToJsonString();
+                resultData = AESUtil.AESEncrypt(dataJsonStr, $"Fast.NET.XnRestful.{timestamp}", $"FIV{timestamp}");
+
+                // 写日志文件
+                Log.Debug($"HTTP Request AES 加密详情：\r\n\t源数据：{dataJsonStr}\r\n\tAES加密：{resultData}");
+            }
+        }
+
+        return new XnRestfulResult<object>
+        {
+            Code = code,
+            Success = success,
+            Data = resultData,
+            Message = message,
+            Extras = UnifyContext.Take(),
+            Time = time.LocalDateTime,
+            Timestamp = timestamp
+        };
+    }
+
     /// <summary>
     /// 替换SqlSugar分页
     /// </summary>

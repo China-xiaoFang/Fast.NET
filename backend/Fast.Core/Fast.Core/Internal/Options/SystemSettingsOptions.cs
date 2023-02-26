@@ -33,17 +33,12 @@ public class SystemSettingsOptions
     public bool SyncEnumDict { get; set; }
 
     /// <summary>
-    /// 接口限流
-    /// </summary>
-    public bool RequestLimit { get; set; }
-
-    /// <summary>
     /// 系统环境
     /// </summary>
     public EnvironmentEnum Environment { get; set; }
 
     /// <summary>
-    /// 演示环境请求禁止前缀
+    /// 演示环境请求禁止行为
     /// </summary>
-    public List<HttpRequestPrefixEnum> DemoEnvReqDisable { get; set; }
+    public List<HttpRequestActionEnum> DemoEnvReqDisable { get; set; }
 }

@@ -31,9 +31,19 @@ public class ServiceCollectionOptions
     public bool AppLocalization { get; set; } = true;
 
     /// <summary>
+    /// 接口限流
+    /// </summary>
+    public bool RequestLimit { get; set; } = true;
+
+    /// <summary>
     /// 请求AES解密
     /// </summary>
     public bool RequestAESDecrypt { get; set; } = true;
+
+    /// <summary>
+    /// 演示环境请求判断
+    /// </summary>
+    public bool DemoEnvironmentRequest { get; set; } = true;
 
     /// <summary>
     /// 数据验证

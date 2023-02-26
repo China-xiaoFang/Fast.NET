@@ -1,8 +1,8 @@
 ﻿using Fast.Core.Handlers;
 using Fast.Core.Internal.Filter;
 using Fast.Core.Internal.Middleware;
+using Fast.Core.Internal.Restful;
 using Fast.Core.Util;
-using Fast.Core.Util.Restful;
 using Furion.Schedule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,13 +51,13 @@ public static class ServiceCollection
 
         if (serviceCollectionOptions.AppLocalization)
         {
-            builder.Services.AddControllersWithViews()
+            builder.Services.AddControllers()
                 // Register multiple languages.
                 .AddAppLocalization();
         }
         else
         {
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
         }
 
         if (serviceCollectionOptions.DataValidation)
@@ -75,7 +75,7 @@ public static class ServiceCollection
         // Add json options.
         builder.Services.AddJsonOptions(serviceCollectionOptions.JsonOptionDateTimeFormat, serviceCollectionOptions.JsonOptions);
 
-        builder.Services.AddViewEngine();
+        //builder.Services.AddViewEngine();
 
         if (serviceCollectionOptions.SignalR)
         {
@@ -111,14 +111,10 @@ public static class ServiceCollection
 
         var app = builder.Build();
 
-        // Add the status code interception middleware.
-        app.UseUnifyResultStatusCodes();
+        // Mandatory Https.
+        app.UseHttpsRedirection();
 
-        if (serviceCollectionOptions.RequestAESDecrypt)
-        {
-            // Request AES decryption middleware.
-            app.UseMiddleware<AESDecryptMiddleware>();
-        }
+        app.UseMiddleware<RequestInfoMiddleware>();
 
         if (serviceCollectionOptions.GzipBrotliCompression)
         {
@@ -126,27 +122,45 @@ public static class ServiceCollection
             app.UseResponseCompression();
         }
 
-        // Mandatory Https.
-        app.UseHttpsRedirection();
-
         if (serviceCollectionOptions.AppLocalization)
         {
             // Multilingual configuration must be performed before route registration.
             app.UseAppLocalization();
         }
 
+        // Add the status code interception middleware.
+        app.UseUnifyResultStatusCodes();
+
         app.UseStaticFiles();
+
+        // Enable backward reading.
+        app.EnableBuffering();
+
+        app.UseRouting();
+
+        if (serviceCollectionOptions.RequestLimit)
+        {
+            // Request interface flow limit.
+            app.UseMiddleware<RequestLimitMiddleware>();
+        }
+
+        if (serviceCollectionOptions.DemoEnvironmentRequest)
+        {
+            // Demonstrates environmental request judgment.
+            app.UseMiddleware<DemoEnvironmentMiddleware>();
+        }
+
+        if (serviceCollectionOptions.RequestAESDecrypt)
+        {
+            // Request AES decryption middleware.
+            app.UseMiddleware<AESDecryptMiddleware>();
+        }
 
         if (serviceCollectionOptions.Scheduler)
         {
             // Start the task scheduling UI.
             app.UseScheduleUI();
         }
-
-        // Enable backward reading.
-        app.EnableBuffering();
-
-        app.UseRouting();
 
         // Add cross-domain middleware.
         app.UseCorsAccessor();

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Fast.Core.AdminFactory.EnumFactory;
 using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Fast.Core.Internal.AttributeFilter.Http;
@@ -18,6 +19,11 @@ public class HttpDeleteAttribute : HttpMethodAttribute
     public string? OperationName { get; }
 
     /// <summary>
+    /// Interface/method operation action
+    /// </summary>
+    public HttpRequestActionEnum? Action { get; }
+
+    /// <summary>
     /// Creates a new <see cref="HttpDeleteAttribute"/>.
     /// </summary>
     public HttpDeleteAttribute() : base(_supportedMethods)
@@ -34,6 +40,8 @@ public class HttpDeleteAttribute : HttpMethodAttribute
         {
             throw new ArgumentNullException(nameof(template));
         }
+
+        Action = HttpRequestActionEnum.Delete;
     }
 
     /// <summary>
@@ -49,5 +57,24 @@ public class HttpDeleteAttribute : HttpMethodAttribute
         }
 
         OperationName = operationName ?? throw new ArgumentNullException(nameof(operationName));
+        Action = HttpRequestActionEnum.Delete;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="HttpDeleteAttribute"/> with the given route template.
+    /// </summary>
+    /// <param name="template">The route template. May not be null.</param>
+    /// <param name="operationName">Interface/method operation name. May not be null.</param>
+    /// <param name="action">Interface/method operation action. May not be null.</param>
+    public HttpDeleteAttribute(string template, string operationName, HttpRequestActionEnum action) : base(_supportedMethods,
+        template)
+    {
+        if (template == null)
+        {
+            throw new ArgumentNullException(nameof(template));
+        }
+
+        OperationName = operationName ?? throw new ArgumentNullException(nameof(operationName));
+        Action = action;
     }
 }
