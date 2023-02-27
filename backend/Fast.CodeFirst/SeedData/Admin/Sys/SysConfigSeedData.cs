@@ -5,7 +5,7 @@ using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Const;
 using SqlSugar;
 
-namespace Fast.Admin.CodeFirst.SeedData;
+namespace Fast.CodeFirst.SeedData.Admin.Sys;
 
 /// <summary>
 /// 系统配置种子数据

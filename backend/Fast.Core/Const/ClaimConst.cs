@@ -11,6 +11,11 @@ public class ClaimConst
     public const long DefaultSuperAdminId = 888888;
 
     /// <summary>
+    /// 默认系统管理员Id
+    /// </summary>
+    public const long DefaultSystemAdminId = 999999;
+
+    /// <summary>
     /// 默认超级管理员租户Id
     /// </summary>
     public const long DefaultSuperAdminTenantId = 666666;

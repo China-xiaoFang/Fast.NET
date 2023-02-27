@@ -264,6 +264,7 @@ public class SysTenantService : ISysTenantService, ITransient
         // 初始化租户系统管理员
         await _db.Insertable(new TenUserModel
         {
+            Id = ClaimConst.DefaultSystemAdminId,
             Account = "SystemAdmin",
             Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
             Name = "系统管理员",

@@ -3,7 +3,7 @@ using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Const;
 using SqlSugar;
 
-namespace Fast.Admin.CodeFirst.SeedData;
+namespace Fast.CodeFirst.SeedData.Admin.Tenant;
 
 /// <summary>
 /// 租户配置种子数据
