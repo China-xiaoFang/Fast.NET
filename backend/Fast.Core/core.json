@@ -29,7 +29,10 @@
   },
   "AllowedHosts": "*",
   "AppSettings": {
-    "InjectSpecificationDocument": true //是否开启swagger
+    // 是否开启swagger
+    "InjectSpecificationDocument": true,
+    // 关闭MiniProfiler
+    "InjectMiniProfiler": false
   },
   "SystemSettings": {
     // 接口版本

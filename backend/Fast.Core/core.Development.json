@@ -29,7 +29,10 @@
   },
   "AllowedHosts": "*",
   "AppSettings": {
-    "InjectSpecificationDocument": true //是否开启swagger
+    // 是否开启swagger
+    "InjectSpecificationDocument": true,
+    // 关闭MiniProfiler
+    "InjectMiniProfiler": false
   },
   "SystemSettings": {
     // 接口版本
@@ -39,9 +42,9 @@
     // 最大请求Body Size，单位是字节（byte） 1kb=1024byte,此处限制512MB
     "MaxRequestBodySize": 536870912,
     // 初始化数据库
-    "InitDataBase": true,
+    "InitDataBase": false,
     // 同步枚举字典
-    "SyncEnumDict": true,
+    "SyncEnumDict": false,
     // 系统环境
     "Environment": "Development",
     // 演示环境请求禁止行为

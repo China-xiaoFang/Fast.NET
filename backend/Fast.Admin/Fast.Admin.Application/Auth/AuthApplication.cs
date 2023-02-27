@@ -26,7 +26,7 @@ public class AuthApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("webLogin", "Web登录", HttpRequestActionEnum.Auth), AllowAnonymous, DisableOpLog]
+    [HttpPost("/webLogin", "Web登录", HttpRequestActionEnum.Auth), AllowAnonymous, DisableOpLog]
     public async Task WebLogin(WebLoginInput input)
     {
         await _tenAuthService.WebLogin(input);
