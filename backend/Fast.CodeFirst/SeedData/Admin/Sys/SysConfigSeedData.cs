@@ -24,8 +24,8 @@ public class SysConfigSeedData : ISystemSeedData
             {
                 Id = 1000000001,
                 Code = ConfigConst.Copyright.ICPCode,
-                ChName = "ICP",
-                EnName = "ICP",
+                ChName = "备案编号",
+                EnName = "ICP Core",
                 Value = GlobalContext.CopyrightInfoOptions.ICPCode,
                 ConfigType = SysConfigTypeEnum.System
             },
@@ -33,8 +33,8 @@ public class SysConfigSeedData : ISystemSeedData
             {
                 Id = 1000000002,
                 Code = ConfigConst.Copyright.ICPUrl,
-                ChName = "ICP",
-                EnName = "ICP",
+                ChName = "备案Url",
+                EnName = "ICP Url",
                 Value = GlobalContext.CopyrightInfoOptions.ICPUrl,
                 ConfigType = SysConfigTypeEnum.System
             },
@@ -42,8 +42,8 @@ public class SysConfigSeedData : ISystemSeedData
             {
                 Id = 1000000003,
                 Code = ConfigConst.Copyright.PublicCode,
-                ChName = "Public",
-                EnName = "Public",
+                ChName = "公安备案编号",
+                EnName = "Public Core",
                 Value = GlobalContext.CopyrightInfoOptions.PublicCode,
                 ConfigType = SysConfigTypeEnum.System
             },
@@ -51,8 +51,8 @@ public class SysConfigSeedData : ISystemSeedData
             {
                 Id = 1000000004,
                 Code = ConfigConst.Copyright.PublicUrl,
-                ChName = "Public",
-                EnName = "Public",
+                ChName = "公安备案Url",
+                EnName = "Public Url",
                 Value = GlobalContext.CopyrightInfoOptions.PublicUrl,
                 ConfigType = SysConfigTypeEnum.System
             },
@@ -60,8 +60,8 @@ public class SysConfigSeedData : ISystemSeedData
             {
                 Id = 1000000005,
                 Code = ConfigConst.Copyright.CRCode,
-                ChName = "Copyright",
-                EnName = "Copyright",
+                ChName = "版权信息",
+                EnName = "Copyright Code",
                 Value = GlobalContext.CopyrightInfoOptions.CRCode,
                 ConfigType = SysConfigTypeEnum.System
             },
@@ -69,9 +69,36 @@ public class SysConfigSeedData : ISystemSeedData
             {
                 Id = 1000000006,
                 Code = ConfigConst.Copyright.CRUrl,
-                ChName = "Copyright",
-                EnName = "Copyright",
+                ChName = "版权Url",
+                EnName = "Copyright Url",
                 Value = GlobalContext.CopyrightInfoOptions.CRUrl,
+                ConfigType = SysConfigTypeEnum.System
+            },
+            new()
+            {
+                Id = 1000000007,
+                Code = ConfigConst.BaiduTranslator.AppId,
+                ChName = "百度翻译开发者AppId",
+                EnName = "Baidu Translation Developer AppId",
+                Value = "",
+                ConfigType = SysConfigTypeEnum.System
+            },
+            new()
+            {
+                Id = 1000000008,
+                Code = ConfigConst.BaiduTranslator.SecretKey,
+                ChName = "百度翻译开发者密钥",
+                EnName = "Baidu Translation Developer SecretKey",
+                Value = "",
+                ConfigType = SysConfigTypeEnum.System
+            },
+            new()
+            {
+                Id = 1000000009,
+                Code = ConfigConst.BaiduTranslator.Url,
+                ChName = "百度翻译请求Url",
+                EnName = "Baidu Translation Request Url",
+                Value = "http://api.fanyi.baidu.com/api/trans/vip/translate",
                 ConfigType = SysConfigTypeEnum.System
             }
         };

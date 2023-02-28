@@ -18,7 +18,7 @@ public class CacheRealize : ICache, ISingleton
         {
             CacheTypeEnum.MemoryCache => memoryCache,
             CacheTypeEnum.RedisCache => redisCache,
-            _ => throw new Exception("JSON file node [Cache:CacheType] is incorrectly configured.")
+            _ => throw new Exception("JSON文件节点 [Cache:CacheType] 配置错误！")
         };
     }
 

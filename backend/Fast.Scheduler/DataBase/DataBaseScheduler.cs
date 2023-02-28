@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 using Fast.Admin.Service.Tenant;
 using Fast.Core;
 using Fast.Core.AdminFactory.EnumFactory;
@@ -17,6 +18,8 @@ using Fast.SqlSugar.Tenant.Internal.Enum;
 using Fast.SqlSugar.Tenant.SugarEntity;
 using Furion.Schedule;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SqlSugar;
 
 namespace Fast.Scheduler.DataBase;
@@ -57,6 +60,9 @@ public class DataBaseJobWorker : IJob
 
         // 同步枚举字典
         await SyncEnumDict(_db, _cache);
+
+        // 同步应用本地化配置
+        await SyncAppLocalization(_db, _cache);
     }
 
     /// <summary>
@@ -281,6 +287,127 @@ public class DataBaseJobWorker : IJob
         Console.WriteLine(@$"
             
              同步枚举字典完成！
+             用时（毫秒）：{sw.ElapsedMilliseconds}
+              
+            ");
+    }
+
+    /// <summary>
+    /// 同步应用本地化配置
+    /// </summary>
+    /// <param name="_db"></param>
+    /// <param name="_cache"></param>
+    /// <returns></returns>
+    public async Task SyncAppLocalization(SqlSugarProvider _db, ICache _cache)
+    {
+        if (GlobalContext.SystemSettingsOptions?.SyncAppLocalization != true)
+            return;
+
+        var sw = new Stopwatch();
+        sw.Start();
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(@"
+            
+             同步应用本地化配置中......
+              
+            ");
+
+        // 获取程序运行路径
+        var systemPath = AppDomain.CurrentDomain.BaseDirectory;
+
+        // 英文翻译文件路径
+        const string englishTranslationFilePath = "Resources\\Lang.en-US.json";
+
+        // 判断是否存在文件
+        if (!File.Exists($"{systemPath}{englishTranslationFilePath}"))
+        {
+            throw new Exception($"不存在{englishTranslationFilePath}文件信息！");
+        }
+
+        // 读取JSON文件信息
+        var bytes = await File.ReadAllBytesAsync($"{systemPath}{englishTranslationFilePath}");
+        var jsonStr = Encoding.UTF8.GetString(bytes);
+
+        // 查询所有已有的配置
+        var orgSysAppLocalizationModels = await _db.Queryable<SysAppLocalizationModel>().ToListAsync();
+
+        var addSysAppLocalizationModels = new List<SysAppLocalizationModel>();
+        var updSysAppLocalizationModels = new List<SysAppLocalizationModel>();
+
+        using (var fileInfo = File.OpenText($"{systemPath}{englishTranslationFilePath}"))
+        {
+            await using (var reader = new JsonTextReader(fileInfo))
+            {
+                var jObject = await JToken.ReadFromAsync(reader);
+                foreach (var jToken in jObject)
+                {
+                    var info = jToken.First();
+
+                    var key = "";
+                    // 判断是否以['开头和']结尾
+                    if (info.Path.StartsWith("['") && info.Path.EndsWith("']"))
+                    {
+                        key = info.Path.Substring(2, info.Path.Length - 4);
+                    }
+                    else
+                    {
+                        key = info.Path;
+                    }
+
+                    var value = jToken.First().ToString();
+
+                    // 判断是否已经在数据库中存在
+                    var orgInfo = orgSysAppLocalizationModels.FirstOrDefault(wh => wh.Chinese == key);
+                    if (orgInfo != null)
+                    {
+                        // 存在则修改
+                        orgInfo.English = value;
+                        updSysAppLocalizationModels.Add(orgInfo);
+                    }
+                    else
+                    {
+                        // 不存在添加
+                        addSysAppLocalizationModels.Add(new SysAppLocalizationModel
+                        {
+                            Chinese = key,
+                            English = value,
+                            TranslationSource = TranslationSourceEnum.Custom,
+                            IsSystem = YesOrNotEnum.Y
+                        });
+                    }
+                }
+            }
+        }
+
+        // 开启事务
+        await _db.Ado.BeginTranAsync();
+        try
+        {
+            // 修改
+            await _db.Updateable(updSysAppLocalizationModels).ExecuteCommandAsync();
+            // 添加
+            await _db.Insertable(addSysAppLocalizationModels).ExecuteCommandAsync();
+
+            // 删除缓存中的数据
+            await _cache.DelAsync(CacheConst.SysAppLocalization);
+
+            // 提交事务
+            await _db.Ado.CommitTranAsync();
+        }
+        catch (Exception)
+        {
+            // 回滚事务
+            await _db.Ado.RollbackTranAsync();
+            throw;
+        }
+
+        sw.Stop();
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(@$"
+            
+             同步应用本地化配置完成！
              用时（毫秒）：{sw.ElapsedMilliseconds}
               
             ");

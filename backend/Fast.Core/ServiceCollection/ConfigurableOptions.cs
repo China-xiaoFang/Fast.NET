@@ -31,6 +31,6 @@ public static class ConfigurableOptions
 
         // Check
         if (GlobalContext.SystemSettingsOptions.Environment.IsNullOrZero())
-            throw Oops.Oh(ErrorCode.ConfigError);
+            throw Oops.Oh("系统配置错误，请检查系统配置！");
     }
 }

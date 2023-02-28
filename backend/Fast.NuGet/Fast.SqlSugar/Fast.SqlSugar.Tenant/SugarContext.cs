@@ -362,7 +362,7 @@ public class SugarContext
 
         if (isThrow)
             // 租户系统异常！
-            throw new SqlSugarException("The tenant system is abnormal!");
+            throw new SqlSugarException("租户系统异常！");
 
         return 0;
     }

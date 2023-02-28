@@ -2,7 +2,6 @@
 using Furion.DataValidation;
 using Furion.DependencyInjection;
 using Furion.FriendlyException;
-using Furion.Localization;
 using Furion.UnifyResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +25,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
     public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata)
     {
         return new JsonResult(GetXnRestfulResult.GetXnRestfulResult(metadata.StatusCode, false, metadata.Errors,
-            L.Text["系统内部错误，请联系管理员处理！"].Value));
+            "系统内部错误，请联系管理员处理！"));
     }
 
     /// <summary>
@@ -39,8 +38,7 @@ public class XnRestfulResultProvider : IUnifyResultProvider
     {
         return new JsonResult(GetXnRestfulResult.GetXnRestfulResult(
             // 处理没有返回值情况 204
-            context.Result is EmptyResult ? StatusCodes.Status204NoContent : StatusCodes.Status200OK, true, data,
-            L.Text["请求成功"].Value));
+            context.Result is EmptyResult ? StatusCodes.Status204NoContent : StatusCodes.Status200OK, true, data, "请求成功"));
     }
 
     /// <summary>
@@ -72,20 +70,20 @@ public class XnRestfulResultProvider : IUnifyResultProvider
             // 处理 401 状态码
             case StatusCodes.Status401Unauthorized:
                 await context.Response.WriteAsJsonAsync(
-                    GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status401Unauthorized, false, null,
-                        L.Text["401 未经授权"].Value), App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
+                    GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status401Unauthorized, false, null, "401 未经授权"),
+                    App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
                 break;
             // 处理 403 状态码
             case StatusCodes.Status403Forbidden:
                 await context.Response.WriteAsJsonAsync(
-                    GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status403Forbidden, false, null,
-                        L.Text["403 演示环境，禁止操作！"].Value), App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
+                    GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status403Forbidden, false, null, "403 演示环境，禁止操作！"),
+                    App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
                 break;
             // 处理 429 状态码
             case StatusCodes.Status429TooManyRequests:
                 await context.Response.WriteAsJsonAsync(
-                    GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status429TooManyRequests, false, null,
-                        L.Text["429 频繁请求"].Value), App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
+                    GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status429TooManyRequests, false, null, "429 频繁请求"),
+                    App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
                 break;
         }
     }

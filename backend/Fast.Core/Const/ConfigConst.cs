@@ -16,17 +16,17 @@ public class ConfigConst
         public const string ICPCode = "Sys_ICPCode";
 
         /// <summary>
-        /// 备案编号
+        /// 备案Url
         /// </summary>
         public const string ICPUrl = "Sys_ICPUrl";
 
         /// <summary>
-        /// 备案编号
+        /// 公安备案编号
         /// </summary>
         public const string PublicCode = "Sys_PublicCode";
 
         /// <summary>
-        /// 备案编号
+        /// 公安备案Url
         /// </summary>
         public const string PublicUrl = "Sys_PublicUrl";
 
@@ -39,6 +39,27 @@ public class ConfigConst
         /// 版权Url
         /// </summary>
         public const string CRUrl = "Sys_CRUrl";
+    }
+
+    /// <summary>
+    /// 百度翻译
+    /// </summary>
+    public class BaiduTranslator
+    {
+        /// <summary>
+        /// 百度翻译开发者AppId
+        /// </summary>
+        public const string AppId = "Sys_BaiduTranslatorAppId";
+
+        /// <summary>
+        /// 百度翻译开发者密钥
+        /// </summary>
+        public const string SecretKey = "Sys_BaiduTranslatorSecretKey";
+
+        /// <summary>
+        /// 百度翻译请求Url
+        /// </summary>
+        public const string Url = "Sys_BaiduTranslatorUrl";
     }
 
     /// <summary>

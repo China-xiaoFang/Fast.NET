@@ -5,6 +5,7 @@ using Fast.Core.Operation.Config.Dto;
 using Fast.Core.Operation.Dict;
 using Fast.Core.Operation.Dict.Dto;
 using Furion.DynamicApiController;
+using Furion.FriendlyException;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,5 +62,15 @@ public class TestApplication : IDynamicApiController
     {
         var result = await ConfigOperation.GetConfigAsync(name, SysConfigTypeEnum.Tenant);
         return result;
+    }
+
+    /// <summary>
+    /// 测试多语言百度翻译
+    /// </summary>
+    /// <exception cref="Exception"></exception>
+    [HttpGet("/test/testBaiduTranslator", "测试多语言百度翻译")]
+    public void TestBaiduTranslator()
+    {
+        throw Oops.Bah("中文提示：百度翻译存在异常，1234567，test apple name string int long hello changsha");
     }
 }

@@ -11,6 +11,11 @@ public class CacheConst
     public const string TenantDbInfo = "Tenant:DbInfo:";
 
     /// <summary>
+    /// 系统应用本地化配置缓存
+    /// </summary>
+    public const string SysAppLocalization = "System:appLocalization";
+
+    /// <summary>
     /// 系统字典信息缓存
     /// </summary>
     public const string SysDictInfo = "System:dictInfo";

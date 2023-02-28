@@ -11,7 +11,7 @@ public class CopyrightInfoOptions
     public string ICPCode { get; set; }
 
     /// <summary>
-    /// ICP备案Url
+    /// 备案Url
     /// </summary>
     public string ICPUrl { get; set; }
 

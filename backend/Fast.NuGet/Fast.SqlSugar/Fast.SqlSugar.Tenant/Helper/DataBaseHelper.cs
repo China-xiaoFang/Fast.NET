@@ -55,8 +55,7 @@ static class DataBaseHelper
             case DbType.HG:
             case DbType.ClickHouse:
             default:
-                // 数据库Type配置异常！
-                throw new SqlSugarException("The database Type configuration is abnormal!");
+                throw new SqlSugarException("数据库类型配置异常！");
         }
 
         return connectionStr;
@@ -170,8 +169,7 @@ static class DataBaseHelper
             case DbType.Custom:
                 break;
             default:
-                // 数据库Type配置异常！
-                throw new SqlSugarException("The database Type configuration is abnormal!");
+                throw new SqlSugarException("数据库类型配置异常！");
         }
     }
 
@@ -217,8 +215,7 @@ static class DataBaseHelper
             case DbType.Custom:
                 break;
             default:
-                // 数据库Type配置异常！
-                throw new SqlSugarException("The database Type configuration is abnormal!");
+                throw new SqlSugarException("数据库类型配置异常！");
         }
     }
 }

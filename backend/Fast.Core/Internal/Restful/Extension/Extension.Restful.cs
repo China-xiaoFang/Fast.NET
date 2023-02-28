@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Fast.Core.Internal.Restful.Internal;
+using Fast.Core.Util.AppLocalization;
 using Fast.Core.Util.Json.Extension;
 using Fast.SqlSugar.Tenant.Extension;
 using Fast.SqlSugar.Tenant.Internal.Dto;
@@ -47,9 +48,30 @@ public static class Extension
         // 一般为Model验证失败返回的结果
         if (message is Dictionary<string, string[]> messageObj)
         {
-            var newMessage = messageObj.Aggregate("",
-                (current1, dicItem) => dicItem.Value.Aggregate(current1, (current, divVal) => current + $"{divVal}\r\n"));
+            var newMessage = "";
+            foreach (var dicVal in messageObj.SelectMany(dicItem => dicItem.Value))
+            {
+                // 判断是否开启多语言
+                if (GlobalContext.ServiceCollectionOptions.AppLocalization)
+                {
+                    newMessage += $"{FL.Text(dicVal)}\r\n";
+                }
+                else
+                {
+                    newMessage += $"{dicVal}\r\n";
+                }
+            }
+
             message = newMessage.Remove(newMessage.LastIndexOf("\r\n", StringComparison.Ordinal));
+        }
+        else
+        {
+            // 字符串多语言处理
+            // 判断是否开启多语言
+            if (GlobalContext.ServiceCollectionOptions.AppLocalization)
+            {
+                message = FL.Text(message.ToString());
+            }
         }
 
         return new XnRestfulResult<object>

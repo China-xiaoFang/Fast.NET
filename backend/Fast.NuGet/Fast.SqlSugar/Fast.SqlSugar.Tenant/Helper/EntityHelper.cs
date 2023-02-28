@@ -80,8 +80,7 @@ public static class EntityHelper
         var entityType = ReflexGetAllTEntityList().FirstOrDefault(f => f.ClassName == name);
         if (entityType == null)
         {
-            // SqlSugar配置错误，请检查 Model 是否继承了接口！
-            throw new SqlSugarException("SqlSugar config error, please Check whether the Model inherits the interface!");
+            throw new SqlSugarException("SqlSugar配置错误，请检查 Model 是否继承了接口！");
         }
 
         return entityType;

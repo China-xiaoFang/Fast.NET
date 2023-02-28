@@ -75,7 +75,7 @@ public class SysTenantService : ISysTenantService, ITransient
         var tenantList = await GetAllTenantInfo(wh => wh.WebUrl.Contains(webUrl));
 
         if (tenantList is not {Count: > 0})
-            throw Oops.Bah(ErrorCode.TenantNotExistError);
+            throw Oops.Bah("租户信息不存在！");
 
         // 获取第一个
         var tenantInfo = tenantList[0];
@@ -115,18 +115,18 @@ public class SysTenantService : ISysTenantService, ITransient
         {
             if (input.WebUrl.Any(url => !Regex.IsMatch(url, CommonConst.RegexStr.HttpsUrl)))
             {
-                throw Oops.Bah(ErrorCode.TenantWebUrlHttpsError);
+                throw Oops.Bah("租户WebUrl必须是Https协议！");
             }
         }
 
         // 判断租户信息是否存在
         if (await _repository.AnyAsync(wh =>
                 wh.ChName == input.Name || wh.ChShortName == input.ShortName || wh.Email == input.Email))
-            throw Oops.Bah(ErrorCode.TenantRepeatError);
+            throw Oops.Bah("已存在同名租户信息！");
 
         // 判断租户的WebUrl是否存在
         if (await _repository.AnyAsync(wh => SqlFunc.ContainsArray(wh.WebUrl, input.WebUrl)))
-            throw Oops.Bah(ErrorCode.TenantWebUrlRepeatError);
+            throw Oops.Bah("已存在同主机租户信息！");
 
         var model = input.Adapt<SysTenantModel>();
         model.Secret = StringUtil.GetGuid();
@@ -160,12 +160,12 @@ public class SysTenantService : ISysTenantService, ITransient
         // 判断是否存在租户
         var newTenantInfo = await _repository.FirstOrDefaultAsync(f => f.Id == input.Id);
         if (newTenantInfo.IsEmpty())
-            throw Oops.Bah(ErrorCode.TenantNotExistError);
+            throw Oops.Bah("租户信息不存在！");
 
         // 查询是否存在数据库信息
         if (!await _repository.Context.Queryable<SysTenantDataBaseModel>().AnyAsync(wh =>
                 wh.TenantId == input.Id && wh.SugarSysDbType == SugarDbTypeEnum.Tenant.GetHashCode()))
-            throw Oops.Bah(ErrorCode.TenantDbNotExistError);
+            throw Oops.Bah("租户数据库信息不存在！");
 
         // 获取所有数据库Model
         var entityTypeList = EntityHelper.ReflexGetAllTEntityList();
@@ -197,7 +197,7 @@ public class SysTenantService : ISysTenantService, ITransient
         if (await _db.Ado.GetIntAsync(
                 $"SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_NAME = '{typeof(TenUserModel).GetSugarTableName()}'") >
             0)
-            throw Oops.Bah(ErrorCode.TenantDataBaseRepeatError);
+            throw Oops.Bah("租户数据库已存在！");
 
         _db.CodeFirst.InitTables(entityTypeList.ToArray());
 

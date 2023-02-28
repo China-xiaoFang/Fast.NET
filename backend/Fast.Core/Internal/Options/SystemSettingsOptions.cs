@@ -33,6 +33,11 @@ public class SystemSettingsOptions
     public bool SyncEnumDict { get; set; }
 
     /// <summary>
+    /// 同步应用本地化配置
+    /// </summary>
+    public bool SyncAppLocalization { get; set; }
+
+    /// <summary>
     /// 系统环境
     /// </summary>
     public EnvironmentEnum Environment { get; set; }

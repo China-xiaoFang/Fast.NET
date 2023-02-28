@@ -42,9 +42,11 @@
     // 最大请求Body Size，单位是字节（byte） 1kb=1024byte,此处限制512MB
     "MaxRequestBodySize": 536870912,
     // 初始化数据库
-    "InitDataBase": true,
+    "InitDataBase": false,
     // 同步枚举字典
-    "SyncEnumDict": true,
+    "SyncEnumDict": false,
+    // 同步应用本地化配置
+    "SyncAppLocalization": false,
     // 系统环境
     "Environment": "Development",
     // 演示环境请求禁止前缀

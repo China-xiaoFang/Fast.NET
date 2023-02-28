@@ -1,5 +1,4 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Furion.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GetXnRestfulResult = Fast.Core.Internal.Restful.Extension.Extension;
@@ -38,8 +37,8 @@ public class DemoEnvironmentMiddleware
                 {
                     // 抛出StatusCode为403的异常
                     await context.Response.WriteAsJsonAsync(
-                        GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status403Forbidden, false, null,
-                            L.Text["403 演示环境，禁止操作！"].Value), App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
+                        GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status403Forbidden, false, null, "403 演示环境，禁止操作！"),
+                        App.GetOptions<JsonOptions>()?.JsonSerializerOptions);
                 }
             }
         }

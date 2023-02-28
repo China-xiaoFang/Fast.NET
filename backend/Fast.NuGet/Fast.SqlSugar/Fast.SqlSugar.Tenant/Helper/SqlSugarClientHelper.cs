@@ -32,8 +32,7 @@ static class SqlSugarClientHelper
         var db = dbInfoList.FirstOrDefault(f => f.SugarSysDbType == dbType);
         if (db == null)
         {
-            // 租户数据库配置异常！
-            throw new SqlSugarException("The tenant database configuration is abnormal!");
+            throw new SqlSugarException("租户数据库配置异常！");
         }
 
         return db;

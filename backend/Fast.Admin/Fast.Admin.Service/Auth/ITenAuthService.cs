@@ -7,7 +7,6 @@ namespace Fast.Admin.Service.Auth;
 /// </summary>
 public interface ITenAuthService
 {
-
     /// <summary>
     /// Web登录
     /// </summary>

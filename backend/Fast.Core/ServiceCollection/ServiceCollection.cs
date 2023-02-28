@@ -53,7 +53,11 @@ public static class ServiceCollection
         {
             builder.Services.AddControllers()
                 // Register multiple languages.
-                .AddAppLocalization();
+                .AddAppLocalization(settings =>
+                {
+                    // Integrate third-party json configurations.
+                    builder.Services.AddJsonLocalization(options => options.ResourcesPath = settings.ResourcesPath);
+                });
         }
         else
         {

@@ -1,7 +1,6 @@
 ﻿using Fast.Core.Cache;
 using Fast.Core.Internal.AttributeFilter;
 using Fast.Core.Util.Http;
-using Furion.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GetXnRestfulResult = Fast.Core.Internal.Restful.Extension.Extension;
@@ -128,9 +127,8 @@ public class RequestLimitMiddleware
                 {
                     // 限流，抛出StatusCode为429的异常
                     await context.Response.WriteAsJsonAsync(
-                        GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status429TooManyRequests, false, null,
-                            L.Text["429 频繁请求"].Value), App.GetOptions<JsonOptions>()?.JsonSerializerOptions,
-                        cancellationToken: cancellation);
+                        GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status429TooManyRequests, false, null, "429 频繁请求"),
+                        App.GetOptions<JsonOptions>()?.JsonSerializerOptions, cancellationToken: cancellation);
                 }
             }
         }

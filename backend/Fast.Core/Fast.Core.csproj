@@ -18,6 +18,7 @@
 	<ItemGroup>
 		<None Remove="core.Development.json" />
 		<None Remove="core.json" />
+		<None Remove="Resources\Lang.en-US.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,6 +31,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Include="Resources\Lang.en-US.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="My.Extensions.Localization.Json" Version="3.0.1" />
 		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
 		<PackageReference Include="Furion" Version="4.8.7.1" />
 		<PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="4.8.7.1" />
@@ -42,12 +50,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Fast.NuGet\Fast.Iaas\Fast.Iaas.csproj" />
 	  <ProjectReference Include="..\Fast.NuGet\Fast.SqlSugar\Fast.SqlSugar.Tenant\Fast.SqlSugar.Tenant.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="Resources\Lang.en-US.resx">
-			<Generator></Generator>
-		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

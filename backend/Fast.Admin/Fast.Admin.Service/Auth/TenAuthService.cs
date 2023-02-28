@@ -49,7 +49,7 @@ public class TenAuthService : ITenAuthService, ITransient
                 var emailRegex = new Regex(CommonConst.RegexStr.EmailAddress);
                 if (!emailRegex.IsMatch(input.Account))
                 {
-                    throw Oops.Bah(ErrorCode.EmailAddressInvalid);
+                    throw Oops.Bah("不是一个有效的邮箱地址！");
                 }
 
                 userInfo = await _tenRepository.FirstOrDefaultAsync(f =>
@@ -60,7 +60,7 @@ public class TenAuthService : ITenAuthService, ITransient
                     f.Phone == input.Account && f.Status != CommonStatusEnum.Delete);
                 break;
             default:
-                throw Oops.Bah(ErrorCode.LoginMethodInvalid);
+                throw Oops.Bah("不是一个有效的登录方式！");
         }
 
         // 判断是否查询到了用户信息
