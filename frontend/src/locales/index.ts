@@ -1,22 +1,25 @@
 import { createI18n } from "vue-i18n";
-import zhCN from "ant-design-vue/es/locale/zh_CN";
-import enGB from "ant-design-vue/es/locale/en_GB";
-import zh_cn from "./lang/zh-cn.js";
-import en from "./lang/en.js";
+import antDZhCN from "ant-design-vue/es/locale/zh_CN";
+import antDEnUS from "ant-design-vue/es/locale/en_US";
+import zh_CN from "./lang/zh-cn.js";
+import en_US from "./lang/en-us.js";
 import tool from "@/utils/tool";
 import sysConfig from "@/config/index";
 import cacheKey from "@/config/cacheKey";
 
 export const messages = {
-	"zh-cn": {
-		lang: zhCN,
-		...zh_cn,
+	"zh-CN": {
+		lang: antDZhCN,
+		...zh_CN,
 	},
-	en: {
-		lang: enGB,
-		...en,
+	"en-US": {
+		lang: antDEnUS,
+		...en_US,
 	},
 };
+
+// 支持的语言
+const supportedCultures = ["zh-CN", "en-US"];
 
 /**
  * 得到默认使用的语言
@@ -29,10 +32,8 @@ const getDefaultLang = () => {
 		return userLang;
 	} else {
 		// 用户未指定时，根据游览器选择:
-		if (navigator.language === "zh-CN") {
-			return "zh-cn";
-		} else if (navigator.language === "en") {
-			return "en";
+		if (supportedCultures.includes(navigator.language)) {
+			return navigator.language;
 		} else {
 			return sysConfig.LANG;
 		}
@@ -41,7 +42,7 @@ const getDefaultLang = () => {
 
 const i18n = createI18n({
 	locale: getDefaultLang(),
-	fallbackLocale: "zh-cn",
+	fallbackLocale: supportedCultures[0],
 	globalInjection: true,
 	messages,
 });

@@ -10,6 +10,7 @@ import tool from "@/utils/tool";
 import cacheKey from "@/config/cacheKey";
 import store from "@/store";
 import { translate as $t } from "@/locales";
+import { AESDecrypt, AESEncrypt } from "./AES";
 
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
 declare module "axios" {
@@ -71,13 +72,37 @@ const service = axios.create({
 service.interceptors.request.use(
 	(config) => {
 		const token = tool.cache.get(cacheKey.TOKEN);
+		const timestamp = new Date().getTime();
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] =
 				sysConfig.TOKEN_PREFIX + token;
 		}
-		if (!sysConfig.REQUEST_CACHE && config.method === "get") {
-			config.params = config.params || {};
-			config.params._ = new Date().getTime();
+		// Request Data AES加密
+		let requestData = config.params || config.data;
+		let dataStr = JSON.stringify(requestData);
+		if (dataStr != null && dataStr != "" && dataStr != "{}") {
+			console.debug(`HTTP Request Param("${config.url}")`, requestData);
+			let decryptData = AESEncrypt(
+				dataStr,
+				`Fast.NET.XnRestful.${timestamp}`,
+				`FIV${timestamp}`
+			);
+			// 组装请求格式
+			requestData = {
+				data: decryptData,
+				timestamp: timestamp,
+			};
+			if (config.method === "get" || config.method === "delete") {
+				config.params = requestData;
+			} else {
+				config.data = requestData;
+			}
+		} else {
+			// Get 请求缓存
+			if (!sysConfig.REQUEST_CACHE && config.method === "get") {
+				config.params = config.params || {};
+				config.params._ = timestamp;
+			}
 		}
 		// 带上租户Id
 		const tenantId = store.state["webSiteInfo"]?.base64TenantId;
@@ -126,7 +151,7 @@ service.interceptors.response.use(
 				return;
 			}
 		}
-		const data = response.data;
+		let data = response.data;
 		const code = data.code;
 		if (reloadCodes.includes(code)) {
 			if (!loginBack.value) {
@@ -136,7 +161,11 @@ service.interceptors.response.use(
 		}
 		// 200 为有返回值，204 为无返回值
 		if (code !== 200 && code !== 204) {
-			message.error(data.message);
+			if (typeof data.message == "object" && data.message) {
+				message.error(JSON.stringify(data.message));
+			} else {
+				message.error(data.message);
+			}
 			return Promise.reject(data);
 		} else {
 			// 统一成功提示
@@ -166,6 +195,13 @@ service.interceptors.response.use(
 				}
 			});
 		}
+		// 处理AES加密
+		data.data = AESDecrypt(
+			data.data,
+			`Fast.NET.XnRestful.${data.timestamp}`,
+			`FIV${data.timestamp}`
+		);
+		console.debug(`HTTP Result Data("${response.config.url}")`, data);
 		return Promise.resolve(data);
 	},
 	(error) => {
@@ -189,8 +225,8 @@ service.interceptors.response.use(
  * @param options
  * @returns
  */
-export const get = (url: string, value: any = {}, options: any = {}) =>
-	baseRequest(url, value, "get", options);
+export const getRequest = (url: string, value: any = {}, options: any = {}) =>
+	baseRequest("get", url, value, options);
 
 /**
  * Post 请求
@@ -199,8 +235,31 @@ export const get = (url: string, value: any = {}, options: any = {}) =>
  * @param options
  * @returns
  */
-export const post = (url: string, value: any = {}, options: any = {}) =>
-	baseRequest(url, value, "post", options);
+export const postRequest = (url: string, value: any = {}, options: any = {}) =>
+	baseRequest("post", url, value, options);
+
+/**
+ * Put 请求
+ * @param url
+ * @param value
+ * @param options
+ * @returns
+ */
+export const putRequest = (url: string, value: any = {}, options: any = {}) =>
+	baseRequest("put", url, value, options);
+
+/**
+ * Delete 请求
+ * @param url
+ * @param value
+ * @param options
+ * @returns
+ */
+export const deleteRequest = (
+	url: string,
+	value: any = {},
+	options: any = {}
+) => baseRequest("delete", url, value, options);
 
 /**
  * 基础请求
@@ -211,9 +270,9 @@ export const post = (url: string, value: any = {}, options: any = {}) =>
  * @returns
  */
 export const baseRequest = (
+	method: string,
 	url: string,
 	value: any = {},
-	method: string,
 	options: any = {}
 ) => {
 	if (method === "post") {

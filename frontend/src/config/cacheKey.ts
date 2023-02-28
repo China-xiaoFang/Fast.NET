@@ -19,4 +19,7 @@ export default {
 
 	// App语言
 	APP_LANG: "APP_LANG",
+
+	// App主题
+	APP_THEME: "APP_THEME",
 };

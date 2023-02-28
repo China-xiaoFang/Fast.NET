@@ -1,4 +1,4 @@
-import { get, post } from "@/utils/request";
+import { getRequest, postRequest } from "@/utils/request";
 
 export default {
 	/**
@@ -6,7 +6,7 @@ export default {
 	 * @returns
 	 */
 	webSiteInit() {
-		return get("/webSiteInit", null);
+		return getRequest("/webSiteInit", null);
 	},
 
 	/**
@@ -15,6 +15,24 @@ export default {
 	 * @returns
 	 */
 	webLogin(value) {
-		return post("/webLogin", value);
+		return postRequest("/webLogin", value);
+	},
+
+	/**
+	 * 测试Get请求参数加密
+	 * @param value
+	 * @returns
+	 */
+	testGet1(value) {
+		return getRequest("/testGet1", value);
+	},
+
+	/**
+	 * 测试Get请求参数加密
+	 * @param value
+	 * @returns
+	 */
+	testGet2(value) {
+		return getRequest("/testGet2", value);
 	},
 };

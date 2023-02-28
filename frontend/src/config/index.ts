@@ -3,7 +3,7 @@ const DEFAULT_CONFIG = {
 	DASHBOARD_URL: "/index",
 
 	// 请求超时，30秒
-	TIMEOUT: 1000 * 10,
+	TIMEOUT: 1000 * 30,
 
 	// TenantId
 	TENANT_ID_NAME: "Fast-NET-TenantId",
@@ -27,7 +27,7 @@ const DEFAULT_CONFIG = {
 	REQUEST_CACHE: false,
 
 	// 语言
-	LANG: "zh-cn",
+	LANG: "zh-CN",
 
 	// HTML页面
 	HTML_PAGE: {
