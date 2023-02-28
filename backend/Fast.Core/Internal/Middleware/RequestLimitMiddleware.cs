@@ -1,5 +1,5 @@
-﻿using Fast.Core.Internal.AttributeFilter;
-using Fast.Core.ServiceCollection.Cache;
+﻿using Fast.Core.Cache;
+using Fast.Core.Internal.AttributeFilter;
 using Fast.Core.Util.Http;
 using Furion.Localization;
 using Microsoft.AspNetCore.Http;

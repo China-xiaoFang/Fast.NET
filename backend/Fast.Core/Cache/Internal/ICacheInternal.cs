@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.ServiceCollection.Cache.Internal;
+﻿namespace Fast.Core.Cache.Internal;
 
 /// <summary>
 /// 缓存仓储的定义

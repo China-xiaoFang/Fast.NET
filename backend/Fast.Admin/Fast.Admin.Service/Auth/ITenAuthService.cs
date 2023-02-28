@@ -8,6 +8,12 @@ namespace Fast.Admin.Service.Auth;
 public interface ITenAuthService
 {
     /// <summary>
+    /// Web站点初始化
+    /// </summary>
+    /// <returns></returns>
+    Task<WebSiteInitOutput> WebSiteInit();
+
+    /// <summary>
     /// Web登录
     /// </summary>
     /// <param name="input"></param>

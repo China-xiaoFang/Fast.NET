@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Fast.Core.AdminFactory.EnumFactory;
-using Fast.SqlSugar.Tenant.BaseModel.Dto;
-
-namespace Fast.Admin.Service.Tenant.Dto;
+﻿namespace Fast.Admin.Service.Tenant.Dto;
 
 /// <summary>
 /// 查询租户输入
@@ -12,7 +8,7 @@ public class QueryTenantInput : PageInputBase
     /// <summary>
     /// 公司名称
     /// </summary>
-    public virtual string Name { get; set; }
+    public string Name { get; set; }
 
     /// <summary>
     /// 公司简称
@@ -22,7 +18,7 @@ public class QueryTenantInput : PageInputBase
     /// <summary>
     /// 管理员名称
     /// </summary>
-    public virtual string AdminName { get; set; }
+    public string AdminName { get; set; }
 
     /// <summary>
     /// 电话号码

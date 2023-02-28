@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Fast.Admin.Service.Cache.Dto;
+﻿namespace Fast.Admin.Service.Cache.Dto;
 
 /// <summary>
 /// 编辑缓存Value输入

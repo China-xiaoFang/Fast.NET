@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Fast.Core.AdminFactory.EnumFactory;
-
-namespace Fast.Admin.Service.Auth.Dto;
+﻿namespace Fast.Admin.Service.Auth.Dto;
 
 /// <summary>
 /// Web登录输入

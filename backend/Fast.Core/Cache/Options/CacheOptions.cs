@@ -1,6 +1,6 @@
-﻿using Fast.Core.ServiceCollection.Cache.Enum;
+﻿using Fast.Core.Cache.Enum;
 
-namespace Fast.Core.ServiceCollection.Cache.Options;
+namespace Fast.Core.Cache.Options;
 
 /// <summary>
 /// 缓存配置

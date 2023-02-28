@@ -1,6 +1,4 @@
 ﻿using Fast.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.Core.ServiceCollection.Cache;
-using Fast.SqlSugar.Tenant.Repository;
 
 namespace Fast.Admin.Service.User;
 

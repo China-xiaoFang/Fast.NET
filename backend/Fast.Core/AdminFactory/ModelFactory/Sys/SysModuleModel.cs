@@ -26,7 +26,7 @@ public class SysModuleModel : BaseEntity
     /// <summary>
     /// 图标
     /// </summary>
-    [SugarColumn(ColumnDescription = "图标", ColumnDataType = "Nvarchar(50)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "图标", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
     public string Icon { get; set; }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class SysModuleModel : BaseEntity
     /// 是否为系统模块
     /// </summary>
     [SugarColumn(ColumnDescription = "是否为系统模块", IsNullable = false)]
-    public bool IsSystem { get; set; }
+    public YesOrNotEnum IsSystem { get; set; }
 
     /// <summary>
     /// 排序

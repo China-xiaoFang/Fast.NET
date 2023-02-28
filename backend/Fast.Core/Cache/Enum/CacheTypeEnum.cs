@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Fast.Core.Internal.AttributeFilter;
 
-namespace Fast.Core.ServiceCollection.Cache.Enum;
+namespace Fast.Core.Cache.Enum;
 
 /// <summary>
 /// 缓存类型枚举

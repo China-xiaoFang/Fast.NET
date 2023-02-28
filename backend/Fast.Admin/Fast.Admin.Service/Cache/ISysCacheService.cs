@@ -1,12 +1,16 @@
-﻿using Fast.Admin.Service.Cache.Dto;
+﻿using System.Linq.Expressions;
+using Fast.Admin.Service.Cache.Dto;
+using Fast.Core.AdminFactory.ModelFactory.Sys;
 
 namespace Fast.Admin.Service.Cache;
 
 /// <summary>
-/// 缓存服务接口
+/// 系统缓存服务接口
 /// </summary>
-public interface ICacheService
+public interface ISysCacheService
 {
+    public ICache _cache { get; }
+
     /// <summary>
     /// 获取缓存类型
     /// </summary>
@@ -39,4 +43,11 @@ public interface ICacheService
     /// <param name="input"></param>
     /// <returns></returns>
     Task DeleteCacheValue(DeleteCacheValueInput input);
+
+    /// <summary>
+    /// 获取所有租户信息
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    Task<List<SysTenantModel>> GetAllTenantInfo(Expression<Func<SysTenantModel, bool>> predicate = null);
 }

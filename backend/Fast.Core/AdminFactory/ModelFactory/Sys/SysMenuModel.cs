@@ -75,7 +75,7 @@ public class SysMenuModel : BaseEntity
     /// 是否为系统菜单
     /// </summary>
     [SugarColumn(ColumnDescription = "是否为系统菜单", IsNullable = false)]
-    public bool IsSystem { get; set; }
+    public YesOrNotEnum IsSystem { get; set; }
 
     /// <summary>
     /// 排序

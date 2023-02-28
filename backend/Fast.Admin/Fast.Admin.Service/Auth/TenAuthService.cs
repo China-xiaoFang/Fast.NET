@@ -1,18 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 using Fast.Admin.Service.Auth.Dto;
-using Fast.Core;
-using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Admin.Service.Cache;
+using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.Core.Const;
 using Fast.Core.Internal.EventSubscriber;
-using Fast.Core.Operation.Config;
-using Fast.Core.Util.Http;
-using Fast.Iaas.Extension;
-using Fast.SqlSugar.Tenant.Repository;
 using Furion.DataEncryption;
-using Furion.DependencyInjection;
 using Furion.EventBus;
-using Furion.FriendlyException;
 using Microsoft.AspNetCore.Http;
 
 namespace Fast.Admin.Service.Auth;
@@ -22,16 +15,44 @@ namespace Fast.Admin.Service.Auth;
 /// </summary>
 public class TenAuthService : ITenAuthService, ITransient
 {
-    private readonly ISqlSugarRepository<TenUserModel> _repository;
+    private readonly ISqlSugarRepository<TenUserModel> _tenRepository;
+    private readonly ISqlSugarRepository<SysTenantModel> _sysRepository;
+    private readonly ISysCacheService _sysCacheService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IEventPublisher _eventPublisher;
 
-    public TenAuthService(ISqlSugarRepository<TenUserModel> repository, IHttpContextAccessor httpContextAccessor,
-        IEventPublisher eventPublisher)
+    public TenAuthService(ISqlSugarRepository<TenUserModel> tenRepository, ISqlSugarRepository<SysTenantModel> sysRepository,
+        ISysCacheService sysCacheService, IHttpContextAccessor httpContextAccessor, IEventPublisher eventPublisher)
     {
-        _repository = repository;
+        _tenRepository = tenRepository;
+        _sysRepository = sysRepository;
+        _sysCacheService = sysCacheService;
         _httpContextAccessor = httpContextAccessor;
         _eventPublisher = eventPublisher;
+    }
+
+    /// <summary>
+    /// Web站点初始化
+    /// </summary>
+    /// <returns></returns>
+    public async Task<WebSiteInitOutput> WebSiteInit()
+    {
+        // webUel
+        var webUrl = GlobalContext.OriginUrl;
+
+        // 根据主机Host判断，是否存在该租户
+        var tenantList = await _sysCacheService.GetAllTenantInfo(wh => wh.WebUrl.Contains(webUrl));
+
+        if (tenantList is not {Count: > 0})
+            throw Oops.Bah(ErrorCode.TenantNotExistError);
+
+        // 获取第一个
+        var tenantInfo = tenantList[0];
+
+        var result = tenantInfo.Adapt<WebSiteInitOutput>();
+        result.TenantId = tenantInfo.Id.ToString().ToBase64();
+
+        return result;
     }
 
     /// <summary>
@@ -47,7 +68,7 @@ public class TenAuthService : ITenAuthService, ITransient
         switch (input.LoginMethod)
         {
             case LoginMethodEnum.Account:
-                userInfo = await _repository.FirstOrDefaultAsync(f =>
+                userInfo = await _tenRepository.FirstOrDefaultAsync(f =>
                     f.Account == input.Account && f.Status != CommonStatusEnum.Delete);
 
                 break;
@@ -59,11 +80,11 @@ public class TenAuthService : ITenAuthService, ITransient
                     throw Oops.Bah(ErrorCode.EmailAddressInvalid);
                 }
 
-                userInfo = await _repository.FirstOrDefaultAsync(f =>
+                userInfo = await _tenRepository.FirstOrDefaultAsync(f =>
                     f.Email == input.Account && f.Status != CommonStatusEnum.Delete);
                 break;
             case LoginMethodEnum.Phone:
-                userInfo = await _repository.FirstOrDefaultAsync(f =>
+                userInfo = await _tenRepository.FirstOrDefaultAsync(f =>
                     f.Phone == input.Account && f.Status != CommonStatusEnum.Delete);
                 break;
             default:

@@ -13,11 +13,11 @@ namespace Fast.Admin.Application.Cache;
 [ApiDescriptionSettings(ApiGroupConst.Web, Name = "Cache", Order = 100)]
 public class CacheApplication : IDynamicApiController
 {
-    private readonly ICacheService _cacheService;
+    private readonly ISysCacheService _sysCacheService;
 
-    public CacheApplication(ICacheService cacheService)
+    public CacheApplication(ISysCacheService sysCacheService)
     {
-        _cacheService = cacheService;
+        _sysCacheService = sysCacheService;
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public class CacheApplication : IDynamicApiController
     [HttpGet("getCacheType", "获取缓存类型", HttpRequestActionEnum.Query)]
     public string GetCacheType()
     {
-        return _cacheService.GetCacheType();
+        return _sysCacheService.GetCacheType();
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class CacheApplication : IDynamicApiController
     [HttpGet("getAllCacheKey", "获取所有缓存Key", HttpRequestActionEnum.Query)]
     public List<string> GetAllCacheKey()
     {
-        return _cacheService.GetAllCacheKey();
+        return _sysCacheService.GetAllCacheKey();
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ public class CacheApplication : IDynamicApiController
     [HttpGet("getCacheValue", "获取缓存值", HttpRequestActionEnum.Query)]
     public async Task<string> GetCacheValue(string key)
     {
-        return await _cacheService.GetCacheValue(key);
+        return await _sysCacheService.GetCacheValue(key);
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ public class CacheApplication : IDynamicApiController
     [HttpPut("editCacheValue", "设置缓存值", HttpRequestActionEnum.Edit)]
     public async Task EditCacheValue(EditCacheValueInput input)
     {
-        await _cacheService.EditCacheValue(input);
+        await _sysCacheService.EditCacheValue(input);
     }
 
     /// <summary>
@@ -70,6 +70,6 @@ public class CacheApplication : IDynamicApiController
     [HttpDelete("deleteCacheValue", "删除缓存", HttpRequestActionEnum.Delete)]
     public async Task DeleteCacheValue(DeleteCacheValueInput input)
     {
-        await _cacheService.DeleteCacheValue(input);
+        await _sysCacheService.DeleteCacheValue(input);
     }
 }

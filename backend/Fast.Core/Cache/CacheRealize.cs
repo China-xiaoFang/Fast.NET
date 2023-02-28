@@ -1,11 +1,9 @@
-﻿using Fast.Core.ServiceCollection.Cache.Enum;
-using Fast.Core.ServiceCollection.Cache.Internal;
-using Fast.Core.ServiceCollection.Cache.Realize;
+﻿using Fast.Core.Cache.Enum;
+using Fast.Core.Cache.Internal;
+using Fast.Core.Cache.Realize;
 using Furion.DependencyInjection;
 
-// ReSharper disable SuggestBaseTypeForParameterInConstructor
-
-namespace Fast.Core.ServiceCollection.Cache;
+namespace Fast.Core.Cache;
 
 /// <summary>
 /// 缓存实现

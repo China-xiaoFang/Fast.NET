@@ -28,7 +28,7 @@ public class SysMenuSeedData : ISystemSeedData
             Color = "#05a045",
             Icon = "profile-outlined",
             ViewType = ModuleViewTypeEnum.All,
-            IsSystem = true,
+            IsSystem = YesOrNotEnum.Y,
             Sort = 1,
             Status = CommonStatusEnum.Enable
         };
@@ -47,7 +47,7 @@ public class SysMenuSeedData : ISystemSeedData
             Router = "/index",
             Component = "index/index",
             Link = null,
-            IsSystem = true,
+            IsSystem = YesOrNotEnum.Y,
             Sort = 1,
             Status = CommonStatusEnum.Enable
         };
@@ -60,7 +60,7 @@ public class SysMenuSeedData : ISystemSeedData
             Color = "#d81b43",
             Icon = "appstore-add-outlined",
             ViewType = ModuleViewTypeEnum.SuperAdmin,
-            IsSystem = true,
+            IsSystem = YesOrNotEnum.Y,
             Sort = 999,
             Status = CommonStatusEnum.Enable
         };
@@ -79,7 +79,7 @@ public class SysMenuSeedData : ISystemSeedData
             Router = null,
             Component = null,
             Link = null,
-            IsSystem = true,
+            IsSystem = YesOrNotEnum.Y,
             Sort = 1,
             Status = CommonStatusEnum.Enable
         };
@@ -98,7 +98,7 @@ public class SysMenuSeedData : ISystemSeedData
             Router = null,
             Component = null,
             Link = null,
-            IsSystem = true,
+            IsSystem = YesOrNotEnum.Y,
             Sort = 1,
             Status = CommonStatusEnum.Enable
         };

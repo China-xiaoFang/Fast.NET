@@ -1,8 +1,8 @@
 ﻿using CSRedis;
-using Fast.Core.ServiceCollection.Cache.Internal;
+using Fast.Core.Cache.Internal;
 using Furion.DependencyInjection;
 
-namespace Fast.Core.ServiceCollection.Cache.Realize;
+namespace Fast.Core.Cache.Realize;
 
 /// <summary>
 /// Redis缓存
