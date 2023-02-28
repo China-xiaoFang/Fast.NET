@@ -16,8 +16,6 @@ namespace Fast.Admin.Service.Auth;
 public class TenAuthService : ITenAuthService, ITransient
 {
     private readonly ISqlSugarRepository<TenUserModel> _tenRepository;
-    private readonly ISqlSugarRepository<SysTenantModel> _sysRepository;
-    private readonly ISysCacheService _sysCacheService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IEventPublisher _eventPublisher;
 
@@ -25,34 +23,8 @@ public class TenAuthService : ITenAuthService, ITransient
         ISysCacheService sysCacheService, IHttpContextAccessor httpContextAccessor, IEventPublisher eventPublisher)
     {
         _tenRepository = tenRepository;
-        _sysRepository = sysRepository;
-        _sysCacheService = sysCacheService;
         _httpContextAccessor = httpContextAccessor;
         _eventPublisher = eventPublisher;
-    }
-
-    /// <summary>
-    /// Web站点初始化
-    /// </summary>
-    /// <returns></returns>
-    public async Task<WebSiteInitOutput> WebSiteInit()
-    {
-        // webUel
-        var webUrl = GlobalContext.OriginUrl;
-
-        // 根据主机Host判断，是否存在该租户
-        var tenantList = await _sysCacheService.GetAllTenantInfo(wh => wh.WebUrl.Contains(webUrl));
-
-        if (tenantList is not {Count: > 0})
-            throw Oops.Bah(ErrorCode.TenantNotExistError);
-
-        // 获取第一个
-        var tenantInfo = tenantList[0];
-
-        var result = tenantInfo.Adapt<WebSiteInitOutput>();
-        result.TenantId = tenantInfo.Id.ToString().ToBase64();
-
-        return result;
     }
 
     /// <summary>

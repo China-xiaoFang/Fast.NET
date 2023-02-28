@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using Fast.Admin.Service.Tenant.Dto;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
@@ -24,6 +25,65 @@ public class SysTenantService : ISysTenantService, ITransient
         _repository = repository;
         _cache = cache;
         _tenant = tenant;
+    }
+
+    /// <summary>
+    /// 获取所有租户信息
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    [NonAction]
+    public async Task<List<SysTenantModel>> GetAllTenantInfo(Expression<Func<SysTenantModel, bool>> predicate = null)
+    {
+        // 先从缓存获取
+        var tenantList = await _cache.GetAsync<List<SysTenantModel>>(CacheConst.TenantInfo);
+
+        if (tenantList != null && tenantList.Any())
+            return predicate == null ? tenantList : tenantList.Where(predicate.Compile()).ToList();
+
+        // 获取租户基本信息
+        tenantList = await _tenant.Queryable<SysTenantModel>().Includes(app => app.AppList).Includes(db => db.DataBaseList)
+            .ToListAsync();
+        // 获取租户两个管理员信息
+        // 注：这里如果租户过多的话可能存在卡顿
+        foreach (var tenant in tenantList)
+        {
+            // 加载租户数据库Db
+            var _db = _tenant.LoadSqlSugar<TenUserModel>(tenant.Id);
+            // 查询两个管理员信息
+            var userList = await _db.Queryable<TenUserModel>().Where(wh =>
+                (wh.AdminType == AdminTypeEnum.SystemAdmin || wh.AdminType == AdminTypeEnum.TenantAdmin)).ToListAsync();
+            tenant.SystemAdminUser = userList.First(f => f.AdminType == AdminTypeEnum.SystemAdmin);
+            tenant.TenantAdminUser = userList.First(f => f.AdminType == AdminTypeEnum.TenantAdmin);
+        }
+
+        await _cache.SetAsync(CacheConst.TenantInfo, tenantList);
+
+        return predicate == null ? tenantList : tenantList.Where(predicate.Compile()).ToList();
+    }
+
+    /// <summary>
+    /// Web站点初始化
+    /// </summary>
+    /// <returns></returns>
+    public async Task<WebSiteInitOutput> WebSiteInit()
+    {
+        // webUel
+        var webUrl = GlobalContext.OriginUrl;
+
+        // 根据主机Host判断，是否存在该租户
+        var tenantList = await GetAllTenantInfo(wh => wh.WebUrl.Contains(webUrl));
+
+        if (tenantList is not {Count: > 0})
+            throw Oops.Bah(ErrorCode.TenantNotExistError);
+
+        // 获取第一个
+        var tenantInfo = tenantList[0];
+
+        var result = tenantInfo.Adapt<WebSiteInitOutput>();
+        result.TenantId = tenantInfo.Id.ToString().ToBase64();
+
+        return result;
     }
 
     /// <summary>

@@ -43,11 +43,4 @@ public interface ISysCacheService
     /// <param name="input"></param>
     /// <returns></returns>
     Task DeleteCacheValue(DeleteCacheValueInput input);
-
-    /// <summary>
-    /// 获取所有租户信息
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    Task<List<SysTenantModel>> GetAllTenantInfo(Expression<Func<SysTenantModel, bool>> predicate = null);
 }

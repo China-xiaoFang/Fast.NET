@@ -1,4 +1,5 @@
-﻿using Fast.Admin.Service.Tenant.Dto;
+﻿using System.Linq.Expressions;
+using Fast.Admin.Service.Tenant.Dto;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,19 @@ namespace Fast.Admin.Service.Tenant;
 /// </summary>
 public interface ISysTenantService
 {
+    /// <summary>
+    /// 获取所有租户信息
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    Task<List<SysTenantModel>> GetAllTenantInfo(Expression<Func<SysTenantModel, bool>> predicate = null);
+
+    /// <summary>
+    /// Web站点初始化
+    /// </summary>
+    /// <returns></returns>
+    Task<WebSiteInitOutput> WebSiteInit();
+
     /// <summary>
     /// 分页查询租户信息
     /// </summary>

@@ -44,6 +44,14 @@ public static class Extension
             }
         }
 
+        // 一般为Model验证失败返回的结果
+        if (message is Dictionary<string, string[]> messageObj)
+        {
+            var newMessage = messageObj.Aggregate("",
+                (current1, dicItem) => dicItem.Value.Aggregate(current1, (current, divVal) => current + $"{divVal}\r\n"));
+            message = newMessage.Remove(newMessage.LastIndexOf("\r\n", StringComparison.Ordinal));
+        }
+
         return new XnRestfulResult<object>
         {
             Code = code,

@@ -46,11 +46,6 @@ public class ServiceCollectionOptions
     public bool DemoEnvironmentRequest { get; set; } = true;
 
     /// <summary>
-    /// 数据验证
-    /// </summary>
-    public bool DataValidation { get; set; } = true;
-
-    /// <summary>
     /// JSON序列化
     /// </summary>
     public bool JsonOptions { get; set; } = true;

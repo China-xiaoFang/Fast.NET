@@ -4,6 +4,7 @@ using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.Const;
 using Fast.Core.Internal.Restful.Internal;
 using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Admin.Application.Tenant;
@@ -19,6 +20,16 @@ public class SysTenantApplication : IDynamicApiController
     public SysTenantApplication(ISysTenantService sysTenantService)
     {
         _sysTenantService = sysTenantService;
+    }
+
+    /// <summary>
+    /// Web站点初始化
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("/webSiteInit", "Web站点初始化", HttpRequestActionEnum.Query), AllowAnonymous, DisableOpLog]
+    public async Task<WebSiteInitOutput> WebSiteInit()
+    {
+        return await _sysTenantService.WebSiteInit();
     }
 
     /// <summary>

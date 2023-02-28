@@ -60,12 +60,6 @@ public static class ServiceCollection
             builder.Services.AddControllers();
         }
 
-        if (serviceCollectionOptions.DataValidation)
-        {
-            // Global data validation.
-            builder.Services.AddDataValidation();
-        }
-
         // Request the log interception middleware.
         builder.Services.AddMvcFilter<RequestActionFilter>();
 

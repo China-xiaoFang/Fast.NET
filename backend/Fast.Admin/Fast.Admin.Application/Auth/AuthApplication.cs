@@ -22,16 +22,6 @@ public class AuthApplication : IDynamicApiController
     }
 
     /// <summary>
-    /// Web站点初始化
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("/webSiteInit", "Web站点初始化", HttpRequestActionEnum.Query), AllowAnonymous, DisableOpLog]
-    public async Task<WebSiteInitOutput> WebSiteInit()
-    {
-        return await _tenAuthService.WebSiteInit();
-    }
-
-    /// <summary>
     /// Web登录
     /// </summary>
     /// <param name="input"></param>
