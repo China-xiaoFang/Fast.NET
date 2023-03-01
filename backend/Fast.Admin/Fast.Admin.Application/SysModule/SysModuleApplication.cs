@@ -20,14 +20,13 @@ public class SysModuleApplication
         _sysModuleService = sysModuleService;
     }
 
-
     /// <summary>
     /// 分页查询模块信息
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
     [HttpGet("page", "分页查询模块信息", HttpRequestActionEnum.Query)]
-    public async Task<PageResult<SysModuleOutput>> QuerySysModulePageList(QuerySysModuleInput input)
+    public async Task<PageResult<SysModuleOutput>> QuerySysModulePageList([FromQuery] QuerySysModuleInput input)
     {
         return await _sysModuleService.QuerySysModulePageList(input);
     }
@@ -48,7 +47,7 @@ public class SysModuleApplication
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("update", "更新系统模块", HttpRequestActionEnum.Update)]
+    [HttpPut("update", "更新系统模块", HttpRequestActionEnum.Update)]
     public async Task UpdateModule(UpdateModuleInput input)
     {
         await _sysModuleService.UpdateModule(input);
@@ -59,7 +58,7 @@ public class SysModuleApplication
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPost("updateModuleStatus", "更新系统模块状态", HttpRequestActionEnum.Update)]
+    [HttpPut("updateModuleStatus", "更新系统模块状态", HttpRequestActionEnum.Update)]
     public async Task UpdateModuleStatus(UpdateModuleStatusInput input)
     {
         await _sysModuleService.UpdateModuleStatus(input);

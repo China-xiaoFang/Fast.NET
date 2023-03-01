@@ -93,7 +93,7 @@ public class SysTenantService : ISysTenantService, ITransient
     /// <returns></returns>
     public async Task<PageResult<TenantOutput>> QueryTenantPageList(QueryTenantInput input)
     {
-        return await _repository.Where(wh => wh.TenantType != TenantTypeEnum.System)
+        return await _repository.AsQueryable().Where(wh => wh.TenantType != TenantTypeEnum.System)
             .WhereIF(!input.Name.IsEmpty(), wh => wh.ChName.Contains(input.Name))
             .WhereIF(!input.ShortName.IsEmpty(), wh => wh.ChShortName.Contains(input.ShortName))
             .WhereIF(!input.AdminName.IsEmpty(), wh => wh.AdminName.Contains(input.AdminName))
