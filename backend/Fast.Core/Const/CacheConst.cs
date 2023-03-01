@@ -30,15 +30,15 @@ public class CacheConst
     /// </summary>
     public const string TenConfigInfo = "Tenant:Config";
 
-    /// <summary>
-    /// 用户缓存
-    /// </summary>
-    public const string User = "User:";
+    ///// <summary>
+    ///// 用户缓存
+    ///// </summary>
+    //public const string User = "User:";
 
-    /// <summary>
-    /// 菜单缓存
-    /// </summary>
-    public const string Menu = "Menu:";
+    ///// <summary>
+    ///// 菜单缓存
+    ///// </summary>
+    //public const string Menu = "Menu:";
 
     /// <summary>
     /// 权限缓存

@@ -3,7 +3,10 @@ using Fast.Core.AdminFactory.ModelFactory.Sys;
 
 namespace Fast.Admin.Service.SysModule;
 
-public class SysModuleService
+/// <summary>
+/// 系统模块服务
+/// </summary>
+public class SysModuleService : ISysModuleService
 {
     private readonly ISqlSugarRepository<SysModuleModel> _repository;
 
@@ -13,7 +16,7 @@ public class SysModuleService
     }
 
     /// <summary>
-    /// 分页查询模块信息
+    /// 分页查询系统模块信息
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -27,7 +30,90 @@ public class SysModuleService
             .ToXnPagedListAsync(input.PageNo, input.PageSize);
     }
 
+    /// <summary>
+    /// 添加系统模块
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public async Task AddModule(AddModuleInput input)
     {
+        // 模块名称不能重复
+        if (await _repository.IsExistsAsync(wh => wh.Name == input.Name))
+        {
+            throw Oops.Bah("模块名称不能重复！");
+        }
+
+        // 转换Model
+        var model = input.Adapt<SysModuleModel>();
+
+        // 默认为启用的
+        model.Status = CommonStatusEnum.Enable;
+
+        // 添加数据库
+        await _repository.InsertAsync(model);
+    }
+
+    /// <summary>
+    /// 更新系统模块
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public async Task UpdateModule(UpdateModuleInput input)
+    {
+        // 模块名称不能重复
+        if (await _repository.IsExistsAsync(wh => wh.Id != input.Id && wh.Name == input.Name))
+        {
+            throw Oops.Bah("模块名称不能重复！");
+        }
+
+        // 查询源数据
+        var model = await _repository.FirstOrDefaultAsync(f => f.Id == input.Id);
+
+        if (model == null)
+        {
+            throw Oops.Bah("数据不存在！");
+        }
+
+        // 系统模块不能修改查看类型和名称
+        if (model.IsSystem == YesOrNotEnum.Y)
+        {
+            if (model.Name != input.Name)
+            {
+                throw Oops.Bah("系统级别数据不允许修改模块名称！");
+            }
+
+            if (model.ViewType != input.ViewType)
+            {
+                throw Oops.Bah("系统级别数据不允许修改查看类型！");
+            }
+
+            if (model.IsSystem != input.IsSystem)
+            {
+                throw Oops.Bah("系统级别数据不允许修改系统级别！");
+            }
+        }
+
+        // 覆盖源数据
+        model = input.Adapt(model);
+
+        // 更新数据
+        await _repository.Context.Updateable(model).ExecuteCommandWithOptLockAsync(true);
+    }
+
+    /// <summary>
+    /// 更新系统模块状态
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public async Task UpdateModuleStatus(UpdateModuleStatusInput input)
+    {
+        // 查询源数据
+        var model = await _repository.FirstOrDefaultAsync(f => f.Id == input.Id);
+
+        // 更新状态
+        model.Status = input.Status;
+
+        // 更新数据
+        await _repository.Context.Updateable(model).ExecuteCommandWithOptLockAsync(true);
     }
 }

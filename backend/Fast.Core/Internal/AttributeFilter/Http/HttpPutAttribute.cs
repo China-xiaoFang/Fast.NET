@@ -40,7 +40,7 @@ public class HttpPutAttribute : HttpMethodAttribute
             throw new ArgumentNullException(nameof(template));
         }
 
-        Action = HttpRequestActionEnum.Edit;
+        Action = HttpRequestActionEnum.Update;
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class HttpPutAttribute : HttpMethodAttribute
         }
 
         OperationName = operationName ?? throw new ArgumentNullException(nameof(operationName));
-        Action = HttpRequestActionEnum.Edit;
+        Action = HttpRequestActionEnum.Update;
     }
 
     /// <summary>

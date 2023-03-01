@@ -56,7 +56,7 @@ public class CacheApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPut("editCacheValue", "设置缓存值", HttpRequestActionEnum.Edit)]
+    [HttpPut("editCacheValue", "设置缓存值", HttpRequestActionEnum.Update)]
     public async Task EditCacheValue(EditCacheValueInput input)
     {
         await _sysCacheService.EditCacheValue(input);
