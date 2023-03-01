@@ -126,6 +126,8 @@ static class SugarEntityFilter
                     SetEntityValue(SugarFieldConst.CreatedUserName, new List<dynamic> {null, ""}, SugarContext.UserName,
                         ref entityInfo);
 
+                    // 更新版本控制字段
+                    SetEntityValue(SugarFieldConst.UpdatedVersion, new List<dynamic> {null, 0}, 1, ref entityInfo);
                     break;
                 // 更新操作
                 case DataFilterType.UpdateByObject:

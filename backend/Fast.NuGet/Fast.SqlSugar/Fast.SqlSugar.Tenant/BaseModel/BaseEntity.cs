@@ -11,38 +11,45 @@ public class BaseEntity : PrimaryKeyEntity, IBaseEntity
     /// <summary>
     /// 创建时间
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建时间", ColumnDataType = "datetimeoffset", IsNullable = true, CreateTableFieldSort = 992)]
+    [SugarColumn(ColumnDescription = "创建时间", ColumnDataType = "datetimeoffset", IsNullable = true, CreateTableFieldSort = 991)]
     public virtual DateTime? CreatedTime { get; set; }
-
-    /// <summary>
-    /// 更新时间
-    /// </summary>
-    [SugarColumn(ColumnDescription = "更新时间", ColumnDataType = "datetimeoffset", IsNullable = true, CreateTableFieldSort = 993)]
-    public virtual DateTime? UpdatedTime { get; set; }
 
     /// <summary>
     /// 创建者Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建者Id", IsNullable = true, CreateTableFieldSort = 994)]
+    [SugarColumn(ColumnDescription = "创建者Id", IsNullable = true, CreateTableFieldSort = 992)]
     public virtual long? CreatedUserId { get; set; }
 
     /// <summary>
     /// 创建者名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建者名称", ColumnDataType = "Nvarchar(20)", IsNullable = true, CreateTableFieldSort = 995)]
+    [SugarColumn(ColumnDescription = "创建者名称", ColumnDataType = "Nvarchar(20)", IsNullable = true, CreateTableFieldSort = 993)]
     public virtual string CreatedUserName { get; set; }
+
+    /// <summary>
+    /// 更新时间
+    /// </summary>
+    [SugarColumn(ColumnDescription = "更新时间", ColumnDataType = "datetimeoffset", IsNullable = true, CreateTableFieldSort = 994)]
+    public virtual DateTime? UpdatedTime { get; set; }
 
     /// <summary>
     /// 更新者Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "修改者Id", IsNullable = true, CreateTableFieldSort = 996)]
+    [SugarColumn(ColumnDescription = "修改者Id", IsNullable = true, CreateTableFieldSort = 995)]
     public virtual long? UpdatedUserId { get; set; }
 
     /// <summary>
     /// 更新者名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "修改者名称", ColumnDataType = "Nvarchar(20)", IsNullable = true, CreateTableFieldSort = 997)]
+    [SugarColumn(ColumnDescription = "修改者名称", ColumnDataType = "Nvarchar(20)", IsNullable = true, CreateTableFieldSort = 996)]
     public virtual string UpdatedUserName { get; set; }
+
+    /// <summary>
+    /// 更新版本控制字段
+    /// </summary>
+    [SugarColumn(ColumnDescription = "更新时间", ColumnDataType = "datetimeoffset", IsEnableUpdateVersionValidation = true,
+        IsNullable = false, CreateTableFieldSort = 998)]
+    public virtual long UpdatedVersion { get; set; }
 
     /// <summary>
     /// 软删除

@@ -11,6 +11,6 @@ public class BaseTenant : IBaseTenant
     /// <summary>
     /// 租户Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户Id", CreateTableFieldSort = 998)]
+    [SugarColumn(ColumnDescription = "租户Id", IsNullable = true, CreateTableFieldSort = 997)]
     public virtual long? TenantId { get; set; }
 }
