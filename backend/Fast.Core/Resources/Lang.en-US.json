@@ -18,5 +18,6 @@
   "租户系统异常！": "The tenant system is abnormal!",
   "系统内部错误，请联系管理员处理！": "System internal error, please contact the administrator!",
   "系统配置错误，请检查系统配置！": "System configuration error, please check the system configuration!",
-  "请求成功": "Request succeeded"
+  "请求成功": "Request succeeded",
+  "当前编辑的数据不是最新版本！": "The data currently edited is not the latest version!"
 }

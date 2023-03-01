@@ -1,9 +1,11 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
+using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.Const;
 using Fast.Core.Operation.Config;
 using Fast.Core.Operation.Config.Dto;
 using Fast.Core.Operation.Dict;
 using Fast.Core.Operation.Dict.Dto;
+using Fast.SqlSugar.Tenant.Repository;
 using Furion.DynamicApiController;
 using Furion.FriendlyException;
 using Microsoft.AspNetCore.Authorization;
@@ -72,5 +74,21 @@ public class TestApplication : IDynamicApiController
     public void TestBaiduTranslator()
     {
         throw Oops.Bah("中文提示：百度翻译存在异常，1234567，test apple name string int long hello changsha");
+    }
+
+    /// <summary>
+    /// 测试更新提交覆盖报错功能
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("/test/testUpdateVersion", "测试更新提交覆盖报错功能")]
+    public async Task TestUpdateVersion()
+    {
+        var _repository = App.GetService<ISqlSugarRepository<SysConfigModel>>();
+
+        var model = await _repository.FirstOrDefaultAsync(f => f.IsDeleted == false);
+        var model2 = await _repository.FirstOrDefaultAsync(f => f.IsDeleted == false);
+
+        await _repository.Context.Updateable(model).ExecuteCommandWithOptLockAsync(true);
+        await _repository.Context.Updateable(model2).ExecuteCommandWithOptLockAsync(true);
     }
 }

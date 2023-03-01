@@ -47,8 +47,8 @@ public class BaseEntity : PrimaryKeyEntity, IBaseEntity
     /// <summary>
     /// 更新版本控制字段
     /// </summary>
-    [SugarColumn(ColumnDescription = "更新时间", ColumnDataType = "datetimeoffset", IsEnableUpdateVersionValidation = true,
-        IsNullable = false, CreateTableFieldSort = 998)]
+    [SugarColumn(ColumnDescription = "更新版本控制字段", IsEnableUpdateVersionValidation = true, IsNullable = false,
+        CreateTableFieldSort = 998)]
     public virtual long UpdatedVersion { get; set; }
 
     /// <summary>
