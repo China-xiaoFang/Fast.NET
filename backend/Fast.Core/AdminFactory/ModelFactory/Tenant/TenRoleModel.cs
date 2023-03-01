@@ -33,7 +33,7 @@ public class TenRoleModel : BaseEntity
     /// <summary>
     /// 数据范围类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "数据范围类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "数据范围类型", ColumnDataType = "tinyint", IsNullable = false)]
     public DataScopeTypeEnum DataScopeType { get; set; }
 
     /// <summary>
@@ -45,12 +45,12 @@ public class TenRoleModel : BaseEntity
     /// <summary>
     /// 状态
     /// </summary>
-    [SugarColumn(ColumnDescription = "状态", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "状态", ColumnDataType = "tinyint", IsNullable = false)]
     public CommonStatusEnum Status { get; set; } = CommonStatusEnum.Enable;
 
     /// <summary>
     /// 角色类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "角色类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "角色类型", ColumnDataType = "tinyint", IsNullable = false)]
     public RoleTypeEnum RoleType { get; set; }
 }

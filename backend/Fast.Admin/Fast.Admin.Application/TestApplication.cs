@@ -88,7 +88,11 @@ public class TestApplication : IDynamicApiController
         var model = await _repository.FirstOrDefaultAsync(f => f.IsDeleted == false);
         var model2 = await _repository.FirstOrDefaultAsync(f => f.IsDeleted == false);
 
-        await _repository.Context.Updateable(model).ExecuteCommandWithOptLockAsync(true);
-        await _repository.Context.Updateable(model2).ExecuteCommandWithOptLockAsync(true);
+        await _repository.Context.Updateable(model).EnableDiffLogEvent("测试差异日志").ExecuteCommandWithOptLockAsync(true);
+        await _repository.Context.Updateable(model2).EnableDiffLogEvent("测试差异日志").ExecuteCommandWithOptLockAsync();
+        await _repository.Context.Deleteable<SysConfigModel>().Where(wh => wh.IsDeleted == false).EnableDiffLogEvent("测试差异日志")
+            .ExecuteCommandAsync();
+        await _repository.Context.Updateable(model2).Where(wh => wh.IsDeleted == true).EnableDiffLogEvent("测试差异日志")
+            .ExecuteCommandWithOptLockAsync();
     }
 }

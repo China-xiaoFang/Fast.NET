@@ -32,13 +32,13 @@ public class SysModuleModel : BaseEntity
     /// <summary>
     /// 查看类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "查看类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "查看类型", ColumnDataType = "tinyint", IsNullable = false)]
     public ModuleViewTypeEnum ViewType { get; set; }
 
     /// <summary>
     /// 是否为系统模块
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否为系统模块", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "是否为系统模块", ColumnDataType = "tinyint", IsNullable = false)]
     public YesOrNotEnum IsSystem { get; set; }
 
     /// <summary>
@@ -50,6 +50,6 @@ public class SysModuleModel : BaseEntity
     /// <summary>
     /// 状态
     /// </summary>
-    [SugarColumn(ColumnDescription = "状态", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "状态", ColumnDataType = "tinyint", IsNullable = false)]
     public CommonStatusEnum Status { get; set; }
 }

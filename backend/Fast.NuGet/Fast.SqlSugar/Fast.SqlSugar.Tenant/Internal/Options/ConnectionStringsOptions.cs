@@ -43,9 +43,19 @@ public class ConnectionStringsOptions
     public DbType DefaultDbType { get; set; }
 
     /// <summary>
+    /// 超时时间，单位秒
+    /// </summary>
+    public int CommandTimeOut { get; set; }
+
+    /// <summary>
     /// SqlSugar Sql执行最大秒数，如果超过记录警告日志
     /// </summary>
     public double SugarSqlExecMaxSeconds { get; set; }
+
+    /// <summary>
+    /// 差异日志
+    /// </summary>
+    public bool DiffLog { get; set; }
 
     /// <summary>
     /// 初始化数据库

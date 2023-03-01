@@ -28,13 +28,13 @@ public class SysLogSchedulerJobModel : IPrimaryKeyEntity<Guid>, IDbEntity
     /// <summary>
     /// 是否正在执行
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否正在执行", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "是否正在执行", ColumnDataType = "tinyint", IsNullable = false)]
     public YesOrNotEnum Running { get; set; }
 
     /// <summary>
     /// 是否执行成功
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否执行成功", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "是否执行成功", ColumnDataType = "tinyint", IsNullable = true)]
     public YesOrNotEnum? Success { get; set; }
 
     /// <summary>

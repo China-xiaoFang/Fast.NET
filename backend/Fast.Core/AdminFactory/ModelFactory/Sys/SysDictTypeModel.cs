@@ -33,7 +33,7 @@ public class SysDictTypeModel : BaseEntity
     /// <summary>
     /// 级别
     /// </summary>
-    [SugarColumn(ColumnDescription = "级别", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "级别", ColumnDataType = "tinyint", IsNullable = false)]
     public SysLevelEnum Level { get; set; }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class SysDictTypeModel : BaseEntity
     /// <summary>
     /// 状态
     /// </summary>
-    [SugarColumn(ColumnDescription = "状态", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "状态", ColumnDataType = "tinyint", IsNullable = false)]
     public CommonStatusEnum Status { get; set; } = CommonStatusEnum.Enable;
 
     /// <summary>

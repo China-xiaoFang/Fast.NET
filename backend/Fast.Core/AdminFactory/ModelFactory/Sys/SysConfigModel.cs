@@ -39,6 +39,6 @@ public class SysConfigModel : BaseEntity
     /// <summary>
     /// 配置类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "配置类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "配置类型", ColumnDataType = "tinyint", IsNullable = false)]
     public SysConfigTypeEnum ConfigType { get; set; }
 }

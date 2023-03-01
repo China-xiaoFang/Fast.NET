@@ -65,7 +65,7 @@ static class SqlSugarClientHelper
         var _db = _tenant.GetConnection(connectionId);
 
         // 过滤器
-        SugarEntityFilter.LoadSugarFilter(_db);
+        SugarEntityFilter.LoadSugarFilter(_db, dbInfo.CommandTimeOut, dbInfo.SugarSqlExecMaxSeconds, dbInfo.DiffLog);
 
         return _db;
     }

@@ -65,7 +65,7 @@ public class SysTenantModel : BaseEntity
     /// <summary>
     /// 租户类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "租户类型", ColumnDataType = "tinyint", IsNullable = false)]
     public TenantTypeEnum TenantType { get; set; }
 
     /// <summary>

@@ -133,7 +133,11 @@ public class DataBaseJobWorker : IJob
             DbUser = SugarContext.ConnectionStringsOptions.DefaultDbUser,
             DbPwd = SugarContext.ConnectionStringsOptions.DefaultDbPwd,
             SugarSysDbType = SugarDbTypeEnum.Tenant.GetHashCode(),
+            SugarDbTypeName = SugarDbTypeEnum.Tenant.GetDescription(),
             DbType = SugarContext.ConnectionStringsOptions.DefaultDbType,
+            CommandTimeOut = SugarContext.ConnectionStringsOptions.CommandTimeOut,
+            SugarSqlExecMaxSeconds = SugarContext.ConnectionStringsOptions.SugarSqlExecMaxSeconds,
+            DiffLog = SugarContext.ConnectionStringsOptions.DiffLog,
             TenantId = superAdminTenantInfo.Id
         }).ExecuteCommandAsync();
 

@@ -60,6 +60,24 @@ public class SysTenantDataBaseModel : BaseTEntity
     public DbType DbType { get; set; }
 
     /// <summary>
+    /// 超时时间，单位秒
+    /// </summary>
+    [SugarColumn(ColumnDescription = "超时时间，单位秒", IsNullable = false)]
+    public int CommandTimeOut { get; set; }
+
+    /// <summary>
+    /// SqlSugar Sql执行最大秒数，如果超过记录警告日志
+    /// </summary>
+    [SugarColumn(ColumnDescription = "SqlSugar Sql执行最大秒数，如果超过记录警告日志", IsNullable = false)]
+    public double SugarSqlExecMaxSeconds { get; set; }
+
+    /// <summary>
+    /// 差异日志
+    /// </summary>
+    [SugarColumn(ColumnDescription = "差异日志", IsNullable = false)]
+    public bool DiffLog { get; set; }
+
+    /// <summary>
     /// SqlSugarClient 连接Id
     /// </summary>
     [SugarColumn(IsIgnore = true)]

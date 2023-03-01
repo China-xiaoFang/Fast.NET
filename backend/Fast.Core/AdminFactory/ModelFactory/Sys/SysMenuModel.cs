@@ -44,7 +44,7 @@ public class SysMenuModel : BaseEntity
     /// <summary>
     /// 类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "类型", ColumnDataType = "tinyint", IsNullable = false)]
     public MenuTypeEnum Type { get; set; }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class SysMenuModel : BaseEntity
     /// <summary>
     /// 是否为系统菜单
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否为系统菜单", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "是否为系统菜单", ColumnDataType = "tinyint", IsNullable = false)]
     public YesOrNotEnum IsSystem { get; set; }
 
     /// <summary>
@@ -86,6 +86,6 @@ public class SysMenuModel : BaseEntity
     /// <summary>
     /// 状态
     /// </summary>
-    [SugarColumn(ColumnDescription = "状态", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "状态", ColumnDataType = "tinyint", IsNullable = false)]
     public CommonStatusEnum Status { get; set; }
 }

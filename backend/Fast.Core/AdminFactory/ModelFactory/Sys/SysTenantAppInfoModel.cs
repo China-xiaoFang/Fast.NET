@@ -14,7 +14,7 @@ public class SysTenantAppInfoModel : BaseTEntity
     /// <summary>
     /// App类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "App类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "App类型", ColumnDataType = "tinyint", IsNullable = false)]
     public AppTypeEnum AppType { get; set; }
 
     /// <summary>

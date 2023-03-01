@@ -56,17 +56,39 @@ public class SugarContext
     }
 
     /// <summary>
+    /// 差异日志
+    /// </summary>
+    public static Action<string, List<DiffLogTableInfo>, List<DiffLogTableInfo>, string, DiffType, DateTime> ActionDiffLog
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// 设置委托差异日志
+    /// </summary>
+    /// <param name="actionDiffLog"></param>
+    public static void SetActionDiffLog(
+        Action<string, List<DiffLogTableInfo>, List<DiffLogTableInfo>, string, DiffType, DateTime> actionDiffLog)
+    {
+        ActionDiffLog = actionDiffLog;
+    }
+
+    /// <summary>
     /// 设置Sugar日志委托
     /// </summary>
     /// <param name="actionLogInformation"></param>
     /// <param name="actionLogWarning"></param>
     /// <param name="actionLogError"></param>
+    /// <param name="actionDiffLog"></param>
     public static void SetSugarLogFunc(Action<string> actionLogInformation, Action<string> actionLogWarning,
-        Action<string> actionLogError)
+        Action<string> actionLogError,
+        Action<string, List<DiffLogTableInfo>, List<DiffLogTableInfo>, string, DiffType, DateTime> actionDiffLog)
     {
         ActionLogInformation = actionLogInformation;
         ActionLogWarning = actionLogWarning;
         ActionLogError = actionLogError;
+        ActionDiffLog = actionDiffLog;
     }
 
     /// <summary>
@@ -107,6 +129,19 @@ public class SugarContext
             else
             {
                 ActionLogError?.Invoke(message);
+            }
+        }
+
+        public static void DiffLog(string diffDescription, List<DiffLogTableInfo> afterData, List<DiffLogTableInfo> beforeData,
+            string executeSql, DiffType diffType, DateTime diffTime)
+        {
+            if (ActionDiffLog == null)
+            {
+                Console.WriteLine("Fast.SqlSugar.DiffLog：Not Setting Diff Log Method");
+            }
+            else
+            {
+                ActionDiffLog?.Invoke(diffDescription, afterData, beforeData, executeSql, diffType, diffTime);
             }
         }
     }

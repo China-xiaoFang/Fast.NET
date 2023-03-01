@@ -27,20 +27,21 @@ public class LogExceptionHandler : IGlobalExceptionHandler, ISingleton
 
         if (!isValidationException)
         {
-            await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:ExLog",
-                new SysLogExModel
-                {
-                    Account = GlobalContext.UserAccount,
-                    Name = GlobalContext.UserName,
-                    ClassName = context.Exception.TargetSite?.DeclaringType?.FullName,
-                    MethodName = context.Exception.TargetSite?.Name,
-                    ExceptionMsg = context.Exception.Message,
-                    ExceptionSource = context.Exception.Source,
-                    ExceptionStackTrace = context.Exception.StackTrace,
-                    ParamsObj = context.Exception.TargetSite?.GetParameters().ToString(),
-                    ExceptionTime = DateTime.Now,
-                    TenantId = GlobalContext.TenantId
-                }));
+            var sysLogExModel = new SysLogExModel
+            {
+                Account = GlobalContext.UserAccount,
+                Name = GlobalContext.UserName,
+                ClassName = context.Exception.TargetSite?.DeclaringType?.FullName,
+                MethodName = context.Exception.TargetSite?.Name,
+                ExceptionMsg = context.Exception.Message,
+                ExceptionSource = context.Exception.Source,
+                ExceptionStackTrace = context.Exception.StackTrace,
+                ParamsObj = context.Exception.TargetSite?.GetParameters().ToString(),
+                ExceptionTime = DateTime.Now,
+                TenantId = GlobalContext.TenantId
+            };
+            sysLogExModel.RecordCreate();
+            await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:ExLog", sysLogExModel));
 
             // 写日志文件
             Log.Error(context.Exception.ToString());

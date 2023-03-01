@@ -27,7 +27,7 @@ public class SysLogVisModel : BaseLogEntity
     /// <summary>
     /// 是否执行成功
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否执行成功", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "是否执行成功", ColumnDataType = "tinyint", IsNullable = true)]
     public YesOrNotEnum Success { get; set; }
 
     /// <summary>
@@ -45,7 +45,7 @@ public class SysLogVisModel : BaseLogEntity
     /// <summary>
     /// 访问类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "访问类型", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "访问类型", ColumnDataType = "tinyint", IsNullable = true)]
     public LoginTypeEnum VisType { get; set; }
 
     /// <summary>

@@ -20,14 +20,17 @@ static class SugarEntityFilter
     /// 加载过滤器
     /// </summary>
     /// <param name="_db"></param>
-    public static void LoadSugarFilter(ISqlSugarClient _db)
+    /// <param name="commandTimeOut">超时时间</param>
+    /// <param name="sugarSqlExecMaxSeconds">SqlSugar Sql执行最大秒数，如果超过记录警告日志</param>
+    /// <param name="diffLog">差异日志</param>
+    public static void LoadSugarFilter(ISqlSugarClient _db, int commandTimeOut, double sugarSqlExecMaxSeconds, bool diffLog)
     {
-        // 执行超时时间 60秒
-        _db.Ado.CommandTimeOut = 60;
+        // 执行超时时间
+        _db.Ado.CommandTimeOut = commandTimeOut;
 
-        if (SugarContext.HostEnvironment.IsDevelopment())
+        _db.Aop.OnLogExecuted = (sql, pars) =>
         {
-            _db.Aop.OnLogExecuted = (sql, pars) =>
+            if (SugarContext.HostEnvironment.IsDevelopment())
             {
                 if (sql.StartsWith("SELECT"))
                 {
@@ -51,30 +54,10 @@ static class SugarEntityFilter
                 }
 
                 Console.WriteLine($"\r\n\r\n{ParameterFormat(sql, pars)}\r\nTime：{_db.Ado.SqlExecutionTime}");
+            }
 
-                // 执行时间判断
-                if (_db.Ado.SqlExecutionTime.TotalSeconds > SugarContext.ConnectionStringsOptions.SugarSqlExecMaxSeconds)
-                {
-                    // 代码CS文件名称
-                    var fileName = _db.Ado.SqlStackTrace.FirstFileName;
-                    // 代码行数
-                    var fileLine = _db.Ado.SqlStackTrace.FirstLine;
-                    // 方法名称
-                    var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
-                    // 消息
-                    var message =
-                        $"Sql执行时间超过 {SugarContext.ConnectionStringsOptions.SugarSqlExecMaxSeconds} 秒，建议优化。\r\nFileName：{fileName}\r\nFileLine：{fileLine}\r\nFirstMethodName：{firstMethodName}\r\nSql：{ParameterFormat(sql, pars)}\r\nSqlExecutionTime：{_db.Ado.SqlExecutionTime}";
-
-                    // 控制台输出
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"\r\n\r\n{message}");
-
-                    // 写日志文件
-                    SugarContext.Log.Warning(message);
-                }
-            };
-
-            _db.Aop.OnError = exp =>
+            // 执行时间判断
+            if (_db.Ado.SqlExecutionTime.TotalSeconds > sugarSqlExecMaxSeconds)
             {
                 // 代码CS文件名称
                 var fileName = _db.Ado.SqlStackTrace.FirstFileName;
@@ -84,16 +67,48 @@ static class SugarEntityFilter
                 var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
                 // 消息
                 var message =
-                    $"Sql 执行异常\r\nFileName：{fileName}\r\nFileLine：{fileLine}\r\nFirstMethodName：{firstMethodName}\r\nSql：{ParameterFormat(exp.Sql, exp.Parametres)}";
+                    $"Sql执行时间超过 {sugarSqlExecMaxSeconds} 秒，建议优化。\r\nFileName：{fileName}\r\nFileLine：{fileLine}\r\nFirstMethodName：{firstMethodName}\r\nSql：{ParameterFormat(sql, pars)}\r\nSqlExecutionTime：{_db.Ado.SqlExecutionTime}";
 
                 // 控制台输出
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"\r\n\r\n{message}");
 
                 // 写日志文件
-                SugarContext.Log.Error(message);
-            };
-        }
+                SugarContext.Log.Warning(message);
+            }
+        };
+
+        _db.Aop.OnDiffLogEvent = diff =>
+        {
+            if (diffLog)
+            {
+                var executeSql = ParameterFormat(diff.Sql, diff.Parameters);
+
+                // 差异日志
+                SugarContext.Log.DiffLog(diff.BusinessData.ToString(), diff.AfterData, diff.BeforeData, executeSql, diff.DiffType,
+                    DateTime.Now);
+            }
+        };
+
+        _db.Aop.OnError = exp =>
+        {
+            // 代码CS文件名称
+            var fileName = _db.Ado.SqlStackTrace.FirstFileName;
+            // 代码行数
+            var fileLine = _db.Ado.SqlStackTrace.FirstLine;
+            // 方法名称
+            var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
+            // 消息
+            var message =
+                $"Sql 执行异常\r\nFileName：{fileName}\r\nFileLine：{fileLine}\r\nFirstMethodName：{firstMethodName}\r\nSql：{ParameterFormat(exp.Sql, exp.Parametres)}";
+
+            // 控制台输出
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\r\n\r\n{message}");
+
+            // 写日志文件
+            SugarContext.Log.Error(message);
+        };
 
 
         // Model基类处理

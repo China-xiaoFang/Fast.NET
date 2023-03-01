@@ -27,13 +27,13 @@ public class SysLogOpModel : BaseLogEntity
     /// <summary>
     /// 是否执行成功
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否执行成功", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "是否执行成功", ColumnDataType = "tinyint", IsNullable = true)]
     public YesOrNotEnum Success { get; set; }
 
     /// <summary>
     /// 操作行为
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作行为", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "操作行为", ColumnDataType = "tinyint", IsNullable = true)]
     public HttpRequestActionEnum? OperationAction { get; set; }
 
     /// <summary>
