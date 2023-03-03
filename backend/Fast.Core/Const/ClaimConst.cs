@@ -61,11 +61,6 @@ public class ClaimConst
     public const string UUID = "Fast-Net-UUID";
 
     /// <summary>
-    /// 环境编码
-    /// </summary>
-    public const string EnvironmentCode = "Environment-Code";
-
-    /// <summary>
     /// 环境名称
     /// </summary>
     public const string EnvironmentName = "Environment-Name";
@@ -74,4 +69,9 @@ public class ClaimConst
     /// 接口版本
     /// </summary>
     public const string ApiVersion = "Api-Version";
+
+    /// <summary>
+    /// 接口行为类型名称
+    /// </summary>
+    public const string ApiActionName = "Api-Action-Name";
 }
