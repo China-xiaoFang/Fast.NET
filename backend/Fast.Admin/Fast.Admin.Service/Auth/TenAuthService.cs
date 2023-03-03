@@ -1,7 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using Fast.Admin.Service.Auth.Dto;
-using Fast.Admin.Service.Cache;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.Internal.EventSubscriber;
 using Furion.DataEncryption;
@@ -19,8 +17,8 @@ public class TenAuthService : ITenAuthService, ITransient
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IEventPublisher _eventPublisher;
 
-    public TenAuthService(ISqlSugarRepository<TenUserModel> tenRepository, ISqlSugarRepository<SysTenantModel> sysRepository,
-        ISysCacheService sysCacheService, IHttpContextAccessor httpContextAccessor, IEventPublisher eventPublisher)
+    public TenAuthService(ISqlSugarRepository<TenUserModel> tenRepository, IHttpContextAccessor httpContextAccessor,
+        IEventPublisher eventPublisher)
     {
         _tenRepository = tenRepository;
         _httpContextAccessor = httpContextAccessor;
@@ -78,7 +76,7 @@ public class TenAuthService : ITenAuthService, ITransient
         // 验证账号状态
         if (userInfo.Status == CommonStatusEnum.Disable)
         {
-            Oops.Bah("账号已经被停用！");
+            throw Oops.Bah("账号已经被停用！");
         }
 
         // 判断密码是否正确
@@ -94,13 +92,8 @@ public class TenAuthService : ITenAuthService, ITransient
              * 连续错误30次，冻结账号
              * 登录成功后消除缓存
              */
-            Oops.Bah("密码不正确！");
+            throw Oops.Bah("密码不正确！");
         }
-
-        // 获取Token过期时间
-        var tokenExpiredTimeInfo =
-            await ConfigOperation.GetConfigAsync(ConfigConst.Tenant.TokenExpiredTime, SysConfigTypeEnum.Tenant);
-        var tokenExpiredTime = tokenExpiredTimeInfo.Value.ParseToInt();
 
         // 生成Token令牌
         var accessToken = JWTEncryption.Encrypt(
@@ -111,13 +104,18 @@ public class TenAuthService : ITenAuthService, ITransient
                 {ClaimConst.Name, userInfo.Name},
                 {ClaimConst.AdminType, userInfo.AdminType},
                 {ClaimConst.TenantId, GlobalContext.TenantId}
-            }, tokenExpiredTime);
+            }, (await ConfigOperation.Tenant.GetConfigAsync(ConfigConst.Tenant.TokenExpiredTime)).Value.ParseToInt());
 
-        // 设置Swagger自动登录
-        _httpContextAccessor.HttpContext.SigninToSwagger(accessToken);
+        // 获取刷新Token
+        // ReSharper disable once RedundantArgumentDefaultValue
+        var refreshToken = JWTEncryption.GenerateRefreshToken(accessToken,
+            (await ConfigOperation.Tenant.GetConfigAsync(ConfigConst.Tenant.RefreshTokenExpiredTime)).Value.ParseToInt());
 
         // 设置Token令牌
-        _httpContextAccessor.HttpContext!.Response.Headers[ClaimConst.RefreshToken] = accessToken;
+        _httpContextAccessor.HttpContext!.Response.Headers[ClaimConst.AccessToken] = accessToken;
+
+        // 设置刷新Token令牌
+        _httpContextAccessor.HttpContext!.Response.Headers[ClaimConst.RefreshToken] = refreshToken;
 
         // 更新最后登录时间和Ip
         userInfo.LastLoginIp = HttpNewUtil.Ip;

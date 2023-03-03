@@ -5,6 +5,9 @@ export default {
 	// Token
 	TOKEN: "TOKEN",
 
+	// 刷新Token
+	REFRESH_TOKEN: "REFRESH_TOKEN",
+
 	// 站点信息
 	WEB_SITE_INFO: "WEB_SITE_INFO",
 

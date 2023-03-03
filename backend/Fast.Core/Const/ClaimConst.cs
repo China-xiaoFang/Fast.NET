@@ -51,9 +51,24 @@ public class ClaimConst
     public const string Origin = "Fast-Net-Origin";
 
     /// <summary>
-    /// 刷新Token
+    /// Token
     /// </summary>
-    public const string RefreshToken = "Fast-Net-Access-Token";
+    public const string AuthAccessToken = "Fast-Net-Authorization";
+
+    /// <summary>
+    /// 刷新的Token
+    /// </summary>
+    public const string AuthRefreshToken = "Fast-Net-X-Authorization";
+
+    /// <summary>
+    /// 刷新的Token
+    /// </summary>
+    public const string AccessToken = "Fast-Net-Access-Token";
+
+    /// <summary>
+    /// 新的刷新Token
+    /// </summary>
+    public const string RefreshToken = "Fast-Net-X-Access-Token";
 
     /// <summary>
     /// UUID

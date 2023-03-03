@@ -91,5 +91,10 @@ public class ConfigConst
         /// Token过期时间
         /// </summary>
         public const string TokenExpiredTime = "Ten_TokenExpiredTime";
+
+        /// <summary>
+        /// 刷新Token过期时间
+        /// </summary>
+        public const string RefreshTokenExpiredTime = "Ten_RefreshTokenExpiredTime";
     }
 }

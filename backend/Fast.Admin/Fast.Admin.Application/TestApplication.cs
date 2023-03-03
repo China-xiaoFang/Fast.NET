@@ -1,5 +1,4 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.Const;
 using Fast.Core.Operation.Config;
 using Fast.Core.Operation.Config.Dto;
@@ -50,7 +49,7 @@ public class TestApplication : IDynamicApiController
     [HttpGet("/test/testConfig", "测试静态配置获取")]
     public async Task<ConfigInfo> TestConfig(string name = ConfigConst.Copyright.ICPCode)
     {
-        var result = await ConfigOperation.GetConfigAsync(name);
+        var result = await ConfigOperation.System.GetConfigAsync(name);
         return result;
     }
 
@@ -62,7 +61,7 @@ public class TestApplication : IDynamicApiController
     [HttpGet("/test/testTenConfig", "测试静态配置获取")]
     public async Task<ConfigInfo> TestTenConfig(string name = ConfigConst.Tenant.WebName)
     {
-        var result = await ConfigOperation.GetConfigAsync(name, SysConfigTypeEnum.Tenant);
+        var result = await ConfigOperation.Tenant.GetConfigAsync(name);
         return result;
     }
 

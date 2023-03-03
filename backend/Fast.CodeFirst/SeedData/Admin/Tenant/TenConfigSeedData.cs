@@ -65,6 +65,15 @@ public class TenConfigSeedData : ITenantSeedData
                 Value = "30",
                 Remark = "单位分钟"
             },
+            new()
+            {
+                Id = 1000000006,
+                Code = ConfigConst.Tenant.RefreshTokenExpiredTime,
+                ChName = "刷新Token过期时间（分钟）",
+                EnName = "Refresh Token Expired Time",
+                Value = "43200",
+                Remark = "单位分钟"
+            },
         };
         await _db.Insertable(data).ExecuteCommandAsync();
     }

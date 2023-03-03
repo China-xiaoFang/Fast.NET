@@ -60,6 +60,25 @@ service.interceptors.request.use(
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] =
 				sysConfig.TOKEN_PREFIX + token;
+			const tokenJson = decodeURIComponent(
+				escape(
+					window.atob(
+						token
+							.replace(/_/g, "/")
+							.replace(/-/g, "+")
+							.split(".")[1]
+					)
+				)
+			);
+			const jwtToken = JSON.parse(tokenJson);
+			const exp = new Date(jwtToken.exp * 1000);
+			if (new Date() >= exp) {
+				const refreshToken = tool.cache.get(cacheKey.REFRESH_TOKEN);
+				if (refreshToken) {
+					config.headers[sysConfig.REFRESH_TOKEN_NAME] =
+						sysConfig.TOKEN_PREFIX + refreshToken;
+				}
+			}
 		}
 		// Request Data AES加密
 		if (process.env.REQUEST_ENCRYPT == "true") {
@@ -130,6 +149,19 @@ const error = () => {
 // HTTP response 拦截器
 service.interceptors.response.use(
 	(response) => {
+		// 获取Token
+		let token = response.headers["fast-net-access-token"];
+		let refreshToken = response.headers["fast-net-x-access-token"];
+		// 判断是否为无效Token
+		if (token === "invalid_token") {
+			// 删除Token
+			tool.cache.remove(cacheKey.TOKEN);
+			tool.cache.remove(cacheKey.REFRESH_TOKEN);
+		} else if (token && refreshToken && refreshToken !== "invalid_token") {
+			// 缓存Token
+			tool.cache.set(cacheKey.TOKEN, token);
+			tool.cache.set(cacheKey.REFRESH_TOKEN, refreshToken);
+		}
 		// 配置了blob，不处理直接返回文件流
 		if (response.config.responseType === "blob") {
 			if (response.status === 200) {
