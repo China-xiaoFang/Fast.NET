@@ -34,7 +34,6 @@ public class TenConfigSeedData : ITenantSeedData
                 Code = ConfigConst.Tenant.WebLogo,
                 ChName = "系统Logo",
                 EnName = "Web Logo",
-                //Value = "https://gitee.com/Net-18K/fast.net/raw/master/frontend/public/logo.png",
                 Value = "/logo.png",
                 Remark = ""
             },
