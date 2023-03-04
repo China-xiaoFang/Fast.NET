@@ -8,7 +8,8 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 /// <summary>
 /// 系统操作日志表Model类
 /// </summary>
-[SugarTable("Sys_Log_Op", "系统操作日志表")]
+[SugarTable("Sys_Log_Op_{year}{month}{day}", "系统操作日志表")]
+[SplitTable(SplitType.Month)]
 [SugarDbType(SugarDbTypeEnum.Tenant)]
 public class SysLogOpModel : BaseLogEntity
 {
@@ -93,6 +94,7 @@ public class SysLogOpModel : BaseLogEntity
     /// <summary>
     /// 操作时间
     /// </summary>
+    [SplitField]
     [SugarColumn(ColumnDescription = "操作时间", ColumnDataType = "datetimeoffset", IsNullable = false)]
     public DateTime OpTime { get; set; }
 }

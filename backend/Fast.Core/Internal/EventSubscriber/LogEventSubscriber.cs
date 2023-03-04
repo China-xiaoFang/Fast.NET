@@ -33,7 +33,7 @@ public class LogEventSubscriber : IEventSubscriber
         {
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogOpModel>(source.TenantId);
             var log = (SysLogOpModel) context.Source.Payload;
-            await _db.Insertable(log).ExecuteCommandAsync();
+            await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
         }
     }
 
@@ -45,7 +45,7 @@ public class LogEventSubscriber : IEventSubscriber
         {
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogVisModel>(source.TenantId);
             var log = (SysLogVisModel) context.Source.Payload;
-            await _db.Insertable(log).ExecuteCommandAsync();
+            await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
         }
     }
 
@@ -57,7 +57,7 @@ public class LogEventSubscriber : IEventSubscriber
         {
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogDiffModel>(source.TenantId);
             var log = (SysLogDiffModel) context.Source.Payload;
-            await _db.Insertable(log).ExecuteCommandAsync();
+            await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
         }
     }
 

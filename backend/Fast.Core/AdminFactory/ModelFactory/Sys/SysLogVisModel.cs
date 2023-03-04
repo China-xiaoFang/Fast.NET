@@ -8,7 +8,8 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 /// <summary>
 /// 系统访问日志表Model类
 /// </summary>
-[SugarTable("Sys_Log_Vis", "系统访问日志表")]
+[SugarTable("Sys_Log_Vis_{year}{month}{day}", "系统访问日志表")]
+[SplitTable(SplitType.Month)]
 [SugarDbType(SugarDbTypeEnum.Tenant)]
 public class SysLogVisModel : BaseLogEntity
 {
@@ -51,6 +52,7 @@ public class SysLogVisModel : BaseLogEntity
     /// <summary>
     /// 访问时间
     /// </summary>
+    [SplitField]
     [SugarColumn(ColumnDescription = "访问时间", ColumnDataType = "datetimeoffset", IsNullable = false)]
     public DateTime VisTime { get; set; }
 }

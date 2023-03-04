@@ -8,7 +8,8 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 /// <summary>
 /// 系统差异日志表Model类
 /// </summary>
-[SugarTable("Sys_Log_Diff", "系统差异日志表")]
+[SugarTable("Sys_Log_Diff_{year}{month}{day}", "系统差异日志表")]
+[SplitTable(SplitType.Month)]
 [SugarDbType(SugarDbTypeEnum.Tenant)]
 public class SysLogDiffModel : BaseLogEntity
 {
@@ -69,6 +70,7 @@ public class SysLogDiffModel : BaseLogEntity
     /// <summary>
     /// 差异时间
     /// </summary>
+    [SplitField]
     [SugarColumn(ColumnDescription = "差异时间", ColumnDataType = "datetimeoffset", IsNullable = false)]
     public DateTime DiffTime { get; set; }
 }
