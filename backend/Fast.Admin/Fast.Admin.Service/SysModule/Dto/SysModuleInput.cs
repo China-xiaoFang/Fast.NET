@@ -78,18 +78,6 @@ public class UpdateModuleInput : AddModuleInput
     /// </summary>
     [Required(ErrorMessage = "主键Id不能为空")]
     public long Id { get; set; }
-}
-
-/// <summary>
-/// 更新模块状态
-/// </summary>
-public class UpdateModuleStatusInput
-{
-    /// <summary>
-    /// 主键Id
-    /// </summary>
-    [Required(ErrorMessage = "主键Id不能为空")]
-    public long Id { get; set; }
 
     /// <summary>
     /// 状态

@@ -3,7 +3,7 @@
 /// <summary>
 /// 系统模块输出
 /// </summary>
-public class SysModuleOutput : OutputInputBase
+public class SysModuleOutput : BaseOutput
 {
     /// <summary>
     /// 名称

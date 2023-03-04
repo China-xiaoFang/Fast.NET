@@ -31,6 +31,16 @@ public class SysModuleService : ISysModuleService
     }
 
     /// <summary>
+    /// 查询系统模块选择器
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<SysModuleOutput>> QuerySysModuleSelector()
+    {
+        return await _repository.AsQueryable(wh => wh.Status == CommonStatusEnum.Enable).OrderBy(ob => ob.Sort)
+            .Select<SysModuleOutput>().ToListAsync();
+    }
+
+    /// <summary>
     /// 添加系统模块
     /// </summary>
     /// <param name="input"></param>
@@ -77,11 +87,6 @@ public class SysModuleService : ISysModuleService
         // 系统模块不能修改查看类型和名称
         if (model.IsSystem == YesOrNotEnum.Y)
         {
-            if (model.Name != input.Name)
-            {
-                throw Oops.Bah("系统级别数据不允许修改模块名称！");
-            }
-
             if (model.ViewType != input.ViewType)
             {
                 throw Oops.Bah("系统级别数据不允许修改查看类型！");
@@ -95,23 +100,6 @@ public class SysModuleService : ISysModuleService
 
         // 覆盖源数据
         model = input.Adapt(model);
-
-        // 更新数据
-        await _repository.Context.Updateable(model).ExecuteCommandWithOptLockAsync(true);
-    }
-
-    /// <summary>
-    /// 更新系统模块状态
-    /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    public async Task UpdateModuleStatus(UpdateModuleStatusInput input)
-    {
-        // 查询源数据
-        var model = await _repository.FirstOrDefaultAsync(f => f.Id == input.Id);
-
-        // 更新状态
-        model.Status = input.Status;
 
         // 更新数据
         await _repository.Context.Updateable(model).ExecuteCommandWithOptLockAsync(true);

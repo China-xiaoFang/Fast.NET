@@ -2,6 +2,7 @@
 using Fast.Admin.Service.SysButton.Dto;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.Const;
+using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Admin.Application.SysButton;
@@ -10,7 +11,7 @@ namespace Fast.Admin.Application.SysButton;
 /// 系统按钮接口
 /// </summary>
 [ApiDescriptionSettings(ApiGroupConst.Web, Name = "SysButton", Order = 100)]
-public class SysButtonApplication
+public class SysButtonApplication : IDynamicApiController
 {
     private readonly ISysButtonService _sysButtonService;
 

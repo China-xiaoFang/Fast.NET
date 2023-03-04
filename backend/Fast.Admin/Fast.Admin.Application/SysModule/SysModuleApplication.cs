@@ -3,6 +3,7 @@ using Fast.Admin.Service.SysModule.Dto;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.Const;
 using Fast.Core.Internal.Restful.Internal;
+using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Admin.Application.SysModule;
@@ -11,7 +12,7 @@ namespace Fast.Admin.Application.SysModule;
 /// 系统模块接口
 /// </summary>
 [ApiDescriptionSettings(ApiGroupConst.Web, Name = "SysModule", Order = 100)]
-public class SysModuleApplication
+public class SysModuleApplication : IDynamicApiController
 {
     private readonly ISysModuleService _sysModuleService;
 
@@ -29,6 +30,16 @@ public class SysModuleApplication
     public async Task<PageResult<SysModuleOutput>> QuerySysModulePageList([FromQuery] QuerySysModuleInput input)
     {
         return await _sysModuleService.QuerySysModulePageList(input);
+    }
+
+    /// <summary>
+    /// 查询系统模块选择器
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("sysModuleSelector", "查询系统模块选择器", HttpRequestActionEnum.Query)]
+    public async Task<List<SysModuleOutput>> QuerySysModuleSelector()
+    {
+        return await _sysModuleService.QuerySysModuleSelector();
     }
 
     /// <summary>
@@ -51,16 +62,5 @@ public class SysModuleApplication
     public async Task UpdateModule(UpdateModuleInput input)
     {
         await _sysModuleService.UpdateModule(input);
-    }
-
-    /// <summary>
-    /// 更新系统模块状态
-    /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [HttpPut("updateModuleStatus", "更新系统模块状态", HttpRequestActionEnum.Update)]
-    public async Task UpdateModuleStatus(UpdateModuleStatusInput input)
-    {
-        await _sysModuleService.UpdateModuleStatus(input);
     }
 }

@@ -15,6 +15,12 @@ public interface ISysModuleService
     Task<PageResult<SysModuleOutput>> QuerySysModulePageList(QuerySysModuleInput input);
 
     /// <summary>
+    /// 查询系统模块选择器
+    /// </summary>
+    /// <returns></returns>
+    Task<List<SysModuleOutput>> QuerySysModuleSelector();
+
+    /// <summary>
     /// 添加系统模块
     /// </summary>
     /// <param name="input"></param>
@@ -27,11 +33,4 @@ public interface ISysModuleService
     /// <param name="input"></param>
     /// <returns></returns>
     Task UpdateModule(UpdateModuleInput input);
-
-    /// <summary>
-    /// 更新系统模块状态
-    /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    Task UpdateModuleStatus(UpdateModuleStatusInput input);
 }
