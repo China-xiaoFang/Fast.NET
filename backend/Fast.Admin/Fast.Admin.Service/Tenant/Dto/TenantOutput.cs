@@ -3,7 +3,7 @@
 /// <summary>
 /// 租户输出
 /// </summary>
-public class TenantOutput : OutputInputBase
+public class TenantOutput : BaseOutput
 {
     /// <summary>
     /// 租户公司名称

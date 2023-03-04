@@ -14,13 +14,15 @@ namespace Fast.Admin.Service.Auth;
 public class TenAuthService : ITenAuthService, ITransient
 {
     private readonly ISqlSugarRepository<TenUserModel> _tenRepository;
+    private readonly ICache _cache;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IEventPublisher _eventPublisher;
 
-    public TenAuthService(ISqlSugarRepository<TenUserModel> tenRepository, IHttpContextAccessor httpContextAccessor,
+    public TenAuthService(ISqlSugarRepository<TenUserModel> tenRepository, ICache cache, IHttpContextAccessor httpContextAccessor,
         IEventPublisher eventPublisher)
     {
         _tenRepository = tenRepository;
+        _cache = cache;
         _httpContextAccessor = httpContextAccessor;
         _eventPublisher = eventPublisher;
     }
@@ -79,21 +81,71 @@ public class TenAuthService : ITenAuthService, ITransient
             throw Oops.Bah("账号已经被停用！");
         }
 
+        /*
+         * 连续错误5次，冻结1分钟
+         * 连续错误10次，冻结5分钟
+         * 连续错误15次，冻结30分钟
+         * 连续错误20次，冻结60分钟
+         * 连续错误25次，冻结120分钟
+         * 连续错误30次，冻结账号
+         * 登录成功后消除缓存
+         */
+        var errorPasswordCacheKey = $"{CacheConst.InputErrorPassword}{userInfo.Id}";
         // 判断密码是否正确
         if (userInfo.Password != MD5Encryption.Encrypt(input.Password))
         {
-            // TODO：这里增加密码次数判断
-            /*
-             * 连续错误5次，冻结1分钟
-             * 连续错误10次，冻结5分钟
-             * 连续错误15次，冻结30分钟
-             * 连续错误20次，冻结60分钟
-             * 连续错误25次，冻结120分钟
-             * 连续错误30次，冻结账号
-             * 登录成功后消除缓存
-             */
-            throw Oops.Bah("密码不正确！");
+            // 记录密码错误次数
+            var errorPasswordDto = await _cache.GetAsync<InputErrorPasswordDto>(errorPasswordCacheKey) ??
+                                   new InputErrorPasswordDto {Count = 0, FreezeMinutes = 0, ThawingTime = null};
+
+            // 错误次数+1
+            errorPasswordDto.Count++;
+
+            // 判断是否为5的倍数
+            if (errorPasswordDto.Count == 30)
+            {
+                // 错误30次，直接冻结账号
+                userInfo.Status = CommonStatusEnum.Disable;
+                await _tenRepository.UpdateAsync(userInfo);
+                await _cache.SetAsync(errorPasswordCacheKey, errorPasswordDto);
+                throw Oops.Bah("密码连续输入错误30次，账号已被停用，请联系管理员！");
+            }
+
+            var time = DateTime.Now;
+
+            // 判断是否存在解冻时间
+            if (errorPasswordDto.ThawingTime != null && errorPasswordDto.ThawingTime.Value > time)
+            {
+                throw Oops.Bah(
+                    $"密码连续输入错误{errorPasswordDto.Count}次，已被冻结{errorPasswordDto.FreezeMinutes}分钟，请{(errorPasswordDto.ThawingTime.Value - time).TotalMinutes.ParseToInt() + 1}分钟后再重试！");
+            }
+
+            if (errorPasswordDto.Count % 5 != 0)
+            {
+                errorPasswordDto.ThawingTime = null;
+                await _cache.SetAsync(errorPasswordCacheKey, errorPasswordDto);
+                throw Oops.Bah("密码不正确！");
+            }
+
+            // 解冻分钟数
+            var addMinutes = errorPasswordDto.Count switch
+            {
+                5 => 1,
+                10 => 5,
+                15 => 30,
+                20 => 60,
+                25 => 120,
+                _ => 0
+            };
+            errorPasswordDto.FreezeMinutes = addMinutes;
+            // 解冻时间
+            errorPasswordDto.ThawingTime = DateTime.Now.AddMinutes(addMinutes);
+            await _cache.SetAsync(errorPasswordCacheKey, errorPasswordDto);
+            throw Oops.Bah($"密码连续输入错误{errorPasswordDto.Count}次，已被冻结{addMinutes}分钟，请{addMinutes}分钟后再重试！");
         }
+
+        // 删除记录的错误密码次数
+        await _cache.DelAsync(errorPasswordCacheKey);
 
         // 生成Token令牌
         var accessToken = JWTEncryption.Encrypt(

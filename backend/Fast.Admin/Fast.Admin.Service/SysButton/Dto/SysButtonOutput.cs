@@ -3,7 +3,7 @@
 /// <summary>
 /// 系统按钮输出
 /// </summary>
-public class SysButtonOutput : OutputInputBase
+public class SysButtonOutput : BaseOutput
 {
     /// <summary>
     /// 编码

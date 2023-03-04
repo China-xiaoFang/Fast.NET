@@ -3,6 +3,6 @@
 /// <summary>
 /// 
 /// </summary>
-public class TenUserOutput : OutputInputBase
+public class TenUserOutput : BaseOutput
 {
 }

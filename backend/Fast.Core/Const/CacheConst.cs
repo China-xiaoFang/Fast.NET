@@ -69,4 +69,9 @@ public class CacheConst
     /// 在线用户缓存
     /// </summary>
     public const string OnlineUser = "onlineUser";
+
+    /// <summary>
+    /// 输入错误密码次数
+    /// </summary>
+    public const string InputErrorPassword = "Auth:ErrorPassword:";
 }

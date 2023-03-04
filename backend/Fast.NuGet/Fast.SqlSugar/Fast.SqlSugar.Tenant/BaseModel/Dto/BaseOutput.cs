@@ -3,7 +3,7 @@
 /// <summary>
 /// 通用输出参数
 /// </summary>
-public class OutputInputBase
+public class BaseOutput
 {
     /// <summary>
     /// Id
