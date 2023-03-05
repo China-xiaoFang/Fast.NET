@@ -32,18 +32,6 @@ public class SysLogVisModel : BaseLogEntity
     public string UserName { get; set; }
 
     /// <summary>
-    /// 是否执行成功
-    /// </summary>
-    [SugarColumn(ColumnDescription = "是否执行成功", ColumnDataType = "tinyint", IsNullable = true)]
-    public YesOrNotEnum Success { get; set; }
-
-    /// <summary>
-    /// 具体消息
-    /// </summary>
-    [SugarColumn(ColumnDescription = "具体消息", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
-    public string Message { get; set; }
-
-    /// <summary>
     /// 地址
     /// </summary>
     [SugarColumn(ColumnDescription = "地址", ColumnDataType = "Nvarchar(500)", IsNullable = true)]

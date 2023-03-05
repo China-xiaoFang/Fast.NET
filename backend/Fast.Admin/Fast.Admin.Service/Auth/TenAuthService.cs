@@ -353,6 +353,18 @@ public class TenAuthService : ITenAuthService, ITransient
         // 构建属性菜单
         result.MenuList = new TreeBuildUtil<AntDesignRouterOutput>().Build(menuTreeList);
 
+        var visLog = new SysLogVisModel
+        {
+            Account = result.Account,
+            UserName = result.Name,
+            Location = HttpNewUtil.Url,
+            VisType = LoginTypeEnum.Login,
+            VisTime = DateTime.Now
+        };
+        visLog.RecordCreate();
+        // 访问日志
+        await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:VisLog", GlobalContext.TenantId, visLog));
+
         return result;
     }
 }
