@@ -6,7 +6,7 @@ namespace Fast.Admin.Service.SysMenu;
 /// <summary>
 /// 系统菜单服务
 /// </summary>
-public class SysMenuService : ISysMenuService
+public class SysMenuService : ISysMenuService,ITransient
 {
     private readonly ISqlSugarRepository<SysMenuModel> _repository;
 
@@ -20,15 +20,15 @@ public class SysMenuService : ISysMenuService
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<List<QuerySysMenuTreeBaseOutput>> QuerySysMenuTree(QuerySysMenuTreeInput input)
+    public async Task<List<SysMenuTreeOutput>> QuerySysMenuTree(QuerySysMenuTreeInput input)
     {
         var list = await _repository.AsQueryable().WhereIF(!input.ModuleId.IsNullOrZero(), wh => wh.ModuleId == input.ModuleId)
-            .WhereIF(!input.Name.IsEmpty(), wh => wh.Name.Contains(input.Name))
+            .WhereIF(!input.MenuName.IsEmpty(), wh => wh.MenuName.Contains(input.MenuName))
             .WhereIF(!input.IsSystem.IsNullOrZero(), wh => wh.IsSystem == input.IsSystem)
-            .WhereIF(!input.Status.IsNullOrZero(), wh => wh.Status == input.Status).Select<QuerySysMenuTreeBaseOutput>()
+            .WhereIF(!input.Status.IsNullOrZero(), wh => wh.Status == input.Status).Select<SysMenuTreeOutput>()
             .ToListAsync();
 
-        var result = new TreeBuildUtil<QuerySysMenuTreeBaseOutput>().Build(list);
+        var result = new TreeBuildUtil<SysMenuTreeOutput>().Build(list);
 
         return result;
     }
@@ -41,7 +41,7 @@ public class SysMenuService : ISysMenuService
     public async Task AddSysMenu(AddSysMenuInput input)
     {
         // 菜单Code不能重复
-        if (await _repository.IsExistsAsync(wh => wh.Code == input.Code))
+        if (await _repository.IsExistsAsync(wh => wh.MenuCode == input.MenuCode))
         {
             throw Oops.Bah("菜单编码不能重复！");
         }
@@ -72,12 +72,12 @@ public class SysMenuService : ISysMenuService
         }
 
         // 保留编码
-        var menuCode = model.Code;
+        var menuCode = model.MenuCode;
 
         // 系统菜单不能修改类型，路由地址，组件地址，内链，外链地址
         if (model.IsSystem == YesOrNotEnum.Y)
         {
-            if (model.Type != input.Type)
+            if (model.MenuType != input.MenuType)
             {
                 throw Oops.Bah("系统级别数据不允许修改类型");
             }
@@ -105,7 +105,7 @@ public class SysMenuService : ISysMenuService
 
         // 覆盖源数据
         model = input.Adapt(model);
-        model.Code = menuCode;
+        model.MenuCode = menuCode;
 
         // 更新数据
         await _repository.Context.Updateable(model).ExecuteCommandWithOptLockAsync(true);

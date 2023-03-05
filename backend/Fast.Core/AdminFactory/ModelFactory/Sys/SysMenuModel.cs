@@ -12,22 +12,22 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 public class SysMenuModel : BaseEntity
 {
     /// <summary>
-    /// 编码
+    /// 菜单编码
     /// </summary>
-    [SugarColumn(ColumnDescription = "编码", ColumnDataType = "Nvarchar(100)", IsNullable = false)]
-    public string Code { get; set; }
+    [SugarColumn(ColumnDescription = "菜单编码", ColumnDataType = "Nvarchar(100)", IsNullable = false)]
+    public string MenuCode { get; set; }
 
     /// <summary>
-    /// 名称
+    /// 菜单名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Name { get; set; }
+    [SugarColumn(ColumnDescription = "菜单名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string MenuName { get; set; }
 
     /// <summary>
-    /// 标题
+    /// 菜单标题
     /// </summary>
-    [SugarColumn(ColumnDescription = "标题", ColumnDataType = "Nvarchar(50)", IsNullable = true)]
-    public string Title { get; set; }
+    [SugarColumn(ColumnDescription = "菜单标题", ColumnDataType = "Nvarchar(50)", IsNullable = true)]
+    public string MenuTitle { get; set; }
 
     /// <summary>
     /// 父级Id
@@ -42,10 +42,10 @@ public class SysMenuModel : BaseEntity
     public long ModuleId { get; set; }
 
     /// <summary>
-    /// 类型
+    /// 菜单类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "类型", ColumnDataType = "tinyint", IsNullable = false)]
-    public MenuTypeEnum Type { get; set; }
+    [SugarColumn(ColumnDescription = "菜单类型", ColumnDataType = "tinyint", IsNullable = false)]
+    public MenuTypeEnum MenuType { get; set; }
 
     /// <summary>
     /// 图标
@@ -70,6 +70,12 @@ public class SysMenuModel : BaseEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "内链/外链地址", ColumnDataType = "Nvarchar(500)", IsNullable = true)]
     public string Link { get; set; }
+
+    /// <summary>
+    /// 是否显示
+    /// </summary>
+    [SugarColumn(ColumnDescription = "是否显示", ColumnDataType = "tinyint", IsNullable = false)]
+    public YesOrNotEnum Visible { get; set; }
 
     /// <summary>
     /// 是否为系统菜单

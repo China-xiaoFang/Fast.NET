@@ -13,7 +13,7 @@ public class QuerySysMenuTreeInput
     /// <summary>
     /// 菜单名称
     /// </summary>
-    public string Name { get; set; }
+    public string MenuName { get; set; }
 
     /// <summary>
     /// 是否为系统菜单
@@ -35,18 +35,18 @@ public class AddSysMenuInput
     /// 编码
     /// </summary>
     [Required(ErrorMessage = "编码不能为空")]
-    public string Code { get; set; }
+    public string MenuCode { get; set; }
 
     /// <summary>
     /// 名称
     /// </summary>
     [Required(ErrorMessage = "名称不能为空")]
-    public string Name { get; set; }
+    public string MenuName { get; set; }
 
     /// <summary>
     /// 标题
     /// </summary>
-    public string Title { get; set; }
+    public string MenuTitle { get; set; }
 
     /// <summary>
     /// 父级Id
@@ -64,7 +64,7 @@ public class AddSysMenuInput
     /// 类型
     /// </summary>
     [Required(ErrorMessage = "类型不能为空")]
-    public MenuTypeEnum Type { get; set; }
+    public MenuTypeEnum MenuType { get; set; }
 
     /// <summary>
     /// 图标
@@ -85,6 +85,12 @@ public class AddSysMenuInput
     /// 内链/外链地址
     /// </summary>
     public string Link { get; set; }
+
+    /// <summary>
+    /// 是否显示
+    /// </summary>
+    [Required(ErrorMessage = "是否显示不能为空")]
+    public YesOrNotEnum Visible { get; set; }
 
     /// <summary>
     /// 是否为系统菜单

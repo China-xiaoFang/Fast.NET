@@ -24,12 +24,12 @@ public class SysMenuSeedData : ISystemSeedData
         var fastModuleInfo = new SysModuleModel
         {
             Id = YitIdHelper.NextId(),
-            Name = "Fast.NET",
+            ModuleName = "Fast.NET",
             Color = "#05a045",
             Icon = "profile-outlined",
             ViewType = ModuleViewTypeEnum.All,
             IsSystem = YesOrNotEnum.Y,
-            Sort = 1,
+            Sort = 0,
             Status = CommonStatusEnum.Enable
         };
         sysModuleList.Add(fastModuleInfo);
@@ -37,18 +37,18 @@ public class SysMenuSeedData : ISystemSeedData
         var indexMenuInfo = new SysMenuModel
         {
             Id = YitIdHelper.NextId(),
-            Code = "index",
-            Name = "系统首页",
-            Title = "首页",
+            MenuCode = "index",
+            MenuName = "系统首页",
+            MenuTitle = "首页",
             ParentId = 0,
             ModuleId = fastModuleInfo.Id,
-            Type = MenuTypeEnum.Menu,
+            MenuType = MenuTypeEnum.Menu,
             Icon = "home-outlined",
             Router = "/index",
             Component = "index/index",
             Link = null,
             IsSystem = YesOrNotEnum.Y,
-            Sort = 1,
+            Sort = 0,
             Status = CommonStatusEnum.Enable
         };
         sysMenuList.Add(indexMenuInfo);
@@ -56,7 +56,7 @@ public class SysMenuSeedData : ISystemSeedData
         var tenantModuleInfo = new SysModuleModel
         {
             Id = YitIdHelper.NextId(),
-            Name = "Saas功能",
+            ModuleName = "Saas功能",
             Color = "#d81b43",
             Icon = "appstore-add-outlined",
             ViewType = ModuleViewTypeEnum.SuperAdmin,
@@ -69,12 +69,12 @@ public class SysMenuSeedData : ISystemSeedData
         var saasMenuInfo = new SysMenuModel
         {
             Id = YitIdHelper.NextId(),
-            Code = "saasManage",
-            Name = "Saas租户",
-            Title = null,
+            MenuCode = "saasManage",
+            MenuName = "Saas租户",
+            MenuTitle = null,
             ParentId = 0,
             ModuleId = tenantModuleInfo.Id,
-            Type = MenuTypeEnum.Catalog,
+            MenuType = MenuTypeEnum.Catalog,
             Icon = "audit-outlined",
             Router = null,
             Component = null,
@@ -88,15 +88,15 @@ public class SysMenuSeedData : ISystemSeedData
         var tenantMenuInfo = new SysMenuModel
         {
             Id = YitIdHelper.NextId(),
-            Code = "tenantManage",
-            Name = "租户管理",
-            Title = "租户管理",
+            MenuCode = "tenantManage",
+            MenuName = "租户管理",
+            MenuTitle = "租户管理",
             ParentId = saasMenuInfo.Id,
             ModuleId = tenantModuleInfo.Id,
-            Type = MenuTypeEnum.Menu,
+            MenuType = MenuTypeEnum.Menu,
             Icon = "usergroup-add-outlined",
-            Router = null,
-            Component = null,
+            Router = "/index",
+            Component = "index/index",
             Link = null,
             IsSystem = YesOrNotEnum.Y,
             Sort = 1,

@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Fast.Admin.Service.Tenant.Dto;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
+using Fast.SqlSugar.Tenant.Internal.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Admin.Service.Tenant;
@@ -51,5 +52,5 @@ public interface ISysTenantService
     /// <param name="entityTypeList">初始化Entity类型</param>
     /// <param name="isInit">是否为初始化</param>
     /// <returns></returns>
-    Task InitNewTenant(SysTenantModel newTenant, IEnumerable<Type> entityTypeList, bool isInit = false);
+    Task InitNewTenant(SysTenantModel newTenant, List<SugarEntityTypeInfo> entityTypeList, bool isInit = false);
 }

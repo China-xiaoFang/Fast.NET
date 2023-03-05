@@ -6,16 +6,16 @@
 public class AddSysButtonInput
 {
     /// <summary>
-    /// 编码
+    /// 按钮编码
     /// </summary>
     [Required(ErrorMessage = "按钮编码不能为空")]
-    public string Code { get; set; }
+    public string ButtonCode { get; set; }
 
     /// <summary>
-    /// 名称
+    /// 按钮名称
     /// </summary>
     [Required(ErrorMessage = "按钮名称不能为空")]
-    public string Name { get; set; }
+    public string ButtonName { get; set; }
 
     /// <summary>
     /// 菜单Id

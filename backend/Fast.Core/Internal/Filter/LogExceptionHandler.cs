@@ -30,7 +30,7 @@ public class LogExceptionHandler : IGlobalExceptionHandler, ISingleton
             var sysLogExModel = new SysLogExModel
             {
                 Account = GlobalContext.UserAccount,
-                Name = GlobalContext.UserName,
+                UserName = GlobalContext.UserName,
                 ClassName = context.Exception.TargetSite?.DeclaringType?.FullName,
                 MethodName = context.Exception.TargetSite?.Name,
                 ExceptionMsg = context.Exception.Message,

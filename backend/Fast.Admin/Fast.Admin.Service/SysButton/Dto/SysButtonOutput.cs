@@ -6,16 +6,14 @@
 public class SysButtonOutput : BaseOutput
 {
     /// <summary>
-    /// 编码
+    /// 按钮编码
     /// </summary>
-    [SugarColumn(ColumnDescription = "编码", ColumnDataType = "Nvarchar(100)", IsNullable = false)]
-    public string Code { get; set; }
+    public string ButtonCode { get; set; }
 
     /// <summary>
-    /// 名称
+    /// 按钮名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Name { get; set; }
+    public string ButtonName { get; set; }
 
     /// <summary>
     /// 排序

@@ -63,23 +63,18 @@ export default {
 		async login() {
 			this.$refs.loginForm.validate().then(async () => {
 				this.isLoading = true;
-				const loginToken = await loginApi
+				// 登录
+				await loginApi
 					.webLogin({
 						account: this.ruleForm.account,
 						password: this.ruleForm.password,
 						loginMethod: 1,
 					})
-					.then((res) => {
-						if (res.success) {
-							this.$message.success(
-								this.$t("login.loginSuccess")
-							);
-							// afterLogin(loginToken)
-						}
-					})
 					.finally(() => {
 						this.isLoading = false;
 					});
+				this.$message.success(this.$t("login.loginSuccess"));
+				this.$router.push({ path: "/" });
 			});
 		},
 		/**

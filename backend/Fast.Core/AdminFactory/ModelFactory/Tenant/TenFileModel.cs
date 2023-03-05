@@ -27,25 +27,25 @@ public class TenFileModel : BaseEntity
     /// 文件名称
     /// </summary>
     [SugarColumn(ColumnDescription = "文件名称", ColumnDataType = "Nvarchar(100)", IsNullable = false)]
-    public string Name { get; set; }
+    public string FileName { get; set; }
 
     /// <summary>
     /// 文件后缀
     /// </summary>
     [SugarColumn(ColumnDescription = "文件后缀", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string Suffix { get; set; }
+    public string FileSuffix { get; set; }
 
     /// <summary>
     /// 文件大小kb
     /// </summary>
     [SugarColumn(ColumnDescription = "文件大小kb", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string SizeKb { get; set; }
+    public string FileSizeKb { get; set; }
 
     /// <summary>
     /// 文件大小（格式化后）
     /// </summary>
     [SugarColumn(ColumnDescription = "文件大小（格式化后）", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string SizeInfo { get; set; }
+    public string FileSizeInfo { get; set; }
 
     /// <summary>
     /// 文件存储路径

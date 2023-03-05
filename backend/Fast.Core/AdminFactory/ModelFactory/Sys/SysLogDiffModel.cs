@@ -14,6 +14,12 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 public class SysLogDiffModel : BaseLogEntity
 {
     /// <summary>
+    /// 主键Id
+    /// </summary>
+    [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true)]
+    public new long Id { get; set; }
+
+    /// <summary>
     /// 操作人账号
     /// </summary>
     [SugarColumn(ColumnDescription = "操作人账号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
@@ -23,7 +29,7 @@ public class SysLogDiffModel : BaseLogEntity
     /// 姓名
     /// </summary>
     [SugarColumn(ColumnDescription = "姓名", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
-    public string Name { get; set; }
+    public string UserName { get; set; }
 
     /// <summary>
     /// 差异描述

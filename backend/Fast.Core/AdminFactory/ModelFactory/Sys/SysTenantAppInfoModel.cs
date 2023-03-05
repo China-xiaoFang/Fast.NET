@@ -18,6 +18,12 @@ public class SysTenantAppInfoModel : BaseTEntity
     public AppTypeEnum AppType { get; set; }
 
     /// <summary>
+    /// AppKey
+    /// </summary>
+    [SugarColumn(ColumnDescription = "AppKey", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    public string AppKey { get; set; }
+
+    /// <summary>
     /// 授权开始时间
     /// </summary>
     [SugarColumn(ColumnDescription = "授权开始时间", ColumnDataType = "datetimeoffset", IsNullable = false)]

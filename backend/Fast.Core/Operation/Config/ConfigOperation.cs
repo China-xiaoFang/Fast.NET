@@ -59,49 +59,7 @@ public static class ConfigOperation
         /// <returns></returns>
         public static async Task<Dictionary<string, ConfigInfo>> GetConfigAsync(params string[] configInputs)
         {
-            // 返回值
-            var result = new Dictionary<string, ConfigInfo>();
-
-            await Scoped.CreateAsync(async (_, scope) =>
-            {
-                var service = scope.ServiceProvider;
-
-                var _cache = service.GetService<ICache>();
-
-                // 从缓存中读取系统配置
-                // ReSharper disable once PossibleNullReferenceException
-                var cacheSysRes = await _cache.GetAsync<Dictionary<string, ConfigInfo>>(CacheConst.SysConfigInfo);
-
-                // 判断缓存中是否存在
-                if (cacheSysRes == null || cacheSysRes.Count == 0)
-                {
-                    var db = service.GetService<ISqlSugarClient>();
-
-                    // ReSharper disable once PossibleNullReferenceException
-                    var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
-
-                    // 获取所有数据
-                    var data = await _db.Queryable<SysConfigModel>().Select<ConfigInfo>().ToListAsync();
-
-                    // 组装数据
-                    cacheSysRes = data.ToDictionary(item => item.Code, item => item.Adapt<ConfigInfo>());
-
-                    // 放入缓存
-                    await _cache.SetAsync(CacheConst.SysConfigInfo, cacheSysRes);
-                }
-
-                // 查找结果
-                foreach (var item in configInputs)
-                {
-                    var info = cacheSysRes[item];
-                    if (info != null)
-                    {
-                        result.Add(item, info);
-                    }
-                }
-            });
-
-            return result;
+            return await ConfigOperation.GetConfigAsync(true, configInputs);
         }
     }
 
@@ -150,19 +108,53 @@ public static class ConfigOperation
         /// <returns></returns>
         public static async Task<Dictionary<string, ConfigInfo>> GetConfigAsync(params string[] configInputs)
         {
-            // 返回值
-            var result = new Dictionary<string, ConfigInfo>();
+            return await ConfigOperation.GetConfigAsync(false, configInputs);
+        }
+    }
 
-            await Scoped.CreateAsync(async (_, scope) =>
+    /// <summary>
+    /// 根据配置Code和类型获取配置信息
+    /// </summary>
+    /// <param name="isSystem"></param>
+    /// <param name="configInputs"></param>
+    /// <returns></returns>
+    private static async Task<Dictionary<string, ConfigInfo>> GetConfigAsync(bool isSystem, params string[] configInputs)
+    {
+        // 返回值
+        var result = new Dictionary<string, ConfigInfo>();
+
+        await Scoped.CreateAsync(async (_, scope) =>
+        {
+            var service = scope.ServiceProvider;
+
+            var _cache = service.GetService<ICache>();
+
+            // 获取缓存的Key
+            var cacheKey = isSystem ? CacheConst.SysConfigInfo : CacheConst.TenConfigInfo;
+
+            // 从缓存中读取配置
+            var cacheRes = await _cache.GetAsync<Dictionary<string, ConfigInfo>>(cacheKey);
+
+            // 判断缓存中是否存在
+            if (cacheRes == null || cacheRes.Count == 0)
             {
-                var service = scope.ServiceProvider;
+                if (isSystem)
+                {
+                    var db = service.GetService<ISqlSugarClient>();
 
-                var _cache = service.GetService<ICache>();
+                    // ReSharper disable once PossibleNullReferenceException
+                    var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
 
-                // 从缓存中读取租户配置
-                var cacheTenRes = await _cache.GetAsync<Dictionary<string, ConfigInfo>>(CacheConst.TenConfigInfo);
-                // 判断缓存中是否存在
-                if (cacheTenRes == null || cacheTenRes.Count == 0)
+                    // 获取所有数据
+                    var data = await _db.Queryable<SysConfigModel>().Select<ConfigInfo>().ToListAsync();
+
+                    // 组装数据
+                    cacheRes = data.ToDictionary(item => item.Code, item => item.Adapt<ConfigInfo>());
+
+                    // 放入缓存
+                    await _cache.SetAsync(cacheKey, cacheRes);
+                }
+                else
                 {
                     var _db = service.GetService<ISqlSugarClient>().LoadSqlSugar<TenConfigModel>();
 
@@ -170,24 +162,24 @@ public static class ConfigOperation
                     var data = await _db.Queryable<TenConfigModel>().Select<ConfigInfo>().ToListAsync();
 
                     // 组装数据
-                    cacheTenRes = data.ToDictionary(item => item.Code, item => item.Adapt<ConfigInfo>());
+                    cacheRes = data.ToDictionary(item => item.Code, item => item.Adapt<ConfigInfo>());
 
                     // 放入缓存
-                    await _cache.SetAsync(CacheConst.TenConfigInfo, cacheTenRes);
+                    await _cache.SetAsync(cacheKey, cacheRes);
                 }
+            }
 
-                // 查找结果
-                foreach (var item in configInputs)
+            // 查找结果
+            foreach (var item in configInputs)
+            {
+                var info = cacheRes[item];
+                if (info != null)
                 {
-                    var info = cacheTenRes[item];
-                    if (info != null)
-                    {
-                        result.Add(item, info);
-                    }
+                    result.Add(item, info);
                 }
-            });
+            }
+        });
 
-            return result;
-        }
+        return result;
     }
 }

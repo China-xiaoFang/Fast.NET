@@ -83,7 +83,7 @@ public static class SqlSugarSetup
                 var sysLogDiffModel = new SysLogDiffModel
                 {
                     Account = GlobalContext.UserAccount,
-                    Name = GlobalContext.UserName,
+                    UserName = GlobalContext.UserName,
                     DiffDescription = diffDescription,
                     TableName = tableName,
                     TableDescription = tableDescription,

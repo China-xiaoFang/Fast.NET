@@ -26,7 +26,7 @@ public class SysMenuApplication : IDynamicApiController
     /// <param name="input"></param>
     /// <returns></returns>
     [HttpGet("tree", "查询系统菜单树形", HttpRequestActionEnum.Query)]
-    public async Task<List<QuerySysMenuTreeBaseOutput>> QuerySysMenuTree([FromQuery] QuerySysMenuTreeInput input)
+    public async Task<List<SysMenuTreeOutput>> QuerySysMenuTree([FromQuery] QuerySysMenuTreeInput input)
     {
         return await _sysMenuService.QuerySysMenuTree(input);
     }

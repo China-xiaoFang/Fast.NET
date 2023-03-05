@@ -12,7 +12,7 @@ public interface ISysMenuService
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    Task<List<QuerySysMenuTreeBaseOutput>> QuerySysMenuTree(QuerySysMenuTreeInput input);
+    Task<List<SysMenuTreeOutput>> QuerySysMenuTree(QuerySysMenuTreeInput input);
 
     /// <summary>
     /// 添加系统菜单

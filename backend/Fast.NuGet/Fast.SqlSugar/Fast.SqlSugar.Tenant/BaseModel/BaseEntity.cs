@@ -6,7 +6,7 @@ namespace Fast.SqlSugar.Tenant.BaseModel;
 /// <summary>
 /// 实体基类
 /// </summary>
-public class BaseEntity : PrimaryKeyEntity, IBaseEntity
+public class BaseEntity : PrimaryKeyEntity, IBaseEntity, IBaseDeleted
 {
     /// <summary>
     /// 创建时间

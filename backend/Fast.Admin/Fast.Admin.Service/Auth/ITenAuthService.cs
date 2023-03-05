@@ -13,4 +13,10 @@ public interface ITenAuthService
     /// <param name="input"></param>
     /// <returns></returns>
     Task WebLogin(WebLoginInput input);
+
+    /// <summary>
+    /// 获取登录用户信息
+    /// </summary>
+    /// <returns></returns>
+    Task<GetLoginUserInfoOutput> GetLoginUserInfo();
 }

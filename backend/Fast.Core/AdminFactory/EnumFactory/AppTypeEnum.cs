@@ -10,8 +10,8 @@ namespace Fast.Core.AdminFactory.EnumFactory;
 public enum AppTypeEnum
 {
     /// <summary>
-    /// 系统后台
+    /// Web管理后台
     /// </summary>
-    [Description("系统后台")]
-    FastNet = 1,
+    [Description("Web管理后台")]
+    WebAdmin = 1,
 }

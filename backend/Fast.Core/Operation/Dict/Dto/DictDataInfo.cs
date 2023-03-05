@@ -1,9 +1,9 @@
 ﻿namespace Fast.Core.Operation.Dict.Dto;
 
 /// <summary>
-/// 系统字典数据信息
+/// 字典数据信息
 /// </summary>
-public class SysDictDataInfo
+public class DictDataInfo
 {
     /// <summary>
     /// 中文值
@@ -18,5 +18,5 @@ public class SysDictDataInfo
     /// <summary>
     /// 编码
     /// </summary>
-    public int Code { get; set; }
+    public string Code { get; set; }
 }

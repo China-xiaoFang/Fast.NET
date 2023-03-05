@@ -64,7 +64,8 @@ public static class EntityHelper
             let dbTypeName =
                 dbTypeAttribute?.DbTypeName ?? SugarDbTypeEnum.Default.GetType().GetMember(SugarDbTypeEnum.Default.ToString())
                     .FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()?.Description
-            select new SugarEntityTypeInfo(type.Name, dbType, dbTypeName, type)).ToList();
+            let isSplitTable = type.GetCustomAttribute<SplitTableAttribute>(true) != null
+            select new SugarEntityTypeInfo(type.Name, dbType, dbTypeName, isSplitTable, type)).ToList();
         // 放入缓存
         _cacheEntityTypeList = entityTypeList;
 

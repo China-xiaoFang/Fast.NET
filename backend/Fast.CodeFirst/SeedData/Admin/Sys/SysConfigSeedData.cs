@@ -1,5 +1,4 @@
 ﻿using Fast.Core;
-using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Const;
@@ -27,7 +26,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "备案编号",
                 EnName = "ICP Core",
                 Value = GlobalContext.CopyrightInfoOptions.ICPCode,
-                ConfigType = SysConfigTypeEnum.System
             },
             new()
             {
@@ -36,7 +34,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "备案Url",
                 EnName = "ICP Url",
                 Value = GlobalContext.CopyrightInfoOptions.ICPUrl,
-                ConfigType = SysConfigTypeEnum.System
             },
             new()
             {
@@ -45,7 +42,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "公安备案编号",
                 EnName = "Public Core",
                 Value = GlobalContext.CopyrightInfoOptions.PublicCode,
-                ConfigType = SysConfigTypeEnum.System
             },
             new()
             {
@@ -54,7 +50,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "公安备案Url",
                 EnName = "Public Url",
                 Value = GlobalContext.CopyrightInfoOptions.PublicUrl,
-                ConfigType = SysConfigTypeEnum.System
             },
             new()
             {
@@ -63,7 +58,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "版权信息",
                 EnName = "Copyright Code",
                 Value = GlobalContext.CopyrightInfoOptions.CRCode,
-                ConfigType = SysConfigTypeEnum.System
             },
             new()
             {
@@ -72,7 +66,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "版权Url",
                 EnName = "Copyright Url",
                 Value = GlobalContext.CopyrightInfoOptions.CRUrl,
-                ConfigType = SysConfigTypeEnum.System
             },
             new()
             {
@@ -81,7 +74,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "百度翻译开发者AppId",
                 EnName = "Baidu Translation Developer AppId",
                 Value = "",
-                ConfigType = SysConfigTypeEnum.System
             },
             new()
             {
@@ -90,7 +82,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "百度翻译开发者密钥",
                 EnName = "Baidu Translation Developer SecretKey",
                 Value = "",
-                ConfigType = SysConfigTypeEnum.System
             },
             new()
             {
@@ -99,7 +90,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "百度翻译请求Url",
                 EnName = "Baidu Translation Request Url",
                 Value = "http://api.fanyi.baidu.com/api/trans/vip/translate",
-                ConfigType = SysConfigTypeEnum.System
             }
         };
 

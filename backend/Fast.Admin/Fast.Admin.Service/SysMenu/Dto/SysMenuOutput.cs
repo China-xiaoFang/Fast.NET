@@ -1,9 +1,11 @@
 ﻿using System.Collections;
-using Fast.Admin.Service.SysButton.Dto;
 
 namespace Fast.Admin.Service.SysMenu.Dto;
 
-public class QuerySysMenuTreeBaseOutput : BaseOutput, ITreeNode
+/// <summary>
+/// 系统菜单树输出
+/// </summary>
+public class SysMenuTreeOutput : BaseOutput, ITreeNode
 {
     /// <summary>
     /// 获取节点id
@@ -24,28 +26,37 @@ public class QuerySysMenuTreeBaseOutput : BaseOutput, ITreeNode
     }
 
     /// <summary>
+    /// 获取排序字段
+    /// </summary>
+    /// <returns></returns>
+    int ITreeNode.Sort()
+    {
+        return Sort;
+    }
+
+    /// <summary>
     /// 设置Children
     /// </summary>
     /// <param name="children"></param>
     public void SetChildren(IList children)
     {
-        Children = (List<QuerySysMenuTreeBaseOutput>) children;
+        Children = (List<SysMenuTreeOutput>) children;
     }
 
     /// <summary>
     /// 编码
     /// </summary>
-    public string Code { get; set; }
+    public string MenuCode { get; set; }
 
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; set; }
+    public string MenuName { get; set; }
 
     /// <summary>
     /// 标题
     /// </summary>
-    public string Title { get; set; }
+    public string MenuTitle { get; set; }
 
     /// <summary>
     /// 父级Id
@@ -60,7 +71,12 @@ public class QuerySysMenuTreeBaseOutput : BaseOutput, ITreeNode
     /// <summary>
     /// 类型
     /// </summary>
-    public MenuTypeEnum Type { get; set; }
+    public MenuTypeEnum MenuType { get; set; }
+
+    /// <summary>
+    /// 颜色
+    /// </summary>
+    public string Color { get; set; }
 
     /// <summary>
     /// 图标
@@ -93,17 +109,17 @@ public class QuerySysMenuTreeBaseOutput : BaseOutput, ITreeNode
     public int Sort { get; set; }
 
     /// <summary>
+    /// 是否显示
+    /// </summary>
+    public YesOrNotEnum Visible { get; set; }
+
+    /// <summary>
     /// 状态
     /// </summary>
     public CommonStatusEnum Status { get; set; }
 
     /// <summary>
-    /// 按钮集合
-    /// </summary>
-    public List<SysButtonOutput> ButtonList { get; set; }
-
-    /// <summary>
     /// 子节点
     /// </summary>
-    public List<QuerySysMenuTreeBaseOutput> Children { get; set; }
+    public List<SysMenuTreeOutput> Children { get; set; }
 }

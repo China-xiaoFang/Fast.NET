@@ -150,8 +150,8 @@ const error = () => {
 service.interceptors.response.use(
 	(response) => {
 		// 获取Token
-		let token = response.headers["fast-net-access-token"];
-		let refreshToken = response.headers["fast-net-x-access-token"];
+		let token = response.headers["access-token"];
+		let refreshToken = response.headers["x-access-token"];
 		// 判断是否为无效Token
 		if (token === "invalid_token") {
 			// 删除Token

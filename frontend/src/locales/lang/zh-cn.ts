@@ -43,6 +43,7 @@ export default {
 		systemInit: "系统初始化中，请耐心等待",
 		hostError: "不知名的主机访问！",
 		webSiteError: "未知的站点，请确认访问的站点是否正确！",
+		authSuccess: "授权成功",
 	},
 	common: {
 		searchButton: "查询",

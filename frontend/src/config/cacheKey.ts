@@ -14,7 +14,7 @@ export default {
 	// 用户信息
 	USER_INFO: "USER_INFO",
 
-	// 菜单
+	// 菜单信息
 	MENU: "MENU",
 
 	// 权限
@@ -25,4 +25,7 @@ export default {
 
 	// App主题
 	APP_THEME: "APP_THEME",
+
+	// 系统默认应用Id
+	MENU_MODULE_ID: "MENU_MODULE_ID",
 };

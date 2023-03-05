@@ -31,4 +31,14 @@ public class AuthApplication : IDynamicApiController
     {
         await _tenAuthService.WebLogin(input);
     }
+
+    /// <summary>
+    /// 获取登录用户信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("/getLoginUser", "获取登录用户信息", HttpRequestActionEnum.Query)]
+    public async Task<GetLoginUserInfoOutput> GetLoginUserInfo()
+    {
+        return await _tenAuthService.GetLoginUserInfo();
+    }
 }

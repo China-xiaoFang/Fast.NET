@@ -43,6 +43,7 @@ export default {
 		systemInit: "Please wait patiently while the system is initialized",
 		hostError: "Unknown host access!",
 		webSiteError: "Unknown site, please confirm that the site is correct!",
+		authSuccess: "Authorization succeeds",
 	},
 	common: {
 		searchButton: "search",

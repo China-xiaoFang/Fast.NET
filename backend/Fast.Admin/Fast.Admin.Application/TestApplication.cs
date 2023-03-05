@@ -35,9 +35,9 @@ public class TestApplication : IDynamicApiController
     /// <param name="name"></param>
     /// <returns></returns>
     [HttpGet("/test/testDict", "测试静态字典获取")]
-    public async Task<SysDictTypeInfo> TestDict(string name = "AdminType")
+    public async Task<DictTypeInfo> TestDict(string name = "AdminType")
     {
-        var result = await DictOperation.GetDictionaryAsync(name);
+        var result = await DictOperation.System.GetDictionaryAsync(name);
         return result;
     }
 

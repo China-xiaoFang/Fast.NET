@@ -58,5 +58,5 @@ public class SysDictTypeModel : BaseEntity
     /// 数据集合
     /// </summary>
     [Navigate(NavigateType.OneToMany, nameof(SysDictDataModel.TypeId))]
-    public List<SysDictDataModel> DataList { get; set; }
+    public virtual List<SysDictDataModel> DataList { get; set; }
 }

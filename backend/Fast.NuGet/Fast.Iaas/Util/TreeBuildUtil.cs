@@ -18,6 +18,12 @@ public interface ITreeNode
     long GetPid();
 
     /// <summary>
+    /// 获取排序字段
+    /// </summary>
+    /// <returns></returns>
+    int Sort();
+
+    /// <summary>
     /// 设置Children
     /// </summary>
     /// <param name="children"></param>
@@ -52,7 +58,7 @@ public class TreeBuildUtil<T> where T : ITreeNode
     /// <returns></returns>
     public List<T> Build(List<T> nodes)
     {
-        var result = nodes.Where(i => i.GetPid() == _rootParentId).ToList();
+        var result = nodes.Where(i => i.GetPid() == _rootParentId).OrderBy(ob => ob.Sort()).ToList();
         result.ForEach(u => BuildChildNodes(nodes, u));
         return result;
     }
@@ -64,7 +70,7 @@ public class TreeBuildUtil<T> where T : ITreeNode
     /// <param name="node"></param>
     private void BuildChildNodes(List<T> totalNodes, T node)
     {
-        var nodeSubList = totalNodes.Where(i => i.GetPid() == node.GetId()).ToList();
+        var nodeSubList = totalNodes.Where(i => i.GetPid() == node.GetId()).OrderBy(ob => ob.Sort()).ToList();
         nodeSubList.ForEach(u => BuildChildNodes(totalNodes, u));
         node.SetChildren(nodeSubList);
     }

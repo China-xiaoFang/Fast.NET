@@ -12,10 +12,10 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 public class SysModuleModel : BaseEntity
 {
     /// <summary>
-    /// 名称
+    /// 模块名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Name { get; set; }
+    [SugarColumn(ColumnDescription = "模块名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string ModuleName { get; set; }
 
     /// <summary>
     /// 颜色

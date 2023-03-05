@@ -5,7 +5,7 @@ using Fast.SqlSugar.Tenant.Internal.Enum;
 namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 
 /// <summary>
-/// 系统字典类型表Model类
+/// 租户配置表Model类
 /// </summary>
 [SugarTable("Ten_Config", "租户配置表")]
 [SugarDbType(SugarDbTypeEnum.Tenant)]

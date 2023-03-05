@@ -1,9 +1,9 @@
 ﻿namespace Fast.Core.Operation.Dict.Dto;
 
 /// <summary>
-/// 系统字典类型
+/// 字典类型
 /// </summary>
-public class SysDictTypeInfo
+public class DictTypeInfo
 {
     /// <summary>
     /// 编码
@@ -23,5 +23,5 @@ public class SysDictTypeInfo
     /// <summary>
     /// 数据集合
     /// </summary>
-    public List<SysDictDataInfo> DataList { get; set; }
+    public List<DictDataInfo> DataList { get; set; }
 }

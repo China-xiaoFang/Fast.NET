@@ -12,10 +12,10 @@ const DEFAULT_CONFIG = {
 	ORIGIN_NAME: "Fast-Net-Origin",
 
 	// TokenName // Authorization
-	TOKEN_NAME: "Fast-Net-Authorization",
+	TOKEN_NAME: "Authorization",
 
 	// RefreshTokenName // X-Authorization
-	REFRESH_TOKEN_NAME: "Fast-Net-X-Authorization",
+	REFRESH_TOKEN_NAME: "Authorization",
 
 	// Token前缀，注意最后有个空格，如不需要需设置空字符串 // Bearer
 	TOKEN_PREFIX: "Bearer ",

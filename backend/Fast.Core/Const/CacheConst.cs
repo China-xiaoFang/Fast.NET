@@ -21,6 +21,11 @@ public class CacheConst
     public const string SysDictInfo = "System:dictInfo";
 
     /// <summary>
+    /// 租户字典信息缓存
+    /// </summary>
+    public const string TenDictInfo = "Tenant:dictInfo";
+
+    /// <summary>
     /// 系统配置信息缓存
     /// </summary>
     public const string SysConfigInfo = "System:Config";

@@ -1,9 +1,5 @@
-﻿using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using Fast.SqlSugar.Tenant.BaseModel;
-using Fast.SqlSugar.Tenant.BaseModel.Interface;
+﻿using Fast.SqlSugar.Tenant.BaseModel.Interface;
 using Fast.SqlSugar.Tenant.Const;
-using Fast.SqlSugar.Tenant.Helper;
 using Microsoft.Extensions.Hosting;
 using SqlSugar;
 using Yitter.IdGenerator;
@@ -158,33 +154,15 @@ static class SugarEntityFilter
             }
         };
 
-        // 这里可以根据字段判断也可以根据接口判断，如果是租户Id，建议根据接口判断，如果是IsDeleted，建议根据名称判断，方便别的表也可以实现
-        foreach (var entityType in EntityHelper.ReflexGetAllTEntityList())
+        // 配置多租户全局过滤器
+        if (!SugarContext.IsSuperAdmin)
         {
-            // 配置多租户全局过滤器
-            // 判断实体是否继承了租户基类接口
-            if (entityType.Type.GetInterfaces().Contains(typeof(IBaseTenant)))
-            {
-                // 构建动态Lambda
-                var lambda = DynamicExpressionParser.ParseLambda(new[] {Expression.Parameter(entityType.Type, "it")},
-                    typeof(bool), $"{nameof(BaseTenant.TenantId)} == @0 OR @1 ", SugarContext.GetTenantId(false),
-                    SugarContext.IsSuperAdmin);
-                // 将Lambda传入过滤器
-                _db.QueryFilter.Add(new TableFilterItem<object>(entityType.Type, lambda));
-            }
-
-            // 配置加删除全局过滤器
-            // 判断实体是否继承了基类
-            // ReSharper disable once InvertIf
-            if (!string.IsNullOrEmpty(entityType.Type.GetProperty(SugarFieldConst.IsDeleted)?.ToString()))
-            {
-                // 构建动态Lambda
-                var lambda = DynamicExpressionParser.ParseLambda(new[] {Expression.Parameter(entityType.Type, "it")},
-                    typeof(bool), $"{nameof(BaseTEntity.IsDeleted)} == @0", false);
-                // 将Lambda传入过滤器
-                _db.QueryFilter.Add(new TableFilterItem<object>(entityType.Type, lambda) {IsJoinQuery = true});
-            }
+            // TODO：这里可能由于SqlSugarBug问题，导致不能使用IF
+            _db.QueryFilter.AddTableFilter<IBaseTenant>(it => it.TenantId == SugarContext.GetTenantId(false));
         }
+
+        // 配置加删除全局过滤器
+        _db.QueryFilter.AddTableFilter<IBaseDeleted>(it => it.IsDeleted == false);
     }
 
     /// <summary>

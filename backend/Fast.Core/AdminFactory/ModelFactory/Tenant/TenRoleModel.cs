@@ -13,16 +13,16 @@ namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 public class TenRoleModel : BaseEntity
 {
     /// <summary>
-    /// 名称
+    /// 角色名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string Name { get; set; }
+    [SugarColumn(ColumnDescription = "角色名称", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
+    public string RoleName { get; set; }
 
     /// <summary>
-    /// 编码
+    /// 角色编码
     /// </summary>
-    [SugarColumn(ColumnDescription = "编码", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Code { get; set; }
+    [SugarColumn(ColumnDescription = "角色编码", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string RoleCode { get; set; }
 
     /// <summary>
     /// 排序

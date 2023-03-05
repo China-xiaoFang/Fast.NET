@@ -8,7 +8,7 @@ public class SysModuleOutput : BaseOutput
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; set; }
+    public string ModuleName { get; set; }
 
     /// <summary>
     /// 颜色

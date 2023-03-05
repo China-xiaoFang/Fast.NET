@@ -69,12 +69,6 @@ public class SysTenantModel : BaseEntity
     public TenantTypeEnum TenantType { get; set; }
 
     /// <summary>
-    /// WebUrl
-    /// </summary>
-    [SugarColumn(ColumnDescription = "WebUrl", ColumnDataType = "Nvarchar(max)", IsNullable = false, IsJson = true)]
-    public List<string> WebUrl { get; set; }
-
-    /// <summary>
     /// LogoUrl
     /// </summary>
     [SugarColumn(ColumnDescription = "LogoUrl", ColumnDataType = "Nvarchar(max)", IsNullable = false)]
@@ -95,12 +89,12 @@ public class SysTenantModel : BaseEntity
     /// <summary>
     /// App授权信息
     /// </summary>
-    [Navigate(NavigateType.OneToMany, nameof(SysTenantAppInfoModel.TenantId))]
+    [Navigate(NavigateType.OneToMany, nameof(SysTenantAppInfoModel.TenantId), nameof(Id))]
     public List<SysTenantAppInfoModel> AppList { get; set; }
 
     /// <summary>
     /// 数据库信息
     /// </summary>
-    [Navigate(NavigateType.OneToMany, nameof(SysTenantDataBaseModel.TenantId))]
+    [Navigate(NavigateType.OneToMany, nameof(SysTenantDataBaseModel.TenantId), nameof(Id))]
     public List<SysTenantDataBaseModel> DataBaseList { get; set; }
 }

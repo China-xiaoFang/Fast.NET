@@ -6,7 +6,7 @@ namespace Fast.Admin.Service.SysModule;
 /// <summary>
 /// 系统模块服务
 /// </summary>
-public class SysModuleService : ISysModuleService
+public class SysModuleService : ISysModuleService,ITransient
 {
     private readonly ISqlSugarRepository<SysModuleModel> _repository;
 
@@ -22,7 +22,8 @@ public class SysModuleService : ISysModuleService
     /// <returns></returns>
     public async Task<PageResult<SysModuleOutput>> QuerySysModulePageList(QuerySysModuleInput input)
     {
-        return await _repository.AsQueryable().WhereIF(!input.Name.IsEmpty(), wh => wh.Name.Contains(input.Name))
+        return await _repository.AsQueryable()
+            .WhereIF(!input.ModuleName.IsEmpty(), wh => wh.ModuleName.Contains(input.ModuleName))
             .WhereIF(!input.ViewType.IsNullOrZero(), wh => wh.ViewType == input.ViewType)
             .WhereIF(!input.IsSystem.IsNullOrZero(), wh => wh.IsSystem == input.IsSystem)
             .WhereIF(!input.Status.IsNullOrZero(), wh => wh.Status == input.Status).OrderBy(ob => ob.Sort)
@@ -36,8 +37,38 @@ public class SysModuleService : ISysModuleService
     /// <returns></returns>
     public async Task<List<SysModuleOutput>> QuerySysModuleSelector()
     {
-        return await _repository.AsQueryable(wh => wh.Status == CommonStatusEnum.Enable).OrderBy(ob => ob.Sort)
-            .Select<SysModuleOutput>().ToListAsync();
+        // 判断是否为超级管理员
+        if (GlobalContext.IsSuperAdmin)
+        {
+            // 查询所有的模块
+            return await _repository.AsQueryable(wh => wh.Status == CommonStatusEnum.Enable).OrderBy(ob => ob.Sort)
+                .Select<SysModuleOutput>().ToListAsync();
+        }
+
+        // 判断是否为系统管理员
+        if (GlobalContext.IsSystemAdmin)
+        {
+            // 查询所有的非超级管理员查看的模块
+            return await _repository
+                .AsQueryable(wh => wh.Status == CommonStatusEnum.Enable && wh.ViewType != ModuleViewTypeEnum.SuperAdmin)
+                .OrderBy(ob => ob.Sort).Select<SysModuleOutput>().ToListAsync();
+        }
+
+        // 判断是否为租户管理员
+        if (GlobalContext.IsTenantAdmin)
+        {
+            // TODO：这里需要做权限处理
+            // 查询所有非超级管理员和系统管理员查看的模块
+            return await _repository
+                .AsQueryable(wh =>
+                    wh.Status == CommonStatusEnum.Enable && wh.ViewType != ModuleViewTypeEnum.SuperAdmin &&
+                    wh.ViewType != ModuleViewTypeEnum.SystemAdmin).OrderBy(ob => ob.Sort).Select<SysModuleOutput>().ToListAsync();
+        }
+        
+        // TODO：这里需要做权限处理
+        // 查询所有非管理员查看的模块
+        return await _repository.AsQueryable(wh => wh.Status == CommonStatusEnum.Enable && wh.ViewType == ModuleViewTypeEnum.All)
+            .OrderBy(ob => ob.Sort).Select<SysModuleOutput>().ToListAsync();
     }
 
     /// <summary>
@@ -48,7 +79,7 @@ public class SysModuleService : ISysModuleService
     public async Task AddModule(AddModuleInput input)
     {
         // 模块名称不能重复
-        if (await _repository.IsExistsAsync(wh => wh.Name == input.Name))
+        if (await _repository.IsExistsAsync(wh => wh.ModuleName == input.ModuleName))
         {
             throw Oops.Bah("模块名称不能重复！");
         }
@@ -71,7 +102,7 @@ public class SysModuleService : ISysModuleService
     public async Task UpdateModule(UpdateModuleInput input)
     {
         // 模块名称不能重复
-        if (await _repository.IsExistsAsync(wh => wh.Id != input.Id && wh.Name == input.Name))
+        if (await _repository.IsExistsAsync(wh => wh.Id != input.Id && wh.ModuleName == input.ModuleName))
         {
             throw Oops.Bah("模块名称不能重复！");
         }

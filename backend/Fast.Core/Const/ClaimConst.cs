@@ -31,9 +31,14 @@ public class ClaimConst
     public const string Account = "Account";
 
     /// <summary>
+    /// 工号
+    /// </summary>
+    public const string JobNum = "JobNum";
+
+    /// <summary>
     /// 名称
     /// </summary>
-    public const string Name = "Name";
+    public const string UserName = "UserName";
 
     /// <summary>
     /// 管理员类型
@@ -53,22 +58,22 @@ public class ClaimConst
     /// <summary>
     /// Token
     /// </summary>
-    public const string AuthAccessToken = "Fast-Net-Authorization";
+    public const string AuthAccessToken = "Authorization";
 
     /// <summary>
     /// 刷新的Token
     /// </summary>
-    public const string AuthRefreshToken = "Fast-Net-X-Authorization";
+    public const string AuthRefreshToken = "X-Authorization";
 
     /// <summary>
     /// 刷新的Token
     /// </summary>
-    public const string AccessToken = "Fast-Net-Access-Token";
+    public const string AccessToken = "Access-Token";
 
     /// <summary>
     /// 新的刷新Token
     /// </summary>
-    public const string RefreshToken = "Fast-Net-X-Access-Token";
+    public const string RefreshToken = "X-Access-Token";
 
     /// <summary>
     /// UUID

@@ -8,7 +8,7 @@ public class QuerySysModuleInput : PageInputBase
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; set; }
+    public string ModuleName { get; set; }
 
     /// <summary>
     /// 查看类型
@@ -35,7 +35,7 @@ public class AddModuleInput
     /// 名称
     /// </summary>
     [Required(ErrorMessage = "名称不能为空")]
-    public string Name { get; set; }
+    public string ModuleName { get; set; }
 
     /// <summary>
     /// 颜色
