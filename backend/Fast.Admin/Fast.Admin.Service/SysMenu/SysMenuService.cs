@@ -6,7 +6,7 @@ namespace Fast.Admin.Service.SysMenu;
 /// <summary>
 /// 系统菜单服务
 /// </summary>
-public class SysMenuService : ISysMenuService,ITransient
+public class SysMenuService : ISysMenuService, ITransient
 {
     private readonly ISqlSugarRepository<SysMenuModel> _repository;
 
@@ -25,8 +25,7 @@ public class SysMenuService : ISysMenuService,ITransient
         var list = await _repository.AsQueryable().WhereIF(!input.ModuleId.IsNullOrZero(), wh => wh.ModuleId == input.ModuleId)
             .WhereIF(!input.MenuName.IsEmpty(), wh => wh.MenuName.Contains(input.MenuName))
             .WhereIF(!input.IsSystem.IsNullOrZero(), wh => wh.IsSystem == input.IsSystem)
-            .WhereIF(!input.Status.IsNullOrZero(), wh => wh.Status == input.Status).Select<SysMenuTreeOutput>()
-            .ToListAsync();
+            .WhereIF(!input.Status.IsNullOrZero(), wh => wh.Status == input.Status).Select<SysMenuTreeOutput>().ToListAsync();
 
         var result = new TreeBuildUtil<SysMenuTreeOutput>().Build(list);
 

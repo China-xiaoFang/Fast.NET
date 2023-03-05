@@ -1,5 +1,4 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.SqlSugar.Tenant.AttributeFilter;
+﻿using Fast.SqlSugar.Tenant.AttributeFilter;
 using Fast.SqlSugar.Tenant.BaseModel;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Sys;

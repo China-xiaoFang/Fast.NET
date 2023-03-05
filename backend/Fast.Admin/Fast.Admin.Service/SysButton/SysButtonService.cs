@@ -6,7 +6,7 @@ namespace Fast.Admin.Service.SysButton;
 /// <summary>
 /// 系统按钮服务
 /// </summary>
-public class SysButtonService : ISysButtonService,ITransient
+public class SysButtonService : ISysButtonService, ITransient
 {
     private readonly ISqlSugarRepository<SysButtonModel> _repository;
 
@@ -70,13 +70,15 @@ public class SysButtonService : ISysButtonService,ITransient
         }
 
         // 判断编码是否重复
-        if (await _repository.IsExistsAsync(wh => wh.Id != input.Id && wh.MenuId == input.MenuId && wh.ButtonCode == input.ButtonCode))
+        if (await _repository.IsExistsAsync(wh =>
+                wh.Id != input.Id && wh.MenuId == input.MenuId && wh.ButtonCode == input.ButtonCode))
         {
             throw Oops.Bah("按钮编码重复！");
         }
 
         // 判断名称是否重复
-        if (await _repository.IsExistsAsync(wh => wh.Id != input.Id && wh.MenuId == input.MenuId && wh.ButtonName == input.ButtonName))
+        if (await _repository.IsExistsAsync(wh =>
+                wh.Id != input.Id && wh.MenuId == input.MenuId && wh.ButtonName == input.ButtonName))
         {
             throw Oops.Bah("按钮名称重复！");
         }

@@ -6,7 +6,7 @@ namespace Fast.Admin.Service.SysModule;
 /// <summary>
 /// 系统模块服务
 /// </summary>
-public class SysModuleService : ISysModuleService,ITransient
+public class SysModuleService : ISysModuleService, ITransient
 {
     private readonly ISqlSugarRepository<SysModuleModel> _repository;
 
@@ -64,7 +64,7 @@ public class SysModuleService : ISysModuleService,ITransient
                     wh.Status == CommonStatusEnum.Enable && wh.ViewType != ModuleViewTypeEnum.SuperAdmin &&
                     wh.ViewType != ModuleViewTypeEnum.SystemAdmin).OrderBy(ob => ob.Sort).Select<SysModuleOutput>().ToListAsync();
         }
-        
+
         // TODO：这里需要做权限处理
         // 查询所有非管理员查看的模块
         return await _repository.AsQueryable(wh => wh.Status == CommonStatusEnum.Enable && wh.ViewType == ModuleViewTypeEnum.All)
