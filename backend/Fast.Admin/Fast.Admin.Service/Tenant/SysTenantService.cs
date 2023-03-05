@@ -5,6 +5,8 @@ using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
 using Fast.Core.CodeFirst;
 using Fast.Core.CodeFirst.Internal;
+using Fast.SqlSugar.Tenant.BaseModel.Interface;
+using Fast.SqlSugar.Tenant.Internal.Dto;
 using Furion.DataEncryption;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -42,8 +44,22 @@ public class SysTenantService : ISysTenantService, ITransient
             return predicate == null ? tenantList : tenantList.Where(predicate.Compile()).ToList();
 
         // 获取租户基本信息
-        tenantList = await _tenant.Queryable<SysTenantModel>().Includes(app => app.AppList).Includes(db => db.DataBaseList)
-            .ToListAsync();
+        // 这里导航查询过滤器不能禁用，所以手动写
+        //tenantList = await _tenant.Queryable<SysTenantModel>().ClearFilter().Where(wh => wh.IsDeleted == false)
+        //    .Includes(app => app.AppList.Where(wh => wh.IsDeleted == false).ToList())
+        //    .Includes(db => db.DataBaseList.Where(wh => wh.IsDeleted == false).ToList()).ToListAsync();
+        tenantList = await _tenant.Queryable<SysTenantModel>().ToListAsync();
+        var tenantIdList = tenantList.Select(sl => sl.Id).ToList();
+        var appList = await _tenant.Queryable<SysTenantAppInfoModel>().ClearFilter<IBaseTenant>()
+            .Where(wh => tenantIdList.Contains(wh.TenantId)).ToListAsync();
+        var dbList = await _tenant.Queryable<SysTenantDataBaseModel>().ClearFilter<IBaseTenant>()
+            .Where(wh => tenantIdList.Contains(wh.TenantId)).ToListAsync();
+        foreach (var item in tenantList)
+        {
+            item.AppList = appList.Where(wh => wh.TenantId == item.Id).ToList();
+            item.DataBaseList = dbList.Where(wh => wh.TenantId == item.Id).ToList();
+        }
+
         // 获取租户两个管理员信息
         // 注：这里如果租户过多的话可能存在卡顿
         foreach (var tenant in tenantList)
@@ -72,13 +88,38 @@ public class SysTenantService : ISysTenantService, ITransient
         var webUrl = GlobalContext.OriginUrl;
 
         // 根据主机Host判断，是否存在该租户
-        var tenantList = await GetAllTenantInfo(wh => wh.WebUrl.Contains(webUrl));
+        var tenantList = await GetAllTenantInfo(wh =>
+            wh.AppList.Any(appWh => appWh.AppType == AppTypeEnum.WebAdmin && appWh.AppKey == webUrl));
 
         if (tenantList is not {Count: > 0})
-            throw Oops.Bah("租户信息不存在！");
+            throw Oops.Bah("租户授权信息不存在！");
 
         // 获取第一个
         var tenantInfo = tenantList[0];
+
+        // 判断授权是否过期或者还没有到使用的日期
+        var appList = tenantInfo.AppList.Where(wh => wh.AppType == AppTypeEnum.WebAdmin && wh.AppKey == webUrl)
+            .OrderBy(ob => ob.AuthStartTime).ToList();
+        if (!appList.Any())
+        {
+            throw Oops.Bah($"{AppTypeEnum.WebAdmin.GetDescription()}未授权使用，请联系客服进行授权！");
+        }
+
+        var time = DateTime.Now;
+
+        // 判断是否已经过期
+        if (appList[^1].AuthEndTime < time)
+        {
+            throw Oops.Bah($"{AppTypeEnum.WebAdmin.GetDescription()}授权已过期，请联系客服进行续费！");
+        }
+
+        // 判断是否还没到使用日期
+        if (appList.Any(wh =>
+                (wh.AuthStartTime < time && wh.AuthEndTime < time) || (wh.AuthStartTime > time && wh.AuthEndTime > time)))
+        {
+            throw Oops.Bah(
+                $"{AppTypeEnum.WebAdmin.GetDescription()}授权使用开始时间为：{appList.FirstOrDefault(f => f.AuthEndTime < time)?.AuthStartTime:yyyy-MM-dd HH:mm:ss}");
+        }
 
         var result = tenantInfo.Adapt<WebSiteInitOutput>();
         result.TenantId = tenantInfo.Id.ToString().ToBase64();
@@ -93,7 +134,7 @@ public class SysTenantService : ISysTenantService, ITransient
     /// <returns></returns>
     public async Task<PageResult<TenantOutput>> QueryTenantPageList(QueryTenantInput input)
     {
-        return await _repository.Where(wh => wh.TenantType != TenantTypeEnum.System)
+        return await _repository.AsQueryable().Where(wh => wh.TenantType != TenantTypeEnum.System)
             .WhereIF(!input.Name.IsEmpty(), wh => wh.ChName.Contains(input.Name))
             .WhereIF(!input.ShortName.IsEmpty(), wh => wh.ChShortName.Contains(input.ShortName))
             .WhereIF(!input.AdminName.IsEmpty(), wh => wh.AdminName.Contains(input.AdminName))
@@ -123,10 +164,6 @@ public class SysTenantService : ISysTenantService, ITransient
         if (await _repository.AnyAsync(wh =>
                 wh.ChName == input.Name || wh.ChShortName == input.ShortName || wh.Email == input.Email))
             throw Oops.Bah("已存在同名租户信息！");
-
-        // 判断租户的WebUrl是否存在
-        if (await _repository.AnyAsync(wh => SqlFunc.ContainsArray(wh.WebUrl, input.WebUrl)))
-            throw Oops.Bah("已存在同主机租户信息！");
 
         var model = input.Adapt<SysTenantModel>();
         model.Secret = StringUtil.GetGuid();
@@ -172,7 +209,7 @@ public class SysTenantService : ISysTenantService, ITransient
 
         // 初始化数据
         await InitNewTenant(newTenantInfo,
-            entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Tenant.GetHashCode()).Select(sl => sl.Type));
+            entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Tenant.GetHashCode()).ToList());
 
         // 删除缓存
         await _cache.DelAsync(CacheConst.TenantInfo);
@@ -186,7 +223,7 @@ public class SysTenantService : ISysTenantService, ITransient
     /// <param name="isInit">是否为初始化</param>
     /// <returns></returns>
     [NonAction]
-    public async Task InitNewTenant(SysTenantModel newTenant, IEnumerable<Type> entityTypeList, bool isInit = false)
+    public async Task InitNewTenant(SysTenantModel newTenant, List<SugarEntityTypeInfo> entityTypeList, bool isInit = false)
     {
         var _db = _tenant.LoadSqlSugar<TenUserModel>(newTenant.Id);
 
@@ -199,15 +236,16 @@ public class SysTenantService : ISysTenantService, ITransient
             0)
             throw Oops.Bah("租户数据库已存在！");
 
-        _db.CodeFirst.InitTables(entityTypeList.ToArray());
+        _db.CodeFirst.InitTables(entityTypeList!.Where(wh => wh.IsSplitTable == false).Select(sl => sl.Type).ToArray());
+        _db.CodeFirst.SplitTables().InitTables(entityTypeList.Where(wh => wh.IsSplitTable).Select(sl => sl.Type).ToArray());
 
         // 初始化公司（组织架构）
         var newAdminOrg = new TenOrgModel
         {
             ParentId = 0,
             ParentIds = new List<long> {0},
-            Name = newTenant.ChName,
-            Code = "org_hq",
+            OrgName = newTenant.ChName,
+            OrgCode = "org_hq",
             Contacts = newTenant.AdminName,
             Tel = newTenant.Phone
         };
@@ -215,8 +253,8 @@ public class SysTenantService : ISysTenantService, ITransient
 
         var newAdminRole = new TenRoleModel
         {
-            Name = RoleTypeEnum.AdminRole.GetDescription(),
-            Code = "manager_role",
+            RoleName = RoleTypeEnum.AdminRole.GetDescription(),
+            RoleCode = "manager_role",
             Sort = 1,
             DataScopeType = DataScopeTypeEnum.All,
             RoleType = RoleTypeEnum.AdminRole
@@ -233,7 +271,7 @@ public class SysTenantService : ISysTenantService, ITransient
                 Id = ClaimConst.DefaultSuperAdminId,
                 Account = "SuperAdmin",
                 Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
-                Name = "超级管理员",
+                UserName = "超级管理员",
                 NickName = "超级管理员",
                 Avatar = CommonConst.Default_Avatar_Url,
                 Sex = GenderEnum.Unknown,
@@ -249,7 +287,7 @@ public class SysTenantService : ISysTenantService, ITransient
             Id = ClaimConst.DefaultSystemAdminId,
             Account = "SystemAdmin",
             Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
-            Name = "系统管理员",
+            UserName = "系统管理员",
             NickName = "系统管理员",
             Avatar = CommonConst.Default_Avatar_Url,
             Sex = GenderEnum.Unknown,
@@ -263,7 +301,7 @@ public class SysTenantService : ISysTenantService, ITransient
         {
             Account = newTenant.Email,
             Password = MD5Encryption.Encrypt(CommonConst.DefaultAdminPassword),
-            Name = newTenant.AdminName,
+            UserName = newTenant.AdminName,
             NickName = newTenant.AdminName,
             Avatar = CommonConst.Default_Avatar_Url,
             Sex = GenderEnum.Unknown,
@@ -273,8 +311,9 @@ public class SysTenantService : ISysTenantService, ITransient
         };
         newAdminUser = await _db.Insertable(newAdminUser).ExecuteReturnEntityAsync();
 
-        // 初始化职工
-        await _db.Insertable(new TenEmpModel {Id = newAdminUser.Id, JobNum = "10001", OrgId = newAdminOrg.Id})
+        // 初始化职工信息
+        // TODO:这里的工号要自动生成
+        await _db.Insertable(new TenEmpModel {SysUserId = newAdminUser.Id, JobNum = "10001", OrgId = newAdminOrg.Id})
             .ExecuteCommandAsync();
 
         // 初始化用户角色

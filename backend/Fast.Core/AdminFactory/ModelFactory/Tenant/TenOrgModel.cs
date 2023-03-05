@@ -25,16 +25,16 @@ public class TenOrgModel : BaseEntity
     public List<long> ParentIds { get; set; }
 
     /// <summary>
-    /// 名称
+    /// 组织名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string Name { get; set; }
+    [SugarColumn(ColumnDescription = "组织名称", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
+    public string OrgName { get; set; }
 
     /// <summary>
-    /// 编码
+    /// 组织编码
     /// </summary>
-    [SugarColumn(ColumnDescription = "编码", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Code { get; set; }
+    [SugarColumn(ColumnDescription = "组织编码", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string OrgCode { get; set; }
 
     /// <summary>
     /// 联系人

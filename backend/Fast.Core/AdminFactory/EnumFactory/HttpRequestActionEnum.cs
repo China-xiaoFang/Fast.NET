@@ -28,10 +28,10 @@ public enum HttpRequestActionEnum
     Add = 3,
 
     /// <summary>
-    /// 编辑
+    /// 更新
     /// </summary>
-    [Description("编辑")]
-    Edit = 4,
+    [Description("更新")]
+    Update = 4,
 
     /// <summary>
     /// 删除

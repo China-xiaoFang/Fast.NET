@@ -21,6 +21,11 @@ public class CacheConst
     public const string SysDictInfo = "System:dictInfo";
 
     /// <summary>
+    /// 租户字典信息缓存
+    /// </summary>
+    public const string TenDictInfo = "Tenant:dictInfo";
+
+    /// <summary>
     /// 系统配置信息缓存
     /// </summary>
     public const string SysConfigInfo = "System:Config";
@@ -30,15 +35,15 @@ public class CacheConst
     /// </summary>
     public const string TenConfigInfo = "Tenant:Config";
 
-    /// <summary>
-    /// 用户缓存
-    /// </summary>
-    public const string User = "User:";
+    ///// <summary>
+    ///// 用户缓存
+    ///// </summary>
+    //public const string User = "User:";
 
-    /// <summary>
-    /// 菜单缓存
-    /// </summary>
-    public const string Menu = "Menu:";
+    ///// <summary>
+    ///// 菜单缓存
+    ///// </summary>
+    //public const string Menu = "Menu:";
 
     /// <summary>
     /// 权限缓存
@@ -69,4 +74,9 @@ public class CacheConst
     /// 在线用户缓存
     /// </summary>
     public const string OnlineUser = "onlineUser";
+
+    /// <summary>
+    /// 输入错误密码次数
+    /// </summary>
+    public const string InputErrorPassword = "Auth:ErrorPassword:";
 }

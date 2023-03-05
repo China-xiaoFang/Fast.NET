@@ -33,7 +33,7 @@ public class LogEventSubscriber : IEventSubscriber
         {
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogOpModel>(source.TenantId);
             var log = (SysLogOpModel) context.Source.Payload;
-            await _db.Insertable(log).CallEntityMethod(m => m.RecordCreate()).ExecuteCommandAsync();
+            await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
         }
     }
 
@@ -45,7 +45,19 @@ public class LogEventSubscriber : IEventSubscriber
         {
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogVisModel>(source.TenantId);
             var log = (SysLogVisModel) context.Source.Payload;
-            await _db.Insertable(log).CallEntityMethod(m => m.RecordCreate()).ExecuteCommandAsync();
+            await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
+        }
+    }
+
+    [EventSubscribe("Create:DiffLog")]
+    public async Task CreateDiffLog(EventHandlerExecutingContext context)
+    {
+        using var scope = Services.CreateScope();
+        if (context.Source is FastChannelEventSource source)
+        {
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogDiffModel>(source.TenantId);
+            var log = (SysLogDiffModel) context.Source.Payload;
+            await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
         }
     }
 

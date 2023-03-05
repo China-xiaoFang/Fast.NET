@@ -8,5 +8,5 @@ public interface IBaseTenant : IDbEntity
     /// <summary>
     /// 租户Id
     /// </summary>
-    long? TenantId { get; set; }
+    long TenantId { get; set; }
 }

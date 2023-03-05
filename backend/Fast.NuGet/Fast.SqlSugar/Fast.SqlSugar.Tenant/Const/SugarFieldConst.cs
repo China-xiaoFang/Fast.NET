@@ -43,6 +43,11 @@ public class SugarFieldConst
     public const string UpdatedUserName = nameof(BaseTEntity.UpdatedUserName);
 
     /// <summary>
+    /// 更新版本控制字段
+    /// </summary>
+    public const string UpdatedVersion = nameof(BaseTEntity.UpdatedVersion);
+
+    /// <summary>
     /// 软删除字段
     /// </summary>
     public const string IsDeleted = nameof(BaseTEntity.IsDeleted);

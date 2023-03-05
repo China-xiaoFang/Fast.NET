@@ -13,17 +13,17 @@ public static class BaiduTranslatorUtil
     /// <summary>
     /// 百度翻译开发者AppId
     /// </summary>
-    private static string AppId => ConfigOperation.GetConfig(ConfigConst.BaiduTranslator.AppId).Value;
+    private static string AppId => ConfigOperation.System.GetConfig(ConfigConst.BaiduTranslator.AppId).Value;
 
     /// <summary>
     /// 百度翻译开发者密钥
     /// </summary>
-    private static string SecretKey => ConfigOperation.GetConfig(ConfigConst.BaiduTranslator.SecretKey).Value;
+    private static string SecretKey => ConfigOperation.System.GetConfig(ConfigConst.BaiduTranslator.SecretKey).Value;
 
     /// <summary>
     /// 百度翻译请求Url
     /// </summary>
-    private static string Url => ConfigOperation.GetConfig(ConfigConst.BaiduTranslator.Url).Value;
+    private static string Url => ConfigOperation.System.GetConfig(ConfigConst.BaiduTranslator.Url).Value;
 
     /// <summary>
     /// 自动检测

@@ -3,12 +3,12 @@
 /// <summary>
 /// 系统模块输出
 /// </summary>
-public class SysModuleOutput
+public class SysModuleOutput : BaseOutput
 {
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; set; }
+    public string ModuleName { get; set; }
 
     /// <summary>
     /// 颜色

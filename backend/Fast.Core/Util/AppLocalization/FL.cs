@@ -48,14 +48,14 @@ public static class FL
             var _cache = serviceScope.GetService<ICache>();
 
             // 先从缓存中读取
-            var sysAppLocalizationModels = _cache.Get<List<SysAppLocalizationModel>>(CacheConst.SysAppLocalization);
+            var sysAppLocalizationModels = _cache.Get<List<SysAppLocalizationOutput>>(CacheConst.SysAppLocalization);
 
             if (sysAppLocalizationModels == null || !sysAppLocalizationModels.Any())
             {
                 // 获取服务
                 var _db = serviceScope.GetService<ISqlSugarClient>();
                 // 获取所有应用本地化配置信息
-                sysAppLocalizationModels = _db.Queryable<SysAppLocalizationModel>().ToList();
+                sysAppLocalizationModels = _db.Queryable<SysAppLocalizationModel>().Select<SysAppLocalizationOutput>().ToList();
 
                 // 放入缓存
                 _cache.Set(CacheConst.SysAppLocalization, sysAppLocalizationModels);
@@ -84,13 +84,7 @@ public static class FL
                 }
 
                 var translatorResultDto = BaiduTranslatorUtil.Translator(name, from, to);
-                sysAppLocalizationModel = new SysAppLocalizationModel
-                {
-                    Chinese = name,
-                    English = name,
-                    TranslationSource = TranslationSourceEnum.BaiduTranslate,
-                    IsSystem = YesOrNotEnum.Y
-                };
+                sysAppLocalizationModel = new SysAppLocalizationOutput {Chinese = name, English = name};
                 // 判断是否存在翻译结果
                 if (translatorResultDto?.Trans_Result is {Count: > 0})
                 {
@@ -107,7 +101,13 @@ public static class FL
                     }
 
                     // 存入数据库
-                    _db.Insertable(sysAppLocalizationModel).ExecuteCommand();
+                    _db.Insertable(new SysAppLocalizationModel
+                    {
+                        Chinese = sysAppLocalizationModel.Chinese,
+                        English = sysAppLocalizationModel.English,
+                        TranslationSource = TranslationSourceEnum.BaiduTranslate,
+                        IsSystem = YesOrNotEnum.Y
+                    }).ExecuteCommand();
 
                     // 删除缓存
                     _cache.Del(CacheConst.SysAppLocalization);
@@ -166,5 +166,21 @@ public static class FL
 
         // (1 - 英文占比) * 100 大于等于百分比，则代表是中文
         return (1 - englishPer) * 100 >= percentage;
+    }
+
+    /// <summary>
+    /// 系统应用本地化表Model类
+    /// </summary>
+    class SysAppLocalizationOutput
+    {
+        /// <summary>
+        /// 中文
+        /// </summary>
+        public string Chinese { get; set; }
+
+        /// <summary>
+        /// 英文
+        /// </summary>
+        public string English { get; set; }
     }
 }

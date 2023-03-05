@@ -29,7 +29,7 @@ public class TenUserModel : BaseEntity
     /// 姓名
     /// </summary>
     [SugarColumn(ColumnDescription = "姓名", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string Name { get; set; }
+    public string UserName { get; set; }
 
     /// <summary>
     /// 昵称
@@ -52,7 +52,7 @@ public class TenUserModel : BaseEntity
     /// <summary>
     /// 性别
     /// </summary>
-    [SugarColumn(ColumnDescription = "性别", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "性别", ColumnDataType = "tinyint", IsNullable = false)]
     public GenderEnum Sex { get; set; }
 
     /// <summary>
@@ -88,12 +88,18 @@ public class TenUserModel : BaseEntity
     /// <summary>
     /// 管理员类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "管理员类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "管理员类型", ColumnDataType = "tinyint", IsNullable = false)]
     public AdminTypeEnum AdminType { get; set; }
 
     /// <summary>
     /// 状态
     /// </summary>
-    [SugarColumn(ColumnDescription = "状态", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "状态", ColumnDataType = "tinyint", IsNullable = false)]
     public CommonStatusEnum Status { get; set; } = CommonStatusEnum.Enable;
+
+    /// <summary>
+    /// 工号
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public string JobNum { get; set; }
 }

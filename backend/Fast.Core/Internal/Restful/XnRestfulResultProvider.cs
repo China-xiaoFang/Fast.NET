@@ -24,6 +24,16 @@ public class XnRestfulResultProvider : IUnifyResultProvider
     /// <returns></returns>
     public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata)
     {
+        // 异常拦截，主要是为了处理特殊情况下使用 throw new Exception 抛出的业务异常
+        var exceptionType = context.Exception.GetType();
+
+        // SqlSugar 更新提交覆盖异常
+        if (exceptionType == typeof(VersionExceptions))
+        {
+            return new JsonResult(GetXnRestfulResult.GetXnRestfulResult(StatusCodes.Status400BadRequest, false, metadata.Errors,
+                "当前编辑的数据不是最新版本！"));
+        }
+
         return new JsonResult(GetXnRestfulResult.GetXnRestfulResult(metadata.StatusCode, false, metadata.Errors,
             "系统内部错误，请联系管理员处理！"));
     }

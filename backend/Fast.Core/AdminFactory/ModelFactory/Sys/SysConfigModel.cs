@@ -1,13 +1,12 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.SqlSugar.Tenant.AttributeFilter;
+﻿using Fast.SqlSugar.Tenant.AttributeFilter;
 using Fast.SqlSugar.Tenant.BaseModel;
 
 namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 
 /// <summary>
-/// 系统字典类型表Model类
+/// 系统配置表Model类
 /// </summary>
-[SugarTable("Sys_Config", "系统字典类型表")]
+[SugarTable("Sys_Config", "系统配置表")]
 [SugarDbType]
 public class SysConfigModel : BaseEntity
 {
@@ -35,10 +34,4 @@ public class SysConfigModel : BaseEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "值", ColumnDataType = "Nvarchar(200)", IsNullable = false)]
     public string Value { get; set; }
-
-    /// <summary>
-    /// 配置类型
-    /// </summary>
-    [SugarColumn(ColumnDescription = "配置类型", IsNullable = false)]
-    public SysConfigTypeEnum ConfigType { get; set; }
 }

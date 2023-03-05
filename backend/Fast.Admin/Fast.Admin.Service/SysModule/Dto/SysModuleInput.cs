@@ -8,7 +8,7 @@ public class QuerySysModuleInput : PageInputBase
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; set; }
+    public string ModuleName { get; set; }
 
     /// <summary>
     /// 查看类型
@@ -35,7 +35,7 @@ public class AddModuleInput
     /// 名称
     /// </summary>
     [Required(ErrorMessage = "名称不能为空")]
-    public string Name { get; set; }
+    public string ModuleName { get; set; }
 
     /// <summary>
     /// 颜色
@@ -72,18 +72,6 @@ public class AddModuleInput
 /// 更新模块信息
 /// </summary>
 public class UpdateModuleInput : AddModuleInput
-{
-    /// <summary>
-    /// 主键Id
-    /// </summary>
-    [Required(ErrorMessage = "主键Id不能为空")]
-    public long Id { get; set; }
-}
-
-/// <summary>
-/// 更新模块状态
-/// </summary>
-public class UpdateModuleStatusInput
 {
     /// <summary>
     /// 主键Id

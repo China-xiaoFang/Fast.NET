@@ -28,6 +28,7 @@ export default {
 					// 挂载app
 					app.mount("#app");
 					initLoading();
+					message.success($t("message.authSuccess"));
 				} else {
 					initLoading();
 					Modal.error({

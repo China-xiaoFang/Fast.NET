@@ -11,12 +11,14 @@ public class SugarEntityTypeInfo
     /// <param name="className">类名称</param>
     /// <param name="dbType">数据库类型</param>
     /// <param name="dbTypeName">数据库类型名称</param>
+    /// <param name="isSplitTable">是否分表</param>
     /// <param name="type">实体类型</param>
-    public SugarEntityTypeInfo(string className, int dbType, string dbTypeName, Type type)
+    public SugarEntityTypeInfo(string className, int dbType, string dbTypeName, bool isSplitTable, Type type)
     {
         ClassName = className;
         DbType = dbType;
         DbTypeName = dbTypeName;
+        IsSplitTable = isSplitTable;
         Type = type;
     }
 
@@ -34,6 +36,11 @@ public class SugarEntityTypeInfo
     /// 数据库类型名称
     /// </summary>
     public string DbTypeName { get; set; }
+
+    /// <summary>
+    /// 是否分表
+    /// </summary>
+    public bool IsSplitTable { get; set; }
 
     /// <summary>
     /// 实体类型

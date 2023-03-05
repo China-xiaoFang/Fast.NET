@@ -26,12 +26,12 @@ public class SysAppLocalizationModel : BaseEntity
     /// <summary>
     /// 翻译来源
     /// </summary>
-    [SugarColumn(ColumnDescription = "翻译来源", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "翻译来源", ColumnDataType = "tinyint", IsNullable = false)]
     public TranslationSourceEnum TranslationSource { get; set; }
 
     /// <summary>
     /// 是否为系统配置
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否为系统配置", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "是否为系统配置", ColumnDataType = "tinyint", IsNullable = false)]
     public YesOrNotEnum IsSystem { get; set; }
 }

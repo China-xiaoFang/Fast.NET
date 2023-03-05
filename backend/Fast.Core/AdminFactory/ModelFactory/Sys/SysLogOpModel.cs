@@ -8,10 +8,17 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 /// <summary>
 /// 系统操作日志表Model类
 /// </summary>
-[SugarTable("Sys_Log_Op", "系统操作日志表")]
+[SugarTable("Sys_Log_Op_{year}{month}{day}", "系统操作日志表")]
+[SplitTable(SplitType.Month)]
 [SugarDbType(SugarDbTypeEnum.Tenant)]
 public class SysLogOpModel : BaseLogEntity
 {
+    /// <summary>
+    /// 主键Id
+    /// </summary>
+    [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true)]
+    public new long Id { get; set; }
+
     /// <summary>
     /// 操作人账号
     /// </summary>
@@ -22,18 +29,18 @@ public class SysLogOpModel : BaseLogEntity
     /// 姓名
     /// </summary>
     [SugarColumn(ColumnDescription = "姓名", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
-    public string Name { get; set; }
+    public string UserName { get; set; }
 
     /// <summary>
     /// 是否执行成功
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否执行成功", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "是否执行成功", ColumnDataType = "tinyint", IsNullable = true)]
     public YesOrNotEnum Success { get; set; }
 
     /// <summary>
     /// 操作行为
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作行为", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "操作行为", ColumnDataType = "tinyint", IsNullable = true)]
     public HttpRequestActionEnum? OperationAction { get; set; }
 
     /// <summary>
@@ -93,6 +100,7 @@ public class SysLogOpModel : BaseLogEntity
     /// <summary>
     /// 操作时间
     /// </summary>
+    [SplitField]
     [SugarColumn(ColumnDescription = "操作时间", ColumnDataType = "datetimeoffset", IsNullable = false)]
     public DateTime OpTime { get; set; }
 }

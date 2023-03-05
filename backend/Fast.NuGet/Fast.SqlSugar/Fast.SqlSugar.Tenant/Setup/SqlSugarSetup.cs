@@ -131,7 +131,8 @@ public static class SqlSugarSetup
         {
             var sqlSugarClient = new SqlSugarClient(connectConfig);
             // 过滤器
-            SugarEntityFilter.LoadSugarFilter(sqlSugarClient);
+            SugarEntityFilter.LoadSugarFilter(sqlSugarClient, SugarContext.ConnectionStringsOptions.CommandTimeOut,
+                SugarContext.ConnectionStringsOptions.SugarSqlExecMaxSeconds, SugarContext.ConnectionStringsOptions.DiffLog);
 
             return sqlSugarClient;
         });

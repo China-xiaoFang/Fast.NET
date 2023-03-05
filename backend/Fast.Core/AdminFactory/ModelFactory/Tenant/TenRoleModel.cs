@@ -13,16 +13,16 @@ namespace Fast.Core.AdminFactory.ModelFactory.Tenant;
 public class TenRoleModel : BaseEntity
 {
     /// <summary>
-    /// 名称
+    /// 角色名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
-    public string Name { get; set; }
+    [SugarColumn(ColumnDescription = "角色名称", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
+    public string RoleName { get; set; }
 
     /// <summary>
-    /// 编码
+    /// 角色编码
     /// </summary>
-    [SugarColumn(ColumnDescription = "编码", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Code { get; set; }
+    [SugarColumn(ColumnDescription = "角色编码", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string RoleCode { get; set; }
 
     /// <summary>
     /// 排序
@@ -33,7 +33,7 @@ public class TenRoleModel : BaseEntity
     /// <summary>
     /// 数据范围类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "数据范围类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "数据范围类型", ColumnDataType = "tinyint", IsNullable = false)]
     public DataScopeTypeEnum DataScopeType { get; set; }
 
     /// <summary>
@@ -45,12 +45,12 @@ public class TenRoleModel : BaseEntity
     /// <summary>
     /// 状态
     /// </summary>
-    [SugarColumn(ColumnDescription = "状态", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "状态", ColumnDataType = "tinyint", IsNullable = false)]
     public CommonStatusEnum Status { get; set; } = CommonStatusEnum.Enable;
 
     /// <summary>
     /// 角色类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "角色类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "角色类型", ColumnDataType = "tinyint", IsNullable = false)]
     public RoleTypeEnum RoleType { get; set; }
 }

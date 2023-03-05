@@ -19,6 +19,14 @@ export default {
 	},
 
 	/**
+	 * 获取登录用户信息
+	 * @returns
+	 */
+	getLoginUser() {
+		return getRequest("/getLoginUser");
+	},
+
+	/**
 	 * 测试Get请求参数加密
 	 * @param value
 	 * @returns

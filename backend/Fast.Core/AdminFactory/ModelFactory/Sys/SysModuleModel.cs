@@ -12,10 +12,10 @@ namespace Fast.Core.AdminFactory.ModelFactory.Sys;
 public class SysModuleModel : BaseEntity
 {
     /// <summary>
-    /// 名称
+    /// 模块名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Name { get; set; }
+    [SugarColumn(ColumnDescription = "模块名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string ModuleName { get; set; }
 
     /// <summary>
     /// 颜色
@@ -32,13 +32,13 @@ public class SysModuleModel : BaseEntity
     /// <summary>
     /// 查看类型
     /// </summary>
-    [SugarColumn(ColumnDescription = "查看类型", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "查看类型", ColumnDataType = "tinyint", IsNullable = false)]
     public ModuleViewTypeEnum ViewType { get; set; }
 
     /// <summary>
     /// 是否为系统模块
     /// </summary>
-    [SugarColumn(ColumnDescription = "是否为系统模块", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "是否为系统模块", ColumnDataType = "tinyint", IsNullable = false)]
     public YesOrNotEnum IsSystem { get; set; }
 
     /// <summary>
@@ -50,6 +50,6 @@ public class SysModuleModel : BaseEntity
     /// <summary>
     /// 状态
     /// </summary>
-    [SugarColumn(ColumnDescription = "状态", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "状态", ColumnDataType = "tinyint", IsNullable = false)]
     public CommonStatusEnum Status { get; set; }
 }

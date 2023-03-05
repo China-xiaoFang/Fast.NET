@@ -31,9 +31,14 @@ public class ClaimConst
     public const string Account = "Account";
 
     /// <summary>
+    /// 工号
+    /// </summary>
+    public const string JobNum = "JobNum";
+
+    /// <summary>
     /// 名称
     /// </summary>
-    public const string Name = "Name";
+    public const string UserName = "UserName";
 
     /// <summary>
     /// 管理员类型
@@ -51,19 +56,29 @@ public class ClaimConst
     public const string Origin = "Fast-Net-Origin";
 
     /// <summary>
-    /// 刷新Token
+    /// Token
     /// </summary>
-    public const string RefreshToken = "Fast-Net-Access-Token";
+    public const string AuthAccessToken = "Authorization";
+
+    /// <summary>
+    /// 刷新的Token
+    /// </summary>
+    public const string AuthRefreshToken = "X-Authorization";
+
+    /// <summary>
+    /// 刷新的Token
+    /// </summary>
+    public const string AccessToken = "Access-Token";
+
+    /// <summary>
+    /// 新的刷新Token
+    /// </summary>
+    public const string RefreshToken = "X-Access-Token";
 
     /// <summary>
     /// UUID
     /// </summary>
     public const string UUID = "Fast-Net-UUID";
-
-    /// <summary>
-    /// 环境编码
-    /// </summary>
-    public const string EnvironmentCode = "Environment-Code";
 
     /// <summary>
     /// 环境名称
@@ -74,4 +89,9 @@ public class ClaimConst
     /// 接口版本
     /// </summary>
     public const string ApiVersion = "Api-Version";
+
+    /// <summary>
+    /// 接口行为类型名称
+    /// </summary>
+    public const string ApiActionName = "Api-Action-Name";
 }

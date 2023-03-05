@@ -73,9 +73,14 @@ public class GlobalContext
     public static string UserAccount => (App.User?.FindFirst(ClaimConst.Account)?.Value).ParseToString();
 
     /// <summary>
+    /// 当前用户工号
+    /// </summary>
+    public static string UserJobNum => (App.User?.FindFirst(ClaimConst.JobNum)?.Value).ParseToString();
+
+    /// <summary>
     /// 当前用户名称
     /// </summary>
-    public static string UserName => (App.User?.FindFirst(ClaimConst.Name)?.Value).ParseToString();
+    public static string UserName => (App.User?.FindFirst(ClaimConst.UserName)?.Value).ParseToString();
 
     /// <summary>
     /// 请求来源Url
@@ -94,7 +99,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: true})
+            if (App.User is {Identity.IsAuthenticated: false})
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.SuperAdmin.GetHashCode().ParseToString();
         }
@@ -107,7 +112,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: true})
+            if (App.User is {Identity.IsAuthenticated: false})
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.SystemAdmin.GetHashCode().ParseToString();
         }
@@ -120,7 +125,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: true})
+            if (App.User is {Identity.IsAuthenticated: false})
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.TenantAdmin.GetHashCode().ParseToString();
         }

@@ -34,7 +34,6 @@ public class TenConfigSeedData : ITenantSeedData
                 Code = ConfigConst.Tenant.WebLogo,
                 ChName = "系统Logo",
                 EnName = "Web Logo",
-                //Value = "https://gitee.com/Net-18K/fast.net/raw/master/frontend/public/logo.png",
                 Value = "/logo.png",
                 Remark = ""
             },
@@ -63,6 +62,15 @@ public class TenConfigSeedData : ITenantSeedData
                 ChName = "Token过期时间（分钟）",
                 EnName = "Token Expired Time",
                 Value = "30",
+                Remark = "单位分钟"
+            },
+            new()
+            {
+                Id = 1000000006,
+                Code = ConfigConst.Tenant.RefreshTokenExpiredTime,
+                ChName = "刷新Token过期时间（分钟）",
+                EnName = "Refresh Token Expired Time",
+                Value = "43200",
                 Remark = "单位分钟"
             },
         };

@@ -112,8 +112,6 @@ public static class ServiceCollection
         // Mandatory Https.
         app.UseHttpsRedirection();
 
-        app.UseMiddleware<RequestInfoMiddleware>();
-
         if (serviceCollectionOptions.GzipBrotliCompression)
         {
             // Enable compression.
@@ -135,6 +133,8 @@ public static class ServiceCollection
         app.EnableBuffering();
 
         app.UseRouting();
+
+        app.UseMiddleware<RequestInfoMiddleware>();
 
         if (serviceCollectionOptions.RequestLimit)
         {

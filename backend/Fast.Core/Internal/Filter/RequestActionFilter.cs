@@ -91,7 +91,7 @@ public class RequestActionFilter : IAsyncActionFilter
             new SysLogOpModel
             {
                 Account = GlobalContext.UserAccount,
-                Name = GlobalContext.UserName,
+                UserName = GlobalContext.UserName,
                 Success = isRequestSucceed ? YesOrNotEnum.Y : YesOrNotEnum.N,
                 OperationAction = operationAction,
                 OperationName = operationName,

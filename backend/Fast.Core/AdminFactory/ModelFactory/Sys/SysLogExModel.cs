@@ -21,7 +21,7 @@ public class SysLogExModel : BaseLogEntity, IBaseTenant
     /// 姓名
     /// </summary>
     [SugarColumn(ColumnDescription = "姓名", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
-    public string Name { get; set; }
+    public string UserName { get; set; }
 
     /// <summary>
     /// 类名
@@ -69,5 +69,5 @@ public class SysLogExModel : BaseLogEntity, IBaseTenant
     /// 租户Id
     /// </summary>
     [SugarColumn(ColumnDescription = "租户Id")]
-    public long? TenantId { get; set; }
+    public long TenantId { get; set; }
 }

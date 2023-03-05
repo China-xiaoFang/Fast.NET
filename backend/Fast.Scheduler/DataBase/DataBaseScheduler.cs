@@ -102,8 +102,11 @@ public class DataBaseJobWorker : IJob
         var entityTypeList = EntityHelper.ReflexGetAllTEntityList();
 
         // 创建核心业务库的所有表
-        _db.CodeFirst.InitTables(entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Default.GetHashCode())
-            .Select(sl => sl.Type).ToArray());
+        _db.CodeFirst.InitTables(entityTypeList
+            .Where(wh => wh.DbType == SugarDbTypeEnum.Default.GetHashCode() && wh.IsSplitTable == false).Select(sl => sl.Type)
+            .ToArray());
+        _db.CodeFirst.SplitTables().InitTables(entityTypeList
+            .Where(wh => wh.DbType == SugarDbTypeEnum.Default.GetHashCode() && wh.IsSplitTable).Select(sl => sl.Type).ToArray());
 
         // 初始化租户信息
         var superAdminTenantInfo = new SysTenantModel
@@ -118,11 +121,33 @@ public class DataBaseJobWorker : IJob
             Email = "email@gmail.com",
             Phone = "15288888888",
             TenantType = TenantTypeEnum.System,
-            WebUrl = new List<string> {"http://fast.18kboy.icu", "http://127.0.0.1:2001", "http://localhost:2001"},
-            //LogoUrl = "https://gitee.com/Net-18K/Fast.NET/raw/master/frontend/public/logo.png"
             LogoUrl = "/logo.png"
         };
         superAdminTenantInfo = await _db.Insertable(superAdminTenantInfo).ExecuteReturnEntityAsync();
+
+        // 初始化租户授权信息
+        var superAdminTenantAppInfoList = new List<SysTenantAppInfoModel>
+        {
+            new()
+            {
+                TenantId = ClaimConst.DefaultSuperAdminTenantId,
+                AppType = AppTypeEnum.WebAdmin,
+                AppKey = "http://127.0.0.1:2001",
+                AuthStartTime = new DateTime(2020, 01, 01),
+                AuthEndTime = new DateTime(2099, 12, 31),
+                Remark = ""
+            },
+            new()
+            {
+                TenantId = ClaimConst.DefaultSuperAdminTenantId,
+                AppType = AppTypeEnum.WebAdmin,
+                AppKey = "http://fast.18kboy.icu",
+                AuthStartTime = new DateTime(2020, 01, 01),
+                AuthEndTime = new DateTime(2099, 12, 31),
+                Remark = ""
+            }
+        };
+        await _db.Insertable(superAdminTenantAppInfoList).ExecuteCommandAsync();
 
         // 初始化租户业务库信息
         await _db.Insertable(new SysTenantDataBaseModel
@@ -133,7 +158,11 @@ public class DataBaseJobWorker : IJob
             DbUser = SugarContext.ConnectionStringsOptions.DefaultDbUser,
             DbPwd = SugarContext.ConnectionStringsOptions.DefaultDbPwd,
             SugarSysDbType = SugarDbTypeEnum.Tenant.GetHashCode(),
+            SugarDbTypeName = SugarDbTypeEnum.Tenant.GetDescription(),
             DbType = SugarContext.ConnectionStringsOptions.DefaultDbType,
+            CommandTimeOut = SugarContext.ConnectionStringsOptions.CommandTimeOut,
+            SugarSqlExecMaxSeconds = SugarContext.ConnectionStringsOptions.SugarSqlExecMaxSeconds,
+            DiffLog = SugarContext.ConnectionStringsOptions.DiffLog,
             TenantId = superAdminTenantInfo.Id
         }).ExecuteCommandAsync();
 
@@ -159,7 +188,7 @@ public class DataBaseJobWorker : IJob
         // 初始化新租户数据
         // ReSharper disable once PossibleNullReferenceException
         await _sysTenantService.InitNewTenant(superAdminTenantInfo,
-            entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Tenant.GetHashCode()).Select(sl => sl.Type), true);
+            entityTypeList.Where(wh => wh.DbType == SugarDbTypeEnum.Tenant.GetHashCode()).ToList(), true);
 
         sw.Stop();
 
@@ -240,7 +269,7 @@ public class DataBaseJobWorker : IJob
                     TypeId = typeInfo.Id,
                     ChValue = dataInfo.Describe ?? dataInfo.Name,
                     EnValue = dataInfo.Name,
-                    Code = dataInfo.Value,
+                    Code = $"{dataInfo.Value}",
                     Sort = dataSort,
                     Remark = dataInfo.Describe ?? dataInfo.Name,
                 });
