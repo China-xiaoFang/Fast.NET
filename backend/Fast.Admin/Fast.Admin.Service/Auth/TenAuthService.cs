@@ -2,9 +2,10 @@
 using Fast.Admin.Service.Auth.Dto;
 using Fast.Admin.Service.SysMenu.Dto;
 using Fast.Admin.Service.SysModule;
+using Fast.Cache.Service;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.Core.Internal.EventSubscriber;
+using Fast.SDK.Common.EventSubscriber;
 using Fast.SqlSugar.Tenant;
 using Furion.DataEncryption;
 using Furion.EventBus;

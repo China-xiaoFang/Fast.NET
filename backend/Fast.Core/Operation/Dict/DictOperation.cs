@@ -1,7 +1,7 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
+﻿using Fast.Cache.Service;
+using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.Core.Cache;
 using Fast.Core.Const;
 using Fast.Core.Operation.Dict.Dto;
 using Fast.SqlSugar.Tenant;

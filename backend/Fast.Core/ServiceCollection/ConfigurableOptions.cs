@@ -1,4 +1,5 @@
-﻿using Fast.Core.Cache.Options;
+﻿using Fast.Cache.Service;
+using Fast.Cache.Service.Options;
 using Fast.Core.Internal.Options;
 using Furion.FriendlyException;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,7 @@ public static class ConfigurableOptions
         // Service collection config.
         GlobalContext.ServiceCollectionOptions = App.GetConfig<ServiceCollectionOptions>("ServiceCollection");
         // Cache config.
-        GlobalContext.CacheOptions = App.GetConfig<CacheOptions>("Cache");
+        CacheContext.CacheOptions = App.GetConfig<CacheOptions>("Cache");
         // System config.
         GlobalContext.SystemSettingsOptions = App.GetConfig<SystemSettingsOptions>("SystemSettings");
         // Copyright Info

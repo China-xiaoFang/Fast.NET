@@ -1,7 +1,7 @@
 ﻿using Fast.Admin.Service.Auth;
 using Fast.Admin.Service.Auth.Dto;
-using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.Const;
+using Fast.SDK.Common.EnumFactory;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -12,7 +12,6 @@ global using Mapster;
 global using SqlSugar;
 global using Fast.Core;
 global using Fast.Core.AdminFactory.EnumFactory;
-global using Fast.Core.Cache;
 global using Fast.Core.Const;
 global using Fast.Core.Internal.Restful.Extension;
 global using Fast.Core.Internal.Restful.Internal;

@@ -1,7 +1,7 @@
 ﻿using System.Text;
+using Fast.Cache.Service;
 using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.Cache;
 using Fast.Core.Const;
 using Fast.Core.Util.BaiduTranslator;
 using Furion.DependencyInjection;

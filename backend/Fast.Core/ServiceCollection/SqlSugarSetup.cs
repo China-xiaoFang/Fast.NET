@@ -1,6 +1,6 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.Internal.EventSubscriber;
+using Fast.SDK.Common.EventSubscriber;
 using Fast.SqlSugar.Tenant;
 using Fast.SqlSugar.Tenant.Setup;
 using Furion.DependencyInjection;

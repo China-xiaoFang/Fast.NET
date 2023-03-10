@@ -1,10 +1,11 @@
 ﻿using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using Fast.Admin.Service.Tenant.Dto;
+using Fast.Cache.Service;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.Core.CodeFirst;
-using Fast.Core.CodeFirst.Internal;
+using Fast.SDK.Common.CodeFirst;
+using Fast.SDK.Common.CodeFirst.Internal;
 using Fast.SqlSugar.Tenant.BaseModel.Interface;
 using Fast.SqlSugar.Tenant.Internal.Dto;
 using Furion.DataEncryption;

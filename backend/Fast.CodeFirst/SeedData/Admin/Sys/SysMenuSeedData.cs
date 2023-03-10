@@ -1,6 +1,6 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.CodeFirst.Internal;
+using Fast.SDK.Common.CodeFirst.Internal;
 using SqlSugar;
 using Yitter.IdGenerator;
 

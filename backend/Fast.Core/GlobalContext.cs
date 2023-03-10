@@ -1,5 +1,4 @@
 ﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.Cache.Options;
 using Fast.Core.Const;
 using Fast.Core.Internal.Options;
 using Fast.SqlSugar.Tenant;
@@ -99,7 +98,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: false})
+            if (App.User == null || App.User.Identity?.IsAuthenticated == false)
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.SuperAdmin.GetHashCode().ParseToString();
         }
@@ -112,7 +111,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: false})
+            if (App.User == null || App.User.Identity?.IsAuthenticated == false)
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.SystemAdmin.GetHashCode().ParseToString();
         }
@@ -125,7 +124,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: false})
+            if (App.User == null || App.User.Identity?.IsAuthenticated == false)
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.TenantAdmin.GetHashCode().ParseToString();
         }
@@ -169,11 +168,6 @@ public class GlobalContext
     {
         return SugarContext.GetTenantId(isThrow);
     }
-
-    /// <summary>
-    /// 缓存配置
-    /// </summary>
-    public static CacheOptions CacheOptions { get; set; }
 
     /// <summary>
     /// 系统配置

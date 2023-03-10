@@ -37,6 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Fast.SDK\Fast.Cache\Fast.Cache.Service\Fast.Cache.Service.csproj" />
 	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Common\Fast.SDK.Common.csproj" />
 	</ItemGroup>
 

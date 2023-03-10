@@ -1,7 +1,7 @@
 ﻿using Fast.Admin.Service.SysButton;
 using Fast.Admin.Service.SysButton.Dto;
-using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.Const;
+using Fast.SDK.Common.EnumFactory;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
-﻿using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Cache.Service;
+using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.AdminFactory.ModelFactory.Tenant;
-using Fast.Core.Cache;
 using Fast.Core.Const;
 using Fast.Core.Operation.Config.Dto;
 using Fast.SqlSugar.Tenant;

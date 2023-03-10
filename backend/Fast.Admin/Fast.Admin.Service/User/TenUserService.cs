@@ -1,4 +1,5 @@
-﻿using Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿using Fast.Cache.Service;
+using Fast.Core.AdminFactory.ModelFactory.Tenant;
 
 namespace Fast.Admin.Service.User;
 

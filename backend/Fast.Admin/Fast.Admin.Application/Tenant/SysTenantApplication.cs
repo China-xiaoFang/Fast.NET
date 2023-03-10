@@ -1,8 +1,8 @@
 ﻿using Fast.Admin.Service.Tenant;
 using Fast.Admin.Service.Tenant.Dto;
-using Fast.Core.AdminFactory.EnumFactory;
 using Fast.Core.Const;
 using Fast.Core.Internal.Restful.Internal;
+using Fast.SDK.Common.EnumFactory;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

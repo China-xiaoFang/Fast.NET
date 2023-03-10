@@ -1,5 +1,5 @@
 ﻿using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.Internal.EventSubscriber;
+using Fast.SDK.Common.EventSubscriber;
 using Furion.DependencyInjection;
 using Furion.EventBus;
 using Furion.FriendlyException;

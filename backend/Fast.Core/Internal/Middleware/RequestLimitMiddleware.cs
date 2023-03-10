@@ -1,4 +1,4 @@
-﻿using Fast.Core.Cache;
+﻿using Fast.Cache.Service;
 using Fast.Core.Internal.AttributeFilter;
 using Fast.Core.Util.Http;
 using Microsoft.AspNetCore.Http;

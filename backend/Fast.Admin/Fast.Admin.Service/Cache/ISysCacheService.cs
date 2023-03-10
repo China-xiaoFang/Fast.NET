@@ -1,4 +1,5 @@
 ﻿using Fast.Admin.Service.Cache.Dto;
+using Fast.Cache.Service;
 
 namespace Fast.Admin.Service.Cache;
 

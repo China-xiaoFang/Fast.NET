@@ -1,4 +1,5 @@
 ﻿using Fast.Admin.Service.Cache.Dto;
+using Fast.Cache.Service;
 
 namespace Fast.Admin.Service.Cache;
 
@@ -22,7 +23,7 @@ public class SysCacheService : ISysCacheService, ITransient
     /// <returns></returns>
     public string GetCacheType()
     {
-        return GlobalContext.CacheOptions.CacheType.GetDescription();
+        return CacheContext.CacheOptions.CacheType.GetDescription();
     }
 
     /// <summary>
