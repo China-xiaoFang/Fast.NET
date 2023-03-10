@@ -4,10 +4,11 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<VersionPrefix>1.0.1</VersionPrefix>
+		<VersionPrefix>1.0.2</VersionPrefix>
 		<AssemblyName>Fast.SqlSugar.Tenant</AssemblyName>
 		<PackageProjectUrl>https://gitee.com/Net-18K/Fast.NET/tree/Fast.SqlSugar.Tenant/Fast.SqlSugar.Tenant</PackageProjectUrl>
 		<PackageIcon>Fast.png</PackageIcon>
@@ -15,7 +16,7 @@
 		<Description>基于SqlSugar扩展的多租户版本和单体版本的Orm扩展包，让.NET 开发更简单，更快捷，更容易。</Description>
 		<RepositoryUrl>https://gitee.com/Net-18K/Fast.NET/tree/Fast.SqlSugar.Tenant/Fast.SqlSugar.Tenant</RepositoryUrl>
 		<RepositoryType>Gitee</RepositoryType>
-		<PackageReleaseNotes>添加租户版本的SqlSugar扩展，仓储扩展方法待优化</PackageReleaseNotes>
+		<PackageReleaseNotes>添加租户版本的SqlSugar扩展，仓储扩展方法待优化，添加注释</PackageReleaseNotes>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
