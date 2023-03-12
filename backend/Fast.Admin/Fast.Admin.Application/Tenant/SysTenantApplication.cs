@@ -1,7 +1,8 @@
 ﻿using Fast.Admin.Service.Tenant;
 using Fast.Admin.Service.Tenant.Dto;
+using Fast.Core.AttributeFilter;
 using Fast.Core.Const;
-using Fast.Core.Internal.Restful.Internal;
+using Fast.Core.Restful.Internal;
 using Fast.SDK.Common.EnumFactory;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +27,7 @@ public class SysTenantApplication : IDynamicApiController
     /// Web站点初始化
     /// </summary>
     /// <returns></returns>
-    [HttpGet("/webSiteInit", "Web站点初始化", HttpRequestActionEnum.Query), AllowAnonymous, DisableOpLog]
+    [HttpGet("/webSiteInit", "Web站点初始化", HttpRequestActionEnum.Page), AllowAnonymous, DisableOpLog]
     public async Task<WebSiteInitOutput> WebSiteInit()
     {
         return await _sysTenantService.WebSiteInit();
@@ -37,7 +38,7 @@ public class SysTenantApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpGet("page", "分页查询租户信息", HttpRequestActionEnum.Query)]
+    [HttpGet("page", "分页查询租户信息", HttpRequestActionEnum.Page)]
     public async Task<PageResult<TenantOutput>> QueryTenantPageList([FromQuery] QueryTenantInput input)
     {
         return await _sysTenantService.QueryTenantPageList(input);

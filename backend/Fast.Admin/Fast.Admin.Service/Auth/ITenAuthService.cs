@@ -19,4 +19,10 @@ public interface ITenAuthService
     /// </summary>
     /// <returns></returns>
     Task<GetLoginUserInfoOutput> GetLoginUserInfo();
+
+    /// <summary>
+    /// 获取登录菜单
+    /// </summary>
+    /// <returns></returns>
+    Task<List<AntDesignRouterOutput>> GetLoginMenu();
 }

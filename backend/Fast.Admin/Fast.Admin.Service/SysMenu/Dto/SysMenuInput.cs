@@ -1,4 +1,6 @@
-﻿namespace Fast.Admin.Service.SysMenu.Dto;
+﻿using Fast.Admin.Model.Enum;
+
+namespace Fast.Admin.Service.SysMenu.Dto;
 
 /// <summary>
 /// 查询系统菜单树形输入

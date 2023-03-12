@@ -1,5 +1,6 @@
-﻿using Fast.Admin.Service.SysMenu.Dto;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys.Menu;
+using Fast.Admin.Service.SysMenu.Dto;
 
 namespace Fast.Admin.Service.SysMenu;
 
@@ -72,7 +73,6 @@ public class SysMenuService : ISysMenuService, ITransient
 
         // 保留编码
         var menuCode = model.MenuCode;
-
         // 系统菜单不能修改类型，路由地址，组件地址，内链，外链地址
         if (model.IsSystem == YesOrNotEnum.Y)
         {

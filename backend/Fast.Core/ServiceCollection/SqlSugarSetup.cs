@@ -1,5 +1,5 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys.Log;
 using Fast.SDK.Common.EventSubscriber;
 using Fast.SqlSugar.Tenant;
 using Fast.SqlSugar.Tenant.Setup;

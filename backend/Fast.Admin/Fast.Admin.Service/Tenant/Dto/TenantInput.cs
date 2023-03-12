@@ -1,4 +1,6 @@
-﻿namespace Fast.Admin.Service.Tenant.Dto;
+﻿using Fast.Admin.Model.Enum;
+
+namespace Fast.Admin.Service.Tenant.Dto;
 
 /// <summary>
 /// 查询租户输入

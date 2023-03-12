@@ -1,4 +1,4 @@
-﻿using Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿using Fast.Admin.Model.Model.Tenant.Config;
 using Fast.Core.Const;
 using Fast.SDK.Common.CodeFirst.Internal;
 using SqlSugar;

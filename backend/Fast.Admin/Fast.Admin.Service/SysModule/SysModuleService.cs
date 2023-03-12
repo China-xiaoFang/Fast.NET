@@ -1,5 +1,11 @@
-﻿using Fast.Admin.Service.SysModule.Dto;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys.Menu;
+using Fast.Admin.Model.Model.Tenant.Auth;
+using Fast.Admin.Model.Model.Tenant.Organization.User;
+using Fast.Admin.Service.SysModule.Dto;
+using Fast.Core.Restful.Extension;
+using Fast.Core.Restful.Internal;
+using Fast.SDK.Common.Cache;
 
 namespace Fast.Admin.Service.SysModule;
 
@@ -9,10 +15,12 @@ namespace Fast.Admin.Service.SysModule;
 public class SysModuleService : ISysModuleService, ITransient
 {
     private readonly ISqlSugarRepository<SysModuleModel> _repository;
+    private readonly ICache _cache;
 
-    public SysModuleService(ISqlSugarRepository<SysModuleModel> repository)
+    public SysModuleService(ISqlSugarRepository<SysModuleModel> repository, ICache cache)
     {
         _repository = repository;
+        _cache = cache;
     }
 
     /// <summary>
@@ -37,38 +45,67 @@ public class SysModuleService : ISysModuleService, ITransient
     /// <returns></returns>
     public async Task<List<SysModuleOutput>> QuerySysModuleSelector()
     {
+        // 从缓存中读取
+        var result = await _cache.GetAsync<List<SysModuleModel>>($"{CacheConst.AuthModule}{GlobalContext.UserId}");
+
+        // 判断缓存中是否存在
+        if (result != null && result.Any())
+            return result.Adapt<List<SysModuleOutput>>();
+
         // 判断是否为超级管理员
         if (GlobalContext.IsSuperAdmin)
         {
             // 查询所有的模块
-            return await _repository.AsQueryable(wh => wh.Status == CommonStatusEnum.Enable).OrderBy(ob => ob.Sort)
-                .Select<SysModuleOutput>().ToListAsync();
+            result = await _repository.AsQueryable(wh => wh.Status == CommonStatusEnum.Enable).OrderBy(ob => ob.Sort)
+                .ToListAsync();
         }
-
         // 判断是否为系统管理员
-        if (GlobalContext.IsSystemAdmin)
+        else if (GlobalContext.IsSystemAdmin)
         {
             // 查询所有的非超级管理员查看的模块
-            return await _repository
+            result = await _repository
                 .AsQueryable(wh => wh.Status == CommonStatusEnum.Enable && wh.ViewType != ModuleViewTypeEnum.SuperAdmin)
-                .OrderBy(ob => ob.Sort).Select<SysModuleOutput>().ToListAsync();
+                .OrderBy(ob => ob.Sort).ToListAsync();
         }
-
-        // 判断是否为租户管理员
-        if (GlobalContext.IsTenantAdmin)
+        else
         {
-            // TODO：这里需要做权限处理
-            // 查询所有非超级管理员和系统管理员查看的模块
-            return await _repository
-                .AsQueryable(wh =>
-                    wh.Status == CommonStatusEnum.Enable && wh.ViewType != ModuleViewTypeEnum.SuperAdmin &&
-                    wh.ViewType != ModuleViewTypeEnum.SystemAdmin).OrderBy(ob => ob.Sort).Select<SysModuleOutput>().ToListAsync();
+            // 查询角色授权菜单
+            var roleMenuIdList = await _repository.Context.Queryable<TenUserRoleModel>()
+                .LeftJoin<TenRoleAuthMenuModel>((t1, t2) => t1.SysRoleId == t2.SysRoleId)
+                .Where(t1 => t1.SysUserId == GlobalContext.UserId).Select((t1, t2) => t2.SysMenuId).ToListAsync();
+            // 查询用户授权菜单
+            var userMenuIdList = await _repository.Context.Queryable<TenUserAuthMenuModel>()
+                .Where(wh => wh.SysUserId == GlobalContext.UserId).Select(sl => sl.SysMenuId).ToListAsync();
+            var menuIdList = new List<long>();
+            menuIdList.AddRange(roleMenuIdList);
+            menuIdList.AddRange(userMenuIdList);
+            // 判断是否为租户管理员
+            if (GlobalContext.IsTenantAdmin)
+            {
+                // 查询授权菜单的模块信息
+                result = await _repository.Context.Queryable<SysModuleModel>()
+                    .LeftJoin<SysMenuModel>((t1, t2) => t1.Id == t2.ModuleId).Where((t1, t2) =>
+                        t1.Status == CommonStatusEnum.Enable && t1.ViewType != ModuleViewTypeEnum.SuperAdmin &&
+                        t1.ViewType != ModuleViewTypeEnum.SystemAdmin && !SqlFunc.IsNullOrEmpty(t2.Id) &&
+                        menuIdList.Contains(t2.Id)).OrderBy(t1 => t1.Sort).Select<SysModuleModel>("t1.*").Distinct()
+                    .ToListAsync();
+            }
+            else
+            {
+
+                // 查询授权菜单的模块信息，非管理员查看的
+                result = await _repository.Context.Queryable<SysModuleModel>()
+                    .LeftJoin<SysMenuModel>((t1, t2) => t1.Id == t2.ModuleId).Where((t1, t2) =>
+                        t1.Status == CommonStatusEnum.Enable && t1.ViewType == ModuleViewTypeEnum.All &&
+                        !SqlFunc.IsNullOrEmpty(t2.Id) && menuIdList.Contains(t2.Id)).OrderBy(t1 => t1.Sort)
+                    .Select<SysModuleModel>("t1.*").Distinct().ToListAsync();
+            }
         }
 
-        // TODO：这里需要做权限处理
-        // 查询所有非管理员查看的模块
-        return await _repository.AsQueryable(wh => wh.Status == CommonStatusEnum.Enable && wh.ViewType == ModuleViewTypeEnum.All)
-            .OrderBy(ob => ob.Sort).Select<SysModuleOutput>().ToListAsync();
+        // 放入缓存
+        await _cache.SetAsync($"{CacheConst.AuthModule}{GlobalContext.UserId}", result);
+
+        return result.Adapt<List<SysModuleOutput>>();
     }
 
     /// <summary>

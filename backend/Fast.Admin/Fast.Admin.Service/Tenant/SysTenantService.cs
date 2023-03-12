@@ -1,9 +1,14 @@
 ﻿using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys;
+using Fast.Admin.Model.Model.Tenant.Auth.DataScope;
+using Fast.Admin.Model.Model.Tenant.Organization;
+using Fast.Admin.Model.Model.Tenant.Organization.User;
 using Fast.Admin.Service.Tenant.Dto;
-using Fast.Cache.Service;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
+using Fast.Core.Restful.Extension;
+using Fast.Core.Restful.Internal;
+using Fast.SDK.Common.Cache;
 using Fast.SDK.Common.CodeFirst;
 using Fast.SDK.Common.CodeFirst.Internal;
 using Fast.SqlSugar.Tenant.BaseModel.Interface;
@@ -328,9 +333,6 @@ public class SysTenantService : ISysTenantService, ITransient
         // 初始化角色数据范围
         await _db.Insertable(new TenRoleDataScopeModel {SysRoleId = newAdminRole.Id, SysOrgId = newAdminOrg.Id,})
             .ExecuteCommandAsync();
-
-        await _cache.DelAsync(CacheConst.UserDataScope);
-        await _cache.DelAsync(CacheConst.DataScope);
 
         // 初始化业务库种子数据
         var seedDataTypes = SeedDataProgram.GetSeedDataType(typeof(ITenantSeedData));

@@ -1,4 +1,5 @@
 ﻿using Fast.Admin.Service.SysModule.Dto;
+using Fast.Core.Restful.Internal;
 
 namespace Fast.Admin.Service.SysModule;
 

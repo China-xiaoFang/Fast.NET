@@ -40,7 +40,7 @@ public class HttpGetAttribute : HttpMethodAttribute
             throw new ArgumentNullException(nameof(template));
         }
 
-        Action = HttpRequestActionEnum.Query;
+        Action = HttpRequestActionEnum.Page;
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class HttpGetAttribute : HttpMethodAttribute
         }
 
         OperationName = operationName ?? throw new ArgumentNullException(nameof(operationName));
-        Action = HttpRequestActionEnum.Query;
+        Action = HttpRequestActionEnum.Page;
     }
 
     /// <summary>

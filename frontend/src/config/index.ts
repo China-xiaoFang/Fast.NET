@@ -1,6 +1,6 @@
 const DEFAULT_CONFIG = {
 	// 首页地址
-	DASHBOARD_URL: "/index",
+	DASHBOARD_URL: "/index?menuCode=index",
 
 	// 请求超时，30秒
 	TIMEOUT: 1000 * 30,

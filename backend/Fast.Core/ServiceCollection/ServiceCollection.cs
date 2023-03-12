@@ -1,8 +1,8 @@
-﻿using Fast.Core.Handlers;
-using Fast.Core.Internal.Filter;
-using Fast.Core.Internal.Middleware;
-using Fast.Core.Internal.Restful;
-using Fast.Core.Util;
+﻿using Fast.Core.Filter;
+using Fast.Core.Handlers;
+using Fast.Core.Middleware;
+using Fast.Core.Restful;
+using Fast.SDK.Common.Util;
 using Furion.Schedule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -170,15 +170,9 @@ public static class ServiceCollection
         // Here, the default address is/API if no argument is entered, and/directory if string.empty is entered. If any string is entered, the/arbitrary string directory.
         app.UseInject(string.Empty);
 
-        app.UseEndpoints(endpoints =>
-        {
-            if (serviceCollectionOptions.SignalR)
-            {
-                //// Register the hub.
-                //endpoints.MapHub<ChatHub>("/hubs/chathub");
-                //endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
-            }
-        });
+        // Register the hub.
+        app.MapControllers();
+        //app.MapHub<ChatHub>("/hubs/chathub");
 
         app.MapControllers();
 

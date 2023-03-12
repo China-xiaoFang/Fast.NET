@@ -12,7 +12,7 @@ public interface ISysButtonService
     /// </summary>
     /// <param name="menuId"></param>
     /// <returns></returns>
-    Task<List<SysButtonOutput>> QuerySysButtonListById(long menuId);
+    Task<List<SysButtonOutput>> QuerySysButtonListByMenuId(long menuId);
 
     /// <summary>
     /// 添加系统按钮

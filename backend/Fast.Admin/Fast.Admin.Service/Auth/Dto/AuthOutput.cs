@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Fast.Admin.Model.Enum;
 
 namespace Fast.Admin.Service.Auth.Dto;
 
@@ -96,11 +97,6 @@ public class GetLoginUserInfoOutput
     /// 按钮编码集合
     /// </summary>
     public List<string> ButtonCodeList { get; set; }
-
-    /// <summary>
-    /// 菜单集合
-    /// </summary>
-    public List<AntDesignRouterOutput> MenuList { get; set; }
 }
 
 /// <summary>
@@ -144,10 +140,13 @@ public class AntDesignRouterOutput : ITreeNode
         Children = (List<AntDesignRouterOutput>) children;
     }
 
+    /// <summary>
+    /// 菜单Id
+    /// </summary>
     public long Id { get; set; }
 
     /// <summary>
-    /// 名称
+    /// 菜单名称
     /// </summary>
     public string Name { get; set; }
 
@@ -175,6 +174,11 @@ public class AntDesignRouterOutput : ITreeNode
     /// 组件地址
     /// </summary>
     public string Component { get; set; }
+
+    /// <summary>
+    /// 菜单类型
+    /// </summary>
+    public MenuTypeEnum Type { get; set; }
 
     /// <summary>
     /// AntDV路由元信息

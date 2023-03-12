@@ -1,9 +1,9 @@
-﻿using Fast.Cache.Service;
-using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys.Dic;
+using Fast.Admin.Model.Model.Tenant.Dic;
 using Fast.Core.Const;
 using Fast.Core.Operation.Dict.Dto;
+using Fast.SDK.Common.Cache;
 using Fast.SqlSugar.Tenant;
 using Fast.SqlSugar.Tenant.Extension;
 using Furion.DependencyInjection;

@@ -1,4 +1,6 @@
-﻿namespace Fast.Admin.Service.SysModule.Dto;
+﻿using Fast.Admin.Model.Enum;
+
+namespace Fast.Admin.Service.SysModule.Dto;
 
 /// <summary>
 /// 系统模块输出

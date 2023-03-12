@@ -24,7 +24,7 @@ public class CacheApplication : IDynamicApiController
     /// 获取缓存类型
     /// </summary>
     /// <returns></returns>
-    [HttpGet("getCacheType", "获取缓存类型", HttpRequestActionEnum.Query)]
+    [HttpGet("getCacheType", "获取缓存类型", HttpRequestActionEnum.Page)]
     public string GetCacheType()
     {
         return _sysCacheService.GetCacheType();
@@ -34,7 +34,7 @@ public class CacheApplication : IDynamicApiController
     /// 获取所有缓存Key
     /// </summary>
     /// <returns></returns>
-    [HttpGet("getAllCacheKey", "获取所有缓存Key", HttpRequestActionEnum.Query)]
+    [HttpGet("getAllCacheKey", "获取所有缓存Key", HttpRequestActionEnum.Page)]
     public List<string> GetAllCacheKey()
     {
         return _sysCacheService.GetAllCacheKey();
@@ -45,7 +45,7 @@ public class CacheApplication : IDynamicApiController
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    [HttpGet("getCacheValue", "获取缓存值", HttpRequestActionEnum.Query)]
+    [HttpGet("getCacheValue", "获取缓存值", HttpRequestActionEnum.Page)]
     public async Task<string> GetCacheValue(string key)
     {
         return await _sysCacheService.GetCacheValue(key);

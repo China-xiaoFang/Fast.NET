@@ -24,6 +24,12 @@ public class AddSysButtonInput
     public long MenuId { get; set; }
 
     /// <summary>
+    /// 接口Id
+    /// </summary>
+    [Required(ErrorMessage = "接口Id不能为空")]
+    public long ApiId { get; set; }
+
+    /// <summary>
     /// 排序
     /// </summary>
     [Required(ErrorMessage = "按钮排序不能为空")]

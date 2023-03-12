@@ -1,4 +1,4 @@
-﻿using Fast.Core.Internal.EventSubscriber;
+﻿using Fast.Core.EventSubscriber;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.ServiceCollection;

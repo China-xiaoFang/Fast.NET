@@ -1,5 +1,6 @@
-﻿using Fast.Admin.Service.SysButton.Dto;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Admin.Model.Model.Sys.Api;
+using Fast.Admin.Model.Model.Sys.Menu;
+using Fast.Admin.Service.SysButton.Dto;
 
 namespace Fast.Admin.Service.SysButton;
 
@@ -20,9 +21,21 @@ public class SysButtonService : ISysButtonService, ITransient
     /// </summary>
     /// <param name="menuId"></param>
     /// <returns></returns>
-    public async Task<List<SysButtonOutput>> QuerySysButtonListById(long menuId)
+    public async Task<List<SysButtonOutput>> QuerySysButtonListByMenuId(long menuId)
     {
-        return await _repository.AsQueryable().Where(wh => wh.MenuId == menuId).Select<SysButtonOutput>().ToListAsync();
+        return await _repository.AsQueryable().LeftJoin<SysApiInfoModel>((t1, t2) => t1.ApiId == t2.Id)
+            .Where(t1 => t1.MenuId == menuId).Select((t1, t2) => new SysButtonOutput
+            {
+                Id = t1.Id,
+                CreatedTime = t1.CreatedTime,
+                UpdatedTime = t1.UpdatedTime,
+                ButtonCode = t1.ButtonCode,
+                ButtonName = t1.ButtonName,
+                ApiUrl = t2.ApiUrl,
+                ApiName = t2.ApiName,
+                ApiMethod = t2.ApiMethod,
+                Sort = t1.Sort
+            }).ToListAsync();
     }
 
     /// <summary>

@@ -37,8 +37,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Fast.SDK\Fast.Cache\Fast.Cache.Service\Fast.Cache.Service.csproj" />
+	  <ProjectReference Include="..\Fast.Admin\Fast.Admin.Model\Fast.Admin.Model.csproj" />
 	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Common\Fast.SDK.Common.csproj" />
+	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Core\Fast.SDK.Aliyun\Fast.SDK.Aliyun.csproj" />
+	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Core\Fast.SDK.Baidu\Fast.SDK.Baidu.csproj" />
+	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Core\Fast.SDK.MiniExcel\Fast.SDK.MiniExcel.csproj" />
+	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Core\Fast.SDK.RabbitMQ\Fast.SDK.RabbitMQ.csproj" />
 	</ItemGroup>
 
 </Project>

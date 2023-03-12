@@ -47,6 +47,8 @@
     "MaxRequestBodySize": 536870912,
     // 初始化数据库
     "InitDataBase": false,
+    // 初始化接口信息
+    "InitApiInfo": false,
     // 同步枚举字典
     "SyncEnumDict": false,
     // 同步应用本地化配置

@@ -17,14 +17,7 @@ const routes = [
 			? menuList[0].children[0].path
 			: sysConfig.DASHBOARD_URL,
 		children: [],
-	},
-	{
-		path: "/login",
-		component: () => import("@/views/auth/login/index.vue"),
-		meta: {
-			title: "登录",
-		},
-	},
+	}
 ];
 
 export default routes;

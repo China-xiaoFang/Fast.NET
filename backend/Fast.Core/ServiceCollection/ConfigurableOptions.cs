@@ -1,6 +1,6 @@
-﻿using Fast.Cache.Service;
-using Fast.Cache.Service.Options;
-using Fast.Core.Internal.Options;
+﻿using Fast.Core.Options;
+using Fast.SDK.Common.Cache;
+using Fast.SDK.Common.Cache.Options;
 using Furion.FriendlyException;
 using Microsoft.Extensions.DependencyInjection;
 

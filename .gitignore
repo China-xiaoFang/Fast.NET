@@ -362,5 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# 添加Npm互虐文件
+# 添加Npm忽略文件
 /frontend/package-lock.json

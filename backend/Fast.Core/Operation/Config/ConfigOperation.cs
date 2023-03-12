@@ -1,8 +1,8 @@
-﻿using Fast.Cache.Service;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿using Fast.Admin.Model.Model.Sys.Config;
+using Fast.Admin.Model.Model.Tenant.Config;
 using Fast.Core.Const;
 using Fast.Core.Operation.Config.Dto;
+using Fast.SDK.Common.Cache;
 using Fast.SqlSugar.Tenant;
 using Fast.SqlSugar.Tenant.Extension;
 using Furion.DependencyInjection;

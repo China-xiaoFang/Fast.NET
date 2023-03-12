@@ -1,7 +1,7 @@
 ﻿using Fast.Admin.Service.SysModule;
 using Fast.Admin.Service.SysModule.Dto;
 using Fast.Core.Const;
-using Fast.Core.Internal.Restful.Internal;
+using Fast.Core.Restful.Internal;
 using Fast.SDK.Common.EnumFactory;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +26,7 @@ public class SysModuleApplication : IDynamicApiController
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpGet("page", "分页查询模块信息", HttpRequestActionEnum.Query)]
+    [HttpGet("page", "分页查询模块信息", HttpRequestActionEnum.Page)]
     public async Task<PageResult<SysModuleOutput>> QuerySysModulePageList([FromQuery] QuerySysModuleInput input)
     {
         return await _sysModuleService.QuerySysModulePageList(input);
@@ -36,7 +36,7 @@ public class SysModuleApplication : IDynamicApiController
     /// 查询系统模块选择器
     /// </summary>
     /// <returns></returns>
-    [HttpGet("sysModuleSelector", "查询系统模块选择器", HttpRequestActionEnum.Query)]
+    [HttpGet("sysModuleSelector", "查询系统模块选择器", HttpRequestActionEnum.Page)]
     public async Task<List<SysModuleOutput>> QuerySysModuleSelector()
     {
         return await _sysModuleService.QuerySysModuleSelector();

@@ -1,4 +1,4 @@
-﻿using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Admin.Model.Model.Sys.Config;
 using Fast.Core.Const;
 using Fast.Core.Operation.Config;
 using Fast.Core.Operation.Config.Dto;

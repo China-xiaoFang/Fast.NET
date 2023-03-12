@@ -1,4 +1,10 @@
-const constRouters = [];
+const constRouters = [{
+  path: "/login",
+  component: () => import("@/views/auth/login/index.vue"),
+  meta: {
+    title: "登录",
+  },
+},];
 /**
  * 路由白名单（数组形式）
  *

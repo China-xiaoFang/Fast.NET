@@ -25,6 +25,11 @@ public class JwtHandler : AppAuthorizeHandler
     {
         if (context.User.Identity!.IsAuthenticated)
         {
+            // Token
+            var token = httpContext.Request.Headers["Authorization"].ToString();
+            // 获取UserId
+            var userId = App.User.FindFirstValue(ClaimConst.UserId);
+
             return true;
         }
 
@@ -108,6 +113,22 @@ public class JwtHandler : AppAuthorizeHandler
         // 超级管理员跳过判断
         if (GlobalContext.IsSuperAdmin)
             return true;
+
+        // 获取请求行为类型
+        var httpRequestActionEnum = httpContext.Request.Method switch
+        {
+            "GET" => httpContext.GetMetadata<HttpGetAttribute>()?.Action,
+            "POST" => httpContext.GetMetadata<HttpPostAttribute>()?.Action,
+            "PUT" => httpContext.GetMetadata<HttpPutAttribute>()?.Action,
+            "DELETE" => httpContext.GetMetadata<HttpDeleteAttribute>()?.Action,
+            _ => null
+        };
+
+        // 判断如果是分页查询的话，则不需要检测按钮权限
+        // 菜单，按钮判断
+        // 菜单判断，是根据菜单Id判断是否有这个菜单的权限
+        // 菜单判断成功后，判断按钮Id是否拥有这个接口的权限
+        // 按钮判断，根据按钮前缀Sys-000000 或者 Ten-000000 判断是系统按钮还是租户按钮，如果是系统按钮，ApiUrl是空的，则不给通过，如果是租户按钮，则直接判断是否拥有权限即可
 
         return true;
     }

@@ -1,5 +1,5 @@
-﻿using Fast.Core;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Admin.Model.Model.Sys.Config;
+using Fast.Core;
 using Fast.Core.Const;
 using Fast.SDK.Common.CodeFirst.Internal;
 using SqlSugar;
@@ -66,30 +66,6 @@ public class SysConfigSeedData : ISystemSeedData
                 ChName = "版权Url",
                 EnName = "Copyright Url",
                 Value = GlobalContext.CopyrightInfoOptions.CRUrl,
-            },
-            new()
-            {
-                Id = 1000000007,
-                Code = ConfigConst.BaiduTranslator.AppId,
-                ChName = "百度翻译开发者AppId",
-                EnName = "Baidu Translation Developer AppId",
-                Value = "",
-            },
-            new()
-            {
-                Id = 1000000008,
-                Code = ConfigConst.BaiduTranslator.SecretKey,
-                ChName = "百度翻译开发者密钥",
-                EnName = "Baidu Translation Developer SecretKey",
-                Value = "",
-            },
-            new()
-            {
-                Id = 1000000009,
-                Code = ConfigConst.BaiduTranslator.Url,
-                ChName = "百度翻译请求Url",
-                EnName = "Baidu Translation Request Url",
-                Value = "http://api.fanyi.baidu.com/api/trans/vip/translate",
             }
         };
 

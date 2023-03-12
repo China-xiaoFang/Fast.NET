@@ -1,6 +1,6 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
+﻿using Fast.Admin.Model.Enum;
 using Fast.Core.Const;
-using Fast.Core.Internal.Options;
+using Fast.Core.Options;
 using Fast.SqlSugar.Tenant;
 
 namespace Fast.Core;

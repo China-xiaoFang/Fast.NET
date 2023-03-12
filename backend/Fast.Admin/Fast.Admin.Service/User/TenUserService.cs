@@ -1,5 +1,5 @@
-﻿using Fast.Cache.Service;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿using Fast.Admin.Model.Model.Tenant.Organization.User;
+using Fast.SDK.Common.Cache;
 
 namespace Fast.Admin.Service.User;
 

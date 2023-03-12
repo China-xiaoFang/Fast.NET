@@ -1,14 +1,16 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys;
+using Fast.Admin.Model.Model.Sys.Api;
+using Fast.Admin.Model.Model.Sys.Dic;
 using Fast.Admin.Service.Tenant;
-using Fast.Cache.Service;
 using Fast.Core;
-using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
 using Fast.Core.Const;
 using Fast.Iaas.Util;
 using Fast.SDK.Common.AttributeFilter;
+using Fast.SDK.Common.Cache;
 using Fast.SDK.Common.CodeFirst;
 using Fast.SDK.Common.CodeFirst.Internal;
 using Fast.SqlSugar.Tenant;
@@ -17,10 +19,16 @@ using Fast.SqlSugar.Tenant.Helper;
 using Fast.SqlSugar.Tenant.Internal.Enum;
 using Fast.SqlSugar.Tenant.SugarEntity;
 using Furion.Schedule;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SqlSugar;
+using Yitter.IdGenerator;
+using HttpDeleteAttribute = Fast.SDK.Common.AttributeFilter.Http.HttpDeleteAttribute;
+using HttpGetAttribute = Fast.SDK.Common.AttributeFilter.Http.HttpGetAttribute;
+using HttpPostAttribute = Fast.SDK.Common.AttributeFilter.Http.HttpPostAttribute;
+using HttpPutAttribute = Fast.SDK.Common.AttributeFilter.Http.HttpPutAttribute;
 
 namespace Fast.Scheduler.DataBase;
 
@@ -57,6 +65,9 @@ public class DataBaseJobWorker : IJob
 
         // 初始化数据库
         await InitDataBast(_db, _sysTenantService);
+
+        // 初始化接口信息
+        await InitApiInfo(_db);
 
         // 同步枚举字典
         await SyncEnumDict(_db, _cache);
@@ -196,6 +207,148 @@ public class DataBaseJobWorker : IJob
         Console.WriteLine(@$"
             
              数据库初始化完成！
+             用时（毫秒）：{sw.ElapsedMilliseconds}
+              
+            ");
+    }
+
+    /// <summary>
+    /// 初始化接口信息
+    /// </summary>
+    /// <param name="_db"></param>
+    /// <returns></returns>
+    public async Task InitApiInfo(SqlSugarProvider _db)
+    {
+        if (GlobalContext.SystemSettingsOptions?.InitApiInfo != true)
+            return;
+
+        // 查询接口信息表中是否存在数据
+        if (await _db.Queryable<SysApiInfoModel>().AnyAsync())
+        {
+            return;
+        }
+
+        var sw = new Stopwatch();
+        sw.Start();
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(@"
+            
+             初始化接口信息中......
+              
+            ");
+
+        // 获取所有实现了 ApiDescriptionSettings 特性的类
+        var apiControllerTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(sl => sl.GetTypes().Where(wh =>
+            wh.GetCustomAttribute<ApiDescriptionSettingsAttribute>() != null));
+
+        var apiGroupModels = new List<SysApiGroupInfoModel>();
+        var apiInfoModels = new List<SysApiInfoModel>();
+
+        // 便利获取到的类型集合
+        foreach (var controllerType in apiControllerTypes)
+        {
+            // 获取分组名称和排序
+            var apiDescriptionSettingsAttribute = controllerType.GetCustomAttribute<ApiDescriptionSettingsAttribute>();
+            var apiGroupModel = new SysApiGroupInfoModel
+            {
+                Id = YitIdHelper.NextId(),
+                ApiGroupName = apiDescriptionSettingsAttribute?.Name ?? controllerType.Name,
+                ApiParentGroupName = apiDescriptionSettingsAttribute?.GroupName ?? ApiGroupConst.Default,
+                Sort = apiDescriptionSettingsAttribute?.Order ?? 0
+            };
+            apiGroupModels.Add(apiGroupModel);
+
+            // 获取接口信息
+            var apiTypes = controllerType.GetMethods().Where(wh => wh.GetCustomAttribute<HttpGetAttribute>() != null ||
+                                                                   wh.GetCustomAttribute<HttpPostAttribute>() != null ||
+                                                                   wh.GetCustomAttribute<HttpPutAttribute>() != null ||
+                                                                   wh.GetCustomAttribute<HttpDeleteAttribute>() != null).ToList();
+
+            var sortIndex = 0;
+            foreach (var apiType in apiTypes)
+            {
+                var httpGetAttribute = apiType.GetCustomAttribute<HttpGetAttribute>();
+                var httpPostAttribute = apiType.GetCustomAttribute<HttpPostAttribute>();
+                var httpPutAttribute = apiType.GetCustomAttribute<HttpPutAttribute>();
+                var httpDeleteAttribute = apiType.GetCustomAttribute<HttpDeleteAttribute>();
+                if (httpGetAttribute != null)
+                {
+                    apiInfoModels.Add(new SysApiInfoModel
+                    {
+                        ApiUrl = httpGetAttribute.Template!.StartsWith("/")
+                            ? httpGetAttribute.Template
+                            : $"/{apiGroupModel.ApiGroupName[0].ToString().ToLower() + apiGroupModel.ApiGroupName[1..]}/{httpGetAttribute.Template}",
+                        ApiName = httpGetAttribute.OperationName,
+                        ApiMethod = "GET",
+                        Sort = sortIndex
+                    });
+                }
+                else if (httpPostAttribute != null)
+                {
+                    apiInfoModels.Add(new SysApiInfoModel
+                    {
+                        ApiUrl = httpPostAttribute.Template!.StartsWith("/")
+                            ? httpPostAttribute.Template
+                            : $"/{apiGroupModel.ApiGroupName[0].ToString().ToLower() + apiGroupModel.ApiGroupName[1..]}/{httpPostAttribute.Template}",
+                        ApiName = httpPostAttribute.OperationName,
+                        ApiMethod = "POST",
+                        Sort = sortIndex
+                    });
+                }
+                else if (httpPutAttribute != null)
+                {
+                    apiInfoModels.Add(new SysApiInfoModel
+                    {
+                        ApiUrl = httpPutAttribute.Template!.StartsWith("/")
+                            ? httpPutAttribute.Template
+                            : $"/{apiGroupModel.ApiGroupName[0].ToString().ToLower() + apiGroupModel.ApiGroupName[1..]}/{httpPutAttribute.Template}",
+                        ApiName = httpPutAttribute.OperationName,
+                        ApiMethod = "PUT",
+                        Sort = sortIndex
+                    });
+                }
+                else if (httpDeleteAttribute != null)
+                {
+                    apiInfoModels.Add(new SysApiInfoModel
+                    {
+                        ApiUrl = httpDeleteAttribute.Template!.StartsWith("/")
+                            ? httpDeleteAttribute.Template
+                            : $"/{apiGroupModel.ApiGroupName[0].ToString().ToLower() + apiGroupModel.ApiGroupName[1..]}/{httpDeleteAttribute.Template}",
+                        ApiName = httpDeleteAttribute.OperationName,
+                        ApiMethod = "DELETE",
+                        Sort = sortIndex
+                    });
+                }
+
+                sortIndex++;
+            }
+        }
+
+        // 开启事务
+        await _db.Ado.BeginTranAsync();
+        try
+        {
+            // 加入数据库
+            await _db.Insertable(apiGroupModels).ExecuteCommandAsync();
+            await _db.Insertable(apiInfoModels).ExecuteCommandAsync();
+
+            // 提交事务
+            await _db.Ado.CommitTranAsync();
+        }
+        catch (Exception)
+        {
+            // 回滚事务
+            await _db.Ado.RollbackTranAsync();
+            throw;
+        }
+
+        sw.Stop();
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(@$"
+            
+             初始化接口信息完成！
              用时（毫秒）：{sw.ElapsedMilliseconds}
               
             ");

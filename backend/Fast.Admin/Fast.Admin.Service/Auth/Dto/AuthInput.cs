@@ -1,4 +1,6 @@
-﻿namespace Fast.Admin.Service.Auth.Dto;
+﻿using Fast.Admin.Model.Enum;
+
+namespace Fast.Admin.Service.Auth.Dto;
 
 /// <summary>
 /// Web登录输入

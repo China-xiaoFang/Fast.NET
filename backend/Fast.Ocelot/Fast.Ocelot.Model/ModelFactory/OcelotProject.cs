@@ -1,4 +1,4 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
+﻿using Fast.Admin.Model.Enum;
 using Fast.SqlSugar.Tenant.AttributeFilter;
 using Fast.SqlSugar.Tenant.BaseModel;
 using SqlSugar;

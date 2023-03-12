@@ -27,20 +27,10 @@ export default {
 	},
 
 	/**
-	 * 测试Get请求参数加密
-	 * @param value
+	 * 获取登录用户菜单
 	 * @returns
 	 */
-	testGet1(value) {
-		return getRequest("/testGet1", value);
-	},
-
-	/**
-	 * 测试Get请求参数加密
-	 * @param value
-	 * @returns
-	 */
-	testGet2(value) {
-		return getRequest("/testGet2", value);
+	getLoginMenu() {
+		return getRequest("/getLoginMenu");
 	},
 };

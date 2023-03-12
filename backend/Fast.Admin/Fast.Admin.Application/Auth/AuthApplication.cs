@@ -1,5 +1,6 @@
 ﻿using Fast.Admin.Service.Auth;
 using Fast.Admin.Service.Auth.Dto;
+using Fast.Core.AttributeFilter;
 using Fast.Core.Const;
 using Fast.SDK.Common.EnumFactory;
 using Furion.DynamicApiController;
@@ -36,9 +37,19 @@ public class AuthApplication : IDynamicApiController
     /// 获取登录用户信息
     /// </summary>
     /// <returns></returns>
-    [HttpGet("/getLoginUser", "获取登录用户信息", HttpRequestActionEnum.Query)]
+    [HttpGet("/getLoginUser", "获取登录用户信息", HttpRequestActionEnum.Page)]
     public async Task<GetLoginUserInfoOutput> GetLoginUserInfo()
     {
         return await _tenAuthService.GetLoginUserInfo();
+    }
+
+    /// <summary>
+    /// 获取登录菜单
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("/getLoginMenu", "获取登录菜单", HttpRequestActionEnum.Page)]
+    public async Task<List<AntDesignRouterOutput>> GetLoginMenu()
+    {
+        return await _tenAuthService.GetLoginMenu();
     }
 }

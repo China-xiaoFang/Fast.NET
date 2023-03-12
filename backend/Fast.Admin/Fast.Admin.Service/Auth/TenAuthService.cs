@@ -1,11 +1,16 @@
 ﻿using System.Text.RegularExpressions;
+using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys.Log;
+using Fast.Admin.Model.Model.Sys.Menu;
+using Fast.Admin.Model.Model.Tenant.Auth;
+using Fast.Admin.Model.Model.Tenant.Organization;
+using Fast.Admin.Model.Model.Tenant.Organization.User;
 using Fast.Admin.Service.Auth.Dto;
 using Fast.Admin.Service.SysMenu.Dto;
 using Fast.Admin.Service.SysModule;
-using Fast.Cache.Service;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
+using Fast.SDK.Common.Cache;
 using Fast.SDK.Common.EventSubscriber;
+using Fast.SDK.Common.Util.Http;
 using Fast.SqlSugar.Tenant;
 using Furion.DataEncryption;
 using Furion.EventBus;
@@ -196,7 +201,7 @@ public class TenAuthService : ITenAuthService, ITransient
         _httpContextAccessor.HttpContext!.Response.Headers[ClaimConst.RefreshToken] = refreshToken;
 
         // 更新最后登录时间和Ip
-        userInfo.LastLoginIp = HttpNewUtil.Ip;
+        userInfo.LastLoginIp = HttpUtil.Ip;
         userInfo.LastLoginTime = DateTime.Now;
         await _eventPublisher.PublishAsync(new FastChannelEventSource("Update:UserLoginInfo", GlobalContext.TenantId, userInfo));
     }
@@ -246,11 +251,71 @@ public class TenAuthService : ITenAuthService, ITransient
             .LeftJoin<TenRoleModel>((t1, t2) => t1.SysRoleId == t2.Id).Where(t1 => t1.SysUserId == userId)
             .Select((t1, t2) => t2.RoleName).ToListAsync();
 
+        // 判断是否为超级管理员
+        if (GlobalContext.IsSuperAdmin)
+        {
+            result.ButtonCodeList = null;
+        }
+        // 判断是否为系统管理员
+        else if (GlobalContext.IsSystemAdmin)
+        {
+            result.ButtonCodeList = null;
+        }
+        // 判断是否为租户管理员或者普通用户
+        else
+        {
+            // 查询角色授权按钮
+            var roleButtonIdList = await _tenRepository.Context.Queryable<TenUserRoleModel>()
+                .LeftJoin<TenRoleAuthButtonModel>((t1, t2) => t1.SysRoleId == t2.SysRoleId).Where(t1 => t1.SysUserId == userId)
+                .Select((t1, t2) => t2.SysButtonId).ToListAsync();
+            // 查询用户授权按钮
+            var userButtonIdList = await _tenRepository.Context.Queryable<TenUserAuthButtonModel>()
+                .Where(wh => wh.SysUserId == userId).Select(sl => sl.SysButtonId).ToListAsync();
+            var buttonIdList = new List<long>();
+            buttonIdList.AddRange(roleButtonIdList);
+            buttonIdList.AddRange(userButtonIdList);
+            // 查询授权按钮Code
+            result.ButtonCodeList = await _repository.Queryable<SysButtonModel>()
+                .LeftJoin<SysMenuModel>((t1, t2) => t1.MenuId == t2.Id)
+                .Where((t1, t2) => !SqlFunc.IsNullOrEmpty(t2.Id) && buttonIdList.Contains(t1.Id))
+                .Select((t1, t2) => $"{t2.MenuCode}:{t1.ButtonCode}").ToListAsync();
+        }
+
+        var visLog = new SysLogVisModel
+        {
+            Account = result.Account,
+            UserName = result.Name,
+            Location = HttpUtil.Url,
+            VisType = LoginTypeEnum.Login,
+            VisTime = DateTime.Now
+        };
+        visLog.RecordCreate();
+        // 访问日志
+        await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:VisLog", GlobalContext.TenantId, visLog));
+
+        return result;
+    }
+
+    /// <summary>
+    /// 获取登录菜单
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<AntDesignRouterOutput>> GetLoginMenu()
+    {
+        var userId = GlobalContext.UserId;
+
+        // 先从缓存中获取
+        var result = await _cache.GetAsync<List<AntDesignRouterOutput>>($"{CacheConst.AuthSysMenu}{userId}");
+
+        // 判断缓存中是否存在
+        if (result != null && result.Any())
+            return new TreeBuildUtil<AntDesignRouterOutput>().Build(result);
+
         // 查询模块
         var moduleList = await App.GetService<ISysModuleService>().QuerySysModuleSelector();
         var moduleIdList = new List<long>();
-        var menuList = new List<SysMenuTreeOutput>();
-        var u = App.User.FindFirst(ClaimConst.AdminType)?.Value;
+        List<SysMenuTreeOutput> menuList;
+
         // 判断是否为超级管理员
         if (GlobalContext.IsSuperAdmin)
         {
@@ -269,29 +334,25 @@ public class TenAuthService : ITenAuthService, ITransient
                 .Where(wh => wh.Status == CommonStatusEnum.Enable && moduleIdList.Contains(wh.ModuleId))
                 .Select<SysMenuTreeOutput>().ToListAsync();
         }
-        // 判断是否为租户管理员
-        else if (GlobalContext.IsTenantAdmin)
-        {
-            // TODO：这里需要做权限处理
-            // 查询授权菜单
-            menuList = await _repository.Queryable<SysMenuModel>()
-                .Where(wh => wh.Status == CommonStatusEnum.Enable && moduleIdList.Contains(wh.ModuleId))
-                .Select<SysMenuTreeOutput>().ToListAsync();
-
-            // 查询授权按钮
-        }
         else
         {
-            // TODO：这里需要做权限处理
+            // 查询角色授权菜单
+            var roleMenuIdList = await _repository.Queryable<TenUserRoleModel>()
+                .LeftJoin<TenRoleAuthMenuModel>((t1, t2) => t1.SysRoleId == t2.SysRoleId).Where(t1 => t1.SysUserId == userId)
+                .Select((t1, t2) => t2.SysMenuId).ToListAsync();
+            // 查询用户授权菜单
+            var userMenuIdList = await _repository.Queryable<TenUserAuthMenuModel>().Where(wh => wh.SysUserId == userId)
+                .Select(sl => sl.SysMenuId).ToListAsync();
+            var menuIdList = new List<long>();
+            menuIdList.AddRange(roleMenuIdList);
+            menuIdList.AddRange(userMenuIdList);
             // 查询授权菜单
             menuList = await _repository.Queryable<SysMenuModel>()
-                .Where(wh => wh.Status == CommonStatusEnum.Enable && moduleIdList.Contains(wh.ModuleId))
-                .Select<SysMenuTreeOutput>().ToListAsync();
-
-            // 查询授权按钮
+                .Where(wh => wh.Status == CommonStatusEnum.Enable && moduleIdList.Contains(wh.ModuleId) &&
+                             menuIdList.Contains(wh.Id)).Select<SysMenuTreeOutput>().ToListAsync();
         }
 
-        var menuTreeList = new List<AntDesignRouterOutput>();
+        result = new List<AntDesignRouterOutput>();
 
         // 循环所有模块
         foreach (var moduleInfo in moduleList)
@@ -306,7 +367,7 @@ public class TenAuthService : ITenAuthService, ITransient
                     menuInfo.ParentId = moduleInfo.Id;
                 }
 
-                menuTreeList.Add(new AntDesignRouterOutput
+                result.Add(new AntDesignRouterOutput
                 {
                     Id = menuInfo.Id,
                     Name = menuInfo.MenuName,
@@ -317,9 +378,10 @@ public class TenAuthService : ITenAuthService, ITransient
                     {
                         MenuTypeEnum.Outside => menuInfo.Link,
                         MenuTypeEnum.Catalog => $"/{menuInfo.Id}",
-                        _ => menuInfo.Router
+                        _ => $"{menuInfo.Router}?menuCode={menuInfo.MenuCode}"
                     },
                     Component = menuInfo.Component,
+                    Type = menuInfo.MenuType,
                     Meta = new AntDesignRouterMetaOutput
                     {
                         Title = menuInfo.MenuTitle,
@@ -331,7 +393,7 @@ public class TenAuthService : ITenAuthService, ITransient
                 });
             }
 
-            menuTreeList.Add(new AntDesignRouterOutput
+            result.Add(new AntDesignRouterOutput
             {
                 Id = moduleInfo.Id,
                 Name = moduleInfo.ModuleName,
@@ -340,6 +402,7 @@ public class TenAuthService : ITenAuthService, ITransient
                 Sort = moduleInfo.Sort,
                 Path = $"/{moduleInfo.Id}",
                 Component = "",
+                Type = MenuTypeEnum.Catalog,
                 Meta = new AntDesignRouterMetaOutput
                 {
                     Title = moduleInfo.ModuleName,
@@ -351,21 +414,10 @@ public class TenAuthService : ITenAuthService, ITransient
             });
         }
 
-        // 构建属性菜单
-        result.MenuList = new TreeBuildUtil<AntDesignRouterOutput>().Build(menuTreeList);
+        // 放入缓存
+        await _cache.SetAsync($"{CacheConst.AuthSysMenu}{userId}", result);
 
-        var visLog = new SysLogVisModel
-        {
-            Account = result.Account,
-            UserName = result.Name,
-            Location = HttpNewUtil.Url,
-            VisType = LoginTypeEnum.Login,
-            VisTime = DateTime.Now
-        };
-        visLog.RecordCreate();
-        // 访问日志
-        await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:VisLog", GlobalContext.TenantId, visLog));
-
-        return result;
+        // 构建树形菜单
+        return new TreeBuildUtil<AntDesignRouterOutput>().Build(result);
     }
 }

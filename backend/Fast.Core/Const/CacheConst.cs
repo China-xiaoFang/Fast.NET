@@ -6,11 +6,6 @@
 public class CacheConst
 {
     /// <summary>
-    /// 数据库信息缓存
-    /// </summary>
-    public const string TenantDbInfo = "Tenant:DbInfo:";
-
-    /// <summary>
     /// 系统应用本地化配置缓存
     /// </summary>
     public const string SysAppLocalization = "System:appLocalization";
@@ -35,40 +30,35 @@ public class CacheConst
     /// </summary>
     public const string TenConfigInfo = "Tenant:Config";
 
-    ///// <summary>
-    ///// 用户缓存
-    ///// </summary>
-    //public const string User = "User:";
-
-    ///// <summary>
-    ///// 菜单缓存
-    ///// </summary>
-    //public const string Menu = "Menu:";
+    /// <summary>
+    /// 所有权限缓存
+    /// </summary>
+    public const string AllPermission = "Auth:AllPermission:";
 
     /// <summary>
-    /// 权限缓存
+    /// 用户模块权限缓存
+    /// </summary>
+    public const string AuthModule = "Auth:Module:";
+
+    /// <summary>
+    /// 所有系统菜单缓存
+    /// </summary>
+    public const string AllSysMenu = "System:Menu";
+
+    /// <summary>
+    /// 用户菜单权限缓存
+    /// </summary>
+    public const string AuthSysMenu = "Auth:Menu:";
+
+    /// <summary>
+    /// 用户权限缓存
     /// </summary>
     public const string Permission = "Auth:Permission:";
-
-    /// <summary>
-    /// 数据范围缓存
-    /// </summary>
-    public const string DataScope = "Auth:Datascope:";
-
-    /// <summary>
-    /// 用户数据权限范围缓存
-    /// </summary>
-    public const string UserDataScope = "Auth:UserDataScope:";
 
     /// <summary>
     /// 租户缓存
     /// </summary>
     public const string TenantInfo = "Tenant:info";
-
-    /// <summary>
-    /// 所有权限缓存
-    /// </summary>
-    public const string AllPermission = "Auth:AllPermission:";
 
     /// <summary>
     /// 在线用户缓存

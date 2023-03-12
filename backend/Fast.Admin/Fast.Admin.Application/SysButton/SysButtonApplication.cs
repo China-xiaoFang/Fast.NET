@@ -25,10 +25,10 @@ public class SysButtonApplication : IDynamicApiController
     /// </summary>
     /// <param name="menuId"></param>
     /// <returns></returns>
-    [HttpGet("page", "根据菜单Id查询系统按钮", HttpRequestActionEnum.Query)]
-    public async Task<List<SysButtonOutput>> QuerySysButtonListById(long menuId)
+    [HttpGet("page", "根据菜单Id查询系统按钮", HttpRequestActionEnum.Page)]
+    public async Task<List<SysButtonOutput>> QuerySysButtonListByMenuId(long menuId)
     {
-        return await _sysButtonService.QuerySysButtonListById(menuId);
+        return await _sysButtonService.QuerySysButtonListByMenuId(menuId);
     }
 
     /// <summary>

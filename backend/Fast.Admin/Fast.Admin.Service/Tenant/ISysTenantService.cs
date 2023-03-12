@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
+using Fast.Admin.Model.Model.Sys;
 using Fast.Admin.Service.Tenant.Dto;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+using Fast.Core.Restful.Internal;
 using Fast.SqlSugar.Tenant.Internal.Dto;
 using Microsoft.AspNetCore.Mvc;
 
