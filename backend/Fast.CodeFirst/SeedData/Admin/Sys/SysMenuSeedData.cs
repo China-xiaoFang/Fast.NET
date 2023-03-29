@@ -1,6 +1,6 @@
 ﻿using Fast.Admin.Model.Enum;
 using Fast.Admin.Model.Model.Sys.Menu;
-using Fast.SDK.Common.CodeFirst.Internal;
+using Fast.Core.CodeFirst.Internal;
 using SqlSugar;
 using Yitter.IdGenerator;
 

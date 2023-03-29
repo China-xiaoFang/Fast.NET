@@ -1,18 +1,21 @@
 ﻿using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using Fast.Admin.Model.BaseModel.Interface;
 using Fast.Admin.Model.Enum;
 using Fast.Admin.Model.Model.Sys;
 using Fast.Admin.Model.Model.Tenant.Auth.DataScope;
 using Fast.Admin.Model.Model.Tenant.Organization;
 using Fast.Admin.Model.Model.Tenant.Organization.User;
 using Fast.Admin.Service.Tenant.Dto;
+using Fast.Core.Cache;
+using Fast.Core.CodeFirst;
+using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Restful.Extension;
 using Fast.Core.Restful.Internal;
-using Fast.SDK.Common.Cache;
-using Fast.SDK.Common.CodeFirst;
-using Fast.SDK.Common.CodeFirst.Internal;
-using Fast.SqlSugar.Tenant.BaseModel.Interface;
-using Fast.SqlSugar.Tenant.Internal.Dto;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Core.SqlSugar.Helper;
+using Fast.Core.SqlSugar.Internal.Dto;
+using Fast.Core.SqlSugar.Repository;
 using Furion.DataEncryption;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -71,7 +74,7 @@ public class SysTenantService : ISysTenantService, ITransient
         foreach (var tenant in tenantList)
         {
             // 加载租户数据库Db
-            var _db = _tenant.LoadSqlSugar<TenUserModel>(tenant.Id);
+            var _db = _tenant.LoadSqlSugar<TenUserModel>(_cache, tenant.Id);
             // 查询两个管理员信息
             var userList = await _db.Queryable<TenUserModel>().Where(wh =>
                 (wh.AdminType == AdminTypeEnum.SystemAdmin || wh.AdminType == AdminTypeEnum.TenantAdmin)).ToListAsync();
@@ -231,7 +234,7 @@ public class SysTenantService : ISysTenantService, ITransient
     [NonAction]
     public async Task InitNewTenant(SysTenantModel newTenant, List<SugarEntityTypeInfo> entityTypeList, bool isInit = false)
     {
-        var _db = _tenant.LoadSqlSugar<TenUserModel>(newTenant.Id);
+        var _db = _tenant.LoadSqlSugar<TenUserModel>(_cache, newTenant.Id);
 
         // 初始化数据库
         _db.DbMaintenance.CreateDatabase();

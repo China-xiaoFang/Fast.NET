@@ -1,6 +1,7 @@
 ﻿using Fast.Admin.Model.Enum;
 using Fast.Admin.Model.Model.Sys.Menu;
 using Fast.Admin.Service.SysMenu.Dto;
+using Fast.Core.SqlSugar.Repository;
 
 namespace Fast.Admin.Service.SysMenu;
 

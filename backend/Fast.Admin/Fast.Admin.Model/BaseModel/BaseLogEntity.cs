@@ -1,5 +1,4 @@
-﻿using Fast.SDK.Common.Util.Http;
-using Fast.SqlSugar.Tenant.BaseModel.Interface;
+﻿using Fast.Admin.Model.BaseModel.Interface;
 using SqlSugar;
 
 namespace Fast.Admin.Model.BaseModel;
@@ -63,15 +62,15 @@ public class BaseLogEntity : IBaseLogEntity, IPrimaryKeyEntity<int>
     /// </summary>
     public virtual void RecordCreate()
     {
-        var userAgentInfo = HttpUtil.UserAgentInfo();
-        var wanInfo = HttpUtil.WanInfo(HttpUtil.Ip).Result;
+        //var userAgentInfo = HttpUtil.UserAgentInfo();
+        //var wanInfo = HttpUtil.WanInfo(HttpUtil.Ip).Result;
 
-        PhoneModel = userAgentInfo.PhoneModel;
-        OS = userAgentInfo.OS;
-        Browser = userAgentInfo.Browser;
-        Province = wanInfo.Pro;
-        City = wanInfo.City;
-        Operator = wanInfo.Operator;
-        Ip = wanInfo.Ip;
+        //PhoneModel = userAgentInfo.PhoneModel;
+        //OS = userAgentInfo.OS;
+        //Browser = userAgentInfo.Browser;
+        //Province = wanInfo.Pro;
+        //City = wanInfo.City;
+        //Operator = wanInfo.Operator;
+        //Ip = wanInfo.Ip;
     }
 }

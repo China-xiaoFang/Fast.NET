@@ -3,9 +3,10 @@ using Fast.Admin.Model.Model.Sys.Menu;
 using Fast.Admin.Model.Model.Tenant.Auth;
 using Fast.Admin.Model.Model.Tenant.Organization.User;
 using Fast.Admin.Service.SysModule.Dto;
+using Fast.Core.Cache;
 using Fast.Core.Restful.Extension;
 using Fast.Core.Restful.Internal;
-using Fast.SDK.Common.Cache;
+using Fast.Core.SqlSugar.Repository;
 
 namespace Fast.Admin.Service.SysModule;
 
@@ -92,7 +93,6 @@ public class SysModuleService : ISysModuleService, ITransient
             }
             else
             {
-
                 // 查询授权菜单的模块信息，非管理员查看的
                 result = await _repository.Context.Queryable<SysModuleModel>()
                     .LeftJoin<SysMenuModel>((t1, t2) => t1.Id == t2.ModuleId).Where((t1, t2) =>

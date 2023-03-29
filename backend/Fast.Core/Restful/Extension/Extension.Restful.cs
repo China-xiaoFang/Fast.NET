@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Fast.Core.AppLocalization;
 using Fast.Core.Restful.Internal;
-using Fast.SDK.Common.Util.Json.Extension;
-using Fast.SqlSugar.Tenant.Extension;
-using Fast.SqlSugar.Tenant.Internal.Dto;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Core.SqlSugar.Internal.Dto;
+using Fast.Core.Util.Json.Extension;
 using Furion.Logging;
 using Furion.UnifyResult;
 

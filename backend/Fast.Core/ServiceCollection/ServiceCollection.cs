@@ -2,7 +2,7 @@
 using Fast.Core.Handlers;
 using Fast.Core.Middleware;
 using Fast.Core.Restful;
-using Fast.SDK.Common.Util;
+using Fast.Core.Util;
 using Furion.Schedule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

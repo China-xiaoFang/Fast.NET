@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Model.Enum;
-using Fast.SqlSugar.Tenant.AttributeFilter;
-using Fast.SqlSugar.Tenant.BaseModel;
+﻿using Fast.Admin.Model;
+using Fast.Admin.Model.BaseModel;
+using Fast.Admin.Model.Enum;
 using SqlSugar;
 
 namespace Fast.Ocelot.Model.ModelFactory;

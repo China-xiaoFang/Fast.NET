@@ -1,8 +1,5 @@
-﻿using Fast.Admin.Model.Enum;
-using Fast.Admin.Model.Model.Sys.Menu;
-using Fast.Admin.Service.Cache.Dto;
-using Fast.Admin.Service.SysMenu.Dto;
-using Fast.SDK.Common.Cache;
+﻿using Fast.Admin.Service.Cache.Dto;
+using Fast.Core.Cache;
 
 namespace Fast.Admin.Service.Cache;
 
@@ -26,7 +23,7 @@ public class SysCacheService : ISysCacheService, ITransient
     /// <returns></returns>
     public string GetCacheType()
     {
-        return CacheContext.CacheOptions.CacheType.GetDescription();
+        return GlobalContext.CacheOptions.CacheType.GetDescription();
     }
 
     /// <summary>

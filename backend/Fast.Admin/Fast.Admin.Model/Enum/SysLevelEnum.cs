@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Fast.SDK.Common.AttributeFilter;
 
 namespace Fast.Admin.Model.Enum;
 

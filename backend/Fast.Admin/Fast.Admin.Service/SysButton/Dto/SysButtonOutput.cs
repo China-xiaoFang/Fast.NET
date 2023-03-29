@@ -1,4 +1,6 @@
-﻿namespace Fast.Admin.Service.SysButton.Dto;
+﻿using Fast.Admin.Model.BaseModel.Dto;
+
+namespace Fast.Admin.Service.SysButton.Dto;
 
 /// <summary>
 /// 系统按钮输出

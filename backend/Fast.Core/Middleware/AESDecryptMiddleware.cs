@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Web;
 using Fast.Core.Restful.Internal;
-using Fast.SDK.Common.Util.Json.Extension;
+using Fast.Core.Util.Json.Extension;
 using Furion.Logging;
 using Microsoft.AspNetCore.Http;
 

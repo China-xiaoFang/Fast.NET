@@ -20,9 +20,7 @@
     // SqlSugar Sql执行最大秒数，如果超过记录警告日志
     "SugarSqlExecMaxSeconds": 30,
     // 差异日志
-    "DiffLog": true,
-    // 初始化数据库
-    "InitDataBase": false
+    "DiffLog": true
   },
   // 缓存
   "Cache": {

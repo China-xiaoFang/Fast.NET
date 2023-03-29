@@ -1,5 +1,4 @@
-﻿using Fast.SqlSugar.Tenant.AttributeFilter;
-using Fast.SqlSugar.Tenant.BaseModel;
+﻿using Fast.Admin.Model.BaseModel;
 using SqlSugar;
 
 namespace Fast.Admin.Model.Model.Sys.Menu;

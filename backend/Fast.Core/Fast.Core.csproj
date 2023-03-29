@@ -37,12 +37,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="My.Extensions.Localization.Json" Version="3.1.0" />
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+		<PackageReference Include="Furion.Pure" Version="4.8.7.6" />
+		<PackageReference Include="CSRedisCore" Version="3.8.670" />
+		<PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="4.8.7.6" />
+		<PackageReference Include="Furion.Extras.ObjectMapper.Mapster" Version="4.8.7.6" />
+		<PackageReference Include="UAParser" Version="3.1.47" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\Fast.Admin\Fast.Admin.Model\Fast.Admin.Model.csproj" />
-	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Common\Fast.SDK.Common.csproj" />
-	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Core\Fast.SDK.Aliyun\Fast.SDK.Aliyun.csproj" />
-	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Core\Fast.SDK.Baidu\Fast.SDK.Baidu.csproj" />
-	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Core\Fast.SDK.MiniExcel\Fast.SDK.MiniExcel.csproj" />
-	  <ProjectReference Include="..\Fast.SDK\Fast.SDK.Core\Fast.SDK.RabbitMQ\Fast.SDK.RabbitMQ.csproj" />
+	  <ProjectReference Include="..\Fast.SDK\Fast.Iaas\Fast.Iaas.csproj" />
 	</ItemGroup>
 
 </Project>

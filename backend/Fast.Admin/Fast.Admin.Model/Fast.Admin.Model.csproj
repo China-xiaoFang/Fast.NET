@@ -16,11 +16,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Fast.SDK\Fast.SDK.Common\Fast.SDK.Common.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Model\Tenant\Menu\" />
+		<PackageReference Include="SqlSugarCore" Version="5.1.4.62" />
+		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 	</ItemGroup>
 
 </Project>

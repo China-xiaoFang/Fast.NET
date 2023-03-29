@@ -1,7 +1,8 @@
 ﻿using Fast.Admin.Model.Model.Sys.Log;
 using Fast.Admin.Model.Model.Tenant.Organization.User;
-using Fast.SDK.Common.EventSubscriber;
-using Fast.SqlSugar.Tenant.Extension;
+using Fast.Core.Cache;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Core.SqlSugar.Repository;
 using Furion.EventBus;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,7 +33,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
-            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogOpModel>(source.TenantId);
+            var _cache = scope.ServiceProvider.GetRequiredService<ICache>();
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>()
+                .LoadSqlSugar<SysLogOpModel>(_cache, source.TenantId);
             var log = (SysLogOpModel) context.Source.Payload;
             await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
         }
@@ -44,7 +47,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
-            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogVisModel>(source.TenantId);
+            var _cache = scope.ServiceProvider.GetRequiredService<ICache>();
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>()
+                .LoadSqlSugar<SysLogVisModel>(_cache, source.TenantId);
             var log = (SysLogVisModel) context.Source.Payload;
             await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
         }
@@ -56,7 +61,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
-            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<SysLogDiffModel>(source.TenantId);
+            var _cache = scope.ServiceProvider.GetRequiredService<ICache>();
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>()
+                .LoadSqlSugar<SysLogDiffModel>(_cache, source.TenantId);
             var log = (SysLogDiffModel) context.Source.Payload;
             await _db.Insertable(log).SplitTable().ExecuteCommandAsync();
         }
@@ -68,7 +75,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
-            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>().LoadSqlSugar<TenUserModel>(source.TenantId);
+            var _cache = scope.ServiceProvider.GetRequiredService<ICache>();
+            var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>()
+                .LoadSqlSugar<TenUserModel>(_cache, source.TenantId);
             var log = (TenUserModel) context.Source.Payload;
             await _db.Updateable(log).UpdateColumns(m => new {m.LastLoginTime, m.LastLoginIp}).ExecuteCommandAsync();
         }
@@ -80,8 +89,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
+            var _cache = scope.ServiceProvider.GetRequiredService<ICache>();
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>()
-                .LoadSqlSugar<SysLogSchedulerJobModel>(source.TenantId);
+                .LoadSqlSugar<SysLogSchedulerJobModel>(_cache, source.TenantId);
             var log = (SysLogSchedulerJobModel) context.Source.Payload;
             await _db.Insertable(log).ExecuteCommandAsync();
         }
@@ -93,8 +103,9 @@ public class LogEventSubscriber : IEventSubscriber
         using var scope = Services.CreateScope();
         if (context.Source is FastChannelEventSource source)
         {
+            var _cache = scope.ServiceProvider.GetRequiredService<ICache>();
             var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>()
-                .LoadSqlSugar<SysLogSchedulerJobModel>(source.TenantId);
+                .LoadSqlSugar<SysLogSchedulerJobModel>(_cache, source.TenantId);
             var log = (SysLogSchedulerJobModel) context.Source.Payload;
             await _db.Updateable(log).ExecuteCommandAsync();
         }

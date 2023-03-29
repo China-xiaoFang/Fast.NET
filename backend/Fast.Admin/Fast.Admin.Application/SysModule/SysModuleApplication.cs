@@ -1,8 +1,8 @@
-﻿using Fast.Admin.Service.SysModule;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Service.SysModule;
 using Fast.Admin.Service.SysModule.Dto;
 using Fast.Core.Const;
 using Fast.Core.Restful.Internal;
-using Fast.SDK.Common.EnumFactory;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 

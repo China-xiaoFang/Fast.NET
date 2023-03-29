@@ -1,4 +1,6 @@
-﻿namespace Fast.Admin.Service.User.Dto;
+﻿using Fast.Admin.Model.BaseModel.Dto;
+
+namespace Fast.Admin.Service.User.Dto;
 
 /// <summary>
 /// 

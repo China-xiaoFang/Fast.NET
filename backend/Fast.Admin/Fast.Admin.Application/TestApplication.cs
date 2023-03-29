@@ -4,7 +4,7 @@ using Fast.Core.Operation.Config;
 using Fast.Core.Operation.Config.Dto;
 using Fast.Core.Operation.Dict;
 using Fast.Core.Operation.Dict.Dto;
-using Fast.SqlSugar.Tenant.Repository;
+using Fast.Core.SqlSugar.Repository;
 using Furion.DynamicApiController;
 using Furion.FriendlyException;
 using Microsoft.AspNetCore.Authorization;

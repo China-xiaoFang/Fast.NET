@@ -1,6 +1,7 @@
 ﻿using Fast.Admin.Model.Model.Sys.Api;
 using Fast.Admin.Model.Model.Sys.Menu;
 using Fast.Admin.Service.SysButton.Dto;
+using Fast.Core.SqlSugar.Repository;
 
 namespace Fast.Admin.Service.SysButton;
 

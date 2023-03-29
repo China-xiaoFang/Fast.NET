@@ -1,4 +1,5 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Admin.Model.BaseModel.Dto;
+using Fast.Admin.Model.Enum;
 
 namespace Fast.Admin.Service.SysModule.Dto;
 

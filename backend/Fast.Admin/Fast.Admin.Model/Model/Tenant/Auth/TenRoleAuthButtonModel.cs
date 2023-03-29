@@ -1,6 +1,5 @@
-﻿using Fast.SqlSugar.Tenant.AttributeFilter;
-using Fast.SqlSugar.Tenant.BaseModel.Interface;
-using Fast.SqlSugar.Tenant.Internal.Enum;
+﻿using Fast.Admin.Model.BaseModel.Interface;
+using Fast.Admin.Model.Enum;
 using SqlSugar;
 
 namespace Fast.Admin.Model.Model.Tenant.Auth;

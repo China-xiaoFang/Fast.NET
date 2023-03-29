@@ -1,10 +1,9 @@
 ﻿using Fast.Admin.Model.Model.Sys.Config;
 using Fast.Admin.Model.Model.Tenant.Config;
+using Fast.Core.Cache;
 using Fast.Core.Const;
 using Fast.Core.Operation.Config.Dto;
-using Fast.SDK.Common.Cache;
-using Fast.SqlSugar.Tenant;
-using Fast.SqlSugar.Tenant.Extension;
+using Fast.Core.SqlSugar.Extension;
 using Furion.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -143,7 +142,7 @@ public static class ConfigOperation
                     var db = service.GetService<ISqlSugarClient>();
 
                     // ReSharper disable once PossibleNullReferenceException
-                    var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
+                    var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
 
                     // 获取所有数据
                     var data = await _db.Queryable<SysConfigModel>().Select<ConfigInfo>().ToListAsync();
@@ -156,7 +155,7 @@ public static class ConfigOperation
                 }
                 else
                 {
-                    var _db = service.GetService<ISqlSugarClient>().LoadSqlSugar<TenConfigModel>();
+                    var _db = service.GetService<ISqlSugarClient>().LoadSqlSugar<TenConfigModel>(_cache);
 
                     // 获取所有数据
                     var data = await _db.Queryable<TenConfigModel>().Select<ConfigInfo>().ToListAsync();

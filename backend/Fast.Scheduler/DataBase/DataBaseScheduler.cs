@@ -1,23 +1,20 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using Fast.Admin.Model;
 using Fast.Admin.Model.Enum;
 using Fast.Admin.Model.Model.Sys;
 using Fast.Admin.Model.Model.Sys.Api;
 using Fast.Admin.Model.Model.Sys.Dic;
 using Fast.Admin.Service.Tenant;
 using Fast.Core;
+using Fast.Core.Cache;
+using Fast.Core.CodeFirst;
+using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Const;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Core.SqlSugar.Helper;
 using Fast.Iaas.Util;
-using Fast.SDK.Common.AttributeFilter;
-using Fast.SDK.Common.Cache;
-using Fast.SDK.Common.CodeFirst;
-using Fast.SDK.Common.CodeFirst.Internal;
-using Fast.SqlSugar.Tenant;
-using Fast.SqlSugar.Tenant.Extension;
-using Fast.SqlSugar.Tenant.Helper;
-using Fast.SqlSugar.Tenant.Internal.Enum;
-using Fast.SqlSugar.Tenant.SugarEntity;
 using Furion.Schedule;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,10 +22,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SqlSugar;
 using Yitter.IdGenerator;
-using HttpDeleteAttribute = Fast.SDK.Common.AttributeFilter.Http.HttpDeleteAttribute;
-using HttpGetAttribute = Fast.SDK.Common.AttributeFilter.Http.HttpGetAttribute;
-using HttpPostAttribute = Fast.SDK.Common.AttributeFilter.Http.HttpPostAttribute;
-using HttpPutAttribute = Fast.SDK.Common.AttributeFilter.Http.HttpPutAttribute;
+using HttpDeleteAttribute = Fast.Core.AttributeFilter.Http.HttpDeleteAttribute;
+using HttpGetAttribute = Fast.Core.AttributeFilter.Http.HttpGetAttribute;
+using HttpPostAttribute = Fast.Core.AttributeFilter.Http.HttpPostAttribute;
+using HttpPutAttribute = Fast.Core.AttributeFilter.Http.HttpPutAttribute;
 
 namespace Fast.Scheduler.DataBase;
 
@@ -59,7 +56,7 @@ public class DataBaseJobWorker : IJob
         // 获取服务
         var db = serviceScope.ServiceProvider.GetService<ISqlSugarClient>();
         // ReSharper disable once PossibleNullReferenceException
-        var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
+        var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
         var _cache = serviceScope.ServiceProvider.GetService<ICache>();
         var _sysTenantService = serviceScope.ServiceProvider.GetService<ISysTenantService>();
 
@@ -163,17 +160,17 @@ public class DataBaseJobWorker : IJob
         // 初始化租户业务库信息
         await _db.Insertable(new SysTenantDataBaseModel
         {
-            ServiceIp = SugarContext.ConnectionStringsOptions.DefaultServiceIp,
-            Port = SugarContext.ConnectionStringsOptions.DefaultPort,
+            ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
+            Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
             DbName = $"Fast.Main_{superAdminTenantInfo.EnShortName}",
-            DbUser = SugarContext.ConnectionStringsOptions.DefaultDbUser,
-            DbPwd = SugarContext.ConnectionStringsOptions.DefaultDbPwd,
+            DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
+            DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
             SugarSysDbType = SugarDbTypeEnum.Tenant.GetHashCode(),
             SugarDbTypeName = SugarDbTypeEnum.Tenant.GetDescription(),
-            DbType = SugarContext.ConnectionStringsOptions.DefaultDbType,
-            CommandTimeOut = SugarContext.ConnectionStringsOptions.CommandTimeOut,
-            SugarSqlExecMaxSeconds = SugarContext.ConnectionStringsOptions.SugarSqlExecMaxSeconds,
-            DiffLog = SugarContext.ConnectionStringsOptions.DiffLog,
+            DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
+            CommandTimeOut = GlobalContext.ConnectionStringsOptions.CommandTimeOut,
+            SugarSqlExecMaxSeconds = GlobalContext.ConnectionStringsOptions.SugarSqlExecMaxSeconds,
+            DiffLog = GlobalContext.ConnectionStringsOptions.DiffLog,
             TenantId = superAdminTenantInfo.Id
         }).ExecuteCommandAsync();
 

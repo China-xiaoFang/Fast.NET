@@ -1,6 +1,5 @@
 ﻿using Fast.Admin.Model.BaseModel;
-using Fast.SqlSugar.Tenant.AttributeFilter;
-using Fast.SqlSugar.Tenant.BaseModel.Interface;
+using Fast.Admin.Model.BaseModel.Interface;
 using SqlSugar;
 
 namespace Fast.Admin.Model.Model.Sys.Log;

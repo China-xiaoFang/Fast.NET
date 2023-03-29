@@ -1,12 +1,10 @@
 ﻿using Fast.Admin.Model.Enum;
-using Fast.Admin.Model.Model.Sys.Log;
-using Fast.SDK.Common.EventSubscriber;
-using Fast.SqlSugar.Tenant;
-using Fast.SqlSugar.Tenant.Setup;
-using Furion.DependencyInjection;
-using Furion.EventBus;
-using Furion.Logging;
+using Fast.Admin.Model.Model.Sys;
+using Fast.Core.Filter;
+using Fast.Core.SqlSugar.Helper;
+using Fast.Core.SqlSugar.Repository;
 using Microsoft.Extensions.DependencyInjection;
+using Yitter.IdGenerator;
 
 namespace Fast.Core.ServiceCollection;
 
@@ -23,82 +21,50 @@ public static class SqlSugarSetup
     public static void AddSqlSugarClientService(this IServiceCollection service)
     {
         // Add Snowflakes Id.
-        service.AddSnowflakeId();
+        // 设置雪花Id的workerId，确保每个实例workerId都应不同
+        var workerId = ushort.Parse(App.Configuration["SnowId:WorkerId"] ?? "1");
+        YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = workerId});
 
-        // Set SqlSugar log Func.
-        SugarContext.SetSugarLogFunc(message => { Log.Information(message); }, message => { Log.Warning(message); },
-            message => { Log.Error(message); }, SqlSugarDiffLog);
-
-        // Set SqlSugar tenant and user Func.
-        SugarContext.SetSugarFunc(() => GlobalContext.TenantId, () => GlobalContext.UserId, () => GlobalContext.UserName,
-            () => GlobalContext.IsSuperAdmin, () => GlobalContext.IsSystemAdmin, () => GlobalContext.IsTenantAdmin);
-
-        // Init sqlSugar.
-        service.SqlSugarClientConfigure(App.HostEnvironment);
-    }
-
-    /// <summary>
-    /// SqlSugar 差异日志
-    /// </summary>
-    /// <param name="diffDescription"></param>
-    /// <param name="afterData"></param>
-    /// <param name="beforeData"></param>
-    /// <param name="executeSql"></param>
-    /// <param name="diffType"></param>
-    /// <param name="diffTime"></param>
-    private static void SqlSugarDiffLog(string diffDescription, List<DiffLogTableInfo> afterData,
-        List<DiffLogTableInfo> beforeData, string executeSql, DiffType diffType, DateTime diffTime)
-    {
-        if ((afterData != null && afterData.Any()) || (beforeData != null && beforeData.Any()))
+        // 得到连接字符串
+        var connectionStr = DataBaseHelper.GetConnectionStr(new SysTenantDataBaseModel
         {
-            // 创建一个作用域
-            Scoped.Create((_, scope) =>
-            {
-                var serviceScope = scope.ServiceProvider;
+            ServiceIp = GlobalContext.ConnectionStringsOptions.DefaultServiceIp,
+            Port = GlobalContext.ConnectionStringsOptions.DefaultPort,
+            DbName = GlobalContext.ConnectionStringsOptions.DefaultDbName,
+            DbUser = GlobalContext.ConnectionStringsOptions.DefaultDbUser,
+            DbPwd = GlobalContext.ConnectionStringsOptions.DefaultDbPwd,
+            SugarSysDbType = SugarDbTypeEnum.Default.GetHashCode(),
+            SugarDbTypeName = SugarDbTypeEnum.Default.GetDescription(),
+            DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType
+        });
 
-                // 获取事件总线服务
-                var _eventPublisher = serviceScope.GetService<IEventPublisher>();
+        var connectConfig = new ConnectionConfig
+        {
+            ConfigId = GlobalContext.ConnectionStringsOptions.DefaultConnectionId, // 此链接标志，用以后面切库使用
+            ConnectionString = connectionStr, // 核心库连接字符串
+            DbType = GlobalContext.ConnectionStringsOptions.DefaultDbType,
+            IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
+            InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
+            //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
+            ConfigureExternalServices =
+                DataBaseHelper.GetSugarExternalServices(GlobalContext.ConnectionStringsOptions.DefaultDbType)
+        };
 
-                DiffLogTableInfo firstData = null;
-                if (afterData != null && afterData.Any())
-                {
-                    firstData = afterData.First();
-                }
-                else if (beforeData != null && beforeData.Any())
-                {
-                    firstData = beforeData.First();
-                }
+        // 注册 SqlSugarClient
+        service.AddScoped<ISqlSugarClient>(_ =>
+        {
+            var sqlSugarClient = new SqlSugarClient(connectConfig);
+            // 过滤器
+            SugarEntityFilter.LoadSugarFilter(sqlSugarClient, GlobalContext.ConnectionStringsOptions.CommandTimeOut,
+                GlobalContext.ConnectionStringsOptions.SugarSqlExecMaxSeconds, GlobalContext.ConnectionStringsOptions.DiffLog);
 
-                var tableName = firstData?.TableName;
-                var tableDescription = firstData?.TableDescription;
+            return sqlSugarClient;
+        });
 
-                var diffLogType = diffType switch
-                {
-                    DiffType.insert => DiffLogTypeEnum.Insert,
-                    DiffType.update => DiffLogTypeEnum.Update,
-                    DiffType.delete => DiffLogTypeEnum.Delete,
-                    _ => DiffLogTypeEnum.None
-                };
+        // 注册非泛型仓储
+        service.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
 
-                var sysLogDiffModel = new SysLogDiffModel
-                {
-                    Account = GlobalContext.UserAccount,
-                    UserName = GlobalContext.UserName,
-                    DiffDescription = diffDescription,
-                    TableName = tableName,
-                    TableDescription = tableDescription,
-                    AfterColumnInfo = afterData?.Select(sl => sl.Columns).ToList(),
-                    BeforeColumnInfo = beforeData?.Select(sl => sl.Columns).ToList(),
-                    ExecuteSql = executeSql,
-                    DiffType = diffLogType,
-                    DiffTime = diffTime
-                };
-                sysLogDiffModel.RecordCreate();
-
-                // 记录差异日志
-                _eventPublisher.PublishAsync(new FastChannelEventSource("Create:DiffLog", GlobalContext.GetTenantId(false),
-                    sysLogDiffModel));
-            });
-        }
+        // 注册 SqlSugar 
+        service.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
     }
 }

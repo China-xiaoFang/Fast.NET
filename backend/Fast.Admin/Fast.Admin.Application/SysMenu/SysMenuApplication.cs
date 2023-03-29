@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Service.SysMenu;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Service.SysMenu;
 using Fast.Admin.Service.SysMenu.Dto;
 using Fast.Core.Const;
-using Fast.SDK.Common.EnumFactory;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 
