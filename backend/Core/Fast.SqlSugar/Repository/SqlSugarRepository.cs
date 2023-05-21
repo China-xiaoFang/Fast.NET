@@ -8,9 +8,11 @@
 
 
 using System.Linq.Expressions;
-using Fast.Core.SqlSugar.Extension;
+using Fast.Iaas.Cache;
+using Fast.SqlSugar.Extension;
+using Fast.SqlSugar.Model;
 
-namespace Fast.Core.SqlSugar.Repository;
+namespace Fast.SqlSugar.Repository;
 
 /// <summary>
 /// 非泛型 SqlSugar 仓储
@@ -75,7 +77,7 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// <summary>
     /// 当前仓储的数据库信息
     /// </summary>
-    public  virtual SysTenantDataBaseModel DataBaseInfo { get; }
+    public virtual SysTenantDataBaseModel DataBaseInfo { get; }
 
     /// <summary>
     /// 实体集合

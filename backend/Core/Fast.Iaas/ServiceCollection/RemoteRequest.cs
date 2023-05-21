@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.ServiceCollection.ServiceCollection;
+namespace Fast.Iaas.ServiceCollection;
 
 /// <summary>
 /// 远程请求

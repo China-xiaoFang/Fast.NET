@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Fast.ServiceCollection.ServiceCollection;
+namespace Fast.Iaas.ServiceCollection;
 
 /// <summary>
 /// 日志

@@ -2,7 +2,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.Versioning;
-using Fast.ServiceCollection.Util;
+using Fast.Iaas.Util;
 using Furion;
 using Furion.DependencyInjection;
 using Furion.JsonSerialization;

@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Model.BaseModel;
-using Fast.Admin.Model.Enum;
-using SqlSugar;
+﻿using Fast.SqlSugar.Attributes;
+using Fast.SqlSugar.BaseModel;
+using Fast.SqlSugar.Enum;
 
 namespace Fast.Admin.Model.Model.Sys.Log;
 

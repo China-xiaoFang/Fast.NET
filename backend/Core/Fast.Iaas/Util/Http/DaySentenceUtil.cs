@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Furion.RemoteRequest.Extensions;
 
-namespace Fast.ServiceCollection.Util.Http;
+namespace Fast.Iaas.Util.Http;
 
 /// <summary>
 /// 每日一句工具类

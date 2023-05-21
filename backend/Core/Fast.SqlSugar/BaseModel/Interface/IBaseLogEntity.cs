@@ -1,4 +1,4 @@
-﻿namespace Fast.Admin.Model.BaseModel.Interface;
+﻿namespace Fast.SqlSugar.BaseModel.Interface;
 
 /// <summary>
 /// IBaseRecordEntity 接口定义

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.ServiceCollection.ServiceCollection;
+namespace Fast.Iaas.ServiceCollection;
 
 /// <summary>
 /// 限制上传文件

@@ -1,4 +1,6 @@
-﻿namespace Fast.Admin.Model.BaseModel;
+﻿using Fast.SqlSugar.BaseModel.Interface;
+
+namespace Fast.SqlSugar.BaseModel;
 
 /// <summary>
 /// 租户基类

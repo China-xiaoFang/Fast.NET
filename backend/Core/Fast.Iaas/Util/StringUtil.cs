@@ -1,6 +1,6 @@
-﻿using Fast.ServiceCollection.Extension;
+﻿using Fast.Iaas.Extension;
 
-namespace Fast.ServiceCollection.Util;
+namespace Fast.Iaas.Util;
 
 /// <summary>
 /// String工具类
@@ -99,7 +99,7 @@ public static class StringUtil
     /// <returns></returns>
     public static string GetShortGuid()
     {
-        var i = Guid.NewGuid().ToByteArray().Aggregate<byte, long>(1, (current, b) => current * ((int) b + 1));
+        var i = Guid.NewGuid().ToByteArray().Aggregate<byte, long>(1, (current, b) => current * (b + 1));
 
         return $"{i - DateTime.Now.Ticks:x}";
     }

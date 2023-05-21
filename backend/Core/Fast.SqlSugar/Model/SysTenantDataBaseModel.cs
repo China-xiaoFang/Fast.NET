@@ -1,4 +1,7 @@
-﻿namespace Fast.Admin.Model.Model.Sys;
+﻿using Fast.SqlSugar.Attributes;
+using Fast.SqlSugar.BaseModel;
+
+namespace Fast.SqlSugar.Model;
 
 /// <summary>
 /// 系统租户数据库Model类

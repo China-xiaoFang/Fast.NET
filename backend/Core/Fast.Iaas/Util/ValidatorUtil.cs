@@ -1,4 +1,4 @@
-﻿namespace Fast.ServiceCollection.Util;
+﻿namespace Fast.Iaas.Util;
 
 /// <summary>
 /// 字符串验证帮助类

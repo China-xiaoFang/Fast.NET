@@ -1,4 +1,4 @@
-﻿namespace Fast.Admin.Model.BaseModel.Dto;
+﻿namespace Fast.SqlSugar.BaseModel.Dto;
 
 /// <summary>
 /// 通用分页输入参数

@@ -2,10 +2,10 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using Fast.ServiceCollection.JsonConverter;
+using Fast.Iaas.JsonConverter;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.ServiceCollection.ServiceCollection;
+namespace Fast.Iaas.ServiceCollection;
 
 /// <summary>
 /// JSON序列化配置

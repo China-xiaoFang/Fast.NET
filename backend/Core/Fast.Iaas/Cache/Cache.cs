@@ -2,7 +2,7 @@
 using Furion;
 using Furion.DependencyInjection;
 
-namespace Fast.Core.Cache;
+namespace Fast.Iaas.Cache;
 
 /// <summary>
 /// 缓存实现

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Fast.ServiceCollection.JsonConverter;
+namespace Fast.Iaas.JsonConverter;
 
 /// <summary>
 /// Datetime 类型返回时间Json处理

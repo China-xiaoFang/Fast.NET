@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
-using Fast.Core.SqlSugar.Internal.Dto;
+using Fast.SqlSugar.Attributes;
+using Fast.SqlSugar.BaseModel;
+using Fast.SqlSugar.BaseModel.Interface;
+using Fast.SqlSugar.Enum;
+using Fast.SqlSugar.Internal;
 
-namespace Fast.Core.SqlSugar.Helper;
+namespace Fast.SqlSugar.Helper;
 
 /// <summary>
 /// 实体类帮助类

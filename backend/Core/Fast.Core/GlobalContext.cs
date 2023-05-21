@@ -1,5 +1,6 @@
 ﻿using Fast.Core.Const;
 using Fast.Core.Options;
+using Fast.Iaas.Extension;
 
 namespace Fast.Core;
 

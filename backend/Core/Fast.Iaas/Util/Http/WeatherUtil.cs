@@ -1,6 +1,6 @@
 ﻿using Furion.RemoteRequest.Extensions;
 
-namespace Fast.ServiceCollection.Util.Http;
+namespace Fast.Iaas.Util.Http;
 
 /// <summary>
 /// 天气预报工具类

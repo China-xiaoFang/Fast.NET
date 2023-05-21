@@ -1,15 +1,16 @@
 ﻿using Fast.Admin.Model.Model.Sys.Log;
 using Fast.Admin.Model.Model.Tenant.Organization.User;
-using Fast.Core.Cache;
-using Fast.Core.SqlSugar.Extension;
-using Fast.Core.SqlSugar.Repository;
-using Fast.ServiceCollection.EventSubscriber;
+using Fast.Iaas.Cache;
+using Fast.Iaas.Internal;
+using Fast.SqlSugar.Extension;
+using Fast.SqlSugar.Model;
+using Fast.SqlSugar.Repository;
 using Furion.DependencyInjection;
 using Furion.EventBus;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 
-namespace Fast.Core.EventSubscriber;
+namespace Fast.RabbitMQ.EventSubscriber;
 
 public class LogEventSubscriber : IEventSubscriber, ISingleton
 {

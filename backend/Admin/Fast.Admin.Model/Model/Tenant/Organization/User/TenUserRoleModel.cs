@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Model.BaseModel.Interface;
-using Fast.Admin.Model.Enum;
-using SqlSugar;
+﻿using Fast.SqlSugar.Attributes;
+using Fast.SqlSugar.BaseModel.Interface;
+using Fast.SqlSugar.Enum;
 
 namespace Fast.Admin.Model.Model.Tenant.Organization.User;
 

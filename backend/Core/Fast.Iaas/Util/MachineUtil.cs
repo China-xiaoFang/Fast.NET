@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Furion;
 using Furion.RemoteRequest.Extensions;
 
-namespace Fast.ServiceCollection.Util;
+namespace Fast.Iaas.Util;
 
 /// <summary>
 /// 获取服务器信息

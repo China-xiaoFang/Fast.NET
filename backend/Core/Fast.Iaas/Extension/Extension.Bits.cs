@@ -1,4 +1,4 @@
-﻿namespace Fast.ServiceCollection.Extension;
+﻿namespace Fast.Iaas.Extension;
 
 /// <summary>
 /// 字符串扩展

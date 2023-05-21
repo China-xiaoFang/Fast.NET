@@ -1,5 +1,5 @@
-﻿using Fast.Admin.Model.BaseModel;
-using SqlSugar;
+﻿using Fast.SqlSugar.Attributes;
+using Fast.SqlSugar.BaseModel;
 
 namespace Fast.Admin.Model.Model.Sys.Menu;
 

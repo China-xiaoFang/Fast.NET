@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.ServiceCollection.ServiceCollection;
+namespace Fast.Iaas.ServiceCollection;
 
 /// <summary>
 /// 配置Gzip Brotli 压缩

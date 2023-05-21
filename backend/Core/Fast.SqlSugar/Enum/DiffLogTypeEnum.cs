@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
+using Fast.Iaas.Internal;
 
-namespace Fast.Admin.Model.Enum;
+namespace Fast.SqlSugar.Enum;
 
 /// <summary>
 /// 差异日志类型

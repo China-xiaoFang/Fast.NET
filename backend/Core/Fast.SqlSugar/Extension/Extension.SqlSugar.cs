@@ -2,10 +2,13 @@
 using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
-using Fast.Core.SqlSugar.Helper;
-using Fast.Core.SqlSugar.Internal.Dto;
+using Fast.Iaas.Cache;
+using Fast.SqlSugar.Enum;
+using Fast.SqlSugar.Helper;
+using Fast.SqlSugar.Internal;
+using Fast.SqlSugar.Model;
 
-namespace Fast.Core.SqlSugar.Extension;
+namespace Fast.SqlSugar.Extension;
 
 /// <summary>
 /// SqlSugar扩展类
@@ -39,8 +42,8 @@ public static class Extension
     /// <param name="_cache"></param>
     /// <param name="tenantId"></param>
     /// <returns></returns>
-    public static (ISqlSugarClient db,SysTenantDataBaseModel dataBaseInfo) LoadSqlSugar<TEntity>(this ISqlSugarClient db, ICache _cache, long? tenantId = null)
-        where TEntity : class, new()
+    public static (ISqlSugarClient db, SysTenantDataBaseModel dataBaseInfo) LoadSqlSugar<TEntity>(this ISqlSugarClient db,
+        ICache _cache, long? tenantId = null) where TEntity : class, new()
     {
         var _db = (SqlSugarClient) db;
 

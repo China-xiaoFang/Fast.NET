@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Fast.ServiceCollection.Extension;
+using Fast.Iaas.Extension;
 
-namespace Fast.ServiceCollection.JsonConverter;
+namespace Fast.Iaas.JsonConverter;
 
 /// <summary>
 /// decimal 类型Json返回处理

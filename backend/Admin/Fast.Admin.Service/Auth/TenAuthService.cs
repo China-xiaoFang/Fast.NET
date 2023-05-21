@@ -8,8 +8,14 @@ using Fast.Admin.Model.Model.Tenant.Organization.User;
 using Fast.Admin.Service.Auth.Dto;
 using Fast.Admin.Service.SysMenu.Dto;
 using Fast.Admin.Service.SysModule;
-using Fast.ServiceCollection.EventSubscriber;
-using Fast.ServiceCollection.Util.Http;
+using Fast.Iaas.Cache;
+using Fast.Iaas.Const;
+using Fast.Iaas.Extension;
+using Fast.Iaas.Internal;
+using Fast.Iaas.Util;
+using Fast.Iaas.Util.Http;
+using Fast.SqlSugar.Extension;
+using Fast.SqlSugar.Repository;
 using Furion.DataEncryption;
 using Furion.EventBus;
 
@@ -26,10 +32,10 @@ public class TenAuthService : ITenAuthService, ITransient
     private readonly IUser _user;
     private readonly IEventPublisher _eventPublisher;
 
-    public TenAuthService(ISqlSugarClient repository, ISqlSugarRepository<TenUserModel> tenRepository,
-        IUser user, ICache cache, IEventPublisher eventPublisher)
+    public TenAuthService(ISqlSugarClient repository, ISqlSugarRepository<TenUserModel> tenRepository, IUser user, ICache cache,
+        IEventPublisher eventPublisher)
     {
-        _repository = repository.AsTenant().GetConnection(Core.SqlSugar.Extension.Extension.GetDefaultDataBaseInfo().ConnectionId);
+        _repository = repository.AsTenant().GetConnection(Extension.GetDefaultDataBaseInfo().ConnectionId);
         _tenRepository = tenRepository;
         _user = user;
         _cache = cache;

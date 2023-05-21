@@ -1,4 +1,4 @@
-﻿using Fast.Admin.Model.BaseModel.Dto;
+﻿using Fast.SqlSugar.BaseModel.Dto;
 
 namespace Fast.Admin.Service.SysButton.Dto;
 

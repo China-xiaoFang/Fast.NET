@@ -1,6 +1,6 @@
 ﻿using Fast.Admin.Service.Tenant;
 using Fast.Admin.Service.Tenant.Dto;
-using Fast.Core.AttributeFilter;
+using Fast.Core.Attributes;
 using Fast.Core.Const;
 using Fast.Core.Restful.Internal;
 using Furion.DynamicApiController;

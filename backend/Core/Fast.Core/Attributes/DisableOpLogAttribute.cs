@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.AttributeFilter;
+﻿namespace Fast.Core.Attributes;
 
 /// <summary>
 /// 禁用操作日志

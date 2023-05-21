@@ -1,4 +1,4 @@
-﻿namespace Fast.ServiceCollection.Util;
+﻿namespace Fast.Iaas.Util;
 
 /// <summary>
 /// 树基类

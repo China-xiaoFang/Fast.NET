@@ -1,4 +1,4 @@
-﻿namespace Fast.ServiceCollection.Util;
+﻿namespace Fast.Iaas.Util;
 
 /// <summary>
 /// 邀请码工具类

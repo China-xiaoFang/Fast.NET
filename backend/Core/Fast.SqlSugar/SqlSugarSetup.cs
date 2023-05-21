@@ -1,9 +1,9 @@
-﻿using Fast.Core.Filter;
-using Fast.Core.SqlSugar.Helper;
-using Fast.Core.SqlSugar.Repository;
+﻿using Fast.SqlSugar.Filter;
+using Fast.SqlSugar.Helper;
+using Fast.SqlSugar.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.SqlSugar;
+namespace Fast.SqlSugar;
 
 /// <summary>
 /// SqlSugar

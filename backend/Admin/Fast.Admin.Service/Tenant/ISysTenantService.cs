@@ -2,7 +2,7 @@
 using Fast.Admin.Model.Model.Sys;
 using Fast.Admin.Service.Tenant.Dto;
 using Fast.Core.Restful.Internal;
-using Fast.Core.SqlSugar.Internal.Dto;
+using Fast.SqlSugar.Internal;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Admin.Service.Tenant;

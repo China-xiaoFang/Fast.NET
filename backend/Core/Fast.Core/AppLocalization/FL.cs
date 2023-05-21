@@ -2,8 +2,8 @@
 using Fast.Admin.Model.Enum;
 using Fast.Admin.Model.Model.Sys;
 using Fast.Core.BaiduTranslator;
-using Fast.Core.Cache;
 using Fast.Core.Const;
+using Fast.Iaas.Cache;
 using Furion.DependencyInjection;
 using Furion.Localization;
 using Microsoft.Extensions.DependencyInjection;

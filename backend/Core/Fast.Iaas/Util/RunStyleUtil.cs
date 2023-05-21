@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.ServiceCollection.Util;
+namespace Fast.Iaas.Util;
 
 public static class RunStyleExtension
 {

@@ -5,6 +5,9 @@ using Fast.Admin.Model.Model.Tenant.Organization.User;
 using Fast.Admin.Service.SysModule.Dto;
 using Fast.Core.Restful.Extension;
 using Fast.Core.Restful.Internal;
+using Fast.Iaas.Cache;
+using Fast.Iaas.Extension;
+using Fast.SqlSugar.Repository;
 
 namespace Fast.Admin.Service.SysModule;
 
@@ -17,7 +20,7 @@ public class SysModuleService : ISysModuleService, ITransient
     private readonly IUser _user;
     private readonly ICache _cache;
 
-    public SysModuleService(ISqlSugarRepository<SysModuleModel> repository,IUser user, ICache cache)
+    public SysModuleService(ISqlSugarRepository<SysModuleModel> repository, IUser user, ICache cache)
     {
         _repository = repository;
         _user = user;

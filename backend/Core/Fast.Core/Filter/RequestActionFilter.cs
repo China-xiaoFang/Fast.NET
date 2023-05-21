@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using Fast.Admin.Model.Enum;
 using Fast.Admin.Model.Model.Sys.Log;
-using Fast.Core.AttributeFilter;
+using Fast.Core.Attributes;
 using Fast.Iaas;
-using Fast.ServiceCollection.EventSubscriber;
-using Fast.ServiceCollection.Internal;
-using Fast.ServiceCollection.Util.Http;
+using Fast.Iaas.Extension;
+using Fast.Iaas.Internal;
+using Fast.Iaas.Util.Http;
 using Furion.EventBus;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -88,32 +88,31 @@ public class RequestActionFilter : IAsyncActionFilter
         }
 
         //记录请求日志
-        await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:OpLog", UserContext.TenantId,
-            new SysLogOpModel
-            {
-                Account = UserContext.UserAccount,
-                UserName = UserContext.UserName,
-                Success = isRequestSucceed ? YesOrNotEnum.Y : YesOrNotEnum.N,
-                OperationAction = operationAction,
-                OperationName = operationName,
-                ClassName = context.Controller.ToString(),
-                MethodName = actionDescriptor?.ActionName,
-                Url = httpRequest.Path,
-                ReqMethod = httpRequest.Method,
-                Param = requestParam == null ? "" : requestParam.ToJsonString(),
-                Result = isRequestSucceed
-                    ? actionContext.Result?.GetType() == typeof(JsonResult) ? actionContext.Result.ToJsonString() : ""
-                    : actionContext.Exception.Message,
-                //Location = HttpUtil.Url,
-                ElapsedTime = sw.ElapsedMilliseconds,
-                OpTime = DateTime.Now,
-                PhoneModel = userAgentInfo.PhoneModel,
-                OS = userAgentInfo.OS,
-                Browser = userAgentInfo.Browser,
-                //Province = wanInfo.Pro,
-                //City = wanInfo.City,
-                //Operator = wanInfo.Operator,
-                //Ip = wanInfo.Ip,
-            }));
+        await _eventPublisher.PublishAsync(new FastChannelEventSource("Create:OpLog", UserContext.TenantId, new SysLogOpModel
+        {
+            Account = UserContext.UserAccount,
+            UserName = UserContext.UserName,
+            Success = isRequestSucceed ? YesOrNotEnum.Y : YesOrNotEnum.N,
+            OperationAction = operationAction,
+            OperationName = operationName,
+            ClassName = context.Controller.ToString(),
+            MethodName = actionDescriptor?.ActionName,
+            Url = httpRequest.Path,
+            ReqMethod = httpRequest.Method,
+            Param = requestParam == null ? "" : requestParam.ToJsonString(),
+            Result = isRequestSucceed
+                ? actionContext.Result?.GetType() == typeof(JsonResult) ? actionContext.Result.ToJsonString() : ""
+                : actionContext.Exception.Message,
+            //Location = HttpUtil.Url,
+            ElapsedTime = sw.ElapsedMilliseconds,
+            OpTime = DateTime.Now,
+            PhoneModel = userAgentInfo.PhoneModel,
+            OS = userAgentInfo.OS,
+            Browser = userAgentInfo.Browser,
+            //Province = wanInfo.Pro,
+            //City = wanInfo.City,
+            //Operator = wanInfo.Operator,
+            //Ip = wanInfo.Ip,
+        }));
     }
 }

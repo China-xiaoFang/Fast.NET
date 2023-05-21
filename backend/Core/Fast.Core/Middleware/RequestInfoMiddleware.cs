@@ -1,4 +1,5 @@
 ﻿using Fast.Core.Const;
+using Fast.Iaas.Extension;
 using Microsoft.AspNetCore.Http;
 
 namespace Fast.Core.Middleware;

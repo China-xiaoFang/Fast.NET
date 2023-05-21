@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using Fast.SqlSugar.Enum;
 
-namespace Fast.Admin.Model;
+namespace Fast.SqlSugar.Attributes;
 
 /// <summary>
 /// Sugar数据库类型特征，区分是那个数据库，默认是Default库（0）

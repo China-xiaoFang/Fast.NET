@@ -2,11 +2,11 @@
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
-using Fast.ServiceCollection.Extension;
+using Fast.Iaas.Extension;
 using Furion.RemoteRequest.Extensions;
 using Encoder = System.Drawing.Imaging.Encoder;
 
-namespace Fast.ServiceCollection.Util;
+namespace Fast.Iaas.Util;
 
 /// <summary>
 /// 图片工具类

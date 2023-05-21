@@ -1,6 +1,6 @@
-﻿using Fast.ServiceCollection.Extension;
+﻿using Fast.Iaas.Extension;
 
-namespace Fast.ServiceCollection.Util;
+namespace Fast.Iaas.Util;
 
 /// <summary>
 /// AES加密解密工具类

@@ -1,6 +1,6 @@
-﻿using Fast.ServiceCollection.Internal;
+﻿using Fast.Iaas.Internal;
 
-namespace Fast.ServiceCollection.Extension;
+namespace Fast.Iaas.Extension;
 
 /// <summary>
 /// 枚举扩展

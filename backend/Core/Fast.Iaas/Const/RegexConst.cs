@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.Const;
+﻿namespace Fast.Iaas.Const;
 
 /// <summary>
 /// 正则表达式字符串

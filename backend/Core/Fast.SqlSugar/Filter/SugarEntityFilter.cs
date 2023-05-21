@@ -1,12 +1,14 @@
-﻿using Fast.Admin.Model.Model.Sys.Log;
-using Fast.ServiceCollection.EventSubscriber;
+﻿using Fast.Iaas.Internal;
+using Fast.SqlSugar.BaseModel.Interface;
+using Fast.SqlSugar.Enum;
+using Fast.SqlSugar.Model;
 using Furion.DependencyInjection;
 using Furion.EventBus;
 using Furion.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Fast.Core.Filter;
+namespace Fast.SqlSugar.Filter;
 
 /// <summary>
 /// Sugar实体类过滤器

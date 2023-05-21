@@ -1,4 +1,4 @@
-﻿namespace Fast.ServiceCollection.Internal;
+﻿namespace Fast.Iaas.Internal;
 
 /// <summary>
 /// Http请求行为枚举

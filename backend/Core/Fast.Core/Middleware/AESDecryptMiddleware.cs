@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Web;
 using Fast.Core.Restful.Internal;
+using Fast.Iaas.Extension;
+using Fast.Iaas.Util;
 using Furion.Logging;
 using Microsoft.AspNetCore.Http;
 

@@ -1,4 +1,6 @@
-﻿namespace Fast.Admin.Model.BaseModel;
+﻿using Fast.SqlSugar.BaseModel.Interface;
+
+namespace Fast.SqlSugar.BaseModel;
 
 /// <summary>
 /// 递增主键实体基类

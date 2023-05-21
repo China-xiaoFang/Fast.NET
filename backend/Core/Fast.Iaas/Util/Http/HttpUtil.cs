@@ -1,15 +1,15 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text.Json.Serialization;
-using Fast.Core.Cache;
-using Fast.ServiceCollection.Extension;
+using Fast.Iaas.Cache;
+using Fast.Iaas.Extension;
 using Furion;
 using Furion.DependencyInjection;
 using Furion.RemoteRequest.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using UAParser;
 
-namespace Fast.ServiceCollection.Util.Http;
+namespace Fast.Iaas.Util.Http;
 
 /// <summary>
 /// HTTP网络工具

@@ -1,4 +1,8 @@
-﻿namespace Fast.Admin.Model.Model.Sys.Log;
+﻿using Fast.SqlSugar.Attributes;
+using Fast.SqlSugar.BaseModel;
+using Fast.SqlSugar.Enum;
+
+namespace Fast.SqlSugar.Model;
 
 /// <summary>
 /// 系统差异日志表Model类

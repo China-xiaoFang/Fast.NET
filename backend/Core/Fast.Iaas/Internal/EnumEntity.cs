@@ -1,4 +1,4 @@
-﻿namespace Fast.ServiceCollection.Internal;
+﻿namespace Fast.Iaas.Internal;
 
 /// <summary>
 /// 枚举的Entity类

@@ -1,4 +1,4 @@
-﻿namespace Fast.ServiceCollection;
+﻿namespace Fast.Iaas;
 
 /// <summary>
 /// 常用常量

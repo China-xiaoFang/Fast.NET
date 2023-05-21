@@ -1,6 +1,6 @@
-﻿using Fast.Core.Cache;
-using Fast.ServiceCollection.Extension;
-using Fast.ServiceCollection.Internal;
+﻿using Fast.Iaas.Cache;
+using Fast.Iaas.Extension;
+using Fast.Iaas.Internal;
 using Furion;
 using Furion.DataEncryption;
 using Furion.DependencyInjection;

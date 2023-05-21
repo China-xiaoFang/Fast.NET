@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Fast.ServiceCollection.JsonConverter;
+namespace Fast.Iaas.JsonConverter;
 
 /// <summary>
 /// Long 类型Json返回处理

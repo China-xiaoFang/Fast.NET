@@ -1,4 +1,4 @@
-﻿namespace Fast.Admin.Model.BaseModel.Dto;
+﻿namespace Fast.SqlSugar.BaseModel.Dto;
 
 /// <summary>
 /// 通用输出参数

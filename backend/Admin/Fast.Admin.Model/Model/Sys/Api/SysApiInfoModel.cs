@@ -1,5 +1,6 @@
-﻿using Fast.Admin.Model.BaseModel;
-using SqlSugar;
+﻿using Fast.Iaas.Internal;
+using Fast.SqlSugar.Attributes;
+using Fast.SqlSugar.BaseModel;
 
 namespace Fast.Admin.Model.Model.Sys.Api;
 

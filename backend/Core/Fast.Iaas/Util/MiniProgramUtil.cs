@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using Fast.ServiceCollection.Extension;
+using Fast.Iaas.Extension;
 using Furion.JsonSerialization;
 
-namespace Fast.ServiceCollection.Util;
+namespace Fast.Iaas.Util;
 
 /// <summary>
 /// 小程序工具类

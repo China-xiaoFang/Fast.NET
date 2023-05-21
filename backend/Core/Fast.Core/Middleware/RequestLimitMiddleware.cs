@@ -1,7 +1,7 @@
-﻿using Fast.Core.AttributeFilter;
-using Fast.Core.Cache;
+﻿using Fast.Core.Attributes;
 using Fast.Iaas;
-using Fast.ServiceCollection.Util.Http;
+using Fast.Iaas.Cache;
+using Fast.Iaas.Util.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GetXnRestfulResult = Fast.Core.Restful.Extension.Extension;

@@ -1,9 +1,9 @@
-﻿using Fast.ServiceCollection.Extension;
+﻿using Fast.Iaas.Extension;
 using Furion.DependencyInjection;
 using Furion.EventBus;
 using Newtonsoft.Json;
 
-namespace Fast.ServiceCollection.EventSubscriber;
+namespace Fast.Iaas.Internal;
 
 /// <summary>
 /// Fast.NET 自定义事件总线载体

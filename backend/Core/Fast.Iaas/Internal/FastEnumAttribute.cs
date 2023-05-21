@@ -1,5 +1,5 @@
 ﻿#nullable enable
-namespace Fast.ServiceCollection.Internal;
+namespace Fast.Iaas.Internal;
 
 /// <summary>
 /// 枚举特性

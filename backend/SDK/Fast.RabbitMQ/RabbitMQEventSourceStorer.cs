@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using System.Threading.Channels;
-using Fast.ServiceCollection.Extension;
+using Fast.Iaas.Extension;
 using Furion.EventBus;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Fast.Iaas.EventSubscriber;
+namespace Fast.RabbitMQ;
 
 /// <summary>
 /// RabbitMQ 事件总线存储器

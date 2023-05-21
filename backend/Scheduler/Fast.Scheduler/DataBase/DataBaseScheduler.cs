@@ -7,15 +7,17 @@ using Fast.Admin.Model.Model.Sys.Api;
 using Fast.Admin.Model.Model.Sys.Dic;
 using Fast.Admin.Service.Tenant;
 using Fast.Core;
-using Fast.Core.Cache;
 using Fast.Core.CodeFirst;
 using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Const;
-using Fast.Core.SqlSugar.Extension;
-using Fast.Core.SqlSugar.Helper;
-using Fast.ServiceCollection.Extension;
-using Fast.ServiceCollection.Internal;
-using Fast.ServiceCollection.Util;
+using Fast.Iaas.Cache;
+using Fast.Iaas.Extension;
+using Fast.Iaas.Internal;
+using Fast.Iaas.Util;
+using Fast.SqlSugar.Enum;
+using Fast.SqlSugar.Extension;
+using Fast.SqlSugar.Helper;
+using Fast.SqlSugar.Model;
 using Furion.Schedule;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,10 +25,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SqlSugar;
 using Yitter.IdGenerator;
-using HttpDeleteAttribute = Fast.ServiceCollection.HttpAttributes.HttpDeleteAttribute;
-using HttpGetAttribute = Fast.ServiceCollection.HttpAttributes.HttpGetAttribute;
-using HttpPostAttribute = Fast.ServiceCollection.HttpAttributes.HttpPostAttribute;
-using HttpPutAttribute = Fast.ServiceCollection.HttpAttributes.HttpPutAttribute;
+using HttpDeleteAttribute = Fast.Iaas.HttpAttributes.HttpDeleteAttribute;
+using HttpGetAttribute = Fast.Iaas.HttpAttributes.HttpGetAttribute;
+using HttpPostAttribute = Fast.Iaas.HttpAttributes.HttpPostAttribute;
+using HttpPutAttribute = Fast.Iaas.HttpAttributes.HttpPutAttribute;
 
 namespace Fast.Scheduler.DataBase;
 
@@ -57,7 +59,7 @@ public class DataBaseJobWorker : IJob
         // 获取服务
         var db = serviceScope.ServiceProvider.GetService<ISqlSugarClient>();
         // ReSharper disable once PossibleNullReferenceException
-        var _db = db.AsTenant().GetConnection(Core.SqlSugar.Extension.Extension.GetDefaultDataBaseInfo().ConnectionId);
+        var _db = db.AsTenant().GetConnection(Extension.GetDefaultDataBaseInfo().ConnectionId);
         var _cache = serviceScope.ServiceProvider.GetService<ICache>();
         var _sysTenantService = serviceScope.ServiceProvider.GetService<ISysTenantService>();
 
@@ -158,7 +160,7 @@ public class DataBaseJobWorker : IJob
         };
         await _db.Insertable(superAdminTenantAppInfoList).ExecuteCommandAsync();
 
-        var defaultDataBaseInfo = Core.SqlSugar.Extension.Extension.GetDefaultDataBaseInfo();
+        var defaultDataBaseInfo = Extension.GetDefaultDataBaseInfo();
 
         // 初始化租户业务库信息
         await _db.Insertable(new SysTenantDataBaseModel

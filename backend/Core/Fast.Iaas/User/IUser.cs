@@ -1,4 +1,4 @@
-﻿using Fast.ServiceCollection.Internal;
+﻿using Fast.Iaas.Internal;
 
 namespace Fast.Iaas.User;
 

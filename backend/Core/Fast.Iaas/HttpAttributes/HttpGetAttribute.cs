@@ -1,8 +1,8 @@
 ﻿#nullable enable
-using Fast.ServiceCollection.Internal;
+using Fast.Iaas.Internal;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace Fast.ServiceCollection.HttpAttributes;
+namespace Fast.Iaas.HttpAttributes;
 
 /// <summary>
 /// Identifies an action that supports the HTTP GET method.

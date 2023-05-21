@@ -1,4 +1,6 @@
 ﻿using Fast.Admin.Model.Model.Tenant.Organization.User;
+using Fast.Iaas.Cache;
+using Fast.SqlSugar.Repository;
 
 namespace Fast.Admin.Service.User;
 

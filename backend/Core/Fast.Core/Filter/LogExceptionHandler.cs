@@ -1,6 +1,6 @@
 ﻿using Fast.Admin.Model.Model.Sys.Log;
 using Fast.Iaas;
-using Fast.ServiceCollection.EventSubscriber;
+using Fast.Iaas.Internal;
 using Furion.DependencyInjection;
 using Furion.EventBus;
 using Furion.FriendlyException;

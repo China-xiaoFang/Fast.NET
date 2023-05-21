@@ -34,6 +34,7 @@ public class CommonConst
     /// 默认头像地址
     /// </summary>
     public const string Default_Avatar_Url = "/logo.png";
+
     /// <summary>
     /// 站点
     /// </summary>

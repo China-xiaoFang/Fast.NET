@@ -1,6 +1,8 @@
-﻿using Fast.Core.Filter;
+﻿using Fast.Iaas.Cache;
+using Fast.SqlSugar.Filter;
+using Fast.SqlSugar.Model;
 
-namespace Fast.Core.SqlSugar.Helper;
+namespace Fast.SqlSugar.Helper;
 
 /// <summary>
 /// SqlSugarClient帮助类

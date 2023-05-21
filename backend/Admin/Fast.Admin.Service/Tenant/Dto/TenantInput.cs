@@ -1,5 +1,5 @@
-﻿using Fast.Admin.Model.BaseModel.Dto;
-using Fast.Admin.Model.Enum;
+﻿using Fast.Admin.Model.Enum;
+using Fast.SqlSugar.BaseModel.Dto;
 
 namespace Fast.Admin.Service.Tenant.Dto;
 

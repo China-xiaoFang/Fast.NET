@@ -2,6 +2,7 @@
 using Fast.Core.Const;
 using Fast.Core.Operation.Config;
 using Fast.Iaas;
+using Fast.Iaas.Extension;
 using Furion.Authorization;
 using Furion.DataEncryption;
 using Microsoft.AspNetCore.Authentication;

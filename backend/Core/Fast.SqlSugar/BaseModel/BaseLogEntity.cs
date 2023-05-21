@@ -1,6 +1,7 @@
-﻿using Fast.ServiceCollection.Util.Http;
+﻿using Fast.Iaas.Util.Http;
+using Fast.SqlSugar.BaseModel.Interface;
 
-namespace Fast.Admin.Model.BaseModel;
+namespace Fast.SqlSugar.BaseModel;
 
 /// <summary>
 /// 记录基类实现

@@ -1,4 +1,4 @@
-﻿namespace Fast.ServiceCollection.Internal;
+﻿namespace Fast.Iaas.Internal;
 
 /// <summary>
 /// App运行环境枚举
