@@ -1,6 +1,6 @@
 ﻿using Fast.Core.AttributeFilter;
 using Fast.Core.Cache;
-using Fast.Core.Util.Http;
+using Fast.ServiceCollection.Util.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GetXnRestfulResult = Fast.Core.Restful.Extension.Extension;
@@ -48,8 +48,6 @@ public class RequestLimitMiddleware
         var tenantId = GlobalContext.GetTenantId(false);
         // 获取用户Id
         var userId = GlobalContext.UserId;
-        // 获取公网信息
-        var wanInfo = await HttpUtil.WanInfo(HttpUtil.Ip);
 
         // 限制次数
         var limitCount = _defaultLimit;
@@ -78,7 +76,7 @@ public class RequestLimitMiddleware
                         limitKey += $"{tenantId}:{userId}";
                         break;
                     case RequestLimitTypeEnum.Ip:
-                        limitKey += $"{wanInfo.Ip}";
+                        limitKey += $"{HttpUtil.Ip}";
                         break;
                     default:
                         limitKey += $"{GlobalContext.UUID}";

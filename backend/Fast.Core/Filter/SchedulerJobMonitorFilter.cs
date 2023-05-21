@@ -1,7 +1,7 @@
 ﻿using Fast.Admin.Model.Enum;
 using Fast.Admin.Model.Model.Sys.Log;
 using Fast.Core.Const;
-using Fast.Core.EventSubscriber;
+using Fast.ServiceCollection.EventSubscriber;
 using Furion.EventBus;
 using Furion.Schedule;
 using Microsoft.Extensions.Logging;

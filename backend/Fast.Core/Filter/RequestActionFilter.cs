@@ -2,9 +2,9 @@
 using Fast.Admin.Model.Enum;
 using Fast.Admin.Model.Model.Sys.Log;
 using Fast.Core.AttributeFilter;
-using Fast.Core.EventSubscriber;
-using Fast.Core.Util.Http;
-using Fast.Core.Util.Json.Extension;
+using Fast.ServiceCollection.EventSubscriber;
+using Fast.ServiceCollection.Internal;
+using Fast.ServiceCollection.Util.Http;
 using Furion.EventBus;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -34,7 +34,7 @@ public class RequestActionFilter : IAsyncActionFilter
 
         // UA Info
         var userAgentInfo = HttpUtil.UserAgentInfo();
-        var wanInfo = await HttpUtil.WanInfo(HttpUtil.Ip);
+        //var wanInfo = await HttpUtil.WanInfo(HttpUtil.Ip);
 
         var sw = new Stopwatch();
         sw.Start();
@@ -103,16 +103,16 @@ public class RequestActionFilter : IAsyncActionFilter
                 Result = isRequestSucceed
                     ? actionContext.Result?.GetType() == typeof(JsonResult) ? actionContext.Result.ToJsonString() : ""
                     : actionContext.Exception.Message,
-                Location = HttpUtil.Url,
+                //Location = HttpUtil.Url,
                 ElapsedTime = sw.ElapsedMilliseconds,
                 OpTime = DateTime.Now,
                 PhoneModel = userAgentInfo.PhoneModel,
                 OS = userAgentInfo.OS,
                 Browser = userAgentInfo.Browser,
-                Province = wanInfo.Pro,
-                City = wanInfo.City,
-                Operator = wanInfo.Operator,
-                Ip = wanInfo.Ip,
+                //Province = wanInfo.Pro,
+                //City = wanInfo.City,
+                //Operator = wanInfo.Operator,
+                //Ip = wanInfo.Ip,
             }));
     }
 }

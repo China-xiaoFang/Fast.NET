@@ -1,4 +1,5 @@
 ﻿using Fast.Admin.Model.Enum;
+using Fast.ServiceCollection.Internal;
 
 namespace Fast.Core.Options;
 

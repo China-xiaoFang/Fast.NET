@@ -23,13 +23,8 @@ public class JwtHandler : AppAuthorizeHandler
     public static bool AutoRefreshToken(AuthorizationHandlerContext context, DefaultHttpContext httpContext,
         string tokenPrefix = "Bearer ", long clockSkew = 5L)
     {
-        if (context.User.Identity!.IsAuthenticated)
+        if (context.User?.Identity?.IsAuthenticated == true)
         {
-            // Token
-            var token = httpContext.Request.Headers["Authorization"].ToString();
-            // 获取UserId
-            var userId = App.User.FindFirstValue(ClaimConst.UserId);
-
             return true;
         }
 

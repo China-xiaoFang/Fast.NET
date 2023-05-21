@@ -3,12 +3,14 @@ using Fast.Admin.Model.Model.Tenant.Organization.User;
 using Fast.Core.Cache;
 using Fast.Core.SqlSugar.Extension;
 using Fast.Core.SqlSugar.Repository;
+using Fast.ServiceCollection.EventSubscriber;
+using Furion.DependencyInjection;
 using Furion.EventBus;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.EventSubscriber;
 
-public class LogEventSubscriber : IEventSubscriber
+public class LogEventSubscriber : IEventSubscriber, ISingleton
 {
     public LogEventSubscriber(IServiceProvider services)
     {
