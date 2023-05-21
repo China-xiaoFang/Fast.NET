@@ -1,5 +1,5 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys.Menu;
 using Fast.Core.CodeFirst.Internal;
 using SqlSugar;
 using Yitter.IdGenerator;
@@ -44,7 +44,7 @@ public class SysMenuSeedData : ISystemSeedData
             ModuleId = fastModuleInfo.Id,
             MenuType = MenuTypeEnum.Menu,
             Icon = "home-outlined",
-            Router = "/index",
+            Router = "/index?menuCode=index",
             Component = "index/index",
             Link = null,
             IsSystem = YesOrNotEnum.Y,

@@ -1,11 +1,10 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
-using Fast.Core.AdminFactory.ModelFactory.Tenant;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys.Dic;
+using Fast.Admin.Model.Model.Tenant.Dic;
 using Fast.Core.Cache;
 using Fast.Core.Const;
 using Fast.Core.Operation.Dict.Dto;
-using Fast.SqlSugar.Tenant;
-using Fast.SqlSugar.Tenant.Extension;
+using Fast.Core.SqlSugar.Extension;
 using Furion.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -144,7 +143,7 @@ public static class DictOperation
                     var db = service.GetService<ISqlSugarClient>();
 
                     // ReSharper disable once PossibleNullReferenceException
-                    var _db = db.AsTenant().GetConnection(SugarContext.ConnectionStringsOptions.DefaultConnectionId);
+                    var _db = db.AsTenant().GetConnection(GlobalContext.ConnectionStringsOptions.DefaultConnectionId);
 
                     // 获取所有数据
                     var data = await _db.Queryable<SysDictTypeModel>().Where(wh => wh.Status == CommonStatusEnum.Enable)
@@ -165,7 +164,7 @@ public static class DictOperation
                 }
                 else
                 {
-                    var _db = service.GetService<ISqlSugarClient>().LoadSqlSugar<TenDictTypeModel>();
+                    var _db = service.GetService<ISqlSugarClient>().LoadSqlSugar<TenDictTypeModel>(_cache);
 
                     // 获取所有数据
                     var data = await _db.Queryable<TenDictTypeModel>().Where(wh => wh.Status == CommonStatusEnum.Enable)

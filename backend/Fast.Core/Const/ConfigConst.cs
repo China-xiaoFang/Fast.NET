@@ -42,27 +42,6 @@ public class ConfigConst
     }
 
     /// <summary>
-    /// 百度翻译
-    /// </summary>
-    public class BaiduTranslator
-    {
-        /// <summary>
-        /// 百度翻译开发者AppId
-        /// </summary>
-        public const string AppId = "Sys_BaiduTranslatorAppId";
-
-        /// <summary>
-        /// 百度翻译开发者密钥
-        /// </summary>
-        public const string SecretKey = "Sys_BaiduTranslatorSecretKey";
-
-        /// <summary>
-        /// 百度翻译请求Url
-        /// </summary>
-        public const string Url = "Sys_BaiduTranslatorUrl";
-    }
-
-    /// <summary>
     /// 租户配置
     /// </summary>
     public class Tenant

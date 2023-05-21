@@ -1,5 +1,5 @@
-﻿using Fast.Core;
-using Fast.Core.AdminFactory.ModelFactory.Sys;
+﻿using Fast.Admin.Model.Model.Sys.Config;
+using Fast.Core;
 using Fast.Core.CodeFirst.Internal;
 using Fast.Core.Const;
 using SqlSugar;

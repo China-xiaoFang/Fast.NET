@@ -1,13 +1,11 @@
 ﻿using CSRedis;
-using Fast.Core.Cache.Internal;
-using Furion.DependencyInjection;
 
 namespace Fast.Core.Cache.Realize;
 
 /// <summary>
 /// Redis缓存
 /// </summary>
-public class RedisCache : ICacheInternal, ISingleton
+public class RedisCache : ICache
 {
     public RedisCache()
     {

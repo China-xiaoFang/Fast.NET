@@ -21,6 +21,14 @@ const webSiteInfo = tool.cache.get(cacheKey.WEB_SITE_INFO);
 // 系统路由
 const routes = [...systemRouter, ...whiteListRouters];
 
+// 系统特殊路由
+const routes_404 = {
+	path: "/:pathMatch(.*)*",
+	hidden: true,
+	component: () => import("@/layout/other/404.vue"),
+};
+let routes_404_r = () => {};
+
 const router = createRouter({
 	// 此方式不带 # 号 // createWebHashHistory()带#号
 	history: createWebHistory(),
@@ -52,15 +60,17 @@ const whiteList = exportWhiteListFromRouter(whiteListRouters);
 
 // 加载动态/静态路由
 const handleGetRouter = (to) => {
+	console.log("动态路由");
 	if (!isGetRouter) {
-		store.dispatch("getLoginUser").then((res) => {
-			let apiMenu = res.menuList;
-			let menuRouter = filterAsyncRouter(apiMenu);
-			menuRouter = flatAsyncRoutes(menuRouter);
+		console.log("构建动态路由");
+		store.dispatch("getLoginUser");
+		store.dispatch("getLoginMenu").then((res) => {
+			let menuRouter = filterAsyncRouter(res);
 			menuRouter.forEach((item) => {
 				router.addRoute("layout", item);
 			});
 			store.commit("search/init", menuRouter);
+			routes_404_r = router.addRoute(routes_404);
 			if (to && to.matched.length === 0) {
 				router.push(to.fullPath);
 			}
@@ -79,7 +89,6 @@ router.beforeEach(async (to, from, next) => {
 	// 过滤白名单
 	if (whiteList.includes(to.path)) {
 		next();
-		// NProgress.done()
 		return false;
 	}
 
@@ -94,10 +103,13 @@ router.beforeEach(async (to, from, next) => {
 		}
 		// 删除路由(替换当前layout路由)
 		router.addRoute(routes[0]);
+		// 删除路由(404)
+		routes_404_r();
 		isGetRouter = false;
 		next();
 		return false;
 	}
+
 	if (!token) {
 		next({
 			path: "/login",
@@ -105,7 +117,7 @@ router.beforeEach(async (to, from, next) => {
 		return false;
 	}
 	// 整页路由处理
-	if (to.meta.fullpage) {
+	if (to.meta.fullPage) {
 		to.matched = [to.matched[to.matched.length - 1]];
 	}
 	// 加载动态/静态路由
@@ -150,6 +162,7 @@ const filterAsyncRouter = (routerMap) => {
 	});
 	return accessedRouters;
 };
+
 const loadComponent = (component) => {
 	if (component) {
 		if (component.includes("/")) {
@@ -160,6 +173,7 @@ const loadComponent = (component) => {
 		return () => import(/* @vite-ignore */ `/src/layout/other/empty.vue`);
 	}
 };
+
 // 路由扁平化
 const flatAsyncRoutes = (routes, breadcrumb = []) => {
 	const res = [];

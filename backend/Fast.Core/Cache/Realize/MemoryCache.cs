@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Reflection;
-using Fast.Core.Cache.Internal;
-using Furion.DependencyInjection;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Fast.Core.Cache.Realize;
@@ -9,14 +7,9 @@ namespace Fast.Core.Cache.Realize;
 /// <summary>
 /// 内存缓存
 /// </summary>
-public class MemoryCache : ICacheInternal, ISingleton
+public class MemoryCache : ICache
 {
-    private readonly IMemoryCache _memoryCache;
-
-    public MemoryCache(IMemoryCache memoryCache)
-    {
-        _memoryCache = memoryCache;
-    }
+    private IMemoryCache _memoryCache => App.GetService<IMemoryCache>();
 
     public long Del(params string[] key)
     {

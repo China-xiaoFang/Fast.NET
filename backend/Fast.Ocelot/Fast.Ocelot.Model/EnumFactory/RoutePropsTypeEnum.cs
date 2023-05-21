@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Fast.Core.Internal.AttributeFilter;
+using Fast.Admin.Model;
 
 namespace Fast.Ocelot.Model.EnumFactory;
 

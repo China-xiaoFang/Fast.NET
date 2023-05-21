@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<VersionPrefix>1.0.0</VersionPrefix>
+		<AssemblyName>Fast.Iaas</AssemblyName>
+		<Authors>1.8K仔</Authors>
+		<Description>Fast.NET 基础设施层，所有的共用 Nuget 包全部位于这里</Description>
+		<RepositoryUrl>https://gitee.com/Net-18K/Fast.NET</RepositoryUrl>
+		<RepositoryType>Gitee</RepositoryType>
+		<PackageReleaseNotes>初始化项目</PackageReleaseNotes>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="IGeekFan.AspNetCore.Knife4jUI" Version="0.0.13" />
+		<PackageReference Include="My.Extensions.Localization.Json" Version="3.1.0" />
+		<PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+		<PackageReference Include="Furion.Pure" Version="4.8.8.21" />
+		<PackageReference Include="CSRedisCore" Version="3.8.670" />
+		<PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="4.8.8.21" />
+		<PackageReference Include="Furion.Extras.ObjectMapper.Mapster" Version="4.8.8.21" />
+		<PackageReference Include="UAParser" Version="3.1.47" />
+	</ItemGroup>
+
+</Project>

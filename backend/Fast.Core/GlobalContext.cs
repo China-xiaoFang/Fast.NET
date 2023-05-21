@@ -1,8 +1,8 @@
-﻿using Fast.Core.AdminFactory.EnumFactory;
-using Fast.Core.Cache.Options;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Sys;
 using Fast.Core.Const;
-using Fast.Core.Internal.Options;
-using Fast.SqlSugar.Tenant;
+using Fast.Core.Options;
+using Furion.FriendlyException;
 
 namespace Fast.Core;
 
@@ -56,11 +56,7 @@ public class GlobalContext
     /// 根据业务自定义设置的租户Id
     /// 请谨慎使用
     /// </summary>
-    public static long CustomTenantId
-    {
-        get => SugarContext.CustomTenantId;
-        set => SugarContext.CustomTenantId = value;
-    }
+    public static long CustomTenantId { get; set; }
 
     /// <summary>
     /// 当前用户Id
@@ -99,7 +95,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: false})
+            if (App.User == null || App.User.Identity?.IsAuthenticated == false)
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.SuperAdmin.GetHashCode().ParseToString();
         }
@@ -112,7 +108,7 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: false})
+            if (App.User == null || App.User.Identity?.IsAuthenticated == false)
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.SystemAdmin.GetHashCode().ParseToString();
         }
@@ -125,39 +121,11 @@ public class GlobalContext
     {
         get
         {
-            if (App.User is {Identity.IsAuthenticated: false})
+            if (App.User == null || App.User.Identity?.IsAuthenticated == false)
                 return false;
             return App.User.FindFirst(ClaimConst.AdminType)?.Value == AdminTypeEnum.TenantAdmin.GetHashCode().ParseToString();
         }
     }
-
-    ///// <summary>
-    ///// 当前用户信息
-    ///// </summary>
-    //public static SysUserModel UserModelInfo =>
-    //    GetService<ISqlSugarRepository<SysUserModel>>().FirstOrDefault(f => f.Id == UserId);
-
-    ///// <summary>
-    ///// 检测用户是否存在
-    ///// </summary>
-    ///// <param name="userId"></param>
-    ///// <returns></returns>
-    //public static async Task<SysUserModel> CheckUserAsync(long userId)
-    //{
-    //    var user = await GetService<ISqlSugarRepository<SysUserModel>>().FirstOrDefaultAsync(u => u.Id == userId);
-    //    return user ?? throw Oops.Bah(ErrorCodeEnum.D1002);
-    //}
-
-    ///// <summary>
-    ///// 获取用户员工信息
-    ///// </summary>
-    ///// <param name="userId"></param>
-    ///// <returns></returns>
-    //public static async Task<SysEmpModel> GetUserEmpInfo(long userId)
-    //{
-    //    var emp = await GetService<ISqlSugarRepository<SysEmpModel>>().FirstOrDefaultAsync(u => u.Id == userId);
-    //    return emp ?? throw Oops.Bah(ErrorCodeEnum.D1002);
-    //}
 
     /// <summary>
     /// 获取租户Id，
@@ -167,8 +135,27 @@ public class GlobalContext
     /// <returns></returns>
     public static long GetTenantId(bool isThrow = true)
     {
-        return SugarContext.GetTenantId(isThrow);
+        if (TenantId.ToString().Trim() != "0")
+        {
+            return TenantId;
+        }
+
+        if (CustomTenantId.ToString().Trim() != "0")
+        {
+            return CustomTenantId;
+        }
+
+        if (isThrow)
+            // 租户系统异常！
+            throw Oops.Oh("租户系统异常！");
+
+        return 0;
     }
+
+    /// <summary>
+    /// 系统配置
+    /// </summary>
+    public static SystemSettingsOptions SystemSettingsOptions { get; set; }
 
     /// <summary>
     /// 缓存配置
@@ -176,9 +163,9 @@ public class GlobalContext
     public static CacheOptions CacheOptions { get; set; }
 
     /// <summary>
-    /// 系统配置
+    /// 数据库配置
     /// </summary>
-    public static SystemSettingsOptions SystemSettingsOptions { get; set; }
+    public static ConnectionStringsOptions ConnectionStringsOptions { get; set; }
 
     /// <summary>
     /// 版权信息
@@ -194,4 +181,77 @@ public class GlobalContext
     /// 服务配置集合
     /// </summary>
     public static ServiceCollectionOptions ServiceCollectionOptions { get; set; }
+
+    /// <summary>
+    /// Sugar数据库信息
+    /// </summary>
+    public static List<SysTenantDataBaseModel> SugarDbInfoList { get; set; } = new();
+
+    /// <summary>
+    /// 获取Sugar数据库信息
+    /// </summary>
+    /// <param name="id">标识Id</param>
+    public static SysTenantDataBaseModel GetSugarDbInfo(long id)
+    {
+        return SugarDbInfoList.FirstOrDefault(f => f.Id == id);
+    }
+
+    /// <summary>
+    /// 获取Sugar数据库信息
+    /// </summary>
+    /// <param name="connectionId">SqlSugarClient 连接Id</param>
+    public static SysTenantDataBaseModel GetSugarDbInfo(string connectionId)
+    {
+        return SugarDbInfoList.FirstOrDefault(f => f.ConnectionId == connectionId);
+    }
+
+    /// <summary>
+    /// 添加Sugar数据库信息
+    /// </summary>
+    /// <param name="model"></param>
+    public static void AddSugarDbInfo(SysTenantDataBaseModel model)
+    {
+        if (model == null)
+            return;
+        if (SugarDbInfoList.All(wh => wh.Id != model.Id))
+        {
+            SugarDbInfoList.Add(model);
+        }
+    }
+
+    /// <summary>
+    /// 删除Sugar数据库信息
+    /// </summary>
+    /// <param name="id">标识Id</param>
+    public static void DeleteSugarDbInfo(long id)
+    {
+        // 查找下表
+        var index = SugarDbInfoList.FindIndex(f => f.Id == id);
+        if (index >= 0)
+        {
+            SugarDbInfoList.RemoveAt(index);
+        }
+    }
+
+    /// <summary>
+    /// 删除Sugar数据库信息
+    /// </summary>
+    /// <param name="connectionId">SqlSugarClient 连接Id</param>
+    public static void DeleteSugarDbInfo(string connectionId)
+    {
+        // 查找下表
+        var index = SugarDbInfoList.FindIndex(f => f.ConnectionId == connectionId);
+        if (index >= 0)
+        {
+            SugarDbInfoList.RemoveAt(index);
+        }
+    }
+
+    /// <summary>
+    /// 清空Sugar数据库信息
+    /// </summary>
+    public static void ClearSugarDbInfo()
+    {
+        SugarDbInfoList = new List<SysTenantDataBaseModel>();
+    }
 }

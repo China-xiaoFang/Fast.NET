@@ -16,13 +16,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="logs\" />
+	  <Compile Remove="logs\**" />
+	  <Content Remove="logs\**" />
+	  <EmbeddedResource Remove="logs\**" />
+	  <None Remove="logs\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Fast.Admin\Fast.Admin.Application\Fast.Admin.Application.csproj" />
+		<ProjectReference Include="..\Admin\Fast.Admin.Application\Fast.Admin.Application.csproj" />
 		<ProjectReference Include="..\Fast.Application\Fast.Application.csproj" />
-		<ProjectReference Include="..\Fast.Scheduler\Fast.Scheduler.csproj" />
+		<ProjectReference Include="..\Scheduler\Fast.Scheduler\Fast.Scheduler.csproj" />
 	</ItemGroup>
 
 </Project>

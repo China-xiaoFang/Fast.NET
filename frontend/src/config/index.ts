@@ -1,6 +1,6 @@
 const DEFAULT_CONFIG = {
 	// 首页地址
-	DASHBOARD_URL: "/index",
+	DASHBOARD_URL: "/index?menuCode=index",
 
 	// 请求超时，30秒
 	TIMEOUT: 1000 * 30,
@@ -15,7 +15,7 @@ const DEFAULT_CONFIG = {
 	TOKEN_NAME: "Authorization",
 
 	// RefreshTokenName // X-Authorization
-	REFRESH_TOKEN_NAME: "Authorization",
+	REFRESH_TOKEN_NAME: "X-Authorization",
 
 	// Token前缀，注意最后有个空格，如不需要需设置空字符串 // Bearer
 	TOKEN_PREFIX: "Bearer ",

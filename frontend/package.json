@@ -12,7 +12,7 @@
 	"scripts": {
 		"serve": "vite",
 		"dev": "vite --mode development",
-		"build": "vue-tsc && vite build",
+		"build": "vue-tsc  --NoEmit --skipLibCheck && vite build",
 		"preview": "vite preview",
 		"prod": "vite  --mode production"
 	},

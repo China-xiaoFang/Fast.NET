@@ -14,8 +14,10 @@ export default {
 	mutations: {
 		setLoginUser(state, info) {
 			state.loginUser = info;
-			state.menuList = info.menuList;
 			state.buttonCodeList = info.buttonCodeList;
+		},
+		setLoginMenu(state, info) {
+			state.menuList = info;
 		},
 	},
 	actions: {
@@ -26,12 +28,29 @@ export default {
 					.then((res) => {
 						if (res.success) {
 							tool.cache.set(cacheKey.USER_INFO, res.data);
-							tool.cache.set(cacheKey.MENU, res.data.menuList);
 							tool.cache.set(
 								cacheKey.PERMISSIONS,
 								res.data.buttonCodeList
 							);
 							commit("setLoginUser", res.data);
+							resolve(res.data);
+						} else {
+							reject(new Error(res.message));
+						}
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			});
+		},
+		getLoginMenu({ commit }) {
+			return new Promise((resolve, reject) => {
+				loginApi
+					.getLoginMenu()
+					.then((res) => {
+						if (res.success) {
+							tool.cache.set(cacheKey.MENU, res.data);
+							commit("setLoginMenu", res.data);
 							resolve(res.data);
 						} else {
 							reject(new Error(res.message));
