@@ -32,7 +32,7 @@
     "HostName": "127.0.0.1",
     "Port": 5672,
     "UserName": "admin",
-    "Password": "12345"
+    "Password": "123456"
   },
   "AllowedHosts": "*",
   "AppSettings": {
