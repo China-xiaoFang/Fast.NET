@@ -16,12 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SqlSugarCore" Version="5.1.4.76" />
-		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Fast.Iaas\Fast.Iaas.csproj" />
+	  <ProjectReference Include="..\..\Admin\Fast.Admin.Model\Fast.Admin.Model.csproj" />
 	</ItemGroup>
 
 </Project>

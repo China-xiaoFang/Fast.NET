@@ -1,8 +1,7 @@
-﻿using Fast.SqlSugar.Attributes;
-using Fast.SqlSugar.BaseModel;
-using Fast.SqlSugar.Enum;
+﻿using Fast.Iaas.Attributes;
+using Fast.Iaas.BaseModel;
 
-namespace Fast.SqlSugar.Model;
+namespace Fast.Admin.Model.Model.Tenant;
 
 /// <summary>
 /// 系统差异日志表Model类

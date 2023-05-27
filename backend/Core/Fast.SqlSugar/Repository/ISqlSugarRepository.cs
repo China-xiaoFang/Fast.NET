@@ -7,7 +7,7 @@
  */
 
 using System.Linq.Expressions;
-using Fast.SqlSugar.Model;
+using Fast.Admin.Model.Model.Sys;
 
 namespace Fast.SqlSugar.Repository;
 

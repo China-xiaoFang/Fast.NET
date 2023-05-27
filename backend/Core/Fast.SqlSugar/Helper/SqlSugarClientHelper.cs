@@ -1,6 +1,6 @@
-﻿using Fast.Iaas.Cache;
+﻿using Fast.Admin.Model.Model.Sys;
+using Fast.Iaas.Cache;
 using Fast.SqlSugar.Filter;
-using Fast.SqlSugar.Model;
 
 namespace Fast.SqlSugar.Helper;
 

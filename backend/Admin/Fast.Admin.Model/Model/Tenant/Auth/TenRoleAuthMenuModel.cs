@@ -1,6 +1,5 @@
-﻿using Fast.SqlSugar.Attributes;
-using Fast.SqlSugar.BaseModel.Interface;
-using Fast.SqlSugar.Enum;
+﻿using Fast.Iaas.Attributes;
+using Fast.Iaas.BaseModel.Interface;
 
 namespace Fast.Admin.Model.Model.Tenant.Auth;
 

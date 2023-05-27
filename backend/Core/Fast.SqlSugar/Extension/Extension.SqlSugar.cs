@@ -2,11 +2,11 @@
 using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
+using Fast.Admin.Model.Model.Sys;
+using Fast.Iaas.Attributes;
 using Fast.Iaas.Cache;
-using Fast.SqlSugar.Enum;
 using Fast.SqlSugar.Helper;
 using Fast.SqlSugar.Internal;
-using Fast.SqlSugar.Model;
 
 namespace Fast.SqlSugar.Extension;
 

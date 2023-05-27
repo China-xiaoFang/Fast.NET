@@ -1,5 +1,5 @@
 ﻿using Fast.Admin.Model.Enum;
-using Fast.SqlSugar.BaseModel.Dto;
+using Fast.Iaas.BaseModel.Dto;
 
 namespace Fast.Admin.Service.SysModule.Dto;
 

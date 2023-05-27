@@ -1,9 +1,9 @@
 ﻿using Fast.Admin.Model.Model.Sys.Log;
+using Fast.Admin.Model.Model.Tenant;
 using Fast.Admin.Model.Model.Tenant.Organization.User;
 using Fast.Iaas.Cache;
 using Fast.Iaas.Internal;
 using Fast.SqlSugar.Extension;
-using Fast.SqlSugar.Model;
 using Fast.SqlSugar.Repository;
 using Furion.DependencyInjection;
 using Furion.EventBus;

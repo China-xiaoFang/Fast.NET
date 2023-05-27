@@ -8,9 +8,9 @@
 
 
 using System.Linq.Expressions;
+using Fast.Admin.Model.Model.Sys;
 using Fast.Iaas.Cache;
 using Fast.SqlSugar.Extension;
-using Fast.SqlSugar.Model;
 
 namespace Fast.SqlSugar.Repository;
 

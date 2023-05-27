@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
-using Fast.SqlSugar.Attributes;
-using Fast.SqlSugar.BaseModel;
-using Fast.SqlSugar.BaseModel.Interface;
-using Fast.SqlSugar.Enum;
+using Fast.Iaas.Attributes;
+using Fast.Iaas.BaseModel;
+using Fast.Iaas.BaseModel.Interface;
 using Fast.SqlSugar.Internal;
 
 namespace Fast.SqlSugar.Helper;

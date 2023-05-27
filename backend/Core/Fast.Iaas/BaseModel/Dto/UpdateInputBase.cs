@@ -1,4 +1,4 @@
-﻿namespace Fast.SqlSugar.BaseModel.Dto;
+﻿namespace Fast.Iaas.BaseModel.Dto;
 
 /// <summary>
 /// 通用更新输入

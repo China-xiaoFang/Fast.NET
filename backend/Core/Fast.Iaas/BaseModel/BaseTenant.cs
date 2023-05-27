@@ -1,11 +1,12 @@
-﻿using Fast.SqlSugar.BaseModel.Interface;
+﻿using Fast.Iaas.BaseModel.Interface;
+using SqlSugar;
 
-namespace Fast.SqlSugar.BaseModel;
+namespace Fast.Iaas.BaseModel;
 
 /// <summary>
-/// 租户实体基类
+/// 租户基类
 /// </summary>
-public class BaseTEntity : BaseEntity, IBaseTenant
+public class BaseTenant : IBaseTenant
 {
     /// <summary>
     /// 租户Id

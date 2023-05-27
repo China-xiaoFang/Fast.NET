@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Fast.Admin.Model.Enum;
+using Fast.Iaas.BaseModel.Dto;
 using Fast.Iaas.Util;
-using Fast.SqlSugar.BaseModel.Dto;
 
 namespace Fast.Admin.Service.SysMenu.Dto;
 

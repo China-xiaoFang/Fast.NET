@@ -37,8 +37,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Admin\Fast.Admin.Model\Fast.Admin.Model.csproj" />
 	  <ProjectReference Include="..\..\SDK\Fast.RabbitMQ\Fast.RabbitMQ.csproj" />
+	  <ProjectReference Include="..\Fast.SqlSugar\Fast.SqlSugar.csproj" />
 	</ItemGroup>
 
 </Project>

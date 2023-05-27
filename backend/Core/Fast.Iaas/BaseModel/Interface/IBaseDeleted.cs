@@ -1,4 +1,4 @@
-﻿namespace Fast.SqlSugar.BaseModel.Interface;
+﻿namespace Fast.Iaas.BaseModel.Interface;
 
 /// <summary>
 /// IsDeleted 软删除 接口定义类

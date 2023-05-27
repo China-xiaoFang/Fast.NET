@@ -1,6 +1,5 @@
 ﻿using Fast.Admin.Model.Model.Sys.Dic;
-using Fast.SqlSugar.Attributes;
-using Fast.SqlSugar.Enum;
+using Fast.Iaas.Attributes;
 
 namespace Fast.Admin.Model.Model.Tenant.Dic;
 

@@ -1,6 +1,7 @@
-﻿using Fast.SqlSugar.BaseModel.Interface;
+﻿using Fast.Iaas.BaseModel.Interface;
+using SqlSugar;
 
-namespace Fast.SqlSugar.BaseModel;
+namespace Fast.Iaas.BaseModel;
 
 /// <summary>
 /// 主键实体基类

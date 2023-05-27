@@ -20,8 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Admin\Fast.Admin.Model\Fast.Admin.Model.csproj" />
-	  <ProjectReference Include="..\..\Core\Fast.Iaas\Fast.Iaas.csproj" />
+	  <ProjectReference Include="..\..\Core\Fast.SqlSugar\Fast.SqlSugar.csproj" />
 	</ItemGroup>
 
 </Project>

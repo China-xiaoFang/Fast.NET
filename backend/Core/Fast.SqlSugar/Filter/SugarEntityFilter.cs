@@ -1,7 +1,7 @@
-﻿using Fast.Iaas.Internal;
-using Fast.SqlSugar.BaseModel.Interface;
-using Fast.SqlSugar.Enum;
-using Fast.SqlSugar.Model;
+﻿using Fast.Admin.Model.Enum;
+using Fast.Admin.Model.Model.Tenant;
+using Fast.Iaas.BaseModel.Interface;
+using Fast.Iaas.Internal;
 using Furion.DependencyInjection;
 using Furion.EventBus;
 using Furion.Logging;

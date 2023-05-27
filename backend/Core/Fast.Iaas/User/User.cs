@@ -84,7 +84,7 @@ public class User : AuthUserInfo, IUser, IScoped
             return;
 
         // 获取并且检测来源
-        AppEnvironment = (AppEnvironmentEnum) httpContext.Request.Headers["Fast-Origin"].ParseToInt();
+        AppEnvironment = (AppEnvironmentEnum) httpContext.Request.Headers["Fast-App-Origin"].ParseToInt();
 
         switch (AppEnvironment)
         {

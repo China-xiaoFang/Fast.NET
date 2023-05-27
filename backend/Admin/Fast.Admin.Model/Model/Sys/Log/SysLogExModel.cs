@@ -1,6 +1,6 @@
-﻿using Fast.SqlSugar.Attributes;
-using Fast.SqlSugar.BaseModel;
-using Fast.SqlSugar.BaseModel.Interface;
+﻿using Fast.Iaas.Attributes;
+using Fast.Iaas.BaseModel;
+using Fast.Iaas.BaseModel.Interface;
 
 namespace Fast.Admin.Model.Model.Sys.Log;
 

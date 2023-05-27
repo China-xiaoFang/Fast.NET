@@ -1,8 +1,25 @@
-﻿using System.ComponentModel;
-using System.Reflection;
-using Fast.SqlSugar.Enum;
+﻿using Fast.Iaas.Internal;
 
-namespace Fast.SqlSugar.Attributes;
+namespace Fast.Iaas.Attributes;
+
+/// <summary>
+/// Sugar数据库类型
+/// </summary>
+[FastEnum("差异日志类型")]
+public enum SugarDbTypeEnum
+{
+    /// <summary>
+    /// 默认库
+    /// </summary>
+    [Description("默认库")]
+    Default = 0,
+
+    /// <summary>
+    /// 租户库
+    /// </summary>
+    [Description("租户库")]
+    Tenant = 1
+}
 
 /// <summary>
 /// Sugar数据库类型特征，区分是那个数据库，默认是Default库（0）

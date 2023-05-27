@@ -1,7 +1,6 @@
 ﻿using Fast.Admin.Model.Model.Tenant.Organization.User;
-using Fast.SqlSugar.Attributes;
-using Fast.SqlSugar.BaseModel;
-using Fast.SqlSugar.Model;
+using Fast.Iaas.Attributes;
+using Fast.Iaas.BaseModel;
 
 namespace Fast.Admin.Model.Model.Sys;
 

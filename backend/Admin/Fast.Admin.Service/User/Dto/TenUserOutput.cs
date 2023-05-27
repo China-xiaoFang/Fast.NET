@@ -1,4 +1,4 @@
-﻿using Fast.SqlSugar.BaseModel.Dto;
+﻿using Fast.Iaas.BaseModel.Dto;
 
 namespace Fast.Admin.Service.User.Dto;
 
