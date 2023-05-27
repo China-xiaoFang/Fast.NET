@@ -22,33 +22,6 @@ public class TenConfigSeedData : ITenantSeedData
             new()
             {
                 Id = 1000000001,
-                Code = ConfigConst.Tenant.WebName,
-                ChName = "系统名称",
-                EnName = "Web Name",
-                Value = "Fast.NET",
-                Remark = ""
-            },
-            new()
-            {
-                Id = 1000000002,
-                Code = ConfigConst.Tenant.WebLogo,
-                ChName = "系统Logo",
-                EnName = "Web Logo",
-                Value = "/logo.png",
-                Remark = ""
-            },
-            new()
-            {
-                Id = 1000000003,
-                Code = ConfigConst.Tenant.WebDescribe,
-                ChName = "系统描述",
-                EnName = "Web Describe,",
-                Value = "Fast.NET 后台管理系统。（持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！）",
-                Remark = ""
-            },
-            new()
-            {
-                Id = 1000000004,
                 Code = ConfigConst.Tenant.VerCodeSwitch,
                 ChName = "验证码开关",
                 EnName = "Ver Code",
@@ -57,7 +30,7 @@ public class TenConfigSeedData : ITenantSeedData
             },
             new()
             {
-                Id = 1000000005,
+                Id = 1000000002,
                 Code = ConfigConst.Tenant.TokenExpiredTime,
                 ChName = "Token过期时间（分钟）",
                 EnName = "Token Expired Time",
@@ -66,12 +39,57 @@ public class TenConfigSeedData : ITenantSeedData
             },
             new()
             {
-                Id = 1000000006,
+                Id = 1000000003,
                 Code = ConfigConst.Tenant.RefreshTokenExpiredTime,
                 ChName = "刷新Token过期时间（分钟）",
                 EnName = "Refresh Token Expired Time",
                 Value = "43200",
                 Remark = "单位分钟"
+            },
+            new()
+            {
+                Id = 1000000004,
+                Code = ConfigConst.Tenant.DemoEnvironment,
+                ChName = "演示环境",
+                EnName = "Demonstration environment",
+                Value = "true",
+                Remark = "true 是； false 否"
+            },
+            new()
+            {
+                Id = 1000000005,
+                Code = ConfigConst.Tenant.DemoEnvironmentRequestDisabled,
+                ChName = "演示环境禁止的请求类型",
+                EnName = "Demonstrates the types of requests prohibited by the environment",
+                Value = "[ \"Add\", \"Update\", \"Delete\", \"Export\", \"Import\" ]",
+                Remark = "Auth Page Query Detail Add Update Delete Download Upload Export Import"
+            },
+            new()
+            {
+                Id = 1000001001,
+                Code = ConfigConst.Tenant.WebName,
+                ChName = "系统名称",
+                EnName = "Web Name",
+                Value = "Fast.NET",
+                Remark = ""
+            },
+            new()
+            {
+                Id = 1000001002,
+                Code = ConfigConst.Tenant.WebLogo,
+                ChName = "系统Logo",
+                EnName = "Web Logo",
+                Value = "/logo.png",
+                Remark = ""
+            },
+            new()
+            {
+                Id = 1000001003,
+                Code = ConfigConst.Tenant.WebDescribe,
+                ChName = "系统描述",
+                EnName = "Web Describe,",
+                Value = "Fast.NET 后台管理系统。（持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！）",
+                Remark = ""
             },
         };
         await _db.Insertable(data).ExecuteCommandAsync();

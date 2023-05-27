@@ -5,6 +5,14 @@
 /// </summary>
 public class ConfigConst
 {
+    public class System
+    {
+        /// <summary>
+        /// AES 加密解密
+        /// </summary>
+        public const string AESCrypto = "Sys_Crypto";
+    }
+
     /// <summary>
     /// 版权信息
     /// </summary>
@@ -96,5 +104,15 @@ public class ConfigConst
         /// 刷新Token过期时间
         /// </summary>
         public const string RefreshTokenExpiredTime = "Ten_RefreshTokenExpiredTime";
+
+        /// <summary>
+        /// 是否为演示环境
+        /// </summary>
+        public const string DemoEnvironment = "Ten_DemoEnvironment";
+
+        /// <summary>
+        /// 演示环境，请求禁用
+        /// </summary>
+        public const string DemoEnvironmentRequestDisabled = "Ten_DemoEnvironmentRequestDisabled";
     }
 }

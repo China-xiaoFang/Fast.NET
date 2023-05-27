@@ -22,6 +22,14 @@ public class SysConfigSeedData : ISystemSeedData
             new()
             {
                 Id = 1000000001,
+                Code = ConfigConst.System.AESCrypto,
+                ChName = "请求 AES 加密解密",
+                EnName = "Request AES encryption and decryption",
+                Value = "true",
+            },
+            new()
+            {
+                Id = 1000001001,
                 Code = ConfigConst.Copyright.ICPCode,
                 ChName = "备案编号",
                 EnName = "ICP Core",
@@ -29,7 +37,7 @@ public class SysConfigSeedData : ISystemSeedData
             },
             new()
             {
-                Id = 1000000002,
+                Id = 1000001002,
                 Code = ConfigConst.Copyright.ICPUrl,
                 ChName = "备案Url",
                 EnName = "ICP Url",
@@ -37,7 +45,7 @@ public class SysConfigSeedData : ISystemSeedData
             },
             new()
             {
-                Id = 1000000003,
+                Id = 1000001003,
                 Code = ConfigConst.Copyright.PublicCode,
                 ChName = "公安备案编号",
                 EnName = "Public Core",
@@ -45,7 +53,7 @@ public class SysConfigSeedData : ISystemSeedData
             },
             new()
             {
-                Id = 1000000004,
+                Id = 1000001004,
                 Code = ConfigConst.Copyright.PublicUrl,
                 ChName = "公安备案Url",
                 EnName = "Public Url",
@@ -53,7 +61,7 @@ public class SysConfigSeedData : ISystemSeedData
             },
             new()
             {
-                Id = 1000000005,
+                Id = 1000001005,
                 Code = ConfigConst.Copyright.CRCode,
                 ChName = "版权信息",
                 EnName = "Copyright Code",
@@ -61,7 +69,7 @@ public class SysConfigSeedData : ISystemSeedData
             },
             new()
             {
-                Id = 1000000006,
+                Id = 1000001006,
                 Code = ConfigConst.Copyright.CRUrl,
                 ChName = "版权Url",
                 EnName = "Copyright Url",
@@ -69,7 +77,7 @@ public class SysConfigSeedData : ISystemSeedData
             },
             new()
             {
-                Id = 1000000007,
+                Id = 1000002001,
                 Code = ConfigConst.BaiduTranslator.AppId,
                 ChName = "百度翻译开发者AppId",
                 EnName = "Baidu Translation Developer AppId",
@@ -77,7 +85,7 @@ public class SysConfigSeedData : ISystemSeedData
             },
             new()
             {
-                Id = 1000000008,
+                Id = 1000002002,
                 Code = ConfigConst.BaiduTranslator.SecretKey,
                 ChName = "百度翻译开发者密钥",
                 EnName = "Baidu Translation Developer SecretKey",
@@ -85,7 +93,7 @@ public class SysConfigSeedData : ISystemSeedData
             },
             new()
             {
-                Id = 1000000009,
+                Id = 1000002003,
                 Code = ConfigConst.BaiduTranslator.Url,
                 ChName = "百度翻译请求Url",
                 EnName = "Baidu Translation Request Url",
