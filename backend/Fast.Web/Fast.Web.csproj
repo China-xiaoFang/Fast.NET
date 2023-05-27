@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Admin\Fast.Admin.Application\Fast.Admin.Application.csproj" />
+		<ProjectReference Include="..\Application\Fast.Admin.Application\Fast.Admin.Application.csproj" />
 		<ProjectReference Include="..\Fast.Application\Fast.Application.csproj" />
 		<ProjectReference Include="..\Scheduler\Fast.Scheduler\Fast.Scheduler.csproj" />
 	</ItemGroup>

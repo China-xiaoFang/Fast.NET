@@ -16,7 +16,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Admin\Fast.Admin.Service\Fast.Admin.Service.csproj" />
 	  <ProjectReference Include="..\Fast.Model\Fast.Model.csproj" />
 	</ItemGroup>
 

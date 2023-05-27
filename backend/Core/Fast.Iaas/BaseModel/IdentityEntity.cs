@@ -1,5 +1,4 @@
 ﻿using Fast.Iaas.BaseModel.Interface;
-using SqlSugar;
 
 namespace Fast.Iaas.BaseModel;
 

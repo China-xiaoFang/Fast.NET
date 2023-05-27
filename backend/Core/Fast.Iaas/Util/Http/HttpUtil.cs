@@ -1,12 +1,10 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text.Json.Serialization;
-using Fast.Iaas.Cache;
 using Fast.Iaas.Extension;
 using Furion;
 using Furion.DependencyInjection;
 using Furion.RemoteRequest.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using UAParser;
 
 namespace Fast.Iaas.Util.Http;
@@ -256,6 +254,76 @@ public static class HttpUtil
     /// <summary>
     /// 根据IP地址获取公网信息
     /// 不传值默认获取服务器的公网信息
+    /// 带缓存
+    /// </summary>
+    /// <returns></returns>
+    public static WhoisIPInfoModel WanInfoCache(string ip = null)
+    {
+        return WanInfoCacheAsync(ip).Result;
+    }
+
+    /// <summary>
+    /// 根据IP地址获取公网信息
+    /// 不传值默认获取服务器的公网信息
+    /// 带缓存
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<WhoisIPInfoModel> WanInfoCacheAsync(string ip = null)
+    {
+        var url = "http://whois.pconline.com.cn/ipJson.jsp";
+
+        WhoisIPInfoModel result = null;
+
+        // 如果IP为空，则默认获取服务器的公网信息
+        if (string.IsNullOrEmpty(ip))
+        {
+            ip = "localhost";
+        }
+
+        url += $"?ip={ip}";
+
+        var ipInfoCacheKey = $"IpInfo:{ip}";
+        await Scoped.CreateAsync(async (_, scope) =>
+        {
+            // 获取缓存类型
+            var cacheType = Type.GetType("ICache");
+            var getCacheMethod = cacheType?.GetMethod("GetAsync");
+            var setCacheMethod = cacheType?.GetMethod("SetAsync");
+            if (cacheType == null || getCacheMethod == null || setCacheMethod == null)
+            {
+                result = await WanInfoAsync(ip);
+            }
+            else
+            {
+                // 获取缓存服务
+                var _cache = scope.ServiceProvider.GetService(cacheType);
+
+                // TODO:这里异步不确定行不行
+
+                // 尝试从缓存中获取
+                var resStr = getCacheMethod.Invoke(_cache, new object[] {ipInfoCacheKey});
+                // 转换类型
+                result = resStr?.ToString().ToObject<WhoisIPInfoModel>();
+                if (result == null)
+                {
+                    var resultStr = await url.GetAsStringAsync();
+                    resultStr = resultStr[(resultStr.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
+                        .TrimEnd();
+                    resultStr = resultStr[..^3];
+                    result = resultStr.ToObject<WhoisIPInfoModel>();
+
+                    // 设置缓存，默认缓存12小时
+                    setCacheMethod.Invoke(_cache, new object[] {ipInfoCacheKey, result, new TimeSpan(12, 0, 0)});
+                }
+            }
+        });
+
+        return result;
+    }
+
+    /// <summary>
+    /// 根据IP地址获取公网信息
+    /// 不传值默认获取服务器的公网信息
     /// </summary>
     /// <returns></returns>
     public static WhoisIPInfoModel WanInfo(string ip = null)
@@ -272,36 +340,18 @@ public static class HttpUtil
     {
         var url = "http://whois.pconline.com.cn/ipJson.jsp";
 
-        WhoisIPInfoModel result = null;
-
         // 如果IP为空，则默认获取服务器的公网信息
-        if (!string.IsNullOrEmpty(ip))
+        if (string.IsNullOrEmpty(ip))
         {
-            url += $"?ip={ip}";
             ip = "localhost";
         }
 
-        var ipInfoCacheKey = $"IpInfo:{ip}";
-        await Scoped.CreateAsync(async (_, scope) =>
-        {
-            var _cache = scope.ServiceProvider.GetService<ICache>();
+        url += $"?ip={ip}";
 
-            // 尝试从缓存中获取
-            result = await _cache.GetAsync<WhoisIPInfoModel>(ipInfoCacheKey);
-            if (result == null)
-            {
-                var resultStr = await url.GetAsStringAsync();
-                resultStr = resultStr[(resultStr.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
-                    .TrimEnd();
-                resultStr = resultStr[..^3];
-                result = resultStr.ToObject<WhoisIPInfoModel>();
-
-                // 设置缓存，默认缓存12小时
-                await _cache.SetAsync(ipInfoCacheKey, result, new TimeSpan(12, 0, 0));
-            }
-        });
-
-        return result;
+        var resultStr = await url.GetAsStringAsync();
+        resultStr = resultStr[(resultStr.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..].TrimEnd();
+        resultStr = resultStr[..^3];
+        return resultStr.ToObject<WhoisIPInfoModel>();
     }
 
     private static readonly char[] reserveChar = {'/', '?', '*', ':', '|', '\\', '<', '>', '\"'};

@@ -37,8 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\SDK\Fast.RabbitMQ\Fast.RabbitMQ.csproj" />
-	  <ProjectReference Include="..\Fast.SqlSugar\Fast.SqlSugar.csproj" />
+	  <ProjectReference Include="..\Fast.Iaas\Fast.Iaas.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 ﻿using Fast.Iaas.BaseModel.Interface;
 using Fast.Iaas.Util.Http;
-using SqlSugar;
 
 namespace Fast.Iaas.BaseModel;
 
@@ -64,7 +63,7 @@ public class BaseLogEntity : IBaseLogEntity, IPrimaryKeyEntity<int>
     public virtual void RecordCreate()
     {
         var userAgentInfo = HttpUtil.UserAgentInfo();
-        var wanInfo = HttpUtil.WanInfo(HttpUtil.Ip);
+        var wanInfo = HttpUtil.WanInfoCache(HttpUtil.Ip);
 
         PhoneModel = userAgentInfo.PhoneModel;
         OS = userAgentInfo.OS;
