@@ -1,6 +1,4 @@
-﻿using Furion.DependencyInjection;
-
-namespace Fast.Core.Restful.Internal;
+﻿namespace Fast.Core.Restful.Internal;
 
 /// <summary>
 /// RESTful风格---小诺返回格式

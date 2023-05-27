@@ -1,10 +1,9 @@
-﻿using Fast.Admin.Model.Model.Sys.Config;
-using Fast.Admin.Model.Model.Tenant.Config;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminModel.Sys.Config;
+using Fast.Core.AdminModel.Tenant.Config;
+using Fast.Core.Cache;
 using Fast.Core.Operation.Config.Dto;
-using Fast.Iaas.Cache;
-using Fast.SqlSugar.Extension;
-using Furion.DependencyInjection;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Iaas.Const;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.Operation.Config;

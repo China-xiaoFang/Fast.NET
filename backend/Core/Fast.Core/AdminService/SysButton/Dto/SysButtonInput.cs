@@ -1,4 +1,4 @@
-﻿namespace Fast.Admin.Service.SysButton.Dto;
+﻿namespace Fast.Core.AdminService.SysButton.Dto;
 
 /// <summary>
 /// 添加系统按钮输入

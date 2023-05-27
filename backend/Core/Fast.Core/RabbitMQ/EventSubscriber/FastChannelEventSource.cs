@@ -1,9 +1,8 @@
-﻿using Fast.Iaas.Extension;
-using Furion.DependencyInjection;
+﻿using System.Text.Json.Serialization;
+using Fast.Iaas.Extension;
 using Furion.EventBus;
-using Newtonsoft.Json;
 
-namespace Fast.Iaas.Internal;
+namespace Fast.Core.RabbitMQ.EventSubscriber;
 
 /// <summary>
 /// Fast.NET 自定义事件总线载体
@@ -29,7 +28,7 @@ public sealed class FastChannelEventSource : IEventSource
     /// <summary>
     /// 取消任务Token
     /// </summary>
-    [System.Text.Json.Serialization.JsonIgnore]
+    [JsonIgnore]
     public CancellationToken CancellationToken { get; set; }
 
     /// <summary>

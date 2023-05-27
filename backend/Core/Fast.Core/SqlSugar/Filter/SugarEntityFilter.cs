@@ -1,19 +1,15 @@
-﻿using Fast.Admin.Model.Enum;
-using Fast.Admin.Model.Model.Tenant;
-using Fast.Iaas;
+﻿using Fast.Core.AdminEnum;
+using Fast.Core.AdminModel.Tenant;
+using Fast.Core.RabbitMQ.EventSubscriber;
 using Fast.Iaas.BaseModel.Interface;
-using Fast.Iaas.Internal;
-using Furion;
-using Furion.DependencyInjection;
 using Furion.EventBus;
 using Furion.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SqlSugar;
 using Yitter.IdGenerator;
 using SystemDbType = System.Data.DbType;
 
-namespace Fast.SqlSugar.Filter;
+namespace Fast.Core.SqlSugar.Filter;
 
 /// <summary>
 /// Sugar实体类过滤器

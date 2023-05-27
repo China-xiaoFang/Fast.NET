@@ -1,4 +1,4 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GetXnRestfulResult = Fast.Core.Restful.Extension.Extension;

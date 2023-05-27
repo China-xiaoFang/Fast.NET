@@ -1,11 +1,11 @@
-﻿using Fast.Admin.Model.Enum;
-using Fast.Admin.Model.Model.Sys.Menu;
-using Fast.Admin.Service.SysMenu.Dto;
+﻿using Fast.Core.AdminEnum;
+using Fast.Core.AdminModel.Sys.Menu;
+using Fast.Core.AdminService.SysMenu.Dto;
+using Fast.Core.SqlSugar.Repository;
 using Fast.Iaas.Extension;
 using Fast.Iaas.Util;
-using Fast.SqlSugar.Repository;
 
-namespace Fast.Admin.Service.SysMenu;
+namespace Fast.Core.AdminService.SysMenu;
 
 /// <summary>
 /// 系统菜单服务

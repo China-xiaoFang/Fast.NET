@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using Fast.Core.SqlSugar.Internal;
 using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel;
 using Fast.Iaas.BaseModel.Interface;
-using Fast.SqlSugar.Internal;
-using SqlSugar;
 
-namespace Fast.SqlSugar.Helper;
+namespace Fast.Core.SqlSugar.Helper;
 
 /// <summary>
 /// 实体类帮助类

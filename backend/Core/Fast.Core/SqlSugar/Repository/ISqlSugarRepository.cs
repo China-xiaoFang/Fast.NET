@@ -7,10 +7,9 @@
  */
 
 using System.Linq.Expressions;
-using Fast.Admin.Model.Model.Sys;
-using SqlSugar;
+using Fast.Core.AdminModel.Sys;
 
-namespace Fast.SqlSugar.Repository;
+namespace Fast.Core.SqlSugar.Repository;
 
 /// <summary>
 /// 非泛型 SqlSugar 仓储

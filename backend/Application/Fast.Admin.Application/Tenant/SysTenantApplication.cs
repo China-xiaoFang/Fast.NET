@@ -1,8 +1,8 @@
-﻿using Fast.Admin.Service.Tenant;
-using Fast.Admin.Service.Tenant.Dto;
-using Fast.Core.Attributes;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminService.Tenant;
+using Fast.Core.AdminService.Tenant.Dto;
 using Fast.Core.Restful.Internal;
+using Fast.Iaas.Attributes;
+using Fast.Iaas.Const;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using Fast.Admin.Model.Enum;
+using Fast.Core.AdminEnum;
 using Fast.Iaas.BaseModel.Dto;
 using Fast.Iaas.Util;
 
-namespace Fast.Admin.Service.SysMenu.Dto;
+namespace Fast.Core.AdminService.SysMenu.Dto;
 
 /// <summary>
 /// 系统菜单树输出

@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
-using Fast.Admin.Model.Model.Sys;
-using SqlSugar;
+using Fast.Core.AdminModel.Sys;
 
-namespace Fast.SqlSugar.Helper;
+namespace Fast.Core.SqlSugar.Helper;
 
 /// <summary>
 /// 数据库帮助类

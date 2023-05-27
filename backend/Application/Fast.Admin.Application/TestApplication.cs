@@ -1,10 +1,10 @@
-﻿using Fast.Admin.Model.Model.Sys.Config;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminModel.Sys.Config;
 using Fast.Core.Operation.Config;
 using Fast.Core.Operation.Config.Dto;
 using Fast.Core.Operation.Dict;
 using Fast.Core.Operation.Dict.Dto;
-using Fast.SqlSugar.Repository;
+using Fast.Core.SqlSugar.Repository;
+using Fast.Iaas.Const;
 using Furion.DynamicApiController;
 using Furion.FriendlyException;
 using Microsoft.AspNetCore.Authorization;

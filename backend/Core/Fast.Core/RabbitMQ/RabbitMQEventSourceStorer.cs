@@ -5,7 +5,7 @@ using Furion.EventBus;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Fast.RabbitMQ;
+namespace Fast.Core.RabbitMQ;
 
 /// <summary>
 /// RabbitMQ 事件总线存储器

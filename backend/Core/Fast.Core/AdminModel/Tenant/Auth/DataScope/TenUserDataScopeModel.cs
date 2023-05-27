@@ -1,8 +1,7 @@
 ﻿using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel.Interface;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Tenant.Auth.DataScope;
+namespace Fast.Core.AdminModel.Tenant.Auth.DataScope;
 
 /// <summary>
 /// 租户用户数据范围表Model类

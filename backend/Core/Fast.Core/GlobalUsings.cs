@@ -15,5 +15,3 @@ global using System.ComponentModel.DataAnnotations;
 global using Furion.DependencyInjection;
 global using Furion.FriendlyException;
 global using Fast.Core;
-global using Fast.Core.Const;
-global using Fast.Iaas.User;

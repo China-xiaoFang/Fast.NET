@@ -1,9 +1,8 @@
 ﻿using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel;
 using Fast.Iaas.Internal;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Sys.Api;
+namespace Fast.Core.AdminModel.Sys.Api;
 
 /// <summary>
 /// 系统接口信息表Model类

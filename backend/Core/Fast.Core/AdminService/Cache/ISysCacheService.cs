@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Service.Cache.Dto;
-using Fast.Iaas.Cache;
+﻿using Fast.Core.AdminService.Cache.Dto;
+using Fast.Core.Cache;
 
-namespace Fast.Admin.Service.Cache;
+namespace Fast.Core.AdminService.Cache;
 
 /// <summary>
 /// 系统缓存服务接口

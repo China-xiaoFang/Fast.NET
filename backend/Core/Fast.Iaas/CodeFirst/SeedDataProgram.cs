@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.CodeFirst;
+﻿namespace Fast.Iaas.CodeFirst;
 
 /// <summary>
 /// 种子数据入口

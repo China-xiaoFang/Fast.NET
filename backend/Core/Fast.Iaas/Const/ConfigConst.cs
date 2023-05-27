@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.Const;
+﻿namespace Fast.Iaas.Const;
 
 /// <summary>
 /// 配置常量类

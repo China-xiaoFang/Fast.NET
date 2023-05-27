@@ -1,15 +1,17 @@
-﻿using Fast.Admin.Model.Enum;
-using Fast.Admin.Model.Model.Sys.Menu;
-using Fast.Admin.Model.Model.Tenant.Auth;
-using Fast.Admin.Model.Model.Tenant.Organization.User;
-using Fast.Admin.Service.SysModule.Dto;
+﻿using Fast.Core.AdminEnum;
+using Fast.Core.AdminModel.Sys.Menu;
+using Fast.Core.AdminModel.Tenant.Auth;
+using Fast.Core.AdminModel.Tenant.Organization.User;
+using Fast.Core.AdminService.SysModule.Dto;
+using Fast.Core.Cache;
 using Fast.Core.Restful.Extension;
 using Fast.Core.Restful.Internal;
-using Fast.Iaas.Cache;
+using Fast.Core.SqlSugar.Repository;
+using Fast.Core.User;
+using Fast.Iaas.Const;
 using Fast.Iaas.Extension;
-using Fast.SqlSugar.Repository;
 
-namespace Fast.Admin.Service.SysModule;
+namespace Fast.Core.AdminService.SysModule;
 
 /// <summary>
 /// 系统模块服务

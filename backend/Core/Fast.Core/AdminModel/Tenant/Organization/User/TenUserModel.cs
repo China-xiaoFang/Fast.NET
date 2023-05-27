@@ -1,9 +1,8 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Tenant.Organization.User;
+namespace Fast.Core.AdminModel.Tenant.Organization.User;
 
 /// <summary>
 /// 租户用户表Model类

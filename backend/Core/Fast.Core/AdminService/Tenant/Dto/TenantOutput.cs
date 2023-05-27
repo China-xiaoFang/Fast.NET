@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 using Fast.Iaas.BaseModel.Dto;
 
-namespace Fast.Admin.Service.Tenant.Dto;
+namespace Fast.Core.AdminService.Tenant.Dto;
 
 /// <summary>
 /// 租户输出

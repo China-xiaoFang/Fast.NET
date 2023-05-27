@@ -1,8 +1,7 @@
-﻿using Fast.Admin.Model.Model.Sys.Dic;
+﻿using Fast.Core.AdminModel.Sys.Dic;
 using Fast.Iaas.Attributes;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Tenant.Dic;
+namespace Fast.Core.AdminModel.Tenant.Dic;
 
 /// <summary>
 /// 租户字典数据表Model类

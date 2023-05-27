@@ -1,6 +1,6 @@
 ﻿using Fast.Iaas.BaseModel.Dto;
 
-namespace Fast.Admin.Service.User.Dto;
+namespace Fast.Core.AdminService.User.Dto;
 
 /// <summary>
 /// 

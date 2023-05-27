@@ -1,9 +1,8 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Sys.Menu;
+namespace Fast.Core.AdminModel.Sys.Menu;
 
 /// <summary>
 /// 系统模块表Model类

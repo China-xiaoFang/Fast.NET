@@ -1,8 +1,7 @@
 ﻿using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel.Interface;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Tenant.Auth;
+namespace Fast.Core.AdminModel.Tenant.Auth;
 
 /// <summary>
 /// 租户用户授权菜单表Model类

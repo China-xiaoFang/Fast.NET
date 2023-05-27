@@ -1,4 +1,6 @@
-﻿namespace Fast.Iaas.Internal;
+﻿using Fast.Iaas.Attributes;
+
+namespace Fast.Iaas.Internal;
 
 /// <summary>
 /// App运行环境枚举

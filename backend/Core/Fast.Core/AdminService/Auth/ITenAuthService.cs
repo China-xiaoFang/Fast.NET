@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Service.Auth.Dto;
+﻿using Fast.Core.AdminService.Auth.Dto;
 
-namespace Fast.Admin.Service.Auth;
+namespace Fast.Core.AdminService.Auth;
 
 /// <summary>
 /// 租户授权服务接口

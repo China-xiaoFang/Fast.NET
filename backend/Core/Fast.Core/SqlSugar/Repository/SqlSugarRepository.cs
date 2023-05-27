@@ -8,12 +8,11 @@
 
 
 using System.Linq.Expressions;
-using Fast.Admin.Model.Model.Sys;
-using Fast.Iaas.Cache;
-using Fast.SqlSugar.Extension;
-using SqlSugar;
+using Fast.Core.AdminModel.Sys;
+using Fast.Core.Cache;
+using Fast.Core.SqlSugar.Extension;
 
-namespace Fast.SqlSugar.Repository;
+namespace Fast.Core.SqlSugar.Repository;
 
 /// <summary>
 /// 非泛型 SqlSugar 仓储

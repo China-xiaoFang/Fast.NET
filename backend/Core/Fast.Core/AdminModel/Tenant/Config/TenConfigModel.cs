@@ -1,8 +1,7 @@
 ﻿using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Tenant.Config;
+namespace Fast.Core.AdminModel.Tenant.Config;
 
 /// <summary>
 /// 租户配置表Model类

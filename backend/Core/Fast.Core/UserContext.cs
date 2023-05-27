@@ -1,7 +1,6 @@
-﻿using Fast.Iaas.User;
-using Furion;
+﻿using Fast.Core.User;
 
-namespace Fast.Iaas;
+namespace Fast.Core;
 
 /// <summary>
 /// 用户通用上下文

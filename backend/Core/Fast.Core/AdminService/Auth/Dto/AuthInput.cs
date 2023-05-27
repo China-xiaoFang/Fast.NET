@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 
-namespace Fast.Admin.Service.Auth.Dto;
+namespace Fast.Core.AdminService.Auth.Dto;
 
 /// <summary>
 /// Web登录输入

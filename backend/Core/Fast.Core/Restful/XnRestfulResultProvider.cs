@@ -1,7 +1,5 @@
 ﻿using Fast.Core.Restful.Internal;
 using Furion.DataValidation;
-using Furion.DependencyInjection;
-using Furion.FriendlyException;
 using Furion.UnifyResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

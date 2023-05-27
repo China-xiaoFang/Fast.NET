@@ -1,5 +1,5 @@
 ﻿#nullable enable
-namespace Fast.Core.Attributes;
+namespace Fast.Iaas.Attributes;
 
 /// <summary>
 /// 请求限制特性

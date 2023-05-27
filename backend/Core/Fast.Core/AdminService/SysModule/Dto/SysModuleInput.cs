@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 using Fast.Iaas.BaseModel.Dto;
 
-namespace Fast.Admin.Service.SysModule.Dto;
+namespace Fast.Core.AdminService.SysModule.Dto;
 
 /// <summary>
 /// 查询模块输入

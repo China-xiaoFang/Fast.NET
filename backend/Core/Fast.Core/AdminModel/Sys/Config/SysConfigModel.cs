@@ -1,8 +1,7 @@
 ﻿using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Sys.Config;
+namespace Fast.Core.AdminModel.Sys.Config;
 
 /// <summary>
 /// 系统配置表Model类

@@ -1,12 +1,10 @@
-﻿using Fast.SqlSugar.Filter;
-using Fast.SqlSugar.Helper;
-using Fast.SqlSugar.Repository;
-using Furion;
+﻿using Fast.Core.SqlSugar.Filter;
+using Fast.Core.SqlSugar.Helper;
+using Fast.Core.SqlSugar.Repository;
 using Microsoft.Extensions.DependencyInjection;
-using SqlSugar;
 using Yitter.IdGenerator;
 
-namespace Fast.SqlSugar;
+namespace Fast.Core.SqlSugar;
 
 /// <summary>
 /// SqlSugar

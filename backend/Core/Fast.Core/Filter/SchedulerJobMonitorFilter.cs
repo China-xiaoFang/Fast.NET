@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Model.Enum;
-using Fast.Admin.Model.Model.Sys.Log;
-using Fast.Core.Const;
-using Fast.Iaas.Internal;
+﻿using Fast.Core.AdminEnum;
+using Fast.Core.AdminModel.Sys.Log;
+using Fast.Core.RabbitMQ.EventSubscriber;
+using Fast.Iaas.Const;
 using Furion.EventBus;
 using Furion.Schedule;
 using Microsoft.Extensions.Logging;

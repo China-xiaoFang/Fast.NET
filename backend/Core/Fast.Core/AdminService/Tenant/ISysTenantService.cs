@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
-using Fast.Admin.Model.Model.Sys;
-using Fast.Admin.Service.Tenant.Dto;
+using Fast.Core.AdminModel.Sys;
+using Fast.Core.AdminService.Tenant.Dto;
 using Fast.Core.Restful.Internal;
-using Fast.SqlSugar.Internal;
+using Fast.Core.SqlSugar.Internal;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fast.Admin.Service.Tenant;
+namespace Fast.Core.AdminService.Tenant;
 
 /// <summary>
 /// 租户服务接口

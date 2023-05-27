@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using Fast.Iaas.Internal;
+using Fast.Iaas.Attributes;
 
-namespace Fast.Admin.Model.Enum;
+namespace Fast.Core.AdminEnum;
 
 /// <summary>
 /// 角色类型枚举

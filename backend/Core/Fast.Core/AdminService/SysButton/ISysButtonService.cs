@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Service.SysButton.Dto;
+﻿using Fast.Core.AdminService.SysButton.Dto;
 
-namespace Fast.Admin.Service.SysButton;
+namespace Fast.Core.AdminService.SysButton;
 
 /// <summary>
 /// 系统按钮服务接口

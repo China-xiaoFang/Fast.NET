@@ -1,4 +1,4 @@
-﻿namespace Fast.Admin.Service.Auth.Dto;
+﻿namespace Fast.Core.AdminService.Auth.Dto;
 
 /// <summary>
 /// 输入错误密码次数Dto

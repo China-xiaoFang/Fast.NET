@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Service.SysMenu;
-using Fast.Admin.Service.SysMenu.Dto;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminService.SysMenu;
+using Fast.Core.AdminService.SysMenu.Dto;
+using Fast.Iaas.Const;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Service.Cache;
-using Fast.Admin.Service.Cache.Dto;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminService.Cache;
+using Fast.Core.AdminService.Cache.Dto;
+using Fast.Iaas.Const;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 

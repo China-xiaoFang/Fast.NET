@@ -1,14 +1,11 @@
-﻿using Fast.Iaas.Cache;
+﻿using Fast.Core.Cache;
 using Fast.Iaas.Extension;
 using Fast.Iaas.Internal;
-using Furion;
 using Furion.DataEncryption;
-using Furion.DependencyInjection;
-using Furion.FriendlyException;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
-namespace Fast.Iaas.User;
+namespace Fast.Core.User;
 
 /// <summary>
 /// 授权用户信息

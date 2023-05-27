@@ -1,4 +1,4 @@
-﻿namespace Fast.Admin.Service.Cache.Dto;
+﻿namespace Fast.Core.AdminService.Cache.Dto;
 
 /// <summary>
 /// 编辑缓存Value输入

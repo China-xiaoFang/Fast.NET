@@ -1,4 +1,4 @@
-﻿namespace Fast.SqlSugar.Internal;
+﻿namespace Fast.Core.SqlSugar.Internal;
 
 /// <summary>
 /// SqlSugar 分页泛型集合

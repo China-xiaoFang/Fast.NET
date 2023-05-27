@@ -2,16 +2,13 @@
 using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
-using Fast.Admin.Model.Model.Sys;
-using Fast.Iaas;
+using Fast.Core.AdminModel.Sys;
+using Fast.Core.Cache;
+using Fast.Core.SqlSugar.Helper;
+using Fast.Core.SqlSugar.Internal;
 using Fast.Iaas.Attributes;
-using Fast.Iaas.Cache;
-using Fast.SqlSugar.Helper;
-using Fast.SqlSugar.Internal;
-using Furion;
-using SqlSugar;
 
-namespace Fast.SqlSugar.Extension;
+namespace Fast.Core.SqlSugar.Extension;
 
 /// <summary>
 /// SqlSugar扩展类

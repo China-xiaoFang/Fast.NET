@@ -1,9 +1,8 @@
-﻿using Fast.Admin.Model.Model.Sys;
-using Fast.Iaas.Cache;
-using Fast.SqlSugar.Filter;
-using SqlSugar;
+﻿using Fast.Core.AdminModel.Sys;
+using Fast.Core.Cache;
+using Fast.Core.SqlSugar.Filter;
 
-namespace Fast.SqlSugar.Helper;
+namespace Fast.Core.SqlSugar.Helper;
 
 /// <summary>
 /// SqlSugarClient帮助类

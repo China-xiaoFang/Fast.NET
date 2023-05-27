@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.CodeFirst.Internal;
+﻿namespace Fast.Iaas.CodeFirst.Internal;
 
 /// <summary>
 /// 系统种子数据接口

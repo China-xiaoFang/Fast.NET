@@ -1,4 +1,4 @@
-﻿namespace Fast.Iaas.Cache;
+﻿namespace Fast.Core.Cache;
 
 /// <summary>
 /// 缓存接口

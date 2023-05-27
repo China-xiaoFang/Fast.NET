@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Model.Model.Sys.Config;
-using Fast.Core;
-using Fast.Core.CodeFirst.Internal;
-using Fast.Core.Const;
+﻿using Fast.Core;
+using Fast.Core.AdminModel.Sys.Config;
+using Fast.Iaas.CodeFirst.Internal;
+using Fast.Iaas.Const;
 using SqlSugar;
 
 namespace Fast.CodeFirst.SeedData.Admin.Sys;

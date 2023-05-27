@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Model.Model.Tenant.Config;
-using Fast.Core.CodeFirst.Internal;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminModel.Tenant.Config;
+using Fast.Iaas.CodeFirst.Internal;
+using Fast.Iaas.Const;
 using SqlSugar;
 
 namespace Fast.CodeFirst.SeedData.Admin.Tenant;

@@ -1,4 +1,4 @@
-﻿namespace Fast.Core.Attributes;
+﻿namespace Fast.Iaas.Attributes;
 
 /// <summary>
 /// 禁用操作日志

@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Service.SysModule;
-using Fast.Admin.Service.SysModule.Dto;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminService.SysModule;
+using Fast.Core.AdminService.SysModule.Dto;
 using Fast.Core.Restful.Internal;
+using Fast.Iaas.Const;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 

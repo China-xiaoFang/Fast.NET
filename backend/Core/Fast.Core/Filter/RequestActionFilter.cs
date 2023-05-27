@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using Fast.Admin.Model.Enum;
-using Fast.Admin.Model.Model.Sys.Log;
-using Fast.Core.Attributes;
-using Fast.Iaas;
+using Fast.Core.AdminEnum;
+using Fast.Core.AdminModel.Sys.Log;
+using Fast.Core.RabbitMQ.EventSubscriber;
+using Fast.Iaas.Attributes;
 using Fast.Iaas.Extension;
 using Fast.Iaas.Internal;
 using Fast.Iaas.Util.Http;

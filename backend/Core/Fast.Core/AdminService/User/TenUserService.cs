@@ -1,8 +1,8 @@
-﻿using Fast.Admin.Model.Model.Tenant.Organization.User;
-using Fast.Iaas.Cache;
-using Fast.SqlSugar.Repository;
+﻿using Fast.Core.AdminModel.Tenant.Organization.User;
+using Fast.Core.Cache;
+using Fast.Core.SqlSugar.Repository;
 
-namespace Fast.Admin.Service.User;
+namespace Fast.Core.AdminService.User;
 
 /// <summary>
 /// 租户用户服务

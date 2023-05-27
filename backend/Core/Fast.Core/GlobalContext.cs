@@ -1,5 +1,5 @@
-﻿using Fast.Core.Const;
-using Fast.Core.Options;
+﻿using Fast.Core.Options;
+using Fast.Iaas.Const;
 using Fast.Iaas.Extension;
 
 namespace Fast.Core;

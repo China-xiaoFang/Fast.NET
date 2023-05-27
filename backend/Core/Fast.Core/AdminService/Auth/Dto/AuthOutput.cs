@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using Fast.Admin.Model.Enum;
+using Fast.Core.AdminEnum;
 using Fast.Iaas.Util;
 
-namespace Fast.Admin.Service.Auth.Dto;
+namespace Fast.Core.AdminService.Auth.Dto;
 
 /// <summary>
 /// 获取登录用户信息输出

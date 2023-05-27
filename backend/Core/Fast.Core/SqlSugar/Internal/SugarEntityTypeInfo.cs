@@ -1,4 +1,4 @@
-﻿namespace Fast.SqlSugar.Internal;
+﻿namespace Fast.Core.SqlSugar.Internal;
 
 /// <summary>
 /// Sugar实体类型信息

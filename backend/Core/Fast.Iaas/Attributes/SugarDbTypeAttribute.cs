@@ -1,6 +1,4 @@
-﻿using Fast.Iaas.Internal;
-
-namespace Fast.Iaas.Attributes;
+﻿namespace Fast.Iaas.Attributes;
 
 /// <summary>
 /// Sugar数据库类型

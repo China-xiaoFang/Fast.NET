@@ -1,9 +1,9 @@
-﻿using Fast.Admin.Model.Model.Sys.Api;
-using Fast.Admin.Model.Model.Sys.Menu;
-using Fast.Admin.Service.SysButton.Dto;
-using Fast.SqlSugar.Repository;
+﻿using Fast.Core.AdminModel.Sys.Api;
+using Fast.Core.AdminModel.Sys.Menu;
+using Fast.Core.AdminService.SysButton.Dto;
+using Fast.Core.SqlSugar.Repository;
 
-namespace Fast.Admin.Service.SysButton;
+namespace Fast.Core.AdminService.SysButton;
 
 /// <summary>
 /// 系统按钮服务

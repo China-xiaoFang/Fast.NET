@@ -1,5 +1,5 @@
 ﻿#nullable enable
-namespace Fast.Iaas.Internal;
+namespace Fast.Iaas.Attributes;
 
 /// <summary>
 /// 枚举特性

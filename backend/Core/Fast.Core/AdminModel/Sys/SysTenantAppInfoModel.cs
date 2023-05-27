@@ -1,9 +1,8 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Sys;
+namespace Fast.Core.AdminModel.Sys;
 
 /// <summary>
 /// 租户App授权信息表Model类

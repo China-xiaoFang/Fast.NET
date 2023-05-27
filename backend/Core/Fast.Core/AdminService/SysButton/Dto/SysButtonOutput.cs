@@ -1,6 +1,6 @@
 ﻿using Fast.Iaas.BaseModel.Dto;
 
-namespace Fast.Admin.Service.SysButton.Dto;
+namespace Fast.Core.AdminService.SysButton.Dto;
 
 /// <summary>
 /// 系统按钮输出

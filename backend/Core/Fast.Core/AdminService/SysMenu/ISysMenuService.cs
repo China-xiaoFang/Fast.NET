@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Service.SysMenu.Dto;
+﻿using Fast.Core.AdminService.SysMenu.Dto;
 
-namespace Fast.Admin.Service.SysMenu;
+namespace Fast.Core.AdminService.SysMenu;
 
 /// <summary>
 /// 系统菜单服务接口

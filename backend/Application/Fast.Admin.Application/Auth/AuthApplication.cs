@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Service.Auth;
-using Fast.Admin.Service.Auth.Dto;
-using Fast.Core.Attributes;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminService.Auth;
+using Fast.Core.AdminService.Auth.Dto;
+using Fast.Iaas.Attributes;
+using Fast.Iaas.Const;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

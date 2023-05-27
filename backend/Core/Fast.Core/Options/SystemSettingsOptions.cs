@@ -1,4 +1,4 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 using Fast.Iaas.Internal;
 
 namespace Fast.Core.Options;

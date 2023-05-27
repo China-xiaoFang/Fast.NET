@@ -1,6 +1,6 @@
-﻿using Fast.Admin.Service.SysButton;
-using Fast.Admin.Service.SysButton.Dto;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminService.SysButton;
+using Fast.Core.AdminService.SysButton.Dto;
+using Fast.Iaas.Const;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 

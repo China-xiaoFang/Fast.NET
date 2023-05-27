@@ -1,6 +1,6 @@
 ﻿using Fast.Iaas.Internal;
 
-namespace Fast.Iaas.User;
+namespace Fast.Core.User;
 
 /// <summary>
 /// 授权用户信息

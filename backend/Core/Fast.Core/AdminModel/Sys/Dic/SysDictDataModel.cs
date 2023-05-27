@@ -1,9 +1,8 @@
-﻿using Fast.Admin.Model.Enum;
+﻿using Fast.Core.AdminEnum;
 using Fast.Iaas.Attributes;
 using Fast.Iaas.BaseModel;
-using SqlSugar;
 
-namespace Fast.Admin.Model.Model.Sys.Dic;
+namespace Fast.Core.AdminModel.Sys.Dic;
 
 /// <summary>
 /// 系统字典数据表Model类

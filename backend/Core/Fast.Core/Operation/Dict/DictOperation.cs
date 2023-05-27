@@ -1,11 +1,10 @@
-﻿using Fast.Admin.Model.Enum;
-using Fast.Admin.Model.Model.Sys.Dic;
-using Fast.Admin.Model.Model.Tenant.Dic;
-using Fast.Core.Const;
+﻿using Fast.Core.AdminEnum;
+using Fast.Core.AdminModel.Sys.Dic;
+using Fast.Core.AdminModel.Tenant.Dic;
+using Fast.Core.Cache;
 using Fast.Core.Operation.Dict.Dto;
-using Fast.Iaas.Cache;
-using Fast.SqlSugar.Extension;
-using Furion.DependencyInjection;
+using Fast.Core.SqlSugar.Extension;
+using Fast.Iaas.Const;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.Operation.Dict;

@@ -1,6 +1,6 @@
 ﻿using Fast.Core.BaiduTranslator.Dto;
-using Fast.Core.Const;
 using Fast.Core.Operation.Config;
+using Fast.Iaas.Const;
 using Fast.Iaas.Util;
 using Furion.RemoteRequest.Extensions;
 

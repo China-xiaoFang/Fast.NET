@@ -1,4 +1,6 @@
-﻿namespace Fast.Iaas.Internal{
+﻿using Fast.Iaas.Attributes;
+
+namespace Fast.Iaas.Internal;
 
 /// <summary>
 /// Http请求行为枚举
@@ -71,5 +73,4 @@ public enum HttpRequestActionEnum
     /// </summary>
     [Description("导入")]
     Import = 11,
-}
 }

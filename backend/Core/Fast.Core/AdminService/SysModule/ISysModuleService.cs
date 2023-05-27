@@ -1,7 +1,7 @@
-﻿using Fast.Admin.Service.SysModule.Dto;
+﻿using Fast.Core.AdminService.SysModule.Dto;
 using Fast.Core.Restful.Internal;
 
-namespace Fast.Admin.Service.SysModule;
+namespace Fast.Core.AdminService.SysModule;
 
 /// <summary>
 /// 系统模块服务接口
