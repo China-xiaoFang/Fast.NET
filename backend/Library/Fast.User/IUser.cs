@@ -1,8 +1,8 @@
-﻿
+﻿using System.Threading.Tasks;
 using Fast.Iaas.Internal;
-using System.Threading.Tasks;
+using Fast.User.Internal;
 
-namespace Fast.IUser
+namespace Fast.User
 {
     /// <summary>
     /// 授权用户信息

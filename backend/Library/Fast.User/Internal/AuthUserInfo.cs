@@ -1,4 +1,4 @@
-﻿namespace Fast.IUser
+﻿namespace Fast.User.Internal
 {
     /// <summary>
     /// 授权用户信息

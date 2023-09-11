@@ -16,12 +16,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\Database\Fast.Cache\Fast.Cache.csproj" />
 	  <ProjectReference Include="..\Fast.Iaas\Fast.Iaas.csproj" />
+	  <ProjectReference Include="..\Tool\Fast.Extension\Fast.Extension.csproj" />
 	</ItemGroup>
 
 </Project>

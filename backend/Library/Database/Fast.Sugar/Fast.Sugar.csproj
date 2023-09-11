@@ -16,7 +16,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="SqlSugarCore" Version="5.1.4.105" />
+	  <PackageReference Include="SqlSugarCore" Version="5.1.4.85" />
+	  <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 	</ItemGroup>
 
 	<ItemGroup>

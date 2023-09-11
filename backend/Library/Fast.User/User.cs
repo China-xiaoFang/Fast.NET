@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Fast.Cache;
 using Fast.Iaas.Extension;
 using Fast.Iaas.Internal;
-using Fast.IUser;
+using Fast.User.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
@@ -14,7 +14,7 @@ namespace Fast.User;
 /// 授权用户信息
 /// 作用域注册，保证当前请求管道中是唯一的，并且只会加载一次
 /// </summary>
-public class User : AuthUserInfo, IUser.IUser
+public class User : AuthUserInfo, IUser
 {
     /// <summary>
     /// 当前租户Id
