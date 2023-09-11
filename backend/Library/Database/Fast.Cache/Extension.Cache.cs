@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Compression;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Cache
