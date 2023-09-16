@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Iaas", "Library\Fast.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.User", "Library\Fast.User\Fast.User.csproj", "{BE1B7AAA-D95B-4435-B2F2-8BFF9A528B23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.UAParser", "Library\Tool\Fast.UAParser\Fast.UAParser.csproj", "{BC4C480F-B122-48D3-80A9-A139154DE114}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.UAParser", "Library\Tool\Fast.UAParser\Fast.UAParser.csproj", "{BC4C480F-B122-48D3-80A9-A139154DE114}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Http", "Library\Tool\Fast.Http\Fast.Http.csproj", "{7632AFAE-6CE9-4DDE-83F3-8947B28DF7D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Http", "Library\Tool\Fast.Http\Fast.Http.csproj", "{7632AFAE-6CE9-4DDE-83F3-8947B28DF7D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
