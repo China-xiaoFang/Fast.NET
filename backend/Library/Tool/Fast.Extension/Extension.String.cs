@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 
 namespace Fast.Iaas.Extension
 {
@@ -15,10 +16,19 @@ namespace Fast.Iaas.Extension
         /// <returns></returns>
         public static string FirstCharToUpper(this string str)
         {
-            if (string.IsNullOrEmpty(str))
-                return string.Empty;
+            // 空检查
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return str;
+            }
 
-            return str.First().ToString().ToUpper() + str[1..];
+            // 初始化字符串构建器
+            var stringBuilder = new StringBuilder(str);
+
+            // 设置字符串构建器首个字符为小写
+            stringBuilder[0] = char.ToUpper(stringBuilder[0]);
+
+            return stringBuilder.ToString();
         }
 
         /// <summary>
@@ -28,10 +38,19 @@ namespace Fast.Iaas.Extension
         /// <returns></returns>
         public static string FirstCharToLower(this string str)
         {
-            if (string.IsNullOrEmpty(str))
-                return string.Empty;
+            // 空检查
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return str;
+            }
 
-            return str.First().ToString().ToLower() + str[1..];
+            // 初始化字符串构建器
+            var stringBuilder = new StringBuilder(str);
+
+            // 设置字符串构建器首个字符为小写
+            stringBuilder[0] = char.ToLower(stringBuilder[0]);
+
+            return stringBuilder.ToString();
         }
     }
 }

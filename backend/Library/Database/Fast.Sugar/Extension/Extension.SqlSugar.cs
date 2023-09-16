@@ -21,7 +21,8 @@ namespace Fast.Core.SqlSugar.Extension;
 /// <summary>
 /// SqlSugar扩展类
 /// </summary>
-public static class Extension
+// ReSharper disable once PartialTypeWithSinglePart
+public static partial class Extensions
 {
     private static ConnectionConfigOption DefaultDataBaseInfo { get; set; }
 

@@ -31,7 +31,7 @@ namespace UAParser
       IEnumerable<Dictionary<string, string>> entries,
       Func<Func<string, string>, T> selector)
     {
-      return entries.Select<Dictionary<string, string>, T>((Func<Dictionary<string, string>, T>) (cm => selector(new Func<string, string>(((DictionaryExtensions) cm).Find<string, string>))));
+      return entries.Select<Dictionary<string, string>, T>((Func<Dictionary<string, string>, T>) (cm => selector(new Func<string, string>(cm.Find<string, string>))));
     }
 
     /// <summary>

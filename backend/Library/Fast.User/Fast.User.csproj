@@ -17,8 +17,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Database\Fast.Cache\Fast.Cache.csproj" />
-	  <ProjectReference Include="..\Fast.Iaas\Fast.Iaas.csproj" />
-	  <ProjectReference Include="..\Tool\Fast.Extension\Fast.Extension.csproj" />
+	  <ProjectReference Include="..\Fast.Iaas\Fast.Core.csproj" />
 	</ItemGroup>
 
 </Project>

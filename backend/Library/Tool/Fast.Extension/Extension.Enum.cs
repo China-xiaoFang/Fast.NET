@@ -17,24 +17,35 @@ public static partial class Extensions
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static string GetDescription(this Enum value)
+    public static string GetEnumDescription(this object value)
     {
-        var description = value.GetType().GetMember(value.ToString()).FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()
-            ?.Description;
-        return description ?? value.ToString();
-    }
+        // 空检查
+        ArgumentNullException.ThrowIfNull(value);
 
-    /// <summary>
-    /// 获取枚举的Description
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static string GetDescription(this object value)
-    {
-        var description = value.GetType().GetMember(value.ToString() ?? string.Empty).FirstOrDefault()
-            ?.GetCustomAttribute<DescriptionAttribute>()?.Description;
+        // 获取枚举类型
+        var enumType = value.GetType();
 
-        return description ?? value.GetType().Name;
+        // 检查是否是枚举类型
+        if (!enumType.IsEnum)
+        {
+            throw new ArgumentException("The parameter is not an enumeration type.", nameof(value));
+        }
+
+        // 获取枚举名称
+        var enumName = Enum.GetName(enumType, value);
+
+        // 空检查
+        ArgumentNullException.ThrowIfNull(enumName);
+
+        // 获取枚举字段
+        var enumField = enumType.GetField(enumName);
+
+        // 空检查
+        ArgumentNullException.ThrowIfNull(enumField);
+
+        // 获取 [Description] 特性描述
+        return enumField.GetCustomAttribute<DescriptionAttribute>(false)
+            ?.Description ?? enumName;
     }
 
     /// <summary>
@@ -50,7 +61,7 @@ public static partial class Extensions
         return arr.Select(sl =>
         {
             var item = Enum.Parse(type, sl);
-            return new EnumEntity {Name = item.ParseToString(), Describe = item.GetDescription(), Value = item.ParseToInt()};
+            return new EnumEntity {Name = item.ParseToString(), Describe = item.GetEnumDescription(), Value = item.ParseToInt()};
         }).ToList();
     }
 
