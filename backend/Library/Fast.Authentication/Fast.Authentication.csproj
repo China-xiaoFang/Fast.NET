@@ -16,15 +16,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="SqlSugarCore" Version="5.1.4.85" />
-	  <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Fast.Authentication\Fast.Authentication.csproj" />
-	  <ProjectReference Include="..\..\SDK\Fast.EventBus\Fast.EventBus.csproj" />
-	  <ProjectReference Include="..\..\SDK\Fast.Logging\Fast.Logging.csproj" />
-	  <ProjectReference Include="..\..\Tool\Fast.Http\Fast.Http.csproj" />
+	  <ProjectReference Include="..\Database\Fast.Cache\Fast.Cache.csproj" />
+	  <ProjectReference Include="..\Fast.Core\Fast.Core.csproj" />
+	  <ProjectReference Include="..\Tool\Fast.Extension\Fast.Extension.csproj" />
 	</ItemGroup>
 
 </Project>
