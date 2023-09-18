@@ -6,17 +6,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Fast.Authentication;
 using Fast.Cache;
-using Fast.Core.SqlSugar.Internal;
-using Fast.Iaas;
-using Fast.Iaas.Attributes;
+using Fast.Core.App;
+using Fast.Sugar.Attributes;
+using Fast.Sugar.Internal;
+using Fast.Sugar.Options;
 using Fast.Sugar.Util;
-using Fast.User;
-using Furion;
 using SqlSugar;
-using ConnectionConfigOption = Fast.Sugar.Internal.ConnectionConfigOption;
 
-namespace Fast.Core.SqlSugar.Extension;
+namespace Fast.Sugar.Extension;
 
 /// <summary>
 /// SqlSugar扩展类
@@ -37,7 +36,7 @@ public static partial class Extensions
             return DefaultDataBaseInfo;
         }
 
-        DefaultDataBaseInfo = FastContext.GetConfig<ConnectionConfigOption>("ConnectionStrings");
+        DefaultDataBaseInfo = App.GetConfig<ConnectionConfigOption>("ConnectionStrings");
 
         return DefaultDataBaseInfo;
     }
@@ -53,8 +52,7 @@ public static partial class Extensions
     /// <param name="tenantId"></param>
     /// <returns></returns>
     public static (ISqlSugarClient db, ConnectionConfigOption dataBaseInfo) LoadSqlSugar<TEntity>(this ISqlSugarClient db,
-        IUser _user,ICache _cache,
-        long? tenantId = null) where TEntity : class, new()
+        IUser _user, ICache _cache, long? tenantId = null) where TEntity : class, new()
     {
         var _db = (SqlSugarClient) db;
 

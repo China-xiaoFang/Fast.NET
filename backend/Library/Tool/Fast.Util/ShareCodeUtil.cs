@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Text;
 
-namespace Fast.Iaas.Util
-{
-    
+namespace Fast.Util;
+
 /// <summary>
 /// 邀请码工具类
 /// </summary>
@@ -120,14 +119,13 @@ public static class ShareCodeUtil
             int ascii = item;
             if (ascii >= 48 && ascii <= 57)
                 Number.Append(item);
-            else if (ascii >= 65 &&ascii <= 90)
+            else if (ascii >= 65 && ascii <= 90)
                 UpperCase.Append(item);
-            else if (ascii >= 97&& ascii <= 122)
+            else if (ascii >= 97 && ascii <= 122)
                 LowerCase.Append(item);
         }
 
         var allStr = UpperCase.Append(",").Append(LowerCase).Append(",").Append(Number).ToString();
         return $"Count({allStr.Length - 2}):{allStr}";
     }
-}
 }

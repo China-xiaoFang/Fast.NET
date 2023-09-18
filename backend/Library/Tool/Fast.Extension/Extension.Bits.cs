@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Fast.Iaas.Extension
-{
-    
+namespace Fast.Extension;
+
 /// <summary>
 /// 字符串扩展
 /// </summary>
@@ -306,5 +305,4 @@ public static partial class Extensions
         var num2 = (timestamp[4] << 24) | (timestamp[5] << 16) | (timestamp[6] << 8) | timestamp[7];
         return ((long) num << 32) | (uint) num2;
     }
-}
 }

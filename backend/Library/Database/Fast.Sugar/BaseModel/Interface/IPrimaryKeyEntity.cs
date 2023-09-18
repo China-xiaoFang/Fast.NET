@@ -1,4 +1,4 @@
-﻿namespace Fast.Iaas.BaseModel.Interface{
+﻿namespace Fast.Sugar.BaseModel.Interface;
 
 /// <summary>
 /// 主键接口
@@ -10,4 +10,4 @@ public interface IPrimaryKeyEntity<T>
     /// 主键Id
     /// </summary>
     T Id { get; set; }
-}}
+}

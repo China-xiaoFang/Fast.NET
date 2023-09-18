@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Fast.Authentication.Internal;
 using Fast.Cache;
-using Fast.Iaas.Extension;
-using Fast.Iaas.Internal;
-using Fast.User.Internal;
+using Fast.Core.Enum;
+using Fast.Extension;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
-namespace Fast.User;
+namespace Fast.Authentication;
 
 /// <summary>
 /// 授权用户信息
@@ -20,41 +19,6 @@ public class User : AuthUserInfo, IUser
     /// 当前租户Id
     /// </summary>
     public override long TenantId { get; }
-
-    /// <summary>
-    /// 当前用户Id
-    /// </summary>
-    public override long UserId { get; }
-
-    /// <summary>
-    /// 当前用户账号
-    /// </summary>
-    public override string UserAccount { get; }
-
-    /// <summary>
-    /// 当前用户工号
-    /// </summary>
-    public override string UserJobNum { get; }
-
-    /// <summary>
-    /// 当前用户名称
-    /// </summary>
-    public override string UserName { get; }
-
-    /// <summary>
-    /// 是否超级管理员
-    /// </summary>
-    public override bool IsSuperAdmin { get; }
-
-    /// <summary>
-    /// 是否系统管理员
-    /// </summary>
-    public override bool IsSystemAdmin { get; }
-
-    /// <summary>
-    /// 是否租户管理员
-    /// </summary>
-    public override bool IsTenantAdmin { get; }
 
     /// <summary>
     /// App 运行环境
@@ -75,7 +39,7 @@ public class User : AuthUserInfo, IUser
 
     private readonly HttpContext _httpContext;
 
-    public User(ICache cache,IHttpContextAccessor httpContextAccessor)
+    public User(ICache cache, IHttpContextAccessor httpContextAccessor)
     {
         _cache = cache;
 
@@ -98,7 +62,7 @@ public class User : AuthUserInfo, IUser
                 break;
             default:
                 throw new Exception("未知的客户端环境！");
-                //throw Oops.Bah("未知的客户端环境！").StatusCode(StatusCodes.Status401Unauthorized);
+            //throw Oops.Bah("未知的客户端环境！").StatusCode(StatusCodes.Status401Unauthorized);
         }
 
         // 尝试用请求头中获取Base64加密的租户ID，仅限于租户ID

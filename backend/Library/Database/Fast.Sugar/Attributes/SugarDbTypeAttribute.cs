@@ -2,8 +2,9 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using Fast.Core.Attributes;
 
-namespace Fast.Iaas.Attributes{
+namespace Fast.Sugar.Attributes;
 
 /// <summary>
 /// Sugar数据库类型
@@ -84,4 +85,4 @@ public class SugarDbTypeAttribute : Attribute
         DbTypeName = dbType.GetType().GetMember(SugarDbTypeEnum.Default.ToString() ?? string.Empty).FirstOrDefault()
             ?.GetCustomAttribute<DescriptionAttribute>()?.Description;
     }
-}}
+}

@@ -2,9 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Gejia.WMS.Iaas.JsonConverter
-{
-    
+namespace Fast.Json.JsonConverter;
 
 /// <summary>
 /// Datetime 类型返回时间Json处理
@@ -89,5 +87,4 @@ public class NullableTimeJsonConverter : JsonConverter<DateTime?>
         else
             writer.WriteStringValue(value.Value.ToString(Format));
     }
-}
 }

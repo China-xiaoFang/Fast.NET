@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace UAParser
+namespace Fast.UAParser;
+
+internal static class RegexBinderBuilder
 {
-    internal static class RegexBinderBuilder
+    public static Func<Match, IEnumerator<int>, TResult> SelectMany<T1, T2, TResult>(
+        this Func<Match, IEnumerator<int>, T1> binder, Func<T1, Func<Match, IEnumerator<int>, T2>> continuation,
+        Func<T1, T2, TResult> projection)
     {
-        public static Func<Match, IEnumerator<int>, TResult> SelectMany<T1, T2, TResult>(
-            this Func<Match, IEnumerator<int>, T1> binder,
-            Func<T1, Func<Match, IEnumerator<int>, T2>> continuation,
-            Func<T1, T2, TResult> projection)
+        return (m, num) =>
         {
-            return (Func<Match, IEnumerator<int>, TResult>) ((m, num) =>
-            {
-                T1 obj1 = binder(m, num);
-                T2 obj2 = continuation(obj1)(m, num);
-                return projection(obj1, obj2);
-            });
-        }
+            var obj1 = binder(m, num);
+            var obj2 = continuation(obj1)(m, num);
+            return projection(obj1, obj2);
+        };
     }
 }

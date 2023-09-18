@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fast.Core.AdminEnum;
-using Fast.Iaas;
-using Fast.Iaas.BaseModel.Interface;
-using Fast.User;
-using Furion;
-using Furion.DependencyInjection;
+using Fast.Authentication;
+using Fast.Core.App;
+using Fast.Core.DependencyInjection;
+using Fast.EventBus.Dependencies;
+using Fast.EventBus.Sources;
+using Fast.Http;
+using Fast.Logging;
+using Fast.Sugar.BaseModel.Interface;
+using Fast.Sugar.Enum;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SqlSugar;
 using Yitter.IdGenerator;
 using SystemDbType = System.Data.DbType;
 
-namespace Fast.Core.SqlSugar.Filter;
+namespace Fast.Sugar.Filter;
 
 /// <summary>
 /// Sugar实体类过滤器
@@ -43,15 +46,14 @@ static class SugarEntityFilter
     public static void LoadSugarFilter(ISqlSugarClient _db, int commandTimeOut, double sugarSqlExecMaxSeconds, bool diffLog)
     {
         // 获取当前用户信息
-        // TODO：这里需要通过IOC容器解析
-        IUser userInfo = null;
+        var userInfo = App.GetService<IUser>();
 
         // 执行超时时间
         _db.Ado.CommandTimeOut = commandTimeOut;
 
         _db.Aop.OnLogExecuted = (sql, pars) =>
         {
-            if (FastContext.HostEnvironment.IsDevelopment())
+            if (App.HostEnvironment.IsDevelopment())
             {
                 if (sql.StartsWith("SELECT"))
                 {
@@ -98,7 +100,7 @@ static class SugarEntityFilter
                 Console.WriteLine($"\r\n\r\n{message}");
 
                 // 写日志文件
-                //Log.Warning(message);
+                Log.Warning(message);
             }
         };
 
@@ -110,63 +112,63 @@ static class SugarEntityFilter
             // 差异日志
             if ((diff.AfterData != null && diff.AfterData.Any()) || (diff.BeforeData != null && diff.BeforeData.Any()))
             {
-                //// 创建一个作用域
-                //Scoped.Create((_, scope) =>
-                //{
-                //    var serviceScope = scope.ServiceProvider;
+                // 创建一个作用域
+                Scoped.Create((_, scope) =>
+                {
+                    var serviceScope = scope.ServiceProvider;
 
-                //    // 获取事件总线服务
-                //    var _eventPublisher = serviceScope.GetService<IEventPublisher>();
+                    // 获取事件总线服务
+                    var _eventPublisher = serviceScope.GetService<IEventPublisher>();
 
-                //    var executeSql = ParameterFormat(diff.Sql, diff.Parameters);
+                    var executeSql = ParameterFormat(diff.Sql, diff.Parameters);
 
-                //    DiffLogTableInfo firstData = null;
-                //    if (diff.AfterData != null && diff.AfterData.Any())
-                //    {
-                //        firstData = diff.AfterData.First();
-                //    }
-                //    else if (diff.BeforeData != null && diff.BeforeData.Any())
-                //    {
-                //        firstData = diff.BeforeData.First();
-                //    }
+                    DiffLogTableInfo firstData = null;
+                    if (diff.AfterData != null && diff.AfterData.Any())
+                    {
+                        firstData = diff.AfterData.First();
+                    }
+                    else if (diff.BeforeData != null && diff.BeforeData.Any())
+                    {
+                        firstData = diff.BeforeData.First();
+                    }
 
-                //    var tableName = firstData?.TableName;
-                //    var tableDescription = firstData?.TableDescription;
+                    var tableName = firstData?.TableName;
+                    var tableDescription = firstData?.TableDescription;
 
-                //    var diffLogType = diff.DiffType switch
-                //    {
-                //        DiffType.insert => DiffLogTypeEnum.Insert,
-                //        DiffType.update => DiffLogTypeEnum.Update,
-                //        DiffType.delete => DiffLogTypeEnum.Delete,
-                //        _ => DiffLogTypeEnum.None
-                //    };
+                    var diffLogType = diff.DiffType switch
+                    {
+                        DiffType.insert => DiffLogTypeEnum.Insert,
+                        DiffType.update => DiffLogTypeEnum.Update,
+                        DiffType.delete => DiffLogTypeEnum.Delete,
+                        _ => DiffLogTypeEnum.None
+                    };
 
-                //    var userAgentInfo = HttpUtil.UserAgentInfo();
-                //    var wanInfo = HttpUtil.WanInfoCache(HttpUtil.Ip);
+                    var userAgentInfo = HttpUtil.UserAgentInfo();
+                    var wanInfo = HttpUtil.WanInfoCache(HttpUtil.Ip);
 
-                //    // 记录差异日志
-                //    _eventPublisher.PublishAsync(new FastChannelEventSource("Create:DiffLog", userInfo.tenantId,
-                //        new
-                //        {
-                //            Account = userInfo.userAccount,
-                //            UserName = userInfo.userName,
-                //            DiffDescription = diff.BusinessData.ToString(),
-                //            TableName = tableName,
-                //            TableDescription = tableDescription,
-                //            AfterColumnInfo = diff.AfterData?.Select(sl => sl.Columns).ToList(),
-                //            BeforeColumnInfo = diff.BeforeData?.Select(sl => sl.Columns).ToList(),
-                //            ExecuteSql = executeSql,
-                //            DiffType = diffLogType,
-                //            DiffTime = DateTime.Now,
-                //            PhoneModel = userAgentInfo.PhoneModel,
-                //            OS = userAgentInfo.OS,
-                //            Browser = userAgentInfo.Browser,
-                //            Province = wanInfo.Pro,
-                //            City = wanInfo.City,
-                //            Operator = wanInfo.Operator,
-                //            Ip = wanInfo.Ip,
-                //        }));
-                //});
+                    // 记录差异日志
+                    _eventPublisher.PublishAsync(new FastChannelEventSource("Create:DiffLog", userInfo.TenantId,
+                        new
+                        {
+                            Account = userInfo.UserAccount,
+                            userInfo.UserName,
+                            DiffDescription = diff.BusinessData.ToString(),
+                            TableName = tableName,
+                            TableDescription = tableDescription,
+                            AfterColumnInfo = diff.AfterData?.Select(sl => sl.Columns).ToList(),
+                            BeforeColumnInfo = diff.BeforeData?.Select(sl => sl.Columns).ToList(),
+                            ExecuteSql = executeSql,
+                            DiffType = diffLogType,
+                            DiffTime = DateTime.Now,
+                            userAgentInfo.PhoneModel,
+                            userAgentInfo.OS,
+                            userAgentInfo.Browser,
+                            Province = wanInfo.Pro,
+                            wanInfo.City,
+                            wanInfo.Operator,
+                            wanInfo.Ip,
+                        }));
+                });
             }
         };
 
@@ -187,7 +189,7 @@ static class SugarEntityFilter
             Console.WriteLine($"\r\n\r\n{message}");
 
             // 写日志文件
-            //Log.Error(message);
+            Log.Error(message);
         };
 
 
@@ -211,8 +213,7 @@ static class SugarEntityFilter
                     SetEntityValue(nameof(IBaseEntity.CreatedTime), new List<dynamic> {null}, DateTime.Now, ref entityInfo);
 
                     // 租户Id
-                    SetEntityValue(nameof(IBaseTenant.TenantId), new List<dynamic> {null, 0}, userInfo.TenantId,
-                        ref entityInfo);
+                    SetEntityValue(nameof(IBaseTenant.TenantId), new List<dynamic> {null, 0}, userInfo.TenantId, ref entityInfo);
 
                     // 创建者Id
                     SetEntityValue(nameof(IBaseEntity.CreatedUserId), new List<dynamic> {null, 0}, userInfo.UserId,
@@ -240,11 +241,11 @@ static class SugarEntityFilter
         };
 
         // 配置多租户全局过滤器
-        //if (!userInfo.isSuperAdmin)
-        //{
-        //    // TODO：这里可能由于SqlSugarBug问题，导致不能使用IF
-        //    _db.QueryFilter.AddTableFilter<IBaseTenant>(it => it.TenantId == userInfo.tenantId);
-        //}
+        if (!userInfo.IsSuperAdmin)
+        {
+            // TODO：这里可能由于SqlSugarBug问题，导致不能使用IF
+            _db.QueryFilter.AddTableFilter<IBaseTenant>(it => it.TenantId == userInfo.TenantId);
+        }
 
         _db.QueryFilter.AddTableFilterIF<IBaseTenant>(!userInfo.IsSuperAdmin, it => it.TenantId == userInfo.TenantId);
 

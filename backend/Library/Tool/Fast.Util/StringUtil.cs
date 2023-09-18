@@ -8,9 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace Fast.Iaas.Util
-{
-    
+namespace Fast.Util;
 
 /// <summary>
 /// String工具类
@@ -448,5 +446,4 @@ public static class StringUtil
     }
 
     #endregion 已淘汰
-}
 }

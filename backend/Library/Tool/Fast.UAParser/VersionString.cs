@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace UAParser
+namespace Fast.UAParser;
+
+internal static class VersionString
 {
-    internal static class VersionString
-    {
-        public static string Format(params string[] parts) => string.Join(".", ((IEnumerable<string>) parts).Where<string>((Func<string, bool>) (v => !string.IsNullOrEmpty(v))).ToArray<string>());
-    }
+    public static string Format(params string[] parts) =>
+        string.Join(".", parts.Where((Func<string, bool>) (v => !string.IsNullOrEmpty(v))).ToArray());
 }

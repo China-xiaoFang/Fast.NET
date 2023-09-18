@@ -1,4 +1,6 @@
-﻿namespace System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+namespace Fast.Extension;
 
 /// <summary>
 /// <see cref="ICollection{T}"/> 拓展类
@@ -13,7 +15,6 @@ public static class ICollectionExtensions
     /// <returns><see cref="bool"/></returns>
     public static bool IsNullOrEmpty<T>(this ICollection<T>? collection)
     {
-        return collection is null
-            || collection.Count == 0;
+        return collection is null || collection.Count == 0;
     }
 }

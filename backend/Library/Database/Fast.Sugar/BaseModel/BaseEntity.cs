@@ -1,8 +1,8 @@
 ﻿using System;
-using Fast.Iaas.BaseModel.Interface;
+using Fast.Sugar.BaseModel.Interface;
 using SqlSugar;
 
-namespace Fast.Iaas.BaseModel{
+namespace Fast.Sugar.BaseModel;
 
 /// <summary>
 /// 实体基类
@@ -81,4 +81,4 @@ public class BaseEntity : PrimaryKeyEntity, IBaseEntity, IBaseDeleted
         updateColumn.CopyTo(result, deleteColumn.Length);
         return result;
     }
-}}
+}

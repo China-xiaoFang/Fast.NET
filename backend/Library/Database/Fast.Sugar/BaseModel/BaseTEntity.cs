@@ -1,7 +1,7 @@
-﻿using Fast.Iaas.BaseModel.Interface;
+﻿using Fast.Sugar.BaseModel.Interface;
 using SqlSugar;
 
-namespace Fast.Iaas.BaseModel{
+namespace Fast.Sugar.BaseModel;
 
 /// <summary>
 /// 租户实体基类
@@ -13,4 +13,4 @@ public class BaseTEntity : BaseEntity, IBaseTenant
     /// </summary>
     [SugarColumn(ColumnDescription = "租户Id", IsNullable = true, CreateTableFieldSort = 997)]
     public virtual long TenantId { get; set; }
-}}
+}

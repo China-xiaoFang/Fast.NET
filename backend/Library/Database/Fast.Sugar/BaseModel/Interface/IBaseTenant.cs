@@ -1,4 +1,4 @@
-﻿namespace Fast.Iaas.BaseModel.Interface{
+﻿namespace Fast.Sugar.BaseModel.Interface;
 
 /// <summary>
 /// BaseTEntity 接口定义类
@@ -9,4 +9,4 @@ public interface IBaseTenant : IDbEntity
     /// 租户Id
     /// </summary>
     long TenantId { get; set; }
-}}
+}

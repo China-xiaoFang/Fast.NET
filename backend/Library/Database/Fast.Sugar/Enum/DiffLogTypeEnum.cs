@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using Fast.Iaas.Attributes;
+using Fast.Core.Attributes;
 
-namespace Fast.Core.AdminEnum{
+namespace Fast.Sugar.Enum;
 
 /// <summary>
 /// 差异日志类型
@@ -32,5 +32,4 @@ public enum DiffLogTypeEnum
     /// </summary>
     [Description("未知")]
     None = 9,
-}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSRedis;
-using Furion.DependencyInjection;
+using Fast.Core.DependencyInjection.Dependencies;
 using Microsoft.Extensions.Configuration;
 
 namespace Fast.Cache;
@@ -11,7 +11,7 @@ namespace Fast.Cache;
 /// <summary>
 /// 缓存实现
 /// </summary>
-public class Cache : ICache, ISingleton
+public class Cache : ICache, ISingletonDependency
 {
     /// <summary>
     /// 

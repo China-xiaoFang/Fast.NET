@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UAParser;
+namespace Fast.UAParser;
 
 /// <summary>
 /// Represents the user agent client information resulting from parsing

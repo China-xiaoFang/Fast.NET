@@ -1,12 +1,13 @@
-﻿using Fast.Core.SqlSugar.Filter;
-using Fast.Core.SqlSugar.Repository;
-using Fast.Iaas;
+﻿using Fast.Core.App;
+using Fast.Sugar.Extension;
+using Fast.Sugar.Filter;
+using Fast.Sugar.Repository;
 using Fast.Sugar.Util;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using Yitter.IdGenerator;
 
-namespace Fast.Core.SqlSugar;
+namespace Fast.Sugar;
 
 /// <summary>
 /// SqlSugar
@@ -22,11 +23,11 @@ public static class SqlSugarSetup
     {
         // Add Snowflakes Id.
         // 设置雪花Id的workerId，确保每个实例workerId都应不同
-        var workerId = ushort.Parse(FastContext.Configuration["SnowId:WorkerId"] ?? "1");
+        var workerId = ushort.Parse(App.Configuration["SnowId:WorkerId"] ?? "1");
         YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = workerId});
 
         // 获取默认连接配置
-        var defaultDataBaseInfo = Extension.Extension.GetDefaultDataBaseInfo();
+        var defaultDataBaseInfo = Extensions.GetDefaultDataBaseInfo();
 
         // 得到连接字符串
         var connectionStr = DataBaseUtil.GetConnectionStr(defaultDataBaseInfo);

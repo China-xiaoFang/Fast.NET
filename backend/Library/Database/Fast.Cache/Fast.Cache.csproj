@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Fast.Iaas\Fast.Core.csproj" />
+	  <ProjectReference Include="..\..\Fast.Core\Fast.Core.csproj" />
 	</ItemGroup>
 
 </Project>

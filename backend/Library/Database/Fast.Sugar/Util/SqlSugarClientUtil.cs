@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Fast.Cache;
-using Fast.Core.SqlSugar.Filter;
+using Fast.Sugar.Filter;
+using Fast.Sugar.Options;
 using SqlSugar;
-using ConnectionConfigOption = Fast.Sugar.Internal.ConnectionConfigOption;
 
 namespace Fast.Sugar.Util;
 
@@ -24,7 +24,8 @@ static class SqlSugarClientUtil
     /// <param name="_cache"></param>
     /// <returns></returns>
     /// <exception cref="SqlSugarException"></exception>
-    public static async Task<ConnectionConfigOption> GetDbInfo(ISqlSugarClient _db, string tableName, int dbType, long tenantId,ICache _cache)
+    public static async Task<ConnectionConfigOption> GetDbInfo(ISqlSugarClient _db, string tableName, int dbType, long tenantId,
+        ICache _cache)
     {
         // 数据库信息缓存
         var dbInfoList = await _cache.GetAndSetAsync($"{CacheKey}{tenantId}",
@@ -56,7 +57,7 @@ static class SqlSugarClientUtil
         if (_tenant.IsAnyConnection(connectionId))
             return _tenant.GetConnection(connectionId);
 
-        _tenant.AddConnection(new SqlSugar.ConnectionConfig
+        _tenant.AddConnection(new ConnectionConfig
         {
             ConfigId = connectionId, // 此链接标志，用以后面切库使用
             ConnectionString = DataBaseUtil.GetConnectionStr(dbInfo), // 租户库连接字符串

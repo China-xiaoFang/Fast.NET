@@ -1,16 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
-namespace System;
+namespace Fast.Extension;
 
 /// <summary>
 /// <see cref="Type"/> 拓展类
 /// </summary>
-public static class TypeExtensions
+public static partial class Extensions
 {
     /// <summary>
     /// 检查类型是否是静态类型
@@ -19,7 +20,7 @@ public static class TypeExtensions
     /// <returns><see cref="bool"/></returns>
     public static bool IsStatic(this Type type)
     {
-        return type is { IsSealed: true, IsAbstract: true };
+        return type is {IsSealed: true, IsAbstract: true};
     }
 
     /// <summary>
@@ -36,9 +37,7 @@ public static class TypeExtensions
         }
 
         // 类型限定名是否以 <> 开头且以 AnonymousType 结尾
-        return type.FullName is not null
-            && type.FullName.StartsWith("<>")
-            && type.FullName.Contains("AnonymousType");
+        return type.FullName is not null && type.FullName.StartsWith("<>") && type.FullName.Contains("AnonymousType");
     }
 
     /// <summary>
@@ -48,8 +47,7 @@ public static class TypeExtensions
     /// <returns><see cref="bool"/></returns>
     public static bool IsInstantiable(this Type type)
     {
-        return type is { IsClass: true, IsAbstract: false }
-            && !type.IsStatic();
+        return type is {IsClass: true, IsAbstract: false} && !type.IsStatic();
     }
 
     /// <summary>
@@ -63,8 +61,7 @@ public static class TypeExtensions
         // 空检查
         ArgumentNullException.ThrowIfNull(fromType);
 
-        return fromType != type
-            && fromType.IsAssignableFrom(type);
+        return fromType != type && fromType.IsAssignableFrom(type);
     }
 
     /// <summary>
@@ -79,9 +76,7 @@ public static class TypeExtensions
         where TAttribute : Attribute
     {
         // 检查是否定义
-        return !type.IsDefined(typeof(TAttribute), inherit)
-            ? null
-            : type.GetCustomAttribute<TAttribute>(inherit);
+        return !type.IsDefined(typeof(TAttribute), inherit) ? null : type.GetCustomAttribute<TAttribute>(inherit);
     }
 
     /// <summary>
@@ -92,8 +87,8 @@ public static class TypeExtensions
     /// <returns><see cref="bool"/></returns>
     public static bool HasDefinePublicParameterlessConstructor(this Type type)
     {
-        return type.IsInstantiable()
-            && type.GetConstructor(BindingFlags.Instance | BindingFlags.Public, Type.EmptyTypes) is not null;
+        return type.IsInstantiable() &&
+               type.GetConstructor(BindingFlags.Instance | BindingFlags.Public, Type.EmptyTypes) is not null;
     }
 
     /// <summary>
@@ -107,11 +102,8 @@ public static class TypeExtensions
         // 空检查
         ArgumentNullException.ThrowIfNull(compareType);
 
-        return type == compareType
-            || (type.IsGenericType
-                && compareType.IsGenericType
-                && type.IsGenericTypeDefinition // 💡
-                && type == compareType.GetGenericTypeDefinition());
+        return type == compareType || (type.IsGenericType && compareType.IsGenericType && type.IsGenericTypeDefinition // 💡
+                                       && type == compareType.GetGenericTypeDefinition());
     }
 
     /// <summary>
@@ -125,12 +117,9 @@ public static class TypeExtensions
         // 空检查
         ArgumentNullException.ThrowIfNull(inheritType);
 
-        return inheritType != typeof(object)
-            && inheritType.IsAssignableFrom(type)
-            && (!type.IsGenericType
-                || (type.IsGenericType
-                    && inheritType.IsGenericType
-                    && type.GetTypeInfo().GenericTypeParameters.SequenceEqual(inheritType.GenericTypeArguments)));
+        return inheritType != typeof(object) && inheritType.IsAssignableFrom(type) && (!type.IsGenericType ||
+            (type.IsGenericType && inheritType.IsGenericType &&
+             type.GetTypeInfo().GenericTypeParameters.SequenceEqual(inheritType.GenericTypeArguments)));
     }
 
     /// <summary>
@@ -141,10 +130,8 @@ public static class TypeExtensions
     /// <param name="accessibilityBindingFlags">可访问性成员绑定标记</param>
     /// <param name="methodInfo"><see cref="MethodInfo"/></param>
     /// <returns><see cref="bool"/></returns>
-    public static bool IsDeclarationMethod(this Type type
-        , string name
-        , BindingFlags accessibilityBindingFlags
-        , out MethodInfo? methodInfo)
+    public static bool IsDeclarationMethod(this Type type, string name, BindingFlags accessibilityBindingFlags,
+        out MethodInfo? methodInfo)
     {
         // 空检查
         ArgumentNullException.ThrowIfNull(type);
@@ -169,14 +156,8 @@ public static class TypeExtensions
         }
 
         // 检查 TypeCode
-        return Type.GetTypeCode(type) is TypeCode.Byte
-            or TypeCode.SByte
-            or TypeCode.Int16
-            or TypeCode.Int32
-            or TypeCode.Int64
-            or TypeCode.UInt16
-            or TypeCode.UInt32
-            or TypeCode.UInt64;
+        return Type.GetTypeCode(type) is TypeCode.Byte or TypeCode.SByte or TypeCode.Int16 or TypeCode.Int32 or TypeCode.Int64
+            or TypeCode.UInt16 or TypeCode.UInt32 or TypeCode.UInt64;
     }
 
     /// <summary>
@@ -187,9 +168,7 @@ public static class TypeExtensions
     public static bool IsDecimal(this Type type)
     {
         // 如果是浮点类型则直接返回
-        if (type == typeof(decimal)
-            || type == typeof(double)
-            || type == typeof(float))
+        if (type == typeof(decimal) || type == typeof(double) || type == typeof(float))
         {
             return true;
         }
@@ -205,8 +184,7 @@ public static class TypeExtensions
     /// <returns><see cref="bool"/></returns>
     public static bool IsNumeric(this Type type)
     {
-        return type.IsInteger()
-            || type.IsDecimal();
+        return type.IsInteger() || type.IsDecimal();
     }
 
     /// <summary>
@@ -217,8 +195,8 @@ public static class TypeExtensions
     public static bool IsDictionary(this Type type)
     {
         // 如果是 IDictionary<,> 类型则直接返回
-        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)
-            || type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>) || type.GetInterfaces()
+                .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
         {
             return true;
         }
@@ -233,9 +211,8 @@ public static class TypeExtensions
                 var elementType = type.GetElementType();
 
                 // 检查元素类型是否是 KeyValuePair<,> 类型
-                if (elementType is not null
-                    && elementType.IsGenericType
-                    && elementType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+                if (elementType is not null && elementType.IsGenericType &&
+                    elementType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
                 {
                     return true;
                 }
@@ -244,8 +221,8 @@ public static class TypeExtensions
             else
             {
                 // 检查集合项类型是否是 KeyValuePair<,> 类型
-                if (type is { IsGenericType: true, GenericTypeArguments.Length: 1 }
-                    && type.GenericTypeArguments[0].GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+                if (type is {IsGenericType: true, GenericTypeArguments.Length: 1} &&
+                    type.GenericTypeArguments[0].GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
                 {
                     return true;
                 }
@@ -267,12 +244,8 @@ public static class TypeExtensions
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_设置_属性名
-        var setterMethod = new DynamicMethod(
-            $"{type.FullName}_Set_{propertyInfo.Name}",
-            null,
-            new Type[] { typeof(object), typeof(object) },
-            typeof(TypeExtensions).Module
-        );
+        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{propertyInfo.Name}", null,
+            new[] {typeof(object), typeof(object)}, typeof(TypeExtensions).Module);
 
         // 获取动态方法的 IL 生成器
         var ilGenerator = setterMethod.GetILGenerator();
@@ -309,7 +282,7 @@ public static class TypeExtensions
         ilGenerator.Emit(OpCodes.Ret);
 
         // 创建一个委托并将其转换为适当的 Action 类型
-        return (Action<object, object?>)setterMethod.CreateDelegate(typeof(Action<object, object>));
+        return (Action<object, object?>) setterMethod.CreateDelegate(typeof(Action<object, object>));
     }
 
     /// <summary>
@@ -324,12 +297,8 @@ public static class TypeExtensions
         ArgumentNullException.ThrowIfNull(fieldInfo);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_设置_字段名
-        var setterMethod = new DynamicMethod(
-            $"{type.FullName}_Set_{fieldInfo.Name}",
-            null,
-            new Type[] { typeof(object), typeof(object) },
-            typeof(TypeExtensions).Module
-        );
+        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{fieldInfo.Name}", null,
+            new[] {typeof(object), typeof(object)}, typeof(TypeExtensions).Module);
 
         // 获取动态方法的 IL 生成器
         var ilGenerator = setterMethod.GetILGenerator();
@@ -360,7 +329,7 @@ public static class TypeExtensions
         ilGenerator.Emit(OpCodes.Ret);
 
         // 创建一个委托并将其转换为适当的 Action 类型
-        return (Action<object, object?>)setterMethod.CreateDelegate(typeof(Action<object, object>));
+        return (Action<object, object?>) setterMethod.CreateDelegate(typeof(Action<object, object>));
     }
 
     /// <summary>
@@ -376,13 +345,8 @@ public static class TypeExtensions
         ArgumentNullException.ThrowIfNull(propertyInfo.DeclaringType);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_获取_属性名
-        var dynamicMethod = new DynamicMethod(
-            $"{type.FullName}_Get_{propertyInfo.Name}",
-            typeof(object),
-            new[] { typeof(object) },
-            typeof(TypeExtensions).Module,
-            true
-        );
+        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{propertyInfo.Name}", typeof(object), new[] {typeof(object)},
+            typeof(TypeExtensions).Module, true);
 
         // 获取动态方法的 IL 生成器
         var ilGenerator = dynamicMethod.GetILGenerator();
@@ -410,7 +374,7 @@ public static class TypeExtensions
         ilGenerator.Emit(OpCodes.Ret);
 
         // 创建一个委托并将其转换为适当的 Func 类型
-        return (Func<object, object?>)dynamicMethod.CreateDelegate(typeof(Func<object, object>));
+        return (Func<object, object?>) dynamicMethod.CreateDelegate(typeof(Func<object, object>));
     }
 
     /// <summary>
@@ -426,13 +390,8 @@ public static class TypeExtensions
         ArgumentNullException.ThrowIfNull(fieldInfo.DeclaringType);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_获取_字段名
-        var dynamicMethod = new DynamicMethod(
-            $"{type.FullName}_Get_{fieldInfo.Name}",
-            typeof(object),
-            new[] { typeof(object) },
-            typeof(TypeExtensions).Module,
-            true
-        );
+        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{fieldInfo.Name}", typeof(object), new[] {typeof(object)},
+            typeof(TypeExtensions).Module, true);
 
         // 获取动态方法的 IL 生成器
         var ilGenerator = dynamicMethod.GetILGenerator();
@@ -454,6 +413,6 @@ public static class TypeExtensions
         ilGenerator.Emit(OpCodes.Ret);
 
         // 创建一个委托并将其转换为适当的 Func 类型
-        return (Func<object, object?>)dynamicMethod.CreateDelegate(typeof(Func<object, object>));
+        return (Func<object, object?>) dynamicMethod.CreateDelegate(typeof(Func<object, object>));
     }
 }

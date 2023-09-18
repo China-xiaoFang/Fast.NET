@@ -11,14 +11,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Fast.Authentication;
 using Fast.Cache;
-using Fast.Core.SqlSugar.Extension;
-using Fast.Core.SqlSugar.Internal;
+using Fast.Sugar.Extension;
 using Fast.Sugar.Internal;
-using Fast.User;
+using Fast.Sugar.Options;
 using SqlSugar;
 
-namespace Fast.Core.SqlSugar.Repository;
+namespace Fast.Sugar.Repository;
 
 /// <summary>
 /// 非泛型 SqlSugar 仓储
@@ -73,7 +73,7 @@ public class SqlSugarRepository<TEntity> : ISqlSugarRepository<TEntity> where TE
     /// <param name="db"></param>
     /// <param name="user"></param>
     /// <param name="cache"></param>
-    public SqlSugarRepository(IServiceProvider serviceProvider, ISqlSugarClient db,IUser user,ICache cache)
+    public SqlSugarRepository(IServiceProvider serviceProvider, ISqlSugarClient db, IUser user, ICache cache)
     {
         _serviceProvider = serviceProvider;
         (_db, DataBaseInfo) = db.LoadSqlSugar<TEntity>(user, cache);

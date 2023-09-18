@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using Fast.Sugar.Options;
 using SqlSugar;
-using ConnectionConfigOption = Fast.Sugar.Internal.ConnectionConfigOption;
 
 namespace Fast.Sugar.Util;
 

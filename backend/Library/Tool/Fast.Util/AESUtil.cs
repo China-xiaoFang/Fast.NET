@@ -1,12 +1,9 @@
-﻿using System.IO;
-using System;
-using System.Net.Http;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Fast.Iaas.Util
-{
-    
+namespace Fast.Util;
 
 /// <summary>
 /// AES加密解密工具类
@@ -97,5 +94,4 @@ public static class AESUtil
         using var srDecryptor = new StreamReader(csDecryptor);
         return srDecryptor.ReadToEnd();
     }
-}
 }

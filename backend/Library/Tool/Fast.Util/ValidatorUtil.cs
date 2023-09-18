@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using System;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Fast.Iaas.Util
-{
-    
+namespace Fast.Util;
 
 /// <summary>
 /// 字符串验证帮助类
@@ -395,5 +393,4 @@ public static class ValidatorUtil
     }
 
     #endregion
-}
 }

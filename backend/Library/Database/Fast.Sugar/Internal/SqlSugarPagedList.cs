@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Fast.Core.SqlSugar.Internal{
+namespace Fast.Sugar.Internal;
 
 /// <summary>
 /// SqlSugar 分页泛型集合
@@ -42,4 +42,4 @@ public class SqlSugarPagedList<TEntity>
     /// 是否有下一页
     /// </summary>
     public bool HasNextPages { get; set; }
-}}
+}

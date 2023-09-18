@@ -1,7 +1,8 @@
-﻿using Fast.Iaas.BaseModel.Interface;
+﻿using Fast.Http;
+using Fast.Sugar.BaseModel.Interface;
 using SqlSugar;
 
-namespace Fast.Iaas.BaseModel{
+namespace Fast.Sugar.BaseModel;
 
 /// <summary>
 /// 记录基类实现
@@ -62,16 +63,15 @@ public class BaseLogEntity : IBaseLogEntity, IPrimaryKeyEntity<int>
     /// </summary>
     public virtual void RecordCreate()
     {
-        // TODO：这里的获取IP和网络信息有问题
-        //var userAgentInfo = HttpUtil.UserAgentInfo();
-        //var wanInfo = HttpUtil.WanInfoCache(HttpUtil.Ip);
+        var userAgentInfo = HttpUtil.UserAgentInfo();
+        var wanInfo = HttpUtil.WanInfoCache(HttpUtil.Ip);
 
-        //PhoneModel = userAgentInfo.PhoneModel;
-        //OS = userAgentInfo.OS;
-        //Browser = userAgentInfo.Browser;
-        //Province = wanInfo.Pro;
-        //City = wanInfo.City;
-        //Operator = wanInfo.Operator;
-        //Ip = wanInfo.Ip;
+        PhoneModel = userAgentInfo.PhoneModel;
+        OS = userAgentInfo.OS;
+        Browser = userAgentInfo.Browser;
+        Province = wanInfo.Pro;
+        City = wanInfo.City;
+        Operator = wanInfo.Operator;
+        Ip = wanInfo.Ip;
     }
-}}
+}

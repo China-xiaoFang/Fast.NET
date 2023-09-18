@@ -2,9 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Gejia.WMS.Iaas.JsonConverter
-{
-    
+namespace Fast.Json.JsonConverter;
 
 /// <summary>
 /// double 类型Json返回处理
@@ -98,5 +96,4 @@ public class NullableDoubleJsonConverter : JsonConverter<double?>
         else
             writer.WriteNumberValue(Places == null ? value.Value : Math.Round(value.Value, Places.Value));
     }
-}
 }

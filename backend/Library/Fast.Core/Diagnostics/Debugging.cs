@@ -1,7 +1,6 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
-namespace System;
+namespace Fast.Core.Diagnostics;
 
 /// <summary>
 /// 向事件管理器中输出事件信息

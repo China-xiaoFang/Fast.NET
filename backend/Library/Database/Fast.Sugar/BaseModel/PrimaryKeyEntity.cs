@@ -1,7 +1,7 @@
-﻿using Fast.Iaas.BaseModel.Interface;
+﻿using Fast.Sugar.BaseModel.Interface;
 using SqlSugar;
 
-namespace Fast.Iaas.BaseModel{
+namespace Fast.Sugar.BaseModel;
 
 /// <summary>
 /// 主键实体基类
@@ -14,4 +14,4 @@ public abstract class PrimaryKeyEntity : IPrimaryKeyEntity<long>, IDbEntity
     [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true)]
     // 注意是在这里定义你的公共实体
     public virtual long Id { get; set; }
-}}
+}

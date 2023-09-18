@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fast.Core.SqlSugar.Internal{
+namespace Fast.Sugar.Internal;
 
 /// <summary>
 /// Sugar实体类型信息
@@ -48,4 +48,4 @@ public class SugarEntityTypeInfo
     /// 实体类型
     /// </summary>
     public Type Type { get; set; }
-}}
+}

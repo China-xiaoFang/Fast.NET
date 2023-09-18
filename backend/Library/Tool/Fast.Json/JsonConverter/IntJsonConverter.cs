@@ -2,9 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Gejia.WMS.Iaas.JsonConverter
-{
-    
+namespace Fast.Json.JsonConverter;
 
 /// <summary>
 /// int 类型Json返回处理
@@ -68,5 +66,4 @@ public class NullableIntJsonConverter : JsonConverter<int?>
         else
             writer.WriteNumberValue(value.Value);
     }
-}
 }

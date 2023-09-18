@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace Fast.Iaas.BaseModel.Interface{
+namespace Fast.Sugar.BaseModel.Interface;
+
 /// <summary>
 /// BaseEntity 接口定义类
 /// </summary>
@@ -57,4 +58,4 @@ public interface IBaseEntity : IDbEntity
     /// </summary>
     /// <returns></returns>
     string[] FalseDeleteColumn();
-}}
+}

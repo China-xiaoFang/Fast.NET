@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Fast.Core.SqlSugar.Internal;
-using Fast.Iaas;
-using Fast.Iaas.Attributes;
-using Fast.Iaas.BaseModel;
-using Fast.Iaas.BaseModel.Interface;
-using Furion;
+using Fast.Core.App;
+using Fast.Sugar.Attributes;
+using Fast.Sugar.BaseModel;
+using Fast.Sugar.BaseModel.Interface;
+using Fast.Sugar.Internal;
 using SqlSugar;
 
 namespace Fast.Sugar.Util;
@@ -57,7 +56,7 @@ static class EntityUtil
             return entityTypeList;
 
         // 获取所有实现了接口的类的类型
-        var types = FastContext.EffectiveTypes.Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity)))
+        var types = App.EffectiveTypes.Where(wh => wh.GetInterfaces().Contains(typeof(IDbEntity)))
             // 排除BaseEntity
             .Where(wh => !excludeBaseTypes.Contains(wh));
 

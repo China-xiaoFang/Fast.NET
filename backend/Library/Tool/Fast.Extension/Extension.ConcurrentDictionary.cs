@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace Fast.Iaas.Extension;
+namespace Fast.Extension;
 
 /// <summary>
 /// 字典扩展

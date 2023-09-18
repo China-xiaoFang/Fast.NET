@@ -1,4 +1,4 @@
-﻿namespace Fast.Iaas.BaseModel.Interface{
+﻿namespace Fast.Sugar.BaseModel.Interface;
 
 /// <summary>
 /// IsDeleted 软删除 接口定义类
@@ -9,4 +9,4 @@ public interface IBaseDeleted : IDbEntity
     /// 软删除
     /// </summary>
     bool IsDeleted { get; set; }
-}}
+}

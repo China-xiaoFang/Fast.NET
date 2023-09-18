@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Fast.Iaas.Extension;
 
-namespace Gejia.WMS.Iaas.JsonConverter
-{
-    
+namespace Fast.Json.JsonConverter;
 
 /// <summary>
 /// decimal 类型Json返回处理
@@ -44,7 +41,7 @@ public class DecimalJsonConverter : JsonConverter<decimal>
     /// <param name="options">An object that specifies serialization options to use.</param>
     public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options)
     {
-        writer.WriteNumberValue(Places == null ?(decimal) (double)  value : Math.Round(value, Places.Value));
+        writer.WriteNumberValue(Places == null ? (decimal) (double) value : Math.Round(value, Places.Value));
     }
 }
 
@@ -97,7 +94,6 @@ public class NullableDecimalJsonConverter : JsonConverter<decimal?>
         if (value == null)
             writer.WriteNullValue();
         else
-            writer.WriteNumberValue(Places == null ?(decimal) (double)  value.Value : Math.Round(value.Value, Places.Value));
+            writer.WriteNumberValue(Places == null ? (decimal) (double) value.Value : Math.Round(value.Value, Places.Value));
     }
-}
 }

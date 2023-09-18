@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Fast.Iaas.Extension
-{
-    
+namespace Fast.Extension;
 
 /// <summary>
 /// 转换扩展类
@@ -55,7 +53,7 @@ public static partial class Extensions
         {
             try
             {
-                return long.Parse(str.ToString() ?? string.Empty);
+                return long.Parse(str ?? string.Empty);
             }
             catch
             {
@@ -478,5 +476,4 @@ public static partial class Extensions
     }
 
     #endregion
-}
 }

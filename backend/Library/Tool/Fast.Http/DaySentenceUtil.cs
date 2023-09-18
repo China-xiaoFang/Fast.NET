@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Fast.Iaas.Util.Http;
+namespace Fast.Http;
 
 /// <summary>
 /// 每日一句工具类

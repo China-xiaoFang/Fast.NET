@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Fast.Iaas.Extension
-{
-    
+namespace Fast.Extension;
+
 /// <summary>
 /// 字典扩展
 /// </summary>
@@ -100,7 +99,9 @@ public static partial class Extensions
         }
 
         return dictionary;
-    }/// <summary>
+    }
+
+    /// <summary>
     /// 尝试获取对象的数量
     /// </summary>
     /// <param name="obj"><see cref="object"/></param>
@@ -126,20 +127,16 @@ public static partial class Extensions
         }
 
         // 反射查找是否存在 Count 属性
-        var runtimeProperty = obj.GetType()
-            .GetRuntimeProperty("Count");
+        var runtimeProperty = obj.GetType().GetRuntimeProperty("Count");
 
         // 反射获取 Count 属性值
-        if (runtimeProperty is not null
-            && runtimeProperty.CanRead
-            && runtimeProperty.PropertyType == typeof(int))
+        if (runtimeProperty is not null && runtimeProperty.CanRead && runtimeProperty.PropertyType == typeof(int))
         {
-            count = (int)runtimeProperty.GetValue(obj)!;
+            count = (int) runtimeProperty.GetValue(obj)!;
             return true;
         }
 
         count = -1;
         return false;
     }
-}
 }

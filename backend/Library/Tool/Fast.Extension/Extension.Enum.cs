@@ -4,9 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace Fast.Iaas.Extension
-{
-    
+namespace Fast.Extension;
+
 /// <summary>
 /// 枚举扩展
 /// </summary>
@@ -44,8 +43,7 @@ public static partial class Extensions
         ArgumentNullException.ThrowIfNull(enumField);
 
         // 获取 [Description] 特性描述
-        return enumField.GetCustomAttribute<DescriptionAttribute>(false)
-            ?.Description ?? enumName;
+        return enumField.GetCustomAttribute<DescriptionAttribute>(false)?.Description ?? enumName;
     }
 
     /// <summary>
@@ -270,5 +268,4 @@ public class EnumEntity
     /// 枚举对象的值  
     /// </summary>  
     public int Value { set; get; }
-}
 }

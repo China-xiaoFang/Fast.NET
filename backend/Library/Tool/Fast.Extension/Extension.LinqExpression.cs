@@ -1,4 +1,7 @@
-﻿namespace System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
+
+namespace Fast.Extension;
 
 /// <summary>
 /// <see cref="Expression"/> 拓展类
@@ -21,7 +24,7 @@ public static class LinqExpressionExtensions
             MemberExpression memberExpression => GetPropertyName<T>(memberExpression),
 
             // 如果主体是 UnaryExpression 类型，则继续解析
-            UnaryExpression { Operand: MemberExpression nestedMemberExpression } => GetPropertyName<T>(nestedMemberExpression),
+            UnaryExpression {Operand: MemberExpression nestedMemberExpression} => GetPropertyName<T>(nestedMemberExpression),
 
             _ => throw new ArgumentException("Expression is not valid for property selection.")
         };

@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
-using Fast.Iaas.Extension;
-using Furion;
-using Furion.DependencyInjection;
-using Furion.RemoteRequest.Extensions;
+using Fast.Cache;
+using Fast.Core.App;
+using Fast.Core.DependencyInjection;
+using Fast.UAParser;
 using Microsoft.Extensions.DependencyInjection;
-using UAParser;
 
-namespace Fast.Iaas.Util.Http;
+namespace Fast.Http;
 
 /// <summary>
 /// HTTP网络工具
@@ -47,17 +48,18 @@ public static class HttpUtil
     {
         get
         {
-            if (FastContext.HttpContext == null)
+            if (App.HttpContext == null)
                 return string.Empty;
-            if (FastContext.HttpContext.Connection.RemoteIpAddress == null)
+            if (App.HttpContext.Connection.RemoteIpAddress == null)
                 return string.Empty;
-            var ip = FastContext.HttpContext.Connection.RemoteIpAddress.ToString();
-            if (FastContext.HttpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
+            var ip = App.HttpContext.Connection.RemoteIpAddress.ToString();
+            if (App.HttpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
             {
                 ip = header1.FirstOrDefault();
             }
 
-            if (string.IsNullOrEmpty(ip) && FastContext.HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
+            if (string.IsNullOrEmpty(ip) &&
+                App.HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
             {
                 ip = header2.FirstOrDefault();
             }
@@ -83,7 +85,7 @@ public static class HttpUtil
     /// <summary>
     /// 本机IP地址
     /// </summary>
-    public static string LocalIp => FastContext.HttpContext?.Connection.LocalIpAddress?.MapToIPv4()?.ToString();
+    public static string LocalIp => App.HttpContext?.Connection.LocalIpAddress?.MapToIPv4()?.ToString();
 
     /// <summary>
     /// 局域网IP地址
@@ -111,7 +113,7 @@ public static class HttpUtil
     {
         get
         {
-            var request = FastContext.HttpContext?.Request;
+            var request = App.HttpContext?.Request;
 
             if (request != null)
             {
@@ -131,7 +133,7 @@ public static class HttpUtil
     {
         get
         {
-            var request = FastContext.HttpContext?.Request;
+            var request = App.HttpContext?.Request;
 
             return request != null ? request.Headers["Referer"].ToString() : string.Empty;
         }
@@ -141,7 +143,7 @@ public static class HttpUtil
     /// 是否是 WebSocket 请求
     /// </summary>
     public static bool IsWebSocketRequest =>
-        FastContext.HttpContext?.WebSockets?.IsWebSocketRequest ?? false || FastContext.HttpContext?.Request?.Path == "/ws";
+        App.HttpContext?.WebSockets?.IsWebSocketRequest ?? false || App.HttpContext?.Request?.Path == "/ws";
 
     /// <summary>
     /// 请求UserAgent信息
@@ -150,7 +152,7 @@ public static class HttpUtil
     {
         get
         {
-            string userAgent = FastContext.HttpContext?.Request.Headers["User-Agent"];
+            string userAgent = App.HttpContext?.Request.Headers["User-Agent"];
 
             return userAgent;
         }
@@ -276,8 +278,6 @@ public static class HttpUtil
     /// <returns></returns>
     public static async Task<WhoisIPInfoModel> WanInfoCacheAsync(string ip = null)
     {
-        var url = "http://whois.pconline.com.cn/ipJson.jsp";
-
         WhoisIPInfoModel result = null;
 
         // 如果IP为空，则默认获取服务器的公网信息
@@ -286,62 +286,26 @@ public static class HttpUtil
             ip = "localhost";
         }
 
-        url += $"?ip={ip}";
-
         var ipInfoCacheKey = $"IpInfo:{ip}";
 
-        await Scoped.CreateAsync((factory, scope) => {
+        // 创建作用域
+        await Scoped.CreateAsync(async (_, scope) =>
+        {
             var services = scope.ServiceProvider;
 
-            var _cache  = services.GetService<>()
+            var _cache = services.GetService<ICache>();
+
+            if (_cache == null)
+            {
+                // 直接获取
+                result = await WanInfoAsync(ip);
+            }
+            else
+            {
+                // 从缓存中获取，获取失败，则直接获取
+                result = await _cache.GetAndSetAsync(ipInfoCacheKey, TimeSpan.FromHours(12), async () => await WanInfoAsync(ip));
+            }
         });
-
-        result = await ReflectionUtil.CacheGetAndSetAsync(ipInfoCacheKey, TimeSpan.FromHours(12),
-            async () => await WanInfoAsync(ip));
-
-        //await Scoped.CreateAsync(async (_, scope) =>
-        //{
-        //    // 获取缓存类型
-        //    var cacheType = Type.GetType("ICache");
-        //    var getCacheMethod = cacheType?.GetMethod("GetAsync")?.MakeGenericMethod(typeof(WhoisIPInfoModel));
-        //    var setCacheMethod = cacheType?.GetMethod("SetAsync");
-        //    if (cacheType == null || getCacheMethod == null || setCacheMethod == null)
-        //    {
-        //        result = await WanInfoAsync(ip);
-        //    }
-        //    else
-        //    {
-        //        // 通过反射获取缓存服务对象
-        //        var cacheService = scope.ServiceProvider.GetService(cacheType);
-
-        //        if (cacheService == null)
-        //        {
-        //            result = await WanInfoAsync(ip);
-        //        }
-        //        else
-        //        {
-        //            // 尝试从缓存中获取
-        //            //var getCacheTask = (Task<WhoisIPInfoModel>)getCacheMethod.Invoke(cacheService, new object[] { ipInfoCacheKey });
-        //            //await getCacheTask.ConfigureAwait(false);
-        //            //var resStr = getCacheTask.Result;
-        //            var getCacheTask =
-        //                (Task<WhoisIPInfoModel>) getCacheMethod.Invoke(cacheService, new object[] {ipInfoCacheKey});
-        //            var resStr = await getCacheTask!;
-
-        //            result = resStr?.ToString().ToObject<WhoisIPInfoModel>();
-        //            if (result == null)
-        //            {
-        //                result = await WanInfoAsync(ip);
-
-        //                // 设置缓存，默认缓存12小时
-        //                var setCacheTask = (Task) setCacheMethod.Invoke(cacheService,
-        //                    new object[] {ipInfoCacheKey, result, TimeSpan.FromHours(12)});
-        //                //await setCacheTask.ConfigureAwait(false);
-        //                await setCacheTask!;
-        //            }
-        //        }
-        //    }
-        //});
 
         return result;
     }
@@ -373,10 +337,22 @@ public static class HttpUtil
 
         url += $"?ip={ip}";
 
-        var resultStr = await url.GetAsStringAsync();
-        resultStr = resultStr[(resultStr.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..].TrimEnd();
-        resultStr = resultStr[..^3];
-        return resultStr.ToObject<WhoisIPInfoModel>();
+        using var client = new HttpClient();
+        try
+        {
+            var response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            responseBody = responseBody[(responseBody.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
+                .TrimEnd();
+            responseBody = responseBody[..^3];
+            return JsonSerializer.Deserialize<WhoisIPInfoModel>(responseBody);
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new HttpRequestException($"Get ip Info request error，{ex.Message}");
+        }
     }
 
     private static readonly char[] reserveChar = {'/', '?', '*', ':', '|', '\\', '<', '>', '\"'};

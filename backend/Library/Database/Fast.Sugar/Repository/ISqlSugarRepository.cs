@@ -10,11 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Fast.Core.SqlSugar.Internal;
+using Fast.Sugar.Internal;
+using Fast.Sugar.Options;
 using SqlSugar;
-using ConnectionConfigOption = Fast.Sugar.Internal.ConnectionConfigOption;
 
-namespace Fast.Core.SqlSugar.Repository;
+namespace Fast.Sugar.Repository;
 
 /// <summary>
 /// 非泛型 SqlSugar 仓储

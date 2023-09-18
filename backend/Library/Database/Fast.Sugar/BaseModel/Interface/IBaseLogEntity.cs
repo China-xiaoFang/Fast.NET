@@ -1,4 +1,4 @@
-﻿namespace Fast.Iaas.BaseModel.Interface{
+﻿namespace Fast.Sugar.BaseModel.Interface;
 
 /// <summary>
 /// IBaseRecordEntity 接口定义
@@ -44,4 +44,4 @@ public interface IBaseLogEntity : IDbEntity
     /// 记录表创建
     /// </summary>
     void RecordCreate();
-}}
+}

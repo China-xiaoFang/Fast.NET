@@ -21,7 +21,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Fast.User\Fast.User.csproj" />
+	  <ProjectReference Include="..\..\Fast.User\Fast.Authentication.csproj" />
+	  <ProjectReference Include="..\..\SDK\Fast.EventBus\Fast.EventBus.csproj" />
+	  <ProjectReference Include="..\..\SDK\Fast.Logging\Fast.Logging.csproj" />
+	  <ProjectReference Include="..\..\Tool\Fast.Http\Fast.Http.csproj" />
 	</ItemGroup>
 
 </Project>
