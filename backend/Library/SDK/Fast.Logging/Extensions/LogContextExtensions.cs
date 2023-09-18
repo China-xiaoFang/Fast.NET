@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Fast.Logging.Implantations;
+using Fast.Logging.Implantation;
 
 namespace Fast.Logging.Extensions;
 
@@ -17,11 +17,13 @@ public static class LogContextExtensions
     /// <returns></returns>
     public static LogContext Set(this LogContext logContext, object key, object value)
     {
-        if (logContext == null || key == null) return logContext;
+        if (logContext == null || key == null)
+            return logContext;
 
         logContext.Properties ??= new Dictionary<object, object>();
 
-        if (logContext.Properties.ContainsKey(key)) logContext.Properties.Remove(key);
+        if (logContext.Properties.ContainsKey(key))
+            logContext.Properties.Remove(key);
         logContext.Properties.Add(key, value);
         return logContext;
     }
@@ -34,9 +36,8 @@ public static class LogContextExtensions
     /// <returns></returns>
     public static LogContext SetRange(this LogContext logContext, IDictionary<object, object> properties)
     {
-        if (logContext == null
-            || properties == null
-            || properties.Count == 0) return logContext;
+        if (logContext == null || properties == null || properties.Count == 0)
+            return logContext;
 
         foreach (var (key, value) in properties)
         {
@@ -54,10 +55,8 @@ public static class LogContextExtensions
     /// <returns></returns>
     public static object Get(this LogContext logContext, object key)
     {
-        if (logContext == null
-            || key == null
-            || logContext.Properties == null
-            || logContext.Properties.Count == 0) return default;
+        if (logContext == null || key == null || logContext.Properties == null || logContext.Properties.Count == 0)
+            return default;
 
         var isExists = logContext.Properties.TryGetValue(key, out var value);
         return isExists ? value : null;
@@ -72,6 +71,6 @@ public static class LogContextExtensions
     public static object Get<T>(this LogContext logContext, object key)
     {
         var value = logContext.Get(key);
-        return (T)value;
+        return (T) value;
     }
 }

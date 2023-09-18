@@ -2,7 +2,7 @@
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 
-namespace Fast.Logging.Implantations;
+namespace Fast.Logging.Implantation;
 
 /// <summary>
 /// 日志结构化消息
@@ -23,17 +23,8 @@ public struct LogMessage
     /// <param name="threadId">线程 Id</param>
     /// <param name="useUtcTimestamp">是否使用 UTC 时间戳</param>
     /// <param name="traceId">请求/跟踪 Id</param>
-    internal LogMessage(string logName
-        , LogLevel logLevel
-        , EventId eventId
-        , string message
-        , Exception exception
-        , LogContext context
-        , object state
-        , DateTime logDateTime
-        , int threadId
-        , bool useUtcTimestamp
-        , string traceId)
+    internal LogMessage(string logName, LogLevel logLevel, EventId eventId, string message, Exception exception,
+        LogContext context, object state, DateTime logDateTime, int threadId, bool useUtcTimestamp, string traceId)
     {
         LogName = logName;
         Message = message;

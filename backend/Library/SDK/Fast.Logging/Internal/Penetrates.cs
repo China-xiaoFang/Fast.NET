@@ -1,12 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Fast.Core.App;
 using Fast.Logging.Extensions;
-using Fast.Logging.Implantations;
-using Fast.Logging.Implantations.Console;
-using Fast.Logging.Implantations.Database;
-using Fast.Logging.Implantations.File;
+using Fast.Logging.Implantation;
+using Fast.Logging.Implantation.Console;
+using Fast.Logging.Implantation.File;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Internal;
@@ -27,15 +27,16 @@ internal static class Penetrates
     /// <param name="configuraionKey">获取配置文件对应的 Key</param>
     /// <param name="configure">文件日志记录器配置选项委托</param>
     /// <returns><see cref="FileLoggerProvider"/></returns>
-    internal static FileLoggerProvider CreateFromConfiguration(Func<string> configuraionKey, Action<FileLoggerOptions> configure = default)
+    internal static FileLoggerProvider CreateFromConfiguration(Func<string> configuraionKey,
+        Action<FileLoggerOptions> configure = default)
     {
         // 检查 Key 是否存在
         var key = configuraionKey?.Invoke();
-        if (string.IsNullOrWhiteSpace(key)) return new FileLoggerProvider("application.log", new FileLoggerOptions());
+        if (string.IsNullOrWhiteSpace(key))
+            return new FileLoggerProvider("application.log", new FileLoggerOptions());
 
         // 加载配置文件中指定节点
-        var fileLoggerSettings = App.GetConfig<FileLoggerSettings>(key)
-            ?? new FileLoggerSettings();
+        var fileLoggerSettings = App.GetConfig<FileLoggerSettings>(key) ?? new FileLoggerSettings();
 
         // 创建文件日志记录器配置选项
         var fileLoggerOptions = new FileLoggerOptions
@@ -59,41 +60,6 @@ internal static class Penetrates
     }
 
     /// <summary>
-    /// 从配置文件中加载配置并创建数据库日志记录器提供程序
-    /// </summary>
-    /// <param name="configuraionKey">获取配置文件对应的 Key</param>
-    /// <param name="configure">数据库日志记录器配置选项委托</param>
-    /// <returns><see cref="DatabaseLoggerProvider"/></returns>
-    internal static DatabaseLoggerProvider CreateFromConfiguration(Func<string> configuraionKey, Action<DatabaseLoggerOptions> configure = default)
-    {
-        // 检查 Key 是否存在
-        var key = configuraionKey?.Invoke();
-        if (string.IsNullOrWhiteSpace(key)) return new DatabaseLoggerProvider(new DatabaseLoggerOptions());
-
-        // 加载配置文件中指定节点
-        var databaseLoggerSettings = App.GetConfig<DatabaseLoggerSettings>(key)
-            ?? new DatabaseLoggerSettings();
-
-        // 创建数据库日志记录器配置选项
-        var databaseLoggerOptions = new DatabaseLoggerOptions
-        {
-            MinimumLevel = databaseLoggerSettings.MinimumLevel,
-            UseUtcTimestamp = databaseLoggerSettings.UseUtcTimestamp,
-            DateFormat = databaseLoggerSettings.DateFormat,
-            IncludeScopes = databaseLoggerSettings.IncludeScopes,
-            IgnoreReferenceLoop = databaseLoggerSettings.IgnoreReferenceLoop,
-            WithTraceId = databaseLoggerSettings.WithTraceId,
-            WithStackFrame = databaseLoggerSettings.WithStackFrame
-        };
-
-        // 处理自定义配置
-        configure?.Invoke(databaseLoggerOptions);
-
-        // 创建数据库日志记录器提供程序
-        return new DatabaseLoggerProvider(databaseLoggerOptions);
-    }
-
-    /// <summary>
     /// 输出标准日志消息
     /// </summary>
     /// <param name="logMsg"></param>
@@ -103,15 +69,12 @@ internal static class Penetrates
     /// <param name="withTraceId"></param>
     /// <param name="withStackFrame"></param>
     /// <returns></returns>
-    internal static string OutputStandardMessage(LogMessage logMsg
-        , string dateFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz dddd"
-        , bool isConsole = false
-        , bool disableColors = true
-        , bool withTraceId = false
-        , bool withStackFrame = false)
+    internal static string OutputStandardMessage(LogMessage logMsg, string dateFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz dddd",
+        bool isConsole = false, bool disableColors = true, bool withTraceId = false, bool withStackFrame = false)
     {
         // 空检查
-        if (logMsg.Message is null) return null;
+        if (logMsg.Message is null)
+            return null;
 
         // 创建默认日志格式化模板
         var formatString = new StringBuilder();
@@ -126,9 +89,8 @@ internal static class Penetrates
         formatString.Append(' ');
         formatString.Append(logMsg.UseUtcTimestamp ? "U" : "L");
         formatString.Append(' ');
-        _ = AppendWithColor(formatString, logMsg.LogName, disableConsoleColor
-            ? new ConsoleColors(null, null)
-            : new ConsoleColors(ConsoleColor.Cyan, ConsoleColor.DarkCyan));
+        _ = AppendWithColor(formatString, logMsg.LogName,
+            disableConsoleColor ? new ConsoleColors(null, null) : new ConsoleColors(ConsoleColor.Cyan, ConsoleColor.DarkCyan));
         formatString.Append('[');
         formatString.Append(logMsg.EventId.Id);
         formatString.Append(']');
@@ -137,10 +99,10 @@ internal static class Penetrates
         if (withTraceId && !string.IsNullOrWhiteSpace(logMsg.TraceId))
         {
             formatString.Append(' ');
-            _ = AppendWithColor(formatString, $"'{logMsg.TraceId}'", disableConsoleColor
-                ? new ConsoleColors(null, null)
-                : new ConsoleColors(ConsoleColor.Gray, ConsoleColor.Black));
+            _ = AppendWithColor(formatString, $"'{logMsg.TraceId}'",
+                disableConsoleColor ? new ConsoleColors(null, null) : new ConsoleColors(ConsoleColor.Gray, ConsoleColor.Black));
         }
+
         formatString.AppendLine();
 
         // 输出日志输出所在方法，类型，程序集
@@ -166,7 +128,8 @@ internal static class Penetrates
         if (logMsg.Exception != null)
         {
             var EXCEPTION_SEPARATOR_WITHCOLOR = AppendWithColor(default, EXCEPTION_SEPARATOR, logLevelColors).ToString();
-            var exceptionMessage = $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITHCOLOR}{Environment.NewLine}{logMsg.Exception}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITHCOLOR}";
+            var exceptionMessage =
+                $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITHCOLOR}{Environment.NewLine}{logMsg.Exception}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITHCOLOR}";
 
             formatString.Append(PadLeftAlign(exceptionMessage));
         }
@@ -182,8 +145,9 @@ internal static class Penetrates
     /// <returns></returns>
     private static string PadLeftAlign(string message)
     {
-        var newMessage = string.Join(Environment.NewLine, message.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None)
-                    .Select(line => string.Empty.PadLeft(6, ' ') + line));
+        var newMessage = string.Join(Environment.NewLine,
+            message.Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None)
+                .Select(line => string.Empty.PadLeft(6, ' ') + line));
 
         return newMessage;
     }
@@ -224,8 +188,10 @@ internal static class Penetrates
             {
                 if (scope != null && scope is LogContext context)
                 {
-                    if (logMsg.Context == null) logMsg.Context = context;
-                    else logMsg.Context = logMsg.Context.SetRange(context.Properties);
+                    if (logMsg.Context == null)
+                        logMsg.Context = context;
+                    else
+                        logMsg.Context = logMsg.Context.SetRange(context.Properties);
                 }
             }, null);
         }
@@ -245,14 +211,18 @@ internal static class Penetrates
         formatString ??= new();
 
         // 输出控制台前景色和背景色
-        if (colors.Background.HasValue) formatString.Append(GetBackgroundColorEscapeCode(colors.Background.Value));
-        if (colors.Foreground.HasValue) formatString.Append(GetForegroundColorEscapeCode(colors.Foreground.Value));
+        if (colors.Background.HasValue)
+            formatString.Append(GetBackgroundColorEscapeCode(colors.Background.Value));
+        if (colors.Foreground.HasValue)
+            formatString.Append(GetForegroundColorEscapeCode(colors.Foreground.Value));
 
         formatString.Append(message);
 
         // 输出控制台前景色和背景色
-        if (colors.Background.HasValue) formatString.Append("\u001b[39m\u001b[22m");
-        if (colors.Foreground.HasValue) formatString.Append("\u001b[49m");
+        if (colors.Background.HasValue)
+            formatString.Append("\u001b[39m\u001b[22m");
+        if (colors.Foreground.HasValue)
+            formatString.Append("\u001b[49m");
 
         return formatString;
     }

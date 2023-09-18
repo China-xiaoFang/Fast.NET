@@ -1,5 +1,5 @@
 ﻿using System;
-using Fast.Logging.Implantations;
+using Fast.Logging.Implantation;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Internal;

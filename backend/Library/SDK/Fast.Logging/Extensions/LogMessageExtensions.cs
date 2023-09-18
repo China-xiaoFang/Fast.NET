@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Fast.Logging.Implantations;
+using Fast.Logging.Implantation;
 
 namespace Fast.Logging.Extensions;
 
@@ -25,8 +25,7 @@ public static class LogMessageExtensions
         using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions
         {
             // 解决中文乱码问题
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            Indented = writeIndented
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, Indented = writeIndented
         });
 
         writeAction?.Invoke(writer);

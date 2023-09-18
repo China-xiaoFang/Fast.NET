@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fast.Logging.Implantations;
+using Fast.Logging.Implantation;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Extensions;
@@ -18,9 +18,10 @@ public static class ILoggerExtensions
     /// <returns></returns>
     public static IDisposable ScopeContext(this ILogger logger, IDictionary<object, object> properties)
     {
-        if (logger == null) throw new ArgumentNullException(nameof(logger));
+        if (logger == null)
+            throw new ArgumentNullException(nameof(logger));
 
-        return logger.BeginScope(new LogContext { Properties = properties });
+        return logger.BeginScope(new LogContext {Properties = properties});
     }
 
     /// <summary>
@@ -31,7 +32,8 @@ public static class ILoggerExtensions
     /// <returns></returns>
     public static IDisposable ScopeContext(this ILogger logger, Action<LogContext> configure)
     {
-        if (logger == null) throw new ArgumentNullException(nameof(logger));
+        if (logger == null)
+            throw new ArgumentNullException(nameof(logger));
 
         var logContext = new LogContext();
         configure?.Invoke(logContext);
@@ -47,7 +49,8 @@ public static class ILoggerExtensions
     /// <returns></returns>
     public static IDisposable ScopeContext(this ILogger logger, LogContext context)
     {
-        if (logger == null) throw new ArgumentNullException(nameof(logger));
+        if (logger == null)
+            throw new ArgumentNullException(nameof(logger));
 
         return logger.BeginScope(context);
     }

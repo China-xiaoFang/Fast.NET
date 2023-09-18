@@ -58,8 +58,7 @@ public static class HttpUtil
                 ip = header1.FirstOrDefault();
             }
 
-            if (string.IsNullOrEmpty(ip) &&
-                App.HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
+            if (string.IsNullOrEmpty(ip) && App.HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
             {
                 ip = header2.FirstOrDefault();
             }

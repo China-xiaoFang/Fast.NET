@@ -1,6 +1,5 @@
 ﻿using System;
-using Fast.Logging.Implantations.Database;
-using Fast.Logging.Implantations.File;
+using Fast.Logging.Implantation.File;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 
@@ -62,80 +61,11 @@ public static class ILoggerFactoryExtensions
     /// <param name="configuraionKey">获取配置文件对应的 Key</param>
     /// <param name="configure">文件日志记录器配置选项委托</param>
     /// <returns><see cref="ILoggerFactory"/></returns>
-    public static ILoggerFactory AddFile(this ILoggerFactory factory, Func<string> configuraionKey, Action<FileLoggerOptions> configure = default)
+    public static ILoggerFactory AddFile(this ILoggerFactory factory, Func<string> configuraionKey,
+        Action<FileLoggerOptions> configure = default)
     {
         // 添加文件日志记录器提供程序
         factory.AddProvider(Penetrates.CreateFromConfiguration(configuraionKey, configure));
-
-        return factory;
-    }
-
-    /// <summary>
-    /// 添加数据库日志记录器
-    /// </summary>
-    /// <typeparam name="TDatabaseLoggingWriter">实现自 <see cref="IDatabaseLoggingWriter"/></typeparam>
-    /// <param name="factory">日志工厂</param>
-    /// <param name="serviceProvider">服务提供器</param>
-    /// <param name="configure">数据库日志记录器配置选项委托</param>
-    /// <returns><see cref="ILoggerFactory"/></returns>
-    public static ILoggerFactory AddDatabase<TDatabaseLoggingWriter>(this ILoggerFactory factory, IServiceProvider serviceProvider, Action<DatabaseLoggerOptions> configure)
-         where TDatabaseLoggingWriter : class, IDatabaseLoggingWriter
-    {
-        var options = new DatabaseLoggerOptions();
-        configure?.Invoke(options);
-
-        var databaseLoggerProvider = new DatabaseLoggerProvider(options);
-
-        // 解决数据库写入器中循环引用数据库仓储问题
-        if (databaseLoggerProvider._serviceScope == null)
-        {
-            databaseLoggerProvider.SetServiceProvider(serviceProvider, typeof(TDatabaseLoggingWriter));
-        }
-
-        // 添加数据库日志记录器提供程序
-        factory.AddProvider(databaseLoggerProvider);
-
-        return factory;
-    }
-
-    /// <summary>
-    /// 添加数据库日志记录器
-    /// </summary>
-    /// <typeparam name="TDatabaseLoggingWriter">实现自 <see cref="IDatabaseLoggingWriter"/></typeparam>
-    /// <param name="factory">日志工厂</param>
-    /// <param name="serviceProvider">服务提供器</param>
-    /// <param name="configuraionKey">配置文件对于的 Key</param>
-    /// <param name="configure">数据库日志记录器配置选项委托</param>
-    /// <returns><see cref="ILoggerFactory"/></returns>
-    public static ILoggerFactory AddDatabase<TDatabaseLoggingWriter>(this ILoggerFactory factory, IServiceProvider serviceProvider, string configuraionKey = default, Action<DatabaseLoggerOptions> configure = default)
-         where TDatabaseLoggingWriter : class, IDatabaseLoggingWriter
-    {
-        return factory.AddDatabase<TDatabaseLoggingWriter>(() => configuraionKey ?? "Logging:Database", serviceProvider, configure);
-    }
-
-    /// <summary>
-    /// 添加数据库日志记录器
-    /// </summary>
-    /// <typeparam name="TDatabaseLoggingWriter">实现自 <see cref="IDatabaseLoggingWriter"/></typeparam>
-    /// <param name="factory">日志工厂</param>
-    /// <param name="configuraionKey">获取配置文件对应的 Key</param>
-    /// <param name="serviceProvider">服务提供器</param>
-    /// <param name="configure">数据库日志记录器配置选项委托</param>
-    /// <returns><see cref="ILoggerFactory"/></returns>
-    public static ILoggerFactory AddDatabase<TDatabaseLoggingWriter>(this ILoggerFactory factory, Func<string> configuraionKey, IServiceProvider serviceProvider, Action<DatabaseLoggerOptions> configure = default)
-        where TDatabaseLoggingWriter : class, IDatabaseLoggingWriter
-    {
-        // 创建数据库日志记录器提供程序
-        var databaseLoggerProvider = Penetrates.CreateFromConfiguration(configuraionKey, configure);
-
-        // 解决数据库写入器中循环引用数据库仓储问题
-        if (databaseLoggerProvider._serviceScope == null)
-        {
-            databaseLoggerProvider.SetServiceProvider(serviceProvider, typeof(TDatabaseLoggingWriter));
-        }
-
-        // 添加数据库日志记录器提供程序
-        factory.AddProvider(databaseLoggerProvider);
 
         return factory;
     }

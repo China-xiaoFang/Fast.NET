@@ -1,13 +1,13 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 
-namespace Fast.Logging.Implantations.Empty;
+namespace Fast.Logging.Implantation.Empty;
 
 /// <summary>
 /// 空日志记录器提供程序
 /// </summary>
 /// <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
-[ ProviderAlias("Empty")]
+[ProviderAlias("Empty")]
 public sealed class EmptyLoggerProvider : ILoggerProvider
 {
     /// <summary>

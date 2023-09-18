@@ -4,13 +4,13 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Fast.Logging.Implantations.File;
+namespace Fast.Logging.Implantation.File;
 
 /// <summary>
 /// 文件日志记录器提供程序
 /// </summary>
 /// <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
-[ ProviderAlias("File")]
+[ProviderAlias("File")]
 public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
 {
     /// <summary>
@@ -49,8 +49,7 @@ public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
     /// 构造函数
     /// </summary>
     /// <param name="fileName">日志文件名</param>
-    public FileLoggerProvider(string fileName)
-        : this(fileName, true)
+    public FileLoggerProvider(string fileName) : this(fileName, true)
     {
     }
 
@@ -59,8 +58,7 @@ public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
     /// </summary>
     /// <param name="fileName">日志文件名</param>
     /// <param name="append">追加到已存在日志文件或覆盖它们</param>
-    public FileLoggerProvider(string fileName, bool append)
-        : this(fileName, new FileLoggerOptions() { Append = append })
+    public FileLoggerProvider(string fileName, bool append) : this(fileName, new FileLoggerOptions {Append = append})
     {
     }
 
@@ -79,8 +77,8 @@ public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
         _fileLoggingWriter = new FileLoggingWriter(this);
 
         // 创建长时间运行的后台任务，并将日志消息队列中数据写入文件中
-        _processQueueTask = Task.Factory.StartNew(state => ((FileLoggerProvider)state).ProcessQueue()
-            , this, TaskCreationOptions.LongRunning);
+        _processQueueTask = Task.Factory.StartNew(state => ((FileLoggerProvider) state).ProcessQueue(), this,
+            TaskCreationOptions.LongRunning);
     }
 
     /// <summary>
@@ -138,9 +136,15 @@ public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
             // 设置 1.5秒的缓冲时间，避免还有日志消息没有完成写入文件中
             _processQueueTask?.Wait(1500);
         }
-        catch (TaskCanceledException) { }
-        catch (AggregateException ex) when (ex.InnerExceptions.Count == 1 && ex.InnerExceptions[0] is TaskCanceledException) { }
-        catch { }
+        catch (TaskCanceledException)
+        {
+        }
+        catch (AggregateException ex) when (ex.InnerExceptions.Count == 1 && ex.InnerExceptions[0] is TaskCanceledException)
+        {
+        }
+        catch
+        {
+        }
 
         // 清空文件日志记录器
         _fileLoggers.Clear();
@@ -164,10 +168,13 @@ public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
             try
             {
                 _logMessageQueue.Add(logMsg);
-                return;
             }
-            catch (InvalidOperationException) { }
-            catch { }
+            catch (InvalidOperationException)
+            {
+            }
+            catch
+            {
+            }
         }
     }
 

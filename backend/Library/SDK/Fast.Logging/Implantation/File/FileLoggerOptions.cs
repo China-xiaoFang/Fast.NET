@@ -1,17 +1,13 @@
+﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace Fast.Logging.Implantations.File;
+namespace Fast.Logging.Implantation.File;
 
 /// <summary>
-/// 文件日志配置类
+/// 文件日志记录器配置选项
 /// </summary>
-public sealed class FileLoggerSettings
+public sealed class FileLoggerOptions
 {
-    /// <summary>
-    /// 日志文件完整路径或文件名，推荐 .log 作为拓展名
-    /// </summary>
-    public string FileName { get; set; } = "application.log";
-
     /// <summary>
     /// 追加到已存在日志文件或覆盖它们
     /// </summary>
@@ -38,6 +34,40 @@ public sealed class FileLoggerSettings
     /// 是否使用 UTC 时间戳，默认 false
     /// </summary>
     public bool UseUtcTimestamp { get; set; }
+
+    /// <summary>
+    /// 自定义日志消息格式化程序
+    /// </summary>
+    public Func<LogMessage, string> MessageFormat { get; set; }
+
+    /// <summary>
+    /// 自定义日志筛选器
+    /// </summary>
+    public Func<LogMessage, bool> WriteFilter { get; set; }
+
+    /// <summary>
+    /// 自定义日志文件名格式化程序（规则）
+    /// </summary>
+    /// <example>
+    /// options.FileNameRule = (fileName) => {
+    ///     return String.Format(Path.GetFileNameWithoutExtension(fileName) + "_{0:yyyy}-{0:MM}-{0:dd}" + Path.GetExtension(fileName), DateTime.UtcNow);
+    ///
+    ///     // 或者每天创建一个文件
+    ///     // return String.Format(fileName, DateTime.UtcNow);
+    /// }
+    /// </example>
+    public Func<string, string> FileNameRule { get; set; }
+
+    /// <summary>
+    /// 自定义日志文件写入错误程序
+    /// </summary>
+    /// <remarks>主要解决日志在写入过程中文件被打开或其他应用程序占用的情况，一旦出现上述情况可创建备用日志文件继续写入</remarks>
+    /// <example>
+    /// options.HandleWriteError = (err) => {
+    ///     err.UseRollbackFileName(Path.GetFileNameWithoutExtension(err.CurrentFileName)+ "_alt" + Path.GetExtension(err.CurrentFileName));
+    /// };
+    /// </example>
+    public Action<FileWriteError> HandleWriteError { get; set; }
 
     /// <summary>
     /// 日期格式化

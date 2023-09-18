@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using Fast.Logging.Extensions;
-using Fast.Logging.Implantations;
+using Fast.Logging.Implantation;
 
 namespace Fast.Logging;
 
@@ -13,7 +13,7 @@ public static class LoggerFormatter
     /// <summary>
     /// Json 输出格式化
     /// </summary>
-    public static readonly Func<LogMessage, string> Json = (logMsg) =>
+    public static readonly Func<LogMessage, string> Json = logMsg =>
     {
         return logMsg.Write(writer => WriteJson(logMsg, writer));
     };
@@ -21,7 +21,7 @@ public static class LoggerFormatter
     /// <summary>
     /// Json 输出格式化
     /// </summary>
-    public static readonly Func<LogMessage, string> JsonIndented = (logMsg) =>
+    public static readonly Func<LogMessage, string> JsonIndented = logMsg =>
     {
         return logMsg.Write(writer => WriteJson(logMsg, writer), true);
     };
@@ -61,8 +61,10 @@ public static class LoggerFormatter
 
         // 输出异常信息
         writer.WritePropertyName("exception");
-        if (logMsg.Exception == null) writer.WriteNullValue();
-        else writer.WriteStringValue(logMsg.Exception.ToString());
+        if (logMsg.Exception == null)
+            writer.WriteNullValue();
+        else
+            writer.WriteStringValue(logMsg.Exception.ToString());
 
         writer.WriteEndObject();
     }

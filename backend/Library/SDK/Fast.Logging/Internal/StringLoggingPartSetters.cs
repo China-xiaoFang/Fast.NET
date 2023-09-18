@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fast.Logging.Implantations;
+using Fast.Logging.Implantation;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Internal;
@@ -17,7 +17,9 @@ public sealed partial class StringLoggingPart
     public StringLoggingPart SetMessage(string message)
     {
         // 支持读取配置渲染
-        if (message != null) Message = message.Render();
+        //if (message != null) Message = message.Render();
+        if (message != null)
+            Message = message;
         return this;
     }
 
@@ -37,7 +39,8 @@ public sealed partial class StringLoggingPart
     /// <param name="args"></param>
     public StringLoggingPart SetArgs(params object[] args)
     {
-        if (args != null && args.Length > 0) Args = args;
+        if (args != null && args.Length > 0)
+            Args = args;
         return this;
     }
 
@@ -66,7 +69,8 @@ public sealed partial class StringLoggingPart
     /// </summary>
     public StringLoggingPart SetException(Exception exception)
     {
-        if (exception != null) Exception = exception;
+        if (exception != null)
+            Exception = exception;
         return this;
     }
 
@@ -77,7 +81,8 @@ public sealed partial class StringLoggingPart
     /// <returns></returns>
     public StringLoggingPart SetLoggerScoped(IServiceProvider serviceProvider)
     {
-        if (serviceProvider != null) LoggerScoped = serviceProvider;
+        if (serviceProvider != null)
+            LoggerScoped = serviceProvider;
         return this;
     }
 
@@ -88,8 +93,9 @@ public sealed partial class StringLoggingPart
     /// <returns></returns>
     public StringLoggingPart ScopeContext(IDictionary<object, object> properties)
     {
-        if (properties == null) return this;
-        LogContext = new LogContext { Properties = properties };
+        if (properties == null)
+            return this;
+        LogContext = new LogContext {Properties = properties};
 
         return this;
     }
@@ -116,7 +122,8 @@ public sealed partial class StringLoggingPart
     /// <returns></returns>
     public StringLoggingPart ScopeContext(LogContext context)
     {
-        if (context == null) return this;
+        if (context == null)
+            return this;
         LogContext = context;
 
         return this;

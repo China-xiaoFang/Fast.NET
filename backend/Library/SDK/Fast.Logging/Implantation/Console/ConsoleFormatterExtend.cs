@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 
-namespace Fast.Logging.Implantations.Console;
+namespace Fast.Logging.Implantation.Console;
 
 /// <summary>
 /// 控制台默认格式化程序拓展
@@ -33,11 +33,12 @@ public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     /// 构造函数
     /// </summary>
     /// <param name="formatterOptions"></param>
-    public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions)
-        : base("console-format")
+    public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions) : base("console-format")
     {
-        (_formatOptionsReloadToken, _formatterOptions) = (formatterOptions.OnChange(ReloadFormatterOptions), formatterOptions.CurrentValue);
-        _disableColors = _formatterOptions.ColorBehavior == LoggerColorBehavior.Disabled || (_formatterOptions.ColorBehavior == LoggerColorBehavior.Default && System.Console.IsOutputRedirected);
+        (_formatOptionsReloadToken, _formatterOptions) =
+            (formatterOptions.OnChange(ReloadFormatterOptions), formatterOptions.CurrentValue);
+        _disableColors = _formatterOptions.ColorBehavior == LoggerColorBehavior.Disabled ||
+                         (_formatterOptions.ColorBehavior == LoggerColorBehavior.Default && System.Console.IsOutputRedirected);
     }
 
     /// <summary>
@@ -54,7 +55,8 @@ public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
 
         // 创建日志消息
         var logDateTime = _formatterOptions.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now;
-        var logMsg = new LogMessage(logEntry.Category, logEntry.LogLevel, logEntry.EventId, message, logEntry.Exception, null, logEntry.State, logDateTime, Environment.CurrentManagedThreadId, _formatterOptions.UseUtcTimestamp, App.GetTraceId());
+        var logMsg = new LogMessage(logEntry.Category, logEntry.LogLevel, logEntry.EventId, message, logEntry.Exception, null,
+            logEntry.State, logDateTime, Environment.CurrentManagedThreadId, _formatterOptions.UseUtcTimestamp, App.GetTraceId());
 
         string standardMessage;
 
@@ -70,16 +72,13 @@ public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
         else
         {
             // 获取标准化日志消息
-            standardMessage = Penetrates.OutputStandardMessage(logMsg
-               , _formatterOptions.DateFormat
-               , true
-               , _disableColors
-               , _formatterOptions.WithTraceId
-               , _formatterOptions.WithStackFrame);
+            standardMessage = Penetrates.OutputStandardMessage(logMsg, _formatterOptions.DateFormat, true, _disableColors,
+                _formatterOptions.WithTraceId, _formatterOptions.WithStackFrame);
         }
 
         // 空检查
-        if (message is null) return;
+        if (message is null)
+            return;
 
         // 判断是否自定义了日志格式化程序
         if (_formatterOptions.WriteHandler != null)
@@ -108,6 +107,7 @@ public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     private void ReloadFormatterOptions(ConsoleFormatterExtendOptions options)
     {
         _formatterOptions = options;
-        _disableColors = options.ColorBehavior == LoggerColorBehavior.Disabled || (options.ColorBehavior == LoggerColorBehavior.Default && System.Console.IsOutputRedirected);
+        _disableColors = options.ColorBehavior == LoggerColorBehavior.Disabled ||
+                         (options.ColorBehavior == LoggerColorBehavior.Default && System.Console.IsOutputRedirected);
     }
 }

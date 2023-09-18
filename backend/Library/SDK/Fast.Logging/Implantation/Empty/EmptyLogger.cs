@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace Fast.Logging.Implantations.Empty;
+namespace Fast.Logging.Implantation.Empty;
 
 /// <summary>
 /// 空日志记录器
@@ -40,13 +40,11 @@ public sealed class EmptyLogger : ILogger
     /// <param name="exception">异常对象</param>
     /// <param name="formatter">日志格式化器</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public void Log<TState>(LogLevel logLevel
-        , EventId eventId
-        , TState state
-        , Exception exception
-        , Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+        Func<TState, Exception, string> formatter)
     {
         // 判断日志级别是否有效
-        if (!IsEnabled(logLevel)) return;
+        if (!IsEnabled(logLevel))
+            return;
     }
 }

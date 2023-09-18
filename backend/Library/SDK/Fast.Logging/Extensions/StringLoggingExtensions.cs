@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fast.Logging.Implantations;
+using Fast.Logging.Implantation;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 
@@ -144,7 +144,8 @@ public static class StringLoggingExtensions
     /// <param name="args"></param>
     public static void LogInformation(this string message, EventId eventId, Exception exception, params object[] args)
     {
-        StringLoggingPart.Default().SetMessage(message).SetArgs(args).SetEventId(eventId).SetException(exception).LogInformation();
+        StringLoggingPart.Default().SetMessage(message).SetArgs(args).SetEventId(eventId).SetException(exception)
+            .LogInformation();
     }
 
     /// <summary>
@@ -179,7 +180,8 @@ public static class StringLoggingExtensions
     /// <param name="args"></param>
     public static void LogInformation<TClass>(this string message, Exception exception, params object[] args)
     {
-        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetException(exception).LogInformation();
+        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetException(exception)
+            .LogInformation();
     }
 
     /// <summary>
@@ -192,7 +194,8 @@ public static class StringLoggingExtensions
     /// <param name="args"></param>
     public static void LogInformation<TClass>(this string message, EventId eventId, Exception exception, params object[] args)
     {
-        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId).SetException(exception).LogInformation();
+        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId)
+            .SetException(exception).LogInformation();
     }
 
     /// <summary>
@@ -284,7 +287,8 @@ public static class StringLoggingExtensions
     /// <param name="args"></param>
     public static void LogWarning<TClass>(this string message, EventId eventId, Exception exception, params object[] args)
     {
-        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId).SetException(exception).LogWarning();
+        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId)
+            .SetException(exception).LogWarning();
     }
 
     /// <summary>
@@ -376,7 +380,8 @@ public static class StringLoggingExtensions
     /// <param name="args"></param>
     public static void LogError<TClass>(this string message, EventId eventId, Exception exception, params object[] args)
     {
-        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId).SetException(exception).LogError();
+        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId)
+            .SetException(exception).LogError();
     }
 
     /// <summary>
@@ -468,7 +473,8 @@ public static class StringLoggingExtensions
     /// <param name="args"></param>
     public static void LogDebug<TClass>(this string message, EventId eventId, Exception exception, params object[] args)
     {
-        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId).SetException(exception).LogDebug();
+        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId)
+            .SetException(exception).LogDebug();
     }
 
     /// <summary>
@@ -560,7 +566,8 @@ public static class StringLoggingExtensions
     /// <param name="args"></param>
     public static void LogTrace<TClass>(this string message, EventId eventId, Exception exception, params object[] args)
     {
-        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId).SetException(exception).LogTrace();
+        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId)
+            .SetException(exception).LogTrace();
     }
 
     /// <summary>
@@ -652,6 +659,7 @@ public static class StringLoggingExtensions
     /// <param name="args"></param>
     public static void LogCritical<TClass>(this string message, EventId eventId, Exception exception, params object[] args)
     {
-        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId).SetException(exception).LogCritical();
+        StringLoggingPart.Default().SetCategory<TClass>().SetMessage(message).SetArgs(args).SetEventId(eventId)
+            .SetException(exception).LogCritical();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fast.Logging.Implantations.File;
+namespace Fast.Logging.Implantation.File;
 
 /// <summary>
 /// 文件写入错误信息上下文

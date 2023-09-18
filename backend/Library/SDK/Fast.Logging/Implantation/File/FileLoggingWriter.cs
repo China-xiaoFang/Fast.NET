@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Fast.Logging.Implantations.File;
+namespace Fast.Logging.Implantation.File;
 
 /// <summary>
 /// 文件日志写入器
@@ -38,7 +38,7 @@ internal class FileLoggingWriter
     /// <summary>
     /// 缓存上次返回的基本日志文件名，避免重复解析
     /// </summary>
-    private string __LastBaseFileName = null;
+    private string __LastBaseFileName;
 
     /// <summary>
     /// 判断是否启动滚动日志功能
@@ -96,7 +96,8 @@ internal class FileLoggingWriter
             var logDirName = Path.GetDirectoryName(baseFileName);
 
             // 如果没有配置文件路径则默认放置根目录
-            if (string.IsNullOrEmpty(logDirName)) logDirName = Directory.GetCurrentDirectory();
+            if (string.IsNullOrEmpty(logDirName))
+                logDirName = Directory.GetCurrentDirectory();
 
             // 在当前目录下根据文件通配符查找所有匹配的文件
             var logFiles = Directory.Exists(logDirName)
@@ -107,17 +108,17 @@ internal class FileLoggingWriter
             if (logFiles.Length > 0)
             {
                 // 根据文件名和最后更新时间获取最近操作的文件
-                var lastFileInfo = logFiles
-                        .Select(fName => new FileInfo(fName))
-                        .OrderByDescending(fInfo => fInfo.Name)
-                        .OrderByDescending(fInfo => fInfo.LastWriteTime).First();
+                var lastFileInfo = logFiles.Select(fName => new FileInfo(fName)).OrderByDescending(fInfo => fInfo.Name)
+                    .OrderByDescending(fInfo => fInfo.LastWriteTime).First();
 
                 _fileName = lastFileInfo.FullName;
             }
             // 没有任何匹配的日志文件直接使用当前基础文件名
-            else _fileName = baseFileName;
+            else
+                _fileName = baseFileName;
         }
-        else _fileName = baseFileName;
+        else
+            _fileName = baseFileName;
     }
 
     /// <summary>
@@ -131,9 +132,9 @@ internal class FileLoggingWriter
         var baseFileName = GetBaseFileName();
 
         // 如果文件不存在或没有达到 FileSizeLimitBytes 限制大小，则返回基础文件名
-        if (!System.IO.File.Exists(baseFileName)
-            || _options.FileSizeLimitBytes <= 0
-            || new FileInfo(baseFileName).Length < _options.FileSizeLimitBytes) return baseFileName;
+        if (!System.IO.File.Exists(baseFileName) || _options.FileSizeLimitBytes <= 0 ||
+            new FileInfo(baseFileName).Length < _options.FileSizeLimitBytes)
+            return baseFileName;
 
         // 获取日志基础文件名和当前日志文件名
         var currentFileIndex = 0;
@@ -157,7 +158,8 @@ internal class FileLoggingWriter
         }
 
         // 返回下一个匹配的日志文件名（完整路径）
-        var nextFileName = baseFileNameOnly + (nextFileIndex > 0 ? nextFileIndex.ToString() : "") + Path.GetExtension(baseFileName);
+        var nextFileName = baseFileNameOnly + (nextFileIndex > 0 ? nextFileIndex.ToString() : "") +
+                           Path.GetExtension(baseFileName);
         return Path.Combine(Path.GetDirectoryName(baseFileName), nextFileName);
     }
 
@@ -190,7 +192,8 @@ internal class FileLoggingWriter
                 }
             }
             // 其他直接抛出异常
-            else throw;
+            else
+                throw;
         }
 
         // 初始化文本写入器
@@ -205,14 +208,17 @@ internal class FileLoggingWriter
             fileInfo.Directory.Create();
 
             // 创建文件流，采用共享锁方式
-            _fileStream = new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, 4096, FileOptions.WriteThrough);
+            _fileStream = new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, 4096,
+                FileOptions.WriteThrough);
 
             // 删除超出滚动日志限制的文件
             DropFilesIfOverLimit(fileInfo);
 
             // 判断是否追加还是覆盖
-            if (append) _fileStream.Seek(0, SeekOrigin.End);
-            else _fileStream.SetLength(0);
+            if (append)
+                _fileStream.Seek(0, SeekOrigin.End);
+            else
+                _fileStream.SetLength(0);
         }
     }
 
@@ -238,8 +244,8 @@ internal class FileLoggingWriter
         }
 
         // 是否超出限制的最大大小
-        bool isMaxFileSizeThresholdReached() => _options.FileSizeLimitBytes > 0
-            && _fileStream.Length > _options.FileSizeLimitBytes;
+        bool isMaxFileSizeThresholdReached() =>
+            _options.FileSizeLimitBytes > 0 && _fileStream.Length > _options.FileSizeLimitBytes;
 
         // 是否重新自定义了文件名
         bool isBaseFileNameChanged()
@@ -268,7 +274,8 @@ internal class FileLoggingWriter
     private void DropFilesIfOverLimit(FileInfo fileInfo)
     {
         // 判断是否启用滚动文件功能
-        if (!_isEnabledRollingFiles) return;
+        if (!_isEnabledRollingFiles)
+            return;
 
         // 处理 Windows 和 Linux 路径分隔符不一致问题
         var fName = fileInfo.FullName.Replace('\\', '/');
@@ -280,20 +287,21 @@ internal class FileLoggingWriter
         if (succeed && _fileLoggerProvider._rollingFileNames.Count > _options.MaxRollingFiles)
         {
             // 根据最后写入时间删除过时日志
-            var dropFiles = _fileLoggerProvider._rollingFileNames
-                .OrderBy(u => u.Value.LastWriteTimeUtc)
+            var dropFiles = _fileLoggerProvider._rollingFileNames.OrderBy(u => u.Value.LastWriteTimeUtc)
                 .Take(_fileLoggerProvider._rollingFileNames.Count - _options.MaxRollingFiles);
 
             // 遍历所有需要删除的文件
             foreach (var rollingFile in dropFiles)
             {
                 var removeSucceed = _fileLoggerProvider._rollingFileNames.TryRemove(rollingFile.Key, out _);
-                if (!removeSucceed) continue;
+                if (!removeSucceed)
+                    continue;
 
                 // 执行删除
                 Task.Run(() =>
                 {
-                    if (System.IO.File.Exists(rollingFile.Key)) System.IO.File.Delete(rollingFile.Key);
+                    if (System.IO.File.Exists(rollingFile.Key))
+                        System.IO.File.Delete(rollingFile.Key);
                 });
             }
         }
@@ -306,12 +314,14 @@ internal class FileLoggingWriter
     /// <param name="flush"></param>
     internal void Write(LogMessage logMsg, bool flush)
     {
-        if (_textWriter == null) return;
+        if (_textWriter == null)
+            return;
 
         CheckForNewLogFile();
         _textWriter.WriteLine(logMsg.Message);
 
-        if (flush) _textWriter.Flush();
+        if (flush)
+            _textWriter.Flush();
     }
 
     /// <summary>
@@ -319,7 +329,8 @@ internal class FileLoggingWriter
     /// </summary>
     internal void Close()
     {
-        if (_textWriter == null) return;
+        if (_textWriter == null)
+            return;
 
         var textloWriter = _textWriter;
         _textWriter = null;

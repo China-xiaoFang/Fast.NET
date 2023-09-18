@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using Fast.Core.App;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 
-namespace Fast.Logging.Implantations.Database;
+namespace Fast.Logging.Implantation.File;
 
 /// <summary>
-/// 数据库日志记录器
+/// 文件日志记录器
 /// </summary>
 /// <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
-public sealed class DatabaseLogger : ILogger
+public sealed class FileLogger : ILogger
 {
     /// <summary>
     /// 记录器类别名称
@@ -19,25 +17,25 @@ public sealed class DatabaseLogger : ILogger
     private readonly string _logName;
 
     /// <summary>
-    /// 数据库日志记录器提供器
+    /// 文件日志记录器提供器
     /// </summary>
-    private readonly DatabaseLoggerProvider _databaseLoggerProvider;
+    private readonly FileLoggerProvider _fileLoggerProvider;
 
     /// <summary>
     /// 日志配置选项
     /// </summary>
-    private readonly DatabaseLoggerOptions _options;
+    private readonly FileLoggerOptions _options;
 
     /// <summary>
     /// 构造函数
     /// </summary>
     /// <param name="logName">记录器类别名称</param>
-    /// <param name="databaseLoggerProvider">数据库日志记录器提供器</param>
-    public DatabaseLogger(string logName, DatabaseLoggerProvider databaseLoggerProvider)
+    /// <param name="fileLoggerProvider">文件日志记录器提供器</param>
+    public FileLogger(string logName, FileLoggerProvider fileLoggerProvider)
     {
         _logName = logName;
-        _databaseLoggerProvider = databaseLoggerProvider;
-        _options = databaseLoggerProvider.LoggerOptions;
+        _fileLoggerProvider = fileLoggerProvider;
+        _options = fileLoggerProvider.LoggerOptions;
     }
 
     /// <summary>
@@ -48,7 +46,7 @@ public sealed class DatabaseLogger : ILogger
     /// <returns><see cref="IDisposable"/></returns>
     public IDisposable BeginScope<TState>(TState state)
     {
-        return _databaseLoggerProvider.ScopeProvider.Push(state);
+        return _fileLoggerProvider.ScopeProvider.Push(state);
     }
 
     /// <summary>
@@ -71,46 +69,42 @@ public sealed class DatabaseLogger : ILogger
     /// <param name="exception">异常对象</param>
     /// <param name="formatter">日志格式化器</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public void Log<TState>(LogLevel logLevel
-        , EventId eventId
-        , TState state
-        , Exception exception
-        , Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+        Func<TState, Exception, string> formatter)
     {
         // 判断日志级别是否有效
-        if (!IsEnabled(logLevel)) return;
+        if (!IsEnabled(logLevel))
+            return;
 
         // 检查日志格式化器
-        if (formatter == null) throw new ArgumentNullException(nameof(formatter));
+        if (formatter == null)
+            throw new ArgumentNullException(nameof(formatter));
 
         // 获取格式化后的消息
         var message = formatter(state, exception);
 
         var logDateTime = _options.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now;
-        var logMsg = new LogMessage(_logName, logLevel, eventId, message, exception, null, state, logDateTime, Environment.CurrentManagedThreadId, _options.UseUtcTimestamp, App.GetTraceId());
+        var logMsg = new LogMessage(_logName, logLevel, eventId, message, exception, null, state, logDateTime,
+            Environment.CurrentManagedThreadId, _options.UseUtcTimestamp, App.GetTraceId());
 
         // 设置日志上下文
-        logMsg = Penetrates.SetLogContext(_databaseLoggerProvider.ScopeProvider, logMsg, _options.IncludeScopes);
+        logMsg = Penetrates.SetLogContext(_fileLoggerProvider.ScopeProvider, logMsg, _options.IncludeScopes);
 
         // 判断是否自定义了日志筛选器，如果是则检查是否符合条件
-        if (_options.WriteFilter?.Invoke(logMsg) == false) return;
+        if (_options.WriteFilter?.Invoke(logMsg) == false)
+            return;
 
         // 设置日志消息模板
         logMsg.Message = _options.MessageFormat != null
             ? _options.MessageFormat(logMsg)
-            : Penetrates.OutputStandardMessage(logMsg, _options.DateFormat, withTraceId: _options.WithTraceId, withStackFrame: _options.WithStackFrame);
+            : Penetrates.OutputStandardMessage(logMsg, _options.DateFormat, withTraceId: _options.WithTraceId,
+                withStackFrame: _options.WithStackFrame);
 
         // 空检查
-        if (logMsg.Message is null) return;
-
-        // 判断是否忽略循环输出日志，解决数据库日志提供程序中也输出日志导致写入递归问题
-        if (_options.IgnoreReferenceLoop)
-        {
-            var stackTrace = new StackTrace();
-            if (stackTrace.GetFrames().Any(u => u.HasMethod() && typeof(IDatabaseLoggingWriter).IsAssignableFrom(u.GetMethod().DeclaringType))) return;
-        }
+        if (logMsg.Message is null)
+            return;
 
         // 写入日志队列
-        _databaseLoggerProvider.WriteToQueue(logMsg);
+        _fileLoggerProvider.WriteToQueue(logMsg);
     }
 }

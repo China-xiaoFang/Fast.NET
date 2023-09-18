@@ -63,7 +63,8 @@ public sealed partial class StringLoggingPart
     /// <returns></returns>
     public void Log()
     {
-        if (Message == null) return;
+        if (Message == null)
+            return;
 
         // 获取日志实例
         var (logger, loggerFactory, hasException) = GetLogger();
@@ -89,10 +90,9 @@ public sealed partial class StringLoggingPart
         {
             logger.Log(Level, EventId.Value, Exception, Message, Args);
         }
-        else { }
 
         // 释放临时日志工厂
-        if (hasException == true)
+        if (hasException)
         {
             loggerFactory?.Dispose();
         }
@@ -142,9 +142,6 @@ public sealed partial class StringLoggingPart
     /// <returns></returns>
     private static ILoggerFactory CreateDisposeLoggerFactory()
     {
-        return LoggerFactory.Create(builder =>
-        {
-            builder.AddConsoleFormatter();
-        });
+        return LoggerFactory.Create(builder => { builder.AddConsoleFormatter(); });
     }
 }
