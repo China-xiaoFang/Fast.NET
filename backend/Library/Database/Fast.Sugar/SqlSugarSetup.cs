@@ -19,7 +19,7 @@ public static class SqlSugarSetup
     /// Client不能单例注入
     /// </summary>
     /// <param name="service"></param>
-    public static void AddSqlSugarClientService(this IServiceCollection service)
+    public static void AddSqlSugar(this IServiceCollection service)
     {
         // Add Snowflakes Id.
         // 设置雪花Id的workerId，确保每个实例workerId都应不同
