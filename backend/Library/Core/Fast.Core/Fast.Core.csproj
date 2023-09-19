@@ -16,15 +16,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="SqlSugarCore" Version="5.1.4.85" />
-	  <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Fast.Authentication\Fast.Authentication.csproj" />
-	  <ProjectReference Include="..\..\SDK\Fast.EventBus\Fast.EventBus.csproj" />
-	  <ProjectReference Include="..\..\SDK\Fast.Logging\Fast.Logging.csproj" />
-	  <ProjectReference Include="..\..\Tool\Fast.Http\Fast.Http.csproj" />
+	  <ProjectReference Include="..\..\Tool\Fast.Extension\Fast.Extensions.csproj" />
+	  <ProjectReference Include="..\..\Tool\Fast.Util\Fast.Util.csproj" />
 	</ItemGroup>
 
 </Project>
