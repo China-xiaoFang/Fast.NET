@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Fast.UAParser;
+﻿namespace Fast.UAParser;
 
 internal static class VersionString
 {

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Fast.Core.DataValidation.Enums;
 using Fast.Core.DataValidation.Internal;

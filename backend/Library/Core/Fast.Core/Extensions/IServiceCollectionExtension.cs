@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO.Compression;
-using System.Linq;
+﻿using System.IO.Compression;
 using System.Reflection;
 using Fast.Core.Diagnostics;
 using Fast.Core.Reflection;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.UnifyResult.Attributes;
+﻿namespace Fast.Core.UnifyResult.Attributes;
 
 /// <summary>
 /// 禁止规范化处理

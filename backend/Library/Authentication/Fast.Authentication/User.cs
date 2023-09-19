@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Fast.Authentication.Internal;
+﻿using Fast.Authentication.Internal;
 using Fast.Cache;
 using Fast.Core.Enum;
 using Fast.Extensions;

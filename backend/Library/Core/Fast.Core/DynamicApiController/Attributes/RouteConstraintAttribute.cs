@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.DynamicApiController.Attributes;
+﻿namespace Fast.Core.DynamicApiController.Attributes;
 
 /// <summary>
 /// 接口参数约束

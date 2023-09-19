@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.DataValidation.Attributes;
+﻿namespace Fast.Core.DataValidation.Attributes;
 
 /// <summary>
 /// 验证消息类型特性

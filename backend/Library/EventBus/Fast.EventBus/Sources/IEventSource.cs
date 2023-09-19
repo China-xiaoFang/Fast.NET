@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace Fast.EventBus.Sources;
+﻿namespace Fast.EventBus.Sources;
 
 /// <summary>
 /// 事件源（事件承载对象）依赖接口

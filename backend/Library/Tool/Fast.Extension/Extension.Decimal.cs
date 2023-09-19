@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Extensions;
+﻿namespace Fast.Extensions;
 
 /// <summary>
 /// DateTime扩展

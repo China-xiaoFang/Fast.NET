@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 
 namespace Fast.Core.FriendlyException.Exceptions;

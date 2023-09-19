@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.Core;
+﻿using Fast.Core;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 

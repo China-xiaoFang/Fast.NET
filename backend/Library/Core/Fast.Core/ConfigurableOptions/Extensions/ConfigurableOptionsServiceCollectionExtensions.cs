@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Fast.Core.ConfigurableOptions.Attributes;
 using Fast.Core.ConfigurableOptions.Internal;
 using Fast.Core.ConfigurableOptions.Options;

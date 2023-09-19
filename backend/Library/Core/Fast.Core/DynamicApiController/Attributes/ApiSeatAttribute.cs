@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.Core.DynamicApiController.Enums;
+﻿using Fast.Core.DynamicApiController.Enums;
 
 namespace Fast.Core.DynamicApiController.Attributes;
 

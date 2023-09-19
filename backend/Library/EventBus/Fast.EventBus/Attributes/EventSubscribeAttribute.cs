@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.EventBus.Dependencies;
+﻿using Fast.EventBus.Dependencies;
 using Fast.EventBus.Extensions;
 
 namespace Fast.EventBus.Attributes;

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Fast.Authentication.Internal;
+﻿using Fast.Authentication.Internal;
 using Fast.Core.Enum;
 
 namespace Fast.Authentication;

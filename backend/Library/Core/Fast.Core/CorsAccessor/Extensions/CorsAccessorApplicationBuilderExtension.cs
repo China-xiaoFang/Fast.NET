@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.Core.CorsAccessor.Internal;
+﻿using Fast.Core.CorsAccessor.Internal;
 using Fast.Core.CorsAccessor.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;

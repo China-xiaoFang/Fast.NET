@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.FriendlyException.Attributes;
+﻿namespace Fast.Core.FriendlyException.Attributes;
 
 /// <summary>
 /// 错误代码类型特性

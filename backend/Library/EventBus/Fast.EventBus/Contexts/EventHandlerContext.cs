@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using Fast.EventBus.Attributes;
 using Fast.EventBus.Sources;
 

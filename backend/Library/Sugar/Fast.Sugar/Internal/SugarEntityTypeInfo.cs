@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Sugar.Internal;
+﻿namespace Fast.Sugar.Internal;
 
 /// <summary>
 /// Sugar实体类型信息

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Fast.Extensions;
+﻿namespace Fast.Extensions;
 
 /// <summary>
 /// <see cref="ICollection{T}"/> 拓展类

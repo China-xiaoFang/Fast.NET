@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.EventBus.Builders;
+﻿using Fast.EventBus.Builders;
 using Fast.EventBus.Dependencies;
 using Fast.EventBus.Factories;
 using Fast.EventBus.HostedServices;

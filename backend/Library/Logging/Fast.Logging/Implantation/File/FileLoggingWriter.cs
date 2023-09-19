@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Fast.Logging.Implantation.File;
+﻿namespace Fast.Logging.Implantation.File;
 
 /// <summary>
 /// 文件日志写入器

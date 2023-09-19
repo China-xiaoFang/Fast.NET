@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.Sugar.BaseModel.Interface;
+﻿using Fast.Sugar.BaseModel.Interface;
 using SqlSugar;
 
 namespace Fast.Sugar.BaseModel;

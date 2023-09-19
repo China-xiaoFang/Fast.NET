@@ -1,4 +1,3 @@
-using System;
 using Fast.Core.ConfigurableOptions.Extensions;
 using Fast.Core.CorsAccessor.Internal;
 using Fast.Core.CorsAccessor.Options;

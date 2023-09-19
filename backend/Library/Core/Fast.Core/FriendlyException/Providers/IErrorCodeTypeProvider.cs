@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.FriendlyException.Providers;
+﻿namespace Fast.Core.FriendlyException.Providers;
 
 /// <summary>
 /// 异常错误代码提供器

@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.Core.ConfigurableOptions.Extensions;
+﻿using Fast.Core.ConfigurableOptions.Extensions;
 using Fast.Core.Extensions;
 using Fast.Core.FriendlyException.Extensions.Options;
 using Fast.Core.FriendlyException.Filters;

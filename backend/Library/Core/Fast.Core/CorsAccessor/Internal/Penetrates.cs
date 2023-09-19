@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fast.Core.CorsAccessor.Options;
+﻿using Fast.Core.CorsAccessor.Options;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace Fast.Core.CorsAccessor.Internal;

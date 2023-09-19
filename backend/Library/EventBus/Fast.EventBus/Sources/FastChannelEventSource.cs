@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
-using System.Threading;
+﻿using System.Text.Json.Serialization;
 using Fast.EventBus.Extensions;
 
 namespace Fast.EventBus.Sources;

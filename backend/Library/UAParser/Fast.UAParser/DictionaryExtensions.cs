@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Fast.UAParser;
+﻿namespace Fast.UAParser;
 
 internal static class DictionaryExtensions
 {

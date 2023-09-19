@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using Fast.Core.FriendlyException.Attributes;
 
 namespace Fast.Core.FriendlyException.Internal;

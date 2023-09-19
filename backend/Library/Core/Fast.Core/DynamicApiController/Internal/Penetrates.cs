@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using Fast.Core.DynamicApiController.Attributes;
 using Fast.Core.DynamicApiController.Dependencies;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Sugar.BaseModel.Interface;
+﻿namespace Fast.Sugar.BaseModel.Interface;
 
 /// <summary>
 /// BaseEntity 接口定义类

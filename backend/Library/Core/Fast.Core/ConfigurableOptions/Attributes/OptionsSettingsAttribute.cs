@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.ConfigurableOptions.Attributes;
+﻿namespace Fast.Core.ConfigurableOptions.Attributes;
 
 /// <summary>
 /// 选项配置特性

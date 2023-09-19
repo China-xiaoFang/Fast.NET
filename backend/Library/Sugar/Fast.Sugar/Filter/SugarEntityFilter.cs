@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fast.Authentication;
+﻿using Fast.Authentication;
 using Fast.Core;
 using Fast.Core.DependencyInjection;
 using Fast.EventBus.Dependencies;

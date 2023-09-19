@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Fast.Logging.Extensions;
 using Fast.Logging.Implantation;
 

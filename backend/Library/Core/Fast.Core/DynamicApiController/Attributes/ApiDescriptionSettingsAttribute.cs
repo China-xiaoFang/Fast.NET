@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.Core.DynamicApiController.Internal;
+﻿using Fast.Core.DynamicApiController.Internal;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Core.DynamicApiController.Attributes;

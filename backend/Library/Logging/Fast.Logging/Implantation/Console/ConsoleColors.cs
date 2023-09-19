@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Logging.Implantation.Console;
+﻿namespace Fast.Logging.Implantation.Console;
 
 /// <summary>
 /// 控制台颜色结构

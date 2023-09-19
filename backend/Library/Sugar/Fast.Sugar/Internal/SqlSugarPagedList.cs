@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Fast.Sugar.Internal;
+﻿namespace Fast.Sugar.Internal;
 
 /// <summary>
 /// SqlSugar 分页泛型集合

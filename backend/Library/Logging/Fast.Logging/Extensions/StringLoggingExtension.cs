@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Fast.Logging.Implantation;
+﻿using Fast.Logging.Implantation;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 

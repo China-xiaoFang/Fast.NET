@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Fast.Extensions;
+﻿namespace Fast.Extensions;
 
 /// <summary>
 /// 验证扩展类

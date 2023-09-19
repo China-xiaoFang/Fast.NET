@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.UnifyResult.Internal;
+﻿namespace Fast.Core.UnifyResult.Internal;
 
 /// <summary>
 /// 规范化元数据

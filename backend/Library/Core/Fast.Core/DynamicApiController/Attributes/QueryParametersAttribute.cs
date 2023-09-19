@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.DynamicApiController.Attributes;
+﻿namespace Fast.Core.DynamicApiController.Attributes;
 
 /// <summary>
 /// 将 Action 所有参数 [FromQuery] 化

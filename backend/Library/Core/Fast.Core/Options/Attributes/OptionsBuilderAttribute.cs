@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.Options.Attributes;
+﻿namespace Fast.Core.Options.Attributes;
 
 /// <summary>
 /// 选项构建器特性

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core;
+﻿namespace Fast.Core;
 
 /// <summary>
 /// 常用常量

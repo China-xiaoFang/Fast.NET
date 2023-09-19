@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Fast.Core.DynamicApiController.Internal;
+﻿namespace Fast.Core.DynamicApiController.Internal;
 
 /// <summary>
 /// 参数路由模板

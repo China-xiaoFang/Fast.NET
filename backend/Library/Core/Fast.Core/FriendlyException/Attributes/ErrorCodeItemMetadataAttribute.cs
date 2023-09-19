@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.FriendlyException.Attributes;
+﻿namespace Fast.Core.FriendlyException.Attributes;
 
 /// <summary>
 /// 异常元数据特性

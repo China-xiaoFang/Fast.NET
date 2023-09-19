@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Fast.Http;
+﻿namespace Fast.Http;
 
 /// <summary>
 /// 天气预报工具类

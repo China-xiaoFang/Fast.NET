@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.DataValidation.Providers;
+﻿namespace Fast.Core.DataValidation.Providers;
 
 /// <summary>
 /// 验证消息类型提供器

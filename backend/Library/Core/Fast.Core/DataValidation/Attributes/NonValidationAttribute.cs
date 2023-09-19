@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.DataValidation.Attributes;
+﻿namespace Fast.Core.DataValidation.Attributes;
 
 /// <summary>
 /// 跳过验证

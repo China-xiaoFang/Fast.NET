@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Fast.Logging.Implantation;
+﻿namespace Fast.Logging.Implantation;
 
 /// <summary>
 /// 日志上下文

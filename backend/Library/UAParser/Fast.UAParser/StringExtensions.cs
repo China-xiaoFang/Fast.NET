@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.UAParser;
+﻿namespace Fast.UAParser;
 
 internal static class StringExtensions
 {

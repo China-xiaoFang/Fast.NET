@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CSRedis;
+﻿using CSRedis;
 using Microsoft.Extensions.Configuration;
 
 // ReSharper disable once CheckNamespace

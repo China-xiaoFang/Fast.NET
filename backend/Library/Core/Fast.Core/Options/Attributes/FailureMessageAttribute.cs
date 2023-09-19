@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fast.Core.Options.Attributes;
+﻿namespace Fast.Core.Options.Attributes;
 
 /// <summary>
 /// 选项校验失败消息特性

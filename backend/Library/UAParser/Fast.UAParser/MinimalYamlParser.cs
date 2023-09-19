@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Fast.UAParser;
+﻿namespace Fast.UAParser;
 
 /// <summary>
 /// Just enough string parsing to recognize the regexes.yaml file format. Introduced to remove

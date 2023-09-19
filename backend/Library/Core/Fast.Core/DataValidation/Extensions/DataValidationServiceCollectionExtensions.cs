@@ -1,5 +1,4 @@
-﻿using System;
-using Fast.Core.ConfigurableOptions.Extensions;
+﻿using Fast.Core.ConfigurableOptions.Extensions;
 using Fast.Core.DataValidation.Extensions.Options;
 using Fast.Core.DataValidation.Filters;
 using Fast.Core.DataValidation.Options;
