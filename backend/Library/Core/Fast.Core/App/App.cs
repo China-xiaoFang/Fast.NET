@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Fast.Core.ConfigurableOptions.Internal;
 using Fast.Core.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Fast.Core;
 
@@ -294,5 +296,41 @@ public static class App
             u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType));
 
         return serviceDescriptor?.Lifetime;
+    }
+
+    /// <summary>
+    /// 获取选项
+    /// </summary>
+    /// <typeparam name="TOptions">强类型选项类</typeparam>
+    /// <param name="serviceProvider"></param>
+    /// <returns>TOptions</returns>
+    public static TOptions GetOptions<TOptions>(IServiceProvider serviceProvider = default) where TOptions : class, new()
+    {
+        return Penetrates.GetOptionsOnStarting<TOptions>() ??
+               GetService<IOptions<TOptions>>(serviceProvider ?? RootServices)?.Value;
+    }
+
+    /// <summary>
+    /// 获取选项
+    /// </summary>
+    /// <typeparam name="TOptions">强类型选项类</typeparam>
+    /// <param name="serviceProvider"></param>
+    /// <returns>TOptions</returns>
+    public static TOptions GetOptionsMonitor<TOptions>(IServiceProvider serviceProvider = default) where TOptions : class, new()
+    {
+        return Penetrates.GetOptionsOnStarting<TOptions>() ??
+               GetService<IOptionsMonitor<TOptions>>(serviceProvider ?? RootServices)?.CurrentValue;
+    }
+
+    /// <summary>
+    /// 获取选项
+    /// </summary>
+    /// <typeparam name="TOptions">强类型选项类</typeparam>
+    /// <param name="serviceProvider"></param>
+    /// <returns>TOptions</returns>
+    public static TOptions GetOptionsSnapshot<TOptions>(IServiceProvider serviceProvider = default) where TOptions : class, new()
+    {
+        // 这里不能从根服务解析，因为是 Scoped 作用域
+        return Penetrates.GetOptionsOnStarting<TOptions>() ?? GetService<IOptionsSnapshot<TOptions>>(serviceProvider)?.Value;
     }
 }

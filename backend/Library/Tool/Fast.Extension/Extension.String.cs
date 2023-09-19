@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Fast.Extensions;
 
@@ -96,5 +98,34 @@ public static partial class Extensions
         }
 
         return !string.IsNullOrWhiteSpace(tempStr) ? tempStr : str;
+    }
+
+    /// <summary>
+    /// 切割骆驼命名式字符串
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static string[] SplitCamelCase(this string str)
+    {
+        if (str == null)
+            return Array.Empty<string>();
+
+        if (string.IsNullOrWhiteSpace(str))
+            return new[] {str};
+        if (str.Length == 1)
+            return new[] {str};
+
+        return Regex.Split(str, @"(?=\p{Lu}\p{Ll})|(?<=\p{Ll})(?=\p{Lu})").Where(u => u.Length > 0).ToArray();
+    }
+
+    /// <summary>
+    /// 格式化字符串
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public static string Format(this string str, params object[] args)
+    {
+        return args == null || args.Length == 0 ? str : string.Format(str, args);
     }
 }

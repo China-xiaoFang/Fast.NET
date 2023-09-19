@@ -135,4 +135,28 @@ public static partial class Extensions
             }
         }
     }
+
+    /// <summary>
+    /// 合并两个字典
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="dic">字典</param>
+    /// <param name="newDic">新字典</param>
+    /// <returns></returns>
+    public static Dictionary<string, T> AddOrUpdate<T>(this Dictionary<string, T> dic, IDictionary<string, T> newDic)
+    {
+        foreach (var key in newDic.Keys)
+        {
+            if (dic.TryGetValue(key, out var value))
+            {
+                dic[key] = value;
+            }
+            else
+            {
+                dic.Add(key, newDic[key]);
+            }
+        }
+
+        return dic;
+    }
 }

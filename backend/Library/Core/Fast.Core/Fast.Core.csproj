@@ -20,6 +20,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\..\Tool\Fast.Extension\Fast.Extensions.csproj" />
 	  <ProjectReference Include="..\..\Tool\Fast.Util\Fast.Util.csproj" />
 	</ItemGroup>

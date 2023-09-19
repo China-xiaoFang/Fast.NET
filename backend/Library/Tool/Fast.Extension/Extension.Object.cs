@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace Fast.Extensions;
 
@@ -171,8 +173,56 @@ public static partial class Extensions
     /// </summary>
     /// <param name="type">类型</param>
     /// <returns></returns>
-    internal static bool IsValueTuple(this Type type)
+    public static bool IsValueTuple(this Type type)
     {
         return type.Namespace == "System" && type.Name.Contains("ValueTuple`");
+    }
+
+    /// <summary>
+    /// 判断方法是否是异步
+    /// </summary>
+    /// <param name="method">方法</param>
+    /// <returns></returns>
+    public static bool IsAsync(this MethodInfo method)
+    {
+        return method.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null ||
+               method.ReturnType.ToString().StartsWith(typeof(Task).FullName);
+    }
+
+    /// <summary>
+    /// 获取方法真实返回类型
+    /// </summary>
+    /// <param name="method"></param>
+    /// <returns></returns>
+    public static Type GetRealReturnType(this MethodInfo method)
+    {
+        // 判断是否是异步方法
+        var isAsyncMethod = method.IsAsync();
+
+        // 获取类型返回值并处理 Task 和 Task<T> 类型返回值
+        var returnType = method.ReturnType;
+        return isAsyncMethod ? (returnType.GenericTypeArguments.FirstOrDefault() ?? typeof(void)) : returnType;
+    }
+
+    /// <summary>
+    /// 查找方法指定特性，如果没找到则继续查找声明类
+    /// </summary>
+    /// <typeparam name="TAttribute"></typeparam>
+    /// <param name="method"></param>
+    /// <param name="inherit"></param>
+    /// <returns></returns>
+    public static TAttribute GetFoundAttribute<TAttribute>(this MethodInfo method, bool inherit) where TAttribute : Attribute
+    {
+        // 获取方法所在类型
+        var declaringType = method.DeclaringType;
+
+        var attributeType = typeof(TAttribute);
+
+        // 判断方法是否定义指定特性，如果没有再查找声明类
+        var foundAttribute = method.IsDefined(attributeType, inherit)
+            ? method.GetCustomAttribute<TAttribute>(inherit)
+            : (declaringType.IsDefined(attributeType, inherit) ? declaringType.GetCustomAttribute<TAttribute>(inherit) : default);
+
+        return foundAttribute;
     }
 }

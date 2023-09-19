@@ -36,7 +36,6 @@ internal static class Penetrates
     /// <summary>
     /// 在主机启动时获取选项
     /// </summary>
-    /// <remarks>解决 v4.5.2+ 历史版本升级问题</remarks>
     /// <typeparam name="TOptions"></typeparam>
     /// <returns></returns>
     internal static TOptions GetOptionsOnStarting<TOptions>() where TOptions : class, new()
