@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Fast.Core.App;
+using Fast.Core;
 using Fast.Sugar.Attributes;
 using Fast.Sugar.BaseModel;
 using Fast.Sugar.BaseModel.Interface;

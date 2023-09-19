@@ -16,12 +16,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CSRedisCore" Version="3.8.670" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Fast.Core\Fast.Core.csproj" />
+		<PackageReference Include="CSRedisCore" Version="3.8.670" />
 	</ItemGroup>
 
 </Project>

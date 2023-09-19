@@ -1,4 +1,4 @@
-﻿using Fast.Core.App;
+﻿using Fast.Core;
 using Fast.Logging.Extensions;
 using Microsoft.Extensions.Logging;
 

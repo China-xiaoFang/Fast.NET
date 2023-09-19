@@ -13,7 +13,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Fast.Authentication;
 using Fast.Cache;
-using Fast.Sugar.Extension;
+using Fast.Sugar.Extensions;
 using Fast.Sugar.Internal;
 using Fast.Sugar.Options;
 using SqlSugar;

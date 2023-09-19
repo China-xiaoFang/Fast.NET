@@ -1,4 +1,8 @@
-﻿using System;
+﻿
+
+// ReSharper disable once CheckNamespace
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Fast.Core.App;
+namespace Fast.Core;
 
 /// <summary>
 /// App 上下文

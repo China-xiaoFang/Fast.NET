@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using Fast.Cache;
-using Fast.Core.App;
+using Fast.Core;
 using Fast.Core.DependencyInjection;
 using Fast.UAParser;
 using Microsoft.Extensions.DependencyInjection;

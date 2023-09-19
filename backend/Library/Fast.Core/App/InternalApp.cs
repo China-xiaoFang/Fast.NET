@@ -4,13 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Fast.Core.DependencyInjection.Extensions;
+using Fast.Core.Diagnostics;
 using Fast.Core.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Fast.Core.App;
+// ReSharper disable once CheckNamespace
+namespace Fast.Core;
 
 /// <summary>
 /// 内部 App 副本
@@ -59,6 +61,7 @@ internal class InternalApp
                 HostEnvironment = WebHostEnvironment = hostContext.HostingEnvironment;
 
                 // 加载配置
+                Debugging.Info("加载JSON文件配置中......");
                 AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
             });
         }
@@ -77,14 +80,32 @@ internal class InternalApp
             // 存储服务提供器
             InternalServices = services;
 
+            // 跨域配置
+            Debugging.Info("正在配置跨域请求......");
+            services.AddCorsAccessor();
+
             // 注册 HttpContextAccessor 服务
+            Debugging.Info("正在注册 HttpContextAccessor 服务......");
             services.AddHttpContextAccessor();
 
+            // Gzip 压缩
+            Debugging.Info("正在注册 Gzip压缩......");
+            services.AddGzipBrotliCompression();
+
+            // JSON 序列化配置
+            services.AddJsonOptions();
+
+            // 添加日志服务
+            IServiceCollectionExtension.AddLogging(services);
+
             // 注册内存和分布式内存
+            Debugging.Info("正在注册 MemoryCache......");
             services.AddMemoryCache();
+            Debugging.Info("正在注册 DistributedMemoryCache......");
             services.AddDistributedMemoryCache();
 
             // 注册全局依赖注入
+            Debugging.Info("正在注册全局依赖注入......");
             services.AddInnerDependencyInjection();
 
             // 添加对象映射
@@ -92,6 +113,12 @@ internal class InternalApp
 
             // 默认内置 GBK，Windows-1252, Shift-JIS, GB2312 编码支持
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            // 添加缓存
+            services.AddCache();
+
+            // 添加 SqlSugar
+            services.AddSqlSugar();
         });
     }
 
@@ -107,6 +134,7 @@ internal class InternalApp
             HostEnvironment = hostContext.HostingEnvironment;
 
             // 加载配置
+            Debugging.Info("加载JSON文件配置中......");
             AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
         });
     }

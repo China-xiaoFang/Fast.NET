@@ -1,5 +1,5 @@
 ﻿using System;
-using Fast.Core.App;
+using Fast.Core;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 

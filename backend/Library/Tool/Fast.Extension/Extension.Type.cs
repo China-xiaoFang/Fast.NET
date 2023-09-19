@@ -415,4 +415,26 @@ public static partial class Extensions
         // 创建一个委托并将其转换为适当的 Func 类型
         return (Func<object, object?>) dynamicMethod.CreateDelegate(typeof(Func<object, object>));
     }
+
+    /// <summary>
+    /// 获取类型自定义特性
+    /// </summary>
+    /// <typeparam name="TAttribute">特性类型</typeparam>
+    /// <param name="type">类类型</param>
+    /// <param name="inherit">是否继承查找</param>
+    /// <returns>特性对象</returns>
+    public static TAttribute GetTypeAttribute<TAttribute>(this Type type, bool inherit = false)
+        where TAttribute : Attribute
+    {
+        // 空检查
+        if (type == null)
+        {
+            throw new ArgumentNullException(nameof(type));
+        }
+
+        // 检查特性并获取特性对象
+        return type.IsDefined(typeof(TAttribute), inherit)
+            ? type.GetCustomAttribute<TAttribute>(inherit)
+            : default;
+    }
 }

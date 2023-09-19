@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fast.Authentication;
-using Fast.Core.App;
+using Fast.Core;
 using Fast.Core.DependencyInjection;
 using Fast.EventBus.Dependencies;
 using Fast.EventBus.Sources;
