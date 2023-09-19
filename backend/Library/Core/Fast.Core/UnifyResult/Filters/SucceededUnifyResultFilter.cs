@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Fast.Core.DataValidation;
 using Fast.Core.UnifyResult.Options;
+using Fast.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;

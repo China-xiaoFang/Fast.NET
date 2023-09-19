@@ -1,0 +1,309 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Http</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.Http.DaySentenceUtil">
+            <summary>
+            每日一句工具类
+            </summary>
+        </member>
+        <member name="M:Fast.Http.DaySentenceUtil.GetDaySentence">
+            <summary>
+            得到每日一句
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Fast.Http.DaySentenceOutPut.Picture2">
+            <summary>
+            图片2
+            </summary>
+        </member>
+        <member name="P:Fast.Http.DaySentenceOutPut.Caption">
+            <summary>
+            说明
+            </summary>
+        </member>
+        <member name="P:Fast.Http.DaySentenceOutPut.Note">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Fast.Http.DaySentenceOutPut.Content">
+            <summary>
+            英文内容
+            </summary>
+        </member>
+        <member name="P:Fast.Http.DaySentenceOutPut.shareImg">
+            <summary>
+            分享图片
+            </summary>
+        </member>
+        <member name="P:Fast.Http.DaySentenceOutPut.DateTime">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="T:Fast.Http.HttpUtil">
+            <summary>
+            HTTP网络工具
+            </summary>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.Ip">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.ClientIp">
+            <summary>
+            客户端IP地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.LocalIp">
+            <summary>
+            本机IP地址
+            </summary>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.LanIp">
+            <summary>
+            局域网IP地址
+            </summary>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.RequestUrlAddress">
+            <summary>
+            完整请求地址
+            </summary>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.RefererUrlAddress">
+            <summary>
+            来源地址
+            默认从 HTTP Header['Referer'] 中获取
+            </summary>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.IsWebSocketRequest">
+            <summary>
+            是否是 WebSocket 请求
+            </summary>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.UserAgent">
+            <summary>
+            请求UserAgent信息
+            </summary>
+        </member>
+        <member name="M:Fast.Http.HttpUtil.UserAgentInfo">
+            <summary>
+            UserAgent信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Fast.Http.HttpUtil.OSVersion">
+            <summary>
+            得到操作系统版本
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Http.HttpUtil.WanInfoCache(System.String)">
+            <summary>
+            根据IP地址获取公网信息
+            不传值默认获取服务器的公网信息
+            带缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Http.HttpUtil.WanInfoCacheAsync(System.String)">
+            <summary>
+            根据IP地址获取公网信息
+            不传值默认获取服务器的公网信息
+            带缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Http.HttpUtil.WanInfo(System.String)">
+            <summary>
+            根据IP地址获取公网信息
+            不传值默认获取服务器的公网信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Http.HttpUtil.WanInfoAsync(System.String)">
+            <summary>
+            根据IP地址获取公网信息
+            不传值默认获取服务器的公网信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Http.HttpUtil.EncodeRemotePath(System.String)">
+            <summary>
+            远程路径Encode处理,会保证开头是/，结尾也是/
+            </summary>
+            <param name="remotePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Http.HttpUtil.StandardizationRemotePath(System.String)">
+            <summary>
+            标准化远程目录路径,会保证开头是/，结尾也是/ ,如果命名不规范，存在保留字符，会返回空字符
+            </summary>
+            <param name="remotePath">要标准化的远程路径</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Http.WhoisIPInfoModel">
+            <summary>
+            万网Ip信息Model类
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WhoisIPInfoModel.Ip">
+            <summary>
+            Ip地址
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WhoisIPInfoModel.Pro">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WhoisIPInfoModel.ProCode">
+            <summary>
+            省份邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WhoisIPInfoModel.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WhoisIPInfoModel.CityCode">
+            <summary>
+            城市邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WhoisIPInfoModel.Address">
+            <summary>
+            地理信息
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WhoisIPInfoModel.Operator">
+            <summary>
+            运营商
+            </summary>
+        </member>
+        <member name="T:Fast.Http.UserAgentInfoModel">
+            <summary>
+            UserAgent 信息Model类
+            </summary>
+        </member>
+        <member name="P:Fast.Http.UserAgentInfoModel.PhoneModel">
+            <summary>
+            手机型号
+            </summary>
+        </member>
+        <member name="P:Fast.Http.UserAgentInfoModel.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.Http.UserAgentInfoModel.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="T:Fast.Http.WeatherUtil">
+            <summary>
+            天气预报工具类
+            </summary>
+        </member>
+        <member name="M:Fast.Http.WeatherUtil.GetWeatherInfo(System.String)">
+            <summary>
+            得到天气预报
+            </summary>
+            <param name="cityName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Http.WeatherInfo">
+            <summary>
+            天气信息
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfo.Date">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfo.High">
+            <summary>
+            最高温度
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfo.Fengli">
+            <summary>
+            风力
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfo.Low">
+            <summary>
+            最低温度
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfo.Fengxiang">
+            <summary>
+            分向
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfo.Type">
+            <summary>
+            类型
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfoOutPut.Yesterday">
+            <summary>
+            昨日天气
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfoOutPut.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfoOutPut.Forecast">
+            <summary>
+            未来五天天气
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfoOutPut.Ganmao">
+            <summary>
+            感冒
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfoOutPut.Wendu">
+            <summary>
+            温度
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfoOutPut.Success">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherInfoOutPut.Desc">
+            <summary>
+            失败描述
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherOutPut.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherOutPut.Status">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:Fast.Http.WeatherOutPut.Desc">
+            <summary>
+            描述
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -6,6 +6,7 @@ using Fast.Core.DynamicApiController.Internal;
 using Fast.Core.FriendlyException.Exceptions;
 using Fast.Core.FriendlyException.Results;
 using Fast.Core.UnifyResult;
+using Fast.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;

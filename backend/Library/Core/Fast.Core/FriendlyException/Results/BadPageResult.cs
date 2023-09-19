@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Fast.Core.Reflection;
+using Fast.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -110,7 +111,7 @@ public class BadPageResult : StatusCodeResult
 
         // 读取嵌入式页面路径
         var errorhtml =
-            $"{Reflect.GetAssemblyName(thisAssembly)}{thisType.Namespace.Replace(nameof(Furion), string.Empty)}.Assets.error.html";
+            $"{Reflect.GetAssemblyName(thisAssembly)}{thisType.Namespace.Replace(nameof(Fast), string.Empty)}.Assets.error.html";
 
         // 解析嵌入式文件流
         byte[] buffer;

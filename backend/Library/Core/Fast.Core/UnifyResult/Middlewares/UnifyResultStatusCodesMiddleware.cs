@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Fast.Core.UnifyResult.Options;
+using Fast.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
