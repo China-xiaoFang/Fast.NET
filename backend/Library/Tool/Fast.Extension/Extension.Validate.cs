@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// 验证扩展类

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// 枚举扩展

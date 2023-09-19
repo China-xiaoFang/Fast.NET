@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// 位扩展
@@ -62,10 +62,12 @@ public static partial class Extensions
     public static string ClearStringAffixes(this string str, int pos = 0, params string[] affixes)
     {
         // 空字符串直接返回
-        if (string.IsNullOrWhiteSpace(str)) return str;
+        if (string.IsNullOrWhiteSpace(str))
+            return str;
 
         // 空前后缀集合直接返回
-        if (affixes == null || affixes.Length == 0) return str;
+        if (affixes == null || affixes.Length == 0)
+            return str;
 
         var startCleared = false;
         var endCleared = false;
@@ -73,20 +75,24 @@ public static partial class Extensions
         string tempStr = null;
         foreach (var affix in affixes)
         {
-            if (string.IsNullOrWhiteSpace(affix)) continue;
+            if (string.IsNullOrWhiteSpace(affix))
+                continue;
 
             if (pos != 1 && !startCleared && str.StartsWith(affix, StringComparison.OrdinalIgnoreCase))
             {
                 tempStr = str[affix.Length..];
                 startCleared = true;
             }
+
             if (pos != -1 && !endCleared && str.EndsWith(affix, StringComparison.OrdinalIgnoreCase))
             {
                 var _tempStr = !string.IsNullOrWhiteSpace(tempStr) ? tempStr : str;
                 tempStr = _tempStr[..^affix.Length];
                 endCleared = true;
             }
-            if (startCleared && endCleared) break;
+
+            if (startCleared && endCleared)
+                break;
         }
 
         return !string.IsNullOrWhiteSpace(tempStr) ? tempStr : str;

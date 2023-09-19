@@ -11,7 +11,7 @@ namespace Fast.Core.DependencyInjection.Extensions;
 /// <summary>
 /// <see cref="IServiceCollection"/> 依赖注入拓展类
 /// </summary>
-public static  class DependencyInjectionExtension
+public static class DependencyInjectionExtension
 {
     /// <summary>
     /// 类型名称集合

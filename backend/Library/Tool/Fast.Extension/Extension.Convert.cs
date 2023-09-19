@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// 转换扩展类

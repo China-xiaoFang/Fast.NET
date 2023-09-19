@@ -8,7 +8,7 @@ namespace Fast.Mapster.Extensions;
 /// <summary>
 /// 对象映射拓展类
 /// </summary>
-public static  class ObjectMapperExtension
+public static class ObjectMapperExtension
 {
     /// <summary>
     /// 添加对象映射

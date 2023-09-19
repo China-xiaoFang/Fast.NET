@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// 位扩展

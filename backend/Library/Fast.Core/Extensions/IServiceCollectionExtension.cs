@@ -1,14 +1,14 @@
 ﻿using System;
+using System.IO.Compression;
 using System.Linq;
-using Fast.Core.Reflection;
 using System.Reflection;
+using Fast.Core.Diagnostics;
+using Fast.Core.Reflection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
-using System.IO.Compression;
-using Fast.Core.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Core.Extensions;
 
@@ -105,7 +105,7 @@ public static class IServiceCollectionExtension
 
         return services;
     }
-    
+
     /// <summary>
     /// 添加对象映射
     /// </summary>
@@ -124,8 +124,7 @@ public static class IServiceCollectionExtension
             var addObjectMapperMethod = objectMapperServiceCollectionExtensionsType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static).First(u => u.Name == "AddObjectMapper");
 
-            return addObjectMapperMethod.Invoke(null, new object[] {services, App.Assemblies.ToArray()}) as
-                IServiceCollection;
+            return addObjectMapperMethod.Invoke(null, new object[] {services, App.Assemblies.ToArray()}) as IServiceCollection;
         }
 
         return services;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Fast.Core.CorsAccessor.Extensions;
 using Fast.Core.DependencyInjection.Extensions;
 using Fast.Core.Diagnostics;
 using Fast.Core.Extensions;

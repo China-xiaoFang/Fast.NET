@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Furion.ConfigurableOptions;
+namespace Fast.Core.ConfigurableOptions.Attributes;
 
 /// <summary>
 /// 选项配置特性
 /// </summary>
-[ AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class)]
 public sealed class OptionsSettingsAttribute : Attribute
 {
     /// <summary>

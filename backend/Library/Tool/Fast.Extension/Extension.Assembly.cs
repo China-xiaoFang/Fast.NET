@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// 程序集扩展

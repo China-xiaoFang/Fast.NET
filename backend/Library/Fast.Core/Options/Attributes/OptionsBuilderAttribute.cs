@@ -14,12 +14,12 @@
 
 using System;
 
-namespace Furion.Options;
+namespace Fast.Core.Options.Attributes;
 
 /// <summary>
 /// 选项构建器特性
 /// </summary>
-[ AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class)]
 public sealed class OptionsBuilderAttribute : Attribute
 {
     /// <summary>

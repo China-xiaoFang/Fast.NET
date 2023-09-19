@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// <see cref="Type"/> 拓展类
@@ -423,8 +423,7 @@ public static partial class Extensions
     /// <param name="type">类类型</param>
     /// <param name="inherit">是否继承查找</param>
     /// <returns>特性对象</returns>
-    public static TAttribute GetTypeAttribute<TAttribute>(this Type type, bool inherit = false)
-        where TAttribute : Attribute
+    public static TAttribute GetTypeAttribute<TAttribute>(this Type type, bool inherit = false) where TAttribute : Attribute
     {
         // 空检查
         if (type == null)
@@ -433,8 +432,6 @@ public static partial class Extensions
         }
 
         // 检查特性并获取特性对象
-        return type.IsDefined(typeof(TAttribute), inherit)
-            ? type.GetCustomAttribute<TAttribute>(inherit)
-            : default;
+        return type.IsDefined(typeof(TAttribute), inherit) ? type.GetCustomAttribute<TAttribute>(inherit) : default;
     }
 }

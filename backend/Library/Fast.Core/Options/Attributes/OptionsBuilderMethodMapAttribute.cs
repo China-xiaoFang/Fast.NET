@@ -14,12 +14,12 @@
 
 using System;
 
-namespace Furion.Options;
+namespace Fast.Core.Options.Attributes;
 
 /// <summary>
 /// 选项构建器方法映射特性
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Interface)]
 internal sealed class OptionsBuilderMethodMapAttribute : Attribute
 {
     /// <summary>

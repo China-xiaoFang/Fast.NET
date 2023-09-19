@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
-using Fast.Core;
+using Fast.Core.ConfigurableOptions.Attributes;
+using Fast.Core.ConfigurableOptions.Options;
 
-namespace Furion.ConfigurableOptions;
+namespace Fast.Core.ConfigurableOptions.Internal;
 
 /// <summary>
 /// 常量、公共方法配置类
@@ -24,9 +25,11 @@ internal static class Penetrates
         return (optionsSettings, optionsSettings switch
         {
             // // 没有贴 [OptionsSettings]，如果选项类以 `Options` 结尾，则移除，否则返回类名称
-            null => optionsType.Name.EndsWith(defaultStuffx) ? optionsType.Name[0..^defaultStuffx.Length] : optionsType.Name,
+            null => optionsType.Name.EndsWith(defaultStuffx) ? optionsType.Name[..^defaultStuffx.Length] : optionsType.Name,
             // 如果贴有 [OptionsSettings] 特性，但未指定 Path 参数，则直接返回类名，否则返回 Path
-            _ => optionsSettings != null && string.IsNullOrWhiteSpace(optionsSettings.Path) ? optionsType.Name : optionsSettings.Path,
+            _ => optionsSettings != null && string.IsNullOrWhiteSpace(optionsSettings.Path)
+                ? optionsType.Name
+                : optionsSettings.Path,
         });
     }
 
@@ -36,8 +39,7 @@ internal static class Penetrates
     /// <remarks>解决 v4.5.2+ 历史版本升级问题</remarks>
     /// <typeparam name="TOptions"></typeparam>
     /// <returns></returns>
-    internal static TOptions GetOptionsOnStarting<TOptions>()
-        where TOptions : class, new()
+    internal static TOptions GetOptionsOnStarting<TOptions>() where TOptions : class, new()
     {
         if (App.RootServices == null && typeof(IConfigurableOptions).IsAssignableFrom(typeof(TOptions)))
         {

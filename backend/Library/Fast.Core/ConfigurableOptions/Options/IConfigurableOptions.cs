@@ -1,20 +1,20 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace Furion.ConfigurableOptions;
+namespace Fast.Core.ConfigurableOptions.Options;
 
 /// <summary>
 /// 应用选项依赖接口
 /// </summary>
-public partial interface IConfigurableOptions
-{ }
+public interface IConfigurableOptions
+{
+}
 
 /// <summary>
 /// 选项后期配置
 /// </summary>
 /// <typeparam name="TOptions"></typeparam>
-public partial interface IConfigurableOptions<TOptions> : IConfigurableOptions
-    where TOptions : class, IConfigurableOptions
+public interface IConfigurableOptions<TOptions> : IConfigurableOptions where TOptions : class, IConfigurableOptions
 {
     /// <summary>
     /// 选项后期配置
@@ -29,9 +29,8 @@ public partial interface IConfigurableOptions<TOptions> : IConfigurableOptions
 /// </summary>
 /// <typeparam name="TOptions"></typeparam>
 /// <typeparam name="TOptionsValidation"></typeparam>
-public partial interface IConfigurableOptions<TOptions, TOptionsValidation> : IConfigurableOptions<TOptions>
-    where TOptions : class, IConfigurableOptions
-    where TOptionsValidation : class, IValidateOptions<TOptions>
+public interface IConfigurableOptions<TOptions, TOptionsValidation> : IConfigurableOptions<TOptions>
+    where TOptions : class, IConfigurableOptions where TOptionsValidation : class, IValidateOptions<TOptions>
 {
 }
 
@@ -39,7 +38,7 @@ public partial interface IConfigurableOptions<TOptions, TOptionsValidation> : IC
 /// 带监听的应用选项依赖接口
 /// </summary>
 /// <typeparam name="TOptions"></typeparam>
-public partial interface IConfigurableOptionsListener<TOptions> : IConfigurableOptions<TOptions>
+public interface IConfigurableOptionsListener<TOptions> : IConfigurableOptions<TOptions>
     where TOptions : class, IConfigurableOptions
 {
     /// <summary>

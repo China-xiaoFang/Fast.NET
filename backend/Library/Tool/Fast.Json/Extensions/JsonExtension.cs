@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 
-namespace Fast.Json.Extension;
+namespace Fast.Json.Extensions;
 
 /// <summary>
 /// Json 扩展

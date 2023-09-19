@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Fast.Core.FriendlyException;
+namespace Fast.EventBus.FriendlyException;
 
 /// <summary>
 /// 重试静态类

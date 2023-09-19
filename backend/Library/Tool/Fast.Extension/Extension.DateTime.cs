@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// DateTime扩展

@@ -12,17 +12,17 @@
 // 在任何情况下，作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
+using Fast.Core.Options.Attributes;
 using Microsoft.Extensions.Options;
 
-namespace Furion.Options;
+namespace Fast.Core.Options.Dependencies;
 
 /// <summary>
 /// 选项验证依赖接口
 /// </summary>
 /// <typeparam name="TOptions">选项类型</typeparam>
 [OptionsBuilderMethodMap(nameof(OptionsBuilder<TOptions>.Validate), false)]
-public interface IValidateOptionsBuilder<TOptions> : IOptionsBuilderDependency<TOptions>
-    where TOptions : class
+public interface IValidateOptionsBuilder<TOptions> : IOptionsBuilderDependency<TOptions> where TOptions : class
 {
     /// <summary>
     /// 复杂验证
@@ -38,8 +38,7 @@ public interface IValidateOptionsBuilder<TOptions> : IOptionsBuilderDependency<T
 /// <typeparam name="TDep">依赖服务</typeparam>
 [OptionsBuilderMethodMap(nameof(OptionsBuilder<TOptions>.Validate), false)]
 public interface IValidateOptionsBuilder<TOptions, TDep> : IOptionsBuilderDependency<TOptions>
-    where TOptions : class
-    where TDep : class
+    where TOptions : class where TDep : class
 {
     /// <summary>
     /// 复杂验证
@@ -57,9 +56,7 @@ public interface IValidateOptionsBuilder<TOptions, TDep> : IOptionsBuilderDepend
 /// <typeparam name="TDep2">依赖服务</typeparam>
 [OptionsBuilderMethodMap(nameof(OptionsBuilder<TOptions>.Validate), false)]
 public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2> : IOptionsBuilderDependency<TOptions>
-    where TOptions : class
-    where TDep1 : class
-    where TDep2 : class
+    where TOptions : class where TDep1 : class where TDep2 : class
 {
     /// <summary>
     /// 复杂验证
@@ -67,9 +64,7 @@ public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2> : IOptionsBuild
     /// <param name="options">选项实例</param>
     /// <param name="dep1">依赖服务</param>
     /// <param name="dep2">依赖服务</param>
-    bool Validate(TOptions options
-        , TDep1 dep1
-        , TDep2 dep2);
+    bool Validate(TOptions options, TDep1 dep1, TDep2 dep2);
 }
 
 /// <summary>
@@ -81,10 +76,7 @@ public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2> : IOptionsBuild
 /// <typeparam name="TDep3">依赖服务</typeparam>
 [OptionsBuilderMethodMap(nameof(OptionsBuilder<TOptions>.Validate), false)]
 public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2, TDep3> : IOptionsBuilderDependency<TOptions>
-    where TOptions : class
-    where TDep1 : class
-    where TDep2 : class
-    where TDep3 : class
+    where TOptions : class where TDep1 : class where TDep2 : class where TDep3 : class
 {
     /// <summary>
     /// 复杂验证
@@ -93,10 +85,7 @@ public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2, TDep3> : IOptio
     /// <param name="dep1">依赖服务</param>
     /// <param name="dep2">依赖服务</param>
     /// <param name="dep3">依赖服务</param>
-    bool Validate(TOptions options
-        , TDep1 dep1
-        , TDep2 dep2
-        , TDep3 dep3);
+    bool Validate(TOptions options, TDep1 dep1, TDep2 dep2, TDep3 dep3);
 }
 
 /// <summary>
@@ -109,11 +98,7 @@ public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2, TDep3> : IOptio
 /// <typeparam name="TDep4">依赖服务</typeparam>
 [OptionsBuilderMethodMap(nameof(OptionsBuilder<TOptions>.Validate), false)]
 public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2, TDep3, TDep4> : IOptionsBuilderDependency<TOptions>
-    where TOptions : class
-    where TDep1 : class
-    where TDep2 : class
-    where TDep3 : class
-    where TDep4 : class
+    where TOptions : class where TDep1 : class where TDep2 : class where TDep3 : class where TDep4 : class
 {
     /// <summary>
     /// 复杂验证
@@ -123,11 +108,7 @@ public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2, TDep3, TDep4> :
     /// <param name="dep2">依赖服务</param>
     /// <param name="dep3">依赖服务</param>
     /// <param name="dep4">依赖服务</param>
-    bool Validate(TOptions options
-        , TDep1 dep1
-        , TDep2 dep2
-        , TDep3 dep3
-        , TDep4 dep4);
+    bool Validate(TOptions options, TDep1 dep1, TDep2 dep2, TDep3 dep3, TDep4 dep4);
 }
 
 /// <summary>
@@ -141,12 +122,7 @@ public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2, TDep3, TDep4> :
 /// <typeparam name="TDep5">依赖服务</typeparam>
 [OptionsBuilderMethodMap(nameof(OptionsBuilder<TOptions>.Validate), false)]
 public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2, TDep3, TDep4, TDep5> : IOptionsBuilderDependency<TOptions>
-    where TOptions : class
-    where TDep1 : class
-    where TDep2 : class
-    where TDep3 : class
-    where TDep4 : class
-    where TDep5 : class
+    where TOptions : class where TDep1 : class where TDep2 : class where TDep3 : class where TDep4 : class where TDep5 : class
 {
     /// <summary>
     /// 复杂验证
@@ -157,10 +133,5 @@ public interface IValidateOptionsBuilder<TOptions, TDep1, TDep2, TDep3, TDep4, T
     /// <param name="dep3">依赖服务</param>
     /// <param name="dep4">依赖服务</param>
     /// <param name="dep5">依赖服务</param>
-    bool Validate(TOptions options
-        , TDep1 dep1
-        , TDep2 dep2
-        , TDep3 dep3
-        , TDep4 dep4
-        , TDep5 dep5);
+    bool Validate(TOptions options, TDep1 dep1, TDep2 dep2, TDep3 dep3, TDep4 dep4, TDep5 dep5);
 }

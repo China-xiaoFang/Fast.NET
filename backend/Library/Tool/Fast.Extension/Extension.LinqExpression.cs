@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Fast.Extension;
+namespace Fast.Extensions;
 
 /// <summary>
 /// <see cref="Expression"/> 拓展类

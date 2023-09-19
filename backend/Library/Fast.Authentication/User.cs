@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Fast.Authentication.Internal;
 using Fast.Cache;
 using Fast.Core.Enum;
-using Fast.Extension;
+using Fast.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 

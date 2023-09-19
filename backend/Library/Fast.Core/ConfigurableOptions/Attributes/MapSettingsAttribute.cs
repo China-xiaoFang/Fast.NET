@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Furion.ConfigurableOptions;
+namespace Fast.Core.ConfigurableOptions.Attributes;
 
 /// <summary>
 /// 重新映射属性配置
 /// </summary>
-[ AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public sealed class MapSettingsAttribute : Attribute
 {
     /// <summary>

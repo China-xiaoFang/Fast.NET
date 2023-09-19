@@ -1,14 +1,15 @@
 ﻿using System.Linq;
-using Furion;
-using Furion.ConfigurableOptions;
+using System.Reflection;
+using Fast.Core.ConfigurableOptions.Attributes;
+using Fast.Core.ConfigurableOptions.Internal;
+using Fast.Core.ConfigurableOptions.Options;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using System.Reflection;
-using Fast.Core;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Fast.Core.ConfigurableOptions.Extensions;
 
 /// <summary>
 /// 可变选项服务拓展类
@@ -43,25 +44,25 @@ public static class ConfigurableOptionsServiceCollectionExtensions
                 ChangeToken.OnChange(() => configurationRoot.GetReloadToken(), () =>
                 {
                     var options = optionsConfiguration.Get<TOptions>();
-                    if (options != null) onListenerMethod.Invoke(options, new object[] { options, optionsConfiguration });
+                    if (options != null)
+                        onListenerMethod.Invoke(options, new object[] {options, optionsConfiguration});
                 });
             }
         }
 
-        var optionsConfigure = services.AddOptions<TOptions>()
-              .Bind(optionsConfiguration, options =>
-              {
-                  options.BindNonPublicProperties = true; // 绑定私有变量
-              })
-              .ValidateDataAnnotations();
+        var optionsConfigure = services.AddOptions<TOptions>().Bind(optionsConfiguration, options =>
+        {
+            options.BindNonPublicProperties = true; // 绑定私有变量
+        }).ValidateDataAnnotations();
 
         // 实现 Key 映射
         services.PostConfigureAll<TOptions>(options =>
         {
             // 查找所有贴了 MapSettings 的键值对
             var remapKeys = optionsType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                           .Where(u => u.IsDefined(typeof(MapSettingsAttribute), true));
-            if (!remapKeys.Any()) return;
+                .Where(u => u.IsDefined(typeof(MapSettingsAttribute), true));
+            if (!remapKeys.Any())
+                return;
 
             foreach (var prop in remapKeys)
             {
@@ -73,8 +74,8 @@ public static class ConfigurableOptionsServiceCollectionExtensions
         });
 
         // 配置复杂验证后后期配置
-        var validateInterface = optionsType.GetInterfaces()
-            .FirstOrDefault(u => u.IsGenericType && typeof(IConfigurableOptions).IsAssignableFrom(u.GetGenericTypeDefinition()));
+        var validateInterface = optionsType.GetInterfaces().FirstOrDefault(u =>
+            u.IsGenericType && typeof(IConfigurableOptions).IsAssignableFrom(u.GetGenericTypeDefinition()));
         if (validateInterface != null)
         {
             var genericArguments = validateInterface.GenericTypeArguments;
@@ -82,7 +83,8 @@ public static class ConfigurableOptionsServiceCollectionExtensions
             // 配置复杂验证
             if (genericArguments.Length > 1)
             {
-                services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IValidateOptions<TOptions>), genericArguments.Last()));
+                services.TryAddEnumerable(
+                    ServiceDescriptor.Singleton(typeof(IValidateOptions<TOptions>), genericArguments.Last()));
             }
 
             // 配置后期配置
@@ -90,9 +92,11 @@ public static class ConfigurableOptionsServiceCollectionExtensions
             if (postConfigureMethod != null)
             {
                 if (optionsSettings?.PostConfigureAll != true)
-                    optionsConfigure.PostConfigure(options => postConfigureMethod.Invoke(options, new object[] { options, optionsConfiguration }));
+                    optionsConfigure.PostConfigure(options =>
+                        postConfigureMethod.Invoke(options, new object[] {options, optionsConfiguration}));
                 else
-                    services.PostConfigureAll<TOptions>(options => postConfigureMethod.Invoke(options, new object[] { options, optionsConfiguration }));
+                    services.PostConfigureAll<TOptions>(options =>
+                        postConfigureMethod.Invoke(options, new object[] {options, optionsConfiguration}));
             }
         }
 

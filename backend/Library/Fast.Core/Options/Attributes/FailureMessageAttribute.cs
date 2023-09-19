@@ -14,12 +14,12 @@
 
 using System;
 
-namespace Furion.Options;
+namespace Fast.Core.Options.Attributes;
 
 /// <summary>
 /// 选项校验失败消息特性
 /// </summary>
-[ AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Method)]
 public sealed class FailureMessageAttribute : Attribute
 {
     /// <summary>

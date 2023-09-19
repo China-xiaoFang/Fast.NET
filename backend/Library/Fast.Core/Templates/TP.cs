@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Furion.Templates;
+namespace Fast.Core.Templates;
 
 /// <summary>
 /// 模板静态类
@@ -39,8 +39,7 @@ public static class TP
         // 添加项
         if (items != null && items.Length > 0)
         {
-            var propMaxLength = items.Where(u => _lazyRegex.Value.IsMatch(u))
-                .DefaultIfEmpty(string.Empty)
+            var propMaxLength = items.Where(u => _lazyRegex.Value.IsMatch(u)).DefaultIfEmpty(string.Empty)
                 .Max(u => _lazyRegex.Value.Match(u).Groups["prop"].Value.Length);
 
             // 控制项名称对齐空白占位数

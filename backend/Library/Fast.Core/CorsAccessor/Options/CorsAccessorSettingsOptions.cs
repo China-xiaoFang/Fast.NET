@@ -1,9 +1,9 @@
 ﻿using System;
-using Furion.ConfigurableOptions;
-using Microsoft.Extensions.Configuration;
 using System.ComponentModel.DataAnnotations;
+using Fast.Core.ConfigurableOptions.Options;
+using Microsoft.Extensions.Configuration;
 
-namespace Furion.CorsAccessor;
+namespace Fast.Core.CorsAccessor.Options;
 
 /// <summary>
 /// 跨域配置选项

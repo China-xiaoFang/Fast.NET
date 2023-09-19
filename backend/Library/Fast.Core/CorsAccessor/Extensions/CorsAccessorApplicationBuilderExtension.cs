@@ -1,10 +1,12 @@
 ﻿using System;
-using Furion.CorsAccessor;
+using Fast.Core.CorsAccessor.Internal;
+using Fast.Core.CorsAccessor.Options;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder;
+namespace Fast.Core.CorsAccessor.Extensions;
 
 /// <summary>
 /// 跨域中间件拓展
@@ -17,7 +19,8 @@ public static class CorsAccessorApplicationBuilderExtension
     /// <param name="app"></param>
     /// <param name="corsPolicyBuilderHandler"></param>
     /// <returns></returns>
-    public static IApplicationBuilder UseCorsAccessor(this IApplicationBuilder app, Action<CorsPolicyBuilder> corsPolicyBuilderHandler = default)
+    public static IApplicationBuilder UseCorsAccessor(this IApplicationBuilder app,
+        Action<CorsPolicyBuilder> corsPolicyBuilderHandler = default)
     {
         // 获取选项
         var corsAccessorSettings = app.ApplicationServices.GetService<IOptions<CorsAccessorSettingsOptions>>().Value;
@@ -27,8 +30,8 @@ public static class CorsAccessorApplicationBuilderExtension
         {
             // 配置跨域中间件
             _ = corsPolicyBuilderHandler == null
-                   ? app.UseCors(corsAccessorSettings.PolicyName)
-                   : app.UseCors(corsPolicyBuilderHandler);
+                ? app.UseCors(corsAccessorSettings.PolicyName)
+                : app.UseCors(corsPolicyBuilderHandler);
         }
         else
         {

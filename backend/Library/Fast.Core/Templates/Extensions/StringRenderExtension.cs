@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Fast.Core;
-using Fast.Extension;
+using Fast.Extensions;
 
-namespace Furion.Templates.Extensions;
+namespace Fast.Core.Templates.Extensions;
 
 /// <summary>
 /// 字符串渲染模板拓展类
@@ -31,7 +30,8 @@ public static class StringRenderExtension
     /// <returns></returns>
     public static string Render(this string template, object templateData, bool encode = false)
     {
-        if (template == null) return default;
+        if (template == null)
+            return default;
 
         return template.Render(templateData == null ? default : templateData.ToDictionary(), encode);
     }
@@ -45,25 +45,26 @@ public static class StringRenderExtension
     /// <returns></returns>
     public static string Render(this string template, IDictionary<string, object> templateData, bool encode = false)
     {
-        if (template == null) return default;
+        if (template == null)
+            return default;
 
         // 如果模板为空，则跳过
-        if (templateData == null || templateData.Count == 0) return template;
+        if (templateData == null || templateData.Count == 0)
+            return template;
 
         // 判断字符串是否包含模板
-        if (!Regex.IsMatch(template, commonTemplatePattern)) return template;
+        if (!Regex.IsMatch(template, commonTemplatePattern))
+            return template;
 
         // 获取所有匹配的模板
-        var templateValues = Regex.Matches(template, commonTemplatePattern)
-                                                   .Select(u => new {
-                                                       Template = u.Groups["p"].Value,
-                                                       Value = MatchTemplateValue(u.Groups["p"].Value, templateData)
-                                                   });
+        var templateValues = Regex.Matches(template, commonTemplatePattern).Select(u =>
+            new {Template = u.Groups["p"].Value, Value = MatchTemplateValue(u.Groups["p"].Value, templateData)});
 
         // 循环替换模板
         foreach (var item in templateValues)
         {
-            template = template.Replace($"{{{item.Template}}}", encode ? Uri.EscapeDataString(item.Value?.ToString() ?? string.Empty) : item.Value?.ToString());
+            template = template.Replace($"{{{item.Template}}}",
+                encode ? Uri.EscapeDataString(item.Value?.ToString() ?? string.Empty) : item.Value?.ToString());
         }
 
         return template;
@@ -77,22 +78,22 @@ public static class StringRenderExtension
     /// <returns></returns>
     public static string Render(this string template, bool encode = false)
     {
-        if (template == null) return default;
+        if (template == null)
+            return default;
 
         // 判断字符串是否包含模板
-        if (!Regex.IsMatch(template, configTemplatePattern)) return template;
+        if (!Regex.IsMatch(template, configTemplatePattern))
+            return template;
 
         // 获取所有匹配的模板
-        var templateValues = Regex.Matches(template, configTemplatePattern)
-                                                   .Select(u => new {
-                                                       Template = u.Groups["p"].Value,
-                                                       Value = App.Configuration[u.Groups["p"].Value]
-                                                   });
+        var templateValues = Regex.Matches(template, configTemplatePattern).Select(u =>
+            new {Template = u.Groups["p"].Value, Value = App.Configuration[u.Groups["p"].Value]});
 
         // 循环替换模板
         foreach (var item in templateValues)
         {
-            template = template.Replace($"#({item.Template})", encode ? Uri.EscapeDataString(item.Value?.ToString() ?? string.Empty) : item.Value?.ToString());
+            template = template.Replace($"#({item.Template})",
+                encode ? Uri.EscapeDataString(item.Value ?? string.Empty) : item.Value);
         }
 
         return template;
@@ -107,8 +108,10 @@ public static class StringRenderExtension
     private static object MatchTemplateValue(string template, IDictionary<string, object> templateData)
     {
         string tmpl;
-        if (!template.Contains('.', StringComparison.CurrentCulture)) tmpl = template;
-        else tmpl = template.Split('.', StringSplitOptions.RemoveEmptyEntries).First();
+        if (!template.Contains('.', StringComparison.CurrentCulture))
+            tmpl = template;
+        else
+            tmpl = template.Split('.', StringSplitOptions.RemoveEmptyEntries).First();
 
         var succeed = templateData.TryGetValue(tmpl, out var templateValue);
         return ResolveTemplateValue(template, succeed ? templateValue : default);
@@ -129,25 +132,29 @@ public static class StringRenderExtension
         // 静态本地函数
         static object GetValue(string[] propertyCrumbs, object data)
         {
-            if (data == null || propertyCrumbs == null || propertyCrumbs.Length <= 1) return data;
+            if (data == null || propertyCrumbs == null || propertyCrumbs.Length <= 1)
+                return data;
             var dataType = data.GetType();
 
             // 如果是基元类型则直接返回
-            if (dataType.IsRichPrimitive()) return data;
+            if (dataType.IsRichPrimitive())
+                return data;
             object value = null;
 
             // 递归获取下一级模板值
             for (var i = 1; i < propertyCrumbs.Length; i++)
             {
                 var propery = dataType.GetProperty(propertyCrumbs[i]);
-                if (propery == null) break;
+                if (propery == null)
+                    break;
 
                 value = propery.GetValue(data);
                 if (i + 1 < propertyCrumbs.Length)
                 {
                     value = GetValue(propertyCrumbs.Skip(i).ToArray(), value);
                 }
-                else break;
+                else
+                    break;
             }
 
             return value;
