@@ -1,8 +1,7 @@
 ﻿using CSRedis;
 using Microsoft.Extensions.Configuration;
 
-// ReSharper disable once CheckNamespace
-namespace Fast.Cache;
+namespace Fast.Cache.Realize;
 
 /// <summary>
 /// 缓存实现

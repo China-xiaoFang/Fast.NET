@@ -79,7 +79,7 @@ internal class InternalApp
 
             // 跨域配置
             Debugging.Info("正在配置跨域请求......");
-            services.AddCorsAccessor();
+            //services.AddCorsAccessor();
 
             // 注册 HttpContextAccessor 服务
             Debugging.Info("正在注册 HttpContextAccessor 服务......");
@@ -114,6 +114,9 @@ internal class InternalApp
             // 添加缓存
             services.AddCache();
 
+            // 添加鉴权用户
+            IServiceCollectionExtension.AddAuthentication(services);
+
             // 添加 SqlSugar
             services.AddSqlSugar();
         });
@@ -143,6 +146,7 @@ internal class InternalApp
 
         // 扫描自定义配置扫描目录
         var jsonFiles = new[] {executeDirectory}.Concat(InternalConfigurationScanDirectories)
+            .Where(Directory.Exists)
             .SelectMany(s => Directory.GetFiles(s, "*.json", SearchOption.TopDirectoryOnly)).ToList();
 
         // 如果没有配置文件，中止执行

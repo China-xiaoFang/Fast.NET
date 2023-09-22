@@ -147,7 +147,42 @@ public static class IServiceCollectionExtension
             var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(f => f.Name == "AddLogging");
 
-            return addCacheMethod.Invoke(null, new object[] {services}) as IServiceCollection;
+            /**
+             *
+             *Debugging.Info("正在注册 Logging......");
+// 加载 Cache 拓展类和拓展方法
+var cacheIServiceCollectionExtensionType = Reflect.GetType(cacheAssembly, "Fast.Logging.Extensions.LoggingIServiceCollectionExtension");
+var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+    .First(f => f.Name == "AddLogging");
+
+// 获取 AddLogging 方法的参数信息
+ParameterInfo[] parameters = addCacheMethod.GetParameters();
+
+// 创建一个与参数个数相匹配的空参数数组
+object[] arguments = new object[parameters.Length];
+
+// 遍历参数，如果是 fileSizeLimitBytes 参数，则保持默认值；否则设置为 null
+for (int i = 0; i < parameters.Length; i++)
+{
+    if (parameters[i].Name == "fileSizeLimitBytes")
+    {
+        arguments[i] = Type.Missing;
+    }
+    else
+    {
+        arguments[i] = null;
+    }
+}
+
+// 调用 AddLogging 方法，并传递参数数组
+addCacheMethod.Invoke(null, arguments);
+
+return services;
+             *
+             */
+
+            // TODO:这里要设置默认值
+            return addCacheMethod.Invoke(null, new object[] {services, 10 * 1024 * 1024}) as IServiceCollection;
         }
 
         return services;
@@ -170,6 +205,30 @@ public static class IServiceCollectionExtension
                 Reflect.GetType(cacheAssembly, "Fast.Cache.Extensions.CacheIServiceCollectionExtension");
             var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(f => f.Name == "AddCache");
+
+            return addCacheMethod.Invoke(null, new object[] {services}) as IServiceCollection;
+        }
+
+        return services;
+    }
+
+    /// <summary>
+    /// 添加鉴权用户
+    /// </summary>
+    /// <param name="services"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddAuthentication(this IServiceCollection services)
+    {
+        // 判断是否安装了 Authentication 程序集
+        var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Authentication") == true);
+        if (cacheAssembly != null)
+        {
+            Debugging.Info("正在注册 Authentication......");
+            // 加载 Cache 拓展类和拓展方法
+            var cacheIServiceCollectionExtensionType =
+                Reflect.GetType(cacheAssembly, "Fast.Authentication.Extensions.AddAuthentication");
+            var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                .First(f => f.Name == "AddAuthentication");
 
             return addCacheMethod.Invoke(null, new object[] {services}) as IServiceCollection;
         }

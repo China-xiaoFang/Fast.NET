@@ -15,7 +15,7 @@ public static class CacheIServiceCollectionExtension
     public static IServiceCollection AddCache(this IServiceCollection services)
     {
         // 单例注入
-        services.AddSingleton<ICache, Cache>();
+        services.AddSingleton<ICache, Realize.Cache>();
 
         return services;
     }

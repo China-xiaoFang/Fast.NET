@@ -1,6 +1,7 @@
 ﻿using Fast.Authentication.Internal;
 using Fast.Core.Enum;
 
+// ReSharper disable once CheckNamespace
 namespace Fast.Authentication;
 
 /// <summary>

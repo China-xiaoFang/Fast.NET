@@ -51,5 +51,6 @@ public static class WebApplicationBuilderExtension
 
         期待您的PR，让.NET更好！
         ");
+        Console.ResetColor();
     }
 }

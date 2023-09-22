@@ -2606,6 +2606,13 @@
             <param name="services"></param>
             <returns></returns>
         </member>
+        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加鉴权用户
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddSqlSugar(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             添加 SqlSugar
