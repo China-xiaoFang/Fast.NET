@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
-/// 程序集扩展
+/// <see cref="Assembly"/> 拓展类
 /// </summary>
-public static partial class Extensions
+public static class AssemblyExtension
 {
     /// <summary>
     /// 获取所有类型
@@ -23,7 +23,7 @@ public static partial class Extensions
     /// </summary>
     /// <param name="assembly"><see cref="Assembly"/></param>
     /// <returns><see cref="string"/></returns>
-    public static string? GetDescription(this Assembly assembly)
+    public static string GetDescription(this Assembly assembly)
     {
         var descriptionAttribute =
             Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
@@ -36,7 +36,7 @@ public static partial class Extensions
     /// </summary>
     /// <param name="assembly"><see cref="Assembly"/></param>
     /// <returns><see cref="string"/></returns>
-    public static Version? GetVersion(this Assembly assembly)
+    public static Version GetVersion(this Assembly assembly)
     {
         return assembly.GetName().Version;
     }

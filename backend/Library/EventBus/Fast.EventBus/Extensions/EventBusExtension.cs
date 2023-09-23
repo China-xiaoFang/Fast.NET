@@ -5,7 +5,7 @@ namespace Fast.EventBus.Extensions;
 /// <summary>
 /// 事件总线拓展类
 /// </summary>
-public static class EventBusExtensition
+public static class EventBusExtension
 {
     /// <summary>
     /// 将事件枚举 Id 转换成字符串对象

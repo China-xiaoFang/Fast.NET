@@ -1,11 +1,11 @@
 ﻿using System.Text;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
-/// 位扩展
+/// Base64 拓展类
 /// </summary>
-public static partial class Extensions
+public static class Base64Extension
 {
     // 随机字符长度
     public const int RandomPrefixStrLength = 6;
@@ -35,6 +35,9 @@ public static partial class Extensions
     /// <summary>
     /// 普通 字符串 转换为 base64 字符串
     /// </summary>
+    /// <param name="str">&lt;see cref="string"/&gt;</param>
+    /// <param name="randomPrefixStrLength"></param>
+    /// <returns><see cref="string"/></returns>
     public static string ToBase64(this string str, int randomPrefixStrLength = RandomPrefixStrLength)
     {
         if (string.IsNullOrWhiteSpace(str))
@@ -63,6 +66,9 @@ public static partial class Extensions
     /// <summary>
     /// base64 字符串 转换为 普通 字符串
     /// </summary>
+    /// <param name="base64Str"><see cref="string"/></param>
+    /// <param name="randomPrefixStrLength"></param>
+    /// <returns><see cref="string"/></returns>
     public static string Base64ToString(this string base64Str, int randomPrefixStrLength = RandomPrefixStrLength)
     {
         var result = base64Str.Trim();

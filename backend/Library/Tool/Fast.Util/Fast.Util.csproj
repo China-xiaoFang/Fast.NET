@@ -4,4 +4,8 @@
 		<Description>Fast.NET 框架常用工具类模块。</Description>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Folder Include="Utils\" />
+	</ItemGroup>
+
 </Project>

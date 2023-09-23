@@ -10,7 +10,7 @@ using Fast.Core.FriendlyException.Internal;
 using Fast.Core.FriendlyException.Options;
 using Fast.Core.FriendlyException.Providers;
 using Fast.Core.Templates.Extensions;
-using Fast.Extensions;
+using Fast.IaaS.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

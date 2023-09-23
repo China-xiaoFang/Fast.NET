@@ -1,21 +1,17 @@
 ﻿using System.Globalization;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
-/// DateTime扩展
+/// <see cref="DateTime"/> 拓展类
 /// </summary>
-public static partial class Extensions
+public static class DateTimeExtension
 {
-    /// <summary>
-    /// 默认DateTime
-    /// </summary>
-    private static DateTime DefaultTime => TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
-
     /// <summary>
     /// 得到问好
     /// </summary>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns><see cref="string"/></returns>
     public static string GetSayHello(this DateTime dateTime)
     {
         var hour = DateTime.Now.Hour;
@@ -39,10 +35,10 @@ public static partial class Extensions
     /// <summary>
     /// 获取指定年月的第一天
     /// </summary>
-    /// <param name="dateTime"></param>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
     /// <param name="year"></param>
     /// <param name="mon"></param>
-    /// <returns></returns>
+    /// <returns><see cref="string"/></returns>
     public static DateTime GetCurMonthFirstDay(this DateTime dateTime, string year, string mon)
     {
         var AssemblyDate = Convert.ToDateTime(year + "-" + mon + "-" + "01"); // 组装当前指定月份
@@ -53,10 +49,10 @@ public static partial class Extensions
     /// <summary>
     /// 获取指定年月的第一天
     /// </summary>
-    /// <param name="dateTime"></param>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
     /// <param name="year"></param>
     /// <param name="mon"></param>
-    /// <returns></returns>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime GetCurMonthFirstDay(this DateTime dateTime, int year, int mon)
     {
         var AssemblyDate = Convert.ToDateTime(year + "-" + mon + "-" + "01"); // 组装当前指定月份
@@ -67,10 +63,10 @@ public static partial class Extensions
     /// <summary>
     /// 获取指定年月的最后一天
     /// </summary>
-    /// <param name="dateTime"></param>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
     /// <param name="year"></param>
     /// <param name="mon"></param>
-    /// <returns></returns>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime GetCurMonthLastDay(this DateTime dateTime, string year, string mon)
     {
         var AssemblyDate = Convert.ToDateTime(year + "-" + mon + "-" + "01"); // 组装当前指定月份
@@ -81,10 +77,10 @@ public static partial class Extensions
     /// <summary>
     /// 获取指定年月的最后一天
     /// </summary>
-    /// <param name="dateTime"></param>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
     /// <param name="year"></param>
     /// <param name="mon"></param>
-    /// <returns></returns>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime GetCurMonthLastDay(this DateTime dateTime, int year, int mon)
     {
         var AssemblyDate = Convert.ToDateTime(year + "-" + mon + "-" + "01"); // 组装当前指定月份
@@ -95,8 +91,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取当前月的第一天
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime GetCurMonthFirstDay(this DateTime dateTime)
     {
         // 第一种写法
@@ -110,8 +106,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取当前月的最后一天
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime GetCurMonthLastDay(this DateTime dateTime)
     {
         var CurDate = Convert.ToDateTime(dateTime.ToString(CultureInfo.InvariantCulture)); // 组装当前指定月份
@@ -122,8 +118,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取上月的第一天
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime GetUpMonthFirstDay(this DateTime dateTime)
     {
         var nowDate = dateTime.AddMonths(-1);
@@ -133,8 +129,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取上月的最后一天
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime GetUpMonthLastDay(this DateTime dateTime)
     {
         var CurDate = Convert.ToDateTime(dateTime.ToString(CultureInfo.InvariantCulture)); // 组装当前指定月份
@@ -145,8 +141,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取本周时间
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns>(<see cref="DateTime"/>, <see cref="DateTime"/>)</returns>
     public static (DateTime startTime, DateTime lastTime) GetCurWeekDay(this DateTime dateTime)
     {
         var startTime = dateTime.AddDays(0 - Convert.ToInt16(dateTime.DayOfWeek) + 1);
@@ -158,8 +154,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取上周时间
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns>(<see cref="DateTime"/>, <see cref="DateTime"/>)</returns>
     public static (DateTime startTime, DateTime lastTime) GetUpWeekDay(this DateTime dateTime)
     {
         var startTime = dateTime.AddDays(0 - Convert.ToInt16(dateTime.DayOfWeek) - 6);
@@ -171,8 +167,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取当天时间
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns>(<see cref="DateTime"/>, <see cref="DateTime"/>)</returns>
     public static (DateTime startTime, DateTime lastTime) GetCurDay(this DateTime dateTime)
     {
         return (new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0),
@@ -182,8 +178,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取昨天时间
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns>(<see cref="DateTime"/>, <see cref="DateTime"/>)</returns>
     public static (DateTime startTime, DateTime lastTime) GetUpDay(this DateTime dateTime)
     {
         var dt = dateTime.AddDays(-1);
@@ -193,10 +189,10 @@ public static partial class Extensions
     /// <summary>
     /// 计算两个时间的差
     /// </summary>
-    /// <param name="dateTime"></param>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
     /// <param name="startTime"></param>
     /// <param name="lastTime"></param>
-    /// <returns></returns>
+    /// <returns><see cref="int"/></returns>
     public static int DateDiff(this DateTime dateTime, DateTime startTime, DateTime lastTime)
     {
         var start = Convert.ToDateTime(startTime.ToShortDateString());
@@ -208,15 +204,14 @@ public static partial class Extensions
     /// <summary>
     /// 将毫秒时间戳转换为DateTime，若转换失败，则返回日期最小值。不抛出异常。  
     /// </summary>
-    /// <param name="timeStamps"></param>
-    /// <returns></returns>
+    /// <param name="timeStamps"><see cref="long"/></param>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime ToDateTime_Milliseconds(this long timeStamps)
     {
         try
         {
             // 当地时区
-            var defaultTime = DefaultTime;
-            return timeStamps.IsNullOrZero() ? DateTime.MinValue : defaultTime.AddMilliseconds(timeStamps);
+            return timeStamps.IsNullOrZero() ? DateTime.MinValue : GlobalConstant.DefaultTime.AddMilliseconds(timeStamps);
         }
         catch
         {
@@ -227,16 +222,17 @@ public static partial class Extensions
     /// <summary>
     /// 将毫秒时间戳转换为DateTime，若转换失败，则返回默认值。
     /// </summary>
-    /// <param name="timeStamps"></param>
+    /// <param name="timeStamps"><see cref="long"/></param>
     /// <param name="defaultValue"></param>
-    /// <returns></returns>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime ToDateTime_Milliseconds(this long timeStamps, DateTime? defaultValue)
     {
         try
         {
             // 当地时区
-            var defaultTime = DefaultTime;
-            return timeStamps.IsNullOrZero() ? defaultValue.GetValueOrDefault() : defaultTime.AddMilliseconds(timeStamps);
+            return timeStamps.IsNullOrZero()
+                ? defaultValue.GetValueOrDefault()
+                : GlobalConstant.DefaultTime.AddMilliseconds(timeStamps);
         }
         catch
         {
@@ -247,15 +243,14 @@ public static partial class Extensions
     /// <summary>
     /// 将秒时间戳转换为DateTime，若转换失败，则返回日期最小值。不抛出异常。  
     /// </summary>
-    /// <param name="timeStamps"></param>
-    /// <returns></returns>
+    /// <param name="timeStamps"><see cref="long"/></param>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime ToDateTime_Seconds(this long timeStamps)
     {
         try
         {
             // 当地时区
-            var defaultTime = DefaultTime;
-            return timeStamps.IsNullOrZero() ? DateTime.MinValue : defaultTime.AddSeconds(timeStamps);
+            return timeStamps.IsNullOrZero() ? DateTime.MinValue : GlobalConstant.DefaultTime.AddSeconds(timeStamps);
         }
         catch
         {
@@ -266,16 +261,17 @@ public static partial class Extensions
     /// <summary>
     /// 将秒时间戳转换为DateTime，若转换失败，则返回默认值。
     /// </summary>
-    /// <param name="timeStamps"></param>
+    /// <param name="timeStamps"><see cref="long"/></param>
     /// <param name="defaultValue"></param>
-    /// <returns></returns>
+    /// <returns><see cref="DateTime"/></returns>
     public static DateTime ToDateTime_Seconds(this long timeStamps, DateTime? defaultValue)
     {
         try
         {
             // 当地时区
-            var defaultTime = DefaultTime;
-            return timeStamps.IsNullOrZero() ? defaultValue.GetValueOrDefault() : defaultTime.AddSeconds(timeStamps);
+            return timeStamps.IsNullOrZero()
+                ? defaultValue.GetValueOrDefault()
+                : GlobalConstant.DefaultTime.AddSeconds(timeStamps);
         }
         catch
         {
@@ -286,8 +282,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取生肖
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns><see cref="string"/></returns>
     public static string GetZodiac(this DateTime dateTime)
     {
         if (dateTime < new DateTime(1900, 1, 1))
@@ -307,8 +303,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取星座
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns><see cref="string"/></returns>
     public static string GetConstellation(this DateTime dateTime)
     {
         if (dateTime < new DateTime(1900, 1, 1))
@@ -346,8 +342,8 @@ public static partial class Extensions
     /// <summary>
     /// 生命密码
     /// </summary>
-    /// <param name="dateTime"></param>
-    /// <returns></returns>
+    /// <param name="dateTime"><see cref="DateTime"/></param>
+    /// <returns><see cref="int"/></returns>
     public static int GetLifeCode(this DateTime dateTime)
     {
         if (dateTime < new DateTime(1900, 1, 1))

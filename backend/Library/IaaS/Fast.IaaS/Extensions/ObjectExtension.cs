@@ -2,20 +2,20 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
-/// 字典扩展
+/// <see cref="object"/> 拓展类
 /// </summary>
-public static partial class Extensions
+public static class ObjectExtension
 {
     /// <summary>
     /// 将一个对象转化为 Get 请求的String字符串
     /// 注：List，Array，Object属性不支持
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj"><see cref="object"/></param>
     /// <param name="isToLower">首字母是否小写</param>
-    /// <returns></returns>
+    /// <returns><see cref="string"/></returns>
     public static string ToQueryString(this object obj, bool isToLower = false)
     {
         if (obj == null)
@@ -76,7 +76,12 @@ public static partial class Extensions
         return dictionary.ToQueryString(isToLower: isToLower);
     }
 
-    public static Dictionary<string, string> ToDictionary(this object obj)
+    /// <summary>
+    /// 将一个Object对象转为 字典
+    /// </summary>
+    /// <param name="obj"><see cref="object"/></param>
+    /// <returns><see cref="IDictionary{TKey,TValue}"/></returns>
+    public static IDictionary<string, string> ToDictionary(this object obj)
     {
         var dictionary = new Dictionary<string, string>();
 
@@ -142,8 +147,8 @@ public static partial class Extensions
     /// <summary>
     /// 判断是否是富基元类型
     /// </summary>
-    /// <param name="type">类型</param>
-    /// <returns></returns>
+    /// <param name="type"><see cref="Type"/></param>
+    /// <returns><see cref="bool"/></returns>
     public static bool IsRichPrimitive(this Type type)
     {
         // 处理元组类型
@@ -167,18 +172,33 @@ public static partial class Extensions
     /// <summary>
     /// 判断是否是元组类型
     /// </summary>
-    /// <param name="type">类型</param>
-    /// <returns></returns>
+    /// <param name="type"><see cref="Type"/></param>
+    /// <returns><see cref="bool"/></returns>
     public static bool IsValueTuple(this Type type)
     {
         return type.Namespace == "System" && type.Name.Contains("ValueTuple`");
     }
 
     /// <summary>
+    /// 获取字段特性
+    /// </summary>
+    /// <param name="field"><see cref="FieldInfo"/></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetDescriptionValue<T>(this FieldInfo field) where T : Attribute
+    {
+        // 获取字段的指定特性，不包含继承中的特性
+        var customAttributes = field.GetCustomAttributes(typeof(T), false);
+
+        // 如果没有数据返回null
+        return customAttributes.Length > 0 ? (T) customAttributes[0] : null;
+    }
+
+    /// <summary>
     /// 判断方法是否是异步
     /// </summary>
-    /// <param name="method">方法</param>
-    /// <returns></returns>
+    /// <param name="method"><see cref="MethodInfo"/></param>
+    /// <returns><see cref="bool"/></returns>
     public static bool IsAsync(this MethodInfo method)
     {
         return method.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null ||
@@ -188,8 +208,8 @@ public static partial class Extensions
     /// <summary>
     /// 获取方法真实返回类型
     /// </summary>
-    /// <param name="method"></param>
-    /// <returns></returns>
+    /// <param name="method"><see cref="MethodInfo"/></param>
+    /// <returns><see cref="Type"/></returns>
     public static Type GetRealReturnType(this MethodInfo method)
     {
         // 判断是否是异步方法
@@ -204,7 +224,7 @@ public static partial class Extensions
     /// 查找方法指定特性，如果没找到则继续查找声明类
     /// </summary>
     /// <typeparam name="TAttribute"></typeparam>
-    /// <param name="method"></param>
+    /// <param name="method"><see cref="MethodInfo"/></param>
     /// <param name="inherit"></param>
     /// <returns></returns>
     public static TAttribute GetFoundAttribute<TAttribute>(this MethodInfo method, bool inherit) where TAttribute : Attribute
@@ -217,7 +237,9 @@ public static partial class Extensions
         // 判断方法是否定义指定特性，如果没有再查找声明类
         var foundAttribute = method.IsDefined(attributeType, inherit)
             ? method.GetCustomAttribute<TAttribute>(inherit)
-            : (declaringType.IsDefined(attributeType, inherit) ? declaringType.GetCustomAttribute<TAttribute>(inherit) : default);
+            : (declaringType != null && declaringType.IsDefined(attributeType, inherit)
+                ? declaringType.GetCustomAttribute<TAttribute>(inherit)
+                : default);
 
         return foundAttribute;
     }

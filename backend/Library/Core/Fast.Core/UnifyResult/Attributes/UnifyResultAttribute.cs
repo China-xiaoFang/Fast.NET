@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Fast.Extensions;
+using Fast.IaaS.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

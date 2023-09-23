@@ -8,7 +8,7 @@ using Fast.Core.DataValidation.Internal;
 using Fast.Core.DataValidation.Options;
 using Fast.Core.DataValidation.Providers;
 using Fast.Core.Templates.Extensions;
-using Fast.Extensions;
+using Fast.IaaS.Extensions;
 
 namespace Fast.Core.DataValidation.Validators;
 
@@ -261,7 +261,7 @@ public static class DataValidator
             var settingsErrorMessages = validationTypeMessageSettings.Definitions.Where(u => u.Length > 1)
                 .ToDictionary(u => u[0].ToString(), u => u[1].ToString());
 
-            customErrorMessages = customErrorMessages.AddOrUpdate(settingsErrorMessages);
+            customErrorMessages = (Dictionary<string, string>) customErrorMessages.AddOrUpdate(settingsErrorMessages);
         }
 
         // 获取所有验证属性

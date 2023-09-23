@@ -9,7 +9,7 @@ using Fast.Core.UnifyResult.Attributes;
 using Fast.Core.UnifyResult.Internal;
 using Fast.Core.UnifyResult.Options;
 using Fast.Core.UnifyResult.Providers;
-using Fast.Extensions;
+using Fast.IaaS.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;

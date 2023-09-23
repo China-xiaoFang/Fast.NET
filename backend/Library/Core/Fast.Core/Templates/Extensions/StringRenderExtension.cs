@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using Fast.Extensions;
+using Fast.IaaS.Extensions;
 
 namespace Fast.Core.Templates.Extensions;
 

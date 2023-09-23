@@ -3,10 +3,11 @@ using Fast.Core;
 using Fast.Core.DependencyInjection;
 using Fast.EventBus.Dependencies;
 using Fast.EventBus.Sources;
-using Fast.Http;
+using Fast.IaaS.Extensions;
 using Fast.Logging;
 using Fast.Sugar.BaseModel.Interface;
 using Fast.Sugar.Enum;
+using Fast.Sugar.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SqlSugar;
@@ -140,8 +141,9 @@ static class SugarEntityFilter
                         _ => DiffLogTypeEnum.None
                     };
 
-                    var userAgentInfo = HttpUtil.UserAgentInfo();
-                    var wanInfo = HttpUtil.WanInfoCache(HttpUtil.Ip);
+                    var httpContext = App.HttpContext;
+                    var userAgentInfo = HttpUtil.GetUserAgentInfo(httpContext.UserAgent());
+                    var wanInfo = HttpUtil.WanInfo(httpContext.RemoteIpv4());
 
                     // 记录差异日志
                     _eventPublisher.PublishAsync(new FastChannelEventSource("Create:DiffLog", userInfo.TenantId,

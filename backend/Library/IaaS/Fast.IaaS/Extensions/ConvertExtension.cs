@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Globalization;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
-/// 转换扩展类
+/// <see cref="Convert"/> 转换拓展类
 /// </summary>
-public static partial class Extensions
+public static class ConvertExtension
 {
     #region 转换为long
 

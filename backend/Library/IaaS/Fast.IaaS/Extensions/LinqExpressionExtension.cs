@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
 /// <see cref="Expression"/> 拓展类
 /// </summary>
-public static class LinqExpressionExtensions
+public static class LinqExpressionExtension
 {
     /// <summary>
     /// 解析表达式属性名称

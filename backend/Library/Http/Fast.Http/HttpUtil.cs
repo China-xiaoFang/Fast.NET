@@ -18,249 +18,12 @@ namespace Fast.Http;
 public static class HttpUtil
 {
     /// <summary>
-    /// IP地址
-    /// </summary>
-    public static string Ip
-    {
-        get
-        {
-            // 尝试获取客户端的IP地址
-            var result = ClientIp;
-            if (string.IsNullOrEmpty(result))
-            {
-                // 没有获取到获取局域网的
-                result = LanIp;
-            }
-
-            return string.IsNullOrEmpty(result) ? string.Empty : result;
-        }
-    }
-
-    /// <summary>
-    /// 客户端IP地址
-    /// </summary>
-    /// <returns></returns>
-    private static string ClientIp
-    {
-        get
-        {
-            if (App.HttpContext == null)
-                return string.Empty;
-            if (App.HttpContext.Connection.RemoteIpAddress == null)
-                return string.Empty;
-            var ip = App.HttpContext.Connection.RemoteIpAddress.ToString();
-            if (App.HttpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
-            {
-                ip = header1.FirstOrDefault();
-            }
-
-            if (string.IsNullOrEmpty(ip) && App.HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
-            {
-                ip = header2.FirstOrDefault();
-            }
-
-            if (ip == null)
-                return string.Empty;
-
-            foreach (var hostAddress in Dns.GetHostAddresses(ip))
-            {
-                if (hostAddress.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return hostAddress.ToString();
-                }
-            }
-
-            return string.Empty;
-
-            // 第二种方式
-            //return context.Connection.RemoteIpAddress?.MapToIPv4()?.ToString();
-        }
-    }
-
-    /// <summary>
-    /// 本机IP地址
-    /// </summary>
-    public static string LocalIp => App.HttpContext?.Connection.LocalIpAddress?.MapToIPv4()?.ToString();
-
-    /// <summary>
-    /// 局域网IP地址
-    /// </summary>
-    public static string LanIp
-    {
-        get
-        {
-            foreach (var hostAddress in Dns.GetHostAddresses(Dns.GetHostName()))
-            {
-                if (hostAddress.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return hostAddress.ToString();
-                }
-            }
-
-            return string.Empty;
-        }
-    }
-
-    /// <summary>
-    /// 完整请求地址
-    /// </summary>
-    public static string RequestUrlAddress
-    {
-        get
-        {
-            var request = App.HttpContext?.Request;
-
-            if (request != null)
-            {
-                return new StringBuilder().Append(request.Scheme).Append("://").Append(request.Host).Append(request.PathBase)
-                    .Append(request.Path).Append(request.QueryString).ToString();
-            }
-
-            return string.Empty;
-        }
-    }
-
-    /// <summary>
-    /// 来源地址
-    /// 默认从 HTTP Header['Referer'] 中获取
-    /// </summary>
-    public static string RefererUrlAddress
-    {
-        get
-        {
-            var request = App.HttpContext?.Request;
-
-            return request != null ? request.Headers["Referer"].ToString() : string.Empty;
-        }
-    }
-
-    /// <summary>
-    /// 是否是 WebSocket 请求
-    /// </summary>
-    public static bool IsWebSocketRequest =>
-        App.HttpContext?.WebSockets?.IsWebSocketRequest ?? false || App.HttpContext?.Request?.Path == "/ws";
-
-    /// <summary>
-    /// 请求UserAgent信息
-    /// </summary>
-    public static string UserAgent
-    {
-        get
-        {
-            string userAgent = App.HttpContext?.Request.Headers["User-Agent"];
-
-            return userAgent;
-        }
-    }
-
-    /// <summary>
-    /// UserAgent信息
-    /// </summary>
-    /// <returns></returns>
-    public static UserAgentInfoModel UserAgentInfo()
-    {
-        try
-        {
-            var parser = Parser.GetDefault();
-            var clientInfo = parser.Parse(UserAgent);
-            var result = new UserAgentInfoModel
-            {
-                PhoneModel = clientInfo.Device.ToString(), OS = clientInfo.OS.ToString(), Browser = clientInfo.UA.ToString()
-            };
-            return result;
-        }
-        catch (Exception)
-        {
-            return new UserAgentInfoModel();
-        }
-    }
-
-    /// <summary>
-    /// 得到操作系统版本
-    /// </summary>
-    /// <returns></returns>
-    public static string OSVersion
-    {
-        get
-        {
-            var osVersion = string.Empty;
-            var userAgent = UserAgent;
-            if (userAgent.Contains("NT 10"))
-            {
-                osVersion = "Windows 10";
-            }
-            else if (userAgent.Contains("NT 6.3"))
-            {
-                osVersion = "Windows 8";
-            }
-            else if (userAgent.Contains("NT 6.1"))
-            {
-                osVersion = "Windows 7";
-            }
-            else if (userAgent.Contains("NT 6.0"))
-            {
-                osVersion = "Windows Vista/Server 2008";
-            }
-            else if (userAgent.Contains("NT 5.2"))
-            {
-                osVersion = "Windows Server 2003";
-            }
-            else if (userAgent.Contains("NT 5.1"))
-            {
-                osVersion = "Windows XP";
-            }
-            else if (userAgent.Contains("NT 5"))
-            {
-                osVersion = "Windows 2000";
-            }
-            else if (userAgent.Contains("NT 4"))
-            {
-                osVersion = "Windows NT4";
-            }
-            else if (userAgent.Contains("Android"))
-            {
-                osVersion = "Android";
-            }
-            else if (userAgent.Contains("Me"))
-            {
-                osVersion = "Windows Me";
-            }
-            else if (userAgent.Contains("98"))
-            {
-                osVersion = "Windows 98";
-            }
-            else if (userAgent.Contains("95"))
-            {
-                osVersion = "Windows 95";
-            }
-            else if (userAgent.Contains("Mac"))
-            {
-                osVersion = "Mac";
-            }
-            else if (userAgent.Contains("Unix"))
-            {
-                osVersion = "UNIX";
-            }
-            else if (userAgent.Contains("Linux"))
-            {
-                osVersion = "Linux";
-            }
-            else if (userAgent.Contains("SunOS"))
-            {
-                osVersion = "SunOS";
-            }
-
-            return osVersion;
-        }
-    }
-
-    /// <summary>
     /// 根据IP地址获取公网信息
     /// 不传值默认获取服务器的公网信息
     /// 带缓存
     /// </summary>
     /// <returns></returns>
-    public static WhoisIPInfoModel WanInfoCache(string ip = null)
+    public static WhoisIPInfoEntity WanInfoCache(string ip = null)
     {
         return WanInfoCacheAsync(ip).Result;
     }
@@ -271,9 +34,9 @@ public static class HttpUtil
     /// 带缓存
     /// </summary>
     /// <returns></returns>
-    public static async Task<WhoisIPInfoModel> WanInfoCacheAsync(string ip = null)
+    public static async Task<WhoisIPInfoEntity> WanInfoCacheAsync(string ip = null)
     {
-        WhoisIPInfoModel result = null;
+        WhoisIPInfoEntity result = null;
 
         // 如果IP为空，则默认获取服务器的公网信息
         if (string.IsNullOrEmpty(ip))
@@ -310,7 +73,7 @@ public static class HttpUtil
     /// 不传值默认获取服务器的公网信息
     /// </summary>
     /// <returns></returns>
-    public static WhoisIPInfoModel WanInfo(string ip = null)
+    public static WhoisIPInfoEntity WanInfo(string ip = null)
     {
         return WanInfoAsync(ip).Result;
     }
@@ -320,7 +83,7 @@ public static class HttpUtil
     /// 不传值默认获取服务器的公网信息
     /// </summary>
     /// <returns></returns>
-    public static async Task<WhoisIPInfoModel> WanInfoAsync(string ip = null)
+    public static async Task<WhoisIPInfoEntity> WanInfoAsync(string ip = null)
     {
         var url = "http://whois.pconline.com.cn/ipJson.jsp";
 
@@ -342,7 +105,7 @@ public static class HttpUtil
             responseBody = responseBody[(responseBody.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
                 .TrimEnd();
             responseBody = responseBody[..^3];
-            return JsonSerializer.Deserialize<WhoisIPInfoModel>(responseBody);
+            return JsonSerializer.Deserialize<WhoisIPInfoEntity>(responseBody);
         }
         catch (HttpRequestException ex)
         {
@@ -430,7 +193,7 @@ public static class HttpUtil
 /// <summary>
 /// 万网Ip信息Model类
 /// </summary>
-public class WhoisIPInfoModel
+public class WhoisIPInfoEntity
 {
     /// <summary>
     /// Ip地址

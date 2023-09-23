@@ -13,8 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Tool\Fast.Extension\Fast.Extensions.csproj" />
-	  <ProjectReference Include="..\..\Tool\Fast.Util\Fast.Util.csproj" />
+	  <ProjectReference Include="..\..\IaaS\Fast.IaaS\Fast.IaaS.csproj" />
 	</ItemGroup>
 
 </Project>

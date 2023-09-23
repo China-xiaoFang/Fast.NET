@@ -1,20 +1,19 @@
-﻿using System.Text;
-using System.Web;
+﻿using System.Xml;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
-/// 字典扩展
+/// <see cref="IDictionary{TKey,TValue}"/> 拓展类
 /// </summary>
-public static partial class Extensions
+public static class IDictionaryExtension
 {
     /// <summary>
     /// 将一个字典转化为 QueryString
     /// </summary>
-    /// <param name="dict"></param>
+    /// <param name="dict"><see cref="IDictionary{TKey,TValue}"/></param>
     /// <param name="urlEncode"></param>
     /// <param name="isToLower">首字母是否小写</param>
-    /// <returns></returns>
+    /// <returns><see cref="string"/></returns>
     public static string ToQueryString(this IDictionary<string, string> dict, bool urlEncode = true, bool isToLower = false)
     {
         return string.Join("&",
@@ -23,35 +22,15 @@ public static partial class Extensions
     }
 
     /// <summary>
-    /// 将一个字符串 URL 编码
-    /// </summary>
-    /// <param name="str"></param>
-    /// <returns></returns>
-    public static string UrlEncode(this string str)
-    {
-        return string.IsNullOrEmpty(str) ? "" : HttpUtility.UrlEncode(str, Encoding.UTF8);
-    }
-
-    /// <summary>
     /// 移除空值项
     /// </summary>
-    /// <param name="dict"></param>
+    /// <param name="dict"><see cref="IDictionary{TKey,TValue}"/></param>
     public static void RemoveEmptyValueItems(this IDictionary<string, string> dict)
     {
         dict.Where(item => string.IsNullOrEmpty(item.Value)).Select(item => item.Key).ToList().ForEach(key =>
         {
             dict.Remove(key);
         });
-    }
-
-    /// <summary>
-    /// 将一个Url 编码 转为字符串
-    /// </summary>
-    /// <param name="str"></param>
-    /// <returns></returns>
-    public static string UrlDecode(this string str)
-    {
-        return string.IsNullOrEmpty(str) ? "" : HttpUtility.UrlDecode(str, Encoding.UTF8);
     }
 
     /// <summary>
@@ -137,10 +116,10 @@ public static partial class Extensions
     /// 合并两个字典
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="dic">字典</param>
-    /// <param name="newDic">新字典</param>
-    /// <returns></returns>
-    public static Dictionary<string, T> AddOrUpdate<T>(this Dictionary<string, T> dic, IDictionary<string, T> newDic)
+    /// <param name="dic"><see cref="IDictionary{TKey,TValue}"/>字典</param>
+    /// <param name="newDic"><see cref="IDictionary{TKey,TValue}"/>新字典</param>
+    /// <returns><see cref="IDictionary{TKey,TValue}"/></returns>
+    public static IDictionary<string, T> AddOrUpdate<T>(this IDictionary<string, T> dic, IDictionary<string, T> newDic)
     {
         foreach (var key in newDic.Keys)
         {
@@ -155,5 +134,104 @@ public static partial class Extensions
         }
 
         return dic;
+    }
+
+
+    /// <summary>
+    /// 将Dic字典转换成字符串
+    /// </summary>
+    /// <param name="dic"><see cref="IDictionary{TKey,TValue}"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static string DicToXmlStr(this IDictionary<string, object> dic)
+    {
+        var xml = "<xml>";
+        foreach (var (key, value) in dic)
+        {
+            if (value is int)
+                xml += "<" + key + ">" + value + "</" + key + ">";
+            else if (value is string)
+                xml += "<" + key + ">" + "<![CDATA[" + value + "]]></" + key + ">";
+        }
+
+        xml += "</xml>";
+        return xml;
+    }
+
+    /// <summary>
+    /// 将字符串转换为Dic字典
+    /// </summary>
+    /// <param name="xml"><see cref="string"/></param>
+    /// <returns><see cref="IDictionary{TKey,TValue}"/></returns>
+    public static IDictionary<string, object> XmlStrToDic(this string xml)
+    {
+        if (string.IsNullOrEmpty(xml))
+        {
+            throw new Exception("不能转换空字符串！");
+        }
+
+        var rltDic = new Dictionary<string, object>();
+        var xmlDoc = new XmlDocument {XmlResolver = null};
+        xmlDoc.LoadXml(xml);
+        var xmlNode = xmlDoc.FirstChild; //获取到根节点<xml>
+        if (xmlNode != null)
+        {
+            var nodes = xmlNode.ChildNodes;
+            foreach (XmlNode xn in nodes)
+            {
+                var xe = (XmlElement) xn;
+                rltDic[xe.Name] = xe.InnerText; //获取xml的键值对到WxPayData内部的数据中
+            }
+        }
+
+        return rltDic;
+    }
+
+    /// <summary>
+    /// 将Dic字典转换成字符串
+    /// </summary>
+    /// <param name="dic"><see cref="IDictionary{TKey,TValue}"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static string SortDicToXmlStr(this SortedDictionary<string, object> dic)
+    {
+        var xml = "<xml>";
+        foreach (var (key, value) in dic)
+        {
+            if (value is int)
+                xml += "<" + key + ">" + value + "</" + key + ">";
+            else if (value is string)
+                xml += "<" + key + ">" + "<![CDATA[" + value + "]]></" + key + ">";
+        }
+
+        xml += "</xml>";
+        return xml;
+    }
+
+    /// <summary>
+    /// 将字符串转换为Dic字典
+    /// </summary>
+    /// <param name="xml"><see cref="string"/></param>
+    /// <returns><see cref="SortedDictionary{TKey,TValue}"/></returns>
+    public static SortedDictionary<string, object> XmlStrToSortDic(this string xml)
+    {
+        if (string.IsNullOrEmpty(xml))
+        {
+            throw new Exception("不能转换空字符串！");
+        }
+
+        var rltDic = new SortedDictionary<string, object>();
+        var xmlDoc = new XmlDocument {XmlResolver = null};
+        xmlDoc.LoadXml(xml);
+        var xmlNode = xmlDoc.FirstChild; //获取到根节点<xml>
+        if (xmlNode != null)
+        {
+            var nodes = xmlNode.ChildNodes;
+            foreach (XmlNode xn in nodes)
+            {
+                var xe = (XmlElement) xn;
+                rltDic[xe.Name] = xe.InnerText; //获取xml的键值对到WxPayData内部的数据中
+            }
+        }
+
+        return rltDic;
     }
 }

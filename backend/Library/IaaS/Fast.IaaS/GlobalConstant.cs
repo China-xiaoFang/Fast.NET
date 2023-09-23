@@ -1,4 +1,4 @@
-﻿namespace Fast.Core;
+﻿namespace Fast.IaaS;
 
 /// <summary>
 /// 常用常量

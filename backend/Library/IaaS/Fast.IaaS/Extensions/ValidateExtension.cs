@@ -1,12 +1,92 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Fast.Util;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
-/// 字符串验证帮助类
+/// 验证拓展类
 /// </summary>
-public static class ValidatorUtil
+public static class ValidateExtension
 {
+    /// <summary>
+    /// 检查 Object 是否为 NULL
+    /// </summary>
+    /// <param name="value"><see cref="object"/></param>
+    /// <returns><see cref="bool"/></returns>
+    public static bool IsEmpty(this object value)
+    {
+        return value == null || string.IsNullOrEmpty(value.ParseToString());
+    }
+
+    /// <summary>
+    /// 检查 Object 或者 集合 是否为 NULL 或者 空集合
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"><see cref="object"/></param>
+    /// <returns><see cref="bool"/></returns>
+    public static bool IsEmpty<T>(this T value)
+    {
+        if (value == null)
+        {
+            return true;
+        }
+
+        if (string.IsNullOrEmpty(value.ParseToString()))
+        {
+            return true;
+        }
+
+        var type = typeof(T);
+
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+        {
+            if (!(value is IList<object> list) || list.Count == 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        if (value is IEnumerable<T> collection && !collection.Any())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 检查 Object 是否为 NULL 或者 0
+    /// </summary>
+    /// <param name="value"><see cref="object"/></param>
+    /// <returns><see cref="bool"/></returns>
+    public static bool IsNullOrZero(this object value)
+    {
+        if (value == null)
+        {
+            return true;
+        }
+
+        // 判断是否为枚举类型
+        if (value.GetType().IsEnum)
+        {
+            return value.ParseToLong() == 0;
+        }
+
+        return value.ParseToString().Trim() == "0";
+    }
+
+    /// <summary>
+    /// 判断集合是否为空
+    /// </summary>
+    /// <typeparam name="T">对象类型</typeparam>
+    /// <param name="collection"><see cref="ICollection{T}"/></param>
+    /// <returns><see cref="bool"/></returns>
+    public static bool IsNullOrEmpty<T>(this ICollection<T>? collection)
+    {
+        return collection is null || collection.Count == 0;
+    }
+
     #region 验证输入字符串为数字(带小数)
 
     /// <summary>
@@ -24,7 +104,7 @@ public static class ValidatorUtil
     /// </summary>
     /// <param name="str">输入字符</param>
     /// <returns>返回一个bool类型的值</returns>
-    public static bool IsNumberic(this string str)
+    public static bool IsDecimalNumber(this string str)
     {
         return Regex.IsMatch(str, "^-?\\d+$|^(-?\\d+)(\\.\\d+)?$");
     }
@@ -145,7 +225,6 @@ public static class ValidatorUtil
             sum += int.Parse(wi[i]) * int.Parse(ai[i].ToString());
         }
 
-        // ReSharper disable once UselessBinaryOperation
         Math.DivRem(sum, 11, out var y);
         return arrVarIfyCode[y] == str.Substring(17, 1).ToLower();
     }
@@ -227,8 +306,8 @@ public static class ValidatorUtil
             return false;
         //列举一些特殊字符串
         const string badChars = "@,*,#,$,!,+,',=,--,%,^,&,?,(,), <,>,[,],{,},/,\\,;,:,\",\"\",delete,update,drop,alert,select";
-        var arraryBadChar = badChars.Split(',');
-        return arraryBadChar.Any(t => !str.Contains(t));
+        var arrBadChar = badChars.Split(',');
+        return arrBadChar.Any(t => !str.Contains(t));
     }
 
     #endregion
@@ -254,7 +333,7 @@ public static class ValidatorUtil
     /// </summary>
     /// <param name="str">输入字符</param>
     /// <returns></returns>
-    public static bool IsSzzmChinese(this string str)
+    public static bool IsAlphaNumericChinese(this string str)
     {
         return Regex.Match(str, @"^[0-9a-zA-Z\u4e00-\u9fa5]+$").Success;
     }
@@ -268,7 +347,7 @@ public static class ValidatorUtil
     /// </summary>
     /// <param name="str">输入字符</param>
     /// <returns></returns>
-    public static bool IsSzzm(this string str)
+    public static bool IsAlphaNumeric(this string str)
     {
         return Regex.Match(str, @"^[0-9a-zA-Z]+$").Success;
     }

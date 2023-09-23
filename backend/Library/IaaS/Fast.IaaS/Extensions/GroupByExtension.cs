@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
-/// GroupBy 扩展
+/// GroupBy 拓展类
 /// </summary>
-public static partial class Extensions
+public static class GroupByExtension
 {
     /// <summary>
     /// 多个GroupBy

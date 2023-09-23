@@ -1,7 +1,7 @@
 ﻿using Fast.Authentication.Internal;
 using Fast.Cache;
 using Fast.Core.Enum;
-using Fast.Extensions;
+using Fast.IaaS.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
@@ -48,7 +48,7 @@ public class User : AuthUserInfo, IUser
             return;
 
         // 获取并且检测来源
-        AppEnvironment = (AppEnvironmentEnum)_httpContext.Request.Headers["Fast-App-Origin"].ParseToInt();
+        AppEnvironment = (AppEnvironmentEnum) _httpContext.Request.Headers["Fast-App-Origin"].ParseToInt();
 
         switch (AppEnvironment)
         {
@@ -60,7 +60,7 @@ public class User : AuthUserInfo, IUser
                 break;
             default:
                 throw new Exception("未知的客户端环境！");
-                //throw Oops.Bah("未知的客户端环境！").StatusCode(StatusCodes.Status401Unauthorized);
+            //throw Oops.Bah("未知的客户端环境！").StatusCode(StatusCodes.Status401Unauthorized);
         }
 
         // 尝试用请求头中获取Base64加密的租户ID，仅限于租户ID

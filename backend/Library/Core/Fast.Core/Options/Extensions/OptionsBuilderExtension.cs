@@ -2,7 +2,7 @@
 using System.Reflection;
 using Fast.Core.Options.Attributes;
 using Fast.Core.Options.Dependencies;
-using Fast.Extensions;
+using Fast.IaaS.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

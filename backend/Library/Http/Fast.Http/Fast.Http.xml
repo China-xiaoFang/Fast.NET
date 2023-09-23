@@ -71,22 +71,6 @@
             局域网IP地址
             </summary>
         </member>
-        <member name="P:Fast.Http.HttpUtil.RequestUrlAddress">
-            <summary>
-            完整请求地址
-            </summary>
-        </member>
-        <member name="P:Fast.Http.HttpUtil.RefererUrlAddress">
-            <summary>
-            来源地址
-            默认从 HTTP Header['Referer'] 中获取
-            </summary>
-        </member>
-        <member name="P:Fast.Http.HttpUtil.IsWebSocketRequest">
-            <summary>
-            是否是 WebSocket 请求
-            </summary>
-        </member>
         <member name="P:Fast.Http.HttpUtil.UserAgent">
             <summary>
             请求UserAgent信息

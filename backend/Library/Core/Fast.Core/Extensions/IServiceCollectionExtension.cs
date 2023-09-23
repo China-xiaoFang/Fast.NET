@@ -93,8 +93,8 @@ public static class IServiceCollectionExtension
         {
             Debugging.Info("正在注册 JSON 序列化配置......");
             // 加载 Cache 拓展类和拓展方法
-            var cacheIServiceCollectionExtensionType =
-                Reflect.GetType(cacheAssembly, "Fast.Serialization.Extensions.SerializationIServiceCollectionExtension");
+            var cacheIServiceCollectionExtensionType = Reflect.GetType(cacheAssembly,
+                "Fast.Serialization.Extensions.SerializationIServiceCollectionExtension");
             var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(f => f.Name == "AddJsonOptions");
 

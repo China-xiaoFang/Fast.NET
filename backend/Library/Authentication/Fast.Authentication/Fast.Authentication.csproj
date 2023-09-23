@@ -7,7 +7,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Cache\Fast.Cache\Fast.Cache.csproj" />
 	  <ProjectReference Include="..\..\Core\Fast.Core\Fast.Core.csproj" />
-	  <ProjectReference Include="..\..\Tool\Fast.Extension\Fast.Extensions.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -3,12 +3,12 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
-namespace Fast.Extensions;
+namespace Fast.IaaS.Extensions;
 
 /// <summary>
 /// <see cref="Type"/> 拓展类
 /// </summary>
-public static partial class Extensions
+public static class TypeExtension
 {
     /// <summary>
     /// 检查类型是否是静态类型
@@ -132,8 +132,9 @@ public static partial class Extensions
     {
         // 空检查
         ArgumentNullException.ThrowIfNull(type);
-        // TODO:.NET8独有的属性，需要替换
         //ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException($"Argument '{name}' cannot be null or whitespace.");
 
         methodInfo = type.GetMethod(name, accessibilityBindingFlags | BindingFlags.Instance | BindingFlags.DeclaredOnly);
         return methodInfo is not null;

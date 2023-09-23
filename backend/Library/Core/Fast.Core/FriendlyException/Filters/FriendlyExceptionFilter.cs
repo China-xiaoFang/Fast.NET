@@ -6,7 +6,7 @@ using Fast.Core.FriendlyException.Handlers;
 using Fast.Core.FriendlyException.Options;
 using Fast.Core.FriendlyException.Results;
 using Fast.Core.UnifyResult;
-using Fast.Extensions;
+using Fast.IaaS.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
