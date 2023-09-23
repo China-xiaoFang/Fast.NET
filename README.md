@@ -1,10 +1,4 @@
-[![star](https://gitee.com/Net-18K/Fast.NET/badge/star.svg?theme=dark)](https://gitee.com/Net-18K/Fast.NET/stargazers)
-[![fork](https://gitee.com/Net-18K/Fast.NET/badge/fork.svg?theme=dark)](https://gitee.com/Net-18K/Fast.NET/members)
-[![Gitee license](https://img.shields.io/badge/license-Apache2-yellow)](https://gitee.com/Net-18K/fast.net/blob/master/LICENSE)
-
-![今日诗词](https://v2.jinrishici.com/one.svg?font-size=20&spacing=2&color=Chocolate)
-
-## Fast.NET（v3）
+# Fast.NET（v3）
 
 ### 前后端分离架构，开箱即用，紧随前沿技术
 
