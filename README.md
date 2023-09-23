@@ -1,26 +1,28 @@
-<div align="center">
-    <p align="center">
-        <img src="/Fast.png" height="100" alt="logo"/>
-    </p>
-</div>
-<div align="center"><h1 align="center">Fast.NET</h1></div>
-
-<div align="center"><h3 align="center">前后端分离架构，开箱即用，紧随前沿技术</h3></div>
-
-<div align="center">
-
 [![star](https://gitee.com/Net-18K/Fast.NET/badge/star.svg?theme=dark)](https://gitee.com/Net-18K/Fast.NET/stargazers)
 [![fork](https://gitee.com/Net-18K/Fast.NET/badge/fork.svg?theme=dark)](https://gitee.com/Net-18K/Fast.NET/members)
-[![GitHub license](https://img.shields.io/badge/license-Apache2-yellow)](https://gitee.com/Net-18K/fast.net/blob/master/LICENSE)
+[![Gitee license](https://img.shields.io/badge/license-Apache2-yellow)](https://gitee.com/Net-18K/fast.net/blob/master/LICENSE)
 
 ![今日诗词](https://v2.jinrishici.com/one.svg?font-size=20&spacing=2&color=Chocolate)
-</div>
 
 ## Fast.NET（v3）
 
+### 前后端分离架构，开箱即用，紧随前沿技术
+
 一个快速构建项目的 .NET 框架。
 
-## 项目背景
+一个前后端分离架构，提供开箱即用的功能，并紧跟最新的前沿技术。
+
+### 技术选择
+
+- Fast.NET v3 版本采用 C# 10 和 .NET 6 进行开发。
+
+#### 项目特点：
+
+- **前后端分离架构**：采用前后端分离，使得前端和后端代码独立开发，便于团队合作和系统维护。
+- **开箱即用**：提供预配置的功能，无需额外的配置或开发工作，可以快速启动项目。
+- **紧随前沿技术**：采用最新的技术和框架，始终保持与行业的最新趋势和发展同步。
+
+### 项目背景
 
 过去 .NET 在国内并没有很好的开源环境和社区，随着国内使用 .NET 的程序猿越来越多，慢慢的国内的开源环境和社区也越来越好。
 
@@ -44,10 +46,6 @@
 [Fast.NET](https://gitee.com/Net-18K/fast.net) 框架底层部分核心代码都是由 [Furion](https://gitee.com/dotnetchina/Furion) 提供，借鉴或引用了 [Furion v4](https://gitee.com/dotnetchina/Furion) 的部分源码，也征得了作者 [百小僧](https://gitee.com/monksoul) 的同意授权。
 
 **持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！**
-
-## 技术选择
-
-Fast.NET v3 版本采用 C# 10 和 .NET 6 进行开发。
 
 ## 🍟 概述
 
