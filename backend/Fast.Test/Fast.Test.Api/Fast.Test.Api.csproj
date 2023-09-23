@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Library\Core\Fast.Core\Fast.Core.csproj" />
     <ProjectReference Include="..\..\Library\EventBus\Fast.EventBus\Fast.EventBus.csproj" />
-    <ProjectReference Include="..\..\Library\Json\Fast.Json\Fast.Json.csproj" />
+    <ProjectReference Include="..\..\Library\Json\Fast.Json\Fast.Serialization.csproj" />
     <ProjectReference Include="..\..\Library\Logging\Fast.Logging\Fast.Logging.csproj" />
     <ProjectReference Include="..\..\Library\Mapster\Fast.Mapster\Fast.Mapster.csproj" />
     <ProjectReference Include="..\..\Library\Sugar\Fast.Sugar\Fast.Sugar.csproj" />

@@ -2625,7 +2625,6 @@
             添加Gzip Brotli 压缩
             </summary>
             <param name="service"></param>
-            <param name="isRun"></param>
         </member>
         <member name="T:Fast.Core.Extensions.WebApplicationBuilderExtension">
             <summary>

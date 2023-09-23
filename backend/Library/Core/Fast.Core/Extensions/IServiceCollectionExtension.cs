@@ -85,16 +85,16 @@ public static class IServiceCollectionExtension
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
-    public static IServiceCollection AddJsonOptions(this IServiceCollection services)
+    internal static IServiceCollection AddJsonOptions(this IServiceCollection services)
     {
         // 判断是否安装了 Json 程序集
-        var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Json") == true);
+        var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Serialization") == true);
         if (cacheAssembly != null)
         {
             Debugging.Info("正在注册 JSON 序列化配置......");
             // 加载 Cache 拓展类和拓展方法
             var cacheIServiceCollectionExtensionType =
-                Reflect.GetType(cacheAssembly, "Fast.Json.Extensions.JsonIServiceCollectionExtension");
+                Reflect.GetType(cacheAssembly, "Fast.Serialization.Extensions.SerializationIServiceCollectionExtension");
             var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(f => f.Name == "AddJsonOptions");
 
@@ -109,7 +109,7 @@ public static class IServiceCollectionExtension
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddObjectMapper(this IServiceCollection services)
+    internal static IServiceCollection AddObjectMapper(this IServiceCollection services)
     {
         // 判断是否安装了 Mapster 程序集
         var objectMapperAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name?.Equals("Fast.Mapster") == true);
@@ -134,7 +134,7 @@ public static class IServiceCollectionExtension
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
-    public static IServiceCollection AddLogging(this IServiceCollection services)
+    internal static IServiceCollection AddLogging(this IServiceCollection services)
     {
         // 判断是否安装了 Logging 程序集
         var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Logging") == true);
@@ -193,7 +193,7 @@ return services;
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
-    public static IServiceCollection AddCache(this IServiceCollection services)
+    internal static IServiceCollection AddCache(this IServiceCollection services)
     {
         // 判断是否安装了 Cache 程序集
         var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Cache") == true);
@@ -217,7 +217,7 @@ return services;
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
-    public static IServiceCollection AddAuthentication(this IServiceCollection services)
+    internal static IServiceCollection AddAuthentication(this IServiceCollection services)
     {
         // 判断是否安装了 Authentication 程序集
         var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Authentication") == true);
@@ -241,7 +241,7 @@ return services;
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
-    public static IServiceCollection AddSqlSugar(this IServiceCollection services)
+    internal static IServiceCollection AddSqlSugar(this IServiceCollection services)
     {
         // 判断是否安装了 Cache 程序集
         var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Sugar") == true);
@@ -264,8 +264,7 @@ return services;
     /// 添加Gzip Brotli 压缩
     /// </summary>
     /// <param name="service"></param>
-    /// <param name="isRun"></param>
-    public static void AddGzipBrotliCompression(this IServiceCollection service)
+    internal static void AddGzipBrotliCompression(this IServiceCollection service)
     {
         service.Configure<BrotliCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
         service.Configure<GzipCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });

@@ -139,7 +139,7 @@ internal class InternalApp
         });
     }
 
-    internal static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
+    private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
     {
         // 获取程序执行目录
         var executeDirectory = AppContext.BaseDirectory;

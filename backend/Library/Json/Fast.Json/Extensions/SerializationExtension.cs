@@ -5,7 +5,7 @@ namespace Fast.Json.Extensions;
 /// <summary>
 /// Json 扩展
 /// </summary>
-public static class JsonExtension
+public static class SerializationExtension
 {
     /// <summary>
     /// JSON 字符串转 Object

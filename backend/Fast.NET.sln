@@ -27,9 +27,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sugar", "Sugar", "{8DE47681
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Sugar", "Library\Sugar\Fast.Sugar\Fast.Sugar.csproj", "{73C8A67C-8193-4FF0-87DA-3BE6726107DD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Json", "Json", "{E16E97C8-B09A-452C-8C80-02AF452D0C7C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serialization", "Serialization", "{E16E97C8-B09A-452C-8C80-02AF452D0C7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Json", "Library\Json\Fast.Json\Fast.Json.csproj", "{D97235DC-52BB-4D65-8795-D7E6E4642F71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Serialization", "Library\Json\Fast.Json\Fast.Serialization.csproj", "{D97235DC-52BB-4D65-8795-D7E6E4642F71}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UAParser", "UAParser", "{32F77B15-6037-454E-8BB3-9DB001E2E1B1}"
 EndProject
@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fast.Admin", "Fast.Admin", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fast.Test", "Fast.Test", "{08B5ECBA-ACBB-4720-836A-34378B7E2A83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Test.Api", "Fast.Test\Fast.Test.Api\Fast.Test.Api.csproj", "{006FBEB2-15EE-4071-8E71-32CEFBAA5B62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Test.Api", "Fast.Test\Fast.Test.Api\Fast.Test.Api.csproj", "{006FBEB2-15EE-4071-8E71-32CEFBAA5B62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

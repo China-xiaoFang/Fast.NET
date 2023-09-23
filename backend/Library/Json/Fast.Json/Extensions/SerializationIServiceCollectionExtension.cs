@@ -10,7 +10,7 @@ namespace Fast.Json.Extensions;
 /// <summary>
 /// <see cref="IServiceCollection"/> 拓展类
 /// </summary>
-public static class JsonIServiceCollectionExtension
+public static class SerializationIServiceCollectionExtension
 {
     /// <summary>
     /// 添加JSON序列化配置
