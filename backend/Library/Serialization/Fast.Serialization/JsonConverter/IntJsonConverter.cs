@@ -1,68 +1,68 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Fast.Json.JsonConverter;
+namespace Fast.Serialization.JsonConverter;
 
 /// <summary>
-/// Long 类型Json返回处理
+/// int 类型Json返回处理
 /// </summary>
-public class LongJsonConverter : JsonConverter<long>
+public class IntJsonConverter : JsonConverter<int>
 {
-    /// <summary>Reads and converts the JSON to type long.</summary>
+    /// <summary>Reads and converts the JSON to type int.</summary>
     /// <param name="reader">The reader.</param>
     /// <param name="typeToConvert">The type to convert.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
     /// <returns>The converted value.</returns>
-    public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Long类型可能为String类型，或者Number类型。
-        return reader.TokenType == JsonTokenType.String ? long.Parse(reader.GetString()) : reader.GetInt64();
+        // 这里做处理，前端传入的Int类型可能为String类型，或者Number类型。
+        return reader.TokenType == JsonTokenType.String ? int.Parse(reader.GetString()) : reader.GetInt32();
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
     /// <param name="writer">The writer to write to.</param>
     /// <param name="value">The value to convert to JSON.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
-    public override void Write(Utf8JsonWriter writer, long value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, int value, JsonSerializerOptions options)
     {
-        writer.WriteStringValue($"{value}");
+        writer.WriteNumberValue(value);
     }
 }
 
 /// <summary>
-/// Long? 类型Json返回处理
+/// int? 类型Json返回处理
 /// </summary>
-public class NullableLongJsonConverter : JsonConverter<long?>
+public class NullableIntJsonConverter : JsonConverter<int?>
 {
     /// <summary>Reads and converts the JSON to type <typeparamref name="T" />.</summary>
     /// <param name="reader">The reader.</param>
     /// <param name="typeToConvert">The type to convert.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
     /// <returns>The converted value.</returns>
-    public override long? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override int? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Long类型可能为String类型，或者Number类型。
+        // 这里做处理，前端传入的Int类型可能为String类型，或者Number类型。
         if (reader.TokenType != JsonTokenType.String)
-            return reader.GetInt64();
+            return reader.GetInt32();
 
-        var longString = reader.GetString();
-        if (string.IsNullOrEmpty(longString))
+        var intString = reader.GetString();
+        if (string.IsNullOrEmpty(intString))
         {
             return null;
         }
 
-        return long.Parse(reader.GetString());
+        return int.Parse(reader.GetString());
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
     /// <param name="writer">The writer to write to.</param>
     /// <param name="value">The value to convert to JSON.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
-    public override void Write(Utf8JsonWriter writer, long? value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, int? value, JsonSerializerOptions options)
     {
         if (value == null)
             writer.WriteNullValue();
         else
-            writer.WriteStringValue($"{value}");
+            writer.WriteNumberValue(value.Value);
     }
 }

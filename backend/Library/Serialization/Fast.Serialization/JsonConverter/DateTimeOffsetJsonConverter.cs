@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Fast.Json.JsonConverter;
+namespace Fast.Serialization.JsonConverter;
 
 internal static class DateTimeOffsetExtension
 {

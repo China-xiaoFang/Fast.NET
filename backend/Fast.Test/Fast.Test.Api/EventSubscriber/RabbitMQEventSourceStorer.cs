@@ -2,11 +2,11 @@
 using System.Threading.Channels;
 using Fast.EventBus.Sources;
 using Fast.EventBus.Storers;
-using Fast.Json.Extensions;
+using Fast.Serialization.Extensions;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Gejia.WMS.Core.EventSubscriber;
+namespace Fast.Test.Api.EventSubscriber;
 
 /// <summary>
 /// RabbitMQ 事件总线存储器

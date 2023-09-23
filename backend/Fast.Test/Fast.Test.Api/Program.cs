@@ -4,7 +4,7 @@ using Fast.Core.Extensions;
 using Fast.Core.UnifyResult.Extensions;
 using Fast.EventBus.Extensions;
 using Fast.Logging.Extensions;
-using Gejia.WMS.Core.EventSubscriber;
+using Fast.Test.Api.EventSubscriber;
 using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args).Initialize();

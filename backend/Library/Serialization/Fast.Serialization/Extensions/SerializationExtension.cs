@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Fast.Json.Extensions;
+namespace Fast.Serialization.Extensions;
 
 /// <summary>
 /// Json 扩展

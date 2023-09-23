@@ -1,8 +1,7 @@
 ﻿using Fast.EventBus.Contexts;
 using Fast.EventBus.Policies;
-using Microsoft.Extensions.Logging;
 
-namespace Gejia.WMS.Core.EventSubscriber;
+namespace Fast.Test.Api.EventSubscriber;
 
 public class EventFallbackPolicy : IEventFallbackPolicy
 {

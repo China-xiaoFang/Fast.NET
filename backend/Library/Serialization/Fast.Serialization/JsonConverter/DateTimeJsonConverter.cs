@@ -1,25 +1,25 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Fast.Json.JsonConverter;
+namespace Fast.Serialization.JsonConverter;
 
 /// <summary>
-/// Datetime 类型返回日期Json处理
+/// DateTime 类型序列化
 /// </summary>
-public class DateJsonConverter : JsonConverter<DateTime>
+public class DateTimeJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
-    /// 日期格式化
-    /// 默认：yyyy-MM-dd
+    /// 格式化
+    /// 默认：yyyy-MM-dd HH:mm:ss
     /// </summary>
     public string Format { get; set; }
 
-    public DateJsonConverter()
+    public DateTimeJsonConverter()
     {
-        Format = "yyyy-MM-dd";
+        Format = "yyyy-MM-dd HH:mm:ss";
     }
 
-    public DateJsonConverter(string format)
+    public DateTimeJsonConverter(string format)
     {
         Format = format;
     }
@@ -45,22 +45,22 @@ public class DateJsonConverter : JsonConverter<DateTime>
 }
 
 /// <summary>
-/// Datetime? 类型返回日期Json处理
+/// DateTime? 类型序列化
 /// </summary>
-public class NullableDateJsonConverter : JsonConverter<DateTime?>
+public class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
-    /// 日期格式化
-    /// 默认：yyyy-MM-dd
+    /// 格式化
+    /// 默认：yyyy-MM-dd HH:mm:ss
     /// </summary>
     public string Format { get; set; }
 
-    public NullableDateJsonConverter()
+    public NullableDateTimeJsonConverter()
     {
-        Format = "yyyy-MM-dd";
+        Format = "yyyy-MM-dd HH:mm:ss";
     }
 
-    public NullableDateJsonConverter(string format)
+    public NullableDateTimeJsonConverter(string format)
     {
         Format = format;
     }

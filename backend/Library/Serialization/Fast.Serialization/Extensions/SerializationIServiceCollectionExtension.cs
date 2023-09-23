@@ -1,11 +1,11 @@
 ﻿using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using Fast.Json.JsonConverter;
+using Fast.Serialization.JsonConverter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Json.Extensions;
+namespace Fast.Serialization.Extensions;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> 拓展类
