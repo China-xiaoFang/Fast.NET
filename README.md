@@ -1,6 +1,6 @@
 <div align="center">
     <p align="center">
-        <img src="./backend/Fast.png" height="100" alt="logo"/>
+        <img src="/Fast.png" height="100" alt="logo"/>
     </p>
 </div>
 <div align="center"><h1 align="center">Fast.NET</h1></div>
