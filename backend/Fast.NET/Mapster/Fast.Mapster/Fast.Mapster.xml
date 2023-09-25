@@ -1,21 +1,23 @@
 <?xml version="1.0"?>
+
 <doc>
-    <assembly>
-        <name>Fast.Mapster</name>
-    </assembly>
-    <members>
-        <member name="T:Fast.Mapster.Extensions.ObjectMapperExtension">
-            <summary>
-            对象映射拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.Mapster.Extensions.ObjectMapperExtension.AddObjectMapper(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Reflection.Assembly[])">
-            <summary>
-            添加对象映射
-            </summary>
-            <param name="services">服务集合</param>
-            <param name="assemblies">扫描的程序集</param>
-            <returns></returns>
-        </member>
-    </members>
+	<assembly>
+		<name>Fast.Mapster</name>
+	</assembly>
+	<members>
+		<member name="T:Fast.Mapster.Extensions.ObjectMapperExtension">
+			<summary>
+				对象映射拓展类
+			</summary>
+		</member>
+		<member
+			name="M:Fast.Mapster.Extensions.ObjectMapperExtension.AddObjectMapper(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Reflection.Assembly[])">
+			<summary>
+				添加对象映射
+			</summary>
+			<param name="services">服务集合</param>
+			<param name="assemblies">扫描的程序集</param>
+			<returns></returns>
+		</member>
+	</members>
 </doc>

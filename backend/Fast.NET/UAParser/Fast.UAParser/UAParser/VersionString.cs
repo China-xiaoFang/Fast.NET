@@ -16,6 +16,5 @@ namespace Fast.UAParser.UAParser;
 
 internal static class VersionString
 {
-    public static string Format(params string[] parts) =>
-        string.Join(".", parts.Where(v => !string.IsNullOrEmpty(v)).ToArray());
+    public static string Format(params string[] parts) => string.Join(".", parts.Where(v => !string.IsNullOrEmpty(v)).ToArray());
 }

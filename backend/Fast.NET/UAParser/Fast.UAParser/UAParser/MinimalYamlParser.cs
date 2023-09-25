@@ -29,7 +29,7 @@ internal class MinimalYamlParser
 
     private void ReadIntoMappingModel(string yamlInputString)
     {
-        var strArray = yamlInputString.Split(new string[4] { Environment.NewLine, "\r", "\n", "\r\n" },
+        var strArray = yamlInputString.Split(new string[4] {Environment.NewLine, "\r", "\n", "\r\n"},
             StringSplitOptions.RemoveEmptyEntries);
         var num = 0;
         Mapping mapping = null;
