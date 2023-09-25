@@ -19,11 +19,6 @@
             获取Web主机环境
             </summary>
         </member>
-        <member name="P:Fast.Core.App.HostEnvironment">
-            <summary>
-            获取泛型主机环境
-            </summary>
-        </member>
         <member name="P:Fast.Core.App.RootServices">
             <summary>
             存储根服务，可能为空
@@ -204,21 +199,10 @@
             获取Web主机环境
             </summary>
         </member>
-        <member name="F:Fast.Core.InternalApp.HostEnvironment">
-            <summary>
-            获取泛型主机环境
-            </summary>
-        </member>
         <member name="P:Fast.Core.InternalApp.InternalConfigurationScanDirectories">
             <summary>
-            配置配置文件扫描目录
+            默认配置文件扫描目录
             </summary>
-        </member>
-        <member name="M:Fast.Core.InternalApp.ConfigureHostAppConfiguration(Microsoft.Extensions.Hosting.IHostBuilder)">
-            <summary>
-            自动装载主机配置
-            </summary>
-            <param name="builder"></param>
         </member>
         <member name="F:Fast.Core.InternalApp.excludeJsonPrefixArr">
             <summary>
@@ -401,11 +385,12 @@
             跨域访问服务拓展类
             </summary>
         </member>
-        <member name="M:Fast.Core.CorsAccessor.Extensions.CorsAccessorServiceCollectionExtension.AddCorsAccessor(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions},System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder})">
+        <member name="M:Fast.Core.CorsAccessor.Extensions.CorsAccessorServiceCollectionExtension.AddCorsAccessor(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions},System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder})">
             <summary>
             配置跨域
             </summary>
             <param name="services">服务集合</param>
+            <param name="configuration"></param>
             <param name="corsOptionsHandler"></param>
             <param name="corsPolicyBuilderHandler"></param>
             <returns>服务集合</returns>
@@ -485,6 +470,20 @@
             </summary>
             <param name="options"></param>
             <param name="configuration"></param>
+        </member>
+        <member name="F:Fast.Core.CorsAccessor.Options.CorsAccessorSettingsOptions._defaultExposedHeaders">
+            <summary>
+            默认跨域导出响应头 Key
+            </summary>
+            <remarks>解决 ajax，XMLHttpRequest，axios 不能获取请求头问题</remarks>
+        </member>
+        <member name="M:Fast.Core.CorsAccessor.Options.CorsAccessorSettingsOptions.SetCorsPolicy(Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder,Fast.Core.CorsAccessor.Options.CorsAccessorSettingsOptions,System.Boolean)">
+            <summary>
+            设置跨域策略
+            </summary>
+            <param name="builder"></param>
+            <param name="corsAccessorSettings"></param>
+            <param name="isMiddleware"></param>
         </member>
         <member name="T:Fast.Core.DataValidation.Attributes.DataValidationAttribute">
             <summary>
@@ -2533,6 +2532,55 @@
             导入
             </summary>
         </member>
+        <member name="T:Fast.Core.Extensions.AppIServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> Fast.NET 应用服务集合拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Core.Extensions.AppIServiceCollectionExtension.AddInject(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            服务注入基础配置（带规范化文档）
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.AppIServiceCollectionExtension.AddInject(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            服务注入基础配置（带规范化文档）
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.AppIServiceCollectionExtension.AddInjectWithUnifyResult(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            注入基础配置和规范化结果
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.AppIServiceCollectionExtension.AddInjectWithUnifyResult(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            注入基础配置和规范化结果
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.AppIServiceCollectionExtension.AddInjectWithUnifyResult``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            注入基础配置和规范化结果
+            </summary>
+            <typeparam name="TUnifyResultProvider"></typeparam>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.AppIServiceCollectionExtension.AddInjectWithUnifyResult``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            注入基础配置和规范化结果
+            </summary>
+            <typeparam name="TUnifyResultProvider"></typeparam>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
         <member name="T:Fast.Core.Extensions.IConfigurationExtension">
             <summary>
             <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 拓展类
@@ -2545,10 +2593,64 @@
             <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
             <returns><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></returns>
         </member>
+        <member name="T:Fast.Core.Extensions.InternalIServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 内部拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Core.Extensions.InternalIServiceCollectionExtension.AddJsonOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加JSON序列化配置
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.InternalIServiceCollectionExtension.AddObjectMapper(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加对象映射
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.InternalIServiceCollectionExtension.AddLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加日志服务
+            /// 197001/01/24.log
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.InternalIServiceCollectionExtension.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加缓存
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.InternalIServiceCollectionExtension.AddAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加鉴权用户
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Core.Extensions.InternalIServiceCollectionExtension.AddSqlSugar(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加 SqlSugar
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
         <member name="T:Fast.Core.Extensions.IServiceCollectionExtension">
             <summary>
             <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
             </summary>
+        </member>
+        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddGzipBrotliCompression(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加Gzip Brotli 压缩
+            </summary>
+            <param name="service"></param>
         </member>
         <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddMvcFilter``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Action{Microsoft.AspNetCore.Mvc.MvcOptions})">
             <summary>
@@ -2576,55 +2678,6 @@
             <param name="filter"></param>
             <param name="configure"></param>
             <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
-        </member>
-        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddJsonOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加JSON序列化配置
-            </summary>
-            <param name="services"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddObjectMapper(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加对象映射
-            </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
-        </member>
-        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加日志服务
-            /// 197001/01/24.log
-            </summary>
-            <param name="services"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加缓存
-            </summary>
-            <param name="services"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加鉴权用户
-            </summary>
-            <param name="services"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddSqlSugar(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加 SqlSugar
-            </summary>
-            <param name="services"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Core.Extensions.IServiceCollectionExtension.AddGzipBrotliCompression(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加Gzip Brotli 压缩
-            </summary>
-            <param name="service"></param>
         </member>
         <member name="T:Fast.Core.Extensions.WebApplicationBuilderExtension">
             <summary>

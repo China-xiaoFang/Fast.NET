@@ -45,7 +45,7 @@ public static class Debugging
         // 获取信息级别对应的 emoji
         var category = GetLevelEmoji(level);
 
-        Console.WriteLine(message, category);
+        Console.WriteLine($"{category} {message}");
         Debug.WriteLine(message, category);
     }
 

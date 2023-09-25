@@ -96,7 +96,7 @@ public static class LoggingIServiceCollectionExtension
             loggingBuilder.AddFile($"logs/error/{logFileFormat}.log",
                 options => { SetLogOptions(options, LogLevel.Error, fileSizeLimitBytes); });
             // Environments other than the development environment are not logged.
-            if (!App.HostEnvironment.IsDevelopment())
+            if (!App.WebHostEnvironment.IsDevelopment())
                 return;
             loggingBuilder.AddFile($"logs/info/{logFileFormat}.log",
                 options => { SetLogOptions(options, LogLevel.Information, fileSizeLimitBytes); });

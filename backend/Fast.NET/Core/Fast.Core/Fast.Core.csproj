@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	  <PackageReference Include="Fast.IaaS" Version="3.0.2" />
 	  <PackageReference Include="Fast.Mapster" Version="3.0.2" />
 	  <PackageReference Include="Fast.Serialization" Version="3.0.2" />

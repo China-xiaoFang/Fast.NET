@@ -4,14 +4,15 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using Fast.Core.ConfigurableOptions.Internal;
+using Fast.Core.ConfigurableOptions.Options;
 using Fast.Core.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
+// ReSharper disable once CheckNamespace
 namespace Fast.Core;
 
 /// <summary>
@@ -29,11 +30,6 @@ public static class App
     /// 获取Web主机环境
     /// </summary>
     public static IWebHostEnvironment WebHostEnvironment => InternalApp.WebHostEnvironment;
-
-    /// <summary>
-    /// 获取泛型主机环境
-    /// </summary>
-    public static IHostEnvironment HostEnvironment => InternalApp.HostEnvironment;
 
     /// <summary>
     /// 存储根服务，可能为空
@@ -141,7 +137,7 @@ public static class App
     public static IServiceProvider GetServiceProvider(Type serviceType)
     {
         // 处理控制台应用程序
-        if (HostEnvironment == default)
+        if (WebHostEnvironment == default)
             return RootServices;
 
         // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
@@ -243,7 +239,20 @@ public static class App
     /// <returns>TOptions</returns>
     public static TOptions GetConfig<TOptions>(string path, bool loadPostConfigure = false)
     {
-        return Configuration.GetSection(path).Get<TOptions>();
+        var options = Configuration.GetSection(path).Get<TOptions>();
+
+        // 加载默认选项配置
+        if (loadPostConfigure && typeof(IConfigurableOptions).IsAssignableFrom(typeof(TOptions)))
+        {
+            var postConfigure = typeof(TOptions).GetMethod("PostConfigure");
+            if (postConfigure != null)
+            {
+                options ??= Activator.CreateInstance<TOptions>();
+                postConfigure.Invoke(options, new object[] {options, Configuration});
+            }
+        }
+
+        return options;
     }
 
     /// <summary>

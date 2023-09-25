@@ -51,7 +51,7 @@ static class SugarEntityFilter
 
         _db.Aop.OnLogExecuted = (sql, pars) =>
         {
-            if (App.HostEnvironment.IsDevelopment())
+            if (App.WebHostEnvironment.IsDevelopment())
             {
                 if (sql.StartsWith("SELECT"))
                 {

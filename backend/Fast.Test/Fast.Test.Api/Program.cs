@@ -14,6 +14,8 @@ builder.Logging.AddConsoleFormatter(options => { options.DateFormat = "yyyy-MM-d
 
 builder.Services.AddControllers();
 
+builder.Services.AddInjectWithUnifyResult();
+
 // Add event bus.
 builder.Services.AddEventBus(options =>
 {

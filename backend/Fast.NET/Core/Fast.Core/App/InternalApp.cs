@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Fast.Core.CorsAccessor.Extensions;
 using Fast.Core.DependencyInjection.Extensions;
 using Fast.Core.Diagnostics;
 using Fast.Core.Extensions;
@@ -36,36 +37,22 @@ internal class InternalApp
     internal static IWebHostEnvironment WebHostEnvironment;
 
     /// <summary>
-    /// 获取泛型主机环境
+    /// 默认配置文件扫描目录
     /// </summary>
-    internal static IHostEnvironment HostEnvironment;
+    internal static IEnumerable<string> InternalConfigurationScanDirectories => new[] {"AppConfig", "JsonConfig"};
 
-    /// <summary>
-    /// 配置配置文件扫描目录
-    /// </summary>
-    internal static IEnumerable<string> InternalConfigurationScanDirectories { get; private set; } =
-        new[] {"AppConfig", "JsonConfig"};
-
-    internal static void ConfigureApplication(IWebHostBuilder builder, IHostBuilder hostBuilder = default)
+    internal static void ConfigureApplication(IWebHostBuilder builder)
     {
         // 自动装载配置
-        if (hostBuilder == null)
+        builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
         {
-            builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
-            {
-                // 存储环境对象
-                HostEnvironment = WebHostEnvironment = hostContext.HostingEnvironment;
+            // 存储环境对象
+            WebHostEnvironment = hostContext.HostingEnvironment;
 
-                // 加载配置
-                Debugging.Info("加载JSON文件配置中......");
-                AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
-            });
-        }
-        else
-        {
-            // 自动装载配置
-            ConfigureHostAppConfiguration(hostBuilder);
-        }
+            // 加载配置
+            Debugging.Info("加载JSON文件配置中......");
+            AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
+        });
 
         // 应用初始化服务
         builder.ConfigureServices((hostContext, services) =>
@@ -78,7 +65,7 @@ internal class InternalApp
 
             // 跨域配置
             Debugging.Info("正在配置跨域请求......");
-            //services.AddCorsAccessor();
+            services.AddCorsAccessor(hostContext.Configuration);
 
             // 注册 HttpContextAccessor 服务
             Debugging.Info("正在注册 HttpContextAccessor 服务......");
@@ -92,7 +79,7 @@ internal class InternalApp
             services.AddJsonOptions();
 
             // 添加日志服务
-            IServiceCollectionExtension.AddLogging(services);
+            InternalIServiceCollectionExtension.AddLogging(services);
 
             // 注册内存和分布式内存
             Debugging.Info("正在注册 MemoryCache......");
@@ -114,27 +101,10 @@ internal class InternalApp
             services.AddCache();
 
             // 添加鉴权用户
-            IServiceCollectionExtension.AddAuthentication(services);
+            InternalIServiceCollectionExtension.AddAuthentication(services);
 
             // 添加 SqlSugar
             services.AddSqlSugar();
-        });
-    }
-
-    /// <summary>
-    /// 自动装载主机配置
-    /// </summary>
-    /// <param name="builder"></param>
-    private static void ConfigureHostAppConfiguration(IHostBuilder builder)
-    {
-        builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
-        {
-            // 存储环境对象
-            HostEnvironment = hostContext.HostingEnvironment;
-
-            // 加载配置
-            Debugging.Info("加载JSON文件配置中......");
-            AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
         });
     }
 
