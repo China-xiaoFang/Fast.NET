@@ -1,4 +1,4 @@
-﻿namespace Fast.UAParser;
+﻿namespace Fast.UAParser.UAParser;
 
 /// <summary>
 /// Represents the physical device the user agent is using

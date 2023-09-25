@@ -12,20 +12,10 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.IaaS;
+namespace Fast.UAParser.UAParser;
 
-/// <summary>
-/// 常用常量
-/// </summary>
-public class GlobalConstant
+internal static class VersionString
 {
-    /// <summary>
-    /// 默认DateTime
-    /// </summary>
-    public static DateTime DefaultTime => TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
-
-    /// <summary>
-    /// 时间戳
-    /// </summary>
-    public static long TimeStamp => Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
+    public static string Format(params string[] parts) =>
+        string.Join(".", parts.Where(v => !string.IsNullOrEmpty(v)).ToArray());
 }

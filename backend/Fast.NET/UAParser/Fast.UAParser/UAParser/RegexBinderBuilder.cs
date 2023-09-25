@@ -12,20 +12,21 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.IaaS;
+using System.Text.RegularExpressions;
 
-/// <summary>
-/// 常用常量
-/// </summary>
-public class GlobalConstant
+namespace Fast.UAParser.UAParser;
+
+internal static class RegexBinderBuilder
 {
-    /// <summary>
-    /// 默认DateTime
-    /// </summary>
-    public static DateTime DefaultTime => TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
-
-    /// <summary>
-    /// 时间戳
-    /// </summary>
-    public static long TimeStamp => Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
+    public static Func<Match, IEnumerator<int>, TResult> SelectMany<T1, T2, TResult>(
+        this Func<Match, IEnumerator<int>, T1> binder, Func<T1, Func<Match, IEnumerator<int>, T2>> continuation,
+        Func<T1, T2, TResult> projection)
+    {
+        return (m, num) =>
+        {
+            var obj1 = binder(m, num);
+            var obj2 = continuation(obj1)(m, num);
+            return projection(obj1, obj2);
+        };
+    }
 }

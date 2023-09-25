@@ -17,6 +17,14 @@
             <param name="json"></param>
             <returns></returns>
         </member>
+        <member name="M:Fast.Serialization.Extensions.SerializationExtension.ToObject(System.String,System.Type)">
+            <summary>
+            JSON 字符串转 Object
+            </summary>
+            <param name="json"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.Serialization.Extensions.SerializationExtension.ToJsonString(System.Object)">
             <summary>
             Object 转 JSON字符串
@@ -30,6 +38,15 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="dictionary"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Serialization.Extensions.SerializationExtension.ToObject``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.Type)">
+            <summary>
+            Dictionary 字符串转 Object
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dictionary"></param>
+            <param name="type"></param>
             <returns></returns>
         </member>
         <member name="M:Fast.Serialization.Extensions.SerializationExtension.DeepCopy``1(``0)">

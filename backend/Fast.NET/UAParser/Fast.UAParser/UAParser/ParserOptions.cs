@@ -12,20 +12,23 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.IaaS;
+using System.Text.RegularExpressions;
 
-/// <summary>
-/// 常用常量
-/// </summary>
-public class GlobalConstant
+namespace Fast.UAParser.UAParser;
+
+/// <summary>Options available for the parser</summary>
+public sealed class ParserOptions
 {
     /// <summary>
-    /// 默认DateTime
+    /// If true, will use compiled regular expressions for slower startup time
+    /// but higher throughput. The default is false.
     /// </summary>
-    public static DateTime DefaultTime => TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+    public bool UseCompiledRegex { get; set; }
 
     /// <summary>
-    /// 时间戳
+    /// Allows for specifying the maximum time spent on regular expressions,
+    /// serving as a fail safe for potential infinite backtracking. The default is
+    /// set to Regex.InfiniteMatchTimeout
     /// </summary>
-    public static long TimeStamp => Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
+    public TimeSpan MatchTimeOut { get; set; } = Regex.InfiniteMatchTimeout;
 }

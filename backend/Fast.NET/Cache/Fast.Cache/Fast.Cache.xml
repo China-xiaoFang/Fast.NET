@@ -267,6 +267,7 @@
         <member name="M:Fast.Cache.Extensions.CacheIServiceCollectionExtension.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             添加缓存
+            请确保 配置文件中存在 “RedisConnectionString” 节点
             </summary>
             <param name="services"></param>
             <returns></returns>

@@ -12,20 +12,23 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.IaaS;
+namespace Fast.UAParser.UAParser;
 
 /// <summary>
-/// 常用常量
+/// Representing the parse results. Structure of this class aligns with the
+/// ua-parser-output WebIDL structure defined in this document: https://github.com/ua-parser/uap-core/blob/master/docs/specification.md
 /// </summary>
-public class GlobalConstant
+public interface IUAParserOutput
 {
-    /// <summary>
-    /// 默认DateTime
-    /// </summary>
-    public static DateTime DefaultTime => TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+    /// <summary>The user agent string, the input for the UAParser</summary>
+    string String { get; }
 
-    /// <summary>
-    /// 时间戳
-    /// </summary>
-    public static long TimeStamp => Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
+    /// <summary>The OS parsed from the user agent string</summary>
+    OS OS { get; }
+
+    /// <summary>The Device parsed from the user agent string</summary>
+    Device Device { get; }
+
+    /// <summary>The User Agent parsed from the user agent string</summary>
+    UserAgent UA { get; }
 }
