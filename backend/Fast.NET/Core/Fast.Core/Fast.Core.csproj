@@ -10,10 +10,9 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\IaaS\Fast.IaaS\Fast.IaaS.csproj" />
+	  <PackageReference Include="Fast.IaaS" Version="3.0.2" />
+	  <PackageReference Include="Fast.Mapster" Version="3.0.2" />
+	  <PackageReference Include="Fast.Serialization" Version="3.0.2" />
 	</ItemGroup>
 
 </Project>

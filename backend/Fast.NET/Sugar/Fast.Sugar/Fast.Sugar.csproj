@@ -5,6 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Fast.UAParser" Version="3.0.2" />
 	  <PackageReference Include="SqlSugarCore" Version="5.1.4.85" />
 	  <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 	</ItemGroup>
@@ -13,7 +14,6 @@
 	  <ProjectReference Include="..\..\Authentication\Fast.Authentication\Fast.Authentication.csproj" />
 	  <ProjectReference Include="..\..\EventBus\Fast.EventBus\Fast.EventBus.csproj" />
 	  <ProjectReference Include="..\..\Logging\Fast.Logging\Fast.Logging.csproj" />
-	  <ProjectReference Include="..\..\UAParser\Fast.UAParser\Fast.UAParser.csproj" />
 	</ItemGroup>
 
 </Project>
