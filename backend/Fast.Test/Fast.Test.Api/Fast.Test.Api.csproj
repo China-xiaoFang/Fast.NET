@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Fast.NET\Core\Fast.Core\Fast.Core.csproj" />
+    <ProjectReference Include="..\..\Fast.NET\CorsAccessor\Fast.CorsAccessor\Fast.CorsAccessor.csproj" />
     <ProjectReference Include="..\..\Fast.NET\EventBus\Fast.EventBus\Fast.EventBus.csproj" />
     <ProjectReference Include="..\..\Fast.NET\Logging\Fast.Logging\Fast.Logging.csproj" />
     <ProjectReference Include="..\..\Fast.NET\Sugar\Fast.Sugar\Fast.Sugar.csproj" />

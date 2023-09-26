@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
-using Fast.Core.Diagnostics;
 using Fast.Core.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Fast.Core.Extensions;
 
@@ -11,24 +12,87 @@ namespace Fast.Core.Extensions;
 internal static class InternalIServiceCollectionExtension
 {
     /// <summary>
+    /// 添加日志服务
+    /// 197001/01/24.log
+    /// </summary>
+    /// <param name="services"></param>
+    /// <returns></returns>
+    internal static IServiceCollection AddLogging(this IServiceCollection services)
+    {
+        // 判断是否安装了 Logging 程序集
+        var assembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Logging") == true);
+        if (assembly != null)
+        {
+            InternalApp.LogInfo("Registering the Logging service......");
+
+            // 加载 Cache 拓展类和拓展方法
+            var cacheIServiceCollectionExtensionType =
+                Reflect.GetType(assembly, "Fast.Logging.Extensions.LoggingIServiceCollectionExtension");
+            var method = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                .First(f => f.Name == "AddLogging");
+
+            var result = method.Invoke(null, new[] {services, Type.Missing}) as IServiceCollection;
+
+            // 创建一个新的 LoggerFactory 实例
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                // TODO：这里待优化，输出的格式不对
+                builder.AddConsole(options => options.FormatterName = "console-format");
+            });
+
+            // 创建 ILogger 实例
+            InternalApp.Logger = loggerFactory.CreateLogger("Fast.Core.App");
+
+            return result;
+        }
+
+        return services;
+    }
+
+    /// <summary>
+    /// 添加跨域配置
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    internal static IServiceCollection AddCorsAccessor(this IServiceCollection services, IConfiguration configuration)
+    {
+        // 判断是否安装了 CorsAccessor 程序集
+        var assembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.CorsAccessor") == true);
+        if (assembly != null)
+        {
+            InternalApp.LogInfo("Registering for the CorsAccessor service......");
+            // 加载 Cache 拓展类和拓展方法
+            var cacheIServiceCollectionExtensionType = Reflect.GetType(assembly,
+                "Fast.CorsAccessor.Extensions.CorsAccessorIServiceCollectionExtension");
+            var method = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                .First(f => f.Name == "AddCorsAccessor");
+
+            return method.Invoke(null, new[] {services, configuration, Type.Missing, Type.Missing}) as IServiceCollection;
+        }
+
+        return services;
+    }
+
+    /// <summary>
     /// 添加JSON序列化配置
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
     internal static IServiceCollection AddJsonOptions(this IServiceCollection services)
     {
-        // 判断是否安装了 Json 程序集
-        var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Serialization") == true);
-        if (cacheAssembly != null)
+        // 判断是否安装了 Serialization 程序集
+        var assembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Serialization") == true);
+        if (assembly != null)
         {
-            Debugging.Info("正在注册 JSON 序列化配置......");
+            InternalApp.LogInfo("Registering for the Serialization service......");
             // 加载 Cache 拓展类和拓展方法
-            var cacheIServiceCollectionExtensionType = Reflect.GetType(cacheAssembly,
+            var cacheIServiceCollectionExtensionType = Reflect.GetType(assembly,
                 "Fast.Serialization.Extensions.SerializationIServiceCollectionExtension");
-            var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+            var method = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(f => f.Name == "AddJsonOptions");
 
-            return addCacheMethod.Invoke(null, new object[] {services}) as IServiceCollection;
+            return method.Invoke(null, new object[] {services}) as IServiceCollection;
         }
 
         return services;
@@ -42,42 +106,17 @@ internal static class InternalIServiceCollectionExtension
     internal static IServiceCollection AddObjectMapper(this IServiceCollection services)
     {
         // 判断是否安装了 Mapster 程序集
-        var objectMapperAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name?.Equals("Fast.Mapster") == true);
-        if (objectMapperAssembly != null)
+        var assembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name?.Equals("Fast.Mapster") == true);
+        if (assembly != null)
         {
-            Debugging.Info("正在注册 Mapster 对象映射......");
+            InternalApp.LogInfo("Registering the Mapster mapping service......");
             // 加载 ObjectMapper 拓展类型和拓展方法
             var objectMapperServiceCollectionExtensionsType =
-                Reflect.GetType(objectMapperAssembly, "Fast.Mapster.Extensions.ObjectMapperExtension");
-            var addObjectMapperMethod = objectMapperServiceCollectionExtensionsType
-                .GetMethods(BindingFlags.Public | BindingFlags.Static).First(u => u.Name == "AddObjectMapper");
+                Reflect.GetType(assembly, "Fast.Mapster.Extensions.ObjectMapperExtension");
+            var method = objectMapperServiceCollectionExtensionsType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                .First(u => u.Name == "AddObjectMapper");
 
-            return addObjectMapperMethod.Invoke(null, new object[] {services, App.Assemblies.ToArray()}) as IServiceCollection;
-        }
-
-        return services;
-    }
-
-    /// <summary>
-    /// 添加日志服务
-    /// /// 197001/01/24.log
-    /// </summary>
-    /// <param name="services"></param>
-    /// <returns></returns>
-    internal static IServiceCollection AddLogging(this IServiceCollection services)
-    {
-        // 判断是否安装了 Logging 程序集
-        var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Logging") == true);
-        if (cacheAssembly != null)
-        {
-            Debugging.Info("正在注册 Logging......");
-            // 加载 Cache 拓展类和拓展方法
-            var cacheIServiceCollectionExtensionType =
-                Reflect.GetType(cacheAssembly, "Fast.Logging.Extensions.LoggingIServiceCollectionExtension");
-            var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .First(f => f.Name == "AddLogging");
-
-            return addCacheMethod.Invoke(null, new[] {services, Type.Missing}) as IServiceCollection;
+            return method.Invoke(null, new object[] {services, App.Assemblies.ToArray()}) as IServiceCollection;
         }
 
         return services;
@@ -91,17 +130,17 @@ internal static class InternalIServiceCollectionExtension
     internal static IServiceCollection AddCache(this IServiceCollection services)
     {
         // 判断是否安装了 Cache 程序集
-        var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Cache") == true);
-        if (cacheAssembly != null)
+        var assembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Cache") == true);
+        if (assembly != null)
         {
-            Debugging.Info("正在注册 Cache......");
+            InternalApp.LogInfo("Registering the Cache service.......");
             // 加载 Cache 拓展类和拓展方法
             var cacheIServiceCollectionExtensionType =
-                Reflect.GetType(cacheAssembly, "Fast.Cache.Extensions.CacheIServiceCollectionExtension");
-            var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                Reflect.GetType(assembly, "Fast.Cache.Extensions.CacheIServiceCollectionExtension");
+            var method = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(f => f.Name == "AddCache");
 
-            return addCacheMethod.Invoke(null, new object[] {services}) as IServiceCollection;
+            return method.Invoke(null, new object[] {services}) as IServiceCollection;
         }
 
         return services;
@@ -115,17 +154,17 @@ internal static class InternalIServiceCollectionExtension
     internal static IServiceCollection AddAuthentication(this IServiceCollection services)
     {
         // 判断是否安装了 Authentication 程序集
-        var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Authentication") == true);
-        if (cacheAssembly != null)
+        var assembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Authentication") == true);
+        if (assembly != null)
         {
-            Debugging.Info("正在注册 Authentication......");
+            InternalApp.LogInfo("Registering the Authentication service......");
             // 加载 Cache 拓展类和拓展方法
             var cacheIServiceCollectionExtensionType =
-                Reflect.GetType(cacheAssembly, "Fast.Authentication.Extensions.AddAuthentication");
-            var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                Reflect.GetType(assembly, "Fast.Authentication.Extensions.AddAuthentication");
+            var method = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(f => f.Name == "AddAuthentication");
 
-            return addCacheMethod.Invoke(null, new object[] {services}) as IServiceCollection;
+            return method.Invoke(null, new object[] {services}) as IServiceCollection;
         }
 
         return services;
@@ -139,17 +178,17 @@ internal static class InternalIServiceCollectionExtension
     internal static IServiceCollection AddSqlSugar(this IServiceCollection services)
     {
         // 判断是否安装了 Cache 程序集
-        var cacheAssembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Sugar") == true);
-        if (cacheAssembly != null)
+        var assembly = App.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.Sugar") == true);
+        if (assembly != null)
         {
-            Debugging.Info("正在注册 SqlSugar......");
+            InternalApp.LogInfo("Registering for the SqlSugar service......");
             // 加载 Cache 拓展类和拓展方法
             var cacheIServiceCollectionExtensionType =
-                Reflect.GetType(cacheAssembly, "Fast.Sugar.Extensions.SqlSugarIServiceCollectionExtension");
-            var addCacheMethod = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                Reflect.GetType(assembly, "Fast.Sugar.Extensions.SqlSugarIServiceCollectionExtension");
+            var method = cacheIServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(f => f.Name == "AddSqlSugar");
 
-            return addCacheMethod.Invoke(null, new object[] {services}) as IServiceCollection;
+            return method.Invoke(null, new object[] {services}) as IServiceCollection;
         }
 
         return services;

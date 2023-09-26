@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Fast.Core.Diagnostics;
+namespace Fast.IaaS.Diagnostics;
 
 /// <summary>
 /// 向事件管理器中输出事件信息
@@ -45,7 +45,6 @@ public static class Debugging
         // 获取信息级别对应的 emoji
         var category = GetLevelEmoji(level);
 
-        Console.WriteLine($"{category} {message}");
         Debug.WriteLine(message, category);
     }
 

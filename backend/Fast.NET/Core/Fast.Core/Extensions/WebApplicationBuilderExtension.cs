@@ -25,7 +25,7 @@ public static class WebApplicationBuilderExtension
         return builder;
     }
 
-    private static void UseDefault()
+    static void UseDefault()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine(@$"

@@ -1,12 +1,15 @@
-﻿using System.Text;
-using Fast.Core.CorsAccessor.Extensions;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
+using System.Text;
 using Fast.Core.DependencyInjection.Extensions;
-using Fast.Core.Diagnostics;
 using Fast.Core.Extensions;
+using Fast.Core.Filters;
+using Fast.IaaS.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.Core;
@@ -37,9 +40,118 @@ internal class InternalApp
     internal static IWebHostEnvironment WebHostEnvironment;
 
     /// <summary>
+    /// 应用有效程序集
+    /// </summary>
+    internal static readonly IEnumerable<Assembly> Assemblies;
+
+    /// <summary>
+    /// 有效程序集类型
+    /// </summary>
+    internal static readonly IEnumerable<Type> EffectiveTypes;
+
+    /// <summary>
+    /// App 日志对象
+    /// </summary>
+    internal static ILogger Logger;
+
+    /// <summary>
+    /// 未托管的对象集合
+    /// </summary>
+    internal static readonly ConcurrentBag<IDisposable> UnmanagedObjects;
+
+    /// <summary>
     /// 默认配置文件扫描目录
     /// </summary>
     internal static IEnumerable<string> InternalConfigurationScanDirectories => new[] {"AppConfig", "JsonConfig"};
+
+    /// <summary>
+    /// GC 回收默认间隔
+    /// </summary>
+    internal const int GC_COLLECT_INTERVAL_SECONDS = 5;
+
+    /// <summary>
+    /// 记录最近 GC 回收时间
+    /// </summary>
+    internal static DateTime? LastGCCollectTime { get; set; }
+
+    /// <summary>
+    /// <see cref="InternalApp"/>
+    /// </summary>
+    static InternalApp()
+    {
+        // 日志对象，默认等于 Null
+        Logger = null;
+
+        // 未托管的对象
+        UnmanagedObjects = new ConcurrentBag<IDisposable>();
+
+        // 加载程序集
+        Assemblies = GetAssemblies();
+
+        // 获取有效的类型集合
+        EffectiveTypes = Assemblies.SelectMany(GetTypes);
+    }
+
+    /// <summary>
+    /// 获取程序集
+    /// </summary>
+    /// <returns></returns>
+    static IEnumerable<Assembly> GetAssemblies()
+    {
+        // 获取入口程序集
+        var entryAssembly = Assembly.GetEntryAssembly();
+
+        // 获取入口程序集所引用的所有程序集
+        var referencedAssemblies = entryAssembly?.GetReferencedAssemblies();
+
+        // 加载引用的程序集
+        var assemblies = referencedAssemblies.Select(Assembly.Load).ToList();
+
+        // 将入口程序集也放入集合
+        assemblies.Add(entryAssembly);
+
+        return assemblies;
+    }
+
+    /// <summary>
+    /// 加载程序集中的所有类型
+    /// </summary>
+    /// <param name="ass"></param>
+    /// <returns></returns>
+    static IEnumerable<Type> GetTypes(Assembly ass)
+    {
+        var types = Array.Empty<Type>();
+
+        try
+        {
+            types = ass.GetTypes();
+        }
+        catch
+        {
+            Console.WriteLine($"Error load `{ass.FullName}` assembly.");
+        }
+
+        return types.Where(u => u.IsPublic);
+    }
+
+    /// <summary>
+    /// 处理获取对象异常问题
+    /// </summary>
+    /// <typeparam name="T">类型</typeparam>
+    /// <param name="action">获取对象委托</param>
+    /// <param name="defaultValue">默认值</param>
+    /// <returns>T</returns>
+    internal static T CatchOrDefault<T>(Func<T> action, T defaultValue = null) where T : class
+    {
+        try
+        {
+            return action();
+        }
+        catch
+        {
+            return defaultValue;
+        }
+    }
 
     internal static void ConfigureApplication(IWebHostBuilder builder)
     {
@@ -50,7 +162,6 @@ internal class InternalApp
             WebHostEnvironment = hostContext.HostingEnvironment;
 
             // 加载配置
-            Debugging.Info("加载JSON文件配置中......");
             AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
         });
 
@@ -63,32 +174,35 @@ internal class InternalApp
             // 存储服务提供器
             InternalServices = services;
 
+            // 注册 Startup 过滤器
+            services.AddTransient<IStartupFilter, StartupFilter>();
+
+            // 添加日志服务
+            InternalIServiceCollectionExtension.AddLogging(services);
+
             // 跨域配置
-            Debugging.Info("正在配置跨域请求......");
             services.AddCorsAccessor(hostContext.Configuration);
 
             // 注册 HttpContextAccessor 服务
-            Debugging.Info("正在注册 HttpContextAccessor 服务......");
+            LogInfo("Registering the HttpContextAccessor service......");
             services.AddHttpContextAccessor();
 
             // Gzip 压缩
-            Debugging.Info("正在注册 Gzip压缩......");
             services.AddGzipBrotliCompression();
 
             // JSON 序列化配置
             services.AddJsonOptions();
 
-            // 添加日志服务
-            InternalIServiceCollectionExtension.AddLogging(services);
-
-            // 注册内存和分布式内存
-            Debugging.Info("正在注册 MemoryCache......");
+            // 注册内存缓存
+            LogInfo("Registering the MemoryCache service......");
             services.AddMemoryCache();
-            Debugging.Info("正在注册 DistributedMemoryCache......");
+
+            // 注册分布式内存缓存
+            LogInfo("Registering the DistributedMemoryCache service......");
             services.AddDistributedMemoryCache();
 
             // 注册全局依赖注入
-            Debugging.Info("正在注册全局依赖注入......");
+            LogInfo("Registering the global dependency Injection service......");
             services.AddInnerDependencyInjection();
 
             // 添加对象映射
@@ -109,7 +223,9 @@ internal class InternalApp
     }
 
     private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
-    {
+    {   
+        LogInfo("Load the JSON file configuration in......");
+
         // 获取程序执行目录
         var executeDirectory = AppContext.BaseDirectory;
 
@@ -185,5 +301,38 @@ internal class InternalApp
 
             return string.Join('.', fileNameParts.Take(fileNameParts.Length - 2));
         }
+    }
+
+    /// <summary>
+    /// 写入 Info Log
+    /// </summary>
+    /// <param name="message"></param>
+    internal static void LogInfo(string message)
+    {
+        Logger?.LogInformation(message);
+
+        Debugging.Info(message);
+    }
+
+    /// <summary>
+    /// 写入 Warning Log
+    /// </summary>
+    /// <param name="message"></param>
+    internal static void LogWarning(string message)
+    {
+        Logger?.LogWarning(message);
+
+        Debugging.Warn(message);
+    }
+
+    /// <summary>
+    /// 谢日 Error Log
+    /// </summary>
+    /// <param name="message"></param>
+    internal static void LogError(string message)
+    {
+        Logger?.LogError(message);
+
+        Debugging.Error(message);
     }
 }

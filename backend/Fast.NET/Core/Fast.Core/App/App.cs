@@ -1,6 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using Fast.Core.ConfigurableOptions.Internal;
@@ -10,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable once CheckNamespace
@@ -24,7 +23,7 @@ public static class App
     /// 配置
     /// </summary>
     public static IConfiguration Configuration =>
-        CatchOrDefault(() => InternalApp.Configuration.Reload(), new ConfigurationBuilder().Build());
+        InternalApp.CatchOrDefault(() => InternalApp.Configuration.Reload(), new ConfigurationBuilder().Build());
 
     /// <summary>
     /// 获取Web主机环境
@@ -39,95 +38,28 @@ public static class App
     /// <summary>
     /// 应用有效程序集
     /// </summary>
-    public static readonly IEnumerable<Assembly> Assemblies;
+    public static IEnumerable<Assembly> Assemblies => InternalApp.Assemblies;
 
     /// <summary>
     /// 有效程序集类型
     /// </summary>
-    public static readonly IEnumerable<Type> EffectiveTypes;
+    public static IEnumerable<Type> EffectiveTypes => InternalApp.EffectiveTypes;
 
     /// <summary>
     /// 请求上下文
     /// </summary>
-    public static HttpContext HttpContext => CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
+    public static HttpContext HttpContext =>
+        InternalApp.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
+
+    ///// <summary>
+    ///// App 日志对象
+    ///// </summary>
+    //public static ILogger Logger => InternalApp.Logger;
 
     /// <summary>
     /// 未托管的对象集合
     /// </summary>
-    public static readonly ConcurrentBag<IDisposable> UnmanagedObjects;
-
-    static App()
-    {
-        // 未托管的对象
-        UnmanagedObjects = new ConcurrentBag<IDisposable>();
-
-        // 加载程序集
-        Assemblies = GetAssemblies();
-
-        // 获取有效的类型集合
-        EffectiveTypes = Assemblies.SelectMany(GetTypes);
-    }
-
-    #region private function
-
-    private static IEnumerable<Assembly> GetAssemblies()
-    {
-        // 获取入口程序集
-        var entryAssembly = Assembly.GetEntryAssembly();
-
-        // 获取入口程序集所引用的所有程序集
-        var referencedAssemblies = entryAssembly?.GetReferencedAssemblies();
-
-        // 加载引用的程序集
-        var assemblies = referencedAssemblies.Select(Assembly.Load).ToList();
-
-        // 将入口程序集也放入集合
-        assemblies.Add(entryAssembly);
-
-        return assemblies;
-    }
-
-    /// <summary>
-    /// 加载程序集中的所有类型
-    /// </summary>
-    /// <param name="ass"></param>
-    /// <returns></returns>
-    private static IEnumerable<Type> GetTypes(Assembly ass)
-    {
-        var types = Array.Empty<Type>();
-
-        try
-        {
-            types = ass.GetTypes();
-        }
-        catch
-        {
-            Console.WriteLine($"Error load `{ass.FullName}` assembly.");
-        }
-
-        return types.Where(u => u.IsPublic);
-    }
-
-    /// <summary>
-    /// 处理获取对象异常问题
-    /// </summary>
-    /// <typeparam name="T">类型</typeparam>
-    /// <param name="action">获取对象委托</param>
-    /// <param name="defaultValue">默认值</param>
-    /// <returns>T</returns>
-    private static T CatchOrDefault<T>(Func<T> action, T defaultValue = null) where T : class
-    {
-        try
-        {
-            return action();
-        }
-        catch
-        {
-            return defaultValue;
-        }
-    }
-
-    #endregion
+    public static ConcurrentBag<IDisposable> UnmanagedObjects => InternalApp.UnmanagedObjects;
 
     /// <summary>
     /// 解析服务提供器
@@ -136,10 +68,6 @@ public static class App
     /// <returns></returns>
     public static IServiceProvider GetServiceProvider(Type serviceType)
     {
-        // 处理控制台应用程序
-        if (WebHostEnvironment == default)
-            return RootServices;
-
         // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
         if (RootServices != null && InternalApp.InternalServices
                 .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
@@ -150,6 +78,7 @@ public static class App
         var httpContext = HttpContext;
         if (httpContext?.RequestServices != null)
             return httpContext.RequestServices;
+
         // 第三选择，创建新的作用域并返回服务提供器
         if (RootServices != null)
         {
@@ -157,8 +86,8 @@ public static class App
             UnmanagedObjects.Add(scoped);
             return scoped.ServiceProvider;
         }
-        // 第四选择，构建新的服务对象（性能最差）
 
+        // 第四选择，构建新的服务对象（性能最差）
         var serviceProvider = InternalApp.InternalServices.BuildServiceProvider();
         UnmanagedObjects.Add(serviceProvider);
         return serviceProvider;
@@ -338,5 +267,31 @@ public static class App
     {
         // 这里不能从根服务解析，因为是 Scoped 作用域
         return Penetrates.GetOptionsOnStarting<TOptions>() ?? GetService<IOptionsSnapshot<TOptions>>(serviceProvider)?.Value;
+    }
+
+    /// <summary>
+    /// 释放所有未托管的对象
+    /// </summary>
+    public static void DisposeUnmanagedObjects()
+    {
+        foreach (var dsp in UnmanagedObjects)
+        {
+            dsp?.Dispose();
+        }
+
+        // 强制手动回收 GC 内存
+        if (UnmanagedObjects.Any())
+        {
+            var nowTime = DateTime.UtcNow;
+            if ((InternalApp.LastGCCollectTime == null || (nowTime - InternalApp.LastGCCollectTime.Value).TotalSeconds >
+                    InternalApp.GC_COLLECT_INTERVAL_SECONDS))
+            {
+                InternalApp.LastGCCollectTime = nowTime;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        UnmanagedObjects.Clear();
     }
 }

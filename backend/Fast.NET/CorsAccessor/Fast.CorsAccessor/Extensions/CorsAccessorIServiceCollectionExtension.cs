@@ -1,15 +1,14 @@
-using Fast.Core.ConfigurableOptions.Extensions;
-using Fast.Core.CorsAccessor.Options;
+using Fast.CorsAccessor.Options;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.CorsAccessor.Extensions;
+namespace Fast.CorsAccessor.Extensions;
 
 /// <summary>
 /// 跨域访问服务拓展类
 /// </summary>
-public static class CorsAccessorServiceCollectionExtension
+public static class CorsAccessorIServiceCollectionExtension
 {
     /// <summary>
     /// 配置跨域
@@ -22,9 +21,7 @@ public static class CorsAccessorServiceCollectionExtension
     public static IServiceCollection AddCorsAccessor(this IServiceCollection services, IConfiguration configuration,
         Action<CorsOptions> corsOptionsHandler = default, Action<CorsPolicyBuilder> corsPolicyBuilderHandler = default)
     {
-        // 添加跨域配置选项
-        services.AddConfigurableOptions<CorsAccessorSettingsOptions>();
-
+        // 获取跨域配置选项
         var corsAccessorSettings = configuration.GetSection("CorsAccessorSettings").Get<CorsAccessorSettingsOptions>();
 
         // 加载默认构造函数

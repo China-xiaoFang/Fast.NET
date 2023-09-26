@@ -1,7 +1,7 @@
 using Fast.Core;
-using Fast.Core.CorsAccessor.Extensions;
 using Fast.Core.Extensions;
 using Fast.Core.UnifyResult.Extensions;
+using Fast.CorsAccessor.Extensions;
 using Fast.EventBus.Extensions;
 using Fast.Logging.Extensions;
 using Fast.Test.Api.EventSubscriber;

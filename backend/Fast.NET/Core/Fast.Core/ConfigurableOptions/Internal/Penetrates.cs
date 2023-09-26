@@ -19,14 +19,14 @@ internal static class Penetrates
         var optionsSettings = optionsType.GetCustomAttribute<OptionsSettingsAttribute>(false);
 
         // 默认后缀
-        var defaultStuffx = nameof(Options);
+        var defaultEnd = nameof(Options);
 
         return (optionsSettings, optionsSettings switch
         {
             // // 没有贴 [OptionsSettings]，如果选项类以 `Options` 结尾，则移除，否则返回类名称
-            null => optionsType.Name.EndsWith(defaultStuffx) ? optionsType.Name[..^defaultStuffx.Length] : optionsType.Name,
+            null => optionsType.Name.EndsWith(defaultEnd) ? optionsType.Name[..^defaultEnd.Length] : optionsType.Name,
             // 如果贴有 [OptionsSettings] 特性，但未指定 Path 参数，则直接返回类名，否则返回 Path
-            _ => optionsSettings != null && string.IsNullOrWhiteSpace(optionsSettings.Path)
+            _ => string.IsNullOrWhiteSpace(optionsSettings.Path)
                 ? optionsType.Name
                 : optionsSettings.Path,
         });

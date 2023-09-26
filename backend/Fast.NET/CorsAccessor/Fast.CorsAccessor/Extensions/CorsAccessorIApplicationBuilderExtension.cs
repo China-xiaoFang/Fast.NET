@@ -1,16 +1,15 @@
-﻿using Fast.Core.CorsAccessor.Internal;
-using Fast.Core.CorsAccessor.Options;
+﻿using Fast.CorsAccessor.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Fast.Core.CorsAccessor.Extensions;
+namespace Fast.CorsAccessor.Extensions;
 
 /// <summary>
 /// 跨域中间件拓展
 /// </summary>
-public static class CorsAccessorApplicationBuilderExtension
+public static class CorsAccessorIApplicationBuilderExtension
 {
     /// <summary>
     /// 添加跨域中间件
@@ -38,7 +37,7 @@ public static class CorsAccessorApplicationBuilderExtension
             app.UseCors(builder =>
             {
                 // 设置跨域策略
-                Penetrates.SetCorsPolicy(builder, corsAccessorSettings, true);
+                corsAccessorSettings.SetCorsPolicy(builder, corsAccessorSettings, true);
 
                 // 添加自定义配置
                 corsPolicyBuilderHandler?.Invoke(builder);

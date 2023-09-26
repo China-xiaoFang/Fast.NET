@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Fast.Core.ConfigurableOptions.Options;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Configuration;
 
-namespace Fast.Core.CorsAccessor.Options;
+namespace Fast.CorsAccessor.Options;
 
 /// <summary>
 /// 跨域配置选项
 /// </summary>
-public sealed class CorsAccessorSettingsOptions : IConfigurableOptions<CorsAccessorSettingsOptions>
+public sealed class CorsAccessorSettingsOptions
 {
     /// <summary>
     /// 策略名称
@@ -89,7 +88,7 @@ public sealed class CorsAccessorSettingsOptions : IConfigurableOptions<CorsAcces
         var isNotSetOrigins = corsAccessorSettings.WithOrigins == null || corsAccessorSettings.WithOrigins.Length == 0;
 
         // https://docs.microsoft.com/zh-cn/aspnet/core/signalr/security?view=aspnetcore-6.0
-        var isSupportSignarlR = isMiddleware && corsAccessorSettings.SignalRSupport == true;
+        var isSupportSignalR = isMiddleware && corsAccessorSettings.SignalRSupport == true;
 
         // 设置总是允许跨域源配置
         builder.SetIsOriginAllowed(_ => true);
@@ -97,15 +96,15 @@ public sealed class CorsAccessorSettingsOptions : IConfigurableOptions<CorsAcces
         // 如果没有配置来源，则允许所有来源
         if (isNotSetOrigins)
         {
-            // 解决 SignarlR  不能配置允许所有源问题
-            if (!isSupportSignarlR)
+            // 解决 SignalR  不能配置允许所有源问题
+            if (!isSupportSignalR)
                 builder.AllowAnyOrigin();
         }
         else
             builder.WithOrigins(corsAccessorSettings.WithOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
 
-        // 如果没有配置请求标头，则允许所有表头，包含处理 SignarlR 情况
-        if ((corsAccessorSettings.WithHeaders == null || corsAccessorSettings.WithHeaders.Length == 0) || isSupportSignarlR)
+        // 如果没有配置请求标头，则允许所有表头，包含处理 SignalR 情况
+        if ((corsAccessorSettings.WithHeaders == null || corsAccessorSettings.WithHeaders.Length == 0) || isSupportSignalR)
             builder.AllowAnyHeader();
         else
             builder.WithHeaders(corsAccessorSettings.WithHeaders);
@@ -115,8 +114,8 @@ public sealed class CorsAccessorSettingsOptions : IConfigurableOptions<CorsAcces
             builder.AllowAnyMethod();
         else
         {
-            // 解决 SignarlR 必须允许 GET POST 问题
-            if (isSupportSignarlR)
+            // 解决 SignalR 必须允许 GET POST 问题
+            if (isSupportSignalR)
             {
                 builder.WithMethods(corsAccessorSettings.WithMethods.Concat(new[] {"GET", "POST"})
                     .Distinct(StringComparer.OrdinalIgnoreCase).ToArray());
@@ -125,18 +124,16 @@ public sealed class CorsAccessorSettingsOptions : IConfigurableOptions<CorsAcces
                 builder.WithMethods(corsAccessorSettings.WithMethods);
         }
 
-        // 配置跨域凭据，包含处理 SignarlR 情况
-        if ((corsAccessorSettings.AllowCredentials == true && !isNotSetOrigins) || isSupportSignarlR)
+        // 配置跨域凭据，包含处理 SignalR 情况
+        if ((corsAccessorSettings.AllowCredentials == true && !isNotSetOrigins) || isSupportSignalR)
             builder.AllowCredentials();
 
         // 配置响应头，如果前端不能获取自定义的 header 信息，必须配置该项，默认配置了 access-token 和 x-access-token，可取消默认行为
-        IEnumerable<string> exposedHeaders = corsAccessorSettings.FixedClientToken == true
-            ? _defaultExposedHeaders
-            : Array.Empty<string>();
+        var exposedHeaders = corsAccessorSettings.FixedClientToken == true ? _defaultExposedHeaders.ToList() : new List<string>();
         if (corsAccessorSettings.WithExposedHeaders != null && corsAccessorSettings.WithExposedHeaders.Length > 0)
         {
-            exposedHeaders = exposedHeaders.Concat(corsAccessorSettings.WithExposedHeaders)
-                .Distinct(StringComparer.OrdinalIgnoreCase);
+            exposedHeaders.AddRange(corsAccessorSettings.WithExposedHeaders);
+            exposedHeaders = exposedHeaders.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         }
 
         if (exposedHeaders.Any())

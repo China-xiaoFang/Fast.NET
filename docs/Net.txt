@@ -1,0 +1,21 @@
+IOptions，IOptionsMonitor，IOptionsSnapshot 有啥区别？
+
+IOptions, IOptionsMonitor, 和 IOptionsSnapshot 是在 .NET Core 中用于访问配置选项的接口，它们之间有一些区别和适用场景：
+
+IOptions：IOptions 接口提供了对配置选项的单次请求访问。它通过在构造函数中注入 IOptions<T> 或在方法参数中使用 IOptions<T> 来获取配置选项的值。这种方式在每次需要配置选项的地方都要重新获取一次配置值。适用于需要单次访问配置选项的情况，并且配置选项的值在整个应用程序生命周期内不会改变。
+
+IOptionsMonitor：IOptionsMonitor 接口提供了对配置选项的动态监视。它允许应用程序实时检测配置选项的更改，并在更改发生时立即获取新的配置值。通过在构造函数中注入 IOptionsMonitor<T> 或在方法参数中使用 IOptionsMonitor<T> 来获取配置选项的值。适用于需要实时监视配置选项更改并立即应用新值的情况，例如处理用户在应用程序运行时修改配置的场景。
+
+IOptionsSnapshot：IOptionsSnapshot 接口提供了对配置选项的一次性快照访问。与 IOptions 类似，IOptionsSnapshot 在构造函数或方法参数中注入，但相比于 IOptions，IOptionsSnapshot 可以用于在请求开始时获取一次配置选项快照，然后在请求处理过程中使用该快照，而不必每次访问都重新获取配置选项的值。适用于在请求处理期间需要访问配置选项，并且配置的更改在同一请求处理期间不会影响到该请求。
+
+总结来说：
+
+如果你只需要一次性获取配置选项，而不关心配置值的更改，可以使用 IOptions。
+如果你需要动态监视并实时获取配置选项的更改，可以使用 IOptionsMonitor。
+如果你需要在请求处理期间获取配置选项，并希望在同一请求处理期间不受配置更改的影响，可以使用 IOptionsSnapshot。
+选择适当的接口取决于你对配置选项的访问需求以及配置值的动态性。
+
+
+
+
+
