@@ -51,11 +51,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Test.Api", "..\Fast.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SpecificationDocument", "SpecificationDocument", "{C7FE1CF2-E183-41AE-BDF4-2F0FFBBAFF55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.SpecificationDocument", "SpecificationDocument\Fast.SpecificationDocument\Fast.SpecificationDocument.csproj", "{6F30568D-5077-4B9D-8877-922B109109E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.SpecificationDocument", "SpecificationDocument\Fast.SpecificationDocument\Fast.SpecificationDocument.csproj", "{6F30568D-5077-4B9D-8877-922B109109E9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CorsAccessor", "CorsAccessor", "{9511B6C0-06D3-41CD-BF7E-44B64CB14C46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.CorsAccessor", "CorsAccessor\Fast.CorsAccessor\Fast.CorsAccessor.csproj", "{F7517538-D7E1-4FCB-BA1C-56876D231848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.CorsAccessor", "CorsAccessor\Fast.CorsAccessor\Fast.CorsAccessor.csproj", "{F7517538-D7E1-4FCB-BA1C-56876D231848}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataValidation", "DataValidation", "{9B6429B6-5631-455B-BFA9-EA5B6E4C6A7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.DataValidation", "DataValidation\Fast.DataValidation\Fast.DataValidation.csproj", "{8110EB42-8C21-4511-A22E-CE200B9045CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exception", "Exception", "{E641CD8C-21A7-43A7-89C1-9735EF213E11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Exception", "Exception\Fast.Exception\Fast.Exception.csproj", "{D6DA435E-1919-456A-9884-88485C94A927}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +123,14 @@ Global
 		{F7517538-D7E1-4FCB-BA1C-56876D231848}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7517538-D7E1-4FCB-BA1C-56876D231848}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7517538-D7E1-4FCB-BA1C-56876D231848}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8110EB42-8C21-4511-A22E-CE200B9045CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8110EB42-8C21-4511-A22E-CE200B9045CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8110EB42-8C21-4511-A22E-CE200B9045CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8110EB42-8C21-4511-A22E-CE200B9045CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6DA435E-1919-456A-9884-88485C94A927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6DA435E-1919-456A-9884-88485C94A927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6DA435E-1919-456A-9884-88485C94A927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6DA435E-1919-456A-9884-88485C94A927}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +149,8 @@ Global
 		{006FBEB2-15EE-4071-8E71-32CEFBAA5B62} = {08B5ECBA-ACBB-4720-836A-34378B7E2A83}
 		{6F30568D-5077-4B9D-8877-922B109109E9} = {C7FE1CF2-E183-41AE-BDF4-2F0FFBBAFF55}
 		{F7517538-D7E1-4FCB-BA1C-56876D231848} = {9511B6C0-06D3-41CD-BF7E-44B64CB14C46}
+		{8110EB42-8C21-4511-A22E-CE200B9045CA} = {9B6429B6-5631-455B-BFA9-EA5B6E4C6A7E}
+		{D6DA435E-1919-456A-9884-88485C94A927} = {E641CD8C-21A7-43A7-89C1-9735EF213E11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4261BB-E228-45EE-8B97-B915C19C8A4F}
