@@ -4,12 +4,12 @@
         <name>Fast.IaaS</name>
     </assembly>
     <members>
-        <member name="T:Fast.Core.Diagnostics.Debugging">
+        <member name="T:Fast.IaaS.Diagnostics.Debugging">
             <summary>
             向事件管理器中输出事件信息
             </summary>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.WriteLine(System.Int32,System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.WriteLine(System.Int32,System.String)">
             <summary>
             输出一行事件信息
             </summary>
@@ -44,7 +44,7 @@
             </param>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.WriteLine(System.Int32,System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.WriteLine(System.Int32,System.String,System.Object[])">
             <summary>
             输出一行事件信息
             </summary>
@@ -80,111 +80,111 @@
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Trace(System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Trace(System.String)">
             <summary>
             输出跟踪级别事件信息
             </summary>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Trace(System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Trace(System.String,System.Object[])">
             <summary>
             输出跟踪级别事件信息
             </summary>
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Info(System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Info(System.String)">
             <summary>
             输出信息级别事件信息
             </summary>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Info(System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Info(System.String,System.Object[])">
             <summary>
             输出信息级别事件信息
             </summary>
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Warn(System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Warn(System.String)">
             <summary>
             输出警告级别事件信息
             </summary>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Warn(System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Warn(System.String,System.Object[])">
             <summary>
             输出警告级别事件信息
             </summary>
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Error(System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Error(System.String)">
             <summary>
             输出错误级别事件信息
             </summary>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Error(System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Error(System.String,System.Object[])">
             <summary>
             输出错误级别事件信息
             </summary>
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.File(System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.File(System.String)">
             <summary>
             输出文件级别事件信息
             </summary>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.File(System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.File(System.String,System.Object[])">
             <summary>
             输出文件级别事件信息
             </summary>
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Tip(System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Tip(System.String)">
             <summary>
             输出提示级别事件信息
             </summary>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Tip(System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Tip(System.String,System.Object[])">
             <summary>
             输出提示级别事件信息
             </summary>
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Search(System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Search(System.String)">
             <summary>
             输出搜索级别事件信息
             </summary>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Search(System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Search(System.String,System.Object[])">
             <summary>
             输出搜索级别事件信息
             </summary>
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Clock(System.String)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Clock(System.String)">
             <summary>
             输出时钟级别事件信息
             </summary>
             <param name="message">事件信息</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.Clock(System.String,System.Object[])">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.Clock(System.String,System.Object[])">
             <summary>
             输出时钟级别事件信息
             </summary>
             <param name="message">事件信息</param>
             <param name="args">格式化参数</param>
         </member>
-        <member name="M:Fast.Core.Diagnostics.Debugging.GetLevelEmoji(System.Int32)">
+        <member name="M:Fast.IaaS.Diagnostics.Debugging.GetLevelEmoji(System.Int32)">
             <summary>
             获取信息级别对应的 emoji
             </summary>
