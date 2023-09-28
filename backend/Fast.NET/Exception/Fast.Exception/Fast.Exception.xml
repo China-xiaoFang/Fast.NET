@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Exception</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.Exception.AppException">
+            <summary>
+            <see cref="T:Fast.Exception.AppException"/> 应用程序异常类
+            </summary>
+        </member>
+        <member name="P:Fast.Exception.AppException.Code">
+            <summary>
+            异常编码
+            </summary>
+        </member>
+        <member name="M:Fast.Exception.AppException.#ctor">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.AppException" />
+            </summary>
+        </member>
+        <member name="M:Fast.Exception.AppException.#ctor(System.String)">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.AppException" />
+            </summary>
+            <param name="message">异常信息</param>
+        </member>
+        <member name="M:Fast.Exception.AppException.#ctor(System.String,System.Object)">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.AppException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="code">异常编码</param>
+        </member>
+        <member name="M:Fast.Exception.AppException.#ctor(System.String,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.AppException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="M:Fast.Exception.AppException.#ctor(System.String,System.Object,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.AppException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="innerException">内部异常</param>
+            <param name="code">异常编码</param>
+        </member>
+        <member name="T:Fast.Exception.UserFriendlyException">
+            <summary>
+            <see cref="T:Fast.Exception.UserFriendlyException"/> 用户友好异常
+            </summary>
+        </member>
+        <member name="P:Fast.Exception.UserFriendlyException.Code">
+            <summary>
+            异常编码
+            </summary>
+        </member>
+        <member name="M:Fast.Exception.UserFriendlyException.#ctor">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.UserFriendlyException" />
+            </summary>
+        </member>
+        <member name="M:Fast.Exception.UserFriendlyException.#ctor(System.String)">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+        </member>
+        <member name="M:Fast.Exception.UserFriendlyException.#ctor(System.String,System.Object)">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="code">异常编码</param>
+        </member>
+        <member name="M:Fast.Exception.UserFriendlyException.#ctor(System.String,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="M:Fast.Exception.UserFriendlyException.#ctor(System.String,System.Object,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:Fast.Exception.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="innerException">内部异常</param>
+            <param name="code">异常编码</param>
+        </member>
+        <member name="T:Fast.Exception.Oops">
+            <summary>
+            抛异常静态类
+            </summary>
+        </member>
+        <member name="M:Fast.Exception.Oops.Bah(System.String,System.Object[])">
+            <summary>
+            抛出业务异常信息
+            </summary>
+            <param name="errorMessage"><see cref="T:System.String"/>异常消息</param>
+            <param name="args">String.Format 参数</param>
+            <returns><see cref="T:Fast.Exception.UserFriendlyException"/>异常实例</returns>
+        </member>
+        <member name="M:Fast.Exception.Oops.Oh(System.String,System.Object[])">
+            <summary>
+            抛出字符串异常
+            </summary>
+            <param name="errorMessage"><see cref="T:System.String"/>异常消息</param>
+            <param name="args">String.Format 参数</param>
+            <returns><see cref="T:Fast.Exception.AppException"/>异常实例</returns>
+        </member>
+        <member name="M:Fast.Exception.Oops.Oh(System.String,System.Type,System.Object[])">
+            <summary>
+            抛出字符串异常
+            </summary>
+            <param name="errorMessage"><see cref="T:System.String"/>异常消息</param>
+            <param name="exceptionType">具体异常类型</param>
+            <param name="args">String.Format 参数</param>
+            <returns><see cref="T:Fast.Exception.AppException"/>异常实例</returns>
+        </member>
+        <member name="M:Fast.Exception.Oops.Oh``1(System.String,System.Object[])">
+            <summary>
+            抛出字符串异常
+            </summary>
+            <typeparam name="TException">具体异常类型</typeparam>
+            <param name="errorMessage"><see cref="T:System.String"/>异常消息</param>
+            <param name="args">String.Format 参数</param>
+            <returns><see cref="T:Fast.Exception.AppException"/>异常实例</returns>
+        </member>
+        <member name="T:Fast.Core.FriendlyException.Extensions.ExceptionIServiceCollectionExtension">
+            <summary>
+            友好异常服务拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Core.FriendlyException.Extensions.ExceptionIServiceCollectionExtension.AddFriendlyException(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            添加友好异常服务拓展服务
+            </summary>
+            <param name="mvcBuilder"><see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/>Mvc构建器</param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/></returns>
+        </member>
+        <member name="M:Fast.Core.FriendlyException.Extensions.ExceptionIServiceCollectionExtension.AddFriendlyException(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加友好异常服务拓展服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="T:Fast.Core.FriendlyException.Filters.ExceptionFilter">
+            <summary>
+            友好异常拦截器
+            </summary>
+        </member>
+        <member name="M:Fast.Core.FriendlyException.Filters.ExceptionFilter.OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            异常拦截
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Core.FriendlyException.Handlers.IGlobalExceptionHandler">
+            <summary>
+            全局异常处理
+            </summary>
+        </member>
+        <member name="M:Fast.Core.FriendlyException.Handlers.IGlobalExceptionHandler.OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,System.Boolean)">
+            <summary>
+            异常拦截
+            </summary>
+            <param name="context"></param>
+            <param name="isFriendlyException">是否友好异常</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
