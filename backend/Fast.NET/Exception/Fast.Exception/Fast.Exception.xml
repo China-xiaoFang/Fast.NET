@@ -90,6 +90,25 @@
             <param name="innerException">内部异常</param>
             <param name="code">异常编码</param>
         </member>
+        <member name="T:Fast.Exception.Extensions.ExceptionIServiceCollectionExtension">
+            <summary>
+            友好异常服务拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Exception.Extensions.ExceptionIServiceCollectionExtension.AddFriendlyException(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            添加友好异常服务拓展服务
+            </summary>
+            <param name="mvcBuilder"><see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/>Mvc构建器</param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/></returns>
+        </member>
+        <member name="M:Fast.Exception.Extensions.ExceptionIServiceCollectionExtension.AddFriendlyException(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加友好异常服务拓展服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
         <member name="T:Fast.Exception.Oops">
             <summary>
             抛异常静态类
@@ -128,25 +147,6 @@
             <param name="errorMessage"><see cref="T:System.String"/>异常消息</param>
             <param name="args">String.Format 参数</param>
             <returns><see cref="T:Fast.Exception.AppException"/>异常实例</returns>
-        </member>
-        <member name="T:Fast.Core.FriendlyException.Extensions.ExceptionIServiceCollectionExtension">
-            <summary>
-            友好异常服务拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.Core.FriendlyException.Extensions.ExceptionIServiceCollectionExtension.AddFriendlyException(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
-            <summary>
-            添加友好异常服务拓展服务
-            </summary>
-            <param name="mvcBuilder"><see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/>Mvc构建器</param>
-            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/></returns>
-        </member>
-        <member name="M:Fast.Core.FriendlyException.Extensions.ExceptionIServiceCollectionExtension.AddFriendlyException(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加友好异常服务拓展服务
-            </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
         </member>
         <member name="T:Fast.Core.FriendlyException.Filters.ExceptionFilter">
             <summary>

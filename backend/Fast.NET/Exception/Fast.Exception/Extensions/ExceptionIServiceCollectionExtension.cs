@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.FriendlyException.Extensions;
+namespace Fast.Exception.Extensions;
 
 /// <summary>
 /// 友好异常服务拓展类
