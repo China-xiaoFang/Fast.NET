@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.UnifyResult</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.UnifyResult.Extensions.UnifyResultIApplicationBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.UnifyResult.Extensions.UnifyResultIApplicationBuilderExtension.UseUnifyResultStatusCodes(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            添加状态码拦截中间件
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></returns>
+        </member>
+        <member name="T:Fast.UnifyResult.Extensions.UnifyResultIServiceCollectionExtension">
+            <summary>
+            规范化服务拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.UnifyResult.Extensions.UnifyResultIServiceCollectionExtension.AddUnifyResult``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            添加规范化结果服务
+            </summary>
+            <typeparam name="TUnifyResultProvider"></typeparam>
+            <param name="mvcBuilder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.UnifyResult.Extensions.UnifyResultIServiceCollectionExtension.AddUnifyResult``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加规范化结果服务
+            </summary>
+            <typeparam name="TUnifyResultProvider"></typeparam>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.UnifyResult.Filters.SucceededUnifyResultFilter">
+            <summary>
+            规范化结构（请求成功）过滤器
+            </summary>
+        </member>
+        <member name="F:Fast.UnifyResult.Filters.SucceededUnifyResultFilter.FilterOrder">
+            <summary>
+            过滤器排序
+            </summary>
+        </member>
+        <member name="P:Fast.UnifyResult.Filters.SucceededUnifyResultFilter.Order">
+            <summary>
+            排序属性
+            </summary>
+        </member>
+        <member name="M:Fast.UnifyResult.Filters.SucceededUnifyResultFilter.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)">
+            <summary>
+            处理规范化结果
+            </summary>
+            <param name="context"></param>
+            <param name="next"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.UnifyResult.Middlewares.UnifyResultStatusCodesMiddleware">
+            <summary>
+            状态码中间件
+            </summary>
+        </member>
+        <member name="F:Fast.UnifyResult.Middlewares.UnifyResultStatusCodesMiddleware._next">
+            <summary>
+            请求委托
+            </summary>
+        </member>
+        <member name="M:Fast.UnifyResult.Middlewares.UnifyResultStatusCodesMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:Fast.UnifyResult.Middlewares.UnifyResultStatusCodesMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            中间件执行方法
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.UnifyResult.Providers.IUnifyResultProvider">
+            <summary>
+            <see cref="T:Fast.UnifyResult.Providers.IUnifyResultProvider"/> 规范化结果提供器
+            </summary>
+        </member>
+        <member name="M:Fast.UnifyResult.Providers.IUnifyResultProvider.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,System.Int32)">
+            <summary>
+            异常返回值
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext"/></param>
+            <param name="statusCode"></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/></returns>
+        </member>
+        <member name="M:Fast.UnifyResult.Providers.IUnifyResultProvider.OnSucceeded(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext,System.Object)">
+            <summary>
+            成功返回值
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext"/></param>
+            <param name="data"></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/></returns>
+        </member>
+        <member name="M:Fast.UnifyResult.Providers.IUnifyResultProvider.OnValidateFailed(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,System.Object)">
+            <summary>
+            验证失败返回值
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext"/></param>
+            <param name="message"></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/></returns>
+        </member>
+        <member name="M:Fast.UnifyResult.Providers.IUnifyResultProvider.OnResponseStatusCodes(Microsoft.AspNetCore.Http.HttpContext,System.Int32)">
+            <summary>
+            拦截返回状态码
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="statusCode"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
