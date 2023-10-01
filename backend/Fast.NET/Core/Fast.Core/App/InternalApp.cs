@@ -50,11 +50,6 @@ internal class InternalApp
     internal static readonly IEnumerable<Type> EffectiveTypes;
 
     /// <summary>
-    /// App 日志对象
-    /// </summary>
-    internal static ILogger Logger;
-
-    /// <summary>
     /// 未托管的对象集合
     /// </summary>
     internal static readonly ConcurrentBag<IDisposable> UnmanagedObjects;
@@ -79,9 +74,6 @@ internal class InternalApp
     /// </summary>
     static InternalApp()
     {
-        // 日志对象，默认等于 Null
-        Logger = null;
-
         // 未托管的对象
         UnmanagedObjects = new ConcurrentBag<IDisposable>();
 
@@ -177,32 +169,16 @@ internal class InternalApp
             // 注册 Startup 过滤器
             services.AddTransient<IStartupFilter, StartupFilter>();
 
-            // 添加日志服务
-            InternalIServiceCollectionExtension.AddLogging(services);
-
             // 跨域配置
             services.AddCorsAccessor(hostContext.Configuration);
 
             // 注册 HttpContextAccessor 服务
-            LogInfo("Registering the HttpContextAccessor service......");
             services.AddHttpContextAccessor();
-
-            // Gzip 压缩
-            services.AddGzipBrotliCompression();
 
             // JSON 序列化配置
             services.AddJsonOptions();
 
-            // 注册内存缓存
-            LogInfo("Registering the MemoryCache service......");
-            services.AddMemoryCache();
-
-            // 注册分布式内存缓存
-            LogInfo("Registering the DistributedMemoryCache service......");
-            services.AddDistributedMemoryCache();
-
             // 注册全局依赖注入
-            LogInfo("Registering the global dependency Injection service......");
             services.AddInnerDependencyInjection();
 
             // 添加对象映射
@@ -210,22 +186,11 @@ internal class InternalApp
 
             // 默认内置 GBK，Windows-1252, Shift-JIS, GB2312 编码支持
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            // 添加缓存
-            services.AddCache();
-
-            // 添加鉴权用户
-            InternalIServiceCollectionExtension.AddAuthentication(services);
-
-            // 添加 SqlSugar
-            services.AddSqlSugar();
         });
     }
 
     private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
     {   
-        LogInfo("Load the JSON file configuration in......");
-
         // 获取程序执行目录
         var executeDirectory = AppContext.BaseDirectory;
 
@@ -301,38 +266,5 @@ internal class InternalApp
 
             return string.Join('.', fileNameParts.Take(fileNameParts.Length - 2));
         }
-    }
-
-    /// <summary>
-    /// 写入 Info Log
-    /// </summary>
-    /// <param name="message"></param>
-    internal static void LogInfo(string message)
-    {
-        Logger?.LogInformation(message);
-
-        Debugging.Info(message);
-    }
-
-    /// <summary>
-    /// 写入 Warning Log
-    /// </summary>
-    /// <param name="message"></param>
-    internal static void LogWarning(string message)
-    {
-        Logger?.LogWarning(message);
-
-        Debugging.Warn(message);
-    }
-
-    /// <summary>
-    /// 谢日 Error Log
-    /// </summary>
-    /// <param name="message"></param>
-    internal static void LogError(string message)
-    {
-        Logger?.LogError(message);
-
-        Debugging.Error(message);
     }
 }

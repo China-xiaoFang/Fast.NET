@@ -8,6 +8,7 @@ namespace Fast.Core.RemoteRequest;
 /// </summary>
 public static class RemoteRequestUtil
 {
+    // TODO：后期移动单独类库，或者直接集成到项目中
     /// <summary>
     /// 得到每日一句
     /// </summary>

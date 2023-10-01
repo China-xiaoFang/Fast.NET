@@ -13,10 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Exception\Fast.Exception\Fast.Exception.csproj" />
 	  <ProjectReference Include="..\..\IaaS\Fast.IaaS\Fast.IaaS.csproj" />
-	  <ProjectReference Include="..\..\Mapster\Fast.Mapster\Fast.Mapster.csproj" />
-	  <ProjectReference Include="..\..\Serialization\Fast.Serialization\Fast.Serialization.csproj" />
 	</ItemGroup>
 
 </Project>

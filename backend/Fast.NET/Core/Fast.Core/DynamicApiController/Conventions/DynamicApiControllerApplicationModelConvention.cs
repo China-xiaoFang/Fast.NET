@@ -5,8 +5,6 @@ using Fast.Core.DynamicApiController.Attributes;
 using Fast.Core.DynamicApiController.Enums;
 using Fast.Core.DynamicApiController.Internal;
 using Fast.Core.DynamicApiController.Options;
-using Fast.Core.UnifyResult;
-using Fast.Core.UnifyResult.Attributes;
 using Fast.IaaS.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
