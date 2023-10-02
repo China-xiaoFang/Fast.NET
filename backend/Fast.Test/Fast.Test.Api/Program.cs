@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args).Initialize();
 // Customize the console log output template.
 builder.Logging.AddConsoleFormatter(options => { options.DateFormat = "yyyy-MM-dd HH:mm:ss"; });
 
-builder.Services.AddLogging();
+//builder.Services.AddLogging();
 
 builder.Services.AddControllers();
 
@@ -51,6 +51,7 @@ builder.Services.AddEventBus(options =>
     // 注册事件总线重试服务
     options.AddFallbackPolicy<EventFallbackPolicy>();
 });
+//builder.Services.AddEventBus();
 
 builder.Services.AddSwaggerGen();
 
@@ -60,7 +61,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 // Enable compression.
-app.UseResponseCompression();
+//app.UseResponseCompression();
 
 // Add the status code interception middleware.
 app.UseUnifyResultStatusCodes();
