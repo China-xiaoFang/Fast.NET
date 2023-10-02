@@ -1,7 +1,8 @@
 ﻿using Fast.Core.DynamicApiController.Internal;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fast.Core.DynamicApiController.Attributes;
+// ReSharper disable once CheckNamespace
+namespace Fast.DynamicApplication;
 
 /// <summary>
 /// 接口描述设置

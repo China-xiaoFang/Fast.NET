@@ -1,5 +1,4 @@
 ﻿using Fast.Core;
-using Fast.Core.Templates;
 using Fast.Logging.Implantation.Console;
 using Fast.Logging.Implantation.File;
 using Microsoft.Extensions.DependencyInjection;

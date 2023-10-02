@@ -9,10 +9,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\..\IaaS\Fast.IaaS\Fast.IaaS.csproj" />
 	</ItemGroup>
 

@@ -2154,5 +2154,48 @@
             <param name="logMsg"></param>
             <param name="writer"></param>
         </member>
+        <member name="T:Fast.Logging.Templates.TP">
+            <summary>
+            模板静态类
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Templates.TP._lazyRegex">
+            <summary>
+            模板正则表达式对象
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Templates.TP.Wrapper(System.String,System.String,System.String[])">
+            <summary>
+            生成规范日志模板
+            </summary>
+            <param name="title">标题</param>
+            <param name="description">描述</param>
+            <param name="items">列表项，如果以 ##xxx## 开头，自动生成 xxx: 属性</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Templates.TP.WrapperRectangle(System.String[],System.Int32,System.Int32)">
+            <summary>
+            矩形包裹
+            </summary>
+            <param name="lines">多行消息</param>
+            <param name="align">对齐方式，-1/左对齐；0/居中对其；1/右对齐</param>
+            <param name="pad">间隙</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Templates.TP.PadRight(System.String,System.Int32)">
+            <summary>
+            等宽文字对齐
+            </summary>
+            <param name="str"></param>
+            <param name="totalByteCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Templates.TP.GetLength(System.String)">
+            <summary>
+            获取字符串长度
+            </summary>
+            <param name="str">字符串</param>
+            <returns>字符串长度</returns>
+        </member>
     </members>
 </doc>

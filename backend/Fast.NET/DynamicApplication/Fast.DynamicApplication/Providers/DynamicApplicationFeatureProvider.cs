@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 namespace Fast.Core.DynamicApiController.Providers;
 
 /// <summary>
-/// 动态接口控制器特性提供器
+/// 动态API引用特性提供器
 /// </summary>
-public sealed class DynamicApiControllerFeatureProvider : ControllerFeatureProvider
+public sealed class DynamicApplicationFeatureProvider : ControllerFeatureProvider
 {
     /// <summary>
     /// 扫描控制器

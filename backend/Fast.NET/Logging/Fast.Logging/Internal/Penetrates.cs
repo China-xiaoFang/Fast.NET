@@ -106,15 +106,16 @@ internal static class Penetrates
         // 输出日志输出所在方法，类型，程序集
         if (withStackFrame)
         {
-            var stackTraces = EnhancedStackTrace.Current();
+            var stackTrace = new StackTrace();
+            var stackFrames = stackTrace.GetFrames();
             var pos = isConsole ? 6 : 5;
-            if (stackTraces.FrameCount > pos)
+            if (stackFrames.Count() > pos)
             {
-                var targetMethod = stackTraces.Where((u, i) => i == pos).First().MethodInfo;
-                var declaringType = targetMethod.DeclaringType;
-                var targetAssembly = declaringType.Assembly;
+                var targetMethod = stackFrames.Where((u, i) => i == pos).First().GetMethod();
+                var declaringType = targetMethod?.DeclaringType;
+                var targetAssembly = declaringType?.Assembly;
 
-                formatString.Append(PadLeftAlign($"[{targetAssembly.GetName().Name}.dll] {targetMethod}"));
+                formatString.Append(PadLeftAlign($"[{targetAssembly?.GetName().Name}.dll] {targetMethod}"));
                 formatString.AppendLine();
             }
         }

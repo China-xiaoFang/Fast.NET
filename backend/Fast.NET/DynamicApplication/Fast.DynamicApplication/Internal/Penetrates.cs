@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using Fast.Core.DynamicApiController.Attributes;
-using Fast.Core.DynamicApiController.Dependencies;
+using Fast.DynamicApplication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Core.DynamicApiController.Internal;
@@ -16,11 +15,6 @@ internal static class Penetrates
     internal const string GroupSeparator = "##";
 
     /// <summary>
-    /// 请求动词映射字典
-    /// </summary>
-    internal static ConcurrentDictionary<string, string> VerbToHttpMethods { get; private set; }
-
-    /// <summary>
     /// 控制器排序集合
     /// </summary>
     internal static ConcurrentDictionary<string, (string, int, Type)> ControllerOrderCollection { get; set; }
@@ -31,28 +25,6 @@ internal static class Penetrates
     static Penetrates()
     {
         ControllerOrderCollection = new ConcurrentDictionary<string, (string, int, Type)>();
-
-        VerbToHttpMethods = new ConcurrentDictionary<string, string>
-        {
-            ["post"] = "POST",
-            ["add"] = "POST",
-            ["create"] = "POST",
-            ["insert"] = "POST",
-            ["submit"] = "POST",
-            ["get"] = "GET",
-            ["find"] = "GET",
-            ["fetch"] = "GET",
-            ["query"] = "GET",
-            //["getlist"] = "GET",
-            //["getall"] = "GET",
-
-            ["put"] = "PUT",
-            ["update"] = "PUT",
-            ["delete"] = "DELETE",
-            ["remove"] = "DELETE",
-            ["clear"] = "DELETE",
-            ["patch"] = "PATCH"
-        };
 
         IsApiControllerCached = new ConcurrentDictionary<Type, bool>();
     }
@@ -74,8 +46,11 @@ internal static class Penetrates
         // 本地静态方法
         static bool Function(Type type)
         {
+            if (type == null)
+                return false;
+
             // 排除 OData 控制器
-            if (type.Assembly.GetName().Name.StartsWith("Microsoft.AspNetCore.OData"))
+            if (type.Assembly.GetName().Name?.StartsWith("Microsoft.AspNetCore.OData") == true)
                 return false;
 
             // 不能是非公开、基元类型、值类型、抽象类、接口、泛型类
@@ -83,10 +58,9 @@ internal static class Penetrates
                 type.IsGenericType)
                 return false;
 
-            // 继承 ControllerBase 或 实现 IDynamicApiController 的类型 或 贴了 [DynamicApiController] 特性
+            // 继承 ControllerBase 或 实现 IDynamicApiController 的类型
             if ((!typeof(Controller).IsAssignableFrom(type) && typeof(ControllerBase).IsAssignableFrom(type)) ||
-                typeof(IDynamicApiController).IsAssignableFrom(type) ||
-                type.IsDefined(typeof(DynamicApiControllerAttribute), true))
+                typeof(IDynamicApplication).IsAssignableFrom(type))
                 return true;
 
             return false;

@@ -1,31 +1,21 @@
-﻿using System.Collections.Concurrent;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
-using Fast.Core.DynamicApiController.Attributes;
-using Fast.Core.DynamicApiController.Enums;
 using Fast.Core.DynamicApiController.Internal;
-using Fast.Core.DynamicApiController.Options;
-using Fast.IaaS.Extensions;
+using Fast.DynamicApplication.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.DynamicApiController.Conventions;
+namespace Fast.DynamicApplication.Conventions;
 
 /// <summary>
 /// 动态接口控制器应用模型转换器
 /// </summary>
 internal sealed class DynamicApiControllerApplicationModelConvention : IApplicationModelConvention
 {
-    /// <summary>
-    /// 动态接口控制器配置实例
-    /// </summary>
-    private readonly DynamicApiControllerSettingsOptions _dynamicApiControllerSettings;
-
     /// <summary>
     /// 带版本的名称正则表达式
     /// </summary>
@@ -48,8 +38,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     public DynamicApiControllerApplicationModelConvention(IServiceCollection services)
     {
         _services = services;
-        _dynamicApiControllerSettings = App.GetConfig<DynamicApiControllerSettingsOptions>("DynamicApiControllerSettings", true);
-        LoadVerbToHttpMethodsConfigure();
         _nameVersionRegex = new Regex(@"V(?<version>[0-9_]+$)");
     }
 
@@ -72,25 +60,12 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             // 判断是否处理 Mvc控制器
             if (typeof(ControllerBase).IsAssignableFrom(controllerType))
             {
-                if (!_dynamicApiControllerSettings.SupportedMvcController.Value || controller.ApiExplorer?.IsVisible == false)
-                {
-                    // 存储排序给 Swagger 使用
-                    Penetrates.ControllerOrderCollection.TryAdd(controller.ControllerName,
-                        (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName,
-                            controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
+                // 存储排序给 Swagger 使用
+                Penetrates.ControllerOrderCollection.TryAdd(controller.ControllerName,
+                    (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName,
+                        controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
 
-                    // 控制器默认处理规范化结果
-                    if (UnifyContext.EnabledUnifyHandler)
-                    {
-                        foreach (var action in controller.Actions)
-                        {
-                            // 配置动作方法规范化特性
-                            ConfigureActionUnifyResultAttribute(action);
-                        }
-                    }
-
-                    continue;
-                }
+                continue;
             }
 
             ConfigureController(controller, controllerApiDescriptionSettings);
@@ -109,9 +84,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
 
         // 配置控制器名称
         ConfigureControllerName(controller, controllerApiDescriptionSettings);
-
-        // 配置控制器路由特性
-        ConfigureControllerRouteAttribute(controller, controllerApiDescriptionSettings);
 
         // 存储排序给 Swagger 使用
         Penetrates.ControllerOrderCollection.TryAdd(controller.ControllerName,
@@ -138,8 +110,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 continue;
             }
 
-            ;
-
             var actionMethod = action.ActionMethod;
             var actionApiDescriptionSettings = actionMethod.IsDefined(typeof(ApiDescriptionSettingsAttribute), true)
                 ? actionMethod.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true)
@@ -161,7 +131,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             return;
 
         // 如果没有配置区域，则跳过
-        var area = controllerApiDescriptionSettings?.Area ?? _dynamicApiControllerSettings.DefaultArea;
+        var area = controllerApiDescriptionSettings?.Area;
         if (string.IsNullOrWhiteSpace(area))
             return;
 
@@ -176,35 +146,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     private void ConfigureControllerName(ControllerModel controller,
         ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
     {
-        var (Name, _, _, _) = ConfigureControllerAndActionName(controllerApiDescriptionSettings, controller.ControllerType.Name,
-            _dynamicApiControllerSettings.AbandonControllerAffixes, _ => _);
+        var (Name, _, _, _) =
+            ConfigureControllerAndActionName(controllerApiDescriptionSettings, controller.ControllerType.Name, _ => _);
         controller.ControllerName = Name;
-    }
-
-    /// <summary>
-    /// 强制处理了 ForceWithDefaultPrefix 的控制器
-    /// </summary>
-    /// <remarks>避免路由无限追加</remarks>
-    private ConcurrentBag<Type> ForceWithDefaultPrefixRouteControllerTypes { get; } = new ConcurrentBag<Type>();
-
-    /// <summary>
-    /// 配置控制器路由特性
-    /// </summary>
-    /// <param name="controller"></param>
-    /// <param name="controllerApiDescriptionSettings"></param>
-    private void ConfigureControllerRouteAttribute(ControllerModel controller,
-        ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
-    {
-        if (CheckIsForceWithDefaultRoute(controllerApiDescriptionSettings) &&
-            !string.IsNullOrWhiteSpace(_dynamicApiControllerSettings.DefaultRoutePrefix) && controller.Selectors[0] != null &&
-            controller.Selectors[0].AttributeRouteModel != null &&
-            !ForceWithDefaultPrefixRouteControllerTypes.Contains(controller.ControllerType))
-        {
-            controller.Selectors[0].AttributeRouteModel = AttributeRouteModel.CombineAttributeRouteModel(
-                new AttributeRouteModel(new RouteAttribute(_dynamicApiControllerSettings.DefaultRoutePrefix)),
-                controller.Selectors[0].AttributeRouteModel);
-            ForceWithDefaultPrefixRouteControllerTypes.Add(controller.ControllerType);
-        }
     }
 
     /// <summary>
@@ -233,10 +177,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         // 配置动作方法路由特性
         ConfigureActionRouteAttribute(action, apiDescriptionSettings, controllerApiDescriptionSettings, isLowercaseRoute,
             isKeepName, isLowerCamelCase, hasApiControllerAttribute);
-
-        // 配置动作方法规范化特性
-        if (UnifyContext.EnabledUnifyHandler)
-            ConfigureActionUnifyResultAttribute(action);
     }
 
     /// <summary>
@@ -273,24 +213,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         }
 
         var (Name, IsLowercaseRoute, IsKeepName, IsLowerCamelCase) = ConfigureControllerAndActionName(apiDescriptionSettings,
-            action.ActionMethod.Name, _dynamicApiControllerSettings.AbandonActionAffixes, tempName =>
-            {
-                // 处理动作方法名称谓词
-                if (!CheckIsKeepVerb(apiDescriptionSettings, controllerApiDescriptionSettings))
-                {
-                    var words = tempName.SplitCamelCase();
-                    var verbKey = words.First().ToLower();
-                    // 处理类似 getlist,getall 多个单词
-                    if (words.Length > 1 && Penetrates.VerbToHttpMethods.ContainsKey((words[0] + words[1]).ToLower()))
-                    {
-                        tempName = tempName[(words[0] + words[1]).Length..];
-                    }
-                    else if (Penetrates.VerbToHttpMethods.ContainsKey(verbKey))
-                        tempName = tempName[verbKey.Length..];
-                }
-
-                return tempName;
-            }, controllerApiDescriptionSettings, actionName);
+            action.ActionMethod.Name, tempName => tempName, controllerApiDescriptionSettings, actionName);
         action.ActionName = Name;
 
         return (IsLowercaseRoute, IsKeepName, IsLowerCamelCase);
@@ -307,35 +230,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         if (selectorModel.ActionConstraints.Any(u => u is HttpMethodActionConstraint))
             return;
 
-        // 解析请求谓词
-        var words = action.ActionMethod.Name.SplitCamelCase();
-        var verbKey = words.First().ToLower();
-
-        // 处理类似 getlist,getall 多个单词
-        if (words.Length > 1 && Penetrates.VerbToHttpMethods.ContainsKey((words[0] + words[1]).ToLower()))
-        {
-            verbKey = (words[0] + words[1]).ToLower();
-        }
-
-        var succeed = Penetrates.VerbToHttpMethods.TryGetValue(verbKey, out var verbValue);
-        var verb = succeed ? verbValue : _dynamicApiControllerSettings.DefaultHttpMethod.ToUpper();
-
-        // 添加请求约束
-        selectorModel.ActionConstraints.Add(new HttpMethodActionConstraint(new[] {verb}));
-
-        // 添加请求谓词特性
-        HttpMethodAttribute httpMethodAttribute = verb switch
-        {
-            "GET" => new HttpGetAttribute(),
-            "POST" => new HttpPostAttribute(),
-            "PUT" => new HttpPutAttribute(),
-            "DELETE" => new HttpDeleteAttribute(),
-            "PATCH" => new HttpPatchAttribute(),
-            "HEAD" => new HttpHeadAttribute(),
-            _ => throw new NotSupportedException($"{verb}")
-        };
-
-        selectorModel.EndpointMetadata.Add(httpMethodAttribute);
+        throw new NotSupportedException($"{action.ActionMethod.Name}");
     }
 
     /// <summary>
@@ -349,15 +244,12 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             return;
 
         // 如果动作方法请求谓词只有GET和HEAD，则将类转查询参数
-        if (_dynamicApiControllerSettings.ModelToQuery.Value)
-        {
-            var httpMethods = action.Selectors.SelectMany(u =>
-                u.ActionConstraints.Where(u => u is HttpMethodActionConstraint)
-                    .SelectMany(u => (u as HttpMethodActionConstraint).HttpMethods));
+        var httpMethods = action.Selectors.SelectMany(u =>
+            u.ActionConstraints.Where(metadata => metadata is HttpMethodActionConstraint)
+                .SelectMany(metadata => (metadata as HttpMethodActionConstraint)?.HttpMethods));
 
-            if (httpMethods.All(u => u.Equals("GET") || u.Equals("HEAD")))
-                return;
-        }
+        if (httpMethods.All(u => u.Equals("GET") || u.Equals("HEAD")))
+            return;
 
         var parameters = action.Parameters;
         foreach (var parameterModel in parameters)
@@ -430,7 +322,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             var module = apiDescriptionSettings?.Module;
 
             string template;
-            string controllerRouteTemplate = null;
             // 如果动作方法名称为空、参数值为空，且无需保留谓词，则只生成控制器路由模板
             if (action.ActionName.Length == 0 && !isKeepName && action.Parameters.Count == 0)
             {
@@ -442,26 +333,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             }
             else
             {
-                // 生成参数路由模板
-                var parameterRouteTemplate =
-                    GenerateParameterRouteTemplates(action, isLowercaseRoute, isLowerCamelCase, hasApiControllerAttribute);
-
-                // 生成控制器模板
-                controllerRouteTemplate = GenerateControllerRouteTemplate(action.Controller, controllerApiDescriptionSettings,
-                    parameterRouteTemplate);
-
-                // 拼接动作方法路由模板
-                var ActionStartTemplate = parameterRouteTemplate != null
-                    ? (parameterRouteTemplate.ActionStartTemplates.Count == 0
-                        ? null
-                        : string.Join("/", parameterRouteTemplate.ActionStartTemplates))
-                    : null;
-                var ActionEndTemplate = parameterRouteTemplate != null
-                    ? (parameterRouteTemplate.ActionEndTemplates.Count == 0
-                        ? null
-                        : string.Join("/", parameterRouteTemplate.ActionEndTemplates))
-                    : null;
-
                 // 判断是否定义了控制器路由，如果定义，则不拼接控制器路由
                 var actionRouteTemplate =
                     string.IsNullOrWhiteSpace(action.ActionName) ||
@@ -475,9 +346,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                     actionRouteTemplate = $"{actionRouteTemplate}/{selectorModel.AttributeRouteModel?.Template}";
                 }
 
-                template = string.IsNullOrWhiteSpace(controllerRouteTemplate)
-                    ? $"{(string.IsNullOrWhiteSpace(module) ? "/" : $"{module}/")}{ActionStartTemplate}/{actionRouteTemplate}/{ActionEndTemplate}"
-                    : $"{controllerRouteTemplate}/{(string.IsNullOrWhiteSpace(module) ? null : $"{module}/")}{ActionStartTemplate}/{actionRouteTemplate}/{ActionEndTemplate}";
+                template = $"{(string.IsNullOrWhiteSpace(module) ? "/" : $"{module}/")}{actionRouteTemplate}";
             }
 
             AttributeRouteModel actionAttributeRouteModel = null;
@@ -496,12 +365,10 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             }
 
             // 拼接路由
-            selectorModel.AttributeRouteModel = string.IsNullOrWhiteSpace(controllerRouteTemplate)
-                ? (actionAttributeRouteModel == null
-                    ? null
-                    : AttributeRouteModel.CombineAttributeRouteModel(action.Controller.Selectors[0].AttributeRouteModel,
-                        actionAttributeRouteModel))
-                : actionAttributeRouteModel;
+            selectorModel.AttributeRouteModel = (actionAttributeRouteModel == null
+                ? null
+                : AttributeRouteModel.CombineAttributeRouteModel(action.Controller.Selectors[0].AttributeRouteModel,
+                    actionAttributeRouteModel));
         }
     }
 
@@ -510,10 +377,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     /// </summary>
     /// <param name="controller"></param>
     /// <param name="apiDescriptionSettings"></param>
-    /// <param name="parameterRouteTemplate">参数路由模板</param>
     /// <returns></returns>
     private string GenerateControllerRouteTemplate(ControllerModel controller,
-        ApiDescriptionSettingsAttribute apiDescriptionSettings, ParameterRouteTemplate parameterRouteTemplate = default)
+        ApiDescriptionSettingsAttribute apiDescriptionSettings)
     {
         var selectorModel = controller.Selectors[0];
         // 跳过已配置路由特性的配置
@@ -521,138 +387,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             return default;
 
         // 读取模块
-        var module = apiDescriptionSettings?.Module ?? _dynamicApiControllerSettings.DefaultModule;
+        var module = apiDescriptionSettings?.Module;
 
-        // 路由默认前缀
-        var routePrefix = _dynamicApiControllerSettings.DefaultRoutePrefix;
-
-        // 生成路由模板
-        // 如果参数路由模板为空或不包含任何控制器参数模板，则返回正常的模板
-        if (parameterRouteTemplate == null || (parameterRouteTemplate.ControllerStartTemplates.Count == 0 &&
-                                               parameterRouteTemplate.ControllerEndTemplates.Count == 0))
-            return
-                $"{(string.IsNullOrWhiteSpace(routePrefix) ? null : $"{routePrefix}/")}{(string.IsNullOrWhiteSpace(module) ? null : $"{module}/")}[controller]";
-
-        // 拼接控制器路由模板
-        var controllerStartTemplate = parameterRouteTemplate.ControllerStartTemplates.Count == 0
-            ? null
-            : string.Join("/", parameterRouteTemplate.ControllerStartTemplates);
-        var controllerEndTemplate = parameterRouteTemplate.ControllerEndTemplates.Count == 0
-            ? null
-            : string.Join("/", parameterRouteTemplate.ControllerEndTemplates);
-        var template =
-            $"{(string.IsNullOrWhiteSpace(routePrefix) ? null : $"{routePrefix}/")}{(string.IsNullOrWhiteSpace(module) ? null : $"{module}/")}{controllerStartTemplate}/[controller]/{controllerEndTemplate}";
-
-        return template;
-    }
-
-    /// <summary>
-    /// 生成参数路由模板（非引用类型）
-    /// </summary>
-    /// <param name="action">动作方法模型</param>
-    /// <param name="isLowercaseRoute"></param>
-    /// <param name="isLowerCamelCase"></param>
-    /// <param name="hasApiControllerAttribute"></param>
-    private ParameterRouteTemplate GenerateParameterRouteTemplates(ActionModel action, bool isLowercaseRoute,
-        bool isLowerCamelCase, bool hasApiControllerAttribute)
-    {
-        // 如果没有参数，则跳过
-        if (action.Parameters.Count == 0)
-            return default;
-
-        var parameterRouteTemplate = new ParameterRouteTemplate();
-        var parameters = action.Parameters;
-
-        // 判断是否贴有 [QueryParameters] 特性
-        var isQueryParametersAction = action.Attributes.Any(u => u is QueryParametersAttribute);
-
-        // 遍历所有参数
-        foreach (var parameterModel in parameters)
-        {
-            var parameterType = parameterModel.ParameterType;
-            var parameterAttributes = parameterModel.Attributes;
-
-            // 处理小写参数路由匹配问题
-            if (isLowercaseRoute)
-                parameterModel.ParameterName = parameterModel.ParameterName.ToLower();
-
-            // 处理小驼峰命名
-            if (isLowerCamelCase)
-                parameterModel.ParameterName = parameterModel.ParameterName.FirstCharToLower();
-
-            // 判断是否贴有任何 [FromXXX] 特性了
-            var hasFormAttribute = parameterAttributes.Any(u => typeof(IBindingSourceMetadata).IsAssignableFrom(u.GetType()));
-
-            // 判断方法贴有 [QueryParameters] 特性且当前参数没有任何 [FromXXX] 特性，则添加 [FromQuery] 特性
-            if (isQueryParametersAction && !hasFormAttribute)
-            {
-                parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromQueryAttribute()});
-                continue;
-            }
-
-            // 如果没有贴 [FromRoute] 特性且不是基元类型，则跳过
-            // 如果没有贴 [FromRoute] 特性且有任何绑定特性，则跳过
-            if (!parameterAttributes.Any(u => u is FromRouteAttribute) && (!parameterType.IsRichPrimitive() || hasFormAttribute))
-                continue;
-
-            // 处理基元数组数组类型，还有全局配置参数问题
-            if (_dynamicApiControllerSettings?.UrlParameterization == true || parameterType.IsArray)
-            {
-                parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromQueryAttribute()});
-                continue;
-            }
-
-            // 处理 [ApiController] 特性情况
-            // https://docs.microsoft.com/en-US/aspnet/core/web-api/?view=aspnetcore-5.0#binding-source-parameter-inference
-            if (!hasFormAttribute && hasApiControllerAttribute)
-                continue;
-
-            // 判断是否可以为null
-            var canBeNull = parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Nullable<>);
-
-            // 判断是否贴有路由约束特性
-            string constraint = default;
-            if (parameterAttributes.FirstOrDefault(u =>
-                    u is RouteConstraintAttribute) is RouteConstraintAttribute routeConstraint &&
-                !string.IsNullOrWhiteSpace(routeConstraint.Constraint))
-            {
-                constraint = !routeConstraint.Constraint.StartsWith(":")
-                    ? $":{routeConstraint.Constraint}"
-                    : routeConstraint.Constraint;
-            }
-
-            var template =
-                $"{{{(constraint == ":*" ? "*" : default)}{parameterModel.ParameterName}{(canBeNull ? "?" : string.Empty)}{(constraint == ":*" ? default : constraint)}}}";
-            // 如果没有贴路由位置特性，则默认添加到动作方法后面
-            if (parameterAttributes.FirstOrDefault(u => u is ApiSeatAttribute) is not ApiSeatAttribute apiSeat)
-            {
-                parameterRouteTemplate.ActionEndTemplates.Add(template);
-                continue;
-            }
-
-            // 生成路由参数位置
-            switch (apiSeat.Seat)
-            {
-                // 控制器名之前
-                case ApiSeats.ControllerStart:
-                    parameterRouteTemplate.ControllerStartTemplates.Add(template);
-                    break;
-                // 控制器名之后
-                case ApiSeats.ControllerEnd:
-                    parameterRouteTemplate.ControllerEndTemplates.Add(template);
-                    break;
-                // 动作方法名之前
-                case ApiSeats.ActionStart:
-                    parameterRouteTemplate.ActionStartTemplates.Add(template);
-                    break;
-                // 动作方法名之后
-                case ApiSeats.ActionEnd:
-                    parameterRouteTemplate.ActionEndTemplates.Add(template);
-                    break;
-            }
-        }
-
-        return parameterRouteTemplate;
+        return $"{(string.IsNullOrWhiteSpace(module) ? null : $"{module}/")}[controller]";
     }
 
     /// <summary>
@@ -660,15 +397,13 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     /// </summary>
     /// <param name="apiDescriptionSettings"></param>
     /// <param name="orignalName"></param>
-    /// <param name="affixes"></param>
     /// <param name="configure"></param>
     /// <param name="controllerApiDescriptionSettings"></param>
     /// <param name="actionName">针对 [ActionName] 特性和 [HttpMethod] 特性处理</param>
     /// <returns></returns>
     private (string Name, bool IsLowercaseRoute, bool IsKeepName, bool IsLowerCamelCase) ConfigureControllerAndActionName(
-        ApiDescriptionSettingsAttribute apiDescriptionSettings, string orignalName, string[] affixes,
-        Func<string, string> configure, ApiDescriptionSettingsAttribute controllerApiDescriptionSettings = default,
-        string actionName = default)
+        ApiDescriptionSettingsAttribute apiDescriptionSettings, string orignalName, Func<string, string> configure,
+        ApiDescriptionSettingsAttribute controllerApiDescriptionSettings = default, string actionName = default)
     {
         // 获取版本号
         var apiVersion = apiDescriptionSettings?.Version;
@@ -683,9 +418,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             tempName = name;
             apiVersion ??= version;
 
-            // 清除指定(前)后缀，只处理后缀，解决 ServiceService 的情况
-            tempName = tempName.ClearStringAffixes(1, affixes: affixes);
-
             isKeepName = CheckIsKeepName(controllerApiDescriptionSettings == null ? null : apiDescriptionSettings,
                 controllerApiDescriptionSettings ?? apiDescriptionSettings);
 
@@ -699,14 +431,13 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 if (CheckIsSplitCamelCase(controllerApiDescriptionSettings == null ? null : apiDescriptionSettings,
                         controllerApiDescriptionSettings ?? apiDescriptionSettings))
                 {
-                    tempName = string.Join(_dynamicApiControllerSettings.CamelCaseSeparator, tempName.SplitCamelCase());
+                    tempName = string.Join("-", tempName.SplitCamelCase());
                 }
             }
         }
 
         // 拼接名称和版本号
-        var newName =
-            $"{tempName}{(string.IsNullOrWhiteSpace(apiVersion) ? null : $"{_dynamicApiControllerSettings.VersionSeparator}{apiVersion}")}";
+        var newName = $"{tempName}{apiVersion}";
 
         var isLowercaseRoute = CheckIsLowercaseRoute(controllerApiDescriptionSettings == null ? null : apiDescriptionSettings,
             controllerApiDescriptionSettings ?? apiDescriptionSettings);
@@ -740,63 +471,10 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             var canParse = bool.TryParse(controllerApiDescriptionSettings.KeepName.ToString(), out var value);
             isKeepName = canParse && value;
         }
-        // 取全局配置
         else
-            isKeepName = _dynamicApiControllerSettings?.KeepName == true;
+            isKeepName = false;
 
         return isKeepName;
-    }
-
-    /// <summary>
-    /// 检查是否设置了 KeepVerb 参数
-    /// </summary>
-    /// <param name="apiDescriptionSettings"></param>
-    /// <param name="controllerApiDescriptionSettings"></param>
-    /// <returns></returns>
-    private bool CheckIsKeepVerb(ApiDescriptionSettingsAttribute apiDescriptionSettings,
-        ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
-    {
-        bool isKeepVerb;
-
-        // 判断 Action 是否配置了 KeepVerb 属性
-        if (apiDescriptionSettings?.KeepVerb != null)
-        {
-            var canParse = bool.TryParse(apiDescriptionSettings.KeepVerb.ToString(), out var value);
-            isKeepVerb = canParse && value;
-        }
-        // 判断 Controller 是否配置了 KeepVerb 属性
-        else if (controllerApiDescriptionSettings?.KeepVerb != null)
-        {
-            var canParse = bool.TryParse(controllerApiDescriptionSettings.KeepVerb.ToString(), out var value);
-            isKeepVerb = canParse && value;
-        }
-        // 取全局配置
-        else
-            isKeepVerb = _dynamicApiControllerSettings?.KeepVerb == true;
-
-        return isKeepVerb;
-    }
-
-    /// <summary>
-    /// 检查是否设置了 ForceWithRoutePrefix  参数
-    /// </summary>
-    /// <param name="controllerApiDescriptionSettings"></param>
-    /// <returns></returns>
-    private bool CheckIsForceWithDefaultRoute(ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
-    {
-        bool isForceWithRoutePrefix;
-
-        // 判断 Controller 是否配置了 ForceWithRoutePrefix 属性
-        if (controllerApiDescriptionSettings?.ForceWithRoutePrefix != null)
-        {
-            var canParse = bool.TryParse(controllerApiDescriptionSettings.ForceWithRoutePrefix.ToString(), out var value);
-            isForceWithRoutePrefix = canParse && value;
-        }
-        // 取全局配置
-        else
-            isForceWithRoutePrefix = _dynamicApiControllerSettings?.ForceWithRoutePrefix == true;
-
-        return isForceWithRoutePrefix;
     }
 
     /// <summary>
@@ -822,9 +500,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             var canParse = bool.TryParse(controllerApiDescriptionSettings.AsLowerCamelCase.ToString(), out var value);
             isLowerCamelCase = canParse && value;
         }
-        // 取全局配置
         else
-            isLowerCamelCase = _dynamicApiControllerSettings?.AsLowerCamelCase == true;
+            isLowerCamelCase = false;
 
         return isLowerCamelCase;
     }
@@ -884,28 +561,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         }
         // 取全局配置
         else
-            isLowercaseRoute = (_dynamicApiControllerSettings?.LowercaseRoute) != false;
+            isLowercaseRoute = true;
 
         return isLowercaseRoute;
-    }
-
-    /// <summary>
-    /// 配置规范化结果类型
-    /// </summary>
-    /// <param name="action"></param>
-    private static void ConfigureActionUnifyResultAttribute(ActionModel action)
-    {
-        // 判断是否手动添加了标注或跳过规范化处理
-        if (UnifyContext.CheckSucceededNonUnify(action.ActionMethod, out var _, false))
-            return;
-
-        // 获取真实类型
-        var returnType = action.ActionMethod.GetRealReturnType();
-        if (returnType == typeof(void))
-            return;
-
-        // 添加规范化结果特性
-        action.Filters.Add(new UnifyResultAttribute(returnType, StatusCodes.Status200OK, action.ActionMethod));
     }
 
     /// <summary>
@@ -920,27 +578,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
 
         var version = _nameVersionRegex.Match(name).Groups["version"].Value.Replace("_", ".");
         return (_nameVersionRegex.Replace(name, ""), version);
-    }
-
-    /// <summary>
-    /// 获取方法名映射 [HttpMethod] 规则
-    /// </summary>
-    /// <returns></returns>
-    private void LoadVerbToHttpMethodsConfigure()
-    {
-        var defaultVerbToHttpMethods = Penetrates.VerbToHttpMethods;
-
-        // 获取配置的复写映射规则
-        var verbToHttpMethods = _dynamicApiControllerSettings.VerbToHttpMethods;
-
-        if (verbToHttpMethods is not null)
-        {
-            // 获取所有参数大于1的配置
-            var settingsVerbToHttpMethods = verbToHttpMethods.Where(u => u.Length > 1)
-                .ToDictionary(u => u[0].ToString().ToLower(), u => u[1]?.ToString());
-
-            defaultVerbToHttpMethods.AddOrUpdate(settingsVerbToHttpMethods);
-        }
     }
 
     /// <summary>
@@ -970,8 +607,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             {
                 // 处理带路由约束的路由参数模板 https://gitee.com/zuohuaijun/Admin.NET/issues/I736XJ
                 var t = !temp.Contains("?", StringComparison.CurrentCulture)
-                    ? (!temp.Contains(":", StringComparison.CurrentCulture) ? temp : temp[..temp.IndexOf(":")] + "}")
-                    : temp[..temp.IndexOf("?")] + "}";
+                    ? (!temp.Contains(":", StringComparison.CurrentCulture) ? temp : temp[..temp.IndexOf(":", StringComparison.Ordinal)] + "}")
+                    : temp[..temp.IndexOf("?", StringComparison.Ordinal)] + "}";
 
                 if (!paramTemplates.Contains(t, StringComparer.OrdinalIgnoreCase))
                 {
