@@ -1,10 +1,16 @@
+using Fast.Cache.Extensions;
 using Fast.Core;
 using Fast.Core.Extensions;
-using Fast.Core.UnifyResult.Extensions;
 using Fast.CorsAccessor.Extensions;
+using Fast.DataValidation.Extensions;
+using Fast.DynamicApplication.Extensions;
 using Fast.EventBus.Extensions;
+using Fast.Exception.Extensions;
 using Fast.Logging.Extensions;
+using Fast.Sugar.Extensions;
 using Fast.Test.Api.EventSubscriber;
+using Fast.UnifyResult.Extensions;
+using Furion.UnifyResult;
 using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args).Initialize();
@@ -12,9 +18,23 @@ var builder = WebApplication.CreateBuilder(args).Initialize();
 // Customize the console log output template.
 builder.Logging.AddConsoleFormatter(options => { options.DateFormat = "yyyy-MM-dd HH:mm:ss"; });
 
+builder.Services.AddLogging();
+
 builder.Services.AddControllers();
 
-builder.Services.AddInjectWithUnifyResult();
+//builder.Services.AddSpecificationDocuments();
+
+builder.Services.AddDynamicApiControllers();
+
+builder.Services.AddDataValidation();
+
+builder.Services.AddFriendlyException();
+
+builder.Services.AddUnifyResult<RESTfulResultProvider>();
+
+builder.Services.AddCache();
+
+//builder.Services.AddSqlSugar();
 
 // Add event bus.
 builder.Services.AddEventBus(options =>

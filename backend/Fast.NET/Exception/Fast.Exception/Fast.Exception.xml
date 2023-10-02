@@ -109,6 +109,31 @@
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
         </member>
+        <member name="T:Fast.Exception.Filters.ExceptionFilter">
+            <summary>
+            友好异常拦截器
+            </summary>
+        </member>
+        <member name="M:Fast.Exception.Filters.ExceptionFilter.OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            异常拦截
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Exception.Handlers.IGlobalExceptionHandler">
+            <summary>
+            全局异常处理
+            </summary>
+        </member>
+        <member name="M:Fast.Exception.Handlers.IGlobalExceptionHandler.OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,System.Boolean)">
+            <summary>
+            异常拦截
+            </summary>
+            <param name="context"></param>
+            <param name="isFriendlyException">是否友好异常</param>
+            <returns></returns>
+        </member>
         <member name="T:Fast.Exception.Oops">
             <summary>
             抛异常静态类
@@ -147,31 +172,6 @@
             <param name="errorMessage"><see cref="T:System.String"/>异常消息</param>
             <param name="args">String.Format 参数</param>
             <returns><see cref="T:Fast.Exception.AppException"/>异常实例</returns>
-        </member>
-        <member name="T:Fast.Core.FriendlyException.Filters.ExceptionFilter">
-            <summary>
-            友好异常拦截器
-            </summary>
-        </member>
-        <member name="M:Fast.Core.FriendlyException.Filters.ExceptionFilter.OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
-            <summary>
-            异常拦截
-            </summary>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Fast.Core.FriendlyException.Handlers.IGlobalExceptionHandler">
-            <summary>
-            全局异常处理
-            </summary>
-        </member>
-        <member name="M:Fast.Core.FriendlyException.Handlers.IGlobalExceptionHandler.OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,System.Boolean)">
-            <summary>
-            异常拦截
-            </summary>
-            <param name="context"></param>
-            <param name="isFriendlyException">是否友好异常</param>
-            <returns></returns>
         </member>
     </members>
 </doc>

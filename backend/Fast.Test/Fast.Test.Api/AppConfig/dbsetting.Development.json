@@ -1,11 +1,11 @@
 {
   // Redis缓存连接字符串
-  "RedisConnectionString": "192.168.1.22:6379,password=123456,defaultDatabase=12",
+  "RedisConnectionString": "127.0.0.1:6379,password=123456,defaultDatabase=2",
   // MQ
   "RabbitMQConnection": {
-    "HostName": "192.168.1.22",
+    "HostName": "127.0.0.1",
     "Port": 5672,
-    "UserName": "test",
+    "UserName": "admin",
     "Password": "123456"
   },
   // 雪花ID

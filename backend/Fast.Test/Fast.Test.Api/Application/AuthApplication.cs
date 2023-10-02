@@ -1,5 +1,4 @@
-﻿using Fast.Core.DynamicApiController.Attributes;
-using Fast.Core.DynamicApiController.Dependencies;
+﻿using Fast.DynamicApplication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Test.Api.Application;
@@ -8,7 +7,7 @@ namespace Fast.Test.Api.Application;
 /// 授权接口
 /// </summary>
 [ApiDescriptionSettings(Name = "auth", Order = 1)]
-public class AuthApplication : IDynamicApiController
+public class AuthApplication : IDynamicApplication
 {
     /// <summary>
     /// 获取登录用户信息

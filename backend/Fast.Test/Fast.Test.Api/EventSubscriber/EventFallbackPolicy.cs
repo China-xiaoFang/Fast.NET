@@ -12,7 +12,7 @@ public class EventFallbackPolicy : IEventFallbackPolicy
         _logger = logger;
     }
 
-    public async Task CallbackAsync(EventHandlerExecutingContext context, Exception ex)
+    public async Task CallbackAsync(EventHandlerExecutingContext context, System.Exception ex)
     {
         _logger.LogError(ex, "重试了多次最终还是失败了");
         await Task.CompletedTask;

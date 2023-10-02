@@ -23,38 +23,38 @@
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
         </member>
-        <member name="T:Fast.Core.DataValidation.Filters.DataValidationFilter">
+        <member name="T:Fast.DataValidation.Filters.DataValidationFilter">
             <summary>
             数据验证拦截器
             </summary>
         </member>
-        <member name="F:Fast.Core.DataValidation.Filters.DataValidationFilter._apiBehaviorOptions">
+        <member name="F:Fast.DataValidation.Filters.DataValidationFilter._apiBehaviorOptions">
             <summary>
             Api 行为配置选项
             </summary>
         </member>
-        <member name="M:Fast.Core.DataValidation.Filters.DataValidationFilter.#ctor(Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.ApiBehaviorOptions})">
+        <member name="M:Fast.DataValidation.Filters.DataValidationFilter.#ctor(Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.ApiBehaviorOptions})">
             <summary>
             构造函数
             </summary>
             <param name="options"></param>
         </member>
-        <member name="F:Fast.Core.DataValidation.Filters.DataValidationFilter.FilterOrder">
+        <member name="F:Fast.DataValidation.Filters.DataValidationFilter.FilterOrder">
             <summary>
             过滤器排序
             </summary>
         </member>
-        <member name="P:Fast.Core.DataValidation.Filters.DataValidationFilter.Order">
+        <member name="P:Fast.DataValidation.Filters.DataValidationFilter.Order">
             <summary>
             排序属性
             </summary>
         </member>
-        <member name="P:Fast.Core.DataValidation.Filters.DataValidationFilter.IsReusable">
+        <member name="P:Fast.DataValidation.Filters.DataValidationFilter.IsReusable">
             <summary>
             是否是可重复使用的
             </summary>
         </member>
-        <member name="M:Fast.Core.DataValidation.Filters.DataValidationFilter.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)">
+        <member name="M:Fast.DataValidation.Filters.DataValidationFilter.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)">
             <summary>
             拦截请求
             </summary>

@@ -324,62 +324,62 @@
             <param name="str"><see cref="T:System.String"/></param>
             <returns><see cref="T:System.String"/></returns>
         </member>
-        <member name="T:Fast.Core.DynamicApiController.Formatters.TextPlainMediaTypeFormatter">
+        <member name="T:Fast.DynamicApplication.Formatters.TextPlainMediaTypeFormatter">
             <summary>
             text/plain 请求 Body 参数支持
             </summary>
         </member>
-        <member name="M:Fast.Core.DynamicApiController.Formatters.TextPlainMediaTypeFormatter.#ctor">
+        <member name="M:Fast.DynamicApplication.Formatters.TextPlainMediaTypeFormatter.#ctor">
             <summary>
             构造函数
             </summary>
         </member>
-        <member name="M:Fast.Core.DynamicApiController.Formatters.TextPlainMediaTypeFormatter.ReadRequestBodyAsync(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext,System.Text.Encoding)">
+        <member name="M:Fast.DynamicApplication.Formatters.TextPlainMediaTypeFormatter.ReadRequestBodyAsync(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext,System.Text.Encoding)">
             <summary>
-            重写 <see cref="M:Fast.Core.DynamicApiController.Formatters.TextPlainMediaTypeFormatter.ReadRequestBodyAsync(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext,System.Text.Encoding)"/>
+            重写 <see cref="M:Fast.DynamicApplication.Formatters.TextPlainMediaTypeFormatter.ReadRequestBodyAsync(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext,System.Text.Encoding)"/>
             </summary>
             <param name="context"></param>
             <param name="effectiveEncoding"></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.Core.DynamicApiController.Internal.Penetrates">
+        <member name="T:Fast.DynamicApplication.Internal.Penetrates">
             <summary>
             常量、公共方法配置类
             </summary>
         </member>
-        <member name="F:Fast.Core.DynamicApiController.Internal.Penetrates.GroupSeparator">
+        <member name="F:Fast.DynamicApplication.Internal.Penetrates.GroupSeparator">
             <summary>
             分组分隔符
             </summary>
         </member>
-        <member name="P:Fast.Core.DynamicApiController.Internal.Penetrates.ControllerOrderCollection">
+        <member name="P:Fast.DynamicApplication.Internal.Penetrates.ControllerOrderCollection">
             <summary>
             控制器排序集合
             </summary>
         </member>
-        <member name="M:Fast.Core.DynamicApiController.Internal.Penetrates.#cctor">
+        <member name="M:Fast.DynamicApplication.Internal.Penetrates.#cctor">
             <summary>
             构造函数
             </summary>
         </member>
-        <member name="F:Fast.Core.DynamicApiController.Internal.Penetrates.IsApiControllerCached">
+        <member name="F:Fast.DynamicApplication.Internal.Penetrates.IsApiControllerCached">
             <summary>
-            <see cref="M:Fast.Core.DynamicApiController.Internal.Penetrates.IsApiController(System.Type)"/> 缓存集合
+            <see cref="M:Fast.DynamicApplication.Internal.Penetrates.IsApiController(System.Type)"/> 缓存集合
             </summary>
         </member>
-        <member name="M:Fast.Core.DynamicApiController.Internal.Penetrates.IsApiController(System.Type)">
+        <member name="M:Fast.DynamicApplication.Internal.Penetrates.IsApiController(System.Type)">
             <summary>
             是否是Api控制器
             </summary>
             <param name="type">type</param>
             <returns></returns>
         </member>
-        <member name="T:Fast.Core.DynamicApiController.Providers.DynamicApplicationFeatureProvider">
+        <member name="T:Fast.DynamicApplication.Providers.DynamicApplicationFeatureProvider">
             <summary>
             动态API引用特性提供器
             </summary>
         </member>
-        <member name="M:Fast.Core.DynamicApiController.Providers.DynamicApplicationFeatureProvider.IsController(System.Reflection.TypeInfo)">
+        <member name="M:Fast.DynamicApplication.Providers.DynamicApplicationFeatureProvider.IsController(System.Reflection.TypeInfo)">
             <summary>
             扫描控制器
             </summary>
