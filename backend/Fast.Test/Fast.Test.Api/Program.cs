@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args).Initialize();
 // Customize the console log output template.
 builder.Logging.AddConsoleFormatter(options => { options.DateFormat = "yyyy-MM-dd HH:mm:ss"; });
 
-//builder.Services.AddLogging();
+builder.Services.AddLogging();
 
 builder.Services.AddControllers();
 
