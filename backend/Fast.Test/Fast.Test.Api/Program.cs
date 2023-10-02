@@ -7,10 +7,9 @@ using Fast.DynamicApplication.Extensions;
 using Fast.EventBus.Extensions;
 using Fast.Exception.Extensions;
 using Fast.Logging.Extensions;
-using Fast.Sugar.Extensions;
+using Fast.Test.Api;
 using Fast.Test.Api.EventSubscriber;
 using Fast.UnifyResult.Extensions;
-using Furion.UnifyResult;
 using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args).Initialize();

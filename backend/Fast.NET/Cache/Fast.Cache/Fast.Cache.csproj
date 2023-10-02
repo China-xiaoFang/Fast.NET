@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CSRedisCore" Version="3.8.670" />
+		<PackageReference Include="CSRedisCore" Version="3.8.671" />
 	</ItemGroup>
 
 </Project>
