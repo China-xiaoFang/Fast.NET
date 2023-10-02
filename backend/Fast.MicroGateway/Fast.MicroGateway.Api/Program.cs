@@ -8,11 +8,14 @@ using Fast.EventBus.Extensions;
 using Fast.Exception.Extensions;
 using Fast.Logging.Extensions;
 using Fast.Test.Api;
-using Fast.Test.Api.EventSubscriber;
 using Fast.UnifyResult.Extensions;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args).Initialize();
+
+builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 
 // Customize the console log output template.
 builder.Logging.AddConsoleFormatter(options => { options.DateFormat = "yyyy-MM-dd HH:mm:ss"; });
@@ -32,6 +35,8 @@ builder.Services.AddFriendlyException();
 builder.Services.AddUnifyResult<RESTfulResultProvider>();
 
 builder.Services.AddCache();
+
+builder.Services.AddOcelot();
 
 //builder.Services.AddSqlSugar();
 
@@ -69,6 +74,8 @@ app.UseUnifyResultStatusCodes();
 app.UseCorsAccessor();
 
 app.UseStaticFiles();
+
+app.UseOcelot();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

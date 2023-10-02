@@ -1,4 +1,6 @@
-﻿using Fast.DynamicApplication;
+﻿using Fast.Core;
+using Fast.DynamicApplication;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fast.Test.Api.Application;
@@ -27,5 +29,16 @@ public class AuthApplication : IDynamicApplication
     public string Post()
     {
         return "我是Post请求";
+    }
+
+    /// <summary>
+    /// 测试
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("/test")]
+    public async Task<string> Test()
+    {
+        Console.WriteLine("我执行了-----------");
+        return "1";
     }
 }
