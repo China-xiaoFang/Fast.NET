@@ -424,11 +424,11 @@ public interface ISqlSugarRepository<TEntity> where TEntity : class, new()
     /// <returns></returns>
     int Delete(Expression<Func<TEntity, bool>> whereExpression);
 
-  /// <summary>
-  /// 删除一条记录
-  /// </summary>
-  /// <param name="entity"></param>
-  /// <returns></returns>
+    /// <summary>
+    /// 删除一条记录
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
     Task<int> DeleteAsync(TEntity entity);
 
     /// <summary>

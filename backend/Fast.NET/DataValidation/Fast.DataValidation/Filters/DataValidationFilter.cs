@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 
-namespace Fast.Core.DataValidation.Filters;
+namespace Fast.DataValidation.Filters;
 
 /// <summary>
 /// 数据验证拦截器

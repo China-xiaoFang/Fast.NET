@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 
-namespace Fast.Core.DynamicApiController.Formatters;
+namespace Fast.DynamicApplication.Formatters;
 
 /// <summary>
 /// text/plain 请求 Body 参数支持

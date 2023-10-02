@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Fast.Core.DynamicApiController.Formatters;
-using Fast.Core.DynamicApiController.Providers;
 using Fast.DynamicApplication.Conventions;
+using Fast.DynamicApplication.Formatters;
+using Fast.DynamicApplication.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;

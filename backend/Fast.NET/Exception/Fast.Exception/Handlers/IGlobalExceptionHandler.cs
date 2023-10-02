@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Fast.Core.FriendlyException.Handlers;
+namespace Fast.Exception.Handlers;
 
 /// <summary>
 /// 全局异常处理

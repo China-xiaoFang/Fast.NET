@@ -1,4 +1,4 @@
-﻿using Fast.Core.FriendlyException.Filters;
+﻿using Fast.Exception.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 

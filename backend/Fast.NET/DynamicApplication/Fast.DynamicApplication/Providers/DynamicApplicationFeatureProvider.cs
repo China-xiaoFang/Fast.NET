@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using Fast.Core.DynamicApiController.Internal;
+using Fast.DynamicApplication.Internal;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
-namespace Fast.Core.DynamicApiController.Providers;
+namespace Fast.DynamicApplication.Providers;
 
 /// <summary>
 /// 动态API引用特性提供器

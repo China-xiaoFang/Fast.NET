@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Fast.Core.DataValidation.Filters;
+﻿using Fast.DataValidation.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -41,12 +36,12 @@ public static class DataValidationIServiceCollectionExtension
             // 是否禁用模型验证过滤器
             options.SuppressModelStateInvalidFilter = true;
         });
-        
+
         // 添加全局数据验证
         services.Configure<MvcOptions>(options =>
         {
-            options.Filters.Add<DataValidationFilter>(); 
-            
+            options.Filters.Add<DataValidationFilter>();
+
             // 关闭空引用对象验证
             options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
         });

@@ -4,12 +4,10 @@ using System.Text;
 using Fast.Core.DependencyInjection.Extensions;
 using Fast.Core.Extensions;
 using Fast.Core.Filters;
-using Fast.IaaS.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.Core;
@@ -190,7 +188,7 @@ internal class InternalApp
     }
 
     private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
-    {   
+    {
         // 获取程序执行目录
         var executeDirectory = AppContext.BaseDirectory;
 

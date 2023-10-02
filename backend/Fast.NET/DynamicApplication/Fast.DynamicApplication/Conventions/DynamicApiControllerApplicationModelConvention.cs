@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.RegularExpressions;
-using Fast.Core.DynamicApiController.Internal;
 using Fast.DynamicApplication.Extensions;
+using Fast.DynamicApplication.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
@@ -607,7 +607,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             {
                 // 处理带路由约束的路由参数模板 https://gitee.com/zuohuaijun/Admin.NET/issues/I736XJ
                 var t = !temp.Contains("?", StringComparison.CurrentCulture)
-                    ? (!temp.Contains(":", StringComparison.CurrentCulture) ? temp : temp[..temp.IndexOf(":", StringComparison.Ordinal)] + "}")
+                    ? (!temp.Contains(":", StringComparison.CurrentCulture)
+                        ? temp
+                        : temp[..temp.IndexOf(":", StringComparison.Ordinal)] + "}")
                     : temp[..temp.IndexOf("?", StringComparison.Ordinal)] + "}";
 
                 if (!paramTemplates.Contains(t, StringComparer.OrdinalIgnoreCase))

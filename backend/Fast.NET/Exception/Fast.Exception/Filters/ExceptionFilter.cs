@@ -1,9 +1,8 @@
-﻿using Fast.Core.FriendlyException.Handlers;
-using Fast.Exception;
+﻿using Fast.Exception.Handlers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.FriendlyException.Filters;
+namespace Fast.Exception.Filters;
 
 /// <summary>
 /// 友好异常拦截器

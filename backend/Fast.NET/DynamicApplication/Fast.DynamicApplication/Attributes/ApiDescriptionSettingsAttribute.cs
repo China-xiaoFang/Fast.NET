@@ -1,4 +1,4 @@
-﻿using Fast.Core.DynamicApiController.Internal;
+﻿using Fast.DynamicApplication.Internal;
 using Microsoft.AspNetCore.Mvc;
 
 // ReSharper disable once CheckNamespace

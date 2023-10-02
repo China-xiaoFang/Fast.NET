@@ -1,8 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using Fast.DynamicApplication;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fast.Core.DynamicApiController.Internal;
+namespace Fast.DynamicApplication.Internal;
 
 /// <summary>
 /// 常量、公共方法配置类

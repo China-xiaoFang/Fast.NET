@@ -1,10 +1,10 @@
 ﻿using Fast.Core;
 using Fast.Logging.Implantation.Console;
 using Fast.Logging.Implantation.File;
+using Fast.Logging.Templates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TP = Fast.Logging.Templates.TP;
 
 namespace Fast.Logging.Extensions;
 
