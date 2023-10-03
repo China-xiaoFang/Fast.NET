@@ -1,31 +1,38 @@
 {
-  "ReRoutes": [
+  "Routes": [
     {
-      // 下游（转发的服务器地址模板）
       "DownstreamPathTemplate": "/{url}",
       "DownstreamScheme": "http",
-      // 下游服务器地址
+      // 下游服务的Method只能配置一个，不能配置成数组
+      //"DownstreamHttpMethod": "POST",
       "DownstreamHostAndPorts": [
         {
-          "Host": "127.0.0.1",
-          "Port": "5010"
+          "Host": "localhost",
+          "Port": 5011
         },
         {
-          "Host": "127.0.0.1",
-          "Port": "5011"
+          "Host": "localhost",
+          "Port": 5010
         }
       ],
-      // 上游（请求路径模板）
-      "UpstreamPathTemplate": "/api/{url}",
-      "UpstreamHttpMethod": [ "Get", "Post", "DELETE", "PUT" ],
-      /**
-      LeastConnection – 将请求发往空闲的那个服务器
-RoundRobin – 轮流发送
-NoLoadBalance – 总是发往个请求或者是服务发现
-*/
+      "UpstreamPathTemplate": "/api/v1/{url}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST"
+      ],
       "LoadBalancerOptions": {
-        "Type": "RoundRobin"
+        "Type": "RoundRobin" // RoundRobin负载均衡
       }
     }
-  ]
+  ],
+  "GlobalConfiguration": {
+    // 网关服务的访问地址
+    "BaseUrl": "http://localhost:5001",
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning"
+      }
+    }
+  }
 }
