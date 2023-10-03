@@ -5,10 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Fast.Cache" Version="3.0.2" />
-	</ItemGroup>
-
-	<ItemGroup>
+	  <ProjectReference Include="..\..\Cache\Fast.Cache\Fast.Cache.csproj" />
 	  <ProjectReference Include="..\..\Core\Fast.Core\Fast.Core.csproj" />
 	</ItemGroup>
 
