@@ -1,8 +1,15 @@
 {
   "Routes": [
     {
+      // 下游（转发的服务地址模板）
       "DownstreamPathTemplate": "/{url}",
       "DownstreamScheme": "http",
+      // 上游（请求路径模板）
+      "UpstreamPathTemplate": "/api/{url}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST"
+      ],
       // 下游服务的Method只能配置一个，不能配置成数组
       //"DownstreamHttpMethod": "POST",
       "DownstreamHostAndPorts": [
@@ -15,12 +22,10 @@
           "Port": 5010
         }
       ],
-      "UpstreamPathTemplate": "/api/v1/{url}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "POST"
-      ],
+      //"ServiceName": "ServiceA",
+      //"UseServiceDiscovery": true,
       "LoadBalancerOptions": {
+        // 轮询
         "Type": "RoundRobin" // RoundRobin负载均衡
       }
     }
@@ -28,6 +33,12 @@
   "GlobalConfiguration": {
     // 网关服务的访问地址
     "BaseUrl": "http://localhost:5001",
+    //// Consul 配置信息
+    //"UseServiceDiscoveryProvider": {
+    //  "Host": "localhost",
+    //  "Port": 8500,
+    //  "Type": "Consul"
+    //},
     "Logging": {
       "LogLevel": {
         "Default": "Information",
