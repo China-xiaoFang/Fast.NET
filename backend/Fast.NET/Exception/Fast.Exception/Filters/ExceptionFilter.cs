@@ -21,7 +21,7 @@ namespace Fast.Exception.Filters;
 /// <summary>
 /// 友好异常拦截器
 /// </summary>
-public sealed class ExceptionFilter : IAsyncExceptionFilter
+internal sealed class ExceptionFilter : IAsyncExceptionFilter
 {
     /// <summary>
     /// 异常拦截

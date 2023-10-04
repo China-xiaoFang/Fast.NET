@@ -21,7 +21,7 @@ namespace Fast.UnifyResult.Middlewares;
 /// <summary>
 /// 状态码中间件
 /// </summary>
-public class UnifyResultStatusCodesMiddleware
+internal class UnifyResultStatusCodesMiddleware
 {
     /// <summary>
     /// 请求委托

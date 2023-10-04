@@ -41,7 +41,7 @@ namespace Fast.SpecificationDocument.Builders;
 /// <summary>
 /// 规范化文档构建器
 /// </summary>
-public static class SpecificationDocumentBuilder
+internal static class SpecificationDocumentBuilder
 {
     /// <summary>
     /// 所有分组默认的组名 Key

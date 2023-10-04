@@ -21,7 +21,7 @@ namespace Fast.DynamicApplication.Formatters;
 /// <summary>
 /// text/plain 请求 Body 参数支持
 /// </summary>
-public sealed class TextPlainMediaTypeFormatter : TextInputFormatter
+internal sealed class TextPlainMediaTypeFormatter : TextInputFormatter
 {
     /// <summary>
     /// 构造函数

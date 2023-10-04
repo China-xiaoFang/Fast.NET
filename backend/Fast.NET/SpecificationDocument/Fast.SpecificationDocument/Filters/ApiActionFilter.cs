@@ -22,7 +22,7 @@ namespace Fast.SpecificationDocument.Filters;
 /// <summary>
 /// 规范化文档自定义更多功能
 /// </summary>
-public class ApiActionFilter : IOperationFilter
+internal class ApiActionFilter : IOperationFilter
 {
     /// <summary>
     /// 实现过滤器方法

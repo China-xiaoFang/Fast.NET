@@ -23,7 +23,7 @@ namespace Fast.SpecificationDocument.Filters;
 /// <summary>
 /// 标签文档排序/注释拦截器
 /// </summary>
-public class TagsOrderDocumentFilter : IDocumentFilter
+internal class TagsOrderDocumentFilter : IDocumentFilter
 {
     private readonly ConcurrentDictionary<string, (string, int, Type)> controllerOrderCollection;
 

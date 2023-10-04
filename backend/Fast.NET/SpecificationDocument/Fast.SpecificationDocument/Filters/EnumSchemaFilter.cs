@@ -28,7 +28,7 @@ namespace Fast.SpecificationDocument.Filters;
 /// <summary>
 /// 修正 规范化文档 Enum 提示
 /// </summary>
-public class EnumSchemaFilter : ISchemaFilter
+internal class EnumSchemaFilter : ISchemaFilter
 {
     /// <summary>
     /// 中文正则表达式

@@ -21,7 +21,7 @@ namespace Fast.DynamicApplication.Providers;
 /// <summary>
 /// 动态API引用特性提供器
 /// </summary>
-public sealed class DynamicApplicationFeatureProvider : ControllerFeatureProvider
+internal sealed class DynamicApplicationFeatureProvider : ControllerFeatureProvider
 {
     /// <summary>
     /// 扫描控制器

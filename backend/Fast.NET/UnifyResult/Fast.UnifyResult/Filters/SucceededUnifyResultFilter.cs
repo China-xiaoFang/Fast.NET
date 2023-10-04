@@ -25,7 +25,7 @@ namespace Fast.UnifyResult.Filters;
 /// <summary>
 /// 规范化结构（请求成功）过滤器
 /// </summary>
-public class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
+internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
 {
     /// <summary>
     /// 过滤器排序
