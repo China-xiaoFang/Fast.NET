@@ -4,87 +4,87 @@
         <name>Fast.SpecificationDocument</name>
     </assembly>
     <members>
-        <member name="T:Furion.SpecificationDocument.OperationIdAttribute">
+        <member name="T:Fast.SpecificationDocument.Attributes.OperationIdAttribute">
             <summary>
             配置规范化文档 OperationId 问题
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.OperationIdAttribute.#ctor(System.String)">
+        <member name="M:Fast.SpecificationDocument.Attributes.OperationIdAttribute.#ctor(System.String)">
             <summary>
             构造函数
             </summary>
             <param name="operationId">自定义 OperationId，可用户生成可读的前端代码</param>
         </member>
-        <member name="P:Furion.SpecificationDocument.OperationIdAttribute.OperationId">
+        <member name="P:Fast.SpecificationDocument.Attributes.OperationIdAttribute.OperationId">
             <summary>
             自定义 OperationId
             </summary>
         </member>
-        <member name="T:Furion.SpecificationDocument.SchemaIdAttribute">
+        <member name="T:Fast.SpecificationDocument.Attributes.SchemaIdAttribute">
             <summary>
             解决规范化文档 SchemaId 冲突问题
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.SchemaIdAttribute.#ctor(System.String)">
+        <member name="M:Fast.SpecificationDocument.Attributes.SchemaIdAttribute.#ctor(System.String)">
             <summary>
             构造函数
             </summary>
             <param name="schemaId">自定义 SchemaId，只能是字母开头，只运行下划线_连接</param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SchemaIdAttribute.#ctor(System.String,System.Boolean)">
+        <member name="M:Fast.SpecificationDocument.Attributes.SchemaIdAttribute.#ctor(System.String,System.Boolean)">
             <summary>
             构造函数
             </summary>
             <param name="schemaId">自定义 SchemaId</param>
-            <param name="replace">默认在头部叠加，设置 true 之后，将直接使用 <see cref="P:Furion.SpecificationDocument.SchemaIdAttribute.SchemaId"/></param>
+            <param name="replace">默认在头部叠加，设置 true 之后，将直接使用 <see cref="P:Fast.SpecificationDocument.Attributes.SchemaIdAttribute.SchemaId"/></param>
         </member>
-        <member name="P:Furion.SpecificationDocument.SchemaIdAttribute.SchemaId">
+        <member name="P:Fast.SpecificationDocument.Attributes.SchemaIdAttribute.SchemaId">
             <summary>
             自定义 SchemaId
             </summary>
         </member>
-        <member name="P:Furion.SpecificationDocument.SchemaIdAttribute.Replace">
+        <member name="P:Fast.SpecificationDocument.Attributes.SchemaIdAttribute.Replace">
             <summary>
             完全覆盖
             </summary>
-            <remarks>默认在头部叠加，设置 true 之后，将直接使用 <see cref="P:Furion.SpecificationDocument.SchemaIdAttribute.SchemaId"/></remarks>
+            <remarks>默认在头部叠加，设置 true 之后，将直接使用 <see cref="P:Fast.SpecificationDocument.Attributes.SchemaIdAttribute.SchemaId"/></remarks>
         </member>
-        <member name="T:Furion.SpecificationDocument.SpecificationDocumentBuilder">
+        <member name="T:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder">
             <summary>
             规范化文档构建器
             </summary>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder.AllGroupsKey">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.AllGroupsKey">
             <summary>
             所有分组默认的组名 Key
             </summary>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder._specificationDocumentSettings">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder._specificationDocumentSettings">
             <summary>
             规范化文档配置
             </summary>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder.DocumentGroupExtras">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.DocumentGroupExtras">
             <summary>
             分组信息
             </summary>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder._groupOrderRegex">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder._groupOrderRegex">
             <summary>
             带排序的分组名
             </summary>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder.DocumentGroups">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.DocumentGroups">
             <summary>
             文档分组列表
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.#cctor">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.#cctor">
             <summary>
             构造函数
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.CheckApiDescriptionInCurrentGroup(System.String,Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.CheckApiDescriptionInCurrentGroup(System.String,Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)">
             <summary>
             检查方法是否在分组中
             </summary>
@@ -92,25 +92,25 @@
             <param name="apiDescription"></param>
             <returns></returns>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetOpenApiGroups">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetOpenApiGroups">
             <summary>
             获取所有的规范化分组信息
             </summary>
             <returns></returns>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetGroupOpenApiInfoCached">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetGroupOpenApiInfoCached">
             <summary>
             获取分组信息缓存集合
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetGroupOpenApiInfo(System.String)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetGroupOpenApiInfo(System.String)">
             <summary>
             获取分组配置信息
             </summary>
             <param name="group"></param>
             <returns></returns>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.SetProperty``1(System.String,System.String,System.Action{``0})">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.SetProperty``1(System.String,System.String,System.Action{``0})">
             <summary>
             设置额外配置的值
             </summary>
@@ -119,21 +119,21 @@
             <param name="propertyName"></param>
             <param name="action"></param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.Build(Swashbuckle.AspNetCore.Swagger.SwaggerOptions,System.Action{Swashbuckle.AspNetCore.Swagger.SwaggerOptions})">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.Build(Swashbuckle.AspNetCore.Swagger.SwaggerOptions,System.Action{Swashbuckle.AspNetCore.Swagger.SwaggerOptions})">
             <summary>
             构建Swagger全局配置
             </summary>
             <param name="swaggerOptions">Swagger 全局配置</param>
             <param name="configure"></param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.BuildGen(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions,System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.BuildGen(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions,System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})">
             <summary>
             Swagger 生成器构建
             </summary>
             <param name="swaggerGenOptions">Swagger 生成器配置</param>
             <param name="configure">自定义配置</param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.BuildUI(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.BuildUI(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
             <summary>
             Swagger UI 构建
             </summary>
@@ -141,49 +141,49 @@
             <param name="routePrefix"></param>
             <param name="configure"></param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.CreateSwaggerDocs(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.CreateSwaggerDocs(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             创建分组文档
             </summary>
             <param name="swaggerGenOptions">Swagger生成器对象</param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.LoadGroupControllerWithActions(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.LoadGroupControllerWithActions(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             加载分组控制器和动作方法列表
             </summary>
             <param name="swaggerGenOptions">Swagger 生成器配置</param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.ConfigureTagsAction(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.ConfigureTagsAction(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
              配置标签
             </summary>
             <param name="swaggerGenOptions"></param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.ConfigureActionSequence(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.ConfigureActionSequence(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
              配置 Action 排序
             </summary>
             <param name="swaggerGenOptions"></param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.ConfigureOperationIds(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.ConfigureOperationIds(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             配置 Swagger OperationIds
             </summary>
             <param name="swaggerGenOptions">Swagger 生成器配置</param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.ConfigureSchemaIds(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.ConfigureSchemaIds(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             配置 Swagger SchemaIds
             </summary>
             <param name="swaggerGenOptions">Swagger 生成器配置</param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.LoadXmlComments(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.LoadXmlComments(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             加载注释描述文件
             </summary>
             <param name="swaggerGenOptions">Swagger 生成器配置</param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GenerateInheritdocCref(System.Xml.Linq.XDocument,System.String,System.String)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GenerateInheritdocCref(System.Xml.Linq.XDocument,System.String,System.String)">
             <summary>
             生成 Inheritdoc cref 属性
             </summary>
@@ -192,85 +192,85 @@
             <param name="className"></param>
             <returns></returns>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.ConfigureSecurities(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.ConfigureSecurities(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             配置授权
             </summary>
             <param name="swaggerGenOptions">Swagger 生成器配置</param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.CreateGroupEndpoint(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.CreateGroupEndpoint(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions)">
             <summary>
             配置分组终点路由
             </summary>
             <param name="swaggerUIOptions"></param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.CustomizeIndex(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.CustomizeIndex(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions)">
             <summary>
             自定义 Swagger 首页
             </summary>
             <param name="swaggerUIOptions"></param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.AddDefaultInterceptor(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.AddDefaultInterceptor(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions)">
             <summary>
             添加默认请求/响应拦截器
             </summary>
             <param name="swaggerUIOptions"></param>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.ReadGroups">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.ReadGroups">
             <summary>
             读取所有分组信息
             </summary>
             <returns></returns>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetControllerGroupsCached">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetControllerGroupsCached">
             <summary>
             获取控制器组缓存集合
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetControllerGroups(System.Type)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetControllerGroups(System.Type)">
             <summary>
             获取控制器分组列表
             </summary>
             <param name="type"></param>
             <returns></returns>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetActionGroupsCached">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetActionGroupsCached">
             <summary>
-            <see cref="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetActionGroups(System.Reflection.MethodInfo)"/> 缓存集合
+            <see cref="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetActionGroups(System.Reflection.MethodInfo)"/> 缓存集合
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetActionGroups(System.Reflection.MethodInfo)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetActionGroups(System.Reflection.MethodInfo)">
             <summary>
             获取动作方法分组列表
             </summary>
             <param name="method">方法</param>
             <returns></returns>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetControllerTagCached">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetControllerTagCached">
             <summary>
-            <see cref="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetActionTag(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)"/> 缓存集合
+            <see cref="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetActionTag(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)"/> 缓存集合
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetControllerTag(Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetControllerTag(Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)">
             <summary>
             获取控制器标签
             </summary>
             <param name="controllerActionDescriptor">控制器接口描述器</param>
             <returns></returns>
         </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetActionTagCached">
+        <member name="F:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetActionTagCached">
             <summary>
-            <see cref="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetActionTag(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)"/> 缓存集合
+            <see cref="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetActionTag(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)"/> 缓存集合
             </summary>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.GetActionTag(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.GetActionTag(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)">
             <summary>
             获取动作方法标签
             </summary>
             <param name="apiDescription">接口描述器</param>
             <returns></returns>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.IsApiAction(System.Reflection.MethodInfo,System.Type)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.IsApiAction(System.Reflection.MethodInfo,System.Type)">
             <summary>
             是否是动作方法
             </summary>
@@ -278,308 +278,19 @@
             <param name="ReflectedType">声明类型</param>
             <returns></returns>
         </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentBuilder.ResolveGroupExtraInfo(System.String)">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.ResolveGroupExtraInfo(System.String)">
             <summary>
             解析分组附加信息
             </summary>
             <param name="group">分组名</param>
             <returns></returns>
         </member>
-        <member name="T:Furion.SpecificationDocument.AnySchemaFilter">
-            <summary>
-            修正 规范化文档 object schema，统一显示为 any
-            </summary>
-            <remarks>相关 issue：https://github.com/swagger-api/swagger-codegen-generators/issues/692 </remarks>
-        </member>
-        <member name="M:Furion.SpecificationDocument.AnySchemaFilter.Apply(Microsoft.OpenApi.Models.OpenApiSchema,Swashbuckle.AspNetCore.SwaggerGen.SchemaFilterContext)">
-            <summary>
-            实现过滤器方法
-            </summary>
-            <param name="model"></param>
-            <param name="context"></param>
-        </member>
-        <member name="T:Furion.SpecificationDocument.ApiActionFilter">
-            <summary>
-            规范化文档自定义更多功能
-            </summary>
-        </member>
-        <member name="M:Furion.SpecificationDocument.ApiActionFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
-            <summary>
-            实现过滤器方法
-            </summary>
-            <param name="operation"></param>
-            <param name="context"></param>
-        </member>
-        <member name="T:Furion.SpecificationDocument.EnumSchemaFilter">
-            <summary>
-            修正 规范化文档 Enum 提示
-            </summary>
-        </member>
-        <member name="F:Furion.SpecificationDocument.EnumSchemaFilter.CHINESE_PATTERN">
-            <summary>
-            中文正则表达式
-            </summary>
-        </member>
-        <member name="M:Furion.SpecificationDocument.EnumSchemaFilter.Apply(Microsoft.OpenApi.Models.OpenApiSchema,Swashbuckle.AspNetCore.SwaggerGen.SchemaFilterContext)">
-            <summary>
-            实现过滤器方法
-            </summary>
-            <param name="model"></param>
-            <param name="context"></param>
-        </member>
-        <member name="T:Furion.SpecificationDocument.TagsOrderDocumentFilter">
-            <summary>
-            标签文档排序/注释拦截器
-            </summary>
-        </member>
-        <member name="M:Furion.SpecificationDocument.TagsOrderDocumentFilter.Apply(Microsoft.OpenApi.Models.OpenApiDocument,Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext)">
-            <summary>
-            配置拦截
-            </summary>
-            <param name="swaggerDoc"></param>
-            <param name="context"></param>
-        </member>
-        <member name="T:Furion.SpecificationDocument.GroupExtraInfo">
-            <summary>
-            分组附加信息
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.GroupExtraInfo.Group">
-            <summary>
-            分组名
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.GroupExtraInfo.Order">
-            <summary>
-            分组排序
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.GroupExtraInfo.Visible">
-            <summary>
-            是否可见
-            </summary>
-        </member>
-        <member name="T:Furion.SpecificationDocument.SpecificationAuth">
-            <summary>
-            规范化文档授权参数类型
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationAuth.UserName">
-            <summary>
-            用户名
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationAuth.Password">
-            <summary>
-            密码
-            </summary>
-        </member>
-        <member name="T:Furion.SpecificationDocument.SpecificationLoginInfo">
-            <summary>
-            规范化文档授权登录配置信息
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationLoginInfo.Enabled">
-            <summary>
-            是否启用授权控制
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationLoginInfo.CheckUrl">
-            <summary>
-            检查登录地址
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationLoginInfo.SubmitUrl">
-            <summary>
-            提交登录地址
-            </summary>
-        </member>
-        <member name="T:Furion.SpecificationDocument.SpecificationOpenApiInfo">
-            <summary>
-            规范化文档开放接口信息
-            </summary>
-        </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationOpenApiInfo.#ctor">
-            <summary>
-            构造函数
-            </summary>
-        </member>
-        <member name="F:Furion.SpecificationDocument.SpecificationOpenApiInfo._group">
-            <summary>
-            分组私有字段
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationOpenApiInfo.Group">
-            <summary>
-            所属组
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationOpenApiInfo.Order">
-            <summary>
-            排序
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationOpenApiInfo.Visible">
-            <summary>
-            是否可见
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationOpenApiInfo.RouteTemplate">
-            <summary>
-            路由模板
-            </summary>
-        </member>
-        <member name="T:Furion.SpecificationDocument.SpecificationOpenApiSecurityRequirementItem">
-            <summary>
-            安全定义需求子项
-            </summary>
-        </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationOpenApiSecurityRequirementItem.#ctor">
-            <summary>
-            构造函数
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationOpenApiSecurityRequirementItem.Scheme">
-            <summary>
-            安全Schema
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationOpenApiSecurityRequirementItem.Accesses">
-            <summary>
-            权限
-            </summary>
-        </member>
-        <member name="T:Furion.SpecificationDocument.SpecificationOpenApiSecurityScheme">
-            <summary>
-            规范化文档安全配置
-            </summary>
-        </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationOpenApiSecurityScheme.#ctor">
-            <summary>
-            构造函数
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationOpenApiSecurityScheme.Id">
-            <summary>
-            唯一Id
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationOpenApiSecurityScheme.Requirement">
-            <summary>
-            安全需求
-            </summary>
-        </member>
-        <member name="T:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions">
-            <summary>
-            规范化文档配置选项
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.DocumentTitle">
-            <summary>
-            文档标题
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.DefaultGroupName">
-            <summary>
-            默认分组名
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.EnableAuthorized">
-            <summary>
-            启用授权支持
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.FormatAsV2">
-            <summary>
-            格式化为V2版本
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.RoutePrefix">
-            <summary>
-            配置规范化文档地址
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.DocExpansionState">
-            <summary>
-            文档展开设置
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.XmlComments">
-            <summary>
-            XML 描述文件
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.GroupOpenApiInfos">
-            <summary>
-            分组信息
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.SecurityDefinitions">
-            <summary>
-            安全定义
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.Servers">
-            <summary>
-            配置 Servers
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.HideServers">
-            <summary>
-            隐藏 Servers
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.RouteTemplate">
-            <summary>
-            默认 swagger.json 路由模板
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.PackagesGroups">
-            <summary>
-            配置安装第三方包的分组名
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.EnableEnumSchemaFilter">
-            <summary>
-            启用枚举 Schema 筛选器
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.EnableTagsOrderDocumentFilter">
-            <summary>
-            启用标签排序筛选器
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.ServerDir">
-            <summary>
-            服务目录（修正 IIS 创建 Application 问题）
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.LoginInfo">
-            <summary>
-            配置规范化文档登录信息
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.EnableAllGroups">
-            <summary>
-            启用 All Groups 功能
-            </summary>
-        </member>
-        <member name="P:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.EnumToNumber">
-            <summary>
-            枚举类型生成值类型
-            </summary>
-        </member>
-        <member name="M:Furion.SpecificationDocument.SpecificationDocumentSettingsOptions.#ctor">
-            <summary>
-            后期配置
-            </summary>
-        </member>
-        <member name="T:Microsoft.AspNetCore.Builder.SpecificationDocumentIApplicationBuilderExtension">
+        <member name="T:Fast.SpecificationDocument.Extensions.SpecificationDocumentIApplicationBuilderExtension">
             <summary>
             <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> 规范化文档中间件拓展
             </summary>
         </member>
-        <member name="M:Microsoft.AspNetCore.Builder.SpecificationDocumentIApplicationBuilderExtension.UseSpecificationDocuments(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Action{Swashbuckle.AspNetCore.Swagger.SwaggerOptions},System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
+        <member name="M:Fast.SpecificationDocument.Extensions.SpecificationDocumentIApplicationBuilderExtension.UseSpecificationDocuments(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Action{Swashbuckle.AspNetCore.Swagger.SwaggerOptions},System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
             <summary>
             添加规范化文档中间件
             </summary>
@@ -610,27 +321,316 @@
             <param name="configure">自定义配置</param>
             <returns>服务集合</returns>
         </member>
-        <member name="T:Fast.DynamicApplication.Internal.Penetrates">
+        <member name="T:Fast.SpecificationDocument.Filters.AnySchemaFilter">
+            <summary>
+            修正 规范化文档 object schema，统一显示为 any
+            </summary>
+            <remarks>相关 issue：https://github.com/swagger-api/swagger-codegen-generators/issues/692 </remarks>
+        </member>
+        <member name="M:Fast.SpecificationDocument.Filters.AnySchemaFilter.Apply(Microsoft.OpenApi.Models.OpenApiSchema,Swashbuckle.AspNetCore.SwaggerGen.SchemaFilterContext)">
+            <summary>
+            实现过滤器方法
+            </summary>
+            <param name="model"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Filters.ApiActionFilter">
+            <summary>
+            规范化文档自定义更多功能
+            </summary>
+        </member>
+        <member name="M:Fast.SpecificationDocument.Filters.ApiActionFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            实现过滤器方法
+            </summary>
+            <param name="operation"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Filters.EnumSchemaFilter">
+            <summary>
+            修正 规范化文档 Enum 提示
+            </summary>
+        </member>
+        <member name="F:Fast.SpecificationDocument.Filters.EnumSchemaFilter.CHINESE_PATTERN">
+            <summary>
+            中文正则表达式
+            </summary>
+        </member>
+        <member name="M:Fast.SpecificationDocument.Filters.EnumSchemaFilter.Apply(Microsoft.OpenApi.Models.OpenApiSchema,Swashbuckle.AspNetCore.SwaggerGen.SchemaFilterContext)">
+            <summary>
+            实现过滤器方法
+            </summary>
+            <param name="model"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Filters.TagsOrderDocumentFilter">
+            <summary>
+            标签文档排序/注释拦截器
+            </summary>
+        </member>
+        <member name="M:Fast.SpecificationDocument.Filters.TagsOrderDocumentFilter.Apply(Microsoft.OpenApi.Models.OpenApiDocument,Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext)">
+            <summary>
+            配置拦截
+            </summary>
+            <param name="swaggerDoc"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Internal.GroupExtraInfo">
+            <summary>
+            分组附加信息
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.GroupExtraInfo.Group">
+            <summary>
+            分组名
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.GroupExtraInfo.Order">
+            <summary>
+            分组排序
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.GroupExtraInfo.Visible">
+            <summary>
+            是否可见
+            </summary>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Internal.Penetrates">
             <summary>
             常量、公共方法配置类
             </summary>
         </member>
-        <member name="M:Fast.DynamicApplication.Internal.Penetrates.#cctor">
+        <member name="M:Fast.SpecificationDocument.Internal.Penetrates.#cctor">
             <summary>
             构造函数
             </summary>
         </member>
-        <member name="F:Fast.DynamicApplication.Internal.Penetrates.IsApiControllerCached">
+        <member name="F:Fast.SpecificationDocument.Internal.Penetrates.IsApiControllerCached">
             <summary>
-            <see cref="M:Fast.DynamicApplication.Internal.Penetrates.IsApiController(System.Type)"/> 缓存集合
+            <see cref="M:Fast.SpecificationDocument.Internal.Penetrates.IsApiController(System.Type)"/> 缓存集合
             </summary>
         </member>
-        <member name="M:Fast.DynamicApplication.Internal.Penetrates.IsApiController(System.Type)">
+        <member name="M:Fast.SpecificationDocument.Internal.Penetrates.IsApiController(System.Type)">
             <summary>
             是否是Api控制器
             </summary>
             <param name="type">type</param>
             <returns></returns>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Internal.SpecificationAuth">
+            <summary>
+            规范化文档授权参数类型
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationAuth.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationAuth.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Internal.SpecificationLoginInfo">
+            <summary>
+            规范化文档授权登录配置信息
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationLoginInfo.Enabled">
+            <summary>
+            是否启用授权控制
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationLoginInfo.CheckUrl">
+            <summary>
+            检查登录地址
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationLoginInfo.SubmitUrl">
+            <summary>
+            提交登录地址
+            </summary>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Internal.SpecificationOpenApiInfo">
+            <summary>
+            规范化文档开放接口信息
+            </summary>
+        </member>
+        <member name="M:Fast.SpecificationDocument.Internal.SpecificationOpenApiInfo.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="F:Fast.SpecificationDocument.Internal.SpecificationOpenApiInfo._group">
+            <summary>
+            分组私有字段
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationOpenApiInfo.Group">
+            <summary>
+            所属组
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationOpenApiInfo.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationOpenApiInfo.Visible">
+            <summary>
+            是否可见
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationOpenApiInfo.RouteTemplate">
+            <summary>
+            路由模板
+            </summary>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Internal.SpecificationOpenApiSecurityRequirementItem">
+            <summary>
+            安全定义需求子项
+            </summary>
+        </member>
+        <member name="M:Fast.SpecificationDocument.Internal.SpecificationOpenApiSecurityRequirementItem.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationOpenApiSecurityRequirementItem.Scheme">
+            <summary>
+            安全Schema
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationOpenApiSecurityRequirementItem.Accesses">
+            <summary>
+            权限
+            </summary>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Internal.SpecificationOpenApiSecurityScheme">
+            <summary>
+            规范化文档安全配置
+            </summary>
+        </member>
+        <member name="M:Fast.SpecificationDocument.Internal.SpecificationOpenApiSecurityScheme.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationOpenApiSecurityScheme.Id">
+            <summary>
+            唯一Id
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Internal.SpecificationOpenApiSecurityScheme.Requirement">
+            <summary>
+            安全需求
+            </summary>
+        </member>
+        <member name="T:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions">
+            <summary>
+            规范化文档配置选项
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.DocumentTitle">
+            <summary>
+            文档标题
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.DefaultGroupName">
+            <summary>
+            默认分组名
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.EnableAuthorized">
+            <summary>
+            启用授权支持
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.FormatAsV2">
+            <summary>
+            格式化为V2版本
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.RoutePrefix">
+            <summary>
+            配置规范化文档地址
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.DocExpansionState">
+            <summary>
+            文档展开设置
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.XmlComments">
+            <summary>
+            XML 描述文件
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.GroupOpenApiInfos">
+            <summary>
+            分组信息
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.SecurityDefinitions">
+            <summary>
+            安全定义
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.Servers">
+            <summary>
+            配置 Servers
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.HideServers">
+            <summary>
+            隐藏 Servers
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.RouteTemplate">
+            <summary>
+            默认 swagger.json 路由模板
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.PackagesGroups">
+            <summary>
+            配置安装第三方包的分组名
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.EnableEnumSchemaFilter">
+            <summary>
+            启用枚举 Schema 筛选器
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.EnableTagsOrderDocumentFilter">
+            <summary>
+            启用标签排序筛选器
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.ServerDir">
+            <summary>
+            服务目录（修正 IIS 创建 Application 问题）
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.LoginInfo">
+            <summary>
+            配置规范化文档登录信息
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.EnableAllGroups">
+            <summary>
+            启用 All Groups 功能
+            </summary>
+        </member>
+        <member name="P:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.EnumToNumber">
+            <summary>
+            枚举类型生成值类型
+            </summary>
+        </member>
+        <member name="M:Fast.SpecificationDocument.Options.SpecificationDocumentSettingsOptions.#ctor">
+            <summary>
+            后期配置
+            </summary>
         </member>
     </members>
 </doc>
