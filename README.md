@@ -1,10 +1,8 @@
 # Fast.NET（v3）
 
-### 前后端分离架构，开箱即用，紧随前沿技术
+### 框架介绍
 
-一个快速构建项目的 .NET 框架。
-
-一个前后端分离架构，提供开箱即用的功能，并紧跟最新的前沿技术。
+一个快速构建项目，集百家所长，专注于 Web Api 应用，提供开箱即用的功能，并紧跟最新的前沿技术的 .NET 框架。
 
 ### 技术选择
 
@@ -12,8 +10,8 @@
 
 #### 项目特点：
 
-- **前后端分离架构**：采用前后端分离，使得前端和后端代码独立开发，便于团队合作和系统维护。
-- **开箱即用**：提供预配置的功能，无需额外的配置或开发工作，可以快速启动项目。
+- **集百家所长**：集百家好用功能于一体。
+- **开箱即用**：提供众多黑科技，无需额外的配置或开发工作，可以快速构建项目。
 - **紧随前沿技术**：采用最新的技术和框架，始终保持与行业的最新趋势和发展同步。
 
 ### 项目背景
@@ -41,69 +39,54 @@
 
 **持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！**
 
-## 🍟 概述
-
-* 待完善...
-
-## 😁 分支说明
+## 分支说明
 | 分支     | 详情    | 版本     | 环境    | 建议                                                                           |
 | ------- | ------- | ------- | ------- | ----------------------------------------------------------------------------- |
 | master  | 主分支   | 稳定版本 | 生产环境 | 如果需要Fork或者在此版本上进行修改，请拉取master分支的代码                           |
 | develop | 开发分支 | 迭代版本 | 开发环境 | develop是快速迭代版本，此版本的功能是未经过测试的代码，所以不建议用develop进行Fork和学习 |
-
-## 快速启动
-
-全栈工程师推荐idea
-
-### 前端支撑
-| 插件     | 版本   | 用途                |
-| ------- | ------ | ------------------ |
-| node.js | 最新版  |  JavaScript运行环境 |
-
-### 启动前端
-
-#### npm
-
-```
-npm install
-```
-```
-npm run dev
-```
-
-#### pnpm 
-
-```
-pnpm install
-```
-```
-pnpm run dev
-```
-
-### 后端支撑
-| 插件    | 版本  | 用途          |
-| ------ | ----- | ------------ |
-| .NET 6 | 最新版 |  .NET运行环境 |
-
-`如果集成其他ORM，请参照各自操作使用说明。系统默认SqlSugar不会处理其他ORM实体等，请自行处理。`
+| next    | 超前分支 | 超前版本 | 不建议   | next是超前迭代版本，此版本的功能是本人觉得好用，或者即将实现的的代码，所以不建议用于任何用途 |
 
 ## 🥞 更新日志
 
 更新日志 [点击查看](https://gitee.com/Net-18K/fast.net/commits/master)
 
-## 🍿 在线体验
+## 🍖 详细功能（模块说明）
 
-- 开发者租户：用户名：superAdmin，密码：123456          
-
-- 地址1：[https://fast.18kboy.icu/](https://fast.18kboy.icu/) PS: 1核2G 1MB 配置，手下留情~
-
-## 🍖 详细功能（待重新分析）
-
-- 待完善...
+| 模块名称 | 状态 | 版本 | 说明 | 备注 |
+| ------  | --- | ---- | --- | --- |
+| [Fast.Cache](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/Cache/Fast.Cache) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache) | Fast.NET 框架缓存模块库 | 一个在 .NET 行业中从业5年的小菜鸟常用的 Redis 缓存库，基于 [CSRedisCore](https://github.com/2881099/csredis) 封装 |
+| [Fast.Core](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/Core/Fast.Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Core) | Fast.NET 框架核心模块库 | |
+| [Fast.CorsAccessor](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/CorsAccessor/Fast.CorsAccessor) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.CorsAccessor.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.CorsAccessor) | Fast.NET 框架跨域处理模块库 | |
+| [Fast.DataValidation](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/DataValidation/Fast.DataValidation) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DataValidation.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DataValidation) | Fast.NET 框架数据验证模块库 | 基于 [Furion v4](https://gitee.com/dotnetchina/Furion) 部分源码 |
+| [Fast.DependencyInjection](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/DependencyInjection/Fast.DependencyInjection) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection) | Fast.NET 框架依赖注入模块库 | 基于 [Furion v4](https://gitee.com/dotnetchina/Furion) 部分源码 |
+| [Fast.DynamicApplication](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/DynamicApplication/Fast.DynamicApplication) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication) | Fast.NET 框架动态API应用模块库 | 基于 [Furion v4](https://gitee.com/dotnetchina/Furion) 部分源码 |
+| [Fast.EventBus](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/EventBus/Fast.EventBus) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus) | Fast.NET 框架事件总线模块库 | 引用 [Furion v4](https://gitee.com/dotnetchina/Furion) 源码 |
+| [Fast.Exception](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/Exception/Fast.Exception) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Exception.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Exception) | Fast.NET 框架异常模块库 | 基于 [Furion v4](https://gitee.com/dotnetchina/Furion) 部分源码 |
+| [Fast.IaaS](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/IaaS/Fast.IaaS) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS) | Fast.NET 框架基础设施模块库 | 一个在 .NET 行业中从业5年的小菜鸟常用的拓展工具类 |
+| [Fast.Logging](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/Logging/Fast.Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET 框架日志模块库 | 引用 [Furion v4](https://gitee.com/dotnetchina/Furion) 源码 |
+| [Fast.Mapster](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/Mapster/Fast.Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET 框架对象映射模块库 | 基于 [Mapster](https://github.com/MapsterMapper/Mapster) 封装 |
+| [Fast.Serialization](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/Serialization/Fast.Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization) | Fast.NET 框架序列化模块库 | 基于 [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) 封装 |
+| [Fast.SpecificationDocument](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/SpecificationDocument/Fast.SpecificationDocument) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.SpecificationDocument.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SpecificationDocument) | Fast.NET 框架规范化文档模块库 | 引用 [Furion v4](https://gitee.com/dotnetchina/Furion) 源码 |
+| [Fast.UAParser](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/UAParser/Fast.UAParser) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.UAParser.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UAParser) | Fast.NET 框架User-Agent解析模块库 | 引用 [UAParser](https://github.com/ua-parser/uap-csharp) 源码 |
+| [Fast.UnifyResult](https://gitee.com/Net-18K/fast.net/tree/master/backend/Fast.NET/UnifyResult/Fast.UnifyResult) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult) | Fast.NET 框架规范化返回模块库 | 引用 [Furion v4](https://gitee.com/dotnetchina/Furion) 源码 |
 
 ## ⚡ 近期计划
 
-- [⏳] 核心模块
+- [✅] 基础设施模块
+- [✅] 核心模块
+- [✅] 跨域处理模块
+- [✅] 对象映射模
+- [✅] Redis缓存模块
+- [✅] 序列化模块
+- [✅] User-Agent解析模块
+- [✅] 依赖注入模块
+- [✅] 动态API模块
+- [✅] 规范化文档模块
+- [✅] 数据验证模块
+- [✅] 异常模块
+- [✅] 规范化返回模块
+- [✅] 日志模块
+- [✅] 事件总线
 - [⚠️] ...
 
 > 状态说明
@@ -127,12 +110,9 @@ pnpm run dev
 
 ## 团队成员
 
-| 成员 | 技术 | 昵称   | 
-| --- | ---- | ----- | 
-| 小方 | 全栈 | 1.8K仔 | 
-
-## 🍎 效果图
-待开发中...
+| 成员 | 技术 | 昵称 | 座右铭 |
+| --- | ---- | ---- | ---- | 
+| 小方 | 全栈 | 1.8K仔 | 接受自己的平庸和普通，是成长的必修课 <br> 你羡慕的生活都是你没熬过的苦 <br> 当你的能力还撑不起你的野心时，你就需要静下心来 好好学习 | 
 
 ## 免责申明
     请勿用于违反我国法律的项目上 

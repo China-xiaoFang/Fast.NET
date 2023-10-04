@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 异常模块。</Description>
+		<Description>Fast.NET 框架异常模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>

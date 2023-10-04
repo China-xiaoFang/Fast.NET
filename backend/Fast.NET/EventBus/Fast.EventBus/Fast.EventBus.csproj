@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 框架事件总线模块。</Description>
+		<Description>Fast.NET 框架事件总线模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>

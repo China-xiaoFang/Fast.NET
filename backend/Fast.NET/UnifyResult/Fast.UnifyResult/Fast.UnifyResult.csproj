@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 规范化返回模块。</Description>
+		<Description>Fast.NET 框架规范化返回模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>

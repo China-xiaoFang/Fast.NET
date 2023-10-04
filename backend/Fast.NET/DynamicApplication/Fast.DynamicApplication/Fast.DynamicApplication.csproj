@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 动态API应用模块库。</Description>
+		<Description>Fast.NET 框架动态API应用模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
