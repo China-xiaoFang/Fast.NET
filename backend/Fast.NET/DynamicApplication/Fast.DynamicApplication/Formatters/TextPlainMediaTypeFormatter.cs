@@ -40,7 +40,7 @@ public sealed class TextPlainMediaTypeFormatter : TextInputFormatter
     /// <param name="context"></param>
     /// <param name="effectiveEncoding"></param>
     /// <returns></returns>
-    public async override Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context,
+    public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context,
         Encoding effectiveEncoding)
     {
         using var reader = new StreamReader(context.HttpContext.Request.Body, effectiveEncoding);

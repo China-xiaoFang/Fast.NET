@@ -12,13 +12,30 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-// ReSharper disable once CheckNamespace
+using Microsoft.OpenApi.Models;
 
-namespace Fast.DynamicApplication;
+namespace Fast.SpecificationDocument.Internal;
 
 /// <summary>
-/// <see cref="IDynamicApplication"/> 动态API应用依赖接口
+/// 安全定义需求子项
 /// </summary>
-public interface IDynamicApplication
+public sealed class SpecificationOpenApiSecurityRequirementItem
 {
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    public SpecificationOpenApiSecurityRequirementItem()
+    {
+        Accesses = Array.Empty<string>();
+    }
+
+    /// <summary>
+    /// 安全Schema
+    /// </summary>
+    public OpenApiSecurityScheme Scheme { get; set; }
+
+    /// <summary>
+    /// 权限
+    /// </summary>
+    public string[] Accesses { get; set; }
 }

@@ -128,12 +128,13 @@
             </summary>
             <param name="application">引用模型</param>
         </member>
-        <member name="M:Fast.DynamicApplication.Conventions.DynamicApiControllerApplicationModelConvention.ConfigureController(Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute)">
+        <member name="M:Fast.DynamicApplication.Conventions.DynamicApiControllerApplicationModelConvention.ConfigureController(Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute,System.Collections.Concurrent.ConcurrentDictionary{System.String,System.ValueTuple{System.String,System.Int32,System.Type}})">
             <summary>
             配置控制器
             </summary>
             <param name="controller">控制器模型</param>
             <param name="controllerApiDescriptionSettings">接口描述配置</param>
+            <param name="controllerOrderCollection"></param>
         </member>
         <member name="M:Fast.DynamicApplication.Conventions.DynamicApiControllerApplicationModelConvention.ConfigureControllerArea(Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute)">
             <summary>
@@ -286,44 +287,6 @@
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
         </member>
-        <member name="T:Fast.DynamicApplication.Extensions.ObjectExtension">
-            <summary>
-            <see cref="T:System.Object"/> 拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.DynamicApplication.Extensions.ObjectExtension.IsValueTuple(System.Type)">
-            <summary>
-            判断是否是元组类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.DynamicApplication.Extensions.ObjectExtension.IsRichPrimitive(System.Type)">
-            <summary>
-            判断是否是富基元类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="T:Fast.DynamicApplication.Extensions.StringExtension">
-            <summary>
-            <see cref="T:System.String"/> 拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.DynamicApplication.Extensions.StringExtension.SplitCamelCase(System.String)">
-            <summary>
-            切割骆驼命名式字符串
-            </summary>
-            <param name="str"><see cref="T:System.String"/></param>
-            <returns><see cref="T:System.String"/></returns>
-        </member>
-        <member name="M:Fast.DynamicApplication.Extensions.StringExtension.FirstCharToLower(System.String)">
-            <summary>
-            字符串首字母小写
-            </summary>
-            <param name="str"><see cref="T:System.String"/></param>
-            <returns><see cref="T:System.String"/></returns>
-        </member>
         <member name="T:Fast.DynamicApplication.Formatters.TextPlainMediaTypeFormatter">
             <summary>
             text/plain 请求 Body 参数支持
@@ -350,11 +313,6 @@
         <member name="F:Fast.DynamicApplication.Internal.Penetrates.GroupSeparator">
             <summary>
             分组分隔符
-            </summary>
-        </member>
-        <member name="P:Fast.DynamicApplication.Internal.Penetrates.ControllerOrderCollection">
-            <summary>
-            控制器排序集合
             </summary>
         </member>
         <member name="M:Fast.DynamicApplication.Internal.Penetrates.#cctor">

@@ -12,13 +12,25 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-// ReSharper disable once CheckNamespace
-
-namespace Fast.DynamicApplication;
+namespace Fast.SpecificationDocument.Internal;
 
 /// <summary>
-/// <see cref="IDynamicApplication"/> 动态API应用依赖接口
+/// 规范化文档授权登录配置信息
 /// </summary>
-public interface IDynamicApplication
+public sealed class SpecificationLoginInfo
 {
+    /// <summary>
+    /// 是否启用授权控制
+    /// </summary>
+    public bool Enabled { get; set; }
+
+    /// <summary>
+    /// 检查登录地址
+    /// </summary>
+    public string CheckUrl { get; set; }
+
+    /// <summary>
+    /// 提交登录地址
+    /// </summary>
+    public string SubmitUrl { get; set; }
 }

@@ -404,6 +404,34 @@
             <param name="defaultValue"></param>
             <returns></returns>
         </member>
+        <member name="M:Fast.IaaS.Extensions.ConvertExtension.ParseToDateTime(System.DateTimeOffset)">
+            <summary>
+            将 DateTimeOffset 转换成本地 DateTime
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Extensions.ConvertExtension.ParseToDateTime(System.Nullable{System.DateTimeOffset})">
+            <summary>
+            将 DateTimeOffset? 转换成本地 DateTime?
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Extensions.ConvertExtension.ParseToDateTimeOffset(System.DateTime)">
+            <summary>
+            将 DateTime 转换成 DateTimeOffset
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Extensions.ConvertExtension.ParseToDateTimeOffset(System.Nullable{System.DateTime})">
+            <summary>
+            将 DateTime? 转换成 DateTimeOffset?
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.IaaS.Extensions.ConvertExtension.ParseToString(System.Object)">
             <summary>
             将object转换为string，若转换失败，则返回""。不抛出异常。  
@@ -996,6 +1024,22 @@
             <param name="method"><see cref="T:System.Reflection.MethodInfo"/></param>
             <param name="inherit"></param>
             <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Extensions.ObjectExtension.ChangeType``1(System.Object)">
+            <summary>
+            将一个对象转换为指定类型
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Extensions.ObjectExtension.ChangeType(System.Object,System.Type)">
+            <summary>
+            将一个对象转换为指定类型
+            </summary>
+            <param name="obj">待转换的对象</param>
+            <param name="type">目标类型</param>
+            <returns>转换后的对象</returns>
         </member>
         <member name="T:Fast.IaaS.Extensions.StringExtension">
             <summary>

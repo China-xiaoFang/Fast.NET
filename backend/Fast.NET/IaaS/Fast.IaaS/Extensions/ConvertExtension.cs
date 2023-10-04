@@ -378,6 +378,50 @@ public static class ConvertExtension
         }
     }
 
+    /// <summary>
+    /// 将 DateTimeOffset 转换成本地 DateTime
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTime ParseToDateTime(this DateTimeOffset dateTime)
+    {
+        if (dateTime.Offset.Equals(TimeSpan.Zero))
+            return dateTime.UtcDateTime;
+        if (dateTime.Offset.Equals(TimeZoneInfo.Local.GetUtcOffset(dateTime.DateTime)))
+            return dateTime.ToLocalTime().DateTime;
+        return dateTime.DateTime;
+    }
+
+    /// <summary>
+    /// 将 DateTimeOffset? 转换成本地 DateTime?
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTime? ParseToDateTime(this DateTimeOffset? dateTime)
+    {
+        return dateTime?.ParseToDateTime();
+    }
+
+    /// <summary>
+    /// 将 DateTime 转换成 DateTimeOffset
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTimeOffset ParseToDateTimeOffset(this DateTime dateTime)
+    {
+        return DateTime.SpecifyKind(dateTime, DateTimeKind.Local);
+    }
+
+    /// <summary>
+    /// 将 DateTime? 转换成 DateTimeOffset?
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTimeOffset? ParseToDateTimeOffset(this DateTime? dateTime)
+    {
+        return dateTime?.ParseToDateTimeOffset();
+    }
+
     #endregion
 
     #region 转换为string

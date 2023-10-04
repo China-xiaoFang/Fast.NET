@@ -13,20 +13,16 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Collections.Concurrent;
+using Fast.DynamicApplication;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fast.DynamicApplication.Internal;
+namespace Fast.SpecificationDocument.Internal;
 
 /// <summary>
 /// 常量、公共方法配置类
 /// </summary>
 internal static class Penetrates
 {
-    /// <summary>
-    /// 分组分隔符
-    /// </summary>
-    internal const string GroupSeparator = "##";
-
     /// <summary>
     /// 构造函数
     /// </summary>

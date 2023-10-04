@@ -12,13 +12,25 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-// ReSharper disable once CheckNamespace
-
-namespace Fast.DynamicApplication;
+namespace Fast.SpecificationDocument.Internal;
 
 /// <summary>
-/// <see cref="IDynamicApplication"/> 动态API应用依赖接口
+/// 分组附加信息
 /// </summary>
-public interface IDynamicApplication
+public sealed class GroupExtraInfo
 {
+    /// <summary>
+    /// 分组名
+    /// </summary>
+    public string Group { get; internal set; }
+
+    /// <summary>
+    /// 分组排序
+    /// </summary>
+    public int Order { get; internal set; }
+
+    /// <summary>
+    /// 是否可见
+    /// </summary>
+    public bool Visible { get; internal set; }
 }

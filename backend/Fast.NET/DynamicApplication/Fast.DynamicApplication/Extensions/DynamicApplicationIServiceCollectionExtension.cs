@@ -18,6 +18,7 @@ using Fast.DynamicApplication.Formatters;
 using Fast.DynamicApplication.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.DynamicApplication.Extensions;
@@ -50,6 +51,12 @@ public static class DynamicApplicationIServiceCollectionExtension
             services.FirstOrDefault(s => s.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
                 ApplicationPartManager ?? throw new InvalidOperationException(
                 $"`{nameof(AddDynamicApiControllers)}` must be invoked after `{nameof(MvcServiceCollectionExtensions.AddControllers)}`.");
+
+        if (services.All(s => s.ServiceType != typeof(IMemoryCache)))
+        {
+            throw new InvalidOperationException(
+                $"`{nameof(AddDynamicApiControllers)}` must be invoked after `{nameof(MemoryCacheServiceCollectionExtensions.AddMemoryCache)}`.");
+        }
 
         // 获取入口程序集
         var entryAssembly = Assembly.GetEntryAssembly();

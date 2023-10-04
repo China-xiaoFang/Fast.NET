@@ -12,15 +12,18 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Fast.DynamicApplication.Extensions;
+using Fast.Core;
 using Fast.DynamicApplication.Internal;
+using Fast.IaaS.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.DynamicApplication.Conventions;
@@ -62,6 +65,10 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     public void Apply(ApplicationModel application)
     {
         var controllers = application.Controllers.Where(u => Penetrates.IsApiController(u.ControllerType));
+
+        // 控制器排序字典
+        var controllerOrderCollection = new ConcurrentDictionary<string, (string, int, Type)>();
+
         foreach (var controller in controllers)
         {
             var controllerType = controller.ControllerType;
@@ -75,15 +82,18 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             if (typeof(ControllerBase).IsAssignableFrom(controllerType))
             {
                 // 存储排序给 Swagger 使用
-                Penetrates.ControllerOrderCollection.TryAdd(controller.ControllerName,
+                controllerOrderCollection.TryAdd(controller.ControllerName,
                     (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName,
                         controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
 
                 continue;
             }
 
-            ConfigureController(controller, controllerApiDescriptionSettings);
+            ConfigureController(controller, controllerApiDescriptionSettings, controllerOrderCollection);
         }
+
+        // 将控制器排序字典放入内存缓存中
+        App.GetService<IMemoryCache>().Set("Fast.DynamicApplication.ControllerOrderCollection", controllerOrderCollection);
     }
 
     /// <summary>
@@ -91,7 +101,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     /// </summary>
     /// <param name="controller">控制器模型</param>
     /// <param name="controllerApiDescriptionSettings">接口描述配置</param>
-    private void ConfigureController(ControllerModel controller, ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
+    /// <param name="controllerOrderCollection"></param>
+    private void ConfigureController(ControllerModel controller, ApiDescriptionSettingsAttribute controllerApiDescriptionSettings,
+        ConcurrentDictionary<string, (string, int, Type)> controllerOrderCollection)
     {
         // 配置区域
         ConfigureControllerArea(controller, controllerApiDescriptionSettings);
@@ -100,7 +112,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         ConfigureControllerName(controller, controllerApiDescriptionSettings);
 
         // 存储排序给 Swagger 使用
-        Penetrates.ControllerOrderCollection.TryAdd(controller.ControllerName,
+        controllerOrderCollection.TryAdd(controller.ControllerName,
             (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName, controllerApiDescriptionSettings?.Order ?? 0,
                 controller.ControllerType));
 

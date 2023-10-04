@@ -1,14 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
-using Fast.Core.ConfigurableOptions.Internal;
-using Fast.Core.ConfigurableOptions.Options;
 using Fast.Core.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.Core;
@@ -163,24 +160,10 @@ public static class App
     /// </summary>
     /// <typeparam name="TOptions">强类型选项类</typeparam>
     /// <param name="path">配置中对应的Key</param>
-    /// <param name="loadPostConfigure"></param>
     /// <returns>TOptions</returns>
-    public static TOptions GetConfig<TOptions>(string path, bool loadPostConfigure = false)
+    public static TOptions GetConfig<TOptions>(string path)
     {
-        var options = Configuration.GetSection(path).Get<TOptions>();
-
-        // 加载默认选项配置
-        if (loadPostConfigure && typeof(IConfigurableOptions).IsAssignableFrom(typeof(TOptions)))
-        {
-            var postConfigure = typeof(TOptions).GetMethod("PostConfigure");
-            if (postConfigure != null)
-            {
-                options ??= Activator.CreateInstance<TOptions>();
-                postConfigure.Invoke(options, new object[] {options, Configuration});
-            }
-        }
-
-        return options;
+        return Configuration.GetSection(path).Get<TOptions>();
     }
 
     /// <summary>
@@ -230,42 +213,6 @@ public static class App
             u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType));
 
         return serviceDescriptor?.Lifetime;
-    }
-
-    /// <summary>
-    /// 获取选项
-    /// </summary>
-    /// <typeparam name="TOptions">强类型选项类</typeparam>
-    /// <param name="serviceProvider"></param>
-    /// <returns>TOptions</returns>
-    public static TOptions GetOptions<TOptions>(IServiceProvider serviceProvider = default) where TOptions : class, new()
-    {
-        return Penetrates.GetOptionsOnStarting<TOptions>() ??
-               GetService<IOptions<TOptions>>(serviceProvider ?? RootServices)?.Value;
-    }
-
-    /// <summary>
-    /// 获取选项
-    /// </summary>
-    /// <typeparam name="TOptions">强类型选项类</typeparam>
-    /// <param name="serviceProvider"></param>
-    /// <returns>TOptions</returns>
-    public static TOptions GetOptionsMonitor<TOptions>(IServiceProvider serviceProvider = default) where TOptions : class, new()
-    {
-        return Penetrates.GetOptionsOnStarting<TOptions>() ??
-               GetService<IOptionsMonitor<TOptions>>(serviceProvider ?? RootServices)?.CurrentValue;
-    }
-
-    /// <summary>
-    /// 获取选项
-    /// </summary>
-    /// <typeparam name="TOptions">强类型选项类</typeparam>
-    /// <param name="serviceProvider"></param>
-    /// <returns>TOptions</returns>
-    public static TOptions GetOptionsSnapshot<TOptions>(IServiceProvider serviceProvider = default) where TOptions : class, new()
-    {
-        // 这里不能从根服务解析，因为是 Scoped 作用域
-        return Penetrates.GetOptionsOnStarting<TOptions>() ?? GetService<IOptionsSnapshot<TOptions>>(serviceProvider)?.Value;
     }
 
     /// <summary>

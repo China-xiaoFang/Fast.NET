@@ -99,13 +99,12 @@
             <param name="serviceProvider"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.Core.App.GetConfig``1(System.String,System.Boolean)">
+        <member name="M:Fast.Core.App.GetConfig``1(System.String)">
             <summary>
             获取配置
             </summary>
             <typeparam name="TOptions">强类型选项类</typeparam>
             <param name="path">配置中对应的Key</param>
-            <param name="loadPostConfigure"></param>
             <returns>TOptions</returns>
         </member>
         <member name="M:Fast.Core.App.GetThreadId">
@@ -133,30 +132,6 @@
             </summary>
             <param name="serviceType"></param>
             <returns></returns>
-        </member>
-        <member name="M:Fast.Core.App.GetOptions``1(System.IServiceProvider)">
-            <summary>
-            获取选项
-            </summary>
-            <typeparam name="TOptions">强类型选项类</typeparam>
-            <param name="serviceProvider"></param>
-            <returns>TOptions</returns>
-        </member>
-        <member name="M:Fast.Core.App.GetOptionsMonitor``1(System.IServiceProvider)">
-            <summary>
-            获取选项
-            </summary>
-            <typeparam name="TOptions">强类型选项类</typeparam>
-            <param name="serviceProvider"></param>
-            <returns>TOptions</returns>
-        </member>
-        <member name="M:Fast.Core.App.GetOptionsSnapshot``1(System.IServiceProvider)">
-            <summary>
-            获取选项
-            </summary>
-            <typeparam name="TOptions">强类型选项类</typeparam>
-            <param name="serviceProvider"></param>
-            <returns>TOptions</returns>
         </member>
         <member name="M:Fast.Core.App.DisposeUnmanagedObjects">
             <summary>
@@ -282,131 +257,6 @@
             <summary>
             备注
             </summary>
-        </member>
-        <member name="T:Fast.Core.ConfigurableOptions.Attributes.MapSettingsAttribute">
-            <summary>
-            重新映射属性配置
-            </summary>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Attributes.MapSettingsAttribute.#ctor(System.String)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="path">appsetting.json 对应键</param>
-        </member>
-        <member name="P:Fast.Core.ConfigurableOptions.Attributes.MapSettingsAttribute.Path">
-            <summary>
-            对应配置文件中的路径
-            </summary>
-        </member>
-        <member name="T:Fast.Core.ConfigurableOptions.Attributes.OptionsSettingsAttribute">
-            <summary>
-            选项配置特性
-            </summary>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Attributes.OptionsSettingsAttribute.#ctor">
-            <summary>
-            构造函数
-            </summary>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Attributes.OptionsSettingsAttribute.#ctor(System.String)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="path">appsetting.json 对应键</param>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Attributes.OptionsSettingsAttribute.#ctor(System.Boolean)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="postConfigureAll">启动所有实例进行后期配置</param>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Attributes.OptionsSettingsAttribute.#ctor(System.String,System.Boolean)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="path">appsetting.json 对应键</param>
-            <param name="postConfigureAll">启动所有实例进行后期配置</param>
-        </member>
-        <member name="P:Fast.Core.ConfigurableOptions.Attributes.OptionsSettingsAttribute.Path">
-            <summary>
-            对应配置文件中的路径
-            </summary>
-        </member>
-        <member name="P:Fast.Core.ConfigurableOptions.Attributes.OptionsSettingsAttribute.PostConfigureAll">
-            <summary>
-            对所有配置实例进行后期配置
-            </summary>
-        </member>
-        <member name="T:Fast.Core.ConfigurableOptions.Extensions.ConfigurableOptionsServiceCollectionExtensions">
-            <summary>
-            可变选项服务拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Extensions.ConfigurableOptionsServiceCollectionExtensions.AddConfigurableOptions``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加选项配置
-            </summary>
-            <typeparam name="TOptions">选项类型</typeparam>
-            <param name="services">服务集合</param>
-            <returns>服务集合</returns>
-        </member>
-        <member name="T:Fast.Core.ConfigurableOptions.Internal.Penetrates">
-            <summary>
-            常量、公共方法配置类
-            </summary>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Internal.Penetrates.GetOptionsConfiguration(System.Type)">
-            <summary>
-            获取选项配置
-            </summary>
-            <param name="optionsType">选项类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Internal.Penetrates.GetOptionsOnStarting``1">
-            <summary>
-            在主机启动时获取选项
-            </summary>
-            <typeparam name="TOptions"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="T:Fast.Core.ConfigurableOptions.Options.IConfigurableOptions">
-            <summary>
-            应用选项依赖接口
-            </summary>
-        </member>
-        <member name="T:Fast.Core.ConfigurableOptions.Options.IConfigurableOptions`1">
-            <summary>
-            选项后期配置
-            </summary>
-            <typeparam name="TOptions"></typeparam>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Options.IConfigurableOptions`1.PostConfigure(`0,Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            选项后期配置
-            </summary>
-            <param name="options"></param>
-            <param name="configuration"></param>
-        </member>
-        <member name="T:Fast.Core.ConfigurableOptions.Options.IConfigurableOptions`2">
-            <summary>
-            带验证的应用选项依赖接口
-            </summary>
-            <typeparam name="TOptions"></typeparam>
-            <typeparam name="TOptionsValidation"></typeparam>
-        </member>
-        <member name="T:Fast.Core.ConfigurableOptions.Options.IConfigurableOptionsListener`1">
-            <summary>
-            带监听的应用选项依赖接口
-            </summary>
-            <typeparam name="TOptions"></typeparam>
-        </member>
-        <member name="M:Fast.Core.ConfigurableOptions.Options.IConfigurableOptionsListener`1.OnListener(`0,Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            监听
-            </summary>
-            <param name="options"></param>
-            <param name="configuration"></param>
         </member>
         <member name="T:Fast.Core.DependencyInjection.Dependencies.IDependency">
             <summary>

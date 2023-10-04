@@ -1,4 +1,4 @@
-﻿// Apache开源许可证
+// Apache开源许可证
 //
 // 版权所有 © 2018-2023 1.8K仔
 //
@@ -12,13 +12,29 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-// ReSharper disable once CheckNamespace
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Fast.DynamicApplication;
+namespace Fast.SpecificationDocument.Filters;
 
 /// <summary>
-/// <see cref="IDynamicApplication"/> 动态API应用依赖接口
+/// 修正 规范化文档 object schema，统一显示为 any
 /// </summary>
-public interface IDynamicApplication
+/// <remarks>相关 issue：https://github.com/swagger-api/swagger-codegen-generators/issues/692 </remarks>
+public class AnySchemaFilter : ISchemaFilter
 {
+    /// <summary>
+    /// 实现过滤器方法
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="context"></param>
+    public void Apply(OpenApiSchema model, SchemaFilterContext context)
+    {
+        var type = context.Type;
+
+        if (type == typeof(object))
+        {
+            model.AdditionalPropertiesAllowed = false;
+        }
+    }
 }

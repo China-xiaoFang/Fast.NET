@@ -173,6 +173,9 @@ internal class InternalApp
             // 注册 HttpContextAccessor 服务
             services.AddHttpContextAccessor();
 
+            // 注册 内存缓存
+            services.AddMemoryCache();
+
             // JSON 序列化配置
             services.AddJsonOptions();
 
