@@ -13,6 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using CSRedis;
+using Fast.Cache.Extensions;
 using Microsoft.Extensions.Configuration;
 
 namespace Fast.Cache.Realize;
@@ -28,8 +29,15 @@ public class Cache : ICache
     /// <param name="configuration">连接字符串</param>
     public Cache(IConfiguration configuration)
     {
-        // 读取 Redis 缓存字符串
-        var connectionString = configuration["RedisConnectionString"];
+        // 先从静态变量中读取 Redis 缓存字符串
+        var connectionString = CacheIServiceCollectionExtension.ConnectionString;
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            // 从配置文件中读取 Redis 缓存字符串
+            connectionString = configuration["RedisConnectionString"];
+        }
+
         if (string.IsNullOrEmpty(connectionString))
         {
             throw new ArgumentNullException(nameof(connectionString), "Inject cache is “RedisConnectionString” empty.");

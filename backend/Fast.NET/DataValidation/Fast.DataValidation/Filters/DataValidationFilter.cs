@@ -23,7 +23,7 @@ namespace Fast.DataValidation.Filters;
 /// <summary>
 /// 数据验证拦截器
 /// </summary>
-public sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
+internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
 {
     /// <summary>
     /// Api 行为配置选项

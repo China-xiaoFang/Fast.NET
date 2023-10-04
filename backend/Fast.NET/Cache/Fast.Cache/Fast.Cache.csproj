@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 框架缓存模块。</Description>
+		<Description>Fast.NET 框架缓存模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>

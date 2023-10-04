@@ -69,7 +69,7 @@
             添加文件日志记录器
             </summary>
             <param name="factory">日志工厂</param>
-            <param name="configuraionKey">获取配置文件对应的 Key</param>
+            <param name="configurationKey">获取配置文件对应的 Key</param>
             <param name="configure">文件日志记录器配置选项委托</param>
             <returns><see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/></returns>
         </member>
@@ -117,7 +117,7 @@
             添加文件日志记录器（从配置文件中）
             </summary>
             <param name="builder">日志构建器</param>
-            <param name="configuraionKey">获取配置文件对应的 Key</param>
+            <param name="configurationKey">获取配置文件对应的 Key</param>
             <param name="configure">文件日志记录器配置选项委托</param>
             <returns><see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/></returns>
         </member>
@@ -203,7 +203,7 @@
             添加文件日志服务（从配置文件中读取配置）
             </summary>
             <param name="services"></param>
-            <param name="configuraionKey">获取配置文件对应的 Key</param>
+            <param name="configurationKey">获取配置文件对应的 Key</param>
             <param name="configure">文件日志记录器配置选项委托</param>
             <returns></returns>
         </member>
@@ -1414,262 +1414,6 @@
             </summary>
             <returns><see cref="T:System.String"/></returns>
         </member>
-        <member name="T:Fast.Logging.Internal.StringLogging">
-            <summary>
-            字符串日志拓展默认分类名
-            </summary>
-        </member>
-        <member name="T:Fast.Logging.Internal.Penetrates">
-            <summary>
-            常量、公共方法配置类
-            </summary>
-        </member>
-        <member name="F:Fast.Logging.Internal.Penetrates.EXCEPTION_SEPARATOR">
-            <summary>
-            异常分隔符
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.CreateFromConfiguration(System.Func{System.String},System.Action{Fast.Logging.Implantation.File.FileLoggerOptions})">
-            <summary>
-            从配置文件中加载配置并创建文件日志记录器提供程序
-            </summary>
-            <param name="configuraionKey">获取配置文件对应的 Key</param>
-            <param name="configure">文件日志记录器配置选项委托</param>
-            <returns><see cref="T:Fast.Logging.Implantation.File.FileLoggerProvider"/></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.OutputStandardMessage(Fast.Logging.Implantation.LogMessage,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            输出标准日志消息
-            </summary>
-            <param name="logMsg"></param>
-            <param name="dateFormat"></param>
-            <param name="disableColors"></param>
-            <param name="isConsole"></param>
-            <param name="withTraceId"></param>
-            <param name="withStackFrame"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.PadLeftAlign(System.String)">
-            <summary>
-            将日志内容进行对齐
-            </summary>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.GetLogLevelString(Microsoft.Extensions.Logging.LogLevel)">
-            <summary>
-            获取日志级别短名称
-            </summary>
-            <param name="logLevel">日志级别</param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.SetLogContext(Microsoft.Extensions.Logging.IExternalScopeProvider,Fast.Logging.Implantation.LogMessage,System.Boolean)">
-            <summary>
-            设置日志上下文
-            </summary>
-            <param name="scopeProvider"></param>
-            <param name="logMsg"></param>
-            <param name="includeScopes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.AppendWithColor(System.Text.StringBuilder,System.String,Fast.Logging.Implantation.Console.ConsoleColors)">
-            <summary>
-            拓展 StringBuilder 增加带颜色写入
-            </summary>
-            <param name="message"></param>
-            <param name="colors"></param>
-            <param name="formatString"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.GetForegroundColorEscapeCode(System.ConsoleColor)">
-            <summary>
-            输出控制台字体颜色 UniCode 码
-            </summary>
-            <param name="color"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.GetBackgroundColorEscapeCode(System.ConsoleColor)">
-            <summary>
-            输出控制台背景颜色 UniCode 码
-            </summary>
-            <param name="color"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.Penetrates.GetLogLevelConsoleColors(Microsoft.Extensions.Logging.LogLevel,System.Boolean)">
-            <summary>
-            获取控制台日志级别对应的颜色
-            </summary>
-            <param name="logLevel"></param>
-            <param name="disableColors"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Fast.Logging.Internal.StringLoggingPart">
-            <summary>
-            构建字符串日志部分类
-            </summary>
-            <summary>
-            构建字符串日志部分类
-            </summary>
-            <summary>
-            构建字符串日志部分类
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.Default">
-            <summary>
-            静态缺省日志部件
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Internal.StringLoggingPart.Message">
-            <summary>
-            日志内容
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Internal.StringLoggingPart.Level">
-            <summary>
-            日志级别
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Internal.StringLoggingPart.Args">
-            <summary>
-            消息格式化参数
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Internal.StringLoggingPart.EventId">
-            <summary>
-            事件 Id
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Internal.StringLoggingPart.CategoryType">
-            <summary>
-            日志分类类型
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Internal.StringLoggingPart.Exception">
-            <summary>
-            异常对象
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Internal.StringLoggingPart.LoggerScoped">
-            <summary>
-            日志对象所在作用域
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Internal.StringLoggingPart.LogContext">
-            <summary>
-            日志上下文
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogInformation">
-            <summary>
-            Information
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogWarning">
-            <summary>
-            Warning
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogError">
-            <summary>
-            Error
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogDebug">
-            <summary>
-            Debug
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogTrace">
-            <summary>
-            Trace
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogCritical">
-            <summary>
-            Critical
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.Log">
-            <summary>
-            写入日志
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.GetLogger">
-            <summary>
-            获取日志实例
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.CreateDisposeLoggerFactory">
-            <summary>
-            创建待释放的日志工厂
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetMessage(System.String)">
-            <summary>
-            设置消息
-            </summary>
-            <param name="message"></param>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetLevel(Microsoft.Extensions.Logging.LogLevel)">
-            <summary>
-            设置日志级别
-            </summary>
-            <param name="level"></param>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetArgs(System.Object[])">
-            <summary>
-            设置消息格式化参数
-            </summary>
-            <param name="args"></param>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetEventId(Microsoft.Extensions.Logging.EventId)">
-            <summary>
-            设置事件 Id
-            </summary>
-            <param name="eventId"></param>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetCategory``1">
-            <summary>
-            设置日志分类
-            </summary>
-            <typeparam name="TClass"></typeparam>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetException(System.Exception)">
-            <summary>
-            设置异常对象
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetLoggerScoped(System.IServiceProvider)">
-            <summary>
-            设置日志服务作用域
-            </summary>
-            <param name="serviceProvider"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(System.Collections.Generic.IDictionary{System.Object,System.Object})">
-            <summary>
-            配置日志上下文
-            </summary>
-            <param name="properties">建议使用 ConcurrentDictionary 类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(System.Action{Fast.Logging.Implantation.LogContext})">
-            <summary>
-            配置日志上下文
-            </summary>
-            <param name="configure"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(Fast.Logging.Implantation.LogContext)">
-            <summary>
-            配置日志上下文
-            </summary>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.Logging.Log">
             <summary>
             全局日志静态类
@@ -2132,27 +1876,283 @@
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="T:Fast.Logging.LoggerFormatter">
+        <member name="T:Fast.Logging.Internal.LoggerFormatter">
             <summary>
             日志格式化静态类
             </summary>
         </member>
-        <member name="F:Fast.Logging.LoggerFormatter.Json">
+        <member name="F:Fast.Logging.Internal.LoggerFormatter.Json">
             <summary>
             Json 输出格式化
             </summary>
         </member>
-        <member name="F:Fast.Logging.LoggerFormatter.JsonIndented">
+        <member name="F:Fast.Logging.Internal.LoggerFormatter.JsonIndented">
             <summary>
             Json 输出格式化
             </summary>
         </member>
-        <member name="M:Fast.Logging.LoggerFormatter.WriteJson(Fast.Logging.Implantation.LogMessage,System.Text.Json.Utf8JsonWriter)">
+        <member name="M:Fast.Logging.Internal.LoggerFormatter.WriteJson(Fast.Logging.Implantation.LogMessage,System.Text.Json.Utf8JsonWriter)">
             <summary>
             写入 JSON
             </summary>
             <param name="logMsg"></param>
             <param name="writer"></param>
+        </member>
+        <member name="T:Fast.Logging.Internal.StringLogging">
+            <summary>
+            字符串日志拓展默认分类名
+            </summary>
+        </member>
+        <member name="T:Fast.Logging.Internal.Penetrates">
+            <summary>
+            常量、公共方法配置类
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Internal.Penetrates.EXCEPTION_SEPARATOR">
+            <summary>
+            异常分隔符
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.CreateFromConfiguration(System.Func{System.String},System.Action{Fast.Logging.Implantation.File.FileLoggerOptions})">
+            <summary>
+            从配置文件中加载配置并创建文件日志记录器提供程序
+            </summary>
+            <param name="configurationKey">获取配置文件对应的 Key</param>
+            <param name="configure">文件日志记录器配置选项委托</param>
+            <returns><see cref="T:Fast.Logging.Implantation.File.FileLoggerProvider"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.OutputStandardMessage(Fast.Logging.Implantation.LogMessage,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            输出标准日志消息
+            </summary>
+            <param name="logMsg"></param>
+            <param name="dateFormat"></param>
+            <param name="disableColors"></param>
+            <param name="isConsole"></param>
+            <param name="withTraceId"></param>
+            <param name="withStackFrame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.PadLeftAlign(System.String)">
+            <summary>
+            将日志内容进行对齐
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetLogLevelString(Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            获取日志级别短名称
+            </summary>
+            <param name="logLevel">日志级别</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.SetLogContext(Microsoft.Extensions.Logging.IExternalScopeProvider,Fast.Logging.Implantation.LogMessage,System.Boolean)">
+            <summary>
+            设置日志上下文
+            </summary>
+            <param name="scopeProvider"></param>
+            <param name="logMsg"></param>
+            <param name="includeScopes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.AppendWithColor(System.Text.StringBuilder,System.String,Fast.Logging.Implantation.Console.ConsoleColors)">
+            <summary>
+            拓展 StringBuilder 增加带颜色写入
+            </summary>
+            <param name="message"></param>
+            <param name="colors"></param>
+            <param name="formatString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetForegroundColorEscapeCode(System.ConsoleColor)">
+            <summary>
+            输出控制台字体颜色 UniCode 码
+            </summary>
+            <param name="color"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetBackgroundColorEscapeCode(System.ConsoleColor)">
+            <summary>
+            输出控制台背景颜色 UniCode 码
+            </summary>
+            <param name="color"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetLogLevelConsoleColors(Microsoft.Extensions.Logging.LogLevel,System.Boolean)">
+            <summary>
+            获取控制台日志级别对应的颜色
+            </summary>
+            <param name="logLevel"></param>
+            <param name="disableColors"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Logging.Internal.StringLoggingPart">
+            <summary>
+            构建字符串日志部分类
+            </summary>
+            <summary>
+            构建字符串日志部分类
+            </summary>
+            <summary>
+            构建字符串日志部分类
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.Default">
+            <summary>
+            静态缺省日志部件
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.Message">
+            <summary>
+            日志内容
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.Level">
+            <summary>
+            日志级别
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.Args">
+            <summary>
+            消息格式化参数
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.EventId">
+            <summary>
+            事件 Id
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.CategoryType">
+            <summary>
+            日志分类类型
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.Exception">
+            <summary>
+            异常对象
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.LoggerScoped">
+            <summary>
+            日志对象所在作用域
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.LogContext">
+            <summary>
+            日志上下文
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogInformation">
+            <summary>
+            Information
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogWarning">
+            <summary>
+            Warning
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogError">
+            <summary>
+            Error
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogDebug">
+            <summary>
+            Debug
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogTrace">
+            <summary>
+            Trace
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogCritical">
+            <summary>
+            Critical
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.Log">
+            <summary>
+            写入日志
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.GetLogger">
+            <summary>
+            获取日志实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.CreateDisposeLoggerFactory">
+            <summary>
+            创建待释放的日志工厂
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetMessage(System.String)">
+            <summary>
+            设置消息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetLevel(Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            设置日志级别
+            </summary>
+            <param name="level"></param>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetArgs(System.Object[])">
+            <summary>
+            设置消息格式化参数
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetEventId(Microsoft.Extensions.Logging.EventId)">
+            <summary>
+            设置事件 Id
+            </summary>
+            <param name="eventId"></param>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetCategory``1">
+            <summary>
+            设置日志分类
+            </summary>
+            <typeparam name="TClass"></typeparam>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetException(System.Exception)">
+            <summary>
+            设置异常对象
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetLoggerScoped(System.IServiceProvider)">
+            <summary>
+            设置日志服务作用域
+            </summary>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(System.Collections.Generic.IDictionary{System.Object,System.Object})">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="properties">建议使用 ConcurrentDictionary 类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(System.Action{Fast.Logging.Implantation.LogContext})">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(Fast.Logging.Implantation.LogContext)">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
         </member>
         <member name="T:Fast.Logging.Templates.TP">
             <summary>

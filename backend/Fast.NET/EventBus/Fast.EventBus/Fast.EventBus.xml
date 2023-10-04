@@ -4,62 +4,62 @@
         <name>Fast.EventBus</name>
     </assembly>
     <members>
-        <member name="T:Fast.EventBus.Attributes.EventSubscribeAttribute">
+        <member name="T:Fast.EventBus.EventSubscribeAttribute">
             <summary>
             事件处理程序特性
             </summary>
             <remarks>
-            <para>作用于 <see cref="T:Fast.EventBus.Dependencies.IEventSubscriber"/> 实现类实例方法</para>
+            <para>作用于 <see cref="T:Fast.EventBus.IEventSubscriber"/> 实现类实例方法</para>
             <para>支持多个事件 Id 触发同一个事件处理程序</para>
             </remarks>
         </member>
-        <member name="M:Fast.EventBus.Attributes.EventSubscribeAttribute.#ctor(System.Object)">
+        <member name="M:Fast.EventBus.EventSubscribeAttribute.#ctor(System.Object)">
             <summary>
             构造函数
             </summary>
             <param name="eventId">事件 Id</param>
             <remarks>只支持事件类型和 Enum 类型</remarks>
         </member>
-        <member name="P:Fast.EventBus.Attributes.EventSubscribeAttribute.EventId">
+        <member name="P:Fast.EventBus.EventSubscribeAttribute.EventId">
             <summary>
             事件 Id
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Attributes.EventSubscribeAttribute.FuzzyMatch">
+        <member name="P:Fast.EventBus.EventSubscribeAttribute.FuzzyMatch">
             <summary>
             是否启用模糊匹配消息
             </summary>
             <remarks>支持正则表达式，bool 类型，默认为 null</remarks>
         </member>
-        <member name="P:Fast.EventBus.Attributes.EventSubscribeAttribute.GCCollect">
+        <member name="P:Fast.EventBus.EventSubscribeAttribute.GCCollect">
             <summary>
             是否启用执行完成触发 GC 回收
             </summary>
             <remarks>bool 类型，默认为 null</remarks>
         </member>
-        <member name="P:Fast.EventBus.Attributes.EventSubscribeAttribute.NumRetries">
+        <member name="P:Fast.EventBus.EventSubscribeAttribute.NumRetries">
             <summary>
             重试次数
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Attributes.EventSubscribeAttribute.RetryTimeout">
+        <member name="P:Fast.EventBus.EventSubscribeAttribute.RetryTimeout">
             <summary>
             重试间隔时间
             </summary>
             <remarks>默认1000毫秒</remarks>
         </member>
-        <member name="P:Fast.EventBus.Attributes.EventSubscribeAttribute.ExceptionTypes">
+        <member name="P:Fast.EventBus.EventSubscribeAttribute.ExceptionTypes">
             <summary>
             可以指定特定异常类型才重试
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Attributes.EventSubscribeAttribute.FallbackPolicy">
+        <member name="P:Fast.EventBus.EventSubscribeAttribute.FallbackPolicy">
             <summary>
             重试失败策略配置
             </summary>
             <remarks>如果没有注册，必须通过 options.AddFallbackPolicy(type) 注册</remarks>
         </member>
-        <member name="P:Fast.EventBus.Attributes.EventSubscribeAttribute.Order">
+        <member name="P:Fast.EventBus.EventSubscribeAttribute.Order">
             <summary>
             排序
             </summary>
@@ -141,14 +141,14 @@
             <summary>
             注册事件订阅者
             </summary>
-            <typeparam name="TEventSubscriber">实现自 <see cref="T:Fast.EventBus.Dependencies.IEventSubscriber"/></typeparam>
+            <typeparam name="TEventSubscriber">实现自 <see cref="T:Fast.EventBus.IEventSubscriber"/></typeparam>
             <returns><see cref="T:Fast.EventBus.Builders.EventBusOptionsBuilder"/> 实例</returns>
         </member>
         <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.AddSubscriber(System.Type)">
             <summary>
             注册事件订阅者
             </summary>
-            <param name="eventSubscriberType"><see cref="T:Fast.EventBus.Dependencies.IEventSubscriber"/> 派生类型</param>
+            <param name="eventSubscriberType"><see cref="T:Fast.EventBus.IEventSubscriber"/> 派生类型</param>
             <returns><see cref="T:Fast.EventBus.Builders.EventBusOptionsBuilder"/> 实例</returns>
         </member>
         <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.AddSubscribers(System.Reflection.Assembly[])">
@@ -162,17 +162,17 @@
             <summary>
             替换事件发布者
             </summary>
-            <typeparam name="TEventPublisher">实现自 <see cref="T:Fast.EventBus.Dependencies.IEventPublisher"/></typeparam>
+            <typeparam name="TEventPublisher">实现自 <see cref="T:Fast.EventBus.IEventPublisher"/></typeparam>
             <returns><see cref="T:Fast.EventBus.Builders.EventBusOptionsBuilder"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.ReplaceStorer(System.Func{System.IServiceProvider,Fast.EventBus.Storers.IEventSourceStorer})">
+        <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.ReplaceStorer(System.Func{System.IServiceProvider,Fast.EventBus.IEventSourceStorer})">
             <summary>
             替换事件源存储器
             </summary>
             <param name="implementationFactory">自定义事件源存储器工厂</param>
             <returns><see cref="T:Fast.EventBus.Builders.EventBusOptionsBuilder"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.ReplaceStorerOrFallback(System.Func{Fast.EventBus.Storers.IEventSourceStorer})">
+        <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.ReplaceStorerOrFallback(System.Func{Fast.EventBus.IEventSourceStorer})">
             <summary>
             替换事件源存储器（如果初始化失败则回退为默认的）
             </summary>
@@ -180,7 +180,7 @@
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.ReplaceStorerOrFallback(System.Func{System.IServiceProvider,Fast.EventBus.Storers.IEventSourceStorer})">
+        <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.ReplaceStorerOrFallback(System.Func{System.IServiceProvider,Fast.EventBus.IEventSourceStorer})">
             <summary>
             替换事件源存储器（如果初始化失败则回退为默认的）
             </summary>
@@ -192,7 +192,7 @@
             <summary>
             注册事件处理程序监视器
             </summary>
-            <typeparam name="TEventHandlerMonitor">实现自 <see cref="T:Fast.EventBus.Monitors.IEventHandlerMonitor"/></typeparam>
+            <typeparam name="TEventHandlerMonitor">实现自 <see cref="T:Fast.EventBus.IEventHandlerMonitor"/></typeparam>
             <returns><see cref="T:Fast.EventBus.Builders.EventBusOptionsBuilder"/> 实例</returns>
         </member>
         <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.AddExecutor``1">
@@ -206,14 +206,14 @@
             <summary>
             注册事件重试策略
             </summary>
-            <typeparam name="TEventFallbackPolicy">实现自 <see cref="T:Fast.EventBus.Policies.IEventFallbackPolicy"/></typeparam>
+            <typeparam name="TEventFallbackPolicy">实现自 <see cref="T:Fast.EventBus.IEventFallbackPolicy"/></typeparam>
             <returns><see cref="T:Fast.EventBus.Builders.EventBusOptionsBuilder"/> 实例</returns>
         </member>
         <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.AddFallbackPolicy(System.Type)">
             <summary>
             注册事件重试策略
             </summary>
-            <param name="fallbackPolicyType"><see cref="T:Fast.EventBus.Policies.IEventFallbackPolicy"/> 派生类型</param>
+            <param name="fallbackPolicyType"><see cref="T:Fast.EventBus.IEventFallbackPolicy"/> 派生类型</param>
             <returns><see cref="T:Fast.EventBus.Builders.EventBusOptionsBuilder"/> 实例</returns>
         </member>
         <member name="M:Fast.EventBus.Builders.EventBusOptionsBuilder.Build(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
@@ -243,7 +243,7 @@
             事件处理程序上下文
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Contexts.EventHandlerContext.#ctor(Fast.EventBus.Sources.IEventSource,System.Collections.Generic.IDictionary{System.Object,System.Object},System.Reflection.MethodInfo,Fast.EventBus.Attributes.EventSubscribeAttribute)">
+        <member name="M:Fast.EventBus.Contexts.EventHandlerContext.#ctor(Fast.EventBus.IEventSource,System.Collections.Generic.IDictionary{System.Object,System.Object},System.Reflection.MethodInfo,Fast.EventBus.EventSubscribeAttribute)">
             <summary>
             构造函数
             </summary>
@@ -279,7 +279,7 @@
             事件处理程序执行后上下文
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Contexts.EventHandlerExecutedContext.#ctor(Fast.EventBus.Sources.IEventSource,System.Collections.Generic.IDictionary{System.Object,System.Object},System.Reflection.MethodInfo,Fast.EventBus.Attributes.EventSubscribeAttribute)">
+        <member name="M:Fast.EventBus.Contexts.EventHandlerExecutedContext.#ctor(Fast.EventBus.IEventSource,System.Collections.Generic.IDictionary{System.Object,System.Object},System.Reflection.MethodInfo,Fast.EventBus.EventSubscribeAttribute)">
             <summary>
             构造函数
             </summary>
@@ -303,7 +303,7 @@
             事件处理程序执行前上下文
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Contexts.EventHandlerExecutingContext.#ctor(Fast.EventBus.Sources.IEventSource,System.Collections.Generic.IDictionary{System.Object,System.Object},System.Reflection.MethodInfo,Fast.EventBus.Attributes.EventSubscribeAttribute)">
+        <member name="M:Fast.EventBus.Contexts.EventHandlerExecutingContext.#ctor(Fast.EventBus.IEventSource,System.Collections.Generic.IDictionary{System.Object,System.Object},System.Reflection.MethodInfo,Fast.EventBus.EventSubscribeAttribute)">
             <summary>
             构造函数
             </summary>
@@ -317,19 +317,19 @@
             执行前时间
             </summary>
         </member>
-        <member name="T:Fast.EventBus.Dependencies.IEventPublisher">
+        <member name="T:Fast.EventBus.IEventPublisher">
             <summary>
             事件发布服务依赖接口
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Dependencies.IEventPublisher.PublishAsync(Fast.EventBus.Sources.IEventSource)">
+        <member name="M:Fast.EventBus.IEventPublisher.PublishAsync(Fast.EventBus.IEventSource)">
             <summary>
             发布一条消息
             </summary>
             <param name="eventSource">事件源</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Dependencies.IEventPublisher.PublishDelayAsync(Fast.EventBus.Sources.IEventSource,System.Int64)">
+        <member name="M:Fast.EventBus.IEventPublisher.PublishDelayAsync(Fast.EventBus.IEventSource,System.Int64)">
             <summary>
             延迟发布一条消息
             </summary>
@@ -337,7 +337,7 @@
             <param name="delay">延迟数（毫秒）</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Dependencies.IEventPublisher.PublishAsync(System.String,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.IEventPublisher.PublishAsync(System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
             发布一条消息
             </summary>
@@ -346,7 +346,7 @@
             <param name="cancellationToken"> 取消任务 Token</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.EventBus.Dependencies.IEventPublisher.PublishAsync(System.Enum,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.IEventPublisher.PublishAsync(System.Enum,System.Object,System.Threading.CancellationToken)">
             <summary>
             发布一条消息
             </summary>
@@ -355,7 +355,7 @@
             <param name="cancellationToken"> 取消任务 Token</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.EventBus.Dependencies.IEventPublisher.PublishDelayAsync(System.String,System.Int64,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.IEventPublisher.PublishDelayAsync(System.String,System.Int64,System.Object,System.Threading.CancellationToken)">
             <summary>
             延迟发布一条消息
             </summary>
@@ -365,7 +365,7 @@
             <param name="cancellationToken"> 取消任务 Token</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Dependencies.IEventPublisher.PublishDelayAsync(System.Enum,System.Int64,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.IEventPublisher.PublishDelayAsync(System.Enum,System.Int64,System.Object,System.Threading.CancellationToken)">
             <summary>
             延迟发布一条消息
             </summary>
@@ -375,7 +375,7 @@
             <param name="cancellationToken"> 取消任务 Token</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="T:Fast.EventBus.Dependencies.IEventSubscriber">
+        <member name="T:Fast.EventBus.IEventSubscriber">
             <summary>
             事件订阅者依赖接口
             </summary>
@@ -410,19 +410,12 @@
             <param name="em"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.EventBus.Extensions.EventBusExtension.ParseToEnum(System.String)">
-            <summary>
-            将事件枚举字符串转换成枚举对象
-            </summary>
-            <param name="str"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Fast.EventBus.Extensions.EventBusServiceCollectionExtension">
+        <member name="T:Fast.EventBus.Extensions.EventBusIServiceCollectionExtension">
             <summary>
             EventBus 模块服务拓展
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Extensions.EventBusServiceCollectionExtension.AddEventBus(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Fast.EventBus.Builders.EventBusOptionsBuilder})">
+        <member name="M:Fast.EventBus.Extensions.EventBusIServiceCollectionExtension.AddEventBus(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Fast.EventBus.Builders.EventBusOptionsBuilder})">
             <summary>
             添加 EventBus 模块注册
             </summary>
@@ -430,7 +423,7 @@
             <param name="configureOptionsBuilder">事件总线配置选项构建器委托</param>
             <returns>服务集合实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Extensions.EventBusServiceCollectionExtension.AddEventBus(Microsoft.Extensions.DependencyInjection.IServiceCollection,Fast.EventBus.Builders.EventBusOptionsBuilder)">
+        <member name="M:Fast.EventBus.Extensions.EventBusIServiceCollectionExtension.AddEventBus(Microsoft.Extensions.DependencyInjection.IServiceCollection,Fast.EventBus.Builders.EventBusOptionsBuilder)">
             <summary>
             添加 EventBus 模块注册
             </summary>
@@ -438,7 +431,7 @@
             <param name="eventBusOptionsBuilder">事件总线配置选项构建器</param>
             <returns>服务集合实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Extensions.EventBusServiceCollectionExtension.AddInternalService(Microsoft.Extensions.DependencyInjection.IServiceCollection,Fast.EventBus.Builders.EventBusOptionsBuilder)">
+        <member name="M:Fast.EventBus.Extensions.EventBusIServiceCollectionExtension.AddInternalService(Microsoft.Extensions.DependencyInjection.IServiceCollection,Fast.EventBus.Builders.EventBusOptionsBuilder)">
             <summary>
             注册内部服务
             </summary>
@@ -446,34 +439,34 @@
             <param name="eventBusOptionsBuilder">事件总线配置选项构建器</param>
             <returns>服务集合实例</returns>
         </member>
-        <member name="T:Fast.EventBus.Factories.EventBusFactory">
+        <member name="T:Fast.EventBus.EventBusFactory">
             <summary>
             事件总线工厂默认实现
             </summary>
         </member>
-        <member name="F:Fast.EventBus.Factories.EventBusFactory._eventSourceStorer">
+        <member name="F:Fast.EventBus.EventBusFactory._eventSourceStorer">
             <summary>
             事件源存储器
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Factories.EventBusFactory.#ctor(Fast.EventBus.Storers.IEventSourceStorer)">
+        <member name="M:Fast.EventBus.EventBusFactory.#ctor(Fast.EventBus.IEventSourceStorer)">
             <summary>
             构造函数
             </summary>
             <param name="eventSourceStorer">事件源存储器</param>
         </member>
-        <member name="M:Fast.EventBus.Factories.EventBusFactory.Subscribe(System.String,System.Func{Fast.EventBus.Contexts.EventHandlerExecutingContext,System.Threading.Tasks.Task},Fast.EventBus.Attributes.EventSubscribeAttribute,System.Reflection.MethodInfo,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.EventBusFactory.Subscribe(System.String,System.Func{Fast.EventBus.Contexts.EventHandlerExecutingContext,System.Threading.Tasks.Task},Fast.EventBus.EventSubscribeAttribute,System.Reflection.MethodInfo,System.Threading.CancellationToken)">
             <summary>
             添加事件订阅者
             </summary>
             <param name="eventId">事件 Id</param>
             <param name="handler">事件订阅委托</param>
-            <param name="attribute"><see cref="T:Fast.EventBus.Attributes.EventSubscribeAttribute"/> 特性对象</param>
+            <param name="attribute"><see cref="T:Fast.EventBus.EventSubscribeAttribute"/> 特性对象</param>
             <param name="handlerMethod"><see cref="T:System.Reflection.MethodInfo"/> 对象</param>
             <param name="cancellationToken">取消任务 Token</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.EventBus.Factories.EventBusFactory.Unsubscribe(System.String,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.EventBusFactory.Unsubscribe(System.String,System.Threading.CancellationToken)">
             <summary>
             删除事件订阅者
             </summary>
@@ -481,23 +474,23 @@
             <param name="cancellationToken">取消任务 Token</param>
             <returns></returns>
         </member>
-        <member name="T:Fast.EventBus.Factories.IEventBusFactory">
+        <member name="T:Fast.EventBus.IEventBusFactory">
             <summary>
             事件总线工厂接口
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Factories.IEventBusFactory.Subscribe(System.String,System.Func{Fast.EventBus.Contexts.EventHandlerExecutingContext,System.Threading.Tasks.Task},Fast.EventBus.Attributes.EventSubscribeAttribute,System.Reflection.MethodInfo,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.IEventBusFactory.Subscribe(System.String,System.Func{Fast.EventBus.Contexts.EventHandlerExecutingContext,System.Threading.Tasks.Task},Fast.EventBus.EventSubscribeAttribute,System.Reflection.MethodInfo,System.Threading.CancellationToken)">
             <summary>
             添加事件订阅者
             </summary>
             <param name="eventId">事件 Id</param>
             <param name="handler">事件订阅委托</param>
-            <param name="attribute"><see cref="T:Fast.EventBus.Attributes.EventSubscribeAttribute"/> 特性对象</param>
+            <param name="attribute"><see cref="T:Fast.EventBus.EventSubscribeAttribute"/> 特性对象</param>
             <param name="handlerMethod"><see cref="T:System.Reflection.MethodInfo"/> 对象</param>
             <param name="cancellationToken">取消任务 Token</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.EventBus.Factories.IEventBusFactory.Unsubscribe(System.String,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.IEventBusFactory.Unsubscribe(System.String,System.Threading.CancellationToken)">
             <summary>
             删除事件订阅者
             </summary>
@@ -570,7 +563,7 @@
             事件处理程序集合
             </summary>
         </member>
-        <member name="M:Fast.EventBus.HostedServices.EventBusHostedService.#ctor(Microsoft.Extensions.Logging.ILogger{Fast.EventBus.Internal.EventBusService},System.IServiceProvider,Fast.EventBus.Storers.IEventSourceStorer,System.Collections.Generic.IEnumerable{Fast.EventBus.Dependencies.IEventSubscriber},System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:Fast.EventBus.HostedServices.EventBusHostedService.#ctor(Microsoft.Extensions.Logging.ILogger{Fast.EventBus.Internal.EventBusService},System.IServiceProvider,Fast.EventBus.IEventSourceStorer,System.Collections.Generic.IEnumerable{Fast.EventBus.IEventSubscriber},System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             构造函数
             </summary>
@@ -632,7 +625,7 @@
             <param name="stoppingToken">后台主机服务停止时取消任务 Token</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.HostedServices.EventBusHostedService.ManageEventSubscribers(Fast.EventBus.Sources.EventSubscribeOperateSource)">
+        <member name="M:Fast.EventBus.HostedServices.EventBusHostedService.ManageEventSubscribers(Fast.EventBus.EventSubscribeOperateSource)">
             <summary>
             管理事件订阅器动态
             </summary>
@@ -661,30 +654,30 @@
             <param name="args">参数</param>
             <param name="ex">异常</param>
         </member>
-        <member name="T:Fast.EventBus.Internal.ChannelEventPublisher">
+        <member name="T:Fast.EventBus.ChannelEventPublisher">
             <summary>
             基于内存通道事件发布者（默认实现）
             </summary>
         </member>
-        <member name="F:Fast.EventBus.Internal.ChannelEventPublisher._eventSourceStorer">
+        <member name="F:Fast.EventBus.ChannelEventPublisher._eventSourceStorer">
             <summary>
             事件源存储器
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Internal.ChannelEventPublisher.#ctor(Fast.EventBus.Storers.IEventSourceStorer)">
+        <member name="M:Fast.EventBus.ChannelEventPublisher.#ctor(Fast.EventBus.IEventSourceStorer)">
             <summary>
             构造函数
             </summary>
             <param name="eventSourceStorer">事件源存储器</param>
         </member>
-        <member name="M:Fast.EventBus.Internal.ChannelEventPublisher.PublishAsync(Fast.EventBus.Sources.IEventSource)">
+        <member name="M:Fast.EventBus.ChannelEventPublisher.PublishAsync(Fast.EventBus.IEventSource)">
             <summary>
             发布一条消息
             </summary>
             <param name="eventSource">事件源</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Internal.ChannelEventPublisher.PublishDelayAsync(Fast.EventBus.Sources.IEventSource,System.Int64)">
+        <member name="M:Fast.EventBus.ChannelEventPublisher.PublishDelayAsync(Fast.EventBus.IEventSource,System.Int64)">
             <summary>
             延迟发布一条消息
             </summary>
@@ -692,7 +685,7 @@
             <param name="delay">延迟数（毫秒）</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Internal.ChannelEventPublisher.PublishAsync(System.String,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.ChannelEventPublisher.PublishAsync(System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
             发布一条消息
             </summary>
@@ -701,7 +694,7 @@
             <param name="cancellationToken"> 取消任务 Token</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.EventBus.Internal.ChannelEventPublisher.PublishAsync(System.Enum,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.ChannelEventPublisher.PublishAsync(System.Enum,System.Object,System.Threading.CancellationToken)">
             <summary>
             发布一条消息
             </summary>
@@ -710,7 +703,7 @@
             <param name="cancellationToken"> 取消任务 Token</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.EventBus.Internal.ChannelEventPublisher.PublishDelayAsync(System.String,System.Int64,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.ChannelEventPublisher.PublishDelayAsync(System.String,System.Int64,System.Object,System.Threading.CancellationToken)">
             <summary>
             延迟发布一条消息
             </summary>
@@ -720,7 +713,7 @@
             <param name="cancellationToken"> 取消任务 Token</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Internal.ChannelEventPublisher.PublishDelayAsync(System.Enum,System.Int64,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.ChannelEventPublisher.PublishDelayAsync(System.Enum,System.Int64,System.Object,System.Threading.CancellationToken)">
             <summary>
             延迟发布一条消息
             </summary>
@@ -735,32 +728,32 @@
             EventBusService 日志拓展默认分类名
             </summary>
         </member>
-        <member name="T:Fast.EventBus.Monitors.IEventHandlerMonitor">
+        <member name="T:Fast.EventBus.IEventHandlerMonitor">
             <summary>
             事件处理程序监视器
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Monitors.IEventHandlerMonitor.OnExecutingAsync(Fast.EventBus.Contexts.EventHandlerExecutingContext)">
+        <member name="M:Fast.EventBus.IEventHandlerMonitor.OnExecutingAsync(Fast.EventBus.Contexts.EventHandlerExecutingContext)">
             <summary>
             事件处理程序执行前
             </summary>
             <param name="context">上下文</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="M:Fast.EventBus.Monitors.IEventHandlerMonitor.OnExecutedAsync(Fast.EventBus.Contexts.EventHandlerExecutedContext)">
+        <member name="M:Fast.EventBus.IEventHandlerMonitor.OnExecutedAsync(Fast.EventBus.Contexts.EventHandlerExecutedContext)">
             <summary>
             事件处理程序执行后
             </summary>
             <param name="context">上下文</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> 实例</returns>
         </member>
-        <member name="T:Fast.EventBus.Policies.IEventFallbackPolicy">
+        <member name="T:Fast.EventBus.IEventFallbackPolicy">
             <summary>
             事件重试失败回调服务
             </summary>
             <remarks>需注册为单例</remarks>
         </member>
-        <member name="M:Fast.EventBus.Policies.IEventFallbackPolicy.CallbackAsync(Fast.EventBus.Contexts.EventHandlerExecutingContext,System.Exception)">
+        <member name="M:Fast.EventBus.IEventFallbackPolicy.CallbackAsync(Fast.EventBus.Contexts.EventHandlerExecutingContext,System.Exception)">
             <summary>
             重试失败回调
             </summary>
@@ -768,51 +761,30 @@
             <param name="ex"></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.EventBus.Sources.ChannelEventSource">
+        <member name="T:Fast.EventBus.ChannelEventSource">
             <summary>
             内存通道事件源（事件承载对象）
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Sources.ChannelEventSource.#ctor">
+        <member name="M:Fast.EventBus.ChannelEventSource.#ctor">
             <summary>
             构造函数
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Sources.ChannelEventSource.#ctor(System.String)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="eventId">事件 Id</param>
-        </member>
-        <member name="M:Fast.EventBus.Sources.ChannelEventSource.#ctor(System.String,System.Object)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="eventId">事件 Id</param>
-            <param name="payload">事件承载（携带）数据</param>
-        </member>
-        <member name="M:Fast.EventBus.Sources.ChannelEventSource.#ctor(System.String,System.Object,System.Threading.CancellationToken)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="eventId">事件 Id</param>
-            <param name="payload">事件承载（携带）数据</param>
-            <param name="cancellationToken">取消任务 Token</param>
-        </member>
-        <member name="M:Fast.EventBus.Sources.ChannelEventSource.#ctor(System.Enum)">
+        <member name="M:Fast.EventBus.ChannelEventSource.#ctor(System.String)">
             <summary>
             构造函数
             </summary>
             <param name="eventId">事件 Id</param>
         </member>
-        <member name="M:Fast.EventBus.Sources.ChannelEventSource.#ctor(System.Enum,System.Object)">
+        <member name="M:Fast.EventBus.ChannelEventSource.#ctor(System.String,System.Object)">
             <summary>
             构造函数
             </summary>
             <param name="eventId">事件 Id</param>
             <param name="payload">事件承载（携带）数据</param>
         </member>
-        <member name="M:Fast.EventBus.Sources.ChannelEventSource.#ctor(System.Enum,System.Object,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.ChannelEventSource.#ctor(System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
             构造函数
             </summary>
@@ -820,135 +792,156 @@
             <param name="payload">事件承载（携带）数据</param>
             <param name="cancellationToken">取消任务 Token</param>
         </member>
-        <member name="P:Fast.EventBus.Sources.ChannelEventSource.EventId">
+        <member name="M:Fast.EventBus.ChannelEventSource.#ctor(System.Enum)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="eventId">事件 Id</param>
+        </member>
+        <member name="M:Fast.EventBus.ChannelEventSource.#ctor(System.Enum,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="eventId">事件 Id</param>
+            <param name="payload">事件承载（携带）数据</param>
+        </member>
+        <member name="M:Fast.EventBus.ChannelEventSource.#ctor(System.Enum,System.Object,System.Threading.CancellationToken)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="eventId">事件 Id</param>
+            <param name="payload">事件承载（携带）数据</param>
+            <param name="cancellationToken">取消任务 Token</param>
+        </member>
+        <member name="P:Fast.EventBus.ChannelEventSource.EventId">
             <summary>
             事件 Id
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.ChannelEventSource.Payload">
+        <member name="P:Fast.EventBus.ChannelEventSource.Payload">
             <summary>
             事件承载（携带）数据
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.ChannelEventSource.CreatedTime">
+        <member name="P:Fast.EventBus.ChannelEventSource.CreatedTime">
             <summary>
             事件创建时间
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.ChannelEventSource.CancellationToken">
+        <member name="P:Fast.EventBus.ChannelEventSource.CancellationToken">
             <summary>
             取消任务 Token
             </summary>
             <remarks>用于取消本次消息处理</remarks>
         </member>
-        <member name="T:Fast.EventBus.Sources.EventSubscribeOperateSource">
+        <member name="T:Fast.EventBus.EventSubscribeOperateSource">
             <summary>
             事件总线订阅管理事件源
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.EventId">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.EventId">
             <summary>
             事件 Id
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.Payload">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.Payload">
             <summary>
             事件承载（携带）数据
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.CreatedTime">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.CreatedTime">
             <summary>
             事件创建时间
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.CancellationToken">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.CancellationToken">
             <summary>
             取消任务 Token
             </summary>
             <remarks>用于取消本次消息处理</remarks>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.Handler">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.Handler">
             <summary>
             事件处理程序
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.Attribute">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.Attribute">
             <summary>
             订阅特性
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.HandlerMethod">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.HandlerMethod">
             <summary>
             触发的方法
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.SubscribeEventId">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.SubscribeEventId">
             <summary>
             实际事件 Id
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.EventSubscribeOperateSource.Operate">
+        <member name="P:Fast.EventBus.EventSubscribeOperateSource.Operate">
             <summary>
             事件订阅器操作选项
             </summary>
         </member>
-        <member name="T:Fast.EventBus.Sources.FastChannelEventSource">
+        <member name="T:Fast.EventBus.FastChannelEventSource">
             <summary>
             Fast.NET 自定义事件总线载体
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.FastChannelEventSource.EventId">
+        <member name="P:Fast.EventBus.FastChannelEventSource.EventId">
             <summary>
             事件Id
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.FastChannelEventSource.Payload">
+        <member name="P:Fast.EventBus.FastChannelEventSource.Payload">
             <summary>
             事件承载（携带）数据
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.FastChannelEventSource.CreatedTime">
+        <member name="P:Fast.EventBus.FastChannelEventSource.CreatedTime">
             <summary>
             事件创建时间
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.FastChannelEventSource.CancellationToken">
+        <member name="P:Fast.EventBus.FastChannelEventSource.CancellationToken">
             <summary>
             取消任务Token
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.FastChannelEventSource.TenantId">
+        <member name="P:Fast.EventBus.FastChannelEventSource.TenantId">
             <summary>
             事件执行租户Id
             </summary>
         </member>
-        <member name="T:Fast.EventBus.Sources.IEventSource">
+        <member name="T:Fast.EventBus.IEventSource">
             <summary>
             事件源（事件承载对象）依赖接口
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.IEventSource.EventId">
+        <member name="P:Fast.EventBus.IEventSource.EventId">
             <summary>
             事件 Id
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.IEventSource.Payload">
+        <member name="P:Fast.EventBus.IEventSource.Payload">
             <summary>
             事件承载（携带）数据
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.IEventSource.CreatedTime">
+        <member name="P:Fast.EventBus.IEventSource.CreatedTime">
             <summary>
             事件创建时间
             </summary>
         </member>
-        <member name="P:Fast.EventBus.Sources.IEventSource.CancellationToken">
+        <member name="P:Fast.EventBus.IEventSource.CancellationToken">
             <summary>
             取消任务 Token
             </summary>
             <remarks>用于取消本次消息处理</remarks>
         </member>
-        <member name="T:Fast.EventBus.Storers.ChannelEventSourceStorer">
+        <member name="T:Fast.EventBus.ChannelEventSourceStorer">
             <summary>
             内存通道事件源存储器（默认实现）
             </summary>
@@ -957,18 +950,18 @@
             <para>默认实现为内存中的 <see cref="T:System.Threading.Channels.Channel"/>，可自由更换存储介质，如 Kafka，SQL Server 等</para>
             </remarks>
         </member>
-        <member name="F:Fast.EventBus.Storers.ChannelEventSourceStorer._channel">
+        <member name="F:Fast.EventBus.ChannelEventSourceStorer._channel">
             <summary>
             内存通道事件源存储器
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Storers.ChannelEventSourceStorer.#ctor(System.Int32)">
+        <member name="M:Fast.EventBus.ChannelEventSourceStorer.#ctor(System.Int32)">
             <summary>
             构造函数
             </summary>
             <param name="capacity">管道最多能够处理多少消息，超过该容量进入等待写入</param>
         </member>
-        <member name="M:Fast.EventBus.Storers.ChannelEventSourceStorer.WriteAsync(Fast.EventBus.Sources.IEventSource,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.ChannelEventSourceStorer.WriteAsync(Fast.EventBus.IEventSource,System.Threading.CancellationToken)">
             <summary>
             将事件源写入存储器
             </summary>
@@ -976,14 +969,14 @@
             <param name="cancellationToken">取消任务 Token</param>
             <returns><see cref="T:System.Threading.Tasks.ValueTask"/></returns>
         </member>
-        <member name="M:Fast.EventBus.Storers.ChannelEventSourceStorer.ReadAsync(System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.ChannelEventSourceStorer.ReadAsync(System.Threading.CancellationToken)">
             <summary>
             从存储器中读取一条事件源
             </summary>
             <param name="cancellationToken">取消任务 Token</param>
             <returns>事件源对象</returns>
         </member>
-        <member name="T:Fast.EventBus.Storers.IEventSourceStorer">
+        <member name="T:Fast.EventBus.IEventSourceStorer">
             <summary>
             事件源存储器
             </summary>
@@ -992,7 +985,7 @@
             <para>默认实现为内存中的 <see cref="T:System.Threading.Channels.Channel"/>，可自由更换存储介质，如 Kafka，SQL Server 等</para>
             </remarks>
         </member>
-        <member name="M:Fast.EventBus.Storers.IEventSourceStorer.WriteAsync(Fast.EventBus.Sources.IEventSource,System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.IEventSourceStorer.WriteAsync(Fast.EventBus.IEventSource,System.Threading.CancellationToken)">
             <summary>
             将事件源写入存储器
             </summary>
@@ -1000,7 +993,7 @@
             <param name="cancellationToken">取消任务 Token</param>
             <returns><see cref="T:System.Threading.Tasks.ValueTask"/></returns>
         </member>
-        <member name="M:Fast.EventBus.Storers.IEventSourceStorer.ReadAsync(System.Threading.CancellationToken)">
+        <member name="M:Fast.EventBus.IEventSourceStorer.ReadAsync(System.Threading.CancellationToken)">
             <summary>
             从存储器中读取一条事件源
             </summary>

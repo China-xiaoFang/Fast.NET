@@ -16,7 +16,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Fast.UnifyResult.Providers;
+// ReSharper disable once CheckNamespace
+namespace Fast.UnifyResult;
 
 /// <summary>
 /// <see cref="IUnifyResultProvider"/> 规范化结果提供器

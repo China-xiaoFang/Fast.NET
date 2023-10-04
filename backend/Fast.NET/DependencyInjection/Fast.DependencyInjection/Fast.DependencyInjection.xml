@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.DependencyInjection</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.DependencyInjection.IDependency">
+            <summary>
+            依赖关系接口
+            </summary>
+        </member>
+        <member name="T:Fast.DependencyInjection.IScopedDependency">
+            <summary>
+            作用域服务注册依赖
+            </summary>
+        </member>
+        <member name="T:Fast.DependencyInjection.ISingletonDependency">
+            <summary>
+            单例服务注册依赖
+            </summary>
+        </member>
+        <member name="T:Fast.DependencyInjection.ITransientDependency">
+            <summary>
+            瞬时服务注册依赖
+            </summary>
+        </member>
+        <member name="T:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 依赖注入拓展类
+            </summary>
+        </member>
+        <member name="F:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension.TypeNamedCollection">
+            <summary>
+            类型名称集合
+            </summary>
+        </member>
+        <member name="M:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension.AddInnerDependencyInjection(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加扫描注入
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension.RegisterService(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,System.Type,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            注册服务
+            </summary>
+            <param name="services">服务集合</param>
+            <param name="dependencyType"></param>
+            <param name="type">类型</param>
+            <param name="canInjectInterfaces">能被注册的接口</param>
+        </member>
+        <member name="M:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension.Register(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,System.Type,System.Type)">
+            <summary>
+            注册类型
+            </summary>
+            <param name="services">服务</param>
+            <param name="dependencyType"></param>
+            <param name="type">类型</param>
+            <param name="inter">接口</param>
+        </member>
+        <member name="M:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension.AddDispatchProxy(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,System.Type,System.Type)">
+            <summary>
+            创建服务代理
+            </summary>
+            <param name="services">服务集合</param>
+            <param name="dependencyType"></param>
+            <param name="type">拦截的类型</param>
+            <param name="inter">代理接口</param>
+        </member>
+        <member name="M:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension.FixedGenericType(System.Type)">
+            <summary>
+            修复泛型类型注册类型问题
+            </summary>
+            <param name="type">类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension.RegisterNamedService``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            注册命名服务（接口多实现）
+            </summary>
+            <typeparam name="TDependency"></typeparam>
+            <param name="services"></param>
+        </member>
+        <member name="M:Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension.TryGetServiceLifetime(System.Type)">
+            <summary>
+            根据依赖接口类型解析 ServiceLifetime 对象
+            </summary>
+            <param name="dependencyType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.DependencyInjection.Scoped">
+            <summary>
+            创建作用域静态类
+            </summary>
+        </member>
+        <member name="M:Fast.DependencyInjection.Scoped.Create(System.Action{Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Microsoft.Extensions.DependencyInjection.IServiceScope},Microsoft.Extensions.DependencyInjection.IServiceScopeFactory)">
+            <summary>
+            创建一个作用域范围
+            </summary>
+            <param name="handler"></param>
+            <param name="scopeFactory"></param>
+        </member>
+        <member name="M:Fast.DependencyInjection.Scoped.CreateAsync(System.Func{Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Microsoft.Extensions.DependencyInjection.IServiceScope,System.Threading.Tasks.Task},Microsoft.Extensions.DependencyInjection.IServiceScopeFactory)">
+            <summary>
+            创建一个作用域范围（异步）
+            </summary>
+            <param name="handler"></param>
+            <param name="scopeFactory"></param>
+        </member>
+        <member name="M:Fast.DependencyInjection.Scoped.CreateScope(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory@)">
+            <summary>
+            创建一个作用域
+            </summary>
+            <param name="scopeFactory"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.DependencyInjection.Reflection.Reflect">
+            <summary>
+            内部反射静态类
+            </summary>
+        </member>
+        <member name="M:Fast.DependencyInjection.Reflection.Reflect.GetAssembly(System.String)">
+            <summary>
+            根据程序集名称获取运行时程序集
+            </summary>
+            <param name="assemblyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DependencyInjection.Reflection.Reflect.LoadAssembly(System.IO.MemoryStream)">
+            <summary>
+            通过流加载程序集
+            </summary>
+            <param name="assembly"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DependencyInjection.Reflection.Reflect.GetType(System.String,System.String)">
+            <summary>
+            根据程序集名称、类型完整限定名获取运行时类型
+            </summary>
+            <param name="assemblyName"></param>
+            <param name="typeFullName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DependencyInjection.Reflection.Reflect.GetType(System.Reflection.Assembly,System.String)">
+            <summary>
+            根据程序集和类型完全限定名获取运行时类型
+            </summary>
+            <param name="assembly"></param>
+            <param name="typeFullName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DependencyInjection.Reflection.Reflect.GetAssemblyName(System.Reflection.Assembly)">
+            <summary>
+            获取程序集名称
+            </summary>
+            <param name="assembly"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DependencyInjection.Reflection.Reflect.GetAssemblyName(System.Reflection.TypeInfo)">
+            <summary>
+            获取程序集名称
+            </summary>
+            <param name="typeInfo"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

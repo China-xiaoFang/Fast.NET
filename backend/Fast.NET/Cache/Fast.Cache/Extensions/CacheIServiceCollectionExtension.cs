@@ -22,13 +22,21 @@ namespace Fast.Cache.Extensions;
 public static class CacheIServiceCollectionExtension
 {
     /// <summary>
+    /// 连接字符串
+    /// </summary>
+    internal static string ConnectionString;
+
+    /// <summary>
     /// 添加缓存
     /// 请确保 配置文件中存在 “RedisConnectionString” 节点
     /// </summary>
-    /// <param name="services"></param>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="connectionString"><see cref="string"/>连接字符串，如若不传，需要配置在 JSON文件 “RedisConnectionString” 节点中</param>
     /// <returns></returns>
-    public static IServiceCollection AddCache(this IServiceCollection services)
+    public static IServiceCollection AddCache(this IServiceCollection services, string connectionString = default)
     {
+        ConnectionString = connectionString;
+
         // 单例注入
         services.AddSingleton<ICache, Realize.Cache>();
 
