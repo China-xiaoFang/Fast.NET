@@ -36,6 +36,8 @@ public class TagsOrderDocumentFilter : IDocumentFilter
 
         // 读取完成后，立即删除
         memoryCache.Remove("Fast.DynamicApplication.ControllerOrderCollection");
+
+        controllerOrderCollection ??= new ConcurrentDictionary<string, (string, int, Type)>();
     }
 
     /// <summary>

@@ -133,12 +133,11 @@
             <param name="swaggerGenOptions">Swagger 生成器配置</param>
             <param name="configure">自定义配置</param>
         </member>
-        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.BuildUI(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
+        <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.BuildUI(Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions,System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
             <summary>
             Swagger UI 构建
             </summary>
             <param name="swaggerUIOptions"></param>
-            <param name="routePrefix"></param>
             <param name="configure"></param>
         </member>
         <member name="M:Fast.SpecificationDocument.Builders.SpecificationDocumentBuilder.CreateSwaggerDocs(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
@@ -290,12 +289,11 @@
             <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> 规范化文档中间件拓展
             </summary>
         </member>
-        <member name="M:Fast.SpecificationDocument.Extensions.SpecificationDocumentIApplicationBuilderExtension.UseSpecificationDocuments(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Action{Swashbuckle.AspNetCore.Swagger.SwaggerOptions},System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
+        <member name="M:Fast.SpecificationDocument.Extensions.SpecificationDocumentIApplicationBuilderExtension.UseSpecificationDocuments(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Swashbuckle.AspNetCore.Swagger.SwaggerOptions},System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
             <summary>
             添加规范化文档中间件
             </summary>
             <param name="app"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></param>
-            <param name="routePrefix"></param>
             <param name="configureSwagger"></param>
             <param name="configureSwaggerUI"></param>
             <returns></returns>

@@ -306,9 +306,8 @@ public static class SpecificationDocumentBuilder
     /// Swagger UI 构建
     /// </summary>
     /// <param name="swaggerUIOptions"></param>
-    /// <param name="routePrefix"></param>
     /// <param name="configure"></param>
-    internal static void BuildUI(SwaggerUIOptions swaggerUIOptions, string routePrefix = default,
+    internal static void BuildUI(SwaggerUIOptions swaggerUIOptions,
         Action<SwaggerUIOptions> configure = null)
     {
         // 配置分组终点路由
@@ -318,7 +317,7 @@ public static class SpecificationDocumentBuilder
         swaggerUIOptions.DocumentTitle = _specificationDocumentSettings.DocumentTitle;
 
         // 配置UI地址（处理二级虚拟目录）
-        swaggerUIOptions.RoutePrefix = _specificationDocumentSettings.RoutePrefix ?? routePrefix ?? string.Empty;
+        swaggerUIOptions.RoutePrefix = _specificationDocumentSettings.RoutePrefix ?? string.Empty;
 
         // 文档展开设置
         swaggerUIOptions.DocExpansion(_specificationDocumentSettings.DocExpansionState.Value);
@@ -618,7 +617,7 @@ public static class SpecificationDocumentBuilder
         var thisType = typeof(SpecificationDocumentBuilder);
         var thisAssembly = thisType.Assembly;
 
-        var customIndex = $"{thisAssembly.GetName().Name}{thisType.Namespace}.Assets.index.html";
+        var customIndex = $"{thisAssembly.GetName().Name}.Assets.index.html";
         swaggerUIOptions.IndexStream = () =>
         {
             StringBuilder htmlBuilder;

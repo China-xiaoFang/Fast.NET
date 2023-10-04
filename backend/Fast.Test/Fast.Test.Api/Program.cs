@@ -5,6 +5,7 @@ using Fast.DataValidation.Extensions;
 using Fast.DynamicApplication.Extensions;
 using Fast.Exception.Extensions;
 using Fast.Logging.Extensions;
+using Fast.SpecificationDocument.Extensions;
 using Fast.Test.Api;
 using Fast.UnifyResult.Extensions;
 
@@ -17,8 +18,6 @@ builder.Services.AddLogging();
 
 builder.Services.AddControllers();
 
-//builder.Services.AddSpecificationDocuments();
-
 builder.Services.AddDynamicApiControllers();
 
 builder.Services.AddDataValidation();
@@ -26,6 +25,8 @@ builder.Services.AddDataValidation();
 builder.Services.AddFriendlyException();
 
 builder.Services.AddUnifyResult<RESTfulResultProvider>();
+
+builder.Services.AddSpecificationDocuments();
 
 builder.Services.AddCache();
 
@@ -48,8 +49,6 @@ builder.Services.AddCache();
 //});
 //builder.Services.AddEventBus();
 
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Mandatory Https.
@@ -66,14 +65,10 @@ app.UseCorsAccessor();
 
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseRouting();
+
+// Here, the default address is/API if no argument is entered, and/directory if string.empty is entered. If any string is entered, the/arbitrary string directory.
+app.UseSpecificationDocuments();
 
 app.MapControllers();
 

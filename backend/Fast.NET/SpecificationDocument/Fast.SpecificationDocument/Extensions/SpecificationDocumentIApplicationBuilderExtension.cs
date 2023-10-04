@@ -30,11 +30,10 @@ public static class SpecificationDocumentIApplicationBuilderExtension
     /// 添加规范化文档中间件
     /// </summary>
     /// <param name="app"><see cref="IApplicationBuilder"/></param>
-    /// <param name="routePrefix"></param>
     /// <param name="configureSwagger"></param>
     /// <param name="configureSwaggerUI"></param>
     /// <returns></returns>
-    public static IApplicationBuilder UseSpecificationDocuments(this IApplicationBuilder app, string routePrefix = default,
+    public static IApplicationBuilder UseSpecificationDocuments(this IApplicationBuilder app,
         Action<SwaggerOptions> configureSwagger = default, Action<SwaggerUIOptions> configureSwaggerUI = default)
     {
         // 判断是否启用规范化文档
@@ -45,7 +44,7 @@ public static class SpecificationDocumentIApplicationBuilderExtension
         app.UseSwagger(options => SpecificationDocumentBuilder.Build(options, configureSwagger));
 
         // 配置 Swagger UI 参数
-        app.UseSwaggerUI(options => SpecificationDocumentBuilder.BuildUI(options, routePrefix, configureSwaggerUI));
+        app.UseSwaggerUI(options => SpecificationDocumentBuilder.BuildUI(options, configureSwaggerUI));
 
         return app;
     }

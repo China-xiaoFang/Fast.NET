@@ -10,9 +10,38 @@
   "CorsAccessorSettings": {
     "WithExposedHeaders": [ "Content-Disposition" ]
   },
-  // 异常配置
-  "FriendlyExceptionSettings": {
-    // 隐藏错误码
-    "HideErrorCode": true
+  // 版权信息
+  "CopyrightInfo": {
+    // ICP备案编号
+    "ICPCode": "陇ICP备2020003856号-2",
+    // ICP备案Url
+    "ICPUrl": "http://beian.miit.gov.cn/?token=59bd618e-d4d5-4ed9-b5e7-a014213154e8",
+    // 公安备案编号
+    "PublicCode": "甘公网安备 62090202000505号",
+    // 公安备案Url
+    "PublicUrl": "http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=62090202000505",
+    // 版权信息
+    "CRCode": "Copyright © {0} Created by Fast.NET",
+    // 版权Url
+    "CRUrl": "https://gitee.com/Net-18K/fast.net"
+  },
+  "SpecificationDocumentSettings": {
+    "DocumentTitle": "Fast",
+    "DocExpansionState": "None",
+    "HideServers": true,
+    "GroupOpenApiInfos": [
+      {
+        "Group": "Default",
+        "Title": "Fast.NET通用权限管理平台",
+        "Description": "前后端分离架构，开箱即用，紧随前沿技术。<br/>作者By 1.8K 仔<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
+        "Version": "1.0.0"
+      },
+      {
+        "Group": "Web",
+        "Title": "Fast.NET.Web API",
+        "Description": "前后端分离架构，开箱即用，紧随前沿技术。<br/>作者By 1.8K 仔<br/><a href='https://gitee.com/Net-18K/fast.net'>https://gitee.com/Net-18K/fast.net</a>",
+        "Version": "1.0.0"
+      }
+    ]
   }
 }
