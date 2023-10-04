@@ -14,7 +14,7 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace Fast.Core.Extensions;
+namespace Fast.NET.Core.Extensions;
 
 /// <summary>
 /// <see cref="WebApplicationBuilder"/> 拓展类

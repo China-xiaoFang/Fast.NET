@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.Extensions;
+namespace Fast.NET.Core.Extensions;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> 拓展类

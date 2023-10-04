@@ -15,15 +15,15 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text;
-using Fast.Core.Extensions;
-using Fast.Core.Filters;
+using Fast.NET.Core.Extensions;
+using Fast.NET.Core.Filters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.Core;
+namespace Fast.NET.Core;
 
 /// <summary>
 /// 内部 App 副本

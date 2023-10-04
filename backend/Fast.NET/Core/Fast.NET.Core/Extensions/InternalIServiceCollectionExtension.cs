@@ -13,11 +13,11 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Reflection;
-using Fast.Core.Reflection;
+using Fast.NET.Core.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.Core.Extensions;
+namespace Fast.NET.Core.Extensions;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> 内部拓展类
@@ -83,7 +83,8 @@ internal static class InternalIServiceCollectionExtension
         if (assembly != null)
         {
             // 加载 ObjectMapper 拓展类型和拓展方法
-            var iServiceCollectionExtensionType = Reflect.GetType(assembly, "Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension");
+            var iServiceCollectionExtensionType = Reflect.GetType(assembly,
+                "Fast.DependencyInjection.Extensions.DependencyInjectionIServiceCollectionExtension");
             var method = iServiceCollectionExtensionType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(u => u.Name == "AddInnerDependencyInjection");
 

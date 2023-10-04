@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Core\Fast.Core\Fast.Core.csproj" />
+	  <ProjectReference Include="..\..\Core\Fast.NET.Core\Fast.NET.Core.csproj" />
 	</ItemGroup>
 
 </Project>

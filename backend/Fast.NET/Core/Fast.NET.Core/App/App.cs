@@ -15,14 +15,14 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
-using Fast.Core.Extensions;
+using Fast.NET.Core.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.Core;
+namespace Fast.NET.Core;
 
 /// <summary>
 /// App 上下文

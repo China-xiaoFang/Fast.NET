@@ -14,11 +14,11 @@
 
 using System.Diagnostics;
 using System.Text;
-using Fast.Core;
 using Fast.Logging.Extensions;
 using Fast.Logging.Implantation;
 using Fast.Logging.Implantation.Console;
 using Fast.Logging.Implantation.File;
+using Fast.NET.Core;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Internal;

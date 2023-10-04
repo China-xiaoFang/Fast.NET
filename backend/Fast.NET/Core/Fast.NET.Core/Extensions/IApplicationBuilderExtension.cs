@@ -15,7 +15,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace Fast.Core.Extensions;
+namespace Fast.NET.Core.Extensions;
 
 /// <summary>
 /// <see cref="IApplicationBuilder"/> 拓展类

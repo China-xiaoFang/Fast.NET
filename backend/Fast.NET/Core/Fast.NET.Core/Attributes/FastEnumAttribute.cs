@@ -12,44 +12,52 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using System.ComponentModel;
-using Fast.Core.Attributes;
-
-namespace Fast.Core.Enum;
+#nullable enable
+namespace Fast.NET.Core.Attributes;
 
 /// <summary>
-/// App运行环境枚举
+/// 枚举特性
+/// 用于区分是否可以写入枚举字典的特性
 /// </summary>
-[FastEnum("App运行环境枚举")]
-public enum AppEnvironmentEnum
+[AttributeUsage(AttributeTargets.Enum)]
+public class FastEnumAttribute : Attribute
 {
     /// <summary>
-    /// PC
+    /// 中文名称
     /// </summary>
-    [Description("PC")]
-    PC = 1,
+    public string? ChName { get; set; }
 
     /// <summary>
-    /// Windows端
+    /// 英文名称
     /// </summary>
-    [Description("Windows")]
-    Windows = 2,
+    public string? EnName { get; set; }
 
     /// <summary>
-    /// App端
+    /// 备注
     /// </summary>
-    [Description("App")]
-    App = 4,
+    public string? Remark { get; set; }
 
-    /// <summary>
-    /// H5
-    /// </summary>
-    [Description("H5")]
-    H5 = 8,
+    public FastEnumAttribute()
+    {
+    }
 
-    /// <summary>
-    /// 微信小程序
-    /// </summary>
-    [Description("微信小程序")]
-    WeChatMiniProgram = 16,
+    public FastEnumAttribute(string? chName, string? enName, string? remark)
+    {
+        ChName = chName;
+        EnName = enName;
+        Remark = remark;
+    }
+
+    public FastEnumAttribute(string? chName, string? enName)
+    {
+        ChName = chName;
+        EnName = enName;
+        Remark = chName;
+    }
+
+    public FastEnumAttribute(string? chName)
+    {
+        ChName = chName;
+        Remark = chName;
+    }
 }

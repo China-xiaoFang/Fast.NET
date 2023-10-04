@@ -14,7 +14,6 @@
 
 using Fast.EventBus.Builders;
 using Fast.EventBus.HostedServices;
-using Fast.EventBus.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.EventBus.Extensions;

@@ -18,9 +18,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Fast.Core;
 using Fast.DynamicApplication;
 using Fast.IaaS.Extensions;
+using Fast.NET.Core;
 using Fast.SpecificationDocument.Attributes;
 using Fast.SpecificationDocument.Filters;
 using Fast.SpecificationDocument.Internal;
@@ -307,8 +307,7 @@ internal static class SpecificationDocumentBuilder
     /// </summary>
     /// <param name="swaggerUIOptions"></param>
     /// <param name="configure"></param>
-    internal static void BuildUI(SwaggerUIOptions swaggerUIOptions,
-        Action<SwaggerUIOptions> configure = null)
+    internal static void BuildUI(SwaggerUIOptions swaggerUIOptions, Action<SwaggerUIOptions> configure = null)
     {
         // 配置分组终点路由
         CreateGroupEndpoint(swaggerUIOptions);

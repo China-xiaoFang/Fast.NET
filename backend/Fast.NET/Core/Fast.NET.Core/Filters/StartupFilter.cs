@@ -12,13 +12,13 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Core.Extensions;
 using Fast.IaaS.Extensions;
+using Fast.NET.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-namespace Fast.Core.Filters;
+namespace Fast.NET.Core.Filters;
 
 /// <summary>
 /// 应用启动时自动注册中间件

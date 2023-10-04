@@ -12,52 +12,28 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-#nullable enable
-namespace Fast.Core.Attributes;
+using Microsoft.Extensions.Configuration;
+
+namespace Fast.NET.Core.Extensions;
 
 /// <summary>
-/// 枚举特性
-/// 用于区分是否可以写入枚举字典的特性
+/// <see cref="IConfiguration"/> 拓展类
 /// </summary>
-[AttributeUsage(AttributeTargets.Enum)]
-public class FastEnumAttribute : Attribute
+public static class IConfigurationExtension
 {
     /// <summary>
-    /// 中文名称
+    /// 刷新配置对象
     /// </summary>
-    public string? ChName { get; set; }
-
-    /// <summary>
-    /// 英文名称
-    /// </summary>
-    public string? EnName { get; set; }
-
-    /// <summary>
-    /// 备注
-    /// </summary>
-    public string? Remark { get; set; }
-
-    public FastEnumAttribute()
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <returns><see cref="IConfiguration"/></returns>
+    public static IConfiguration Reload(this IConfiguration configuration)
     {
-    }
+        if (App.RootServices == null)
+            return configuration;
 
-    public FastEnumAttribute(string? chName, string? enName, string? remark)
-    {
-        ChName = chName;
-        EnName = enName;
-        Remark = remark;
-    }
+        var newConfiguration = App.GetService<IConfiguration>(App.RootServices);
+        InternalApp.Configuration = newConfiguration;
 
-    public FastEnumAttribute(string? chName, string? enName)
-    {
-        ChName = chName;
-        EnName = enName;
-        Remark = chName;
-    }
-
-    public FastEnumAttribute(string? chName)
-    {
-        ChName = chName;
-        Remark = chName;
+        return newConfiguration;
     }
 }

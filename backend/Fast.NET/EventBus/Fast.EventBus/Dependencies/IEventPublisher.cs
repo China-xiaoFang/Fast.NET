@@ -14,6 +14,7 @@
 
 
 // ReSharper disable once CheckNamespace
+
 namespace Fast.EventBus;
 
 /// <summary>

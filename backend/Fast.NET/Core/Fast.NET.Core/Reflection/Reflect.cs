@@ -15,7 +15,7 @@
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace Fast.Core.Reflection;
+namespace Fast.NET.Core.Reflection;
 
 /// <summary>
 /// 内部反射静态类

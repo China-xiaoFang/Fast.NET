@@ -13,8 +13,8 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Collections.Concurrent;
-using Fast.Core;
 using Fast.DependencyInjection.Reflection;
+using Fast.NET.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.DependencyInjection.Extensions;
@@ -46,7 +46,7 @@ public static class DependencyInjectionIServiceCollectionExtension
             typeof(IDependency).IsAssignableFrom(u) && u.IsClass && !u.IsInterface && !u.IsAbstract);
 
         var projectAssemblies = App.Assemblies;
-        var lifetimeInterfaces = new[] { typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency) };
+        var lifetimeInterfaces = new[] {typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency)};
 
         // 执行依赖注入
         foreach (var type in injectTypes)
@@ -60,8 +60,7 @@ public static class DependencyInjectionIServiceCollectionExtension
                 //&& u != typeof(IDynamicApiController)
                 && !lifetimeInterfaces.Contains(u) && projectAssemblies.Contains(u.Assembly) &&
                 (!type.IsGenericType && !u.IsGenericType || type.IsGenericType && u.IsGenericType &&
-                                                               type.GetGenericArguments().Length ==
-                                                               u.GetGenericArguments().Length));
+                    type.GetGenericArguments().Length == u.GetGenericArguments().Length));
 
             // 获取生存周期类型
             var dependencyType = interfaces.Last(u => lifetimeInterfaces.Contains(u));
@@ -166,7 +165,7 @@ public static class DependencyInjectionIServiceCollectionExtension
                 return isRegister ? provider.GetService(serviceType) : null;
             }
 
-            return (Func<string, TDependency, object>)ResolveService;
+            return (Func<string, TDependency, object>) ResolveService;
         }, lifetime));
     }
 

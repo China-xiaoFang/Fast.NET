@@ -15,7 +15,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Fast.Core.RemoteRequest;
+namespace Fast.NET.Core.RemoteRequest;
 
 /// <summary>
 /// 远程请求工具类

@@ -13,9 +13,9 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.ComponentModel;
-using Fast.Core.Attributes;
+using Fast.NET.Core.Attributes;
 
-namespace Fast.Core.Enum;
+namespace Fast.NET.Core.Enum;
 
 /// <summary>
 /// Http请求行为枚举
