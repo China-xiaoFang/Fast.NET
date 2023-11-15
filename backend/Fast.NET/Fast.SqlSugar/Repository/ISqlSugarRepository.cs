@@ -13,7 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Linq.Expressions;
-using Fast.NET;
+using Fast.SqlSugar.IBaseEntities;
 using Fast.SqlSugar.Options;
 using SqlSugar;
 
@@ -22,7 +22,6 @@ namespace Fast.SqlSugar.Repository;
 /// <summary>
 /// <see cref="ISqlSugarRepository{TEntity}"/> SqlSugar仓储接口
 /// </summary>
-[InternalSuppressSniffer]
 public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : class, new()
 {
     /// <summary>
@@ -429,4 +428,22 @@ public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : 
     /// <param name="whereExpression"></param>
     /// <returns></returns>
     Task<int> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression);
+
+    /// <summary>
+    /// 自定义条件逻辑删除记录
+    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    int LogicDelete(Expression<Func<TEntity, bool>> whereExpression);
+
+    /// <summary>
+    /// 自定义条件逻辑删除记录
+    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    Task<int> LogicDeleteAsync(Expression<Func<TEntity, bool>> whereExpression);
 }

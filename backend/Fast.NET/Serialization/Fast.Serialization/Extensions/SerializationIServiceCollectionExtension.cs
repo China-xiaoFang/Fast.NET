@@ -16,7 +16,8 @@ using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using Fast.NET;
-using Fast.Serialization.JsonConverter;
+using Fast.Serialization.ConverterFactory;
+using Fast.Serialization.JsonConverter.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -54,6 +55,9 @@ public static class SerializationIServiceCollectionExtension
             options.JsonSerializerOptions.Converters.Add(new NullableDoubleJsonConverter());
             // 解决 Exception 类型不能被正常序列化和反序列化的问题
             options.JsonSerializerOptions.Converters.Add(new ExceptionJsonConverter());
+            // 解决 Enum 类型前端传入 string 的问题
+            options.JsonSerializerOptions.Converters.Add(new EnumConverterFactory());
+            options.JsonSerializerOptions.Converters.Add(new NullableEnumConverterFactory());
             // 忽略只有在 .NET 6 才会存在的循环引用问题
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             // 解决 JSON 乱码问题

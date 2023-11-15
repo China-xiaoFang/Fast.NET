@@ -20,7 +20,7 @@ namespace Fast.SqlSugar.IBaseEntities;
 /// <see cref="IBaseTEntity"/> 租户Entity基类接口
 /// </summary>
 [InternalSuppressSniffer]
-public interface IBaseTEntity
+public interface IBaseTEntity : IDataBaseEntity
 {
     /// <summary>
     /// 租户Id

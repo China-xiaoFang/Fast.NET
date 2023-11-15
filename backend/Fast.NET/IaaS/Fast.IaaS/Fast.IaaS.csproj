@@ -5,8 +5,9 @@
 	</PropertyGroup>
 
 	<!-- 这里由于要获取请求头部的 UserAgent 信息进行解析，因此才会引用此包，但是确保此包不会传递出去，只会在内部使用 -->
-	<ItemGroup>
+	<!--2023-11-13 改为通过反射调用，请确保在项目中正确安装了 UAParser 程序集-->
+	<!--<ItemGroup>
 		<PackageReference Include="UAParser" Version="3.1.47" PrivateAssets="all" />
-	</ItemGroup>
+	</ItemGroup>-->
 
 </Project>

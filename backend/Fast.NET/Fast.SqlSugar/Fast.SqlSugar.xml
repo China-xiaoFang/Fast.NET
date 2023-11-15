@@ -84,6 +84,68 @@
             <returns><see cref="T:System.Int64"/></returns>
             <exclude />
         </member>
+        <member name="T:Fast.NET.UserAgentInfo">
+            <summary>
+            <see cref="T:Fast.NET.UserAgentInfo"/> 用户代理信息
+            </summary>
+            <exclude />
+        </member>
+        <member name="P:Fast.NET.UserAgentInfo.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.NET.UserAgentInfo.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.NET.UserAgentInfo.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="T:Fast.NET.WanNetIPInfo">
+            <summary>
+            <see cref="T:Fast.NET.WanNetIPInfo"/> 公网IP信息
+            </summary>
+            <exclude />
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.Ip">
+            <summary>
+            Ip地址
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.ProvinceZipCode">
+            <summary>
+            省份邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.CityZipCode">
+            <summary>
+            城市邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.Address">
+            <summary>
+            地理信息
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.Operator">
+            <summary>
+            运营商
+            </summary>
+        </member>
         <member name="T:Fast.NET.InternalAssemblyExtension">
             <summary>
             <see cref="T:System.Reflection.Assembly"/> 内部拓展类
@@ -174,6 +236,94 @@
             设置规范化文档退出登录
             </summary>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.LanIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            局域网 IPv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.LanIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            局域网 IPv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.LocalIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            本机 IPv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.LocalIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            本机 IPv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RemoteIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            远程 Ipv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RemoteIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            远程 Ipv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RequestUserAgent(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            请求用户代理字符串（User-Agent）
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="userAgentHeaderKey">默认从 “User-Agent” 获取</param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RequestUserAgentInfo(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            请求用户代理信息（User-Agent）
+            <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 null</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:Fast.NET.UserAgentInfo"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RemoteIpv4Info(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            远程 Ipv4 地址信息
+            <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="ip"><see cref="T:System.String"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
+            <returns><see cref="T:Fast.NET.WanNetIPInfo"/></returns>
+            <exception cref="T:System.Exception"></exception>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RemoteIpv4InfoAsync(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            远程 Ipv4 地址信息
+            <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="ip"><see cref="T:System.String"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
+            <returns><see cref="T:Fast.NET.WanNetIPInfo"/></returns>
+            <exception cref="T:System.Exception"></exception>
             <exclude />
         </member>
         <member name="T:Fast.NET.InternalMethodInfoExtension">
@@ -728,6 +878,72 @@
             软删除标识
             </summary>
         </member>
+        <member name="T:Fast.SqlSugar.BaseEntities.BaseRecordEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.BaseEntities.BaseRecordEntity"/> 记录Entity基类
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Ip">
+            <summary>
+            Ip
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedUserId">
+            <summary>
+            创建者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.BaseEntities.BaseRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            记录表创建
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+        </member>
         <member name="T:Fast.SqlSugar.BaseEntities.BaseTEntity">
             <summary>
             <see cref="T:Fast.SqlSugar.BaseEntities.BaseTEntity"/> 租户Entity基类
@@ -762,6 +978,69 @@
             主键Id
             <remarks>雪花Id</remarks>
             </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.SqlSugarContext">
+            <summary>
+            <see cref="T:Fast.SqlSugar.SqlSugarContext"/> SqlSugar 上下文
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.ConnectionSettings">
+            <summary>
+            连接字符串配置
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.SnowflakeSettings">
+            <summary>
+            雪花Id配置
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.DefaultConnectionConfig">
+            <summary>
+            默认连接配置
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.CacheSqlSugarEntityList">
+            <summary>
+            内部缓存SqlSugar实体集合
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.SqlSugarEntityList">
+            <summary>
+            SqlSugar实体集合
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarContext.GetConnectionConfig(Fast.SqlSugar.Options.ConnectionSettingsOptions)">
+            <summary>
+            获取连接配置
+            </summary>
+            <param name="connectionSettings"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarContext.ParameterFormat(System.String,System.Collections.Generic.IReadOnlyList{SqlSugar.SugarParameter})">
+            <summary>
+            格式化参数拼接成完整的SQL语句
+            </summary>
+            <param name="sql"></param>
+            <param name="pars"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarContext.EntityValueCheck(System.String,System.Collections.Generic.ICollection{System.Object},SqlSugar.DataFilterModel)">
+            <summary>
+            Entity Value 检测
+            </summary>
+            <param name="propertyName"><see cref="T:System.String"/> 属性名称</param>
+            <param name="emptyList"><see cref="T:System.Collections.Generic.ICollection`1"/> 空对象检测集合</param>
+            <param name="entityInfo"><see cref="T:SqlSugar.DataFilterModel"/> 实体信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarContext.SetEntityValue(System.String,System.Collections.Generic.ICollection{System.Object},System.Object,SqlSugar.DataFilterModel@)">
+            <summary>
+            设置Entity Value
+            </summary>
+            <param name="fieldName"></param>
+            <param name="emptyList"></param>
+            <param name="setValue"></param>
+            <param name="entityInfo"></param>
         </member>
         <member name="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil">
             <summary>
@@ -806,6 +1085,26 @@
             <param name="dbType"></param>
             <returns></returns>
         </member>
+        <member name="T:Fast.SqlSugar.Definition.SqlSugarEntityInfo">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Definition.SqlSugarEntityInfo"/> SqlSugar 实体信息
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarEntityInfo.TableName">
+            <summary>
+            数据库表名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarEntityInfo.TableDescription">
+            <summary>
+            数据库表描述
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarEntityInfo.EntityType">
+            <summary>
+            实体类型
+            </summary>
+        </member>
         <member name="T:Fast.SqlSugar.Extensions.SqlSugarExtension">
             <summary>
             <see cref="T:SqlSugar.ISqlSugarClient"/> SqlSugar 拓展类
@@ -814,6 +1113,13 @@
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarExtension.GetSugarTableName(System.Type)">
             <summary>
             获取SugarTable特性中的TableName
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarExtension.GetSugarTableAttribute(System.Type)">
+            <summary>
+            获取SugarTable特性
             </summary>
             <param name="type"></param>
             <returns></returns>
@@ -1023,6 +1329,72 @@
             更新版本控制字段
             </summary>
         </member>
+        <member name="T:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity"/> 记录Entity基类接口
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Ip">
+            <summary>
+            Ip
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedUserId">
+            <summary>
+            创建者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            记录表创建
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+        </member>
         <member name="T:Fast.SqlSugar.IBaseEntities.IBaseTEntity">
             <summary>
             <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseTEntity"/> 租户Entity基类接口
@@ -1047,52 +1419,6 @@
             <summary>
             主键Id
             </summary>
-        </member>
-        <member name="T:Fast.SqlSugar.Internal.Penetrates">
-            <summary>
-            <see cref="T:Fast.SqlSugar.Internal.Penetrates"/> 常量，公共方法配置类
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Internal.Penetrates.ConnectionSettings">
-            <summary>
-            连接字符串配置
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Internal.Penetrates.SnowflakeSettings">
-            <summary>
-            雪花Id配置
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Internal.Penetrates.DefaultConnectionConfig">
-            <summary>
-            默认连接配置
-            </summary>
-        </member>
-        <member name="M:Fast.SqlSugar.Internal.Penetrates.ParameterFormat(System.String,System.Collections.Generic.IReadOnlyList{SqlSugar.SugarParameter})">
-            <summary>
-            格式化参数拼接成完整的SQL语句
-            </summary>
-            <param name="sql"></param>
-            <param name="pars"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Internal.Penetrates.EntityValueCheck(System.String,System.Collections.Generic.ICollection{System.Object},SqlSugar.DataFilterModel)">
-            <summary>
-            Entity Value 检测
-            </summary>
-            <param name="propertyName"><see cref="T:System.String"/> 属性名称</param>
-            <param name="emptyList"><see cref="T:System.Collections.Generic.ICollection`1"/> 空对象检测集合</param>
-            <param name="entityInfo"><see cref="T:SqlSugar.DataFilterModel"/> 实体信息</param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Internal.Penetrates.SetEntityValue(System.String,System.Collections.Generic.ICollection{System.Object},System.Object,SqlSugar.DataFilterModel@)">
-            <summary>
-            设置Entity Value
-            </summary>
-            <param name="fieldName"></param>
-            <param name="emptyList"></param>
-            <param name="setValue"></param>
-            <param name="entityInfo"></param>
         </member>
         <member name="T:Fast.SqlSugar.Options.ConnectionSettingsOptions">
             <summary>
@@ -1577,6 +1903,24 @@
             <param name="whereExpression"></param>
             <returns></returns>
         </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.LogicDelete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件逻辑删除记录
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/></remarks>
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.LogicDeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件逻辑删除记录
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/></remarks>
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
         <member name="T:Fast.SqlSugar.Repository.SqlSugarRepository`1">
             <summary>
             <see cref="T:Fast.SqlSugar.Repository.SqlSugarRepository`1"/> SqlSugar仓储实现
@@ -1589,7 +1933,7 @@
         </member>
         <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.#ctor(System.IServiceProvider)">
             <summary>
-            
+            <see cref="T:Fast.SqlSugar.Repository.SqlSugarRepository`1"/> SqlSugar仓储实现
             </summary>
             <param name="serviceProvider"></param>
         </member>
@@ -2000,6 +2344,24 @@
             </summary>
             <param name="whereExpression"></param>
             <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.LogicDelete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件逻辑删除记录
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/></remarks>
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.LogicDeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件逻辑删除记录
+            </summary>
+            <param name="whereExpression"></param>
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/></remarks>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
         </member>
     </members>
 </doc>

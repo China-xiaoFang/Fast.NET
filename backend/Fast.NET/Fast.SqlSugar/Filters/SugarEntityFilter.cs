@@ -14,7 +14,6 @@
 
 using Fast.SqlSugar.Handlers;
 using Fast.SqlSugar.IBaseEntities;
-using Fast.SqlSugar.Internal;
 using SqlSugar;
 using Yitter.IdGenerator;
 
@@ -41,7 +40,7 @@ internal static class SugarEntityFilter
 
         _db.Aop.OnLogExecuted = (sql, pars) =>
         {
-            var handleSql = Penetrates.ParameterFormat(sql, pars);
+            var handleSql = SqlSugarContext.ParameterFormat(sql, pars);
 
 #if DEBUG
             if (sql.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase))
@@ -114,7 +113,7 @@ internal static class SugarEntityFilter
                     // 差异日志
                     if ((diff.AfterData != null && diff.AfterData.Any()) || (diff.BeforeData != null && diff.BeforeData.Any()))
                     {
-                        var handleSql = Penetrates.ParameterFormat(diff.Sql, diff.Parameters);
+                        var handleSql = SqlSugarContext.ParameterFormat(diff.Sql, diff.Parameters);
 
                         DiffLogTableInfo firstData = null;
                         if (diff.AfterData != null && diff.AfterData.Any())
@@ -146,7 +145,7 @@ internal static class SugarEntityFilter
         {
             var param = (SugarParameter[]) exp.Parametres;
 
-            var handleSql = Penetrates.ParameterFormat(exp.Sql, param);
+            var handleSql = SqlSugarContext.ParameterFormat(exp.Sql, param);
 
             // 代码CS文件名称
             var fileName = _db.Ado.SqlStackTrace.FirstFileName;
@@ -182,11 +181,11 @@ internal static class SugarEntityFilter
             {
                 // 新增操作
                 case DataFilterType.InsertByObject:
-                    // 主键（long）赋值雪花Id
+                    // 主键（long）赋值雪花Id，这里一条记录只会匹配一次
                     if (entityInfo.EntityColumnInfo.IsPrimarykey &&
                         entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
                     {
-                        if (Penetrates.EntityValueCheck(nameof(IPrimaryKeyEntity<long>.Id), new List<dynamic> {null, 0},
+                        if (SqlSugarContext.EntityValueCheck(nameof(IPrimaryKeyEntity<long>.Id), new List<dynamic> {null, 0},
                                 entityInfo))
                         {
                             entityInfo.SetValue(YitIdHelper.NextId());
@@ -194,33 +193,34 @@ internal static class SugarEntityFilter
                     }
 
                     // 创建时间
-                    Penetrates.SetEntityValue(nameof(IBaseEntity.CreatedTime), new List<dynamic> {null}, DateTime.Now,
+                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedTime), new List<dynamic> {null}, DateTime.Now,
                         ref entityInfo);
 
                     // 更新版本控制字段
-                    Penetrates.SetEntityValue(nameof(IBaseEntity.UpdatedVersion), new List<dynamic> {null, 0}, 1, ref entityInfo);
+                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedVersion), new List<dynamic> {null, 0}, 1,
+                        ref entityInfo);
 
                     // 其余字段判断
                     if (sqlSugarEntityHandler != null)
                     {
                         // 部门Id
-                        Penetrates.SetEntityValue(nameof(IBaseEntity.DepartmentId), new List<dynamic> {null, 0},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentId), new List<dynamic> {null, 0},
                             sqlSugarEntityHandler.AssignDepartmentId(), ref entityInfo);
 
                         // 部门名称
-                        Penetrates.SetEntityValue(nameof(IBaseEntity.DepartmentName), new List<dynamic> {null, ""},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentName), new List<dynamic> {null, ""},
                             sqlSugarEntityHandler.AssignDepartmentName(), ref entityInfo);
 
                         // 创建者Id
-                        Penetrates.SetEntityValue(nameof(IBaseEntity.CreatedUserId), new List<dynamic> {null, 0},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserId), new List<dynamic> {null, 0},
                             sqlSugarEntityHandler.AssignUserId(), ref entityInfo);
 
                         // 创建者名称
-                        Penetrates.SetEntityValue(nameof(IBaseEntity.CreatedUserName), new List<dynamic> {null, ""},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserName), new List<dynamic> {null, ""},
                             sqlSugarEntityHandler.AssignUserName(), ref entityInfo);
 
                         // 租户Id
-                        Penetrates.SetEntityValue(nameof(IBaseTEntity.TenantId), new List<dynamic> {null, 0},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseTEntity.TenantId), new List<dynamic> {null, 0},
                             sqlSugarEntityHandler.AssignTenantId() ?? 0, ref entityInfo);
                     }
 
@@ -228,17 +228,17 @@ internal static class SugarEntityFilter
                 // 更新操作
                 case DataFilterType.UpdateByObject:
                     // 更新时间
-                    Penetrates.SetEntityValue(nameof(IBaseEntity.UpdatedTime), null, DateTime.Now, ref entityInfo);
+                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedTime), null, DateTime.Now, ref entityInfo);
 
                     // 其余字段判断
                     if (sqlSugarEntityHandler != null)
                     {
                         // 更新者Id
-                        Penetrates.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), new List<dynamic> {null, 0},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), new List<dynamic> {null, 0},
                             sqlSugarEntityHandler.AssignUserId(), ref entityInfo);
 
                         // 更新者名称
-                        Penetrates.SetEntityValue(nameof(IBaseEntity.UpdatedUserName), new List<dynamic> {null, ""},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserName), new List<dynamic> {null, ""},
                             sqlSugarEntityHandler.AssignUserName(), ref entityInfo);
                     }
 

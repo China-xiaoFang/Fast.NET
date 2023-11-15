@@ -122,6 +122,15 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
             // 检查是否是有效的结果（可进行规范化的结果）
             if (UnifyContext.CheckValidResult(actionExecutedContext.Result, out var data))
             {
+                // 判断是否跳过规范化响应数据处理
+                if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, controllerActionDescriptor!.MethodInfo,
+                        out var unifyResponse))
+                {
+                    // 处理规范化响应数据
+                    data = await unifyResponse.ResponseDataAsync(context.HttpContext.UnifyResponseTimestamp(), data,
+                        context.HttpContext);
+                }
+
                 result = unifyResult.OnSucceeded(actionExecutedContext, data);
             }
 

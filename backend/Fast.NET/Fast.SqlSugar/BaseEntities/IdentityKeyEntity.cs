@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.NET;
 using Fast.SqlSugar.IBaseEntities;
 using SqlSugar;
 
@@ -21,7 +22,8 @@ namespace Fast.SqlSugar.BaseEntities;
 /// <see cref="IdentityKeyEntity"/> 自增Id主键实体
 /// <remarks>主键Id为 Long 类型</remarks>
 /// </summary>
-public class IdentityKeyEntity : IPrimaryKeyEntity<int>, IDataBaseEntity
+[InternalSuppressSniffer]
+public class IdentityKeyEntity : IPrimaryKeyEntity<int>
 {
     /// <summary>
     /// 主键Id

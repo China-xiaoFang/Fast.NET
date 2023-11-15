@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Fast.Gateway 接口模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)Services\Fast.Gateway.Service\Fast.Gateway.Service.csproj" />
+	</ItemGroup>
+
+</Project>

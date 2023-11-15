@@ -17,13 +17,12 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Fast.NET;
 
-namespace Fast.Serialization.JsonConverter;
+namespace Fast.Serialization.JsonConverter.Internal;
 
 /// <summary>
 /// <see cref="DateTimeOffsetJsonConverter"/> DateTimeOffset 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
+internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 {
     /// <summary>
     /// 格式化
@@ -137,8 +136,7 @@ public class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 /// <summary>
 /// <see cref="NullableDateTimeOffsetJsonConverter"/> DateTimeOffset? 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset?>
+internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset?>
 {
     /// <summary>
     /// 格式化

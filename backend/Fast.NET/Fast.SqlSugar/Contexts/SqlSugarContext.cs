@@ -12,32 +12,95 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+
+using Fast.NET;
+using Fast.SqlSugar.DataBaseUtils;
+using Fast.SqlSugar.Definition;
+using Fast.SqlSugar.Extensions;
 using Fast.SqlSugar.IBaseEntities;
 using Fast.SqlSugar.Options;
 using SqlSugar;
 using SystemDbType = System.Data.DbType;
 
-namespace Fast.SqlSugar.Internal;
+// ReSharper disable once CheckNamespace
+namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="SqlSugarContext"/> SqlSugar 上下文
 /// </summary>
-internal static class Penetrates
+[InternalSuppressSniffer]
+public sealed class SqlSugarContext
 {
     /// <summary>
     /// 连接字符串配置
     /// </summary>
-    internal static ConnectionSettingsOptions ConnectionSettings { get; set; }
+    public static ConnectionSettingsOptions ConnectionSettings { get; set; }
 
     /// <summary>
     /// 雪花Id配置
     /// </summary>
-    internal static SnowflakeSettingsOptions SnowflakeSettings { get; set; }
+    public static SnowflakeSettingsOptions SnowflakeSettings { get; set; }
 
     /// <summary>
     /// 默认连接配置
     /// </summary>
-    internal static ConnectionConfig DefaultConnectionConfig { get; set; }
+    public static ConnectionConfig DefaultConnectionConfig { get; set; }
+
+    /// <summary>
+    /// 内部缓存SqlSugar实体集合
+    /// </summary>
+    private static List<SqlSugarEntityInfo> CacheSqlSugarEntityList { get; set; }
+
+    /// <summary>
+    /// SqlSugar实体集合
+    /// </summary>
+    public static List<SqlSugarEntityInfo> SqlSugarEntityList
+    {
+        get
+        {
+            if (CacheSqlSugarEntityList != null && CacheSqlSugarEntityList.Count != 0)
+                return CacheSqlSugarEntityList;
+
+            var dataBaseEntityType = typeof(IDataBaseEntity);
+
+            CacheSqlSugarEntityList = InternalPenetrates.EffectiveTypes
+                .Where(wh => dataBaseEntityType.IsAssignableFrom(wh) && !wh.IsInterface).Select(sl =>
+                {
+                    var sqlSugarTableAttribute = sl.GetSugarTableAttribute();
+
+                    return new SqlSugarEntityInfo
+                    {
+                        TableName = sqlSugarTableAttribute?.TableName ?? sl.Name,
+                        TableDescription = sqlSugarTableAttribute?.TableDescription,
+                        EntityType = sl
+                    };
+                }).ToList();
+
+            return CacheSqlSugarEntityList;
+        }
+    }
+
+    /// <summary>
+    /// 获取连接配置
+    /// </summary>
+    /// <param name="connectionSettings"></param>
+    /// <returns></returns>
+    public static ConnectionConfig GetConnectionConfig(ConnectionSettingsOptions connectionSettings)
+    {
+        // 得到连接字符串
+        var connectionStr = DataBaseUtil.GetConnectionStr(connectionSettings);
+
+        return new ConnectionConfig
+        {
+            ConfigId = connectionSettings.ConnectionId, // 此链接标志，用以后面切库使用
+            ConnectionString = connectionStr, // 核心库连接字符串
+            DbType = connectionSettings.DbType,
+            IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
+            InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
+            //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
+            ConfigureExternalServices = DataBaseUtil.GetSugarExternalServices(connectionSettings.DbType)
+        };
+    }
 
     /// <summary>
     /// 格式化参数拼接成完整的SQL语句
@@ -79,42 +142,20 @@ internal static class Penetrates
         {
             // 转换为动态类型
             var dynamicEntityInfo = (dynamic) entityInfo.EntityValue;
-            dynamic value;
-            switch (propertyName)
+            var value = propertyName switch
             {
-                case nameof(IPrimaryKeyEntity<long>.Id):
-                    value = dynamicEntityInfo.Id;
-                    break;
-                case nameof(IBaseTEntity.TenantId):
-                    value = dynamicEntityInfo.TenantId;
-                    break;
-                case nameof(IBaseEntity.DepartmentId):
-                    value = dynamicEntityInfo.DepartmentId;
-                    break;
-                case nameof(IBaseEntity.DepartmentName):
-                    value = dynamicEntityInfo.DepartmentName;
-                    break;
-                case nameof(IBaseEntity.CreatedUserId):
-                    value = dynamicEntityInfo.CreatedUserId;
-                    break;
-                case nameof(IBaseEntity.CreatedUserName):
-                    value = dynamicEntityInfo.CreatedUserName;
-                    break;
-                case nameof(IBaseEntity.CreatedTime):
-                    value = dynamicEntityInfo.CreatedTime;
-                    break;
-                case nameof(IBaseEntity.UpdatedUserId):
-                    value = dynamicEntityInfo.UpdatedUserId;
-                    break;
-                case nameof(IBaseEntity.UpdatedUserName):
-                    value = dynamicEntityInfo.UpdatedUserName;
-                    break;
-                case nameof(IBaseEntity.UpdatedTime):
-                    value = dynamicEntityInfo.UpdatedTime;
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+                nameof(IPrimaryKeyEntity<long>.Id) => dynamicEntityInfo.Id,
+                nameof(IBaseTEntity.TenantId) => dynamicEntityInfo.TenantId,
+                nameof(IBaseEntity.DepartmentId) => dynamicEntityInfo.DepartmentId,
+                nameof(IBaseEntity.DepartmentName) => dynamicEntityInfo.DepartmentName,
+                nameof(IBaseEntity.CreatedUserId) => dynamicEntityInfo.CreatedUserId,
+                nameof(IBaseEntity.CreatedUserName) => dynamicEntityInfo.CreatedUserName,
+                nameof(IBaseEntity.CreatedTime) => dynamicEntityInfo.CreatedTime,
+                nameof(IBaseEntity.UpdatedUserId) => dynamicEntityInfo.UpdatedUserId,
+                nameof(IBaseEntity.UpdatedUserName) => dynamicEntityInfo.UpdatedUserName,
+                nameof(IBaseEntity.UpdatedTime) => dynamicEntityInfo.UpdatedTime,
+                _ => throw new NotImplementedException()
+            };
 
             return emptyList == null || emptyList.Any(empty => empty == value);
         }

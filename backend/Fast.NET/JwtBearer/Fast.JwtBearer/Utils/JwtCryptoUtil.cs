@@ -135,7 +135,7 @@ public class JwtCryptoUtil
             {"k", tokenParagraphs[1].Substring(s, l)}
         };
 
-        return GenerateToken(payload, JwtSettings?.RefreshTokenExpireTime);
+        return GenerateToken(payload, JwtSettings?.RefreshTokenExpireTime ?? 43200);
     }
 
     /// <summary>
@@ -422,7 +422,7 @@ public class JwtCryptoUtil
             // 验证生存期
             ValidateLifetime = jwtSettings.ValidateLifetime ?? false,
             // 过期时间容错值
-            ClockSkew = TimeSpan.FromSeconds(jwtSettings.ClockSkew ?? 0),
+            ClockSkew = TimeSpan.FromSeconds(jwtSettings.ClockSkew ?? 5),
         };
     }
 }

@@ -38,10 +38,10 @@ public class RESTfulResultProvider : IUnifyResultProvider
     /// <summary>
     /// 拦截返回状态码
     /// </summary>
-    /// <param name="context"><see cref="HttpContext"/></param>
+    /// <param name="httpContext"><see cref="HttpContext"/></param>
     /// <param name="statusCode"><see cref="int"/> 状态码</param>
     /// <returns></returns>
-    public async Task OnResponseStatusCodes(HttpContext context, int statusCode)
+    public async Task OnResponseStatusCodes(HttpContext httpContext, int statusCode)
     {
     }
 

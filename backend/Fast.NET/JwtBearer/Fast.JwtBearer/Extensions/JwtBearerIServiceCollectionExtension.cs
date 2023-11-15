@@ -16,6 +16,7 @@ using Fast.JwtBearer.Handlers;
 using Fast.JwtBearer.Options;
 using Fast.JwtBearer.Providers;
 using Fast.JwtBearer.Utils;
+using Fast.NET;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -57,6 +58,16 @@ public static class JwtBearerIServiceCollectionExtension
 
         // 读取配置
         JwtCryptoUtil.JwtSettings = configuration.GetSection("JWTSettings").Get<JWTSettingsOptions>();
+
+        // 查找Jwt验证提供器实现类
+        var jwtBearerHandle =
+            InternalPenetrates.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
+
+        if (jwtBearerHandle != null)
+        {
+            // 注册Jwt验证提供器实现类
+            services.AddSingleton(typeof(IJwtBearerHandle), jwtBearerHandle);
+        }
 
         // 注册授权策略提供器
         services.TryAddSingleton<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();

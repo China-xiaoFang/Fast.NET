@@ -14,15 +14,13 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Fast.NET;
 
-namespace Fast.Serialization.JsonConverter;
+namespace Fast.Serialization.JsonConverter.Internal;
 
 /// <summary>
 /// <see cref="IntJsonConverter"/> int 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class IntJsonConverter : JsonConverter<int>
+internal class IntJsonConverter : JsonConverter<int>
 {
     /// <summary>Reads and converts the JSON to type <see cref="int"/>.</summary>
     /// <param name="reader">The reader.</param>
@@ -48,8 +46,7 @@ public class IntJsonConverter : JsonConverter<int>
 /// <summary>
 /// <see cref="NullableIntJsonConverter"/> int? 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class NullableIntJsonConverter : JsonConverter<int?>
+internal class NullableIntJsonConverter : JsonConverter<int?>
 {
     /// <summary>Reads and converts the JSON to type <see cref="int"/>.</summary>
     /// <param name="reader">The reader.</param>

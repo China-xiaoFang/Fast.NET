@@ -17,6 +17,7 @@ using Fast.NET;
 using Fast.SpecificationProcessor.UnifyResult.Contexts;
 using Fast.SpecificationProcessor.UnifyResult.Filters;
 using Fast.SpecificationProcessor.UnifyResult.Metadatas;
+using Fast.SpecificationProcessor.UnifyResult.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -29,6 +30,56 @@ namespace Fast.SpecificationProcessor.UnifyResult.Extensions;
 [InternalSuppressSniffer]
 public static class UnifyResultIServiceCollectionExtension
 {
+    /// <summary>
+    /// 添加默认规范化结果服务
+    /// </summary>
+    /// <param name="mvcBuilder"></param>
+    /// <returns></returns>
+    public static IMvcBuilder AddUnifyResult(this IMvcBuilder mvcBuilder)
+    {
+        mvcBuilder.AddUnifyResult<RestfulResultProvider>(string.Empty);
+
+        return mvcBuilder;
+    }
+
+    /// <summary>
+    /// 添加默认规范化结果服务
+    /// </summary>
+    /// <param name="services"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddUnifyResult(this IServiceCollection services)
+    {
+        services.AddUnifyResult<RestfulResultProvider>(string.Empty);
+
+        return services;
+    }
+
+    /// <summary>
+    /// 添加默认规范化结果服务
+    /// </summary>
+    /// <param name="mvcBuilder"></param>
+    /// <param name="providerName"></param>
+    /// <returns></returns>
+    public static IMvcBuilder AddUnifyResult(this IMvcBuilder mvcBuilder, string providerName)
+    {
+        mvcBuilder.Services.AddUnifyResult<RestfulResultProvider>(providerName);
+
+        return mvcBuilder;
+    }
+
+    /// <summary>
+    /// 添加默认规范化结果服务
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="providerName"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddUnifyResult(this IServiceCollection services, string providerName)
+    {
+        services.AddUnifyResult<RestfulResultProvider>(providerName);
+
+        return services;
+    }
+
     /// <summary>
     /// 添加规范化结果服务
     /// </summary>
@@ -102,6 +153,17 @@ public static class UnifyResultIServiceCollectionExtension
 
         // 添加或替换规范化配置
         UnifyContext.UnifyProviders.AddOrUpdate(providerName, _ => metadata, (_, _) => metadata);
+
+        // 查找规范化响应数据提供器实现类
+        var unifyResponseProvider =
+            InternalPenetrates.EffectiveTypes.FirstOrDefault(f =>
+                typeof(IUnifyResponseProvider).IsAssignableFrom(f) && !f.IsInterface);
+
+        if (unifyResponseProvider != null)
+        {
+            // 注册规范化响应数据提供器实现类
+            services.AddSingleton(typeof(IUnifyResponseProvider), unifyResponseProvider);
+        }
 
         // 添加规范化提供器
         services.TryAddSingleton(providerType, providerType);

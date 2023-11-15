@@ -15,6 +15,7 @@
 using System.Collections;
 using System.Data;
 using System.Reflection;
+using Fast.NET;
 using SqlSugar;
 
 namespace Fast.SqlSugar.Extensions;
@@ -22,6 +23,7 @@ namespace Fast.SqlSugar.Extensions;
 /// <summary>
 /// <see cref="ISqlSugarClient"/> SqlSugar 拓展类
 /// </summary>
+[InternalSuppressSniffer]
 public static class SqlSugarExtension
 {
     /// <summary>
@@ -38,6 +40,16 @@ public static class SqlSugarExtension
         }
 
         return type.Name;
+    }
+
+    /// <summary>
+    /// 获取SugarTable特性
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static SugarTable GetSugarTableAttribute(this Type type)
+    {
+        return type.GetCustomAttribute<SugarTable>();
     }
 
     /// <summary>

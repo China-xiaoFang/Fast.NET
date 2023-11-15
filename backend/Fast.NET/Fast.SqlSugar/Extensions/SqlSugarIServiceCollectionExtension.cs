@@ -13,10 +13,8 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.NET;
-using Fast.SqlSugar.DataBaseUtils;
 using Fast.SqlSugar.Filters;
 using Fast.SqlSugar.Handlers;
-using Fast.SqlSugar.Internal;
 using Fast.SqlSugar.Options;
 using Fast.SqlSugar.Repository;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +27,7 @@ namespace Fast.SqlSugar.Extensions;
 /// <summary>
 /// <see cref="IServiceCollection"/> 拓展类
 /// </summary>
+[InternalSuppressSniffer]
 public static class SqlSugarIServiceCollectionExtension
 {
     /// <summary>
@@ -55,26 +54,14 @@ public static class SqlSugarIServiceCollectionExtension
         services.AddOptions<SnowflakeSettingsOptions>().BindConfiguration("SnowflakeSettings").ValidateDataAnnotations();
 
         // 获取配置选项
-        Penetrates.ConnectionSettings = configuration.GetSection("ConnectionSettings").Get<ConnectionSettingsOptions>();
-        Penetrates.SnowflakeSettings = configuration.GetSection("SnowflakeSettings").Get<SnowflakeSettingsOptions>();
+        SqlSugarContext.ConnectionSettings = configuration.GetSection("ConnectionSettings").Get<ConnectionSettingsOptions>();
+        SqlSugarContext.SnowflakeSettings = configuration.GetSection("SnowflakeSettings").Get<SnowflakeSettingsOptions>();
 
         // Add Snowflakes Id.
         // 设置雪花Id的workerId，确保每个实例workerId都应不同
-        YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = Penetrates.SnowflakeSettings?.WorkerId ?? 1});
+        YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings?.WorkerId ?? 1});
 
-        // 得到连接字符串
-        var connectionStr = DataBaseUtil.GetConnectionStr(Penetrates.ConnectionSettings);
-
-        Penetrates.DefaultConnectionConfig = new ConnectionConfig
-        {
-            ConfigId = Penetrates.ConnectionSettings.ConnectionId, // 此链接标志，用以后面切库使用
-            ConnectionString = connectionStr, // 核心库连接字符串
-            DbType = Penetrates.ConnectionSettings.DbType,
-            IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
-            InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
-            //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
-            ConfigureExternalServices = DataBaseUtil.GetSugarExternalServices(Penetrates.ConnectionSettings.DbType)
-        };
+        SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings);
 
         // 查找Sugar实体处理程序提供者
         var SqlSugarEntityHandlerType =
@@ -92,11 +79,11 @@ public static class SqlSugarIServiceCollectionExtension
             // 获取 Sugar实体处理 接口的实现类
             var sqlSugarEntityHandler = serviceProvider.GetService<ISqlSugarEntityHandler>();
 
-            var sqlSugarClient = new SqlSugarClient(Penetrates.DefaultConnectionConfig);
+            var sqlSugarClient = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfig);
 
             // 过滤器
-            SugarEntityFilter.LoadSugarFilter(sqlSugarClient, Penetrates.ConnectionSettings.CommandTimeOut,
-                Penetrates.ConnectionSettings.SugarSqlExecMaxSeconds, Penetrates.ConnectionSettings.DiffLog,
+            SugarEntityFilter.LoadSugarFilter(sqlSugarClient, SqlSugarContext.ConnectionSettings.CommandTimeOut,
+                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog,
                 sqlSugarEntityHandler);
 
             return sqlSugarClient;

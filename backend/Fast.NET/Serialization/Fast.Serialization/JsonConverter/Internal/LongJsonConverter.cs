@@ -14,102 +14,69 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Fast.NET;
 
-namespace Fast.Serialization.JsonConverter;
+namespace Fast.Serialization.JsonConverter.Internal;
 
 /// <summary>
-/// <see cref="DecimalJsonConverter"/> decimal 类型Json返回处理
+/// <see cref="LongJsonConverter"/> Long 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class DecimalJsonConverter : JsonConverter<decimal>
+internal class LongJsonConverter : JsonConverter<long>
 {
-    /// <summary>
-    /// 小数点位数
-    /// </summary>
-    public int? Places { get; set; }
-
-    public DecimalJsonConverter()
-    {
-        Places = null;
-    }
-
-    public DecimalJsonConverter(int places)
-    {
-        Places = places;
-    }
-
-    /// <summary>Reads and converts the JSON to type <see cref="decimal"/>.</summary>
+    /// <summary>Reads and converts the JSON to type <see cref="long"/>.</summary>
     /// <param name="reader">The reader.</param>
     /// <param name="typeToConvert">The type to convert.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
     /// <returns>The converted value.</returns>
-    public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Decimal类型可能为String类型，或者Number类型。
-        return reader.TokenType == JsonTokenType.String ? decimal.Parse(reader.GetString()) : reader.GetDecimal();
+        // 这里做处理，前端传入的Long类型可能为String类型，或者Number类型。
+        return reader.TokenType == JsonTokenType.String ? long.Parse(reader.GetString()) : reader.GetInt64();
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
     /// <param name="writer">The writer to write to.</param>
     /// <param name="value">The value to convert to JSON.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
-    public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, long value, JsonSerializerOptions options)
     {
-        writer.WriteNumberValue(Places == null ? (decimal) (double) value : Math.Round(value, Places.Value));
+        writer.WriteStringValue($"{value}");
     }
 }
 
 /// <summary>
-/// <see cref="NullableDecimalJsonConverter"/> decimal? 类型Json返回处理
+/// <see cref="NullableLongJsonConverter"/> Long? 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class NullableDecimalJsonConverter : JsonConverter<decimal?>
+internal class NullableLongJsonConverter : JsonConverter<long?>
 {
-    /// <summary>
-    /// 小数点位数
-    /// </summary>
-    public int? Places { get; set; }
-
-    public NullableDecimalJsonConverter()
-    {
-        Places = null;
-    }
-
-    public NullableDecimalJsonConverter(int places)
-    {
-        Places = places;
-    }
-
-    /// <summary>Reads and converts the JSON to type <see cref="decimal"/>.</summary>
+    /// <summary>Reads and converts the JSON to type <see cref="long"/>.</summary>
     /// <param name="reader">The reader.</param>
     /// <param name="typeToConvert">The type to convert.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
     /// <returns>The converted value.</returns>
-    public override decimal? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override long? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Decimal类型可能为String类型，或者Number类型。
+        // 这里做处理，前端传入的Long类型可能为String类型，或者Number类型。
         if (reader.TokenType != JsonTokenType.String)
-            return reader.GetDecimal();
+            return reader.GetInt64();
 
-        var decimalString = reader.GetString();
-        if (string.IsNullOrEmpty(decimalString))
+        var longString = reader.GetString();
+        if (string.IsNullOrEmpty(longString))
         {
             return null;
         }
 
-        return decimal.Parse(reader.GetString());
+        return long.Parse(reader.GetString());
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
     /// <param name="writer">The writer to write to.</param>
     /// <param name="value">The value to convert to JSON.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
-    public override void Write(Utf8JsonWriter writer, decimal? value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, long? value, JsonSerializerOptions options)
     {
         if (value == null)
             writer.WriteNullValue();
         else
-            writer.WriteNumberValue(Places == null ? (decimal) (double) value.Value : Math.Round(value.Value, Places.Value));
+            writer.WriteStringValue($"{value}");
     }
 }

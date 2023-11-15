@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Fast.Gateway 实体模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Fast.SqlSugar" Version="3.2.15" />
+	</ItemGroup>
+
+</Project>

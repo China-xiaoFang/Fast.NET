@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.SpecificationProcessor.UnifyResult.Contexts;
 
@@ -134,16 +135,12 @@ internal static class UnifyContext
         // 这是不使用 method.GetCustomAttribute<NonUnifyAttribute>() != null 的原因是，避免直接继承了 NonUnifyAttribute 使用自定义的特性
         var nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
-        // 判断方法头部是否贴有 NonUnifyAttribute 特性
-        if (!isSkip && method.CustomAttributes.Any(a => nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)))
-        {
-            isSkip = true;
-        }
-
         var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
         var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
 
         if (!isSkip && !method.CustomAttributes.Any(a =>
+                // 判断方法头部是否贴有 NonUnifyAttribute 特性
+                nonUnifyAttributeType.IsAssignableFrom(a.AttributeType) ||
                 // 判断方法头部是否贴有 原生的 HTTP 响应类型的特性 ProducesResponseTypeAttribute
                 producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType) ||
                 // 判断方法头部是否贴有 IApiResponseMetadataProvider 特性
@@ -170,6 +167,57 @@ internal static class UnifyContext
         }
 
         return unifyResult == null || isSkip;
+    }
+
+    /// <summary>
+    /// 检查请求响应数据是否进行规范化处理
+    /// </summary>
+    /// <param name="httpContext"><see cref="HttpContext"/></param>
+    /// <param name="method"><see cref="MethodInfo"/></param>
+    /// <param name="unifyResponse"><see cref="IUnifyResponseProvider"/></param>
+    /// <returns>返回 true 跳过处理，否则进行规范化处理</returns>
+    /// <returns><see cref="bool"/></returns>
+    internal static bool CheckResponseNonUnify(HttpContext httpContext, MethodInfo method,
+        out IUnifyResponseProvider unifyResponse)
+    {
+        // 判断是否跳过规范化处理
+        var isSkip = !EnabledUnifyHandler;
+
+        // 这是不使用 method.GetCustomAttribute<NonUnifyAttribute>() != null 的原因是，避免直接继承了 NonUnifyAttribute 使用自定义的特性
+        var nonUnifyAttributeType = typeof(NonUnifyAttribute);
+
+        var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
+        var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
+
+        if (!isSkip && !method.CustomAttributes.Any(a =>
+                // 判断方法头部是否贴有 NonUnifyAttribute 特性
+                nonUnifyAttributeType.IsAssignableFrom(a.AttributeType) ||
+                // 判断方法头部是否贴有 原生的 HTTP 响应类型的特性 ProducesResponseTypeAttribute
+                producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType) ||
+                // 判断方法头部是否贴有 IApiResponseMetadataProvider 特性
+                iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType)) &&
+            // 判断方法所在的类是否贴有 NonUnifyAttribute 特性
+            method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true)
+        {
+            isSkip = true;
+        }
+
+        // 判断方法所属类型的程序集的名称以 "Microsoft.AspNetCore.OData" 
+        if (!isSkip && method.ReflectedType?.Assembly?.GetName()?.Name?.StartsWith("Microsoft.AspNetCore.OData") == true)
+        {
+            isSkip = true;
+        }
+
+        if (isSkip)
+        {
+            unifyResponse = null;
+        }
+        else
+        {
+            unifyResponse = httpContext.RequestServices.GetService<IUnifyResponseProvider>();
+        }
+
+        return unifyResponse == null || isSkip;
     }
 
     /// <summary>

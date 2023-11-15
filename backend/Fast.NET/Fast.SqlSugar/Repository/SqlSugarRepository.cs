@@ -13,11 +13,9 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Linq.Expressions;
-using Fast.NET;
-using Fast.SqlSugar.DataBaseUtils;
 using Fast.SqlSugar.Filters;
 using Fast.SqlSugar.Handlers;
-using Fast.SqlSugar.Internal;
+using Fast.SqlSugar.IBaseEntities;
 using Fast.SqlSugar.Options;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
@@ -27,7 +25,6 @@ namespace Fast.SqlSugar.Repository;
 /// <summary>
 /// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar仓储实现
 /// </summary>
-[InternalSuppressSniffer]
 public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepository<TEntity> where TEntity : class, new()
 {
     /// <summary>
@@ -36,10 +33,10 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// 
+    /// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar仓储实现
     /// </summary>
     /// <param name="serviceProvider"></param>
-    public SqlSugarRepository(IServiceProvider serviceProvider) : base(Penetrates.DefaultConnectionConfig)
+    public SqlSugarRepository(IServiceProvider serviceProvider) : base(SqlSugarContext.DefaultConnectionConfig)
     {
         _serviceProvider = serviceProvider;
 
@@ -51,34 +48,22 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
         if (connectionSettings != null)
         {
             DataBaseInfo = connectionSettings;
-            if (connectionSettings.ConnectionId != Penetrates.DefaultConnectionConfig.ConfigId)
+            if (connectionSettings.ConnectionId != SqlSugarContext.DefaultConnectionConfig.ConfigId)
             {
-                // 得到连接字符串
-                var connectionStr = DataBaseUtil.GetConnectionStr(connectionSettings);
-
-                var newConnectionConfig = new ConnectionConfig
-                {
-                    ConfigId = Penetrates.ConnectionSettings.ConnectionId, // 此链接标志，用以后面切库使用
-                    ConnectionString = connectionStr, // 核心库连接字符串
-                    DbType = Penetrates.ConnectionSettings.DbType,
-                    IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
-                    InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
-                    //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
-                    ConfigureExternalServices = DataBaseUtil.GetSugarExternalServices(Penetrates.ConnectionSettings.DbType)
-                };
+                var newConnectionConfig = SqlSugarContext.GetConnectionConfig(connectionSettings);
 
                 // 重新初始化Context
                 InitContext(newConnectionConfig);
 
                 // 加载过滤器
-                SugarEntityFilter.LoadSugarFilter(Context, Penetrates.ConnectionSettings.CommandTimeOut,
-                    Penetrates.ConnectionSettings.SugarSqlExecMaxSeconds, Penetrates.ConnectionSettings.DiffLog,
+                SugarEntityFilter.LoadSugarFilter(Context, SqlSugarContext.ConnectionSettings.CommandTimeOut,
+                    SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog,
                     sqlSugarEntityHandler);
             }
         }
         else
         {
-            DataBaseInfo = Penetrates.ConnectionSettings;
+            DataBaseInfo = SqlSugarContext.ConnectionSettings;
         }
     }
 
@@ -681,6 +666,66 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     public async Task<int> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         return await Deleteable<TEntity>().Where(whereExpression).ExecuteCommandAsync();
+    }
+
+    /// <summary>
+    /// 自定义条件逻辑删除记录
+    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public int LogicDelete(Expression<Func<TEntity, bool>> whereExpression)
+    {
+        // 获取 TEntity 的类型
+        var entityType = typeof(TEntity);
+
+        // 判断是否继承了 IBaseDeletedEntity
+        if (!entityType.GetInterfaces().Contains(typeof(IBaseDeletedEntity)))
+            throw new InvalidOperationException(
+                $"{nameof(TEntity)} does not inherit {nameof(IBaseDeletedEntity)} interface, Logical deletion cannot be used.");
+
+        // 反射创建实体
+        var deletedEntity = Activator.CreateInstance<TEntity>();
+
+        // 获取 IsDeleted 字段属性
+        var isDeletedProperty = entityType.GetProperty(nameof(IBaseDeletedEntity.IsDeleted));
+
+        // 设置 IsDeleted 字段属性值
+        isDeletedProperty!.SetValue(deletedEntity, true);
+
+        // 执行逻辑删除
+        return Updateable<TEntity>().SetColumns(_ => deletedEntity, true).Where(whereExpression).ExecuteCommand();
+    }
+
+    /// <summary>
+    /// 自定义条件逻辑删除记录
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public async Task<int> LogicDeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
+    {
+        // 获取 TEntity 的类型
+        var entityType = typeof(TEntity);
+
+        // 判断是否继承了 IBaseDeletedEntity
+        if (!entityType.GetInterfaces().Contains(typeof(IBaseDeletedEntity)))
+            throw new InvalidOperationException(
+                $"{nameof(TEntity)} does not inherit {nameof(IBaseDeletedEntity)} interface, Logical deletion cannot be used.");
+
+        // 反射创建实体
+        var deletedEntity = Activator.CreateInstance<TEntity>();
+
+        // 获取 IsDeleted 字段属性
+        var isDeletedProperty = entityType.GetProperty(nameof(IBaseDeletedEntity.IsDeleted));
+
+        // 设置 IsDeleted 字段属性值
+        isDeletedProperty!.SetValue(deletedEntity, true);
+
+        // 执行逻辑删除
+        return await Updateable<TEntity>().SetColumns(_ => deletedEntity, true).Where(whereExpression).ExecuteCommandAsync();
     }
 
     #endregion

@@ -14,16 +14,14 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Fast.NET;
 
-namespace Fast.Serialization.JsonConverter;
+namespace Fast.Serialization.JsonConverter.Internal;
 
 /// <summary>
 /// <see cref="ExceptionJsonConverter"/> Exception 类型Json返回日期处理
 /// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
 /// </summary>
-[InternalSuppressSniffer]
-public class ExceptionJsonConverter : JsonConverter<Exception>
+internal class ExceptionJsonConverter : JsonConverter<Exception>
 {
     /// <summary>Reads and converts the JSON to type <see cref="Exception"/>.</summary>
     /// <param name="reader">The reader.</param>

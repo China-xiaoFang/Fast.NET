@@ -84,6 +84,68 @@
             <returns><see cref="T:System.Int64"/></returns>
             <exclude />
         </member>
+        <member name="T:Fast.NET.UserAgentInfo">
+            <summary>
+            <see cref="T:Fast.NET.UserAgentInfo"/> 用户代理信息
+            </summary>
+            <exclude />
+        </member>
+        <member name="P:Fast.NET.UserAgentInfo.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.NET.UserAgentInfo.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.NET.UserAgentInfo.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="T:Fast.NET.WanNetIPInfo">
+            <summary>
+            <see cref="T:Fast.NET.WanNetIPInfo"/> 公网IP信息
+            </summary>
+            <exclude />
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.Ip">
+            <summary>
+            Ip地址
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.ProvinceZipCode">
+            <summary>
+            省份邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.CityZipCode">
+            <summary>
+            城市邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.Address">
+            <summary>
+            地理信息
+            </summary>
+        </member>
+        <member name="P:Fast.NET.WanNetIPInfo.Operator">
+            <summary>
+            运营商
+            </summary>
+        </member>
         <member name="T:Fast.NET.InternalAssemblyExtension">
             <summary>
             <see cref="T:System.Reflection.Assembly"/> 内部拓展类
@@ -174,6 +236,94 @@
             设置规范化文档退出登录
             </summary>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.LanIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            局域网 IPv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.LanIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            局域网 IPv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.LocalIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            本机 IPv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.LocalIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            本机 IPv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RemoteIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            远程 Ipv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RemoteIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            远程 Ipv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RequestUserAgent(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            请求用户代理字符串（User-Agent）
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="userAgentHeaderKey">默认从 “User-Agent” 获取</param>
+            <returns><see cref="T:System.String"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RequestUserAgentInfo(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            请求用户代理信息（User-Agent）
+            <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 null</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:Fast.NET.UserAgentInfo"/></returns>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RemoteIpv4Info(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            远程 Ipv4 地址信息
+            <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="ip"><see cref="T:System.String"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
+            <returns><see cref="T:Fast.NET.WanNetIPInfo"/></returns>
+            <exception cref="T:System.Exception"></exception>
+            <exclude />
+        </member>
+        <member name="M:Fast.NET.InternalHttpContextExtension.RemoteIpv4InfoAsync(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            远程 Ipv4 地址信息
+            <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="ip"><see cref="T:System.String"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
+            <returns><see cref="T:Fast.NET.WanNetIPInfo"/></returns>
+            <exception cref="T:System.Exception"></exception>
             <exclude />
         </member>
         <member name="T:Fast.NET.InternalMethodInfoExtension">
@@ -749,6 +899,7 @@
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.ValidateIssuerSigningKey">
             <summary>
             验证签发方密钥
+            <remarks>默认false</remarks>
             </summary>
         </member>
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.IssuerSigningKey">
@@ -759,6 +910,7 @@
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.ValidateIssuer">
             <summary>
             验证签发方
+            <remarks>默认false</remarks>
             </summary>
         </member>
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.ValidIssuer">
@@ -769,6 +921,7 @@
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.ValidateAudience">
             <summary>
             验证签收方
+            <remarks>默认false</remarks>
             </summary>
         </member>
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.ValidAudience">
@@ -779,21 +932,25 @@
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.ValidateLifetime">
             <summary>
             验证生存期
+            <remarks>默认false</remarks>
             </summary>
         </member>
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.ClockSkew">
             <summary>
             过期时间容错值，解决服务器端时间不同步问题（秒）
+            <remarks>默认5秒</remarks>
             </summary>
         </member>
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.TokenExpiredTime">
             <summary>
             Token 过期时间（分钟）
+            <remarks>默认20分钟</remarks>
             </summary>
         </member>
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.RefreshTokenExpireTime">
             <summary>
             刷新Token 过期时间（分钟）
+            <remarks>默认43200分钟(30天)</remarks>
             </summary>
         </member>
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.Algorithm">
@@ -810,6 +967,7 @@
             ES384
             ES512
             EdDSA
+            <remarks>默认HS256</remarks>
             </summary>
         </member>
         <member name="T:Fast.JwtBearer.Providers.AppAuthorizationPolicyProvider">

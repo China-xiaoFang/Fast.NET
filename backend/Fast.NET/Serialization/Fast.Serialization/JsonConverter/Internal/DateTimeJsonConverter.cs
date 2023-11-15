@@ -15,15 +15,13 @@
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Fast.NET;
 
-namespace Fast.Serialization.JsonConverter;
+namespace Fast.Serialization.JsonConverter.Internal;
 
 /// <summary>
 /// <see cref="DateTimeJsonConverter"/> DateTime 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class DateTimeJsonConverter : JsonConverter<DateTime>
+internal class DateTimeJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
     /// 格式化
@@ -116,8 +114,7 @@ public class DateTimeJsonConverter : JsonConverter<DateTime>
 /// <summary>
 /// <see cref="NullableDateTimeJsonConverter"/> DateTime? 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
+internal class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
     /// 格式化

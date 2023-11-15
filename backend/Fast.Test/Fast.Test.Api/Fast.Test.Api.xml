@@ -244,7 +244,7 @@
             <summary>
             拦截返回状态码
             </summary>
-            <param name="context"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
             <param name="statusCode"><see cref="T:System.Int32"/> 状态码</param>
             <returns></returns>
         </member>

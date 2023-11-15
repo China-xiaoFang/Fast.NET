@@ -9,7 +9,7 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageOutputPath>$(SolutionDir)..\..\nupkgs</PackageOutputPath>
-		<Version>3.2.13</Version>
+		<Version>3.2.20</Version>
 		<PackageVersion>$(Version)</PackageVersion>
 		<Authors>1.8K仔</Authors>
 		<Description>一个快速构建项目的 .NET 框架。</Description>
@@ -32,13 +32,14 @@
 	</ItemGroup>
 
 	<!-- NU1803 是为了解决使用 Http 源的Nuget包导致的警告 -->
+	<!-- IDE0017 是为了解决可以简化对象初始化导致的警告 -->
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<NoWarn>1701;1702;1591;NU1803</NoWarn>
+		<NoWarn>1701;1702;1591;NU1803;IDE0017</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<NoWarn>1701;1702;1591;NU1803</NoWarn>
+		<NoWarn>1701;1702;1591;NU1803;IDE0017</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Fast.Gateway 服务模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)Core\Fast.Gateway.Core\Fast.Gateway.Core.csproj" />
+		<ProjectReference Include="$(SolutionDir)Entities\Fast.Gateway.Entities\Fast.Gateway.Entities.csproj" />
+	</ItemGroup>
+
+</Project>

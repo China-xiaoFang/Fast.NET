@@ -52,9 +52,9 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
 
         if (jwtBearerHandle != null)
         {
-            var isAuthorizeSuccess = true;
             Exception authorizeException = null;
 
+            bool isAuthorizeSuccess;
             try
             {
                 isAuthorizeSuccess = await jwtBearerHandle.AuthorizeHandle(context, httpContext);
@@ -70,7 +70,7 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
             {
                 foreach (var requirement in pendingRequirements)
                 {
-                    var isPermissionSuccess = true;
+                    bool isPermissionSuccess;
                     Exception permissionException = null;
 
                     try

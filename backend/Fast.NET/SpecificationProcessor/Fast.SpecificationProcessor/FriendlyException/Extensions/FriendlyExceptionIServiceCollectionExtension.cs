@@ -14,6 +14,7 @@
 
 using Fast.NET;
 using Fast.SpecificationProcessor.FriendlyException.Filters;
+using Fast.SpecificationProcessor.FriendlyException.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -44,6 +45,17 @@ public static class ExceptionIServiceCollectionExtension
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddFriendlyException(this IServiceCollection services)
     {
+        // 查找全局异常处理实现类
+        var globalExceptionHandler =
+            InternalPenetrates.EffectiveTypes.FirstOrDefault(f =>
+                typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
+
+        if (globalExceptionHandler != null)
+        {
+            // 注册全局异常处理实现类
+            services.AddSingleton(typeof(IGlobalExceptionHandler), globalExceptionHandler);
+        }
+
         services.Configure<MvcOptions>(options => { options.Filters.Add<FriendlyExceptionFilter>(); });
 
         return services;

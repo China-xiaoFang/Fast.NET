@@ -21,6 +21,7 @@ public sealed class JWTSettingsOptions
 {
     /// <summary>
     /// 验证签发方密钥
+    /// <remarks>默认false</remarks>
     /// </summary>
     public bool? ValidateIssuerSigningKey { get; set; }
 
@@ -31,6 +32,7 @@ public sealed class JWTSettingsOptions
 
     /// <summary>
     /// 验证签发方
+    /// <remarks>默认false</remarks>
     /// </summary>
     public bool? ValidateIssuer { get; set; }
 
@@ -41,6 +43,7 @@ public sealed class JWTSettingsOptions
 
     /// <summary>
     /// 验证签收方
+    /// <remarks>默认false</remarks>
     /// </summary>
     public bool? ValidateAudience { get; set; }
 
@@ -51,21 +54,25 @@ public sealed class JWTSettingsOptions
 
     /// <summary>
     /// 验证生存期
+    /// <remarks>默认false</remarks>
     /// </summary>
     public bool? ValidateLifetime { get; set; }
 
     /// <summary>
     /// 过期时间容错值，解决服务器端时间不同步问题（秒）
+    /// <remarks>默认5秒</remarks>
     /// </summary>
     public long? ClockSkew { get; set; }
 
     /// <summary>
     /// Token 过期时间（分钟）
+    /// <remarks>默认20分钟</remarks>
     /// </summary>
     public long? TokenExpiredTime { get; set; }
 
     /// <summary>
     /// 刷新Token 过期时间（分钟）
+    /// <remarks>默认43200分钟(30天)</remarks>
     /// </summary>
     public long? RefreshTokenExpireTime { get; set; }
 
@@ -82,6 +89,7 @@ public sealed class JWTSettingsOptions
     /// ES384
     /// ES512
     /// EdDSA
+    /// <remarks>默认HS256</remarks>
     /// </summary>
     public string Algorithm { get; set; }
 }

@@ -14,72 +14,99 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Fast.NET;
 
-namespace Fast.Serialization.JsonConverter;
+namespace Fast.Serialization.JsonConverter.Internal;
 
 /// <summary>
-/// <see cref="LongJsonConverter"/> Long 类型Json返回处理
+/// <see cref="DoubleJsonConverter"/> double 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class LongJsonConverter : JsonConverter<long>
+internal class DoubleJsonConverter : JsonConverter<double>
 {
-    /// <summary>Reads and converts the JSON to type <see cref="long"/>.</summary>
+    /// <summary>
+    /// 小数点位数
+    /// </summary>
+    public int? Places { get; set; }
+
+    public DoubleJsonConverter()
+    {
+        Places = null;
+    }
+
+    public DoubleJsonConverter(int places)
+    {
+        Places = places;
+    }
+
+    /// <summary>Reads and converts the JSON to type <see cref="double"/>.</summary>
     /// <param name="reader">The reader.</param>
     /// <param name="typeToConvert">The type to convert.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
     /// <returns>The converted value.</returns>
-    public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Long类型可能为String类型，或者Number类型。
-        return reader.TokenType == JsonTokenType.String ? long.Parse(reader.GetString()) : reader.GetInt64();
+        // 这里做处理，前端传入的Double类型可能为String类型，或者Number类型。
+        return reader.TokenType == JsonTokenType.String ? double.Parse(reader.GetString()) : reader.GetDouble();
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
     /// <param name="writer">The writer to write to.</param>
     /// <param name="value">The value to convert to JSON.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
-    public override void Write(Utf8JsonWriter writer, long value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, double value, JsonSerializerOptions options)
     {
-        writer.WriteStringValue($"{value}");
+        writer.WriteNumberValue(Places == null ? value : Math.Round(value, Places.Value));
     }
 }
 
 /// <summary>
-/// <see cref="NullableLongJsonConverter"/> Long? 类型Json返回处理
+/// <see cref="NullableDoubleJsonConverter"/> double? 类型Json返回处理
 /// </summary>
-[InternalSuppressSniffer]
-public class NullableLongJsonConverter : JsonConverter<long?>
+internal class NullableDoubleJsonConverter : JsonConverter<double?>
 {
-    /// <summary>Reads and converts the JSON to type <see cref="long"/>.</summary>
+    /// <summary>
+    /// 小数点位数
+    /// </summary>
+    public int? Places { get; set; }
+
+    public NullableDoubleJsonConverter()
+    {
+        Places = null;
+    }
+
+    public NullableDoubleJsonConverter(int places)
+    {
+        Places = places;
+    }
+
+    /// <summary>Reads and converts the JSON to type <see cref="double"/>.</summary>
     /// <param name="reader">The reader.</param>
     /// <param name="typeToConvert">The type to convert.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
     /// <returns>The converted value.</returns>
-    public override long? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override double? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Long类型可能为String类型，或者Number类型。
+        // 这里做处理，前端传入的Double类型可能为String类型，或者Number类型。
         if (reader.TokenType != JsonTokenType.String)
-            return reader.GetInt64();
+            return reader.GetDouble();
 
-        var longString = reader.GetString();
-        if (string.IsNullOrEmpty(longString))
+        var doubleString = reader.GetString();
+        if (string.IsNullOrEmpty(doubleString))
         {
             return null;
         }
 
-        return long.Parse(reader.GetString());
+        return double.Parse(reader.GetString());
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
     /// <param name="writer">The writer to write to.</param>
     /// <param name="value">The value to convert to JSON.</param>
     /// <param name="options">An object that specifies serialization options to use.</param>
-    public override void Write(Utf8JsonWriter writer, long? value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, double? value, JsonSerializerOptions options)
     {
         if (value == null)
             writer.WriteNullValue();
         else
-            writer.WriteStringValue($"{value}");
+            writer.WriteNumberValue(Places == null ? value.Value : Math.Round(value.Value, Places.Value));
     }
 }
