@@ -1221,7 +1221,7 @@
         </member>
         <member name="T:Fast.Serialization.JsonConverter.Internal.ExceptionJsonConverter">
             <summary>
-            <see cref="T:Fast.Serialization.JsonConverter.Internal.ExceptionJsonConverter"/> Exception 类型Json返回日期处理
+            <see cref="T:Fast.Serialization.JsonConverter.Internal.ExceptionJsonConverter"/> Exception 类型Json返回处理
             <remarks>解决 <see cref="T:System.Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
             </summary>
         </member>
