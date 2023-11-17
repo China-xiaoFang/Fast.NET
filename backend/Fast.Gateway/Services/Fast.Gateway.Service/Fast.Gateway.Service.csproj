@@ -9,4 +9,9 @@
 		<ProjectReference Include="$(SolutionDir)Entities\Fast.Gateway.Entities\Fast.Gateway.Entities.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ProjectVersions\" />
+	  <Folder Include="ProjectStartLogs\" />
+	</ItemGroup>
+
 </Project>

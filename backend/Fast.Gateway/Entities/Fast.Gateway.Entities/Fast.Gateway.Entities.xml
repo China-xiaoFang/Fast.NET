@@ -4,5 +4,211 @@
         <name>Fast.Gateway.Entities</name>
     </assembly>
     <members>
+        <member name="T:Fast.Gateway.Entities.Entities.Consuls.ConsulDataCenter">
+            <summary>
+            <see cref="T:Fast.Gateway.Entities.Entities.Consuls.ConsulDataCenter"/> Consul数据中心信息表
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Consuls.ConsulDataCenter.DataCenterName">
+            <summary>
+            数据中心名称
+            </summary>
+        </member>
+        <member name="T:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValue">
+            <summary>
+            <see cref="T:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValue"/> Consul Key/Value 信息表
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValue.KeyName">
+            <summary>
+            Key路径
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValue.ValueJson">
+            <summary>
+            Value内容（JSON格式）
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValue.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="T:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValueBackup">
+            <summary>
+            <see cref="T:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValueBackup"/> Consul Key/Value 信息备份表
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValueBackup.DataCenterID">
+            <summary>
+            数据中心Id
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValueBackup.KeyValueID">
+            <summary>
+            Key/Value Id
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValueBackup.ValueJson">
+            <summary>
+            备份Value内容（JSON格式）
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Consuls.ConsulKeyValueBackup.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="T:Fast.Gateway.Entities.Entities.Projects.Project">
+             <summary>
+             <see cref="T:Fast.Gateway.Entities.Entities.Projects.Project"/> 项目信息表
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.Project.ProjectName">
+             <summary>
+             项目名称 
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.Project.Enabled">
+             <summary>
+             启用 
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.Project.FilePath">
+            <summary>
+            项目文件夹地址
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.Project.ProjectVersions">
+            <summary>
+            版本信息
+            </summary>
+        </member>
+        <member name="T:Fast.Gateway.Entities.Entities.Projects.ProjectStartLog">
+             <summary>
+             <see cref="T:Fast.Gateway.Entities.Entities.Projects.ProjectStartLog"/> 项目启动日志表
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectStartLog.ProjectId">
+            <summary>
+            项目Id
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectStartLog.ProjectVersionId">
+            <summary>
+            项目版本Id
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectStartLog.StartFilePath">
+            <summary>
+            启动文件路径
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectStartLog.StartIP">
+            <summary>
+            启用IP地址
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectStartLog.StartPort">
+            <summary>
+            启动端口
+            </summary>
+        </member>
+        <member name="T:Fast.Gateway.Entities.Entities.Projects.ProjectVersion">
+            <summary>
+            <see cref="T:Fast.Gateway.Entities.Entities.Projects.ProjectVersion"/> 项目版本信息表
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.ProjectId">
+            <summary>
+            项目Id
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.MainVersion">
+            <summary>
+            主版本号
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.SubVersion">
+            <summary>
+            次版本号
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.ReviseVersion">
+            <summary>
+            修订版本号
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.SubReviseVersion">
+            <summary>
+            副修订版本号
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.IsOnline">
+            <summary>
+            是否在线
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.FilePath">
+            <summary>
+            项目版本文件夹地址
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.HealthCheckUrl">
+            <summary>
+            健康检查地址
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.StartFileName">
+            <summary>
+            启动文件名称
+            如果不填写，则会默认获取文件夹根目录下第一个 exe 文件名称的 dll 文件
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.StartIP">
+            <summary>
+            当前启用IP地址
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.StartPort">
+            <summary>
+            当前启动端口
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.LaseOnlineTime">
+            <summary>
+            最后在线时间
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.Projects.ProjectVersion.Project">
+            <summary>
+            项目
+            </summary>
+        </member>
+        <member name="T:Fast.Gateway.Entities.Entities.User.UserAccount">
+            <summary>
+            用户账号
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.User.UserAccount.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.User.UserAccount.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.User.UserAccount.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Fast.Gateway.Entities.Entities.User.UserAccount.Enabled">
+            <summary>
+            是否启用
+            </summary>
+        </member>
     </members>
 </doc>
