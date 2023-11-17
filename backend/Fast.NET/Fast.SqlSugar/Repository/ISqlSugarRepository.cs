@@ -189,32 +189,6 @@ public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : 
     ISugarQueryable<TEntity> Where(bool condition, Expression<Func<TEntity, bool>> predicate);
 
     /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <returns></returns>
-    List<TEntity> AsEnumerable();
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    List<TEntity> AsEnumerable(Expression<Func<TEntity, bool>> predicate);
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <returns></returns>
-    Task<List<TEntity>> AsAsyncEnumerable();
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    Task<List<TEntity>> AsAsyncEnumerable(Expression<Func<TEntity, bool>> predicate);
-
-    /// <summary>
     /// 新增一条记录
     /// </summary>
     /// <param name="entity"></param>

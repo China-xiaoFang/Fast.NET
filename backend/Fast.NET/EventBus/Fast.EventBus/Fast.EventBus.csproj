@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 框架事件总线模块库。</Description>
+		<Description>Fast.NET 框架事件总线模块库。（将在后续的版本中进行删除，请使用 Furion 官方的 Jaina 包）</Description>
 	</PropertyGroup>
 
 </Project>
