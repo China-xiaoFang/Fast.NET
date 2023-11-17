@@ -308,44 +308,6 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
         return AsQueryable().WhereIF(condition, predicate);
     }
 
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <returns></returns>
-    public List<TEntity> AsEnumerable()
-    {
-        return AsQueryable().ToList();
-    }
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    public List<TEntity> AsEnumerable(Expression<Func<TEntity, bool>> predicate)
-    {
-        return AsQueryable(predicate).ToList();
-    }
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <returns></returns>
-    public Task<List<TEntity>> AsAsyncEnumerable()
-    {
-        return AsQueryable().ToListAsync();
-    }
-
-    /// <summary>
-    /// 直接返回数据库结果
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <returns></returns>
-    public Task<List<TEntity>> AsAsyncEnumerable(Expression<Func<TEntity, bool>> predicate)
-    {
-        return AsQueryable(predicate).ToListAsync();
-    }
-
     #endregion
 
     #region Add

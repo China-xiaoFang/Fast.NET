@@ -18,7 +18,7 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization.JsonConverter.Internal;
 
 /// <summary>
-/// <see cref="ExceptionJsonConverter"/> Exception 类型Json返回日期处理
+/// <see cref="ExceptionJsonConverter"/> Exception 类型Json返回处理
 /// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
 /// </summary>
 internal class ExceptionJsonConverter : JsonConverter<Exception>

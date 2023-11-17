@@ -1105,6 +1105,71 @@
             实体类型
             </summary>
         </member>
+        <member name="T:Fast.SqlSugar.Definition.SqlSugarPageInput">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Definition.SqlSugarPageInput"/> SqlSugar 统一分页输入
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageInput.PageIndex">
+            <summary>
+            当前页面索引值，默认为1
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageInput.PageSize">
+            <summary>
+            页码容量
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageInput.SearchValue">
+            <summary>
+            搜索值
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageInput.SearchTimeList">
+            <summary>
+            搜索开始时间
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.Definition.SqlSugarPageResult`1">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Definition.SqlSugarPageResult`1"/> SqlSugar 统一分页返回结果类
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageResult`1.PageIndex">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageResult`1.PageSize">
+            <summary>
+            当前页码
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageResult`1.TotalPage">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageResult`1.TotalRows">
+            <summary>
+            总条数
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageResult`1.Rows">
+            <summary>
+            Data
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageResult`1.HasPrevPages">
+            <summary>
+            是否有上一页
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Definition.SqlSugarPageResult`1.HasNextPages">
+            <summary>
+            是否有下一页
+            </summary>
+        </member>
         <member name="T:Fast.SqlSugar.Extensions.SqlSugarExtension">
             <summary>
             <see cref="T:SqlSugar.ISqlSugarClient"/> SqlSugar 拓展类
@@ -1145,6 +1210,95 @@
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
             <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
             <returns>服务集合</returns>
+        </member>
+        <member name="T:Fast.SqlSugar.Extensions.SqlSugarPageExtension">
+            <summary>
+            <see cref="T:SqlSugar.ISugarQueryable`1"/> ISugarQueryable 分页拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.Definition.SqlSugarPageInput)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.Definition.SqlSugarPageInput)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.Definition.SqlSugarPageInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"></param>
+            <param name="input"></param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.Definition.SqlSugarPageInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"></param>
+            <param name="input"></param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <param name="expression"></param>
+            <returns></returns>
         </member>
         <member name="T:Fast.SqlSugar.Filters.SugarEntityFilter">
             <summary>
@@ -1662,32 +1816,6 @@
             <param name="predicate"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AsEnumerable">
-            <summary>
-            直接返回数据库结果
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AsEnumerable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>
-            直接返回数据库结果
-            </summary>
-            <param name="predicate"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AsAsyncEnumerable">
-            <summary>
-            直接返回数据库结果
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AsAsyncEnumerable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>
-            直接返回数据库结果
-            </summary>
-            <param name="predicate"></param>
-            <returns></returns>
-        </member>
         <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Insert(`0)">
             <summary>
             新增一条记录
@@ -2101,32 +2229,6 @@
             根据表达式查询多条记录
             </summary>
             <param name="condition"></param>
-            <param name="predicate"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AsEnumerable">
-            <summary>
-            直接返回数据库结果
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AsEnumerable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>
-            直接返回数据库结果
-            </summary>
-            <param name="predicate"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AsAsyncEnumerable">
-            <summary>
-            直接返回数据库结果
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AsAsyncEnumerable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>
-            直接返回数据库结果
-            </summary>
             <param name="predicate"></param>
             <returns></returns>
         </member>
