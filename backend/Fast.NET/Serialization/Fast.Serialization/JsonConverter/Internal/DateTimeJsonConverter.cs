@@ -52,7 +52,7 @@ internal class DateTimeJsonConverter : JsonConverter<DateTime>
         {
             var result = DateTime.Parse(value);
 
-            return result.Date;
+            return result;
         }
 
         switch (value.Length)
@@ -145,7 +145,7 @@ internal class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
         {
             var result = DateTime.Parse(value);
 
-            return result.Date;
+            return result;
         }
 
         switch (value.Length)

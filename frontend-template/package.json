@@ -1,0 +1,92 @@
+{
+  "name": "fast-net",
+  "version": "1.0.0",
+  "description": "Fast.NET 前端快速成型框架。基于 Vue3、TypeScript、Element Plus、Pinia 和 Vite 等主流技术。",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "小方",
+    "email": "2875616188@qq.com",
+    "url": "https://gitee.com/Net-18K"
+  },
+  "contributors": [
+    {
+      "name": "小方",
+      "email": "2875616188@qq.com",
+      "url": "https://gitee.com/Net-18K"
+    }
+  ],
+  "homepage": "fast.18kboy.icu",
+  "repository": {
+    "type": "gitee",
+    "url": "https://gitee.com/Net-18K/fast.net"
+  },
+  "bugs": {
+    "url": "https://gitee.com/Net-18K/fast.net/issues",
+    "email": "2875616188@qq.com"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "check": "vue-tsc"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "axios": "^1.6.2",
+    "element-plus": "^2.4.2",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.0",
+    "screenfull": "^6.0.2",
+    "sortablejs": "^1.15.0",
+    "vue": "^3.3.8",
+    "vue-i18n": "^9.7.0",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.3",
+    "@types/nprogress": "^0.2.3",
+    "@types/sortablejs": "^1.15.6",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-vue": "^9.18.1",
+    "prettier": "^3.1.0",
+    "sass": "^1.69.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
+    "vue-eslint-parser": "^9.3.2",
+    "vue-tsc": "^1.8.22"
+  },
+  "files": [
+    "README.md",
+    "README.zh.md",
+    "../LICENSE",
+    "../Fast.png"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "browserslist": {
+    "production": [
+      "> 1%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "keywords": [
+    "Fast.NET",
+    "1.8K仔",
+    "Web Admin",
+    "Vue3",
+    "TypeScript",
+    "Element Plus",
+    "Pinia",
+    "Vite"
+  ]
+}

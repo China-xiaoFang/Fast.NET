@@ -17,7 +17,7 @@
 		<Product>Fast</Product>
 		<Copyright>版权所有 © 2018-2023 1.8K仔</Copyright>
 		<PackageProjectUrl>https://18kboy.icu</PackageProjectUrl>
-		<PackageIcon>Fast.jpg</PackageIcon>
+		<PackageIcon>Fast.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://gitee.com/Net-18K/Fast.NET</RepositoryUrl>
 		<RepositoryType>Gitee</RepositoryType>
