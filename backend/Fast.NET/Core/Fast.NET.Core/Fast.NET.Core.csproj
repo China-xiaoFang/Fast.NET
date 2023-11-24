@@ -16,9 +16,4 @@
 		<None Include="$(SolutionDir)Core\Fast.NET.Core\InternalResources\*.md" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Compile Include="InternalResources\Definition\UserAgentInfo.cs" />
-	  <Compile Include="InternalResources\Definition\WanNetIPInfo.cs" />
-	</ItemGroup>
-
 </Project>

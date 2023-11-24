@@ -12,15 +12,14 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.NET;
+// ReSharper disable once CheckNamespace
 
-namespace Fast.IaaS.Utils;
+namespace Fast.NET;
 
 /// <summary>
-/// <see cref="GuidUtil"/> Guid 工具类
+/// <see cref="InternalGuidUtil"/> Guid 工具类
 /// </summary>
-[InternalSuppressSniffer]
-public static class GuidUtil
+internal static class InternalGuidUtil
 {
     /// <summary>
     /// 生成一个Guid
@@ -34,17 +33,19 @@ public static class GuidUtil
     /// </summary>
     /// <param name="format"><see cref="string"/>格式化方式</param>
     /// <returns><see cref="string"/></returns>
-    public static string GetGuid(string format = "N")
+    internal static string GetGuid(string format = "N")
     {
-        return InternalGuidUtil.GetGuid(format);
+        return Guid.NewGuid().ToString(format);
     }
 
     /// <summary>
     /// 生成一个短的Guid
     /// </summary>
     /// <returns><see cref="string"/></returns>
-    public static string GetShortGuid()
+    internal static string GetShortGuid()
     {
-        return InternalGuidUtil.GetShortGuid();
+        var i = Guid.NewGuid().ToByteArray().Aggregate<byte, long>(1, (current, b) => current * (b + 1));
+
+        return $"{i - DateTime.Now.Ticks:x}";
     }
 }
