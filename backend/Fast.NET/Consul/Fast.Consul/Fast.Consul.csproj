@@ -4,4 +4,8 @@
 		<Description>Fast.NET 框架Consul模块库。</Description>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Consul" Version="1.7.14.1" />
+	</ItemGroup>
+
 </Project>

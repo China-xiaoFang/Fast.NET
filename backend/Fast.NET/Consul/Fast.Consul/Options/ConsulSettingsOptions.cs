@@ -20,15 +20,45 @@ namespace Fast.Consul.Options;
 public sealed class ConsulSettingsOptions
 {
     /// <summary>
+    /// Consul 是否启用
+    /// </summary>
+    public bool Enable { get; set; }
+
+    /// <summary>
     /// Consul 客户端地址
     /// </summary>
     public string Address { get; set; }
+
+    /// <summary>
+    /// Consul 健康检查地址
+    /// </summary>
+    public string HealthCheck { get; set; }
+
+    /// <summary>
+    /// Consul 服务启动后多久注册，单位秒
+    /// </summary>
+    public int DeregisterCriticalServiceAfter { get; set; }
+
+    /// <summary>
+    /// Consul 健康检查时间间隔，单位秒
+    /// </summary>
+    public int HealthCheckInterval { get; set; }
+
+    /// <summary>
+    /// Consul 健康检查超时时间，单位秒
+    /// </summary>
+    public int HealthCheckTimeout { get; set; }
 
     /// <summary>
     /// 后期配置
     /// </summary>
     public ConsulSettingsOptions()
     {
+        Enable = true;
         Address = "http://127.0.0.1:8500";
+        HealthCheck = "/healthCheck";
+        DeregisterCriticalServiceAfter = 5;
+        HealthCheckInterval = 10;
+        HealthCheckTimeout = 5;
     }
 }

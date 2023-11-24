@@ -629,6 +629,31 @@
             <returns></returns>
             <exclude />
         </member>
+        <member name="T:Fast.NET.InternalGuidUtil">
+            <summary>
+            <see cref="T:Fast.NET.InternalGuidUtil"/> Guid 工具类
+            </summary>
+        </member>
+        <member name="M:Fast.NET.InternalGuidUtil.GetGuid(System.String)">
+            <summary>
+            生成一个Guid
+            <remarks>
+            <para>只支持 N D B P</para>
+            <para>N ece4f4a60b764339b94a07c84e338a27</para>
+            <para>D 5bf99df1-dc49-4023-a34a-7bd80a42d6bb</para>
+            <para>B 2280f8d7-fd18-4c72-a9ab-405de3fcfbc9</para>
+            <para>P 25e6e09f-fb66-4cab-b4cd-bfb429566549</para>
+            </remarks>
+            </summary>
+            <param name="format"><see cref="T:System.String"/>格式化方式</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.NET.InternalGuidUtil.GetShortGuid">
+            <summary>
+            生成一个短的Guid
+            </summary>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
         <member name="T:Fast.NET.InternalRemoteRequestUtil">
             <summary>
             <see cref="T:System.Net.Http.HttpClient"/> 远程请求工具类
@@ -823,6 +848,18 @@
             <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
             <returns></returns>
         </member>
+        <member name="T:Fast.Consul.Extensions.ConsulIApplicationBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> Consul服务拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Consul.Extensions.ConsulIApplicationBuilderExtension.UseConsul(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            配置Consul服务
+            </summary>
+            <param name="app"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
+            <returns>服务集合</returns>
+        </member>
         <member name="T:Fast.Consul.Extensions.ConsulIServiceCollectionExtension">
             <summary>
             <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> Consul服务拓展类
@@ -922,15 +959,62 @@
             <see cref="T:Fast.Consul.Options.ConsulSettingsOptions"/> Consul配置选项
             </summary>
         </member>
+        <member name="P:Fast.Consul.Options.ConsulSettingsOptions.Enable">
+            <summary>
+            Consul 是否启用
+            </summary>
+        </member>
         <member name="P:Fast.Consul.Options.ConsulSettingsOptions.Address">
             <summary>
             Consul 客户端地址
+            </summary>
+        </member>
+        <member name="P:Fast.Consul.Options.ConsulSettingsOptions.HealthCheck">
+            <summary>
+            Consul 健康检查地址
+            </summary>
+        </member>
+        <member name="P:Fast.Consul.Options.ConsulSettingsOptions.DeregisterCriticalServiceAfter">
+            <summary>
+            Consul 服务启动后多久注册，单位秒
+            </summary>
+        </member>
+        <member name="P:Fast.Consul.Options.ConsulSettingsOptions.HealthCheckInterval">
+            <summary>
+            Consul 健康检查时间间隔，单位秒
+            </summary>
+        </member>
+        <member name="P:Fast.Consul.Options.ConsulSettingsOptions.HealthCheckTimeout">
+            <summary>
+            Consul 健康检查超时时间，单位秒
             </summary>
         </member>
         <member name="M:Fast.Consul.Options.ConsulSettingsOptions.#ctor">
             <summary>
             后期配置
             </summary>
+        </member>
+        <member name="T:Fast.Consul.Registers.ConsulRegister">
+            <summary>
+            <see cref="T:Fast.Consul.Registers.ConsulRegister"/> Consul 服务注册
+            </summary>
+        </member>
+        <member name="M:Fast.Consul.Registers.ConsulRegister.ConsulRegisterAsync">
+            <summary>
+            服务注册
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Consul.Registers.IConsulRegister">
+            <summary>
+            <see cref="T:Fast.Consul.Registers.ConsulRegister"/> Consul 服务注册
+            </summary>
+        </member>
+        <member name="M:Fast.Consul.Registers.IConsulRegister.ConsulRegisterAsync">
+            <summary>
+            服务注册
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>
