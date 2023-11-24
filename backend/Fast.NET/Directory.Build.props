@@ -1,7 +1,9 @@
 <Project>
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<!--<TargetFramework>net7.0</TargetFramework>-->
+		<!--<TargetFrameworks>net6.0;net7.0</TargetFrameworks>-->
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -24,6 +26,8 @@
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<DocumentationFile>$(MSBuildProjectName).xml</DocumentationFile>
 		<GenerateResxSourceIncludeDefaultValues>true</GenerateResxSourceIncludeDefaultValues>
+		<!-- 解决多个SDK版本生成报错的问题 -->
+		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
 	</PropertyGroup>
 
 	<!-- 默认所有的类库都包含 Microsoft.AspNetCore.App 框架 -->
