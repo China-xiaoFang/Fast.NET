@@ -1152,7 +1152,7 @@
         </member>
         <member name="P:Fast.SqlSugar.Definition.SqlSugarPageInput.SearchTimeList">
             <summary>
-            搜索开始时间
+            搜索时间
             </summary>
         </member>
         <member name="T:Fast.SqlSugar.Definition.SqlSugarPageResult`1">

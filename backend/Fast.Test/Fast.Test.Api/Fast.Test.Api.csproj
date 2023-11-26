@@ -51,7 +51,7 @@
     <ProjectReference Include="..\..\Fast.NET\CorsAccessor\Fast.CorsAccessor\Fast.CorsAccessor.csproj" />
     <ProjectReference Include="..\..\Fast.NET\DependencyInjection\Fast.DependencyInjection\Fast.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\Fast.NET\EventBus\Fast.EventBus\Fast.EventBus.csproj" />
-    <ProjectReference Include="..\..\Fast.NET\Fast.SqlSugar\Fast.SqlSugar.csproj" />
+    <ProjectReference Include="..\..\Fast.NET\SqlSugar\Fast.SqlSugar\Fast.SqlSugar.csproj" />
     <ProjectReference Include="..\..\Fast.NET\IaaS\Fast.IaaS\Fast.IaaS.csproj" />
     <ProjectReference Include="..\..\Fast.NET\JwtBearer\Fast.JwtBearer\Fast.JwtBearer.csproj" />
     <ProjectReference Include="..\..\Fast.NET\Logging\Fast.Logging\Fast.Logging.csproj" />

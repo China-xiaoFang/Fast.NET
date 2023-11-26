@@ -57,7 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Consul", "Consul\Fast.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlSugar", "SqlSugar", "{1B4AAEE2-07AF-4D72-AEF2-C75F2F54EF1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.SqlSugar", "Fast.SqlSugar\Fast.SqlSugar.csproj", "{457A817A-3C2E-4394-AFDB-D05DD6EB559A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.SqlSugar", "SqlSugar\Fast.SqlSugar\Fast.SqlSugar.csproj", "{457A817A-3C2E-4394-AFDB-D05DD6EB559A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

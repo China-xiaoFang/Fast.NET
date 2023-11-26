@@ -38,7 +38,7 @@ public class SqlSugarPageInput
     public string SearchValue { get; set; }
 
     /// <summary>
-    /// 搜索开始时间
+    /// 搜索时间
     /// </summary>
     public List<DateTime> SearchTimeList { get; set; }
 }
