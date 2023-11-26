@@ -3,18 +3,26 @@
  */
 
 /**
- * 类型验证
- * @description 判断是否为数组
- * @param arg 参数
- * @returns 返回一个布尔值，指定参数是否为数组
+ * 验证是否为外部链接
+ * @description 判断是否为外部链接，支持http、https、mailto和tel协议
+ * @param arg 参数，表示待验证的链接
+ * @returns 返回一个布尔值，指定参数是否为外部链接
  */
-export const isArray = (arg: any): boolean => {
-    // 判断环境是否支持 Array.isArray 方法
-    if (typeof Array.isArray === "undefined") {
-        // 使用对象原型的 toString 方法进行类型检查
-        return Object.prototype.toString.call(arg) === "[object Array]";
-    }
+export const isExternal = (arg: string): boolean => {
+    // 使用正则表达式匹配http、https、mailto和tel开头的链接
+    const reg = /^(https?:|mailto:|tel:)/;
+    return reg.test(arg);
+};
 
-    // 直接使用 Array.isArray 方法进行类型检查
-    return Array.isArray(arg);
-}
+/**
+ * 验证是否为有效的URL
+ * @description 判断是否为有效的URL，支持http和https协议
+ * @param arg 参数，表示待验证的链接
+ * @returns 返回一个布尔值，指定参数是否为有效的URL
+ */
+export const isValidURL = (arg: string): boolean => {
+    // 使用正则表达式验证是否为有效的URL
+    const reg =
+        /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+    return reg.test(arg);
+};
