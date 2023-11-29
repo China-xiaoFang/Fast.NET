@@ -1,5 +1,6 @@
 <template>
     <el-config-provider :locale="lang">
+        <h1>{{ $t("test.你好啊！") }}</h1>
         <router-view></router-view>
     </el-config-provider>
 </template>
