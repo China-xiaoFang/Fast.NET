@@ -41,11 +41,11 @@
     // 翻译源语言 (源文件) 根据此语言文件翻译其他语言文件的变量和内容
     "i18n-ally.sourceLanguage": "zh-cn",
     // 显示语言 (显示文件/翻译文件)
-    "i18n-ally.displayLanguage": "zh-cn",
+    "i18n-ally.displayLanguage": "en",
     // 翻译器
     "i18n-ally.translate.engines": ["deepl", "google"],
     // 翻译字段命名样式采用驼峰
     "i18n-ally.extract.keygenStyle": "camelCase",
     "i18n-ally.enabledFrameworks": ["vue"],
-    "i18n-ally.extract.autoDetect": false
+    "i18n-ally.extract.autoDetect": true
 }
