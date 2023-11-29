@@ -4,6 +4,7 @@ import type { Options, LoadingInstance } from "@/utils/axios/interface";
 import { ElLoading, ElMessage, ElMessageBox, type LoadingOptions } from "element-plus";
 import { useConfig } from "@/stores/config";
 import { useUserInfo } from "@/stores/userInfo";
+import { i18n } from "@/lang";
 import { downloadFile } from "@/utils/utils";
 
 const pendingMap = new Map();
@@ -19,6 +20,63 @@ let loginCallBack = false;
 const loadingInstance: LoadingInstance = {
     target: null,
     count: 0,
+};
+
+/**
+ * Axios 默认配置
+ */
+const axiosDefaultConfig = {
+    /**
+     * 默认加载选项
+     */
+    loading: {
+        fullscreen: true,
+        lock: true,
+        text: i18n.global.t("utils.axios.有效期应为一个有效数值"),
+        background: "rgba(0, 0, 0, 0.7)",
+    },
+    /**
+     * 错误白名单路径
+     */
+    errorWhiteUrls: ["logout"],
+    /**
+     * 重新登录Code
+     */
+    reloadLoginCodes: [401],
+    /**
+     * 重新登录消息
+     */
+    reloadLoginMessage: i18n.global.t("utils.axios.登录已失效，请重新登录！"),
+    /**
+     * 重新登录弹窗按钮文本
+     */
+    reloadLoginButtonText: i18n.global.t("utils.axios.重新登录"),
+    /**
+     * 错误Code消息
+     */
+    errorCodeMessages: {
+        cancelDuplicate: i18n.global.t("utils.axios.重复请求，自动取消！"),
+        offLine: i18n.global.t("utils.axios.您断网了！"),
+        fileDownloadError: i18n.global.t("utils.axios.文件下载失败或此文件不存在！"),
+        302: i18n.global.t("utils.axios.接口重定向了！"),
+        400: i18n.global.t("utils.axios.参数不正确！"),
+        401: i18n.global.t("utils.axios.您没有权限操作（令牌、用户名、密码错误）！"),
+        403: i18n.global.t("utils.axios.您的访问是被禁止的！"),
+        404: i18n.global.t("utils.axios.请求的资源不存在！"),
+        405: i18n.global.t("utils.axios.请求的格式不正确！"),
+        408: i18n.global.t("utils.axios.请求超时！"),
+        409: i18n.global.t("utils.axios.系统已存在相同数据！"),
+        410: i18n.global.t("utils.axios.请求的资源被永久删除，且不会再得到的！"),
+        422: i18n.global.t("utils.axios.当创建一个对象时，发生一个验证错误！"),
+        429: i18n.global.t("utils.axios.请求过于频繁，请稍后再试！"),
+        500: i18n.global.t("utils.axios.服务器内部错误！"),
+        501: i18n.global.t("utils.axios.服务未实现！"),
+        502: i18n.global.t("utils.axios.网关错误！"),
+        503: i18n.global.t("utils.axios.服务不可用，服务器暂时过载或维护！"),
+        504: i18n.global.t("utils.axios.服务暂时无法访问，请稍后再试！"),
+        505: i18n.global.t("utils.axios.HTTP版本不受支持！"),
+        default: i18n.global.t("utils.axios.请求错误！"),
+    },
 };
 
 /**
@@ -73,7 +131,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
                 loadingInstance.count++;
                 if (loadingInstance.count === 1) {
                     // 合并 Loading 配置
-                    loading = Object.assign(localConfig.axios.loading, loading);
+                    loading = Object.assign(axiosDefaultConfig.loading, loading);
 
                     loadingInstance.target = ElLoading.service(loading);
                 }
@@ -114,7 +172,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
             // 关闭loading层
             options.loading && closeLoading(options);
             // 判断是否包含错误白名单路径
-            if (localConfig.axios.errorWhiteUrls.includes(response.config.url)) {
+            if (axiosDefaultConfig.errorWhiteUrls.includes(response.config.url)) {
                 return Promise.resolve(true);
             }
             // 设置 Token
@@ -124,9 +182,9 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
             if (
                 reloadLoginHandle(
                     response,
-                    localConfig.axios.reloadLoginCodes,
-                    localConfig.axios.reloadLoginMessage,
-                    localConfig.axios.reloadLoginButtonText,
+                    axiosDefaultConfig.reloadLoginCodes,
+                    axiosDefaultConfig.reloadLoginMessage,
+                    axiosDefaultConfig.reloadLoginButtonText,
                     () => {
                         localUserInfo.logout();
                     }
@@ -146,7 +204,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
                         }
                         return Promise.resolve(response);
                     } else {
-                        ElMessage.error(localConfig.axios.errorCodeMessages["fileDownloadError"]);
+                        ElMessage.error(axiosDefaultConfig.errorCodeMessages["fileDownloadError"]);
                         return Promise.reject(false);
                     }
                 // 正常 JSON 格式响应处理
@@ -182,16 +240,16 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
             // 关闭loading层
             options.loading && closeLoading(options);
             // 判断是否包含错误白名单路径
-            if (localConfig.axios.errorWhiteUrls.includes(error?.config?.url)) {
+            if (axiosDefaultConfig.errorWhiteUrls.includes(error?.config?.url)) {
                 return Promise.resolve(true);
             }
             // 重新登录处理
             if (
                 reloadLoginHandle(
                     error?.response,
-                    localConfig.axios.reloadLoginCodes,
-                    localConfig.axios.reloadLoginMessage,
-                    localConfig.axios.reloadLoginButtonText,
+                    axiosDefaultConfig.reloadLoginCodes,
+                    axiosDefaultConfig.reloadLoginMessage,
+                    axiosDefaultConfig.reloadLoginButtonText,
                     () => {
                         localUserInfo.logout();
                     }
@@ -200,7 +258,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
                 return Promise.reject(false);
             }
             // 处理错误状态码
-            options.showErrorMessage && httpErrorStatusHandle(error, localConfig.axios.errorCodeMessages);
+            options.showErrorMessage && httpErrorStatusHandle(error, axiosDefaultConfig.errorCodeMessages);
             // 错误继续返回给到具体页面
             return Promise.reject(error);
         }

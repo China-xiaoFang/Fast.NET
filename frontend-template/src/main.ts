@@ -10,7 +10,7 @@ import { loadDirectives } from "@/directives";
 
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/display.css";
-import "font-awesome/css/font-awesome.min.css";
+// import "font-awesome/css/font-awesome.min.css";
 import "@/styles/index.scss";
 
 async function start() {

@@ -11,9 +11,9 @@ import { useConfig } from "@/stores/config";
  * 但 i18n 的 messages 内是按需载入的
  */
 
-import elementZhCnLocale from "element-plus/lib/locale/lang/zh-cn";
-import elementZhTwLocale from "element-plus/lib/locale/lang/zh-tw";
-import elementEnLocale from "element-plus/lib/locale/lang/en";
+import elementZhCnLocale from "element-plus/es/locale/lang/zh-cn";
+import elementZhTwLocale from "element-plus/es/locale/lang/zh-tw";
+import elementEnLocale from "element-plus/es/locale/lang/en";
 
 /**
  * i18n
@@ -48,7 +48,7 @@ export const loadLang = async (app: App) => {
         legacy: false, // 使用组合式 API
         globalInjection: true, // 挂载 $t, $d 等到全局
         fallbackLocale: config.lang.fallbackLang,
-        defaultLocale,
+        messages: defaultLocale,
     });
 
     // 在应用中使用 i18n 插件

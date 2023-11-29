@@ -41,42 +41,6 @@ export interface Axios {
      * @memberof Axios
      */
     options: Options;
-    /**
-     * 默认加载选项
-     * @type {LoadingOptions}
-     * @memberof Axios
-     */
-    loading: LoadingOptions;
-    /**
-     * 错误白名单路径
-     * @type {Array<string>}
-     * @memberof Axios
-     */
-    errorWhiteUrls: Array<string>;
-    /**
-     * 重新登录Code
-     * @type {Array<number>}
-     * @memberof Axios
-     */
-    reloadLoginCodes: Array<number>;
-    /**
-     * 重新登录Code
-     * @type {string}
-     * @memberof Axios
-     */
-    reloadLoginMessage: string;
-    /**
-     * 重新登录弹窗按钮文本
-     * @type {string}
-     * @memberof Axios
-     */
-    reloadLoginButtonText: string;
-    /**
-     * 错误Code消息
-     * @type {Array<number>}
-     * @memberof Axios
-     */
-    errorCodeMessages: anyObj;
 }
 
 /**

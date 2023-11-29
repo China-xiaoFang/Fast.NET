@@ -16,11 +16,17 @@ declare interface ImportMetaEnv {
      */
     readonly VITE_OPEN: boolean;
     /**
-     * 打包输出路径
+     * 打包路径
      * @type {string}
      * @memberof ImportMetaEnv
      */
     readonly VITE_BASE_PATH: string;
+    /**
+     * 打包输出路径
+     * @type {string}
+     * @memberof ImportMetaEnv
+     */
+    readonly VITE_OUT_DIR: string;
     /**
      * App 标题
      * @type {string}
@@ -32,7 +38,7 @@ declare interface ImportMetaEnv {
      * @type {string}
      * @memberof ImportMetaEnv
      */
-    readonly VITE_AXIOS_BASE_URL: string;
+    readonly VITE_AXIOS_BASE_URL: string | "getCurrentDomain";
     /**
      * 请求超时时间
      * @type {number}
