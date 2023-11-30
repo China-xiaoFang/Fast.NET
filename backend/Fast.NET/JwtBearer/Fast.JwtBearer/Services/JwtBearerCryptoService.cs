@@ -18,44 +18,39 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Fast.JwtBearer.Internal;
 using Fast.JwtBearer.Options;
-using Fast.NET;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace Fast.JwtBearer.Utils;
+namespace Fast.JwtBearer.Services;
 
 /// <summary>
-/// <see cref="JwtCryptoUtil"/> Jwt加密解密工具类
+/// <see cref="JwtBearerCryptoService"/> JwtBearer 加密解密服务
 /// </summary>
-[InternalSuppressSniffer]
-public class JwtCryptoUtil
+#if NET8_0
+public class JwtBearerCryptoService(IOptions<JWTSettingsOptions> jwtSettings) : IJwtBearerCryptoService
 {
-    /// <summary>
-    /// 日期类型的 Claim 类型
-    /// </summary>
-    private static readonly string[] DateTypeClaimTypes =
+    private readonly JWTSettingsOptions _jwtSettings = jwtSettings.Value;
+#else
+public class JwtBearerCryptoService : IJwtBearerCryptoService
+{
+    private readonly JWTSettingsOptions _jwtSettings;
+
+    public JwtBearerCryptoService(IOptions<JWTSettingsOptions> jwtSettings)
     {
-        JwtRegisteredClaimNames.Iat, JwtRegisteredClaimNames.Nbf, JwtRegisteredClaimNames.Exp
-    };
-
-    /// <summary>
-    /// 刷新 Token 身份标识
-    /// </summary>
-    internal static readonly string[] RefreshTokenClaims = {"f", "e", "s", "l", "k"};
-
-    /// <summary>
-    /// JWT 配置
-    /// </summary>
-    public static JWTSettingsOptions JwtSettings { get; set; }
+        _jwtSettings = jwtSettings.Value;
+    }
+#endif
 
     /// <summary>
     /// 生成 Token
@@ -63,7 +58,7 @@ public class JwtCryptoUtil
     /// <param name="payload"></param>
     /// <param name="expiredTime">过期时间（分钟）</param>
     /// <returns></returns>
-    public static string GenerateToken(IDictionary<string, object> payload, long? expiredTime = null)
+    public string GenerateToken(IDictionary<string, object> payload, long? expiredTime = null)
     {
         var datetimeOffset = DateTimeOffset.UtcNow;
 
@@ -79,18 +74,18 @@ public class JwtCryptoUtil
 
         if (!payload.ContainsKey(JwtRegisteredClaimNames.Exp))
         {
-            var minute = expiredTime ?? JwtSettings?.TokenExpiredTime ?? 20;
+            var minute = expiredTime ?? _jwtSettings?.TokenExpiredTime ?? 20;
             payload.Add(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(minute).ToUnixTimeSeconds());
         }
 
         if (!payload.ContainsKey(JwtRegisteredClaimNames.Iss))
         {
-            payload.Add(JwtRegisteredClaimNames.Iss, JwtSettings?.ValidIssuer);
+            payload.Add(JwtRegisteredClaimNames.Iss, _jwtSettings?.ValidIssuer);
         }
 
         if (!payload.ContainsKey(JwtRegisteredClaimNames.Aud))
         {
-            payload.Add(JwtRegisteredClaimNames.Aud, JwtSettings?.ValidAudience);
+            payload.Add(JwtRegisteredClaimNames.Aud, _jwtSettings?.ValidAudience);
         }
 
         // 处理 JwtPayload 序列化不一致问题
@@ -101,10 +96,11 @@ public class JwtCryptoUtil
 
         SigningCredentials credentials = null;
 
-        if (!string.IsNullOrWhiteSpace(JwtSettings?.IssuerSigningKey))
+        if (!string.IsNullOrWhiteSpace(_jwtSettings?.IssuerSigningKey))
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings?.IssuerSigningKey));
-            credentials = new SigningCredentials(securityKey, JwtSettings?.Algorithm ?? SecurityAlgorithms.HmacSha256);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings?.IssuerSigningKey));
+            credentials =
+                new SigningCredentials(securityKey, _jwtSettings?.Algorithm?.ToString() ?? SecurityAlgorithms.HmacSha256);
         }
 
         var tokenHandler = new JsonWebTokenHandler();
@@ -118,7 +114,7 @@ public class JwtCryptoUtil
     /// </summary>
     /// <param name="accessToken"></param>
     /// <returns></returns>
-    public static string GenerateRefreshToken(string accessToken)
+    public string GenerateRefreshToken(string accessToken)
     {
         // 分割Token
         var tokenParagraphs = accessToken.Split('.', StringSplitOptions.RemoveEmptyEntries);
@@ -135,7 +131,7 @@ public class JwtCryptoUtil
             {"k", tokenParagraphs[1].Substring(s, l)}
         };
 
-        return GenerateToken(payload, JwtSettings?.RefreshTokenExpireTime ?? 43200);
+        return GenerateToken(payload, _jwtSettings?.RefreshTokenExpireTime ?? 43200);
     }
 
     /// <summary>
@@ -147,7 +143,7 @@ public class JwtCryptoUtil
     /// <param name="expiredTime">过期时间（分钟）</param>
     /// <param name="clockSkew">刷新token容差值，秒做单位</param>
     /// <returns></returns>
-    public static string Exchange(HttpContext httpContext, string expiredToken, string refreshToken, long? expiredTime = null,
+    public string Exchange(HttpContext httpContext, string expiredToken, string refreshToken, long? expiredTime = null,
         long? clockSkew = null)
     {
         // 交换刷新Token 必须原Token 已过期
@@ -172,7 +168,7 @@ public class JwtCryptoUtil
         {
             var refreshTime = new DateTimeOffset(long.Parse(cachedValue), TimeSpan.Zero);
             // 处理并发时容差值
-            if ((nowTime - refreshTime).TotalSeconds > (clockSkew ?? JwtSettings?.ClockSkew ?? 5))
+            if ((nowTime - refreshTime).TotalSeconds > (clockSkew ?? _jwtSettings?.ClockSkew ?? 5))
                 return default;
         }
 
@@ -195,7 +191,7 @@ public class JwtCryptoUtil
         var payload = jwtSecurityToken.Payload;
 
         // 移除 Iat，Nbf，Exp
-        foreach (var innerKey in DateTypeClaimTypes)
+        foreach (var innerKey in Penetrates.DateTypeClaimTypes)
         {
             if (!payload.ContainsKey(innerKey))
                 continue;
@@ -226,14 +222,14 @@ public class JwtCryptoUtil
     /// <param name="tokenPrefix"></param>
     /// <param name="clockSkew"></param>
     /// <returns></returns>
-    public static bool AutoRefreshToken(AuthorizationHandlerContext context, HttpContext httpContext, long? expiredTime = null,
+    public bool AutoRefreshToken(AuthorizationHandlerContext context, HttpContext httpContext, long? expiredTime = null,
         string tokenPrefix = "Bearer ", long? clockSkew = null)
     {
         // 如果验证有效，则跳过刷新
         if (context.User.Identity?.IsAuthenticated == true)
         {
             // 禁止使用刷新 Token 进行单独校验
-            if (RefreshTokenClaims.All(k => context.User.Claims.Any(c => c.Type == k)))
+            if (Penetrates.RefreshTokenClaims.All(k => context.User.Claims.Any(c => c.Type == k)))
             {
                 return false;
             }
@@ -293,24 +289,29 @@ public class JwtCryptoUtil
     /// </summary>
     /// <param name="accessToken"></param>
     /// <returns></returns>
-    public static (bool IsValid, JsonWebToken Token, TokenValidationResult validationResult) Validate(string accessToken)
+    public (bool IsValid, JsonWebToken Token, TokenValidationResult validationResult) Validate(string accessToken)
     {
-        if (JwtSettings == null)
+        if (_jwtSettings == null)
             return (false, default, default);
 
         // 加密Key
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.IssuerSigningKey));
-        var cress = new SigningCredentials(key, JwtSettings?.Algorithm ?? SecurityAlgorithms.HmacSha256);
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.IssuerSigningKey));
+        var cress = new SigningCredentials(key, _jwtSettings?.Algorithm?.ToString() ?? SecurityAlgorithms.HmacSha256);
 
         // 创建Token验证参数
-        var tokenValidationParameters = CreateTokenValidationParameters(JwtSettings);
+        var tokenValidationParameters = CreateTokenValidationParameters(_jwtSettings);
         tokenValidationParameters.IssuerSigningKey ??= cress.Key;
 
         // 验证 Token
         var tokenHandler = new JsonWebTokenHandler();
         try
         {
+#if NET8_0
+            // 处理 .NET8 中 ValidateToken 方法已过时的警告
+            var tokenValidationResult = tokenHandler.ValidateTokenAsync(accessToken, tokenValidationParameters).Result;
+#else
             var tokenValidationResult = tokenHandler.ValidateToken(accessToken, tokenValidationParameters);
+#endif
             if (!tokenValidationResult.IsValid)
                 return (false, null, tokenValidationResult);
 
@@ -331,8 +332,8 @@ public class JwtCryptoUtil
     /// <param name="headerKey"></param>
     /// <param name="tokenPrefix"></param>
     /// <returns></returns>
-    public static bool ValidateJwtBearerToken(DefaultHttpContext httpContext, out JsonWebToken token,
-        string headerKey = "Authorization", string tokenPrefix = "Bearer ")
+    public bool ValidateJwtBearerToken(DefaultHttpContext httpContext, out JsonWebToken token, string headerKey = "Authorization",
+        string tokenPrefix = "Bearer ")
     {
         // 获取 token
         var accessToken = GetJwtBearerToken(httpContext, headerKey, tokenPrefix);
@@ -354,7 +355,7 @@ public class JwtCryptoUtil
     /// </summary>
     /// <param name="accessToken"></param>
     /// <returns></returns>
-    public static JsonWebToken ReadJwtToken(string accessToken)
+    public JsonWebToken ReadJwtToken(string accessToken)
     {
         var tokenHandler = new JsonWebTokenHandler();
         if (tokenHandler.CanReadToken(accessToken))
@@ -370,7 +371,7 @@ public class JwtCryptoUtil
     /// </summary>
     /// <param name="accessToken"></param>
     /// <returns></returns>
-    public static JwtSecurityToken SecurityReadJwtToken(string accessToken)
+    public JwtSecurityToken SecurityReadJwtToken(string accessToken)
     {
         var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         var jwtSecurityToken = jwtSecurityTokenHandler.ReadJwtToken(accessToken);
@@ -384,8 +385,7 @@ public class JwtCryptoUtil
     /// <param name="headerKey"></param>
     /// <param name="tokenPrefix"></param>
     /// <returns></returns>
-    public static string GetJwtBearerToken(HttpContext httpContext, string headerKey = "Authorization",
-        string tokenPrefix = "Bearer ")
+    public string GetJwtBearerToken(HttpContext httpContext, string headerKey = "Authorization", string tokenPrefix = "Bearer ")
     {
         // 判断请求报文头中是否有 "Authorization" 报文头
         var bearerToken = httpContext.Request.Headers[headerKey].ToString();
@@ -403,7 +403,7 @@ public class JwtCryptoUtil
     /// </summary>
     /// <param name="jwtSettings"></param>
     /// <returns></returns>
-    public static TokenValidationParameters CreateTokenValidationParameters(JWTSettingsOptions jwtSettings)
+    public TokenValidationParameters CreateTokenValidationParameters(JWTSettingsOptions jwtSettings)
     {
         return new TokenValidationParameters
         {

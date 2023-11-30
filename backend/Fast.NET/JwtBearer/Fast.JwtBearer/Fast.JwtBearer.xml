@@ -848,6 +848,66 @@
             <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
             <returns></returns>
         </member>
+        <member name="T:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum">
+            <summary>
+            <see cref="T:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum"/> JwtBearer 加密算法
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.HS256">
+            <summary>
+            HS256，默认的
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.HS384">
+            <summary>
+            HS384
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.HS512">
+            <summary>
+            HS512
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.PS256">
+            <summary>
+            PS256
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.PS384">
+            <summary>
+            PS384
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.PS512">
+            <summary>
+            PS512
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.ES256">
+            <summary>
+            ES256
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.ES256K">
+            <summary>
+            ES256K
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.ES384">
+            <summary>
+            ES384
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.ES512">
+            <summary>
+            ES512
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum.EdDSA">
+            <summary>
+            EdDSA
+            </summary>
+        </member>
         <member name="T:Fast.JwtBearer.Extensions.JwtBearerIServiceCollectionExtension">
             <summary>
             <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> JWT 授权服务拓展类
@@ -870,6 +930,7 @@
         <member name="M:Fast.JwtBearer.Handlers.AppAuthorizationHandler.HandleAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext)">
             <summary>Makes a decision if authorization is allowed.</summary>
             <param name="context">The authorization information.</param>
+            <exception cref="T:System.ArgumentException"></exception>
         </member>
         <member name="T:Fast.JwtBearer.Handlers.IJwtBearerHandle">
             <summary>
@@ -914,6 +975,28 @@
             <param name="requirement"><see cref="T:Microsoft.AspNetCore.Authorization.IAuthorizationRequirement"/></param>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
             <param name="exception"><see cref="T:System.Exception"/></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.JwtBearer.Internal.Penetrates">
+            <summary>
+            <see cref="T:Fast.JwtBearer.Internal.Penetrates"/> 常量，公共方法配置类
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Internal.Penetrates.DateTypeClaimTypes">
+            <summary>
+            日期类型的 Claim 类型
+            </summary>
+        </member>
+        <member name="F:Fast.JwtBearer.Internal.Penetrates.RefreshTokenClaims">
+            <summary>
+            刷新 Token 身份标识
+            </summary>
+        </member>
+        <member name="M:Fast.JwtBearer.Internal.Penetrates.CreateTokenValidationParameters(Fast.JwtBearer.Options.JWTSettingsOptions)">
+            <summary>
+            生成Token验证参数
+            </summary>
+            <param name="jwtSettings"></param>
             <returns></returns>
         </member>
         <member name="T:Fast.JwtBearer.Options.JWTSettingsOptions">
@@ -981,17 +1064,6 @@
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.Algorithm">
             <summary>
             加密算法
-            HS256
-            HS384
-            HS512
-            PS256
-            PS384
-            PS512
-            ES256
-            ES256K
-            ES384
-            ES512
-            EdDSA
             <remarks>默认HS256</remarks>
             </summary>
         </member>
@@ -1046,27 +1118,12 @@
             策略
             </summary>
         </member>
-        <member name="T:Fast.JwtBearer.Utils.JwtCryptoUtil">
+        <member name="T:Fast.JwtBearer.Services.IJwtBearerCryptoService">
             <summary>
-            <see cref="T:Fast.JwtBearer.Utils.JwtCryptoUtil"/> Jwt加密解密工具类
+            <see cref="T:Fast.JwtBearer.Services.JwtBearerCryptoService"/> JwtBearer 加密解密服务接口
             </summary>
         </member>
-        <member name="F:Fast.JwtBearer.Utils.JwtCryptoUtil.DateTypeClaimTypes">
-            <summary>
-            日期类型的 Claim 类型
-            </summary>
-        </member>
-        <member name="F:Fast.JwtBearer.Utils.JwtCryptoUtil.RefreshTokenClaims">
-            <summary>
-            刷新 Token 身份标识
-            </summary>
-        </member>
-        <member name="P:Fast.JwtBearer.Utils.JwtCryptoUtil.JwtSettings">
-            <summary>
-            JWT 配置
-            </summary>
-        </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.GenerateToken(System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.Int64})">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.GenerateToken(System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.Int64})">
             <summary>
             生成 Token
             </summary>
@@ -1074,14 +1131,14 @@
             <param name="expiredTime">过期时间（分钟）</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.GenerateRefreshToken(System.String)">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.GenerateRefreshToken(System.String)">
             <summary>
             生成刷新 Token
             </summary>
             <param name="accessToken"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.Exchange(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64})">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.Exchange(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64})">
             <summary>
             通过过期Token 和 刷新Token 换取新的 Token
             </summary>
@@ -1092,7 +1149,7 @@
             <param name="clockSkew">刷新token容差值，秒做单位</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.AutoRefreshToken(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Http.HttpContext,System.Nullable{System.Int64},System.String,System.Nullable{System.Int64})">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.AutoRefreshToken(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Http.HttpContext,System.Nullable{System.Int64},System.String,System.Nullable{System.Int64})">
             <summary>
             自动刷新 Token 信息
             </summary>
@@ -1103,14 +1160,14 @@
             <param name="clockSkew"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.Validate(System.String)">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.Validate(System.String)">
             <summary>
             验证 Token
             </summary>
             <param name="accessToken"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.ValidateJwtBearerToken(Microsoft.AspNetCore.Http.DefaultHttpContext,Microsoft.IdentityModel.JsonWebTokens.JsonWebToken@,System.String,System.String)">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.ValidateJwtBearerToken(Microsoft.AspNetCore.Http.DefaultHttpContext,Microsoft.IdentityModel.JsonWebTokens.JsonWebToken@,System.String,System.String)">
             <summary>
             验证 Token
             </summary>
@@ -1120,21 +1177,21 @@
             <param name="tokenPrefix"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.ReadJwtToken(System.String)">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.ReadJwtToken(System.String)">
             <summary>
             读取 Token，不含验证
             </summary>
             <param name="accessToken"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.SecurityReadJwtToken(System.String)">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.SecurityReadJwtToken(System.String)">
             <summary>
             读取 Token，不含验证
             </summary>
             <param name="accessToken"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.GetJwtBearerToken(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String)">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.GetJwtBearerToken(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String)">
             <summary>
             获取 JWT Bearer Token
             </summary>
@@ -1143,7 +1200,96 @@
             <param name="tokenPrefix"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.JwtBearer.Utils.JwtCryptoUtil.CreateTokenValidationParameters(Fast.JwtBearer.Options.JWTSettingsOptions)">
+        <member name="M:Fast.JwtBearer.Services.IJwtBearerCryptoService.CreateTokenValidationParameters(Fast.JwtBearer.Options.JWTSettingsOptions)">
+            <summary>
+            生成Token验证参数
+            </summary>
+            <param name="jwtSettings"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.JwtBearer.Services.JwtBearerCryptoService">
+            <summary>
+            <see cref="T:Fast.JwtBearer.Services.JwtBearerCryptoService"/> JwtBearer 加密解密服务
+            </summary>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.GenerateToken(System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.Int64})">
+            <summary>
+            生成 Token
+            </summary>
+            <param name="payload"></param>
+            <param name="expiredTime">过期时间（分钟）</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.GenerateRefreshToken(System.String)">
+            <summary>
+            生成刷新 Token
+            </summary>
+            <param name="accessToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.Exchange(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64})">
+            <summary>
+            通过过期Token 和 刷新Token 换取新的 Token
+            </summary>
+            <param name="httpContext"></param>
+            <param name="expiredToken"></param>
+            <param name="refreshToken"></param>
+            <param name="expiredTime">过期时间（分钟）</param>
+            <param name="clockSkew">刷新token容差值，秒做单位</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.AutoRefreshToken(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Http.HttpContext,System.Nullable{System.Int64},System.String,System.Nullable{System.Int64})">
+            <summary>
+            自动刷新 Token 信息
+            </summary>
+            <param name="context"></param>
+            <param name="httpContext"></param>
+            <param name="expiredTime">新 Token 过期时间（分钟）</param>
+            <param name="tokenPrefix"></param>
+            <param name="clockSkew"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.Validate(System.String)">
+            <summary>
+            验证 Token
+            </summary>
+            <param name="accessToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.ValidateJwtBearerToken(Microsoft.AspNetCore.Http.DefaultHttpContext,Microsoft.IdentityModel.JsonWebTokens.JsonWebToken@,System.String,System.String)">
+            <summary>
+            验证 Token
+            </summary>
+            <param name="httpContext"></param>
+            <param name="token"></param>
+            <param name="headerKey"></param>
+            <param name="tokenPrefix"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.ReadJwtToken(System.String)">
+            <summary>
+            读取 Token，不含验证
+            </summary>
+            <param name="accessToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.SecurityReadJwtToken(System.String)">
+            <summary>
+            读取 Token，不含验证
+            </summary>
+            <param name="accessToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.GetJwtBearerToken(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String)">
+            <summary>
+            获取 JWT Bearer Token
+            </summary>
+            <param name="httpContext"></param>
+            <param name="headerKey"></param>
+            <param name="tokenPrefix"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.CreateTokenValidationParameters(Fast.JwtBearer.Options.JWTSettingsOptions)">
             <summary>
             生成Token验证参数
             </summary>

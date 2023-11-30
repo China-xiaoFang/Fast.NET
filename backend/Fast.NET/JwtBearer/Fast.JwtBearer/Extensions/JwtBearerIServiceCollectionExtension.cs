@@ -13,9 +13,10 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.JwtBearer.Handlers;
+using Fast.JwtBearer.Internal;
 using Fast.JwtBearer.Options;
 using Fast.JwtBearer.Providers;
-using Fast.JwtBearer.Utils;
+using Fast.JwtBearer.Services;
 using Fast.NET;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,8 +57,8 @@ public static class JwtBearerIServiceCollectionExtension
         // 配置验证
         services.AddOptions<JWTSettingsOptions>().BindConfiguration("JWTSettings").ValidateDataAnnotations();
 
-        // 读取配置
-        JwtCryptoUtil.JwtSettings = configuration.GetSection("JWTSettings").Get<JWTSettingsOptions>();
+        // 添加加密解密服务
+        services.AddSingleton<IJwtBearerCryptoService, JwtBearerCryptoService>();
 
         // 查找Jwt验证提供器实现类
         var jwtBearerHandle =
@@ -88,7 +89,8 @@ public static class JwtBearerIServiceCollectionExtension
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
-            options.TokenValidationParameters = JwtCryptoUtil.CreateTokenValidationParameters(JwtCryptoUtil.JwtSettings);
+            options.TokenValidationParameters =
+                Penetrates.CreateTokenValidationParameters(configuration.GetSection("JWTSettings").Get<JWTSettingsOptions>());
         });
 
         return authenticationBuilder;

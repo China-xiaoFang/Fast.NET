@@ -48,7 +48,7 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
         if (connectionSettings != null)
         {
             DataBaseInfo = connectionSettings;
-            if (connectionSettings.ConnectionId != SqlSugarContext.DefaultConnectionConfig.ConfigId)
+            if (connectionSettings.ConnectionId != (string) SqlSugarContext.DefaultConnectionConfig.ConfigId)
             {
                 var newConnectionConfig = SqlSugarContext.GetConnectionConfig(connectionSettings);
 
