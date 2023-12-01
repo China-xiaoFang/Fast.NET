@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Mapster</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.Mapster.Extensions.ObjectMapperExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 对象映射拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Mapster.Extensions.ObjectMapperExtension.AddObjectMapper(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加对象映射
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+    </members>
+</doc>

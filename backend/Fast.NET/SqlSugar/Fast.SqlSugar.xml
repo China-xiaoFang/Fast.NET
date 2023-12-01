@@ -1,0 +1,1650 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.SqlSugar</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.SqlSugar.BaseEntities.BaseEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.BaseEntities.BaseEntity"/> Entity基类
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.CreatedUserId">
+            <summary>
+            创建者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.UpdatedUserId">
+            <summary>
+            更新者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.UpdatedUserName">
+            <summary>
+            更新者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.UpdatedTime">
+            <summary>
+            更新时间
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.UpdatedVersion">
+            <summary>
+            更新版本控制字段
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseEntity.IsDeleted">
+            <summary>
+            软删除标识
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.BaseEntities.BaseRecordEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.BaseEntities.BaseRecordEntity"/> 记录Entity基类
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Ip">
+            <summary>
+            Ip
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedUserId">
+            <summary>
+            创建者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.BaseEntities.BaseRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            记录表创建
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+        </member>
+        <member name="T:Fast.SqlSugar.BaseEntities.BaseTEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.BaseEntities.BaseTEntity"/> 租户Entity基类
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseTEntity.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.BaseEntities.IdentityKeyEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.BaseEntities.IdentityKeyEntity"/> 自增Id主键实体
+            <remarks>主键Id为 Long 类型</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.IdentityKeyEntity.Id">
+            <summary>
+            主键Id
+            通过特性设置主键和自增列
+            <remarks>自增Id</remarks>
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.BaseEntities.SnowflakeKeyEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.BaseEntities.SnowflakeKeyEntity"/> 雪花Id主键实体
+            <remarks>主键Id为 Long 类型</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.SnowflakeKeyEntity.Id">
+            <summary>
+            主键Id
+            <remarks>雪花Id</remarks>
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.SqlSugarContext">
+            <summary>
+            <see cref="T:Fast.SqlSugar.SqlSugarContext"/> SqlSugar 上下文
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.ConnectionSettings">
+            <summary>
+            连接字符串配置
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.SnowflakeSettings">
+            <summary>
+            雪花Id配置
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.DefaultConnectionConfig">
+            <summary>
+            默认连接配置
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.CacheSqlSugarEntityList">
+            <summary>
+            内部缓存SqlSugar实体集合
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.SqlSugarEntityList">
+            <summary>
+            SqlSugar实体集合
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarContext.GetConnectionConfig(Fast.SqlSugar.Options.ConnectionSettingsOptions)">
+            <summary>
+            获取连接配置
+            </summary>
+            <param name="connectionSettings"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarContext.ParameterFormat(System.String,System.Collections.Generic.IReadOnlyList{SqlSugar.SugarParameter})">
+            <summary>
+            格式化参数拼接成完整的SQL语句
+            </summary>
+            <param name="sql"></param>
+            <param name="pars"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarContext.EntityValueCheck(System.String,System.Collections.Generic.ICollection{System.Object},SqlSugar.DataFilterModel)">
+            <summary>
+            Entity Value 检测
+            </summary>
+            <param name="propertyName"><see cref="T:System.String"/> 属性名称</param>
+            <param name="emptyList"><see cref="T:System.Collections.Generic.ICollection`1"/> 空对象检测集合</param>
+            <param name="entityInfo"><see cref="T:SqlSugar.DataFilterModel"/> 实体信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarContext.SetEntityValue(System.String,System.Collections.Generic.ICollection{System.Object},System.Object,SqlSugar.DataFilterModel@)">
+            <summary>
+            设置Entity Value
+            </summary>
+            <param name="fieldName"></param>
+            <param name="emptyList"></param>
+            <param name="setValue"></param>
+            <param name="entityInfo"></param>
+        </member>
+        <member name="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil">
+            <summary>
+            <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> 连接字符串工具类
+            </summary>
+            <summary>
+            <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> Database Nvarchar 类型工具类
+            </summary>
+            <summary>
+            <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> Database Nvarchar 类型工具类
+            </summary>
+            <summary>
+            <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> SugarExternalServices工具类
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.GetConnectionStr(Fast.SqlSugar.Options.ConnectionSettingsOptions)">
+            <summary>
+            得到数据库连接字符串
+            </summary>
+            <param name="dbInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.SetDbTypeDateTime(SqlSugar.DbType,SqlSugar.EntityColumnInfo@)">
+            <summary>
+            设置DateTime类型
+            </summary>
+            <param name="dbType"></param>
+            <param name="columnInfo"></param>
+        </member>
+        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.SetDbTypeNvarchar(SqlSugar.DbType,System.String,SqlSugar.EntityColumnInfo@)">
+            <summary>
+            设置NVARCHAR类型
+            </summary>
+            <param name="dbType"></param>
+            <param name="length"></param>
+            <param name="columnInfo"></param>
+        </member>
+        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.GetSugarExternalServices(SqlSugar.DbType)">
+            <summary>
+            目前只验证了Sql Server 和 MySql
+            </summary>
+            <param name="dbType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.SqlSugar.Extensions.SqlSugarExtension">
+            <summary>
+            <see cref="T:SqlSugar.ISqlSugarClient"/> SqlSugar 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarExtension.GetSugarTableName(System.Type)">
+            <summary>
+            获取SugarTable特性中的TableName
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarExtension.GetSugarTableAttribute(System.Type)">
+            <summary>
+            获取SugarTable特性
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarExtension.ToDataTable``1(System.Collections.Generic.List{``0})">
+            <summary>
+            转为DataTable
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.SqlSugar.Extensions.SqlSugarIServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarIServiceCollectionExtension.AddSqlSugar(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            SqlSugarClient的配置
+            Client不能单例注入
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
+            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
+            <returns>服务集合</returns>
+        </member>
+        <member name="T:Fast.SqlSugar.Extensions.SqlSugarPageExtension">
+            <summary>
+            <see cref="T:SqlSugar.ISugarQueryable`1"/> ISugarQueryable 分页拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.SqlSugarPageInput)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.SqlSugarPageInput)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.SqlSugarPageInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"></param>
+            <param name="input"></param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.SqlSugarPageInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"></param>
+            <param name="input"></param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.SqlSugar.Filters.SugarEntityFilter">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Filters.SugarEntityFilter"/> Sugar实体过滤器
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarFilter(SqlSugar.ISqlSugarClient,System.Int32,System.Double,System.Boolean,Fast.SqlSugar.Handlers.ISqlSugarEntityHandler)">
+            <summary>
+            加载Sugar过滤器
+            </summary>
+            <param name="_db"></param>
+            <param name="commandTimeOut"><see cref="T:System.Int32"/> 执行超时时间</param>
+            <param name="sugarSqlExecMaxSeconds"><see cref="T:System.Double"/> Sql最大执行秒数</param>
+            <param name="diffLog"><see cref="T:System.Boolean"/> 是否启用差异日志</param>
+            <param name="sqlSugarEntityHandler"><see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理</param>
+        </member>
+        <member name="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient)">
+            <summary>
+            根据实体类型获取连接字符串
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="sqlSugarClient"><see cref="T:SqlSugar.ISqlSugarClient"/> 默认库SqlSugar客户端</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.ExecuteAsync(System.String,SqlSugar.SugarParameter[],System.TimeSpan,System.String)">
+            <summary>
+            执行Sql
+            </summary>
+            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
+            <param name="executionTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
+            <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.ExecuteTimeoutAsync(System.String,System.Int32,System.String,System.String,SqlSugar.SugarParameter[],System.TimeSpan,System.String,System.String)">
+            <summary>
+            执行Sql超时
+            </summary>
+            <param name="fileName"><see cref="T:System.String"/> 文件名称</param>
+            <param name="fileLine"><see cref="T:System.Int32"/> 文件行数</param>
+            <param name="methodName"><see cref="T:System.String"/> 方法名称</param>
+            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
+            <param name="executionTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
+            <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
+            <param name="message"><see cref="T:System.String"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.ExecuteDiffLogAsync(SqlSugar.DiffType,System.String,System.String,System.String,System.Collections.Generic.List{System.Collections.Generic.List{SqlSugar.DiffLogColumnInfo}},System.Collections.Generic.List{System.Collections.Generic.List{SqlSugar.DiffLogColumnInfo}},System.String,SqlSugar.SugarParameter[],System.Nullable{System.TimeSpan},System.String)">
+            <summary>
+            执行Sql差异
+            </summary>
+            <param name="diffType"><see cref="T:SqlSugar.DiffType"/> 差异类型</param>
+            <param name="diffDescription"><see cref="T:System.String"/> 差异描述</param>
+            <param name="tableName"><see cref="T:System.String"/> 表名称</param>
+            <param name="tableDescription"><see cref="T:System.String"/> 表描述</param>
+            <param name="beforeColumnList"><see cref="T:System.String"/> 执行前列信息</param>
+            <param name="afterColumnList"><see cref="T:System.String"/> 执行后列信息</param>
+            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
+            <param name="executionTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
+            <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.ExecuteErrorAsync(System.String,System.Int32,System.String,System.String,SqlSugar.SugarParameter[],System.String,System.String)">
+            <summary>
+            执行Sql错误
+            </summary>
+            <param name="fileName"><see cref="T:System.String"/> 文件名称</param>
+            <param name="fileLine"><see cref="T:System.Int32"/> 文件行数</param>
+            <param name="methodName"><see cref="T:System.String"/> 方法名称</param>
+            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
+            <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
+            <param name="message"><see cref="T:System.String"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.AssignTenantId">
+            <summary>
+            指派租户Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.AssignDepartmentId">
+            <summary>
+            指派部门Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.AssignDepartmentName">
+            <summary>
+            指派部门名称
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.AssignUserId">
+            <summary>
+            指派用户Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.AssignUserName">
+            <summary>
+            指派用户名称
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.IsSuperAdmin">
+            <summary>
+            是否为超级管理员
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.IsAdmin">
+            <summary>
+            是否为管理员
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/> 软删除实体接口
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity.IsDeleted">
+            <summary>
+            软删除标识
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.IBaseEntities.IBaseEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseEntity"/> Entity基类接口
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.CreatedUserId">
+            <summary>
+            创建者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.UpdatedUserId">
+            <summary>
+            更新者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.UpdatedUserName">
+            <summary>
+            更新者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.UpdatedTime">
+            <summary>
+            更新时间
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseEntity.UpdatedVersion">
+            <summary>
+            更新版本控制字段
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity"/> 记录Entity基类接口
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Ip">
+            <summary>
+            Ip
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedUserId">
+            <summary>
+            创建者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            记录表创建
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+        </member>
+        <member name="T:Fast.SqlSugar.IBaseEntities.IBaseTEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseTEntity"/> 租户Entity基类接口
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseTEntity.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.IBaseEntities.IDataBaseEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IDataBaseEntity"/> 实体接口
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.IBaseEntities.IPrimaryKeyEntity`1">
+            <summary>
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IPrimaryKeyEntity`1"/> 主键实体接口
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IPrimaryKeyEntity`1.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.SqlSugarEntityInfo">
+            <summary>
+            <see cref="T:Fast.SqlSugar.SqlSugarEntityInfo"/> SqlSugar 实体信息
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarEntityInfo.TableName">
+            <summary>
+            数据库表名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarEntityInfo.TableDescription">
+            <summary>
+            数据库表描述
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarEntityInfo.EntityType">
+            <summary>
+            实体类型
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.SqlSugarPageInput">
+            <summary>
+            <see cref="T:Fast.SqlSugar.SqlSugarPageInput"/> SqlSugar 统一分页输入
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageInput.PageIndex">
+            <summary>
+            当前页面索引值，默认为1
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageInput.PageSize">
+            <summary>
+            页码容量
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageInput.SearchValue">
+            <summary>
+            搜索值
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageInput.SearchTimeList">
+            <summary>
+            搜索时间
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.SqlSugarPageResult`1">
+            <summary>
+            <see cref="T:Fast.SqlSugar.SqlSugarPageResult`1"/> SqlSugar 统一分页返回结果类
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageResult`1.PageIndex">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageResult`1.PageSize">
+            <summary>
+            当前页码
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageResult`1.TotalPage">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageResult`1.TotalRows">
+            <summary>
+            总条数
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageResult`1.Rows">
+            <summary>
+            Data
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageResult`1.HasPrevPages">
+            <summary>
+            是否有上一页
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarPageResult`1.HasNextPages">
+            <summary>
+            是否有下一页
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.Options.ConnectionSettingsOptions">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Options.ConnectionSettingsOptions"/> 连接字符串配置
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.ConnectionId">
+            <summary>
+            SqlSugarClient 连接Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.ServiceIp">
+            <summary>
+            服务器Ip地址
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.Port">
+            <summary>
+            端口号
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DbName">
+            <summary>
+            数据库名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DbUser">
+            <summary>
+            数据库用户
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DbPwd">
+            <summary>
+            数据库密码
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.SugarSysDbType">
+            <summary>
+            系统数据库类型
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.SugarDbTypeName">
+            <summary>
+            系统数据库类型名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DbType">
+            <summary>
+            数据库类型，用于区分使用的是那个类型的数据库
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.CommandTimeOut">
+            <summary>
+            超时时间，单位秒
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.SugarSqlExecMaxSeconds">
+            <summary>
+            SqlSugar Sql执行最大秒数，如果超过记录警告日志
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DiffLog">
+            <summary>
+            差异日志
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.Options.SnowflakeSettingsOptions">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Options.SnowflakeSettingsOptions"/> 雪花Id配置
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.SnowflakeSettingsOptions.WorkerId">
+            <summary>
+            工作Id
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.Repository.ISqlSugarRepository`1">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Repository.ISqlSugarRepository`1"/> SqlSugar仓储接口
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Repository.ISqlSugarRepository`1.DataBaseInfo">
+            <summary>
+            当前仓储的数据库信息
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AsQueryable">
+            <summary>
+            构建查询分析器
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AsQueryable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            构建查询分析器
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Change``1">
+            <summary>
+            切换仓储/切换租户仓储
+            </summary>
+            <typeparam name="TChangeEntity">实体类型</typeparam>
+            <returns>仓储</returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Count(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取总数
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取总数
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Any(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            检查是否存在
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AnyAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            检查是否存在
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Single(System.Object)">
+            <summary>
+            根据主键获取实体
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Single(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据条件获取实体
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.SingleAsync(System.Object)">
+            <summary>
+            根据主键获取实体
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.SingleAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据条件获取实体
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.FirstOrDefault(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取一个实体
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.FirstOrDefaultAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取一个实体
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.ToListAsync">
+            <summary>
+            获取列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.ToListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取列表
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.ToListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},SqlSugar.OrderByType)">
+            <summary>
+            获取列表
+            </summary>
+            <param name="whereExpression"></param>
+            <param name="orderByExpression"></param>
+            <param name="orderByType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.ToList(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取列表
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.ToList(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},SqlSugar.OrderByType)">
+            <summary>
+            获取列表
+            </summary>
+            <param name="whereExpression"></param>
+            <param name="orderByExpression"></param>
+            <param name="orderByType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.IsExists(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            查询是否存在
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.IsExistsAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            查询是否存在
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据表达式查询多条记录
+            </summary>
+            <param name="predicate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Where(System.Boolean,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据表达式查询多条记录
+            </summary>
+            <param name="condition"></param>
+            <param name="predicate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Insert(`0)">
+            <summary>
+            新增一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Insert(`0[])">
+            <summary>
+            新增多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Insert(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            新增多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.InsertAsync(`0)">
+            <summary>
+            新增一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.InsertAsync(`0[])">
+            <summary>
+            新增多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.InsertAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            新增多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.InsertReturnIdentity(`0)">
+            <summary>
+            新增一条记录返回自增Id
+            </summary>
+            <param name="insertObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.InsertReturnIdentityAsync(`0)">
+            <summary>
+            新增一条记录返回自增Id
+            </summary>
+            <param name="insertObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.ExecuteReturnBigIdentity(`0)">
+            <summary>
+            新增一条记录返回Long类型的Id
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.ExecuteReturnBigIdentityAsync(`0)">
+            <summary>
+            新增一条记录返回Long类型的Id
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.InsertReturnEntity(`0)">
+            <summary>
+            新增一条记录返回新增的数据
+            </summary>
+            <param name="insertObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.InsertReturnEntityAsync(`0)">
+            <summary>
+            新增一条记录返回新增的数据
+            </summary>
+            <param name="insertObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Update(`0,System.Boolean)">
+            <summary>
+            更新一条记录
+            </summary>
+            <param name="entity"></param>
+            <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Update(`0[])">
+            <summary>
+            更新多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Update(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            更新多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.UpdateAsync(`0)">
+            <summary>
+            更新一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.UpdateAsync(`0[])">
+            <summary>
+            更新多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.UpdateAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            更新多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.UpdateNoPrimaryKey(`0,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            无主键更新一条记录
+            </summary>
+            <param name="entity">更新的实体</param>
+            <param name="columns">根据那些字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.UpdateNoPrimaryKey(System.Collections.Generic.List{`0},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            无主键更新多条记录
+            </summary>
+            <param name="entity">更新的实体</param>
+            <param name="columns">根据那些字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.UpdateNoPrimaryKeyAsync(`0,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            无主键更新一条记录
+            </summary>
+            <param name="entity">更新的实体</param>
+            <param name="columns">根据那些字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.UpdateNoPrimaryKeyAsync(System.Collections.Generic.List{`0},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            无主键更新多条记录
+            </summary>
+            <param name="entity">更新的实体</param>
+            <param name="columns">根据那些字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Delete(`0)">
+            <summary>
+            删除一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Delete(System.Object)">
+            <summary>
+            删除一条记录
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Delete(System.Object[])">
+            <summary>
+            删除多条记录
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Delete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件删除记录
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.DeleteAsync(`0)">
+            <summary>
+            删除一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.DeleteAsync(System.Object)">
+            <summary>
+            删除一条记录
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.DeleteAsync(System.Object[])">
+            <summary>
+            删除多条记录
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.DeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件删除记录
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.LogicDelete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件逻辑删除记录
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/></remarks>
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.LogicDeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件逻辑删除记录
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/></remarks>
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="T:Fast.SqlSugar.Repository.SqlSugarRepository`1">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Repository.SqlSugarRepository`1"/> SqlSugar仓储实现
+            </summary>
+        </member>
+        <member name="F:Fast.SqlSugar.Repository.SqlSugarRepository`1._serviceProvider">
+            <summary>
+            服务提供器
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.#ctor(System.IServiceProvider)">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Repository.SqlSugarRepository`1"/> SqlSugar仓储实现
+            </summary>
+            <param name="serviceProvider"></param>
+        </member>
+        <member name="P:Fast.SqlSugar.Repository.SqlSugarRepository`1.Entities">
+            <summary>
+            实体集合
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Repository.SqlSugarRepository`1.DataBaseInfo">
+            <summary>
+            当前仓储的数据库信息
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AsQueryable">
+            <summary>
+            构建查询分析器
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AsQueryable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            构建查询分析器
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Change``1">
+            <summary>
+            切换仓储/切换租户仓储
+            </summary>
+            <typeparam name="TChangeEntity">实体类型</typeparam>
+            <returns>仓储</returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Count(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取总数
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取总数
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Any(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            检查是否存在
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AnyAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            检查是否存在
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Single(System.Object)">
+            <summary>
+            根据主键获取实体
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.SingleAsync(System.Object)">
+            <summary>
+            根据主键获取实体
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Single(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据条件获取实体
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.SingleAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据条件获取实体
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.FirstOrDefault(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取一个实体
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.FirstOrDefaultAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取一个实体
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.ToListAsync">
+            <summary>
+            获取列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.ToList(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取列表
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.ToListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            获取列表
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.ToList(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},SqlSugar.OrderByType)">
+            <summary>
+            获取列表
+            </summary>
+            <param name="whereExpression"></param>
+            <param name="orderByExpression"></param>
+            <param name="orderByType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.ToListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},SqlSugar.OrderByType)">
+            <summary>
+            获取列表
+            </summary>
+            <param name="whereExpression"></param>
+            <param name="orderByExpression"></param>
+            <param name="orderByType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.IsExists(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            查询是否存在
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.IsExistsAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            查询是否存在
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据表达式查询多条记录
+            </summary>
+            <param name="predicate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Where(System.Boolean,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据表达式查询多条记录
+            </summary>
+            <param name="condition"></param>
+            <param name="predicate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Insert(`0)">
+            <summary>
+            新增一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.InsertAsync(`0)">
+            <summary>
+            新增一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Insert(`0[])">
+            <summary>
+            新增多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.InsertAsync(`0[])">
+            <summary>
+            新增多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Insert(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            新增多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.InsertAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            新增多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.InsertReturnIdentity(`0)">
+            <summary>
+            新增一条记录返回自增Id
+            </summary>
+            <param name="insertObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.InsertReturnIdentityAsync(`0)">
+            <summary>
+            新增一条记录返回自增Id
+            </summary>
+            <param name="insertObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.ExecuteReturnBigIdentity(`0)">
+            <summary>
+            新增一条记录返回Long类型的Id
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.ExecuteReturnBigIdentityAsync(`0)">
+            <summary>
+            新增一条记录返回Long类型的Id
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.InsertReturnEntity(`0)">
+            <summary>
+            新增一条记录返回新增的数据
+            </summary>
+            <param name="insertObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.InsertReturnEntityAsync(`0)">
+            <summary>
+            新增一条记录返回新增的数据
+            </summary>
+            <param name="insertObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Update(`0,System.Boolean)">
+            <summary>
+            更新一条记录
+            </summary>
+            <param name="entity"></param>
+            <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.UpdateAsync(`0)">
+            <summary>
+            更新一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Update(`0[])">
+            <summary>
+            更新多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.UpdateAsync(`0[])">
+            <summary>
+            更新多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Update(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            更新多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.UpdateAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            更新多条记录
+            </summary>
+            <param name="entities"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.UpdateNoPrimaryKey(`0,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            无主键更新一条记录
+            </summary>
+            <param name="entity">更新的实体</param>
+            <param name="columns">根据那些字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.UpdateNoPrimaryKeyAsync(`0,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            无主键更新一条记录
+            </summary>
+            <param name="entity">更新的实体</param>
+            <param name="columns">根据那些字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.UpdateNoPrimaryKey(System.Collections.Generic.List{`0},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            无主键更新多条记录
+            </summary>
+            <param name="entity">更新的实体</param>
+            <param name="columns">根据那些字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.UpdateNoPrimaryKeyAsync(System.Collections.Generic.List{`0},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            无主键更新多条记录
+            </summary>
+            <param name="entity">更新的实体</param>
+            <param name="columns">根据那些字段更新</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Delete(`0)">
+            <summary>
+            删除一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Delete(System.Object)">
+            <summary>
+            删除一条记录
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Delete(System.Object[])">
+            <summary>
+            删除多条记录
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Delete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件删除记录
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.DeleteAsync(`0)">
+            <summary>
+            删除一条记录
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.DeleteAsync(System.Object)">
+            <summary>
+            删除一条记录
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.DeleteAsync(System.Object[])">
+            <summary>
+            删除多条记录
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.DeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件删除记录
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.LogicDelete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件逻辑删除记录
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/></remarks>
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.LogicDeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            自定义条件逻辑删除记录
+            </summary>
+            <param name="whereExpression"></param>
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseDeletedEntity"/></remarks>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+    </members>
+</doc>

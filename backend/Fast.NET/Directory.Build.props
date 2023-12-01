@@ -30,11 +30,6 @@
 		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
 	</PropertyGroup>
 
-	<!-- 默认所有的类库都包含 Microsoft.AspNetCore.App 框架 -->
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
-
 	<!-- NU1803 是为了解决使用 Http 源的Nuget包导致的警告 -->
 	<!-- IDE0017 是为了解决可以简化对象初始化导致的警告 -->
 
@@ -54,10 +49,9 @@
 		<None Include="$(SolutionDir)Directory.Build.props" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<!-- 将内部资源文件夹共享到每个类库的 InternalResources 文件夹下面 --> 
-		<Compile Include="$(SolutionDir)Core\Fast.NET.Core\InternalResources\**\*.cs" Pack="true" PackagePath="\InternalResources" Link="InternalResources\%(RecursiveDir)%(Filename)%(Extension)" />
-		<None Include="$(SolutionDir)Core\Fast.NET.Core\InternalResources\*.md" Pack="true" PackagePath="\InternalResources" Link="InternalResources\%(RecursiveDir)%(Filename)%(Extension)" />
+	<!-- 默认所有模块，全部引用基础设施模块 -->
+	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Fast.Iaas'">
+		<ProjectReference Include="$(SolutionDir)Iaas\Fast.Iaas.csproj" />
 	</ItemGroup>
 
 </Project>

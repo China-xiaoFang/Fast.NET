@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.CorsAccessor</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.CorsAccessor.Extensions.CorsAccessorIApplicationBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> 跨域中间件拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.CorsAccessor.Extensions.CorsAccessorIApplicationBuilderExtension.UseCorsAccessor(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder})">
+            <summary>
+            添加跨域中间件
+            </summary>
+            <param name="app"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></param>
+            <param name="corsPolicyBuilderHandler"></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></returns>
+        </member>
+        <member name="T:Fast.CorsAccessor.Extensions.CorsAccessorIServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 跨域访问服务拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.CorsAccessor.Extensions.CorsAccessorIServiceCollectionExtension.AddCorsAccessor(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions},System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder})">
+            <summary>
+            配置跨域
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
+            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 配置项</param>
+            <param name="corsOptionsHandler"></param>
+            <param name="corsPolicyBuilderHandler"></param>
+            <returns>服务集合</returns>
+        </member>
+        <member name="T:Fast.CorsAccessor.Internal.Penetrates">
+            <summary>
+            <see cref="T:Fast.CorsAccessor.Internal.Penetrates"/> 常量、公共方法配置类
+            </summary>
+        </member>
+        <member name="F:Fast.CorsAccessor.Internal.Penetrates._defaultExposedHeaders">
+            <summary>
+            默认跨域导出响应头 Key
+            </summary>
+            <remarks>解决 ajax，XMLHttpRequest，axios 不能获取请求头问题</remarks>
+        </member>
+        <member name="M:Fast.CorsAccessor.Internal.Penetrates.SetCorsPolicy(Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder,Fast.CorsAccessor.Options.CorsAccessorSettingsOptions,System.Boolean)">
+            <summary>
+            设置跨域策略
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder"/></param>
+            <param name="corsAccessorSettings"><see cref="T:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions"/></param>
+            <param name="isMiddleware"><see cref="T:System.Boolean"/></param>
+        </member>
+        <member name="T:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions">
+            <summary>
+            跨域配置选项
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.PolicyName">
+            <summary>
+            策略名称
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.WithOrigins">
+            <summary>
+            允许来源域名，没有配置则允许所有来源
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.WithHeaders">
+            <summary>
+            请求表头，没有配置则允许所有表头
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.WithExposedHeaders">
+            <summary>
+            设置客户端可获取的响应标头
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.WithMethods">
+            <summary>
+            设置跨域允许请求谓词，没有配置则允许所有
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.AllowCredentials">
+            <summary>
+            是否允许跨域请求中的凭据
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.SetPreflightMaxAge">
+            <summary>
+            设置预检过期时间
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.FixedClientToken">
+            <summary>
+            修正前端无法获取 Token 问题
+            </summary>
+        </member>
+        <member name="P:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.SignalRSupport">
+            <summary>
+            启用 SignalR 跨域支持
+            </summary>
+        </member>
+        <member name="M:Fast.CorsAccessor.Options.CorsAccessorSettingsOptions.PostConfigure">
+            <summary>
+            后期配置
+            </summary>
+        </member>
+    </members>
+</doc>

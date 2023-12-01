@@ -1,0 +1,556 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Cache</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.Cache.ICache">
+            <summary>
+            缓存服务接口
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.ICache.Del(System.String[])">
+            <summary>
+            删除缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.DelAsync(System.String[])">
+            <summary>
+            删除缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.DelByPattern(System.String)">
+            <summary>
+            根据前缀删除缓存
+            慎用
+            </summary>
+            <param name="pattern"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.DelByPatternAsync(System.String)">
+            <summary>
+            根据前缀删除缓存
+            慎用
+            </summary>
+            <param name="pattern"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.Exists(System.String)">
+            <summary>
+            判断是否存在
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.ExistsAsync(System.String)">
+            <summary>
+            判断是否存在
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.Get(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.Get``1(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAsync(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAsync``1(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.Set(System.String,System.Object)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.Set(System.String,System.Object,System.Int32)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expireSeconds">单位秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.Set(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expireTimeSpan"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.SetAsync(System.String,System.Object)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.SetAsync(System.String,System.Object,System.Int32)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expireSeconds">单位秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.SetAsync(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expireTimeSpan"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAllKeys">
+            <summary>
+            获取所有缓存Key
+            慎用
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAllKeysAsync">
+            <summary>
+            获取所有缓存Key
+            慎用
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSet(System.String,System.Func{System.String})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSet``1(System.String,System.Func{``0})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSet(System.String,System.Int32,System.Func{System.String})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="expireSeconds">单位秒</param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSet``1(System.String,System.Int32,System.Func{``0})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="expireSeconds">单位秒</param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSet(System.String,System.TimeSpan,System.Func{System.String})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="expireTimeSpan"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSet``1(System.String,System.TimeSpan,System.Func{``0})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="expireTimeSpan"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSetAsync(System.String,System.Func{System.Threading.Tasks.Task{System.String}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSetAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSetAsync(System.String,System.Int32,System.Func{System.Threading.Tasks.Task{System.String}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="expireSeconds">单位秒</param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSetAsync``1(System.String,System.Int32,System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="expireSeconds">单位秒</param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSetAsync(System.String,System.TimeSpan,System.Func{System.Threading.Tasks.Task{System.String}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="expireTimeSpan"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.ICache.GetAndSetAsync``1(System.String,System.TimeSpan,System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="expireTimeSpan"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Cache.Extensions.CacheIServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
+            </summary>
+        </member>
+        <member name="F:Fast.Cache.Extensions.CacheIServiceCollectionExtension.ConnectionString">
+            <summary>
+            连接字符串
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Extensions.CacheIServiceCollectionExtension.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            添加缓存
+            请确保 配置文件中存在 “RedisConnectionString” 节点
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="connectionString"><see cref="T:System.String"/>连接字符串，如若不传，需要配置在 JSON文件 “RedisConnectionString” 节点中</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Cache.Extensions.ValidateExtension">
+            <summary>
+            验证拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Extensions.ValidateExtension.IsEmpty``1(``0)">
+            <summary>
+            检查 Object 或者 集合 是否为 NULL 或者 空集合
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Cache.Realize.Cache">
+            <summary>
+            缓存实现
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="configuration">连接字符串</param>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.Del(System.String[])">
+            <summary>
+            删除缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.DelAsync(System.String[])">
+            <summary>
+            删除缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.DelByPattern(System.String)">
+            <summary>
+            根据前缀删除缓存
+            慎用
+            </summary>
+            <param name="pattern"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.DelByPatternAsync(System.String)">
+            <summary>
+            根据前缀删除缓存
+            慎用
+            </summary>
+            <param name="pattern"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.Exists(System.String)">
+            <summary>
+            判断是否存在
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.ExistsAsync(System.String)">
+            <summary>
+            判断是否存在
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.Get(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAsync(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.Get``1(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAsync``1(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.Set(System.String,System.Object)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.SetAsync(System.String,System.Object)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.Set(System.String,System.Object,System.Int32)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expireSeconds">单位秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.SetAsync(System.String,System.Object,System.Int32)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expireSeconds">单位秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.Set(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expireTimeSpan"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.SetAsync(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expireTimeSpan"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAllKeys">
+            <summary>
+            获取所有缓存Key
+            慎用
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAllKeysAsync">
+            <summary>
+            获取所有缓存Key
+            慎用
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSet(System.String,System.Func{System.String})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSetAsync(System.String,System.Func{System.Threading.Tasks.Task{System.String}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSet``1(System.String,System.Func{``0})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSetAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSet(System.String,System.Int32,System.Func{System.String})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="expireSeconds">单位秒</param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSetAsync(System.String,System.Int32,System.Func{System.Threading.Tasks.Task{System.String}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="expireSeconds">单位秒</param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSet``1(System.String,System.Int32,System.Func{``0})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="expireSeconds">单位秒</param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSetAsync``1(System.String,System.Int32,System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="expireSeconds">单位秒</param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSet(System.String,System.TimeSpan,System.Func{System.String})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="expireTimeSpan"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSetAsync(System.String,System.TimeSpan,System.Func{System.Threading.Tasks.Task{System.String}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="expireTimeSpan"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSet``1(System.String,System.TimeSpan,System.Func{``0})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="expireTimeSpan"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Cache.Realize.Cache.GetAndSetAsync``1(System.String,System.TimeSpan,System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            获取并且设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="expireTimeSpan"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
