@@ -4,43 +4,6 @@
         <name>Fast.Iaas</name>
     </assembly>
     <members>
-        <member name="T:Fast.IaaS.FastContext">
-            <summary>
-            <see cref="T:Fast.IaaS.FastContext"/> 框架内部的常量，公共方法配置类
-            </summary>
-        </member>
-        <member name="F:Fast.IaaS.FastContext.Assemblies">
-            <summary>
-            应用有效程序集
-            </summary>
-        </member>
-        <member name="F:Fast.IaaS.FastContext.EffectiveTypes">
-            <summary>
-            有效程序集类型
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.FastContext.CatchOrDefault``1(System.Func{``0},``0)">
-            <summary>
-            处理获取对象异常问题
-            </summary>
-            <typeparam name="T">类型</typeparam>
-            <param name="action">获取对象委托</param>
-            <param name="defaultValue">默认值</param>
-            <returns>T</returns>
-        </member>
-        <member name="M:Fast.IaaS.FastContext.GetThreadId">
-            <summary>
-            获取当前线程 Id
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.FastContext.GetExecutionTime(System.Action)">
-            <summary>
-            获取一段代码执行耗时
-            </summary>
-            <param name="action">委托</param>
-            <returns><see cref="T:System.Int64"/></returns>
-        </member>
         <member name="T:Fast.IaaS.FastEnumAttribute">
             <summary>
             <see cref="T:Fast.IaaS.FastEnumAttribute"/> 枚举特性
@@ -92,6 +55,43 @@
             <summary>
             Sql Server 最大时间
             </summary>
+        </member>
+        <member name="T:Fast.IaaS.FastContext">
+            <summary>
+            <see cref="T:Fast.IaaS.FastContext"/> 框架内部的常量，公共方法配置类
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.FastContext.Assemblies">
+            <summary>
+            应用有效程序集
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.FastContext.EffectiveTypes">
+            <summary>
+            有效程序集类型
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.FastContext.CatchOrDefault``1(System.Func{``0},``0)">
+            <summary>
+            处理获取对象异常问题
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="action">获取对象委托</param>
+            <param name="defaultValue">默认值</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:Fast.IaaS.FastContext.GetThreadId">
+            <summary>
+            获取当前线程 Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.FastContext.GetExecutionTime(System.Action)">
+            <summary>
+            获取一段代码执行耗时
+            </summary>
+            <param name="action">委托</param>
+            <returns><see cref="T:System.Int64"/></returns>
         </member>
         <member name="T:Fast.IaaS.Debugging">
             <summary>
