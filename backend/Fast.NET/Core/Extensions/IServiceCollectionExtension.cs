@@ -13,8 +13,9 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.IO.Compression;
-using Fast.NET.Core.Diagnostics;
+using Fast.IaaS;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -52,21 +53,6 @@ public static class IServiceCollectionExtension
     /// 注册 Mvc 过滤器
     /// </summary>
     /// <typeparam name="TFilter"></typeparam>
-    /// <param name="mvcBuilder"><see cref="IMvcBuilder"/></param>
-    /// <param name="configure"></param>
-    /// <returns><see cref="IMvcBuilder"/></returns>
-    public static IMvcBuilder AddMvcFilter<TFilter>(this IMvcBuilder mvcBuilder, Action<MvcOptions> configure = default)
-        where TFilter : IFilterMetadata
-    {
-        mvcBuilder.Services.AddMvcFilter<TFilter>(configure);
-
-        return mvcBuilder;
-    }
-
-    /// <summary>
-    /// 注册 Mvc 过滤器
-    /// </summary>
-    /// <typeparam name="TFilter"></typeparam>
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <param name="configure"></param>
     /// <returns>&lt;see cref="IServiceCollection"/&gt;</returns>
@@ -97,6 +83,33 @@ public static class IServiceCollectionExtension
         services.Configure<MvcOptions>(options =>
         {
             options.Filters.Add(filter);
+
+            // 其他额外配置
+            configure?.Invoke(options);
+        });
+
+        return services;
+    }
+
+    /// <summary>
+    /// 配置反向代理头部
+    /// <remarks>默认解决了“IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题”</remarks>
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configure"></param>
+    /// <returns></returns>
+    public static IServiceCollection ConfigureForwardedHeaders(this IServiceCollection services,
+        Action<ForwardedHeadersOptions> configure = default)
+    {
+        // 解决 IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            //options.ForwardedHeaders = ForwardedHeaders.All;
+
+            // 若上面配置无效可尝试下列代码，比如在 IIS 中
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
 
             // 其他额外配置
             configure?.Invoke(options);

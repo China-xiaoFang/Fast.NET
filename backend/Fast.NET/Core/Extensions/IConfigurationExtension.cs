@@ -12,18 +12,28 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-// ReSharper disable once CheckNamespace
+using Microsoft.Extensions.Configuration;
 
-namespace Fast.NET;
+namespace Fast.NET.Core.Extensions;
 
 /// <summary>
-/// <see cref="InternalSuppressSnifferAttribute"/> 内部不被扫描和发现的特性
+/// <see cref="IConfiguration"/> 拓展类
 /// </summary>
-/// <remarks>用于程序集扫描类型或方法时候</remarks>
-/// <exclude />
-[InternalSuppressSniffer,
- AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Enum | AttributeTargets.Struct |
-                AttributeTargets.Interface)]
-internal class InternalSuppressSnifferAttribute : Attribute
+public static class IConfigurationExtension
 {
+    /// <summary>
+    /// 刷新配置对象
+    /// </summary>
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <returns><see cref="IConfiguration"/></returns>
+    public static IConfiguration Reload(this IConfiguration configuration)
+    {
+        if (FastContext.RootServices == null)
+            return configuration;
+
+        var newConfiguration = FastContext.GetService<IConfiguration>(FastContext.RootServices);
+        InternalContext.Configuration = newConfiguration;
+
+        return newConfiguration;
+    }
 }

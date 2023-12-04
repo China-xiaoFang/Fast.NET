@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.IaaS;
 using Fast.NET.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,17 +37,19 @@ public class StartupFilter : IStartupFilter
         return app =>
         {
             // 存储根服务
-            InternalApp.RootServices = app.ApplicationServices;
+            InternalContext.RootServices = app.ApplicationServices;
 
             // 环境名
-            var envName = App.WebHostEnvironment?.EnvironmentName ?? "Unknown";
+            var envName = FastContext.WebHostEnvironment?.EnvironmentName ?? "Unknown";
 
             // 设置响应报文头信息
             app.Use(async (context, next) =>
             {
                 // 处理 WebSocket 请求
                 if (context.IsWebSocketRequest())
+                {
                     await next.Invoke();
+                }
                 else
                 {
                     // 输出当前环境标识
@@ -64,7 +67,7 @@ public class StartupFilter : IStartupFilter
                     }
 
                     // 释放所有未托管的服务提供器
-                    App.DisposeUnmanagedObjects();
+                    FastContext.DisposeUnmanagedObjects();
                 }
             });
 

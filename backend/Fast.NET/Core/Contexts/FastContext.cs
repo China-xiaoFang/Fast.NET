@@ -15,7 +15,6 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text;
-using Fast.NET.Core.Attributes;
 using Fast.NET.Core.Extensions;
 using Fast.NET.Core.Filters;
 using Microsoft.AspNetCore.Hosting;
@@ -30,56 +29,11 @@ using Microsoft.Extensions.Hosting;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="App"/> App 上下文
+/// <see cref="FastContext"/> App 上下文
 /// </summary>
-public static class App
+public static class FastContext
 {
-    /// <summary>
-    /// 配置
-    /// </summary>
-    public static IConfiguration Configuration =>
-        InternalPenetrates.CatchOrDefault(() => InternalApp.Configuration.Reload(), new ConfigurationBuilder().Build());
-
-    /// <summary>
-    /// 获取Web主机环境
-    /// </summary>
-    public static IWebHostEnvironment WebHostEnvironment => InternalApp.WebHostEnvironment;
-
-    /// <summary>
-    /// 获取主机环境
-    /// </summary>
-    internal static IHostEnvironment HostEnvironment => InternalApp.HostEnvironment;
-
-    /// <summary>
-    /// 应用服务
-    /// </summary>
-    public static IServiceCollection InternalServices => InternalApp.InternalServices;
-
-    /// <summary>
-    /// 存储根服务，可能为空
-    /// </summary>
-    public static IServiceProvider RootServices => InternalApp.RootServices;
-
-    /// <summary>
-    /// 应用有效程序集
-    /// </summary>
-    public static IEnumerable<Assembly> Assemblies => InternalPenetrates.Assemblies;
-
-    /// <summary>
-    /// 有效程序集类型
-    /// </summary>
-    public static readonly IEnumerable<Type> EffectiveTypes;
-
-    /// <summary>
-    /// 请求上下文
-    /// </summary>
-    public static HttpContext HttpContext =>
-        InternalPenetrates.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
-
-    /// <summary>
-    /// 未托管的对象集合
-    /// </summary>
-    public static ConcurrentBag<IDisposable> UnmanagedObjects => InternalApp.UnmanagedObjects;
+    #region 内部属性
 
     /// <summary>
     /// 默认配置文件扫描目录
@@ -96,13 +50,88 @@ public static class App
     /// </summary>
     internal static DateTime? LastGCCollectTime { get; set; }
 
-    static App()
-    {
-        var suppressSnifferAttributeType = typeof(SuppressSnifferAttribute);
+    #endregion
 
-        // 排除使用了 SuppressSnifferAttribute 特性的类型
-        EffectiveTypes = InternalPenetrates.EffectiveTypes.Where(wh => !wh.IsDefined(suppressSnifferAttributeType, false));
+    #region IaaS 映射过来的一些属性和方法
+
+    /// <summary>
+    /// 应用有效程序集
+    /// </summary>
+    public static IEnumerable<Assembly> Assemblies => IaaS.FastContext.Assemblies;
+
+    /// <summary>
+    /// 有效程序集类型
+    /// </summary>
+    public static IEnumerable<Type> EffectiveTypes => IaaS.FastContext.EffectiveTypes;
+
+    /// <summary>
+    /// 处理获取对象异常问题
+    /// </summary>
+    /// <typeparam name="T">类型</typeparam>
+    /// <param name="action">获取对象委托</param>
+    /// <param name="defaultValue">默认值</param>
+    /// <returns>T</returns>
+    public static T CatchOrDefault<T>(Func<T> action, T defaultValue = null) where T : class
+    {
+        return IaaS.FastContext.CatchOrDefault(action, defaultValue);
     }
+
+    /// <summary>
+    /// 获取当前线程 Id
+    /// </summary>
+    /// <returns></returns>
+    public static int GetThreadId()
+    {
+        return IaaS.FastContext.GetThreadId();
+    }
+
+    /// <summary>
+    /// 获取一段代码执行耗时
+    /// </summary>
+    /// <param name="action">委托</param>
+    /// <returns><see cref="long"/></returns>
+    public static long GetExecutionTime(Action action)
+    {
+        return IaaS.FastContext.GetExecutionTime(action);
+    }
+
+    #endregion
+
+    /// <summary>
+    /// 配置
+    /// </summary>
+    public static IConfiguration Configuration =>
+        CatchOrDefault(() => InternalContext.Configuration.Reload(), new ConfigurationBuilder().Build());
+
+    /// <summary>
+    /// 获取Web主机环境
+    /// </summary>
+    public static IWebHostEnvironment WebHostEnvironment => InternalContext.WebHostEnvironment;
+
+    /// <summary>
+    /// 获取主机环境
+    /// </summary>
+    public static IHostEnvironment HostEnvironment => InternalContext.HostEnvironment;
+
+    /// <summary>
+    /// 应用服务
+    /// </summary>
+    public static IServiceCollection InternalServices => InternalContext.InternalServices;
+
+    /// <summary>
+    /// 存储根服务，可能为空
+    /// </summary>
+    public static IServiceProvider RootServices => InternalContext.RootServices;
+
+    /// <summary>
+    /// 请求上下文
+    /// </summary>
+    public static HttpContext HttpContext => CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
+
+    /// <summary>
+    /// 未托管的对象集合
+    /// </summary>
+    public static ConcurrentBag<IDisposable> UnmanagedObjects => InternalContext.UnmanagedObjects;
 
     /// <summary>
     /// 解析服务提供器
@@ -231,34 +260,6 @@ public static class App
     }
 
     /// <summary>
-    /// 获取当前线程 Id
-    /// </summary>
-    /// <returns></returns>
-    public static int GetThreadId()
-    {
-        return InternalPenetrates.GetThreadId();
-    }
-
-    /// <summary>
-    /// 获取当前请求 TraceId
-    /// </summary>
-    /// <returns></returns>
-    public static string GetTraceId()
-    {
-        return InternalApp.GetTraceId();
-    }
-
-    /// <summary>
-    /// 获取一段代码执行耗时
-    /// </summary>
-    /// <param name="action">委托</param>
-    /// <returns><see cref="long"/></returns>
-    public static long GetExecutionTime(Action action)
-    {
-        return InternalPenetrates.GetExecutionTime(action);
-    }
-
-    /// <summary>
     /// 获取服务注册的生命周期类型
     /// </summary>
     /// <param name="serviceType"></param>
@@ -297,22 +298,6 @@ public static class App
     }
 
     /// <summary>
-    /// 自动装载主机配置
-    /// </summary>
-    /// <param name="builder"></param>
-    private static void ConfigureHostAppConfiguration(IHostBuilder builder)
-    {
-        builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
-        {
-            // 存储环境对象
-            InternalApp.HostEnvironment = hostContext.HostingEnvironment;
-
-            // 加载配置
-            AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
-        });
-    }
-
-    /// <summary>
     /// 配置 Application
     /// </summary>
     /// <param name="builder"></param>
@@ -325,7 +310,7 @@ public static class App
             builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
             {
                 // 存储环境对象
-                InternalApp.HostEnvironment = InternalApp.WebHostEnvironment = hostContext.HostingEnvironment;
+                InternalContext.HostEnvironment = InternalContext.WebHostEnvironment = hostContext.HostingEnvironment;
 
                 // 加载配置
                 AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
@@ -334,17 +319,24 @@ public static class App
         // 自动装载配置
         else
         {
-            ConfigureHostAppConfiguration(hostBuilder);
+            builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+            {
+                // 存储环境对象
+                InternalContext.HostEnvironment = hostContext.HostingEnvironment;
+
+                // 加载配置
+                AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
+            });
         }
 
         // 应用初始化服务
         builder.ConfigureServices((hostContext, services) =>
         {
             // 存储配置对象
-            InternalApp.Configuration = hostContext.Configuration;
+            InternalContext.Configuration = hostContext.Configuration;
 
             // 存储服务提供器
-            InternalApp.InternalServices = services;
+            InternalContext.InternalServices = services;
 
             // 注册 Startup 过滤器
             services.AddTransient<IStartupFilter, StartupFilter>();

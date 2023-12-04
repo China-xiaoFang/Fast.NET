@@ -1,0 +1,457 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.NET.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.NET.Core.FastContext">
+            <summary>
+            <see cref="T:Fast.NET.Core.FastContext"/> App 上下文
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.InternalConfigurationScanDirectories">
+            <summary>
+            默认配置文件扫描目录
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.FastContext.GC_COLLECT_INTERVAL_SECONDS">
+            <summary>
+            GC 回收默认间隔
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.LastGCCollectTime">
+            <summary>
+            记录最近 GC 回收时间
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.Assemblies">
+            <summary>
+            应用有效程序集
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.EffectiveTypes">
+            <summary>
+            有效程序集类型
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.CatchOrDefault``1(System.Func{``0},``0)">
+            <summary>
+            处理获取对象异常问题
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="action">获取对象委托</param>
+            <param name="defaultValue">默认值</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetThreadId">
+            <summary>
+            获取当前线程 Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetExecutionTime(System.Action)">
+            <summary>
+            获取一段代码执行耗时
+            </summary>
+            <param name="action">委托</param>
+            <returns><see cref="T:System.Int64"/></returns>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.Configuration">
+            <summary>
+            配置
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.WebHostEnvironment">
+            <summary>
+            获取Web主机环境
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.HostEnvironment">
+            <summary>
+            获取主机环境
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.InternalServices">
+            <summary>
+            应用服务
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.RootServices">
+            <summary>
+            存储根服务，可能为空
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.HttpContext">
+            <summary>
+            请求上下文
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.FastContext.UnmanagedObjects">
+            <summary>
+            未托管的对象集合
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetServiceProvider(System.Type)">
+            <summary>
+            解析服务提供器
+            </summary>
+            <param name="serviceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetService``1(System.IServiceProvider)">
+            <summary>
+            获取请求生存周期的服务
+            </summary>
+            <typeparam name="TService"></typeparam>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetService(System.Type,System.IServiceProvider)">
+            <summary>
+            获取请求生存周期的服务
+            </summary>
+            <param name="type"></param>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetServices``1(System.IServiceProvider)">
+            <summary>
+            获取请求生存周期的服务集合
+            </summary>
+            <typeparam name="TService"></typeparam>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetServices(System.Type,System.IServiceProvider)">
+            <summary>
+            获取请求生存周期的服务集合
+            </summary>
+            <param name="type"></param>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetRequiredService``1(System.IServiceProvider)">
+            <summary>
+            获取请求生存周期的服务
+            </summary>
+            <typeparam name="TService"></typeparam>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetRequiredService(System.Type,System.IServiceProvider)">
+            <summary>
+            获取请求生存周期的服务
+            </summary>
+            <param name="type"></param>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetConfig``1(System.String)">
+            <summary>
+            获取配置
+            </summary>
+            <typeparam name="TOptions">强类型选项类</typeparam>
+            <param name="path">配置中对应的Key</param>
+            <returns>TOptions</returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetCurrentStartupUri">
+            <summary>
+            获取当前程序启动Uri信息
+            <remarks>默认获取第一个地址，可能为空，请勿在程序启动过程中使用</remarks>
+            </summary>
+            <returns><see cref="T:System.Uri"/></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetServiceLifetime(System.Type)">
+            <summary>
+            获取服务注册的生命周期类型
+            </summary>
+            <param name="serviceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.DisposeUnmanagedObjects">
+            <summary>
+            释放所有未托管的对象
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.ConfigureApplication(Microsoft.AspNetCore.Hosting.IWebHostBuilder,Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            配置 Application
+            </summary>
+            <param name="builder"></param>
+            <param name="hostBuilder"></param>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.AddJsonFiles(Microsoft.Extensions.Configuration.IConfigurationBuilder,Microsoft.Extensions.Hosting.IHostEnvironment)">
+            <summary>
+            添加 JSON 文件
+            </summary>
+            <param name="configurationBuilder"></param>
+            <param name="hostEnvironment"></param>
+        </member>
+        <member name="F:Fast.NET.Core.FastContext.excludeJsonPrefixArr">
+            <summary>
+            排除的配置文件前缀
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.FastContext.runtimeJsonSuffixArr">
+            <summary>
+            排除运行时 Json 后缀
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.SplitConfigFileNameToGroups(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            对配置文件名进行分组
+            </summary>
+            <param name="configFiles"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.NET.Core.InternalContext">
+            <summary>
+            <see cref="T:Fast.NET.Core.InternalContext"/> 内部 App 上下文
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.InternalContext.InternalServices">
+            <summary>
+            应用服务
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.InternalContext.RootServices">
+            <summary>
+            根服务
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.InternalContext.Configuration">
+            <summary>
+            配置对象
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.InternalContext.WebHostEnvironment">
+            <summary>
+            获取Web主机环境
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.InternalContext.HostEnvironment">
+            <summary>
+            获取泛型主机环境
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.InternalContext.UnmanagedObjects">
+            <summary>
+            未托管的对象集合
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.InternalContext.GetTraceId">
+            <summary>
+            获取当前请求 TraceId
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.NET.Core.Extensions.IApplicationBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.IApplicationBuilderExtension.EnableBuffering(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            启用 Body 重复读功能
+            </summary>
+            <remarks>须在 app.UseRouting() 之前注册</remarks>
+            <param name="app"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></returns>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.IApplicationBuilderExtension.UseApp(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+            <summary>
+            添加应用中间件
+            </summary>
+            <param name="app"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>应用构建器</param>
+            <param name="configure">应用配置</param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>应用构建器</returns>
+        </member>
+        <member name="T:Fast.NET.Core.Extensions.IConfigurationExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.IConfigurationExtension.Reload(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            刷新配置对象
+            </summary>
+            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
+            <returns><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></returns>
+        </member>
+        <member name="T:Fast.NET.Core.Extensions.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.IServiceCollectionExtension.AddGzipBrotliCompression(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加Gzip Brotli 压缩
+            </summary>
+            <param name="service"></param>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.IServiceCollectionExtension.AddMvcFilter``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.AspNetCore.Mvc.MvcOptions})">
+            <summary>
+            注册 Mvc 过滤器
+            </summary>
+            <typeparam name="TFilter"></typeparam>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="configure"></param>
+            <returns>&lt;see cref="IServiceCollection"/&gt;</returns>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.IServiceCollectionExtension.AddMvcFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata,System.Action{Microsoft.AspNetCore.Mvc.MvcOptions})">
+            <summary>
+            注册 Mvc 过滤器
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="filter"></param>
+            <param name="configure"></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.IServiceCollectionExtension.ConfigureForwardedHeaders(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.AspNetCore.Builder.ForwardedHeadersOptions})">
+            <summary>
+            配置反向代理头部
+            <remarks>默认解决了“IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题”</remarks>
+            </summary>
+            <param name="services"></param>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.NET.Core.Extensions.WebApplicationBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.Initialize(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            框架初始化
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></returns>
+        </member>
+        <member name="T:Fast.NET.Core.Filters.StartupFilter">
+            <summary>
+            应用启动时自动注册中间件
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="M:Fast.NET.Core.Filters.StartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+            <summary>
+            配置中间件
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.NET.Core.RemoteRequest.RemoteRequestUtil">
+            <summary>
+            远程请求工具类
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.RemoteRequest.RemoteRequestUtil.GetDaySentence">
+            <summary>
+            得到每日一句
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.DaySentenceEntity.Picture2">
+            <summary>
+            图片2
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.DaySentenceEntity.Caption">
+            <summary>
+            说明
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.DaySentenceEntity.Note">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.DaySentenceEntity.Content">
+            <summary>
+            英文内容
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.DaySentenceEntity.ShareImg">
+            <summary>
+            分享图片
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.DaySentenceEntity.DateTime">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.Yesterday">
+            <summary>
+            昨日天气
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.Forecast">
+            <summary>
+            未来五天天气
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.Ganmao">
+            <summary>
+            感冒
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.Wendu">
+            <summary>
+            温度
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.Success">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.Desc">
+            <summary>
+            失败描述
+            </summary>
+        </member>
+        <member name="T:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.WeatherInfo">
+            <summary>
+            天气信息
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.WeatherInfo.Date">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.WeatherInfo.High">
+            <summary>
+            最高温度
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.WeatherInfo.Fengli">
+            <summary>
+            风力
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.WeatherInfo.Low">
+            <summary>
+            最低温度
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.WeatherInfo.Fengxiang">
+            <summary>
+            分向
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.RemoteRequest.WeatherInfoEntity.WeatherInfo.Type">
+            <summary>
+            类型
+            </summary>
+        </member>
+    </members>
+</doc>

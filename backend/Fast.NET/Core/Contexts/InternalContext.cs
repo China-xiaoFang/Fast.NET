@@ -24,9 +24,9 @@ using Microsoft.Extensions.Hosting;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="InternalApp"/> 内部 App 上下文
+/// <see cref="InternalContext"/> 内部 App 上下文
 /// </summary>
-internal static class InternalApp
+internal static class InternalContext
 {
     /// <summary>
     /// 应用服务
@@ -58,7 +58,7 @@ internal static class InternalApp
     /// </summary>
     internal static readonly ConcurrentBag<IDisposable> UnmanagedObjects;
 
-    static InternalApp()
+    static InternalContext()
     {
         // 未托管的对象
         UnmanagedObjects = new ConcurrentBag<IDisposable>();
@@ -72,7 +72,7 @@ internal static class InternalApp
     {
         return Activity.Current?.Id ?? (RootServices == null
             ? default
-            : InternalPenetrates.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext)
+            : IaaS.FastContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext)
                 ?.TraceIdentifier);
     }
 }

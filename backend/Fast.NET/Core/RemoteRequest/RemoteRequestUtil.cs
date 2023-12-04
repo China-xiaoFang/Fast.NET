@@ -20,7 +20,7 @@ namespace Fast.NET.Core.RemoteRequest;
 /// <summary>
 /// 远程请求工具类
 /// </summary>
-public static class RemoteRequestUtil
+internal static class RemoteRequestUtil
 {
     // TODO：后期移动单独类库，或者直接集成到项目中
     /// <summary>
@@ -64,7 +64,7 @@ public static class RemoteRequestUtil
     //}
 }
 
-public class DaySentenceEntity
+internal class DaySentenceEntity
 {
     /// <summary>
     /// 图片2
