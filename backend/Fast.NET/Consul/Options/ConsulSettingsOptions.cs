@@ -12,53 +12,59 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.ComponentModel.DataAnnotations;
+using Fast.IaaS;
+
 namespace Fast.Consul.Options;
 
 /// <summary>
 /// <see cref="ConsulSettingsOptions"/> Consul配置选项
 /// </summary>
-public sealed class ConsulSettingsOptions
+public sealed class ConsulSettingsOptions : IPostConfigure
 {
     /// <summary>
     /// Consul 是否启用
     /// </summary>
-    public bool Enable { get; set; }
+    [Required]
+    public bool? Enable { get; set; }
 
     /// <summary>
     /// Consul 客户端地址
     /// </summary>
+    [Required]
     public string Address { get; set; }
 
     /// <summary>
     /// Consul 健康检查地址
     /// </summary>
+    [Required]
     public string HealthCheck { get; set; }
 
     /// <summary>
     /// Consul 服务启动后多久注册，单位秒
     /// </summary>
-    public int DeregisterCriticalServiceAfter { get; set; }
+    public int? DeregisterCriticalServiceAfter { get; set; }
 
     /// <summary>
     /// Consul 健康检查时间间隔，单位秒
     /// </summary>
-    public int HealthCheckInterval { get; set; }
+    public int? HealthCheckInterval { get; set; }
 
     /// <summary>
     /// Consul 健康检查超时时间，单位秒
     /// </summary>
-    public int HealthCheckTimeout { get; set; }
+    public int? HealthCheckTimeout { get; set; }
 
     /// <summary>
     /// 后期配置
     /// </summary>
-    public ConsulSettingsOptions()
+    public void PostConfigure()
     {
-        Enable = true;
-        Address = "http://127.0.0.1:8500";
-        HealthCheck = "/healthCheck";
-        DeregisterCriticalServiceAfter = 5;
-        HealthCheckInterval = 10;
-        HealthCheckTimeout = 5;
+        Enable ??= true;
+        Address ??= "http://127.0.0.1:8500";
+        HealthCheck ??= "/healthCheck";
+        DeregisterCriticalServiceAfter ??= 5;
+        HealthCheckInterval ??= 10;
+        HealthCheckTimeout ??= 5;
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.Iaas</name>
+        <name>Fast.IaaS</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -1324,6 +1324,14 @@
             <see cref="T:System.Type"/> 拓展类
             </summary>
         </member>
+        <member name="M:Fast.IaaS.TypeExtension.LoadPostConfigure``1(``0)">
+            <summary>
+            加载后期配置
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.IaaS.TypeExtension.HasImplementedRawGeneric(System.Type,System.Type)">
             <summary>
             判断类型是否实现某个泛型
@@ -1747,6 +1755,47 @@
             枚举对象的值  
             </summary>  
         </member>
+        <member name="T:Fast.IaaS.IPostConfigure">
+            <summary>
+            <see cref="T:Fast.IaaS.IPostConfigure"/> 后期配置接口
+            <remarks>可在一些不能通过构造函数载入默认配置的地方进行加载默认配置</remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IPostConfigure.PostConfigure">
+            <summary>
+            后期配置
+            </summary>
+        </member>
+        <member name="T:Fast.IaaS.ITreeNode`1">
+            <summary>
+            <see cref="T:Fast.IaaS.ITreeNode`1"/> 树基类
+            </summary>
+            <typeparam name="TProperty">Id属性类型</typeparam>
+        </member>
+        <member name="M:Fast.IaaS.ITreeNode`1.GetId">
+            <summary>
+            获取节点id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ITreeNode`1.GetPid">
+            <summary>
+            获取节点父id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ITreeNode`1.Sort">
+            <summary>
+            获取排序字段
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ITreeNode`1.SetChildren(System.Collections.IList)">
+            <summary>
+            设置Children
+            </summary>
+            <param name="children"></param>
+        </member>
         <member name="T:Fast.IaaS.DepsLibrary">
             <summary>
             <see cref="T:Fast.IaaS.DepsLibrary"/> .deps.json 文件中 libraries 节点的Model
@@ -1781,36 +1830,6 @@
             <summary>
             
             </summary>
-        </member>
-        <member name="T:Fast.IaaS.ITreeNode`1">
-            <summary>
-            <see cref="T:Fast.IaaS.ITreeNode`1"/> 树基类
-            </summary>
-            <typeparam name="TProperty">Id属性类型</typeparam>
-        </member>
-        <member name="M:Fast.IaaS.ITreeNode`1.GetId">
-            <summary>
-            获取节点id
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.ITreeNode`1.GetPid">
-            <summary>
-            获取节点父id
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.ITreeNode`1.Sort">
-            <summary>
-            获取排序字段
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.ITreeNode`1.SetChildren(System.Collections.IList)">
-            <summary>
-            设置Children
-            </summary>
-            <param name="children"></param>
         </member>
         <member name="T:Fast.IaaS.UserAgentInfo">
             <summary>

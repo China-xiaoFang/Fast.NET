@@ -85,13 +85,13 @@ internal class ConsulRegister : IConsulRegister
             Check = new AgentServiceCheck
             {
                 // 服务启动后多久注册
-                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(_consulSettingsOptions.DeregisterCriticalServiceAfter),
+                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(_consulSettingsOptions.DeregisterCriticalServiceAfter!.Value),
                 // 健康检查时间间隔
-                Interval = TimeSpan.FromSeconds(_consulSettingsOptions.HealthCheckInterval),
+                Interval = TimeSpan.FromSeconds(_consulSettingsOptions.HealthCheckInterval!.Value),
                 // 健康检查地址
                 HTTP = $"{startupUri.AbsoluteUri.TrimEnd('/')}{_consulSettingsOptions.HealthCheck}",
                 // 健康检查超时时间
-                Timeout = TimeSpan.FromSeconds(_consulSettingsOptions.HealthCheckTimeout),
+                Timeout = TimeSpan.FromSeconds(_consulSettingsOptions.HealthCheckTimeout!.Value),
             }
         };
 

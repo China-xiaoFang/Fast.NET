@@ -14,6 +14,7 @@
 
 using Fast.CorsAccessor.Internal;
 using Fast.CorsAccessor.Options;
+using Fast.IaaS;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,14 +47,12 @@ public static class CorsAccessorIServiceCollectionExtension
             serviceProvider.Dispose();
         }
 
+        // 配置验证
+        services.AddOptions<CorsAccessorSettingsOptions>().BindConfiguration("CorsAccessorSettings").ValidateDataAnnotations();
+
         // 获取跨域配置选项
-        var corsAccessorSettings = configuration.GetSection("CorsAccessorSettings").Get<CorsAccessorSettingsOptions>();
-
-        // 加载默认构造函数
-        var postConfigure = typeof(CorsAccessorSettingsOptions).GetMethod(nameof(CorsAccessorSettingsOptions.PostConfigure));
-
-        corsAccessorSettings ??= Activator.CreateInstance<CorsAccessorSettingsOptions>();
-        postConfigure?.Invoke(corsAccessorSettings, null);
+        var corsAccessorSettings = configuration.GetSection("CorsAccessorSettings").Get<CorsAccessorSettingsOptions>()
+            .LoadPostConfigure();
 
         // 添加跨域服务
         services.AddCors(options =>

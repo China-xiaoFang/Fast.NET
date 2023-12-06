@@ -830,6 +830,11 @@
             工作Id
             </summary>
         </member>
+        <member name="M:Fast.SqlSugar.Options.SnowflakeSettingsOptions.PostConfigure">
+            <summary>
+            后期配置
+            </summary>
+        </member>
         <member name="T:Fast.SqlSugar.Repository.ISqlSugarRepository`1">
             <summary>
             <see cref="T:Fast.SqlSugar.Repository.ISqlSugarRepository`1"/> SqlSugar仓储接口

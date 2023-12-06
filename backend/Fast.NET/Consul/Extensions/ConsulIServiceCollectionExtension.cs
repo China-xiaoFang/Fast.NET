@@ -16,6 +16,7 @@ using Fast.Consul.Internal;
 using Fast.Consul.KeyValue;
 using Fast.Consul.Options;
 using Fast.Consul.Registers;
+using Fast.IaaS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -48,7 +49,7 @@ public static class ConsulIServiceCollectionExtension
         services.AddOptions<ConsulSettingsOptions>().BindConfiguration("ConsulSettings").ValidateDataAnnotations();
 
         // 获取配置选项
-        Penetrates.ConsulSettings = configuration.GetSection("ConsulSettings").Get<ConsulSettingsOptions>();
+        Penetrates.ConsulSettings = configuration.GetSection("ConsulSettings").Get<ConsulSettingsOptions>().LoadPostConfigure();
 
         // 注册服务
         services.AddTransient<IConsulRegister, ConsulRegister>();

@@ -28,6 +28,26 @@ namespace Fast.IaaS;
 public static class TypeExtension
 {
     /// <summary>
+    /// 加载后期配置
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static T? LoadPostConfigure<T>(this T? type) where T : IPostConfigure
+    {
+        // 获取后期配置方法
+        var postConfigureMethod = typeof(T).GetMethod(nameof(IPostConfigure.PostConfigure));
+
+        // 空值判断
+        type ??= Activator.CreateInstance<T>();
+
+        // 加载后期配置
+        postConfigureMethod!.Invoke(type, null);
+
+        return type;
+    }
+
+    /// <summary>
     /// 判断类型是否实现某个泛型
     /// </summary>
     /// <param name="type"><see cref="Type"/> 类型</param>

@@ -145,7 +145,7 @@
             Consul 健康检查超时时间，单位秒
             </summary>
         </member>
-        <member name="M:Fast.Consul.Options.ConsulSettingsOptions.#ctor">
+        <member name="M:Fast.Consul.Options.ConsulSettingsOptions.PostConfigure">
             <summary>
             后期配置
             </summary>

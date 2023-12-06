@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Fast.IaaS;
 using Fast.JwtBearer.Internal;
 using Fast.JwtBearer.Options;
 using Microsoft.AspNetCore.Authentication;
@@ -40,7 +41,7 @@ namespace Fast.JwtBearer.Services;
 #if NET8_0
 public class JwtBearerCryptoService(IOptions<JWTSettingsOptions> jwtSettings) : IJwtBearerCryptoService
 {
-    private readonly JWTSettingsOptions _jwtSettings = jwtSettings.Value;
+    private readonly JWTSettingsOptions _jwtSettings = jwtSettings.Value.LoadPostConfigure();
 #else
 public class JwtBearerCryptoService : IJwtBearerCryptoService
 {
@@ -48,7 +49,7 @@ public class JwtBearerCryptoService : IJwtBearerCryptoService
 
     public JwtBearerCryptoService(IOptions<JWTSettingsOptions> jwtSettings)
     {
-        _jwtSettings = jwtSettings.Value;
+        _jwtSettings = jwtSettings.Value.LoadPostConfigure();
     }
 #endif
 

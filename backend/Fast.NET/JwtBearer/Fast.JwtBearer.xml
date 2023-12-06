@@ -138,6 +138,11 @@
             <see cref="T:Fast.JwtBearer.Internal.Penetrates"/> 常量，公共方法配置类
             </summary>
         </member>
+        <member name="P:Fast.JwtBearer.Internal.Penetrates.JWTSettings">
+            <summary>
+            Jwt 配置
+            </summary>
+        </member>
         <member name="F:Fast.JwtBearer.Internal.Penetrates.DateTypeClaimTypes">
             <summary>
             日期类型的 Claim 类型
@@ -214,13 +219,18 @@
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.RefreshTokenExpireTime">
             <summary>
             刷新Token 过期时间（分钟）
-            <remarks>默认43200分钟(30天)</remarks>
+            <remarks>默认1440分钟(24小时)</remarks>
             </summary>
         </member>
         <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.Algorithm">
             <summary>
             加密算法
             <remarks>默认HS256</remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.JwtBearer.Options.JWTSettingsOptions.PostConfigure">
+            <summary>
+            后期配置
             </summary>
         </member>
         <member name="T:Fast.JwtBearer.Providers.AppAuthorizationPolicyProvider">

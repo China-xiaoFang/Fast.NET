@@ -25,6 +25,11 @@ namespace Fast.JwtBearer.Internal;
 internal static class Penetrates
 {
     /// <summary>
+    /// Jwt 配置
+    /// </summary>
+    internal static JWTSettingsOptions JWTSettings { get; set; }
+
+    /// <summary>
     /// 日期类型的 Claim 类型
     /// </summary>
     internal static readonly string[] DateTypeClaimTypes =

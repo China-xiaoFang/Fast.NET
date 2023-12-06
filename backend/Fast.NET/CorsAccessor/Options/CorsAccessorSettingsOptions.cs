@@ -13,13 +13,14 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.ComponentModel.DataAnnotations;
+using Fast.IaaS;
 
 namespace Fast.CorsAccessor.Options;
 
 /// <summary>
 /// 跨域配置选项
 /// </summary>
-public sealed class CorsAccessorSettingsOptions
+public sealed class CorsAccessorSettingsOptions : IPostConfigure
 {
     /// <summary>
     /// 策略名称

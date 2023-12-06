@@ -57,6 +57,8 @@ public static class JwtBearerIServiceCollectionExtension
         // 配置验证
         services.AddOptions<JWTSettingsOptions>().BindConfiguration("JWTSettings").ValidateDataAnnotations();
 
+        Penetrates.JWTSettings = configuration.GetSection("JWTSettings").Get<JWTSettingsOptions>().LoadPostConfigure();
+
         // 添加加密解密服务
         services.AddSingleton<IJwtBearerCryptoService, JwtBearerCryptoService>();
 
@@ -89,8 +91,7 @@ public static class JwtBearerIServiceCollectionExtension
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
-            options.TokenValidationParameters =
-                Penetrates.CreateTokenValidationParameters(configuration.GetSection("JWTSettings").Get<JWTSettingsOptions>());
+            options.TokenValidationParameters = Penetrates.CreateTokenValidationParameters(Penetrates.JWTSettings);
         });
 
         return authenticationBuilder;

@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.IaaS;
 using Fast.JwtBearer.Enums;
 
 namespace Fast.JwtBearer.Options;
@@ -19,7 +20,7 @@ namespace Fast.JwtBearer.Options;
 /// <summary>
 /// <see cref="JWTSettingsOptions"/> Jwt 配置
 /// </summary>
-public sealed class JWTSettingsOptions
+public sealed class JWTSettingsOptions : IPostConfigure
 {
     /// <summary>
     /// 验证签发方密钥
@@ -74,7 +75,7 @@ public sealed class JWTSettingsOptions
 
     /// <summary>
     /// 刷新Token 过期时间（分钟）
-    /// <remarks>默认43200分钟(30天)</remarks>
+    /// <remarks>默认1440分钟(24小时)</remarks>
     /// </summary>
     public long? RefreshTokenExpireTime { get; set; }
 
@@ -83,4 +84,19 @@ public sealed class JWTSettingsOptions
     /// <remarks>默认HS256</remarks>
     /// </summary>
     public JwtBearerAlgorithmEnum? Algorithm { get; set; }
+
+    /// <summary>
+    /// 后期配置
+    /// </summary>
+    public void PostConfigure()
+    {
+        ValidateIssuerSigningKey ??= false;
+        ValidateIssuer ??= false;
+        ValidateAudience ??= false;
+        ValidateLifetime ??= false;
+        ClockSkew ??= 5;
+        TokenExpiredTime ??= 20;
+        RefreshTokenExpireTime ??= 1440;
+        Algorithm ??= JwtBearerAlgorithmEnum.HS256;
+    }
 }

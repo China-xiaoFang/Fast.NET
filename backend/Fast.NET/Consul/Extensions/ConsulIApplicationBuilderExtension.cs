@@ -35,7 +35,7 @@ public static class ConsulIApplicationBuilderExtension
     public static IApplicationBuilder UseConsul(this IApplicationBuilder app)
     {
         // 判断是否启用
-        if (!Penetrates.ConsulSettings.Enable)
+        if (!Penetrates.ConsulSettings.Enable!.Value)
         {
             return app;
         }
