@@ -91,8 +91,11 @@ public sealed class JWTSettingsOptions : IPostConfigure
     public void PostConfigure()
     {
         ValidateIssuerSigningKey ??= false;
+        IssuerSigningKey ??= "Ax5/zZ8NB~[%^SIJsL)1o2Mw4jm6eg73";
         ValidateIssuer ??= false;
+        ValidIssuer ??= "Fast.NET.API";
         ValidateAudience ??= false;
+        ValidAudience ??= "Fast.NET.Client";
         ValidateLifetime ??= false;
         ClockSkew ??= 5;
         TokenExpiredTime ??= 20;
