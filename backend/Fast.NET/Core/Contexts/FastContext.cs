@@ -15,6 +15,7 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text;
+using Fast.IaaS;
 using Fast.NET.Core.Extensions;
 using Fast.NET.Core.Filters;
 using Microsoft.AspNetCore.Hosting;
@@ -239,7 +240,21 @@ public static class FastContext
     /// <returns>TOptions</returns>
     public static TOptions GetConfig<TOptions>(string path)
     {
-        return Configuration.GetSection(path).Get<TOptions>();
+        var options = Configuration.GetSection(path).Get<TOptions>();
+
+        // 判断是否继承了 IPostConfigure
+        if (typeof(IPostConfigure).IsAssignableFrom(typeof(TOptions)))
+        {
+            var postConfigureMethod = typeof(TOptions).GetMethod(nameof(IPostConfigure.PostConfigure));
+
+            // 空值判断
+            options ??= Activator.CreateInstance<TOptions>();
+
+            // 加载后期配置
+            postConfigureMethod!.Invoke(options, null);
+        }
+
+        return options;
     }
 
     /// <summary>
