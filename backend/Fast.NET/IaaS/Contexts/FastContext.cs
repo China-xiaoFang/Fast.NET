@@ -21,6 +21,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Fast.DependencyInjection")]
 [assembly: InternalsVisibleTo("Fast.JwtBearer")]
 [assembly: InternalsVisibleTo("Fast.Mapster")]
+[assembly: InternalsVisibleTo("Fast.SpecificationProcessor")]
 [assembly: InternalsVisibleTo("Fast.SqlSugar")]
 
 // ReSharper disable once CheckNamespace

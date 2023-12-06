@@ -32,6 +32,39 @@ namespace Fast.IaaS;
 public static class HttpContextExtension
 {
     /// <summary>
+    /// 设置规范化响应时间戳
+    /// </summary>
+    /// <param name="httpContext"><see cref="HttpContext"/></param>
+    /// <param name="timestamp"><see cref="long"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static void UnifyResponseTimestamp(this HttpContext httpContext, long timestamp)
+    {
+        httpContext?.Response.Headers.TryAdd("Fast-NET-Timestamp", $"{timestamp}");
+    }
+
+    /// <summary>
+    /// 获取规范化响应时间戳
+    /// </summary>
+    /// <param name="httpContext"><see cref="HttpContext"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static long UnifyResponseTimestamp(this HttpContext httpContext)
+    {
+        var timestampStr = httpContext?.Response.Headers["Fast-NET-Timestamp"];
+
+        if (string.IsNullOrEmpty(timestampStr))
+        {
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+            // 设置请求响应头部时间戳
+            httpContext.UnifyResponseTimestamp(timestamp);
+
+            return timestamp;
+        }
+
+        return long.Parse(timestampStr);
+    }
+
+    /// <summary>
     /// 判断是否是 WebSocket 请求
     /// </summary>
     /// <param name="httpContext"><see cref="HttpContext"/></param>

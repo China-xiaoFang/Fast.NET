@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.IaaS</name>
+        <name>Fast.Iaas</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -816,6 +816,21 @@
             <summary>
             <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 拓展类
             </summary>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.UnifyResponseTimestamp(Microsoft.AspNetCore.Http.HttpContext,System.Int64)">
+            <summary>
+            设置规范化响应时间戳
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="timestamp"><see cref="T:System.Int64"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.UnifyResponseTimestamp(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取规范化响应时间戳
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
         </member>
         <member name="M:Fast.IaaS.HttpContextExtension.IsWebSocketRequest(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
