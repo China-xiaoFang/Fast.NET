@@ -11,9 +11,9 @@ import { useConfig } from "@/stores/config";
  * 但 i18n 的 messages 内是按需载入的
  */
 
-import elementZhCnLocale from "element-plus/es/locale/lang/zh-cn";
-import elementZhTwLocale from "element-plus/es/locale/lang/zh-tw";
-import elementEnLocale from "element-plus/es/locale/lang/en";
+import elementZhCnLocale from 'element-plus/dist/locale/zh-cn.mjs';
+import elementZhTwLocale from "element-plus/dist/locale/zh-tw.mjs";
+import elementEnLocale from "element-plus/dist/locale/en.mjs";
 
 /**
  * i18n
@@ -23,9 +23,9 @@ export let i18n: {
 };
 
 /**
- * 默认的语言包
+ * 准备要合并的语言包
  */
-const defaultLocale: anyObj = {
+const assignLocale: anyObj = {
     "zh-cn": [elementZhCnLocale],
     "zh-tw": [elementZhTwLocale],
     en: [elementEnLocale],
@@ -42,13 +42,23 @@ export const loadLang = async (app: App) => {
     // 获取默认语言
     const locale = config.lang.defaultLang;
 
+    // 加载全局语言
+    const message = {};
+
+    const messages = {
+        [locale]:{...message}
+    };
+
+    // 合并语言包(含element-puls、页面语言包)
+    Object.assign(messages[locale], ...assignLocale[locale])
+
     // 创建 i18n 实例
     i18n = createI18n({
         locale: locale,
         legacy: false, // 使用组合式 API
         globalInjection: true, // 挂载 $t, $d 等到全局
         fallbackLocale: config.lang.fallbackLang,
-        messages: defaultLocale,
+        messages: messages,
     });
 
     // 在应用中使用 i18n 插件

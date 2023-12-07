@@ -32,7 +32,7 @@
     "dependencies": {
         "@element-plus/icons-vue": "^2.1.0",
         "axios": "^1.6.2",
-        "element-plus": "^2.4.2",
+        "element-plus": "^2.4.3",
         "lodash-es": "^4.17.21",
         "mitt": "^3.0.1",
         "pinia": "^2.1.7",

@@ -10,7 +10,7 @@ import VueSetupExtend from "vite-plugin-vue-setup-extend";
 // 打包优化插件
 import viteCompression from "vite-plugin-compression";
 import legacyPlugin from "@vitejs/plugin-legacy";
-import viteImagemin from "vite-plugin-imagemin";
+// import viteImagemin from "vite-plugin-imagemin";
 
 const pathResolve = (dir: string): any => {
     return resolve(__dirname, ".", dir);
@@ -157,33 +157,33 @@ const ViteConfig = ({ mode }: ConfigEnv): UserConfig => {
                 ext: ".gz", // 文件类型
             }),
             /** 图片压缩 */
-            viteImagemin({
-                gifsicle: {
-                    optimizationLevel: 7,
-                    interlaced: false,
-                },
-                optipng: {
-                    optimizationLevel: 7,
-                },
-                mozjpeg: {
-                    quality: 20,
-                },
-                pngquant: {
-                    quality: [0.8, 0.9],
-                    speed: 4,
-                },
-                svgo: {
-                    plugins: [
-                        {
-                            name: "removeViewBox",
-                        },
-                        {
-                            name: "removeEmptyAttrs",
-                            active: false,
-                        },
-                    ],
-                },
-            }),
+            // viteImagemin({
+            //     gifsicle: {
+            //         optimizationLevel: 7,
+            //         interlaced: false,
+            //     },
+            //     optipng: {
+            //         optimizationLevel: 7,
+            //     },
+            //     mozjpeg: {
+            //         quality: 20,
+            //     },
+            //     pngquant: {
+            //         quality: [0.8, 0.9],
+            //         speed: 4,
+            //     },
+            //     svgo: {
+            //         plugins: [
+            //             {
+            //                 name: "removeViewBox",
+            //             },
+            //             {
+            //                 name: "removeEmptyAttrs",
+            //                 active: false,
+            //             },
+            //         ],
+            //     },
+            // }),
         ],
     };
 };
