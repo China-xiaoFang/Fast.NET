@@ -171,7 +171,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     private void ConfigureControllerRouteAttribute(ControllerModel controller,
         ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
     {
-        // 解决 Gitee 该 Issue：https://gitee.com/dotnetchina/Furion/issues/I59B74
         if (CheckIsForceWithDefaultRoute(controllerApiDescriptionSettings) && controller.Selectors[0] != null &&
             controller.Selectors[0].AttributeRouteModel != null &&
             !ForceWithDefaultPrefixRouteControllerTypes.Contains(controller.ControllerType))
