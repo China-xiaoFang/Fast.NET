@@ -11,10 +11,11 @@ declare interface ImportMetaEnv {
     readonly VITE_PORT: number;
     /**
      * 运行 npm run dev 时自动打开浏览器
+     * 这里使用 boolean 会直接当作true处理，尽管是 false
      * @type {boolean}
      * @memberof ImportMetaEnv
      */
-    readonly VITE_OPEN: boolean;
+    readonly VITE_OPEN: string;
     /**
      * 打包路径
      * @type {string}

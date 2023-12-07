@@ -1,1 +1,3 @@
-export default {};
+export default {
+    "你好啊！": "你好啊！",
+};

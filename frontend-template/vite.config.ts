@@ -55,7 +55,7 @@ const ViteConfig = ({ mode }: ConfigEnv): UserConfig => {
             /** 端口号 */
             port: VITE_PORT,
             /** 是否自动打开浏览器 */
-            open: VITE_OPEN,
+            open: VITE_OPEN !== "false",
             /** 跨域设置允许 */
             cors: true,
             /** 端口被占用时，是否直接退出 */
