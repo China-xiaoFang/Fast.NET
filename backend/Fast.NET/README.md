@@ -22,39 +22,37 @@ In the past, .NET did not have a good open source environment and community in C
 
 Various .NET open source frameworks have also emerged in response to the times.
 
-As a newbie who has been working in the .NET industry for 5 years, I have also used many open source frameworks, so I want to make a small contribution to .NET open source based on my own work experience and experience.
+As a newbie who has been working in the .NET industry for N years, I have also used many open source frameworks, so I would like to make a small contribution to .NET open source based on my own work experience.
 
 So Fast.NET (v3) was born.
 
-I would like to express my sincere thanks to the boss of the .NET open source framework.
+**Continue to gather the strengths of hundreds of experts to improve and enrich the infrastructure of this framework, adding a choice to the .NET ecosystem! **
 
-- 👉 **[MonkSoul Furion](https://gitee.com/dotnetchina/Furion)**
-- 👉 **[小杰SqlSugar](https://gitee.com/dotnetchina/SqlSugar)**
+### Statement
 
-It is precisely because of these .NET big guys that [Fast.NET](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET) was born.
+```
+This framework can be said to continue to reinvent the wheel based on the predecessors, but it is simpler and more convenient than some frameworks on the market. It's better to use. I don't know if we can talk about it.
 
-Special thanks to [Furion](https://gitee.com/dotnetchina/Furion) author [MonkSoul](https://gitee.com/monksoul).
-
-[Fast.NET](https://gitee.com/Net-18K/Fast.NET) The underlying core code of the framework is provided by [Furion](https://gitee.com/dotnetchina/Furion), learn from or Part of the source code of [Furion v4](https://gitee.com/dotnetchina/Furion) is quoted, and the consent and authorization of the author [MonkSoul](https://gitee.com/monksoul) is also obtained.
-
-**Continue to gather the strengths of hundreds of experts to improve and enrich the infrastructure of this framework, adding a choice to the .NET ecosystem!**
+There is another point about the recent commercialization of "Furion" that has attracted the attention of many people, including me. I do not make any suggestions or opinions here.
+All I can say is that if you find it useful and can be used, then you can continue to use it. If you find it difficult to use, you can use another frame, or choose to make your own wheels.
+```
 
 ## Detailed functions (module description)
 
 | Module name | Status | Version | Description | Remarks |
 | ------ | --- | ---- | --- | --- |
-| [Fast.Cache](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Cache/Fast.Cache) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache) | Fast.NET Framework cache module library | a The Redis cache library commonly used by rookies who have been working in the .NET industry for 5 years is packaged based on [CSRedisCore](https://github.com/2881099/csredis) |
-| [Fast.Consul](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Consul/Fast.Consul) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Consul.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Consul) | Fast.NET 框架Consul模块库 | Some [Consul](https://github.com/hashicorp/consul) commonly used remote service request encapsulation |
-| [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Core/Fast.NET.Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Fast.NET Framework Core Module Library | Because Fast.Core already has a Nuget package, it was renamed [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET.NET/Core/Fast.NET.Core) |
-| [Fast.CorsAccessor](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/CorsAccessor/Fast.CorsAccessor) | ✅ |[![nuget](https://img.shields.io/nuget/v/Fast.CorsAccessor.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.CorsAccessor) | Fast.NET framework cross-domain processing module library | |
-| [Fast.DependencyInjection](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/DependencyInjection/Fast.DependencyInjection) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection) | Fast.NET Framework Dependency Injection Module Library | Based on part of the source code of [Furion v4](https://gitee.com/dotnetchina/Furion) |
-| [Fast.EventBus](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/EventBus/Fast.EventBus) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus) | Fast.NET Framework Event Bus Module Library | Quote [Furion v4](https://gitee.com/dotnetchina/Furion) source code |
-| [Fast.IaaS](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/IaaS/Fast.IaaS) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS) | Fast.NET Framework Infrastructure Module Library | Expansion tools commonly used by a newbie who has been working in the .NET industry for 5 years |
-| [Fast.Logging](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Logging/Fast.Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET Framework Logging Module Library | Reference [Furion v4](https://gitee.com/dotnetchina/Furion) source code |
-| [Fast.Mapster](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Mapster/Fast.Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET Framework Object Mapping Module Library | Based on [Mapster](https://github.com/MapsterMapper/Mapster) packaging |
-| [Fast.Serialization](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Serialization/Fast.Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization) | Fast.NET Framework Serialization Module Library | Based on [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) packaging |
-| [Fast.SpecificationProcessor](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/SpecificationProcessor/Fast.SpecificationProcessor) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.SpecificationProcessor.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SpecificationProcessor) | Fast.NET Framework Specification Processor Module Library | Quote [Furion v4](https://gitee.com/dotnetchina/Furion) source code |
-| [Fast.SqlSugar](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/SqlSugar/Fast.SqlSugar) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar) | Fast.NET Framework SqlSugar module library | Based on [SqlSugar](https://gitee.com/dotnetchina/SqlSugar) package |
+| [Fast.Cache](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Cache) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache) | Fast.NET Framework cache module library | One in the .NET industry A commonly used Redis cache library for `little rookie` who has been in the industry for `N years`, based on [CSRedisCore](https://github.com/2881099/csredis) package |
+| [Fast.Consul](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Consul) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Consul.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Consul) | Fast.NET Framework Consul module library | Some [Consul](https://github.com/hashicorp/consul) Commonly used remote service request encapsulation |
+| [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Fast.NET Framework Core Module Library | Because Fast.Core already exists in the Nuget package, it was renamed [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET.NET/Core) |
+| [Fast.CorsAccessor](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/CorsAccessor) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.CorsAccessor.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.CorsAccessor) | Fast.NET framework cross-domain processing module library | |
+| [Fast.DependencyInjection](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/DependencyInjection) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection) | Fast.NET Framework Dependency Injection Module Library | |
+| [Fast.JwtBearer](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/JwtBearer) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.JwtBearer.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.JwtBearer) | Fast.NET Framework JwtBearer module library | |
+| [Fast.IaaS](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/IaaS) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS) | Fast.NET Framework Infrastructure Module Library (By default, all other module libraries inherit this module library) | A library for .NET A `rookie` who has been working in the industry for `N years` uses commonly used expansion tools. I personally recommend them and they are absolutely easy to use! ! ! |
+| [Fast.Logging](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET Framework Logging Module Library | |
+| [Fast.Mapster](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET Framework Object Mapping Module Library | Based on [Mapster](https://github.com/MapsterMapper/Mapster) Package |
+| [Fast.Serialization](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization) | Fast.NET framework serialization module library | Based on [System. Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) Package |
+| [Fast.SpecificationProcessor](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/SpecificationProcessor) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.SpecificationProcessor.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SpecificationProcessor) | Fast.NET framework normalization processing module library | |
+| [Fast.SqlSugar](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/SqlSugar) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar) | Fast.NET Framework SqlSugar module library | Based on [SqlSugar](https://gitee.com/dotnetchina/SqlSugar) Package |
 
 ## Recent plans
 
@@ -72,8 +70,8 @@ Special thanks to [Furion](https://gitee.com/dotnetchina/Furion) author [MonkSou
 - [✅] Exception module
 - [✅] Normalized return module
 - [✅] Log module
-- [✅] Event bus
 - [✅] SqlSugar
+- [⚠️] Event bus (I am wondering whether to use a third party directly for this)
 - [⚠️] ...
 
 > Status description

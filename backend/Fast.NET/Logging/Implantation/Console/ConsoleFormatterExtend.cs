@@ -46,7 +46,8 @@ public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     /// 构造函数
     /// </summary>
     /// <param name="formatterOptions"></param>
-    public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions) : base(Penetrates.ConsoleFormatterName)
+    public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions) : base(Penetrates
+        .ConsoleFormatterName)
     {
         (_formatOptionsReloadToken, _formatterOptions) =
             (formatterOptions.OnChange(ReloadFormatterOptions), formatterOptions.CurrentValue);

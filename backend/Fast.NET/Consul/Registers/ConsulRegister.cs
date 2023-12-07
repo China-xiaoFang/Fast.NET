@@ -85,7 +85,8 @@ internal class ConsulRegister : IConsulRegister
             Check = new AgentServiceCheck
             {
                 // 服务启动后多久注册
-                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(_consulSettingsOptions.DeregisterCriticalServiceAfter!.Value),
+                DeregisterCriticalServiceAfter =
+                    TimeSpan.FromSeconds(_consulSettingsOptions.DeregisterCriticalServiceAfter!.Value),
                 // 健康检查时间间隔
                 Interval = TimeSpan.FromSeconds(_consulSettingsOptions.HealthCheckInterval!.Value),
                 // 健康检查地址

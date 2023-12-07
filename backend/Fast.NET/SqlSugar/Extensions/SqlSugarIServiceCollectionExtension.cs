@@ -55,7 +55,8 @@ public static class SqlSugarIServiceCollectionExtension
 
         // 获取配置选项
         SqlSugarContext.ConnectionSettings = configuration.GetSection("ConnectionSettings").Get<ConnectionSettingsOptions>();
-        SqlSugarContext.SnowflakeSettings = configuration.GetSection("SnowflakeSettings").Get<SnowflakeSettingsOptions>().LoadPostConfigure();
+        SqlSugarContext.SnowflakeSettings =
+            configuration.GetSection("SnowflakeSettings").Get<SnowflakeSettingsOptions>().LoadPostConfigure();
 
         // Add Snowflakes Id.
         // 设置雪花Id的workerId，确保每个实例workerId都应不同

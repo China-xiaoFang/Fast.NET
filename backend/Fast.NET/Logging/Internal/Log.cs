@@ -75,7 +75,7 @@ public static class Log
     /// </summary>
     /// <param name="configure"></param>
     /// <returns></returns>
-    public static (ILogger logger, IDisposable scope) ScopeContext(Action<Implantation.LogContext> configure)
+    public static (ILogger logger, IDisposable scope) ScopeContext(Action<LogContext> configure)
     {
         return GetLogger(StringLoggingPart.Default().ScopeContext(configure));
     }
@@ -85,7 +85,7 @@ public static class Log
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    public static (ILogger logger, IDisposable scope) ScopeContext(Implantation.LogContext context)
+    public static (ILogger logger, IDisposable scope) ScopeContext(LogContext context)
     {
         return GetLogger(StringLoggingPart.Default().ScopeContext(context));
     }
