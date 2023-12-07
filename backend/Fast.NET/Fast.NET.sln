@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Mapster", "Mapster\Fas
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{FFACFFA7-8A37-40B3-B45F-840C82B3E9EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Logging", "Logging\Fast.Logging\Fast.Logging.csproj", "{6038DB98-99BA-470A-9C39-43F6DCC4C221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Logging", "Logging\Fast.Logging.csproj", "{6038DB98-99BA-470A-9C39-43F6DCC4C221}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fast.Test", "Fast.Test", "{08B5ECBA-ACBB-4720-836A-34378B7E2A83}"
 EndProject
