@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Fast.NET 框架基础设施模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+	  <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+	    <HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+	  </Reference>
+		<Reference Include="Microsoft.AspNetCore.Http.Features">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Primitives">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Primitives.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Http.Features">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Primitives">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Primitives.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Http.Features">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Primitives">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Primitives.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

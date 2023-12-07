@@ -32,7 +32,6 @@
         /* 报告值为undefined的错误 Include 'undefined' in index signature results */
         "noUncheckedIndexedAccess": false,
         "types": [
-            "vite/client",
             /** Element Plus 的 Volar 插件支持 */
             "element-plus/global"
         ],
@@ -45,6 +44,5 @@
         }
     },
     /** 编译器默认排除的编译文件 */
-    "exclude": ["node_modules", "dist"],
-    "include": ["types/*.d.ts", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+    "exclude": ["node_modules", "dist"]
 }

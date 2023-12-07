@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Fast.NET 框架日志模块库。（将在后续的版本进行重构）</Description>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+		</Reference>
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+		</Reference>
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+		</Reference>
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+	</ItemGroup>
+
+</Project>

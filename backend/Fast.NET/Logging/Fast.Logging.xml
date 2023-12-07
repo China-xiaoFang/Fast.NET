@@ -1,0 +1,1528 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Logging</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.Logging.Extensions.ILoggerExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.Logging.ILogger"/> 拓展
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Extensions.ILoggerExtension.ScopeContext(Microsoft.Extensions.Logging.ILogger,System.Collections.Generic.IDictionary{System.Object,System.Object})">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="logger"></param>
+            <param name="properties">建议使用 ConcurrentDictionary 类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Extensions.ILoggerExtension.ScopeContext(Microsoft.Extensions.Logging.ILogger,System.Action{Fast.Logging.Implantation.LogContext})">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="logger"></param>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Extensions.ILoggerExtension.ScopeContext(Microsoft.Extensions.Logging.ILogger,Fast.Logging.Implantation.LogContext)">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="logger"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Logging.Extensions.ILoggingBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> 拓展
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Extensions.ILoggingBuilderExtension.AddConsoleFormatter(Microsoft.Extensions.Logging.ILoggingBuilder)">
+            <summary>
+            添加控制台默认格式化器
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Logging.Extensions.LogContextExtension">
+            <summary>
+            LogContext 拓展
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Extensions.LogContextExtension.Set(Fast.Logging.Implantation.LogContext,System.Object,System.Object)">
+            <summary>
+            设置上下文数据
+            </summary>
+            <param name="logContext"></param>
+            <param name="key">键</param>
+            <param name="value">值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Extensions.LogContextExtension.SetRange(Fast.Logging.Implantation.LogContext,System.Collections.Generic.IDictionary{System.Object,System.Object})">
+            <summary>
+            批量设置上下文数据
+            </summary>
+            <param name="logContext"></param>
+            <param name="properties"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Extensions.LogContextExtension.Get(Fast.Logging.Implantation.LogContext,System.Object)">
+            <summary>
+            获取上下文数据
+            </summary>
+            <param name="logContext"></param>
+            <param name="key">键</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Extensions.LogContextExtension.Get``1(Fast.Logging.Implantation.LogContext,System.Object)">
+            <summary>
+            获取上下文数据
+            </summary>
+            <param name="logContext"></param>
+            <param name="key">键</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Logging.Extensions.LoggingIServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 日志服务拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Extensions.LoggingIServiceCollectionExtension.AddLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.Int64)">
+            <summary>
+            添加日志服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
+            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
+            <param name="fileSizeLimitBytes"><see cref="T:System.Int64"/> 日志文件大小 控制每一个日志文件最大存储大小，默认10MB，单位是 B，也就是 1024 才等于 1KB</param>
+            <returns>服务集合</returns>
+        </member>
+        <member name="M:Fast.Logging.Extensions.LoggingIServiceCollectionExtension.GetLogOptions(Microsoft.Extensions.Logging.LogLevel,System.Int64)">
+            <summary>
+            配置日志
+            </summary>
+            <param name="logLevel"></param>
+            <param name="fileSizeLimitBytes">日志文件大小 控制每一个日志文件最大存储大小，默认无限制，单位是 B，也就是 1024 才等于 1KB</param>
+        </member>
+        <member name="T:Fast.Logging.Extensions.LogMessageExtension">
+            <summary>
+            <see cref="T:Fast.Logging.Implantation.LogMessage"/> 拓展
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Extensions.LogMessageExtension.Write(Fast.Logging.Implantation.LogMessage,System.Action{System.Text.Json.Utf8JsonWriter},System.Boolean)">
+            <summary>
+            高性能创建 JSON 对象字符串
+            </summary>
+            <param name="_"><see cref="T:Fast.Logging.Implantation.LogMessage"/></param>
+            <param name="writeAction"></param>
+            <param name="writeIndented">是否对 JSON 格式化</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Extensions.LogMessageExtension.WriteArray(Fast.Logging.Implantation.LogMessage,System.Action{System.Text.Json.Utf8JsonWriter},System.Boolean)">
+            <summary>
+            高性能创建 JSON 数组字符串
+            </summary>
+            <param name="logMsg"><see cref="T:Fast.Logging.Implantation.LogMessage"/></param>
+            <param name="writeAction"></param>
+            <param name="writeIndented">是否对 JSON 格式化</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.Logging.Filters.StartupFilter">
+            <summary>
+            应用启动时自动注册中间件
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="M:Fast.Logging.Filters.StartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+            <summary>
+            配置中间件
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Logging.Implantation.Console.ConsoleColors">
+            <summary>
+            控制台颜色结构
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.Console.ConsoleColors.#ctor(System.Nullable{System.ConsoleColor},System.Nullable{System.ConsoleColor})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="foreground"></param>
+            <param name="background"></param>
+        </member>
+        <member name="P:Fast.Logging.Implantation.Console.ConsoleColors.Foreground">
+            <summary>
+            前景色
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.Console.ConsoleColors.Background">
+            <summary>
+            背景色
+            </summary>
+        </member>
+        <member name="T:Fast.Logging.Implantation.Console.ConsoleFormatterExtend">
+            <summary>
+            控制台默认格式化程序拓展
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.Console.ConsoleFormatterExtend._formatOptionsReloadToken">
+            <summary>
+            日志格式化选项刷新 Token
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.Console.ConsoleFormatterExtend._formatterOptions">
+            <summary>
+            日志格式化配置选项
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.Console.ConsoleFormatterExtend._disableColors">
+            <summary>
+            是否启用控制台颜色
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.Console.ConsoleFormatterExtend.#ctor(Microsoft.Extensions.Options.IOptionsMonitor{Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="formatterOptions"></param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.Console.ConsoleFormatterExtend.Write``1(Microsoft.Extensions.Logging.Abstractions.LogEntry{``0}@,Microsoft.Extensions.Logging.IExternalScopeProvider,System.IO.TextWriter)">
+            <summary>
+            写入日志
+            </summary>
+            <typeparam name="TState"></typeparam>
+            <param name="logEntry"></param>
+            <param name="scopeProvider"></param>
+            <param name="textWriter"></param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.Console.ConsoleFormatterExtend.Dispose">
+            <summary>
+            释放非托管资源
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.Console.ConsoleFormatterExtend.ReloadFormatterOptions(Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions)">
+            <summary>
+            刷新日志格式化选项
+            </summary>
+            <param name="options"></param>
+        </member>
+        <member name="T:Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions">
+            <summary>
+            控制台默认格式化选项拓展
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions.ColorBehavior">
+            <summary>
+            控制是否启用颜色
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions.MessageFormat">
+            <summary>
+            自定义日志消息格式化程序
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions.DateFormat">
+            <summary>
+            日期格式化
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions.WriteHandler">
+            <summary>
+            自定义格式化日志处理程序
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions.WithTraceId">
+            <summary>
+            显示跟踪/请求 Id
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.Console.ConsoleFormatterExtendOptions.WithStackFrame">
+            <summary>
+            显示堆栈框架（程序集和方法签名）
+            </summary>
+        </member>
+        <member name="T:Fast.Logging.Implantation.File.FileLogger">
+            <summary>
+            文件日志记录器
+            </summary>
+            <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLogger._logName">
+            <summary>
+            记录器类别名称
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLogger._fileLoggerProvider">
+            <summary>
+            文件日志记录器提供器
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLogger._options">
+            <summary>
+            日志配置选项
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLogger.#ctor(System.String,Fast.Logging.Implantation.File.FileLoggerProvider)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="logName">记录器类别名称</param>
+            <param name="fileLoggerProvider">文件日志记录器提供器</param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLogger.BeginScope``1(``0)">
+            <summary>
+            开始逻辑操作范围
+            </summary>
+            <typeparam name="TState">标识符类型参数</typeparam>
+            <param name="state">要写入的项/对象</param>
+            <returns><see cref="T:System.IDisposable"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            检查是否已启用给定日志级别
+            </summary>
+            <param name="logLevel">日志级别</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
+            <summary>
+            写入日志项
+            </summary>
+            <typeparam name="TState">标识符类型参数</typeparam>
+            <param name="logLevel">日志级别</param>
+            <param name="eventId">事件 Id</param>
+            <param name="state">要写入的项/对象</param>
+            <param name="exception">异常对象</param>
+            <param name="formatter">日志格式化器</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="T:Fast.Logging.Implantation.File.FileLoggerOptions">
+            <summary>
+            文件日志记录器配置选项
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.Append">
+            <summary>
+            追加到已存在日志文件或覆盖它们
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.FileSizeLimitBytes">
+            <summary>
+            控制每一个日志文件最大存储大小，默认无限制，单位是 B，也就是 1024 才等于 1KB
+            </summary>
+            <remarks>如果指定了该值，那么日志文件大小超出了该配置就会创建的日志文件，新创建的日志文件命名规则：文件名+[递增序号].log</remarks>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.MaxRollingFiles">
+            <summary>
+            控制最大创建的日志文件数量，默认无限制，配合 <see cref="P:Fast.Logging.Implantation.File.FileLoggerOptions.FileSizeLimitBytes"/> 使用
+            </summary>
+            <remarks>如果指定了该值，那么超出该值将从最初日志文件中从头写入覆盖</remarks>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.MinimumLevel">
+            <summary>
+            最低日志记录级别
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.UseUtcTimestamp">
+            <summary>
+            是否使用 UTC 时间戳，默认 false
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.MessageFormat">
+            <summary>
+            自定义日志消息格式化程序
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.WriteFilter">
+            <summary>
+            自定义日志筛选器
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.FileNameRule">
+             <summary>
+             自定义日志文件名格式化程序（规则）
+             </summary>
+             <example>
+             options.FileNameRule = (fileName) => {
+                 return String.Format(Path.GetFileNameWithoutExtension(fileName) + "_{0:yyyy}-{0:MM}-{0:dd}" + Path.GetExtension(fileName), DateTime.UtcNow);
+            
+                 // 或者每天创建一个文件
+                 // return String.Format(fileName, DateTime.UtcNow);
+             }
+             </example>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.HandleWriteError">
+            <summary>
+            自定义日志文件写入错误程序
+            </summary>
+            <remarks>主要解决日志在写入过程中文件被打开或其他应用程序占用的情况，一旦出现上述情况可创建备用日志文件继续写入</remarks>
+            <example>
+            options.HandleWriteError = (err) => {
+                err.UseRollbackFileName(Path.GetFileNameWithoutExtension(err.CurrentFileName)+ "_alt" + Path.GetExtension(err.CurrentFileName));
+            };
+            </example>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.DateFormat">
+            <summary>
+            日期格式化
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.IncludeScopes">
+            <summary>
+            是否启用日志上下文
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.WithTraceId">
+            <summary>
+            显示跟踪/请求 Id
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerOptions.WithStackFrame">
+            <summary>
+            显示堆栈框架（程序集和方法签名）
+            </summary>
+        </member>
+        <member name="T:Fast.Logging.Implantation.File.FileLoggerProvider">
+            <summary>
+            文件日志记录器提供程序
+            </summary>
+            <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggerProvider._fileLoggers">
+            <summary>
+            存储多日志分类日志记录器
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggerProvider._logMessageQueue">
+            <summary>
+            日志消息队列（线程安全）
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggerProvider._scopeProvider">
+            <summary>
+            日志作用域提供器
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggerProvider._rollingFileNames">
+            <summary>
+            记录日志所有滚动文件名
+            </summary>
+            <remarks>只有 MaxRollingFiles 和 FileSizeLimitBytes 大于 0 有效</remarks>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggerProvider._fileLoggingWriter">
+            <summary>
+            文件日志写入器
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggerProvider._processQueueTask">
+            <summary>
+            长时间运行的后台任务
+            </summary>
+            <remarks>实现不间断写入</remarks>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggerProvider.#ctor(System.String,Fast.Logging.Implantation.File.FileLoggerOptions)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="fileName">日志文件名</param>
+            <param name="fileLoggerOptions">文件日志记录器配置选项</param>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggerProvider.FileName">
+            <summary>
+            文件名
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerProvider.LoggerOptions">
+            <summary>
+            文件日志记录器配置选项
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileLoggerProvider.ScopeProvider">
+            <summary>
+            日志作用域提供器
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggerProvider.CreateLogger(System.String)">
+            <summary>
+            创建文件日志记录器
+            </summary>
+            <param name="categoryName">日志分类名</param>
+            <returns><see cref="T:Microsoft.Extensions.Logging.ILogger"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggerProvider.SetScopeProvider(Microsoft.Extensions.Logging.IExternalScopeProvider)">
+            <summary>
+            设置作用域提供器
+            </summary>
+            <param name="scopeProvider"></param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggerProvider.Dispose">
+            <summary>
+            释放非托管资源
+            </summary>
+            <remarks>控制日志消息队列</remarks>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggerProvider.WriteToQueue(Fast.Logging.Implantation.LogMessage)">
+            <summary>
+            将日志消息写入队列中等待后台任务出队写入文件
+            </summary>
+            <param name="logMsg">日志消息</param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggerProvider.ProcessQueue">
+            <summary>
+            将日志消息写入文件中
+            </summary>
+        </member>
+        <member name="T:Fast.Logging.Implantation.File.FileLoggingWriter">
+            <summary>
+            文件日志写入器
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggingWriter._fileLoggerProvider">
+            <summary>
+            文件日志记录器提供程序
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggingWriter._options">
+            <summary>
+            日志配置选项
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggingWriter._fileName">
+            <summary>
+            日志文件名
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggingWriter._fileStream">
+            <summary>
+            文件流
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggingWriter._textWriter">
+            <summary>
+            文本写入器
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggingWriter.__LastBaseFileName">
+            <summary>
+            缓存上次返回的基本日志文件名，避免重复解析
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Implantation.File.FileLoggingWriter._isEnabledRollingFiles">
+            <summary>
+            判断是否启动滚动日志功能
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.#ctor(Fast.Logging.Implantation.File.FileLoggerProvider)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="fileLoggerProvider">文件日志记录器提供程序</param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.GetBaseFileName">
+            <summary>
+            获取日志基础文件名
+            </summary>
+            <returns>日志文件名</returns>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.GetCurrentFileName">
+            <summary>
+            解析当前写入日志的文件名
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.GetNextFileName">
+            <summary>
+            获取下一个匹配的日志文件名
+            </summary>
+            <remarks>只有配置了 <see cref="P:Fast.Logging.Implantation.File.FileLoggerOptions.FileSizeLimitBytes"/> 或 <see cref="P:Fast.Logging.Implantation.File.FileLoggerOptions.FileNameRule"/> 或 <see cref="P:Fast.Logging.Implantation.File.FileLoggerOptions.MaxRollingFiles"/> 有效</remarks>
+            <returns>新的文件名</returns>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.OpenFile(System.Boolean)">
+            <summary>
+            打开文件
+            </summary>
+            <param name="append"></param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.CheckForNewLogFile">
+            <summary>
+            判断是否需要创建新文件写入
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.DropFilesIfOverLimit(System.IO.FileInfo)">
+            <summary>
+            删除超出滚动日志限制的文件
+            </summary>
+            <param name="fileInfo"></param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.Write(Fast.Logging.Implantation.LogMessage,System.Boolean)">
+            <summary>
+            写入文件
+            </summary>
+            <param name="logMsg">日志消息</param>
+            <param name="flush"></param>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileLoggingWriter.Close">
+            <summary>
+            关闭文本写入器并释放
+            </summary>
+        </member>
+        <member name="T:Fast.Logging.Implantation.File.FileWriteError">
+            <summary>
+            文件写入错误信息上下文
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileWriteError.#ctor(System.String,System.Exception)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="currentFileName">当前日志文件名</param>
+            <param name="exception">异常对象</param>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileWriteError.CurrentFileName">
+            <summary>
+            当前日志文件名
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileWriteError.Exception">
+            <summary>
+            引起文件写入异常信息
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.File.FileWriteError.RollbackFileName">
+            <summary>
+            备用日志文件名
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.File.FileWriteError.UseRollbackFileName(System.String)">
+            <summary>
+            配置日志文件写入错误后新的备用日志文件名
+            </summary>
+            <param name="rollbackFileName">备用日志文件名</param>
+        </member>
+        <member name="T:Fast.Logging.Implantation.LogContext">
+            <summary>
+            日志上下文
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.LogContext.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogContext.Properties">
+            <summary>
+            日志上下文数据
+            </summary>
+        </member>
+        <member name="T:Fast.Logging.Implantation.LogMessage">
+            <summary>
+            日志结构化消息
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.LogMessage.#ctor(System.String,Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception,Fast.Logging.Implantation.LogContext,System.Object,System.DateTime,System.Int32,System.Boolean,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="logName">记录器类别名称</param>
+            <param name="logLevel">日志级别</param>
+            <param name="eventId">事件 Id</param>
+            <param name="message">日志消息</param>
+            <param name="exception">异常对象</param>
+            <param name="context">日志上下文</param>
+            <param name="state">当前状态值</param>
+            <param name="logDateTime">日志记录时间</param>
+            <param name="threadId">线程 Id</param>
+            <param name="useUtcTimestamp">是否使用 UTC 时间戳</param>
+            <param name="traceId">请求/跟踪 Id</param>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.LogName">
+            <summary>
+            记录器类别名称
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.LogLevel">
+            <summary>
+            日志级别
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.EventId">
+            <summary>
+            事件 Id
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.Message">
+            <summary>
+            日志消息
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.Exception">
+            <summary>
+            异常对象
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.State">
+            <summary>
+            当前状态值
+            </summary>
+            <remarks>可以是任意类型</remarks>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.LogDateTime">
+            <summary>
+            日志记录时间
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.ThreadId">
+            <summary>
+            线程 Id
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.UseUtcTimestamp">
+            <summary>
+            是否使用 UTC 时间戳
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.TraceId">
+            <summary>
+            请求/跟踪 Id
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Implantation.LogMessage.Context">
+            <summary>
+            日志上下文
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Implantation.LogMessage.ToString">
+            <summary>
+            重写默认输出
+            </summary>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.Logging.Log">
+            <summary>
+            全局日志静态类
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Log.Default">
+            <summary>
+            手动构建方式
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Log.CreateLogger``1">
+            <summary>
+            创建日志记录器
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Log.CreateLoggerFactory(System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})">
+            <summary>
+            创建日志工厂
+            </summary>
+            <param name="configure">日志构建器</param>
+            <remarks><see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/> 实现了 <see cref="T:System.IDisposable"/> 接口，注意使用 `using` 控制</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Log.ScopeContext(System.Collections.Generic.IDictionary{System.Object,System.Object})">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="properties">建议使用 ConcurrentDictionary 类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Log.ScopeContext(System.Action{Fast.Logging.Implantation.LogContext})">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Log.ScopeContext(Fast.Logging.Implantation.LogContext)">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Log.Information(System.String,System.Object[])">
+            <summary>
+            LogInformation
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Information(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogInformation
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Information(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogInformation
+            </summary>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Information(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogInformation
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Information``1(System.String,System.Object[])">
+            <summary>
+            LogInformation
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Information``1(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogInformation
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Information``1(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogInformation
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Information``1(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogInformation
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Warning(System.String,System.Object[])">
+            <summary>
+            LogWarning
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Warning(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogWarning
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Warning(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogWarning
+            </summary>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Warning(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogWarning
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Warning``1(System.String,System.Object[])">
+            <summary>
+            LogWarning
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Warning``1(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogWarning
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Warning``1(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogWarning
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Warning``1(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogWarning
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Error(System.String,System.Object[])">
+            <summary>
+            LogError
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Error(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogError
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Error(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogError
+            </summary>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Error(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogError
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Error``1(System.String,System.Object[])">
+            <summary>
+            LogError
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Error``1(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogError
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Error``1(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogError
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Error``1(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogError
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Debug(System.String,System.Object[])">
+            <summary>
+            LogDebug
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Debug(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogDebug
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Debug(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogDebug
+            </summary>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Debug(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogDebug
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Debug``1(System.String,System.Object[])">
+            <summary>
+            LogDebug
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Debug``1(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogDebug
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Debug``1(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogDebug
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Debug``1(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogDebug
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Trace(System.String,System.Object[])">
+            <summary>
+            LogTrace
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Trace(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogTrace
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Trace(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogTrace
+            </summary>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Trace(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogTrace
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Trace``1(System.String,System.Object[])">
+            <summary>
+            LogTrace
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Trace``1(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogTrace
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Trace``1(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogTrace
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Trace``1(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogTrace
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Critical(System.String,System.Object[])">
+            <summary>
+            LogCritical
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Critical(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogCritical
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Critical(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogCritical
+            </summary>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Critical(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogCritical
+            </summary>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Critical``1(System.String,System.Object[])">
+            <summary>
+            LogCritical
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Critical``1(System.String,Microsoft.Extensions.Logging.EventId,System.Object[])">
+            <summary>
+            LogCritical
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Critical``1(System.String,System.Exception,System.Object[])">
+            <summary>
+            LogCritical
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.Critical``1(System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.Object[])">
+            <summary>
+            LogCritical
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="message"></param>
+            <param name="eventId"></param>
+            <param name="exception"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Log.GetLogger(Fast.Logging.Internal.StringLoggingPart)">
+            <summary>
+            获取日志实例
+            </summary>
+            <param name="loggingPart"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="T:Fast.Logging.Internal.LoggerFormatter">
+            <summary>
+            日志格式化静态类
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Internal.LoggerFormatter.Json">
+            <summary>
+            Json 输出格式化
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Internal.LoggerFormatter.JsonIndented">
+            <summary>
+            Json 输出格式化
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.LoggerFormatter.WriteJson(Fast.Logging.Implantation.LogMessage,System.Text.Json.Utf8JsonWriter)">
+            <summary>
+            写入 JSON
+            </summary>
+            <param name="logMsg"></param>
+            <param name="writer"></param>
+        </member>
+        <member name="T:Fast.Logging.Internal.StringLogging">
+            <summary>
+            字符串日志拓展默认分类名
+            </summary>
+        </member>
+        <member name="T:Fast.Logging.Internal.Penetrates">
+            <summary>
+            常量、公共方法配置类
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.Penetrates.DefaultLogLevel">
+            <summary>
+            默认日志级别
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Internal.Penetrates.InternalServices">
+            <summary>
+            应用服务
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Internal.Penetrates.RootServices">
+            <summary>
+            根服务
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.Penetrates.HttpContext">
+            <summary>
+            请求上下文
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetTraceId">
+            <summary>
+            获取当前请求 TraceId
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetRequiredService(System.Type)">
+            <summary>
+            获取请求生存周期的服务
+            </summary>
+            <param name="serviceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetRequiredService``1">
+            <summary>
+            获取请求生存周期的服务
+            </summary>
+            <typeparam name="TService"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="F:Fast.Logging.Internal.Penetrates.ConsoleFormatterName">
+            <summary>
+            控制台默认格式化程序名称
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Internal.Penetrates.EXCEPTION_SEPARATOR">
+            <summary>
+            异常分隔符
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.OutputStandardMessage(Fast.Logging.Implantation.LogMessage,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            输出标准日志消息
+            </summary>
+            <param name="logMsg"></param>
+            <param name="dateFormat"></param>
+            <param name="disableColors"></param>
+            <param name="isConsole"></param>
+            <param name="withTraceId"></param>
+            <param name="withStackFrame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.PadLeftAlign(System.String)">
+            <summary>
+            将日志内容进行对齐
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetLogLevelString(Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            获取日志级别短名称
+            </summary>
+            <param name="logLevel">日志级别</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.SetLogContext(Microsoft.Extensions.Logging.IExternalScopeProvider,Fast.Logging.Implantation.LogMessage,System.Boolean)">
+            <summary>
+            设置日志上下文
+            </summary>
+            <param name="scopeProvider"></param>
+            <param name="logMsg"></param>
+            <param name="includeScopes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.AppendWithColor(System.Text.StringBuilder,System.String,Fast.Logging.Implantation.Console.ConsoleColors)">
+            <summary>
+            拓展 StringBuilder 增加带颜色写入
+            </summary>
+            <param name="message"></param>
+            <param name="colors"></param>
+            <param name="formatString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetForegroundColorEscapeCode(System.ConsoleColor)">
+            <summary>
+            输出控制台字体颜色 UniCode 码
+            </summary>
+            <param name="color"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetBackgroundColorEscapeCode(System.ConsoleColor)">
+            <summary>
+            输出控制台背景颜色 UniCode 码
+            </summary>
+            <param name="color"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.Penetrates.GetLogLevelConsoleColors(Microsoft.Extensions.Logging.LogLevel,System.Boolean)">
+            <summary>
+            获取控制台日志级别对应的颜色
+            </summary>
+            <param name="logLevel"></param>
+            <param name="disableColors"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Logging.Internal.StringLoggingPart">
+            <summary>
+            构建字符串日志部分类
+            </summary>
+            <summary>
+            构建字符串日志部分类
+            </summary>
+            <summary>
+            构建字符串日志部分类
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.Default">
+            <summary>
+            静态缺省日志部件
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.Message">
+            <summary>
+            日志内容
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.Level">
+            <summary>
+            日志级别
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.Args">
+            <summary>
+            消息格式化参数
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.EventId">
+            <summary>
+            事件 Id
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.CategoryType">
+            <summary>
+            日志分类类型
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.Exception">
+            <summary>
+            异常对象
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.LoggerScoped">
+            <summary>
+            日志对象所在作用域
+            </summary>
+        </member>
+        <member name="P:Fast.Logging.Internal.StringLoggingPart.LogContext">
+            <summary>
+            日志上下文
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogInformation">
+            <summary>
+            Information
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogWarning">
+            <summary>
+            Warning
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogError">
+            <summary>
+            Error
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogDebug">
+            <summary>
+            Debug
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogTrace">
+            <summary>
+            Trace
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.LogCritical">
+            <summary>
+            Critical
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.Log">
+            <summary>
+            写入日志
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.GetLogger">
+            <summary>
+            获取日志实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.CreateDisposeLoggerFactory">
+            <summary>
+            创建待释放的日志工厂
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetMessage(System.String)">
+            <summary>
+            设置消息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetLevel(Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            设置日志级别
+            </summary>
+            <param name="level"></param>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetArgs(System.Object[])">
+            <summary>
+            设置消息格式化参数
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetEventId(Microsoft.Extensions.Logging.EventId)">
+            <summary>
+            设置事件 Id
+            </summary>
+            <param name="eventId"></param>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetCategory``1">
+            <summary>
+            设置日志分类
+            </summary>
+            <typeparam name="TClass"></typeparam>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetException(System.Exception)">
+            <summary>
+            设置异常对象
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.SetLoggerScoped(System.IServiceProvider)">
+            <summary>
+            设置日志服务作用域
+            </summary>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(System.Collections.Generic.IDictionary{System.Object,System.Object})">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="properties">建议使用 ConcurrentDictionary 类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(System.Action{Fast.Logging.Implantation.LogContext})">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Internal.StringLoggingPart.ScopeContext(Fast.Logging.Implantation.LogContext)">
+            <summary>
+            配置日志上下文
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Logging.Templates.TP">
+            <summary>
+            模板静态类
+            </summary>
+        </member>
+        <member name="F:Fast.Logging.Templates.TP._lazyRegex">
+            <summary>
+            模板正则表达式对象
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.Templates.TP.Wrapper(System.String,System.String,System.String[])">
+            <summary>
+            生成规范日志模板
+            </summary>
+            <param name="title">标题</param>
+            <param name="description">描述</param>
+            <param name="items">列表项，如果以 ##xxx## 开头，自动生成 xxx: 属性</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Templates.TP.WrapperRectangle(System.String[],System.Int32,System.Int32)">
+            <summary>
+            矩形包裹
+            </summary>
+            <param name="lines">多行消息</param>
+            <param name="align">对齐方式，-1/左对齐；0/居中对其；1/右对齐</param>
+            <param name="pad">间隙</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Logging.Templates.TP.PadRight(System.String,System.Int32)">
+            <summary>
+            等宽文字对齐
+            </summary>
+            <param name="str"></param>
+            <param name="totalByteCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Logging.Templates.TP.GetLength(System.String)">
+            <summary>
+            获取字符串长度
+            </summary>
+            <param name="str">字符串</param>
+            <returns>字符串长度</returns>
+        </member>
+    </members>
+</doc>

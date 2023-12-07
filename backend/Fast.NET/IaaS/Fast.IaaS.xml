@@ -1,0 +1,2727 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.IaaS</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.IaaS.FastEnumAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.FastEnumAttribute"/> 枚举特性
+            </summary>
+            <remarks>用于区分是否可以写入枚举字典的特性</remarks>
+        </member>
+        <member name="P:Fast.IaaS.FastEnumAttribute.ChName">
+            <summary>
+            中文名称
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.FastEnumAttribute.EnName">
+            <summary>
+            英文名称
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.FastEnumAttribute.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="T:Fast.IaaS.SuppressSnifferAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.SuppressSnifferAttribute"/> 不被扫描和发现的特性
+            </summary>
+            <remarks>用于程序集扫描类型或方法时候</remarks>
+        </member>
+        <member name="T:Fast.IaaS.GlobalConstant">
+            <summary>
+            <see cref="T:Fast.IaaS.GlobalConstant"/> 常用常量
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.GlobalConstant.DefaultTime">
+            <summary>
+            默认DateTime
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.GlobalConstant.TimeStamp">
+            <summary>
+            时间戳
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.GlobalConstant.SqlServerMinTime">
+            <summary>
+            Sql Server 最小时间
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.GlobalConstant.SqlServerMaxTime">
+            <summary>
+            Sql Server 最大时间
+            </summary>
+        </member>
+        <member name="T:Fast.IaaS.FastContext">
+            <summary>
+            <see cref="T:Fast.IaaS.FastContext"/> 框架内部的常量，公共方法配置类
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.FastContext.Assemblies">
+            <summary>
+            应用有效程序集
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.FastContext.EffectiveTypes">
+            <summary>
+            有效程序集类型
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.FastContext.CatchOrDefault``1(System.Func{``0},``0)">
+            <summary>
+            处理获取对象异常问题
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="action">获取对象委托</param>
+            <param name="defaultValue">默认值</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:Fast.IaaS.FastContext.GetThreadId">
+            <summary>
+            获取当前线程 Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.FastContext.GetExecutionTime(System.Action)">
+            <summary>
+            获取一段代码执行耗时
+            </summary>
+            <param name="action">委托</param>
+            <returns><see cref="T:System.Int64"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.Debugging">
+            <summary>
+            <see cref="T:Fast.IaaS.Debugging"/> 向事件管理器中输出事件信息
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.WriteLine(System.Int32,System.String)">
+            <summary>
+            输出一行事件信息
+            </summary>
+            <param name="level">
+            <para>信息级别</para>
+            <list type="number">
+            <item>
+            <description>跟踪</description>
+            </item>
+            <item>
+            <description>信息</description>
+            </item>
+            <item>
+            <description>警告</description>
+            </item>
+            <item>
+            <description>错误</description>
+            </item>
+            <item>
+            <description>文件</description>
+            </item>
+            <item>
+            <description>提示</description>
+            </item>
+            <item>
+            <description>搜索</description>
+            </item>
+            <item>
+            <description>时钟</description>
+            </item>
+            </list>
+            </param>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.WriteLine(System.Int32,System.String,System.Object[])">
+            <summary>
+            输出一行事件信息
+            </summary>
+            <param name="level">
+            <para>信息级别</para>
+            <list type="number">
+            <item>
+            <description>跟踪</description>
+            </item>
+            <item>
+            <description>信息</description>
+            </item>
+            <item>
+            <description>警告</description>
+            </item>
+            <item>
+            <description>错误</description>
+            </item>
+            <item>
+            <description>文件</description>
+            </item>
+            <item>
+            <description>提示</description>
+            </item>
+            <item>
+            <description>搜索</description>
+            </item>
+            <item>
+            <description>时钟</description>
+            </item>
+            </list>
+            </param>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Trace(System.String)">
+            <summary>
+            输出跟踪级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Trace(System.String,System.Object[])">
+            <summary>
+            输出跟踪级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Info(System.String)">
+            <summary>
+            输出信息级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Info(System.String,System.Object[])">
+            <summary>
+            输出信息级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Warn(System.String)">
+            <summary>
+            输出警告级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Warn(System.String,System.Object[])">
+            <summary>
+            输出警告级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Error(System.String)">
+            <summary>
+            输出错误级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Error(System.String,System.Object[])">
+            <summary>
+            输出错误级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.File(System.String)">
+            <summary>
+            输出文件级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.File(System.String,System.Object[])">
+            <summary>
+            输出文件级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Tip(System.String)">
+            <summary>
+            输出提示级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Tip(System.String,System.Object[])">
+            <summary>
+            输出提示级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Search(System.String)">
+            <summary>
+            输出搜索级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Search(System.String,System.Object[])">
+            <summary>
+            输出搜索级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Clock(System.String)">
+            <summary>
+            输出时钟级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.Clock(System.String,System.Object[])">
+            <summary>
+            输出时钟级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:Fast.IaaS.Debugging.GetLevelEmoji(System.Int32)">
+            <summary>
+            获取信息级别对应的 emoji
+            </summary>
+            <param name="level">
+            <para>信息级别</para>
+            <list type="number">
+            <item>
+            <description>跟踪</description>
+            </item>
+            <item>
+            <description>信息</description>
+            </item>
+            <item>
+            <description>警告</description>
+            </item>
+            <item>
+            <description>错误</description>
+            </item>
+            <item>
+            <description>文件</description>
+            </item>
+            <item>
+            <description>提示</description>
+            </item>
+            <item>
+            <description>搜索</description>
+            </item>
+            <item>
+            <description>时钟</description>
+            </item>
+            </list>
+            </param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.AssemblyExtension">
+            <summary>
+            <see cref="T:System.Reflection.Assembly"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetTypes(System.Reflection.Assembly,System.Boolean)">
+            <summary>
+            获取所有类型
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
+            <param name="exported">类型导出设置</param>
+            <returns><see cref="T:System.Type"/>[]</returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetDescription(System.Reflection.Assembly)">
+            <summary>
+            获取程序集描述
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetVersion(System.Reflection.Assembly)">
+            <summary>
+            获取程序集版本
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetAssemblyName(System.Reflection.Assembly)">
+            <summary>
+            获取程序集名称
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.Base64Extension">
+            <summary>
+            <see cref="T:Fast.IaaS.Base64Extension"/> Base64 拓展类
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.Base64Extension.RandomPrefixStrLength">
+            <summary>
+            随机字符长度
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.Base64Extension.ToBase64(System.String,System.Int32)">
+            <summary>
+            普通 字符串 转换为 Base64 字符串
+            </summary>
+            <param name="str"><see cref="T:System.String"/> 字符串</param>
+            <param name="randomPrefixStrLength"><see cref="T:System.Int32"/> 随机字符长度，默认6位</param>
+            <returns><see cref="T:System.String"/> 转换后的 Base64 字符串</returns>
+        </member>
+        <member name="M:Fast.IaaS.Base64Extension.Base64ToString(System.String,System.Int32)">
+            <summary>
+            Base64 字符串 转换为 普通 字符串
+            </summary>
+            <param name="base64Str"><see cref="T:System.String"/> Base64 字符串</param>
+            <param name="randomPrefixStrLength"><see cref="T:System.Int32"/> 随机字符长度，默认6位</param>
+            <returns><see cref="T:System.String"/> 转换后的 字符串</returns>
+        </member>
+        <member name="M:Fast.IaaS.Base64Extension.InsertRandomStrToBase64Str(System.String)">
+            <summary>
+            添加随机字符串到 Base64 字符串
+            </summary>
+            <param name="base64Str"><see cref="T:System.String"/> Base64 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Base64Extension.RemoveBase64StrRandomStr(System.String)">
+            <summary>
+            删除 Base64 字符串中的随机数
+            </summary>
+            <param name="input"><see cref="T:System.String"/> Base64 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.ConvertExtension">
+            <summary>
+            <see cref="T:System.Convert"/> 转换拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToLong(System.String,System.Boolean,System.Int64)">
+            <summary>
+            将 String 类型 转换为 Long 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Int64"/>异常默认值，默认为 0L</param>
+            <returns><see cref="T:System.Int64"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToLong``1(``0,System.Boolean,System.Int64)">
+            <summary>
+            将 Enum 类型 转换为 Long 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>枚举值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Int64"/>异常默认值，默认为 0L</param>
+            <returns><see cref="T:System.Int64"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的枚举值为空</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToLong``1(System.Nullable{``0},System.Boolean,System.Int64)">
+            <summary>
+            将 可空的Enum 类型 转换为 Long 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>枚举值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Int64"/>异常默认值，默认为 0L</param>
+            <returns><see cref="T:System.Int64"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的枚举值为空</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToInt(System.String,System.Boolean,System.Int32)">
+            <summary>
+            将 String 类型 转换为 Int 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Int32"/>异常默认值，默认为 0</param>
+            <returns><see cref="T:System.Int32"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToInt``1(``0,System.Boolean,System.Int32)">
+            <summary>
+            将 Enum 类型 转换为 Int 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>枚举值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Int32"/>异常默认值，默认为 0</param>
+            <returns><see cref="T:System.Int32"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的枚举值为空</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToInt``1(System.Nullable{``0},System.Boolean,System.Int32)">
+            <summary>
+            将 可空的Enum 类型 转换为 Int 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>枚举值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Int32"/>异常默认值，默认为 0</param>
+            <returns><see cref="T:System.Int32"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的枚举值为空</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToShort(System.String,System.Boolean,System.Int16)">
+            <summary>
+            将 String 类型 转换为 Short 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Int16"/>异常默认值，默认为 0</param>
+            <returns><see cref="T:System.Int16"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDecimal(System.String,System.Boolean,System.Decimal)">
+            <summary>
+            将 String 类型 转换为 Decimal 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Decimal"/>异常默认值，默认为 0M</param>
+            <returns><see cref="T:System.Decimal"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToBool(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            将 String 类型 转换为 Bool 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Boolean"/>异常默认值，默认为 false</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToFloat(System.String,System.Boolean,System.Single)">
+            <summary>
+            将 String 类型 转换为 Float 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Single"/>异常默认值，默认为 0F</param>
+            <returns><see cref="T:System.Single"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDouble(System.String,System.Boolean,System.Double)">
+            <summary>
+            将 String 类型 转换为 Float 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Double"/>异常默认值，默认为 0D</param>
+            <returns><see cref="T:System.Double"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToGuid(System.String,System.Boolean,System.Nullable{System.Guid})">
+            <summary>
+            将 String 类型 转换为 Guid 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.Guid"/>异常默认值，默认为 Guid.Empty</param>
+            <returns><see cref="T:System.Guid"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTime(System.String,System.Boolean,System.DateTime)">
+            <summary>
+            将 String 类型 转换为 DateTime 类型
+            </summary>
+            <param name="value"><see cref="T:System.String"/>值</param>
+            <param name="isThrow"><see cref="T:System.Boolean"/>是否抛出异常，默认为 true</param>
+            <param name="defaultValue"><see cref="T:System.DateTime"/>异常默认值，默认为 DateTime.MinValue</param>
+            <returns><see cref="T:System.DateTime"/></returns>
+            <exception cref="T:System.ArgumentNullException">传入的值为空或者空字符串</exception>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTime(System.DateTimeOffset)">
+            <summary>
+            将 DateTimeOffset 转换成本地 DateTime
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTimeOffset"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTime(System.Nullable{System.DateTimeOffset})">
+            <summary>
+            将 DateTimeOffset? 转换成本地 DateTime?
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTimeOffset"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTimeOffset(System.DateTime)">
+            <summary>
+            将 DateTime 转换成 DateTimeOffset
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTimeOffset(System.Nullable{System.DateTime})">
+            <summary>
+            将 DateTime? 转换成 DateTimeOffset?
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTime_Milliseconds(System.Int64)">
+            <summary>
+            将毫秒时间戳转换为DateTime，若转换失败，则返回日期最小值。不抛出异常。  
+            </summary>
+            <param name="timeStamps"><see cref="T:System.Int64"/></param>
+            <returns><see cref="T:System.DateTime"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTime_Milliseconds(System.Int64,System.Nullable{System.DateTime})">
+            <summary>
+            将毫秒时间戳转换为DateTime，若转换失败，则返回默认值。
+            </summary>
+            <param name="timeStamps"><see cref="T:System.Int64"/></param>
+            <param name="defaultValue"></param>
+            <returns><see cref="T:System.DateTime"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTime_Seconds(System.Int64)">
+            <summary>
+            将秒时间戳转换为DateTime，若转换失败，则返回日期最小值。不抛出异常。  
+            </summary>
+            <param name="timeStamps"><see cref="T:System.Int64"/></param>
+            <returns><see cref="T:System.DateTime"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToDateTime_Seconds(System.Int64,System.Nullable{System.DateTime})">
+            <summary>
+            将秒时间戳转换为DateTime，若转换失败，则返回默认值。
+            </summary>
+            <param name="timeStamps"><see cref="T:System.Int64"/></param>
+            <param name="defaultValue"></param>
+            <returns><see cref="T:System.DateTime"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.ParseToUnixTime(System.DateTime)">
+            <summary>
+            将 DateTime 转为 UnixTime
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.Int64"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ConvertExtension.CastSuper``1(System.Collections.IEnumerable)">
+            <summary>
+            强制转换类型
+            </summary>
+            <typeparam name="TResult"></typeparam>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.DataTableExtension">
+            <summary>
+            <see cref="T:System.Data.DataTable"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DataTableExtension.ToDataTable``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            转换为DataTable
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="data"><see cref="T:System.Collections.Generic.IEnumerable`1"/></param>
+            <returns><see cref="T:System.Data.DataTable"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DataTableExtension.ToList``1(System.Data.DataTable)">
+            <summary>
+            DataTable To List
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dataTable"><see cref="T:System.Data.DataTable"/></param>
+            <returns><see cref="T:System.Collections.Generic.List`1"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.DateTimeExtension">
+            <summary>
+            <see cref="T:System.DateTime"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetSayHello(System.DateTime)">
+            <summary>
+            得到问好
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetCurMonthFirstDay(System.DateTime)">
+            <summary>
+            获取当前月的第一天
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.DateTime"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetCurMonthLastDay(System.DateTime)">
+            <summary>
+            获取当前月的最后一天
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.DateTime"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetUpMonthFirstDay(System.DateTime)">
+            <summary>
+            获取上月的第一天
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.DateTime"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetUpMonthLastDay(System.DateTime)">
+            <summary>
+            获取上月的最后一天
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.DateTime"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetCurWeekDay(System.DateTime)">
+            <summary>
+            获取本周时间
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns>(<see cref="T:System.DateTime"/>, <see cref="T:System.DateTime"/>)</returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetUpWeekDay(System.DateTime)">
+            <summary>
+            获取上周时间
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns>(<see cref="T:System.DateTime"/>, <see cref="T:System.DateTime"/>)</returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetCurDay(System.DateTime)">
+            <summary>
+            获取当天时间
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns>(<see cref="T:System.DateTime"/>, <see cref="T:System.DateTime"/>)</returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetUpDay(System.DateTime)">
+            <summary>
+            获取昨天时间
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns>(<see cref="T:System.DateTime"/>, <see cref="T:System.DateTime"/>)</returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetZodiac(System.DateTime)">
+            <summary>
+            获取生肖
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetConstellation(System.DateTime)">
+            <summary>
+            获取星座
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeExtension.GetLifeCode(System.DateTime)">
+            <summary>
+            生命密码
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/></param>
+            <returns><see cref="T:System.Int32"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.DecimalExtension">
+            <summary>
+            <see cref="T:System.Decimal"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DecimalExtension.GetPercentage(System.Decimal)">
+            <summary>
+            得到百分比
+            </summary>
+            <param name="data"><see cref="T:System.Decimal"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DecimalExtension.GetPercentage(System.Decimal,System.Decimal)">
+            <summary>
+            得到百分比
+            </summary>
+            <param name="num1"><see cref="T:System.Decimal"/></param>
+            <param name="num2"><see cref="T:System.Decimal"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.DecimalExtension.GetDecimal(System.Decimal,System.Nullable{System.Int32})">
+            <summary>
+            获取 decimal，小数点后面有几位就保留几位
+            </summary>
+            <param name="data"><see cref="T:System.Decimal"/></param>
+            <param name="places"><see cref="T:System.Int32"/>要保留的小数据，不传默认有几位就保留几位</param>
+            <returns><see cref="T:System.Decimal"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.DynamicExtension">
+            <summary>
+            <see cref="T:Fast.IaaS.DynamicExtension"/> dynamic 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DynamicExtension.HasProperty(System.Object,System.String)">
+            <summary>
+            检查动态对象是否包含指定属性的方法
+            </summary>
+            <param name="obj"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.EnumExtension">
+            <summary>
+            <see cref="T:System.Enum"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.EnumExtension.GetDescription``1(``0)">
+            <summary>
+            获取枚举值的描述
+            </summary>
+            <remarks>需要有 [Description] 特性，否则返回的是枚举值的Name</remarks>
+            <typeparam name="TEnum"></typeparam>
+            <param name="value">枚举值</param>
+            <returns><see cref="T:System.String"/>枚举的 [Description] 特性描述</returns>
+            <exception cref="T:System.ArgumentNullException">传入的枚举值为空</exception>
+            <exception cref="T:System.ArgumentException">The parameter is not an enum type.</exception>
+        </member>
+        <member name="M:Fast.IaaS.EnumExtension.GetDescription(System.Enum,System.Type)">
+            <summary>
+            获取枚举值的描述
+            </summary>
+            <remarks>需要有 [Description] 特性，否则返回的是枚举值的Name</remarks>
+            <param name="value"><see cref="T:System.Enum"/>枚举值</param>
+            <param name="enumType"><see cref="T:System.Type"/>枚举类型</param>
+            <returns><see cref="T:System.String"/>枚举的 [Description] 特性描述</returns>
+            <exception cref="T:System.ArgumentNullException">传入的枚举值为空</exception>
+            <exception cref="T:System.ArgumentException">The parameter is not an enum type.</exception>
+        </member>
+        <member name="M:Fast.IaaS.EnumExtension.EnumToList(System.Type)">
+            <summary>
+            将枚举转成枚举信息集合
+            </summary>
+            <param name="enumType"><see cref="T:System.Type"/>枚举值类型</param>
+            <returns><see cref="T:System.Collections.Generic.List`1"/></returns>
+            <exception cref="T:System.ArgumentException">类型不是一个枚举类型</exception>
+        </member>
+        <member name="M:Fast.IaaS.EnumExtension.EnumToList``1(System.Type)">
+            <summary>
+            将枚举转成枚举信息集合
+            </summary>
+            <typeparam name="TProperty"></typeparam>
+            <param name="enumType"><see cref="T:System.Type"/>枚举值类型</param>
+            <returns><see cref="T:System.Collections.Generic.List`1"/></returns>
+            <exception cref="T:System.ArgumentException">类型不是一个枚举类型</exception>
+        </member>
+        <member name="T:Fast.IaaS.FieldInfoExtension">
+            <summary>
+            <see cref="T:System.Reflection.FieldInfo"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.FieldInfoExtension.GetDescriptionValue``1(System.Reflection.FieldInfo)">
+            <summary>
+            获取字段特性
+            </summary>
+            <param name="field"><see cref="T:System.Reflection.FieldInfo"/></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.GroupByExtension">
+            <summary>
+            <see cref="T:Fast.IaaS.EnumExtension"/> GroupBy 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.GroupByExtension.GroupByMultiple``1(System.Collections.Generic.IEnumerable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
+            <summary>
+            多个GroupBy
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <param name="source"></param>
+            <param name="groupByProperties"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.HttpContextExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.UnifyResponseTimestamp(Microsoft.AspNetCore.Http.HttpContext,System.Int64)">
+            <summary>
+            设置规范化响应时间戳
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="timestamp"><see cref="T:System.Int64"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.UnifyResponseTimestamp(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取规范化响应时间戳
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.IsWebSocketRequest(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            判断是否是 WebSocket 请求
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.GetMetadata``1(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取 Action 特性
+            </summary>
+            <typeparam name="TAttribute"></typeparam>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.GetMetadata(Microsoft.AspNetCore.Http.EndpointMetadataCollection,System.Type)">
+            <summary>
+            获取 Action 特性
+            </summary>
+            <param name="metadata"><see cref="T:Microsoft.AspNetCore.Http.EndpointMetadataCollection"/></param>
+            <param name="attributeType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Object"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.GetMetadata(Microsoft.AspNetCore.Http.HttpContext,System.Type)">
+            <summary>
+            获取 Action 特性
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="attributeType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Object"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.SignInToSwagger(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            设置规范化文档自动登录
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="accessToken"></param>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.SignOutToSwagger(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            设置规范化文档退出登录
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.LanIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            局域网 IPv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.LanIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            局域网 IPv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.LocalIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            本机 IPv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.LocalIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            本机 IPv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RemoteIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            远程 Ipv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RemoteIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            远程 Ipv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RequestUserAgent(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            请求用户代理字符串（User-Agent）
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="userAgentHeaderKey">默认从 “User-Agent” 获取</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RequestUserAgentInfo(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            请求用户代理信息（User-Agent）
+            <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 null</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:Fast.IaaS.UserAgentInfo"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RemoteIpv4Info(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            远程 Ipv4 地址信息
+            <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="ip"><see cref="T:System.String"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
+            <returns><see cref="T:Fast.IaaS.WanNetIPInfo"/></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RemoteIpv4InfoAsync(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            远程 Ipv4 地址信息
+            <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="ip"><see cref="T:System.String"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
+            <returns><see cref="T:Fast.IaaS.WanNetIPInfo"/></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.GetControllerActionDescriptor(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取 控制器/Action 描述器
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.ReadBodyContentAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            读取 Body 内容
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.ReadBodyContentAsync(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            读取 Body 内容
+            </summary>
+            <param name="httpRequest"><see cref="T:Microsoft.AspNetCore.Http.HttpRequest"/></param>
+            <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RequestUrlAddress(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            完整请求地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RequestUrlAddress(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            完整请求地址
+            </summary>
+            <param name="httpRequest"><see cref="T:Microsoft.AspNetCore.Http.HttpRequest"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.RefererUrlAddress(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            来源地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="refererHeaderKey">默认从 “Referer” 获取</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.SetResponseStatusCodes(Microsoft.AspNetCore.Http.HttpContext,System.Int32,System.Int32[],System.Int32[][])">
+            <summary>
+            设置响应状态码
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="statusCode"><see cref="T:System.Int32"/></param>
+            <param name="return200StatusCodes"><see cref="T:System.Array"/> 设置返回 200 状态码列表。只支持 400+(404除外) 状态码</param>
+            <param name="adaptStatusCodes"><see cref="T:System.Array"/> 适配（篡改）状态码。只支持 400+(404除外) 状态码</param>
+            <remarks>
+            示例：
+                return200StatusCodes = [401, 403]
+                adaptStatusCodes = [[401, 200], [403, 200]]
+            </remarks>
+        </member>
+        <member name="T:Fast.IaaS.IDictionaryExtension">
+            <summary>
+            <see cref="T:System.Collections.Generic.IDictionary`2"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.ToQueryString(System.Collections.Generic.IDictionary{System.String,System.String},System.Boolean,System.Boolean)">
+            <summary>
+            将一个字典转化为 QueryString
+            </summary>
+            <param name="dict"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+            <param name="urlEncode"></param>
+            <param name="isToLower">首字母是否小写</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.RemoveEmptyValueItems(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            移除空值项
+            </summary>
+            <param name="dict"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.AddOrUpdate``2(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.List{``1}},``0,``1)">
+            <summary>
+            添加或更新
+            </summary>
+            <typeparam name="TKey">字典键类型</typeparam>
+            <typeparam name="TValue">字典值类型</typeparam>
+            <param name="dictionary"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+            <param name="key"><typeparamref name="TKey"/></param>
+            <param name="value"><typeparamref name="TValue"/></param>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.AddOrUpdate``2(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.List{``1}},System.Collections.Generic.IDictionary{``0,System.Collections.Generic.List{``1}})">
+            <summary>
+            添加或更新
+            </summary>
+            <typeparam name="TKey">字典键类型</typeparam>
+            <typeparam name="TValue">字典值类型</typeparam>
+            <param name="dictionary"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+            <param name="concatDictionary"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.AddOrUpdate``2(System.Collections.Generic.IDictionary{``0,``1},System.Collections.Generic.IDictionary{``0,``1})">
+            <summary>
+            添加或更新
+            </summary>
+            <typeparam name="TKey">字典键类型</typeparam>
+            <typeparam name="TValue">字典值类型</typeparam>
+            <param name="dictionary"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+            <param name="concatDictionary"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.AddOrUpdate``1(System.Collections.Generic.IDictionary{System.String,``0},System.Collections.Generic.IDictionary{System.String,``0})">
+            <summary>
+            合并两个字典
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dic"><see cref="T:System.Collections.Generic.IDictionary`2"/>字典</param>
+            <param name="newDic"><see cref="T:System.Collections.Generic.IDictionary`2"/>新字典</param>
+            <returns><see cref="T:System.Collections.Generic.IDictionary`2"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.DicToXmlStr(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            将Dic字典转换成字符串
+            </summary>
+            <param name="dic"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.XmlStrToDic(System.String)">
+            <summary>
+            将字符串转换为Dic字典
+            </summary>
+            <param name="xml"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.Collections.Generic.IDictionary`2"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.SortDicToXmlStr(System.Collections.Generic.SortedDictionary{System.String,System.Object})">
+            <summary>
+            将Dic字典转换成字符串
+            </summary>
+            <param name="dic"><see cref="T:System.Collections.Generic.IDictionary`2"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.IDictionaryExtension.XmlStrToSortDic(System.String)">
+            <summary>
+            将字符串转换为Dic字典
+            </summary>
+            <param name="xml"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.Collections.Generic.SortedDictionary`2"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.LinqExpressionExtension">
+            <summary>
+            <see cref="T:System.Linq.Expressions.Expression"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.LinqExpressionExtension.GetPropertyName``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            解析表达式属性名称
+            </summary>
+            <typeparam name="T">对象类型</typeparam>
+            <typeparam name="TProperty">属性类型</typeparam>
+            <param name="propertySelector"><see cref="T:System.Linq.Expressions.Expression`1"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:Fast.IaaS.LinqExpressionExtension.GetPropertyName``1(System.Linq.Expressions.MemberExpression)">
+            <summary>
+            解析表达式属性名称
+            </summary>
+            <typeparam name="T">对象类型</typeparam>
+            <param name="memberExpression"><see cref="T:System.Linq.Expressions.MemberExpression"/></param>
+            <returns><see cref="T:System.String"/></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="T:Fast.IaaS.MethodInfoExtension">
+            <summary>
+            <see cref="T:System.Reflection.MethodInfo"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.MethodInfoExtension.IsAsync(System.Reflection.MethodInfo)">
+            <summary>
+            判断方法是否是异步
+            </summary>
+            <param name="methodInfo"><see cref="T:System.Reflection.MemberInfo"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.MethodInfoExtension.GetRealReturnType(System.Reflection.MethodInfo)">
+            <summary>
+            获取方法真实返回类型
+            </summary>
+            <param name="methodInfo"><see cref="T:System.Reflection.MethodInfo"/></param>
+            <returns><see cref="T:System.Type"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.MethodInfoExtension.GetFoundAttribute``1(System.Reflection.MethodInfo,System.Boolean)">
+            <summary>
+            查找方法指定特性，如果没找到则继续查找声明类
+            </summary>
+            <typeparam name="TAttribute"></typeparam>
+            <param name="methodInfo"></param>
+            <param name="inherit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.MethodInfoExtension.GetFoundAttribute(System.Reflection.MethodInfo,System.Type,System.Boolean)">
+            <summary>
+            查找方法指定特性，如果没找到则继续查找声明类
+            </summary>
+            <param name="methodInfo"></param>
+            <param name="attributeType"></param>
+            <param name="inherit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.MethodInfoExtension.GetMethodParameterCount(System.Reflection.MethodInfo)">
+            <summary>
+            获取方法参数数量
+            </summary>
+            <param name="methodInfo"><see cref="T:System.Reflection.MemberInfo"/></param>
+            <returns><see cref="T:System.Int32"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.ObjectExtension">
+            <summary>
+            <see cref="T:System.Object"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.ObjectExtension.ChangeType(System.Object,System.Type)">
+            <summary>
+            将一个对象转换为指定类型
+            </summary>
+            <param name="obj">待转换的对象</param>
+            <param name="type">目标类型</param>
+            <returns>转换后的对象</returns>
+        </member>
+        <member name="M:Fast.IaaS.ObjectExtension.ToDictionary(System.Object)">
+            <summary>
+            将一个Object对象转为 字典
+            </summary>
+            <param name="obj"><see cref="T:System.Object"/></param>
+            <returns><see cref="T:System.Collections.Generic.IDictionary`2"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ObjectExtension.ChangeType``1(System.Object)">
+            <summary>
+            将一个对象转换为指定类型
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ObjectExtension.ToQueryString(System.Object,System.Boolean)">
+            <summary>
+            将一个对象转化为 Get 请求的String字符串
+            注：List，Array，Object属性不支持
+            </summary>
+            <param name="obj"><see cref="T:System.Object"/></param>
+            <param name="isToLower">首字母是否小写</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ObjectExtension.TryGetCount(System.Object,System.Int32@)">
+            <summary>
+            尝试获取对象的数量
+            </summary>
+            <param name="obj"><see cref="T:System.Object"/></param>
+            <param name="count">数量</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.StringEncodingExtension">
+            <summary>
+            <see cref="T:Fast.IaaS.StringEncodingExtension"/> 字符串编码拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.StringEncodingExtension.EnAscii(System.String)">
+            <summary>
+            将字符串转换为 ASCII 编码形式。
+            </summary>
+            <param name="str"><see cref="T:System.String"/> 要进行编码的字符串。</param>
+            <returns><see cref="T:System.String"/> 转换后的 ASCII 编码形式字符串。</returns>
+        </member>
+        <member name="M:Fast.IaaS.StringEncodingExtension.DeAscii(System.String)">
+            <summary>
+            将 ASCII 编码形式的字符串转换为字符串。
+            </summary>
+            <param name="str"><see cref="T:System.String"/> 要进行解码的 ASCII 编码形式字符串。</param>
+            <returns><see cref="T:System.String"/> 解码后的字符串。</returns>
+        </member>
+        <member name="M:Fast.IaaS.StringEncodingExtension.EnUnicode(System.String)">
+            <summary>
+            Unicode编码
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringEncodingExtension.DeUnicode(System.String)">
+            <summary>
+            Unicode解码
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringEncodingExtension.UrlEncode(System.String)">
+            <summary>
+            将一个字符串 URL 编码
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringEncodingExtension.UrlDecode(System.String)">
+            <summary>
+            将一个Url 编码 转为字符串
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.StringExtension">
+            <summary>
+            <see cref="T:System.String"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.FirstCharToUpper(System.String)">
+            <summary>
+            字符串首字母大写
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.FirstCharToLower(System.String)">
+            <summary>
+            字符串首字母小写
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.SplitCamelCase(System.String)">
+            <summary>
+            切割骆驼命名式字符串
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.ClearStringAffixes(System.String,System.Int32,System.String[])">
+            <summary>
+            清除字符串前后缀
+            </summary>
+            <param name="str"><see cref="T:System.String"/>字符串</param>
+            <param name="pos">0：前后缀，1：后缀，-1：前缀</param>
+            <param name="affixes">前后缀集合</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.Format(System.String,System.Object[])">
+            <summary>
+            格式化字符串
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <param name="args"></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.PadStringLeftAlign(System.String,System.Int32)">
+            <summary>
+            将字符串转化为固定长度左对齐，右补空格
+            </summary>
+            <param name="strTemp"><see cref="T:System.String"/></param>
+            <param name="length"></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.GenerateSpaceString(System.Int32)">
+            <summary>
+            生成固定长度的空格字符串
+            </summary>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.GetSubStringWithEllipsis(System.String,System.Int32,System.Boolean)">
+            <summary>
+            截取指定长度的字符串
+            </summary>
+            <param name="value"><see cref="T:System.String"/></param>
+            <param name="length"></param>
+            <param name="ellipsis"></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.StringExtension.GetNVarcharMaxLen(System.String,System.Int32,System.Boolean)">
+            <summary>
+            获取 Sql Server NVarchar 最大字节长度
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <param name="maxLen"><see cref="T:System.Int32"/>最大长度</param>
+            <param name="ellipsis"><see cref="T:System.Boolean"/></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.TypeExtension">
+            <summary>
+            <see cref="T:System.Type"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.LoadPostConfigure``1(``0)">
+            <summary>
+            加载后期配置
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.HasImplementedRawGeneric(System.Type,System.Type)">
+            <summary>
+            判断类型是否实现某个泛型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/> 类型</param>
+            <param name="generic"><see cref="T:System.Type"/>泛型类型</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.GetAssemblyName(System.Type)">
+            <summary>
+            获取类型所在程序集名称
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.GetAssemblyName(System.Reflection.TypeInfo)">
+            <summary>
+            获取类型所在程序集名称
+            </summary>
+            <param name="typeInfo"><see cref="T:System.Reflection.TypeInfo"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsRichPrimitive(System.Type)">
+            <summary>
+            判断是否是富基元类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsValueTuple(System.Type)">
+            <summary>
+            判断是否是元组类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsStatic(System.Type)">
+            <summary>
+            检查类型是否是静态类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsAnonymous(System.Type)">
+            <summary>
+            检查类型是否是匿名类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsInstantiable(System.Type)">
+            <summary>
+            检查类型是否可实例化
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsAlienAssignableTo(System.Type,System.Type)">
+            <summary>
+            检查类型是否派生自指定类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="fromType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.GetDefinedCustomAttribute``1(System.Type,System.Boolean)">
+            <summary>
+            获取指定特性实例
+            </summary>
+            <remarks>若特性不存在则返回 null</remarks>
+            <typeparam name="TAttribute">特性类型</typeparam>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="inherit">是否查找基类型特性</param>
+            <returns><typeparamref name="TAttribute"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.HasDefinePublicParameterlessConstructor(System.Type)">
+            <summary>
+            检查类型是否定义了公开无参构造函数
+            </summary>
+            <remarks>用于 <see cref="M:System.Activator.CreateInstance(System.Type)"/> 实例化</remarks>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsDefinitionEqual(System.Type,System.Type)">
+            <summary>
+            检查类型和指定类型定义是否相等
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="compareType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsCompatibilityTo(System.Type,System.Type)">
+            <summary>
+            检查类型和指定继承类型是否兼容
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="inheritType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsDeclarationMethod(System.Type,System.String,System.Reflection.BindingFlags,System.Reflection.MethodInfo@)">
+            <summary>
+            检查类型是否定义了指定方法
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="name">方法名称</param>
+            <param name="accessibilityBindingFlags">可访问性成员绑定标记</param>
+            <param name="methodInfo"><see cref="T:System.Reflection.MethodInfo"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsInteger(System.Type)">
+            <summary>
+            检查类型是否是整数类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsDecimal(System.Type)">
+            <summary>
+            检查类型是否是小数类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsNumeric(System.Type)">
+            <summary>
+            检查类型是否是数值类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsDictionary(System.Type)">
+            <summary>
+            检查类型是否是字典类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.CreatePropertySetter(System.Type,System.Reflection.PropertyInfo)">
+            <summary>
+            创建属性值设置器
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="propertyInfo"><see cref="T:System.Reflection.PropertyInfo"/></param>
+            <returns><see cref="T:System.Action`2"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.CreateFieldSetter(System.Type,System.Reflection.FieldInfo)">
+            <summary>
+            创建字段值设置器
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="fieldInfo"><see cref="T:System.Reflection.FieldInfo"/></param>
+            <returns><see cref="T:System.Action`2"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.CreatePropertyGetter(System.Type,System.Reflection.PropertyInfo)">
+            <summary>
+            创建属性值访问器
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="propertyInfo"><see cref="T:System.Reflection.PropertyInfo"/></param>
+            <returns><see cref="T:System.Func`2"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.CreateFieldGetter(System.Type,System.Reflection.FieldInfo)">
+            <summary>
+            创建字段值访问器
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="fieldInfo"><see cref="T:System.Reflection.FieldInfo"/></param>
+            <returns><see cref="T:System.Func`2"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.GetTypeAttribute``1(System.Type,System.Boolean)">
+            <summary>
+            获取类型自定义特性
+            </summary>
+            <typeparam name="TAttribute">特性类型</typeparam>
+            <param name="type">类类型</param>
+            <param name="inherit">是否继承查找</param>
+            <returns>特性对象</returns>
+        </member>
+        <member name="T:Fast.IaaS.ValidateExtension">
+            <summary>
+            <see cref="T:Fast.IaaS.ValidateExtension"/> 验证拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsEmpty(System.String)">
+            <summary>
+            判断 string 是否为 Null
+            </summary>
+            <param name="value"><see cref="T:System.String"/>字符串</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsEmpty``1(``0)">
+            <summary>
+            判断 Enum 是否为 Null
+            </summary>
+            <typeparam name="TEnum"></typeparam>
+            <param name="value">枚举值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsEmpty``1(System.Nullable{``0})">
+            <summary>
+            判断 Enum 是否为 Null
+            </summary>
+            <typeparam name="TEnum"></typeparam>
+            <param name="value">枚举值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNullOrZero``1(``0)">
+            <summary>
+            判断 Enum 是否为 Null 或者 0
+            </summary>
+            <typeparam name="TEnum"></typeparam>
+            <param name="value">枚举值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNullOrZero``1(System.Nullable{``0})">
+            <summary>
+            判断 Enum 是否为 Null 或者 0
+            </summary>
+            <typeparam name="TEnum"></typeparam>
+            <param name="value">枚举值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNullOrZero(System.Nullable{System.Byte})">
+            <summary>
+            判断 byte 是否为 Null 或者 0
+            </summary>
+            <param name="value"><see cref="T:System.Int32"/>值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNullOrZero(System.Nullable{System.Int32})">
+            <summary>
+            判断 int 是否为 Null 或者 0
+            </summary>
+            <param name="value"><see cref="T:System.Int32"/>值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNullOrZero(System.Nullable{System.Double})">
+            <summary>
+            判断 double 是否为 Null 或者 0
+            </summary>
+            <param name="value"><see cref="T:System.Double"/>值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNullOrZero(System.Nullable{System.Decimal})">
+            <summary>
+            判断 decimal 是否为 Null 或者 0
+            </summary>
+            <param name="value"><see cref="T:System.Decimal"/>值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNullOrZero(System.Nullable{System.Single})">
+            <summary>
+            判断 float 是否为 Null 或者 0
+            </summary>
+            <param name="value"><see cref="T:System.Decimal"/>值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNullOrZero(System.Nullable{System.Int64})">
+            <summary>
+            判断 long 是否为 Null 或者 0
+            </summary>
+            <param name="value"><see cref="T:System.Int64"/>值</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNumber(System.String)">
+            <summary>
+            验证输入字符串为带小数点正数
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsDecimalNumber(System.String)">
+            <summary>
+            验证输入字符串为带小数点正负数
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsTel(System.String)">
+            <summary>
+            验证中国电话格式是否有效，格式010-85849685
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsPhone(System.String)">
+            <summary>
+            验证输入字符串为电话号码
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsFax(System.String)">
+            <summary>
+            验证是否是有效传真号码
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsMobile(System.String)">
+            <summary>
+            验证手机号是否合法 号段为13,14,15,16,17,18,19  0，86开头将自动识别
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsIdCard(System.String)">
+            <summary>
+            验证身份证是否有效
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsIdCard18(System.String)">
+            <summary>
+            验证输入字符串为18位的身份证号码
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsIdCard15(System.String)">
+            <summary>
+            验证输入字符串为15位的身份证号码
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsEmail(System.String)">
+            <summary>
+            验证是否是有效邮箱地址
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsQqEmail(System.String)">
+            <summary>
+            验证是否是有效QQ邮箱地址
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsOnlyChinese(System.String)">
+            <summary>
+            验证是否只含有汉字
+            </summary>
+            <param name="strLn">输入字符</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsBadString(System.String)">
+            <summary>
+            是否有多余的字符 防止SQL注入
+            </summary>
+            <param name="str">输入字符</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsNzx(System.String)">
+            <summary>
+            是否由数字、26个英文字母或者下划线組成的字串 
+            </summary>
+            <param name="str">输入字符</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsAlphaNumericChinese(System.String)">
+            <summary>
+            由数字、26个英文字母、汉字組成的字串
+            </summary>
+            <param name="str">输入字符</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsAlphaNumeric(System.String)">
+            <summary>
+            是否由数字、26个英文字母組成的字串
+            </summary>
+            <param name="str">输入字符</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsPostCode(System.String)">
+            <summary>
+            验证输入字符串为邮政编码
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.CheckLength(System.String,System.Int32)">
+            <summary>
+            检查对象的输入长度
+            </summary>
+            <param name="str">输入字符</param>
+            <param name="length">指定的长度</param>
+            <returns>false 太长，true -太短</returns>
+        </member>
+        <member name="M:Fast.IaaS.ValidateExtension.IsDateTime(System.String)">
+            <summary>
+            判断用户输入是否为日期
+            </summary>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
+            <remarks>
+            可判断格式如下（其中-可替换为/，不影响验证):
+            YYYY | YYYY-MM | YYYYMM | YYYY-MM-DD | YYYYMMDD | YYYY-MM-DD HH:MM:SS | YYYY-MM-DD HH:MM:SS.FFF
+            </remarks>
+        </member>
+        <member name="T:Fast.IaaS.EnumItem`1">
+            <summary>
+            <see cref="T:Fast.IaaS.EnumItem`1"/> 枚举项
+            </summary>
+            <typeparam name="TProperty">Value属性类型</typeparam>
+        </member>
+        <member name="P:Fast.IaaS.EnumItem`1.Describe">
+            <summary>  
+            枚举的描述  
+            </summary>  
+        </member>
+        <member name="P:Fast.IaaS.EnumItem`1.Name">
+            <summary>  
+            枚举名称  
+            </summary>  
+        </member>
+        <member name="P:Fast.IaaS.EnumItem`1.Value">
+            <summary>  
+            枚举对象的值  
+            </summary>  
+        </member>
+        <member name="T:Fast.IaaS.IPostConfigure">
+            <summary>
+            <see cref="T:Fast.IaaS.IPostConfigure"/> 后期配置接口
+            <remarks>可在一些不能通过构造函数载入默认配置的地方进行加载默认配置</remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IPostConfigure.PostConfigure">
+            <summary>
+            后期配置
+            </summary>
+        </member>
+        <member name="T:Fast.IaaS.ITreeNode`1">
+            <summary>
+            <see cref="T:Fast.IaaS.ITreeNode`1"/> 树基类
+            </summary>
+            <typeparam name="TProperty">Id属性类型</typeparam>
+        </member>
+        <member name="M:Fast.IaaS.ITreeNode`1.GetId">
+            <summary>
+            获取节点id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ITreeNode`1.GetPid">
+            <summary>
+            获取节点父id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ITreeNode`1.Sort">
+            <summary>
+            获取排序字段
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.ITreeNode`1.SetChildren(System.Collections.IList)">
+            <summary>
+            设置Children
+            </summary>
+            <param name="children"></param>
+        </member>
+        <member name="T:Fast.IaaS.DepsLibrary">
+            <summary>
+            <see cref="T:Fast.IaaS.DepsLibrary"/> .deps.json 文件中 libraries 节点的Model
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DepsLibrary.#ctor(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <param name="version"></param>
+            <param name="serviceable"></param>
+        </member>
+        <member name="P:Fast.IaaS.DepsLibrary.Type">
+            <summary>
+            类型
+            <remarks>"package"是引用的包，"project"是本地引用的项目</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DepsLibrary.Name">
+            <summary>
+            程序集名称
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DepsLibrary.Version">
+            <summary>
+            程序集版本
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DepsLibrary.Serviceable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Fast.IaaS.UserAgentInfo">
+            <summary>
+            <see cref="T:Fast.IaaS.UserAgentInfo"/> 用户代理信息
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserAgentInfo.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserAgentInfo.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserAgentInfo.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="T:Fast.IaaS.WanNetIPInfo">
+            <summary>
+            <see cref="T:Fast.IaaS.WanNetIPInfo"/> 公网IP信息
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.Ip">
+            <summary>
+            Ip地址
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.ProvinceZipCode">
+            <summary>
+            省份邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.CityZipCode">
+            <summary>
+            城市邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.Address">
+            <summary>
+            地理信息
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.Operator">
+            <summary>
+            运营商
+            </summary>
+        </member>
+        <member name="T:Fast.IaaS.Reflect">
+            <summary>
+            反射静态类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetEntryAssembly">
+            <summary>
+            获取入口程序集
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetAssembly(System.String)">
+            <summary>
+            根据程序集名称获取运行时程序集
+            </summary>
+            <param name="assemblyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.LoadAssembly(System.String)">
+            <summary>
+            根据路径加载程序集
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.LoadAssembly(System.IO.MemoryStream)">
+            <summary>
+            通过流加载程序集
+            </summary>
+            <param name="assembly"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetType(System.String,System.String)">
+            <summary>
+            根据程序集名称、类型完整限定名获取运行时类型
+            </summary>
+            <param name="assemblyName"></param>
+            <param name="typeFullName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetType(System.Reflection.Assembly,System.String)">
+            <summary>
+            根据程序集和类型完全限定名获取运行时类型
+            </summary>
+            <param name="assembly"></param>
+            <param name="typeFullName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetType(System.IO.MemoryStream,System.String)">
+            <summary>
+            根据程序集和类型完全限定名获取运行时类型
+            </summary>
+            <param name="assembly"></param>
+            <param name="typeFullName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetAssemblyName(System.Reflection.Assembly)">
+            <summary>
+            获取程序集名称
+            </summary>
+            <param name="assembly"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetAssemblyName(System.Type)">
+            <summary>
+            获取程序集名称
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetAssemblyName(System.Reflection.TypeInfo)">
+            <summary>
+            获取程序集名称
+            </summary>
+            <param name="typeInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.Reflect.GetStringType(System.String)">
+            <summary>
+            加载程序集类型，支持格式：程序集;网站类型命名空间
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.AssemblyUtil">
+            <summary>
+            <see cref="T:System.Reflection.Assembly"/> 工具类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyUtil.GetEntryAssembly(System.Boolean)">
+            <summary>
+            获取入口程序集
+            </summary>
+            <param name="referenced"><see cref="T:System.Boolean"/> 是否包含引用的，默认为 true</param>
+            <returns><see cref="T:System.Collections.Generic.IEnumerable`1"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyUtil.GetAssemblyTypes(System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
+            <summary>
+            获取程序集中所有类型
+            </summary>
+            <remarks>这里默认获取所有 Public 声明的</remarks>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/> 程序集</param>
+            <param name="typeFilter"><see cref="T:System.Func`1"/> 类型过滤条件</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.CryptoUtil">
+            <summary>
+            <see cref="T:Fast.IaaS.CryptoUtil"/> 加密解密工具类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.CryptoUtil.AESEncrypt(System.String,System.String,System.String,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            使用AES算法对给定字符串进行加密。
+            </summary>
+            <param name="dataStr">要加密的字符串。</param>
+            <param name="key">用于加密的密钥。</param>
+            <param name="vector">用于加密的向量（IV）。</param>
+            <param name="cipherMode">加密模式，默认为CBC模式。</param>
+            <param name="paddingMode">填充模式，默认为PKCS7。</param>
+            <returns>加密后的Base64编码字符串。</returns>
+        </member>
+        <member name="M:Fast.IaaS.CryptoUtil.AESDecrypt(System.String,System.String,System.String,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            使用AES算法对给定的Base64编码字符串进行解密。
+            </summary>
+            <param name="dataStr">要解密的Base64编码字符串。</param>
+            <param name="key">用于解密的密钥。</param>
+            <param name="vector">用于解密的向量（IV）。</param>
+            <param name="cipherMode">解密模式，默认为CBC模式。</param>
+            <param name="paddingMode">填充模式，默认为PKCS7。</param>
+            <returns>解密后的原始字符串。</returns>
+        </member>
+        <member name="M:Fast.IaaS.CryptoUtil.MD5Encrypt(System.String)">
+            <summary>
+            使用 MD5 算法对给定的字符串进行加密。
+            </summary>
+            <param name="content">要加密的字符串。</param>
+            <returns>加密后的字符串。</returns>
+        </member>
+        <member name="M:Fast.IaaS.CryptoUtil.SHAEncrypt(System.String)">
+            <summary>
+            SHA1加密
+            </summary>
+            <param name="str"><see cref="T:System.String"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.DateTimeUtil">
+            <summary>
+            <see cref="T:Fast.IaaS.DateTimeUtil"/> DateTime工具类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeUtil.GetYearMonthFirstDay(System.String,System.String)">
+            <summary>
+            获取指定年月的第一天
+            </summary>
+            <param name="year"><see cref="T:System.String"/> 年份</param>
+            <param name="month"><see cref="T:System.String"/> 月份</param>
+            <returns><see cref="T:System.DateTime"/> 第一天的 DateTime</returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeUtil.GetYearMonthFirstDay(System.Int32,System.Int32)">
+            <summary>
+            获取指定年月的第一天
+            </summary>
+            <param name="year"><see cref="T:System.Int32"/> 年份</param>
+            <param name="month"><see cref="T:System.Int32"/> 月份</param>
+            <returns><see cref="T:System.DateTime"/> 第一天的 DateTime</returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeUtil.GetYearMonthLastDay(System.String,System.String)">
+            <summary>
+            获取指定年月的最后一天
+            </summary>
+            <param name="year"><see cref="T:System.String"/> 年份</param>
+            <param name="month"><see cref="T:System.String"/> 月份</param>
+            <returns><see cref="T:System.DateTime"/> 最后一天的 DateTime</returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeUtil.GetYearMonthLastDay(System.Int32,System.Int32)">
+            <summary>
+            获取指定年月的最后一天
+            </summary>
+            <param name="year"><see cref="T:System.Int32"/> 年份</param>
+            <param name="month"><see cref="T:System.Int32"/> 月份</param>
+            <returns><see cref="T:System.DateTime"/> 最后一天的 DateTime</returns>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeUtil.DateDiffDay(System.DateTime,System.DateTime)">
+            <summary>
+            计算两个时间的差，返回天数
+            </summary>
+            <param name="startTime"><see cref="T:System.DateTime"/> 开始时间</param>
+            <param name="lastTime"><see cref="T:System.DateTime"/> 结束时间</param>
+            <returns><see cref="T:System.Int32"/><see cref="T:System.Int32"/> 天数</returns>
+        </member>
+        <member name="T:Fast.IaaS.FileUtil">
+            <summary>
+            <see cref="T:Fast.IaaS.FileUtil"/> 文件工具类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.FileUtil.GetFileSHA1(System.String)">
+            <summary>
+            获取文件的 SHA1 哈希值。
+            </summary>
+            <param name="filePath"><see cref="T:System.String"/> 文件的完整路径。</param>
+            <returns><see cref="T:System.String"/> 由小写字母组成的 SHA1 哈希值字符串。</returns>
+        </member>
+        <member name="M:Fast.IaaS.FileUtil.CopyFile(System.String,System.String)">
+            <summary>
+            复制文件
+            </summary>
+            <param name="fromPath"><see cref="T:System.String"/>来源文件路径</param>
+            <param name="toPath"><see cref="T:System.String"/>复制的文件路径</param>
+        </member>
+        <member name="M:Fast.IaaS.FileUtil.TryCreateDirectory(System.String)">
+            <summary>
+            尝试创建文件夹
+            </summary>
+            <param name="path"><see cref="T:System.String"/>路径</param>
+        </member>
+        <member name="T:Fast.IaaS.GuidUtil">
+            <summary>
+            <see cref="T:Fast.IaaS.GuidUtil"/> Guid 工具类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.GuidUtil.GetGuid(System.String)">
+            <summary>
+            生成一个Guid
+            <remarks>
+            <para>只支持 N D B P</para>
+            <para>N ece4f4a60b764339b94a07c84e338a27</para>
+            <para>D 5bf99df1-dc49-4023-a34a-7bd80a42d6bb</para>
+            <para>B 2280f8d7-fd18-4c72-a9ab-405de3fcfbc9</para>
+            <para>P 25e6e09f-fb66-4cab-b4cd-bfb429566549</para>
+            </remarks>
+            </summary>
+            <param name="format"><see cref="T:System.String"/>格式化方式</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.GuidUtil.GetShortGuid">
+            <summary>
+            生成一个短的Guid
+            </summary>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.RemoteRequestUtil">
+            <summary>
+            <see cref="T:System.Net.Http.HttpClient"/> 远程请求工具类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.Get``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Get 请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="param"><see cref="T:System.Object"/> Url拼接的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.GetAsync``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Get 请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="param"><see cref="T:System.Object"/> Url拼接的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.Get(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Get 请求
+            </summary>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="param"><see cref="T:System.Object"/> Url拼接的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.GetAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Get 请求
+            </summary>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="param"><see cref="T:System.Object"/> Url拼接的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.Post``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Post 请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="data"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.PostAsync``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Post 请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="data"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.Post(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Post 请求
+            </summary>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="data"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.PostAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Post 请求
+            </summary>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="data"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.Put``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Put 请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="data"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.PutAsync``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Put 请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="data"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.Put(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Put 请求
+            </summary>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="data"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.PutAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Put 请求
+            </summary>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="data"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.Delete``1(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Delete 请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.DeleteAsync``1(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Delete 请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.Delete(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Delete 请求
+            </summary>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.DeleteAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            Http Delete 请求
+            </summary>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.SendAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            发送请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="httpMethod"><see cref="T:System.Net.Http.HttpMethod"/> 请求方式</param>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="urlParam"><see cref="T:System.Object"/> Url拼接的参数</param>
+            <param name="bodyData"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.SendAsync(System.Net.Http.HttpMethod,System.String,System.Object,System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32)">
+            <summary>
+            发送请求
+            </summary>
+            <param name="httpMethod"><see cref="T:System.Net.Http.HttpMethod"/> 请求方式</param>
+            <param name="url"><see cref="T:System.String"/> 请求的Url</param>
+            <param name="urlParam"><see cref="T:System.Object"/> Url拼接的参数</param>
+            <param name="bodyData"><see cref="T:System.Object"/> 写入请求Body中的参数</param>
+            <param name="headers"><see cref="T:System.Collections.Generic.IDictionary`2"/> 请求头部信息</param>
+            <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.TreeBuildUtil`2">
+            <summary>
+            <see cref="T:Fast.IaaS.TreeBuildUtil`2"/> 递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等
+            </summary>
+            <typeparam name="TEntity">模型</typeparam>
+            <typeparam name="TProperty">Id属性类型</typeparam>
+        </member>
+        <member name="F:Fast.IaaS.TreeBuildUtil`2._rootParentId">
+            <summary>
+            顶级节点的父节点Id(默认0)
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.TreeBuildUtil`2.SetRootParentId(`1)">
+            <summary>
+            设置根节点方法
+            查询数据可以设置其他节点为根节点，避免父节点永远是0，查询不到数据的问题
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.TreeBuildUtil`2.Build(System.Collections.Generic.List{`0})">
+            <summary>
+            构造树节点
+            </summary>
+            <param name="nodes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.TreeBuildUtil`2.BuildChildNodes(System.Collections.Generic.List{`0},`0)">
+            <summary>
+            构造子节点集合
+            </summary>
+            <param name="totalNodes"></param>
+            <param name="node"></param>
+        </member>
+        <member name="T:Fast.IaaS.VerificationUtil">
+            <summary>
+            <see cref="T:Fast.IaaS.VerificationUtil"/> 验证工具类
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.VerificationUtil.BASE">
+            <summary>
+            自定义进制所用的编码，大小写和数字(初始62位)，但去掉7位相似：O/o/0,I/i/1/l，去掉一个补位：A;最终只留(26+26+10)-(7+1)=54位
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.VerificationUtil.SUFFIX_CHAR">
+            <summary>
+            A补位字符，不能与自定义重复
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.VerificationUtil.BIN_LEN">
+            <summary>
+            进制长度
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.VerificationUtil.CODE_LEN">
+            <summary>
+            生成邀请码最小长度
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.VerificationUtil.IdToCodeByLong(System.Int64)">
+            <summary>
+            ID转换为邀请码
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.VerificationUtil.CodeToIdByLong(System.String)">
+            <summary>
+            邀请码解析出ID,基本操作思路恰好与idToCode反向操作。
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.VerificationUtil.IdToCodeByInt(System.Int32)">
+            <summary>
+            ID转换为邀请码
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.VerificationUtil.CodeToIdByInt(System.String)">
+            <summary>
+            邀请码解析出ID,基本操作思路恰好与idToCode反向操作。
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.VerificationUtil.PrintBase">
+            <summary>
+            显示用于进制编码的所有字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.VerificationUtil.GenNumVerCode(System.Int32)">
+            <summary>
+            生成数字验证码
+            </summary>
+            <param name="len"><see cref="T:System.Int32"/> 验证码长度，默认6位</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.VerificationUtil.GenStrVerCode(System.Int32)">
+            <summary>
+            生成字符串验证码
+            </summary>
+            <param name="len"><see cref="T:System.Int32"/> 验证码长度，默认6位</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.VerificationUtil.GenRandomNum(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            生成随机数
+            </summary>
+            <param name="minVal">最小值（包含）</param>
+            <param name="maxVal">最大值（默认不包含）</param>
+            <param name="isInclude">是否包含最大值</param>
+            <returns></returns>
+        </member>
+        <member name="T:System.Linq.LinqExpression">
+            <summary>
+            <see cref="T:System.Linq.LinqExpression"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:System.Linq.LinqExpression.Create``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            创建 Linq/Lambda 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.Create``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            创建 Linq/Lambda 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.And``1">
+            <summary>
+            创建 And 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.IndexAnd``1">
+            <summary>
+            创建 And 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.Or``1">
+            <summary>
+            创建 Or 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.IndexOr``1">
+            <summary>
+            创建 Or 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="T:System.Linq.ExpressionExtension">
+            <summary>
+            <see cref="T:System.Linq.ExpressionExtension"/> 表达式拓展类
+            </summary>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.Compose``1(System.Linq.Expressions.Expression{``0},System.Linq.Expressions.Expression{``0},System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression})">
+            <summary>
+            组合两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <param name="mergeWay">组合方式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            与操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            与操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.AndIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            根据条件成立再与操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.AndIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            根据条件成立再与操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            或操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            或操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.OrIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            根据条件成立再或操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.OrIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            根据条件成立再或操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.GetExpressionPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            获取Lambda表达式属性名，只限 u=>u.Property 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>属性名</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.IsNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            是否是空集合
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <returns>是否为空集合</returns>
+        </member>
+        <member name="T:System.Linq.IEnumerableExtension">
+            <summary>
+            <see cref="T:System.Linq.IEnumerableExtension"/> IEnumerable 拓展
+            </summary>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            根据条件成立再构建 Where 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            根据条件成立再构建 Where 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}[])">
+            <summary>
+            与操作合并多个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="expressions">表达式数组</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}[])">
+            <summary>
+            与操作合并多个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="expressions">表达式数组</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}}[])">
+            <summary>
+            根据条件成立再构建 WhereOr 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="conditionExpressions">条件表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}}[])">
+            <summary>
+            根据条件成立再构建 WhereOr 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="conditionExpressions">条件表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Boolean})">
+            <summary>
+            根据条件成立再构建 Where 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Int32,System.Boolean})">
+            <summary>
+            根据条件成立再构建 Where 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="T:System.Linq.ParameterReplaceExpressionVisitor">
+            <summary>
+            处理 Lambda 参数不一致问题
+            </summary>
+        </member>
+        <member name="F:System.Linq.ParameterReplaceExpressionVisitor.parameterExpressionSetter">
+            <summary>
+            参数表达式映射集合
+            </summary>
+        </member>
+        <member name="M:System.Linq.ParameterReplaceExpressionVisitor.#ctor(System.Collections.Generic.Dictionary{System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="parameterExpressionSetter">参数表达式映射集合</param>
+        </member>
+        <member name="M:System.Linq.ParameterReplaceExpressionVisitor.ReplaceParameters(System.Collections.Generic.Dictionary{System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression},System.Linq.Expressions.Expression)">
+            <summary>
+            替换表达式参数
+            </summary>
+            <param name="parameterExpressionSetter">参数表达式映射集合</param>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ParameterReplaceExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            重写基类参数访问器
+            </summary>
+            <param name="parameterExpression"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

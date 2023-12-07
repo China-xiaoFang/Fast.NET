@@ -1,30 +1,35 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+    <el-config-provider :locale="lang">
+        <br />
+        <el-radio-group v-model="radioLang" class="ml-4" @change="changeLang">
+            <el-radio v-for="item in config.lang.langArray" :label="item.name">{{ item.value }}</el-radio>
+        </el-radio-group>
+        <br />
+        <div class="demo-time-range">
+            <el-table mb-1 :data="[]" />
+            <el-pagination :total="100" />
+        </div>
+        <br />
+        <!-- <router-view></router-view> -->
+        <h1>{{ $t("你好啊！") }}</h1>
+    </el-config-provider>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import { useConfig } from "@/stores/config";
+import { ref } from "vue";
+import { editDefaultLang } from "@/lang";
+
+const radioLang = ref<string>();
+
+const changeLang = (value: string) => {
+    editDefaultLang(value);
+};
+
+const config = useConfig();
+
+// 初始化 element 的语言包
+const { getLocaleMessage } = useI18n();
+const lang = getLocaleMessage(config.lang.defaultLang) as any;
+</script>

@@ -5,27 +5,23 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IaaS", "IaaS", "{934603BB-5DD5-4A49-9A7E-51E2DA6C03B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.IaaS", "IaaS\Fast.IaaS\Fast.IaaS.csproj", "{9B9FD8F8-FD69-4DB0-B2FD-C00201152C14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.IaaS", "IaaS\Fast.IaaS.csproj", "{9B9FD8F8-FD69-4DB0-B2FD-C00201152C14}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A57C51E7-2F83-4F3E-AD4D-C5D9AC46104D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.NET.Core", "Core\Fast.NET.Core\Fast.NET.Core.csproj", "{90D05FF4-73F4-41C4-A9C9-FC895FC0CFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.NET.Core", "Core\Fast.NET.Core.csproj", "{90D05FF4-73F4-41C4-A9C9-FC895FC0CFCF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serialization", "Serialization", "{E16E97C8-B09A-452C-8C80-02AF452D0C7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Serialization", "Serialization\Fast.Serialization\Fast.Serialization.csproj", "{D97235DC-52BB-4D65-8795-D7E6E4642F71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Serialization", "Serialization\Fast.Serialization.csproj", "{D97235DC-52BB-4D65-8795-D7E6E4642F71}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mapster", "Mapster", "{DCE7FEEE-EDC6-4A0B-87E2-B8921F9CBFDE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Mapster", "Mapster\Fast.Mapster\Fast.Mapster.csproj", "{DA9E8DDA-2FCC-4C97-8BCF-3B80FB5AD6FF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{1EEC88B1-C117-472B-B12D-3948C07F2D56}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.EventBus", "EventBus\Fast.EventBus\Fast.EventBus.csproj", "{5B29761C-9E42-4EC2-8D1A-21E66EF180B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Mapster", "Mapster\Fast.Mapster.csproj", "{DA9E8DDA-2FCC-4C97-8BCF-3B80FB5AD6FF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{FFACFFA7-8A37-40B3-B45F-840C82B3E9EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Logging", "Logging\Fast.Logging\Fast.Logging.csproj", "{6038DB98-99BA-470A-9C39-43F6DCC4C221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Logging", "Logging\Fast.Logging.csproj", "{6038DB98-99BA-470A-9C39-43F6DCC4C221}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fast.Test", "Fast.Test", "{08B5ECBA-ACBB-4720-836A-34378B7E2A83}"
 EndProject
@@ -33,31 +29,31 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Test.Api", "..\Fast.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CorsAccessor", "CorsAccessor", "{9511B6C0-06D3-41CD-BF7E-44B64CB14C46}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.CorsAccessor", "CorsAccessor\Fast.CorsAccessor\Fast.CorsAccessor.csproj", "{F7517538-D7E1-4FCB-BA1C-56876D231848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.CorsAccessor", "CorsAccessor\Fast.CorsAccessor.csproj", "{F7517538-D7E1-4FCB-BA1C-56876D231848}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cache", "Cache", "{29AE146C-7DF2-47E0-A97D-36A67E2C26B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Cache", "Cache\Fast.Cache\Fast.Cache.csproj", "{2BE749CC-718A-41AE-94B9-4EEABAEAC5A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Cache", "Cache\Fast.Cache.csproj", "{2BE749CC-718A-41AE-94B9-4EEABAEAC5A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "DependencyInjection", "{49CEA7D5-6AA3-4C0A-9DA8-6ED4FF27FAAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.DependencyInjection", "DependencyInjection\Fast.DependencyInjection\Fast.DependencyInjection.csproj", "{97922AC8-32DA-413D-88C7-78CF7707D353}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.DependencyInjection", "DependencyInjection\Fast.DependencyInjection.csproj", "{97922AC8-32DA-413D-88C7-78CF7707D353}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SpecificationProcessor", "SpecificationProcessor", "{B2D204BD-A3CD-4E06-8D06-DDA0B453AE95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.SpecificationProcessor", "SpecificationProcessor\Fast.SpecificationProcessor\Fast.SpecificationProcessor.csproj", "{637872DD-BE59-4849-B723-792386BD0765}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.SpecificationProcessor", "SpecificationProcessor\Fast.SpecificationProcessor.csproj", "{637872DD-BE59-4849-B723-792386BD0765}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JwtBearer", "JwtBearer", "{DC475BA8-B73F-4498-97D1-FC69AB3C4CDC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.JwtBearer", "JwtBearer\Fast.JwtBearer\Fast.JwtBearer.csproj", "{06DD5E6A-B8E1-4330-907B-8BA83B5297EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.JwtBearer", "JwtBearer\Fast.JwtBearer.csproj", "{06DD5E6A-B8E1-4330-907B-8BA83B5297EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Consul", "Consul", "{D85C2F5C-B466-406D-A55B-06DF98FCBB6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Consul", "Consul\Fast.Consul\Fast.Consul.csproj", "{92DCEE10-1D4D-4173-A82A-69284F9428DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Consul", "Consul\Fast.Consul.csproj", "{92DCEE10-1D4D-4173-A82A-69284F9428DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlSugar", "SqlSugar", "{1B4AAEE2-07AF-4D72-AEF2-C75F2F54EF1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.SqlSugar", "Fast.SqlSugar\Fast.SqlSugar.csproj", "{457A817A-3C2E-4394-AFDB-D05DD6EB559A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.SqlSugar", "SqlSugar\Fast.SqlSugar.csproj", "{457A817A-3C2E-4394-AFDB-D05DD6EB559A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,10 +77,6 @@ Global
 		{DA9E8DDA-2FCC-4C97-8BCF-3B80FB5AD6FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA9E8DDA-2FCC-4C97-8BCF-3B80FB5AD6FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA9E8DDA-2FCC-4C97-8BCF-3B80FB5AD6FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B29761C-9E42-4EC2-8D1A-21E66EF180B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B29761C-9E42-4EC2-8D1A-21E66EF180B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B29761C-9E42-4EC2-8D1A-21E66EF180B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B29761C-9E42-4EC2-8D1A-21E66EF180B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6038DB98-99BA-470A-9C39-43F6DCC4C221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6038DB98-99BA-470A-9C39-43F6DCC4C221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6038DB98-99BA-470A-9C39-43F6DCC4C221}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -130,7 +122,6 @@ Global
 		{90D05FF4-73F4-41C4-A9C9-FC895FC0CFCF} = {A57C51E7-2F83-4F3E-AD4D-C5D9AC46104D}
 		{D97235DC-52BB-4D65-8795-D7E6E4642F71} = {E16E97C8-B09A-452C-8C80-02AF452D0C7C}
 		{DA9E8DDA-2FCC-4C97-8BCF-3B80FB5AD6FF} = {DCE7FEEE-EDC6-4A0B-87E2-B8921F9CBFDE}
-		{5B29761C-9E42-4EC2-8D1A-21E66EF180B0} = {1EEC88B1-C117-472B-B12D-3948C07F2D56}
 		{6038DB98-99BA-470A-9C39-43F6DCC4C221} = {FFACFFA7-8A37-40B3-B45F-840C82B3E9EE}
 		{006FBEB2-15EE-4071-8E71-32CEFBAA5B62} = {08B5ECBA-ACBB-4720-836A-34378B7E2A83}
 		{F7517538-D7E1-4FCB-BA1C-56876D231848} = {9511B6C0-06D3-41CD-BF7E-44B64CB14C46}

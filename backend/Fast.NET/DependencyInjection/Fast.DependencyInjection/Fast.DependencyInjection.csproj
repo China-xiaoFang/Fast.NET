@@ -1,7 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<Description>Fast.NET 框架依赖注入模块库。</Description>
-	</PropertyGroup>
-
-</Project>
