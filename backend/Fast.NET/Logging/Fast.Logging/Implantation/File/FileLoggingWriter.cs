@@ -118,7 +118,7 @@ internal class FileLoggingWriter
             {
                 // 根据文件名和最后更新时间获取最近操作的文件
                 var lastFileInfo = logFiles.Select(fName => new FileInfo(fName)).OrderByDescending(fInfo => fInfo.Name)
-                    .OrderByDescending(fInfo => fInfo.LastWriteTime).First();
+                    .ThenByDescending(fInfo => fInfo.LastWriteTime).First();
 
                 _fileName = lastFileInfo.FullName;
             }

@@ -12,7 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Logging.App;
+using Fast.IaaS;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -24,6 +24,7 @@ namespace Fast.Logging.Implantation.Console;
 /// <summary>
 /// 控制台默认格式化程序拓展
 /// </summary>
+[SuppressSniffer]
 public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
 {
     /// <summary>
@@ -45,7 +46,7 @@ public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     /// 构造函数
     /// </summary>
     /// <param name="formatterOptions"></param>
-    public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions) : base("console-format")
+    public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions) : base(Penetrates.ConsoleFormatterName)
     {
         (_formatOptionsReloadToken, _formatterOptions) =
             (formatterOptions.OnChange(ReloadFormatterOptions), formatterOptions.CurrentValue);
@@ -69,7 +70,7 @@ public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
         var logDateTime = _formatterOptions.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now;
         var logMsg = new LogMessage(logEntry.Category, logEntry.LogLevel, logEntry.EventId, message, logEntry.Exception, null,
             logEntry.State, logDateTime, Environment.CurrentManagedThreadId, _formatterOptions.UseUtcTimestamp,
-            InternalApp.GetTraceId());
+            Penetrates.GetTraceId());
 
         string standardMessage;
 

@@ -12,7 +12,6 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Logging.App;
 using Fast.Logging.Extensions;
 using Fast.Logging.Implantation;
 using Fast.Logging.Internal;
@@ -41,7 +40,7 @@ public static class Log
     /// <returns></returns>
     public static ILogger CreateLogger<T>()
     {
-        return InternalApp.GetRequiredService<ILogger<T>>();
+        return Penetrates.GetRequiredService<ILogger<T>>();
     }
 
     /// <summary>
@@ -76,7 +75,7 @@ public static class Log
     /// </summary>
     /// <param name="configure"></param>
     /// <returns></returns>
-    public static (ILogger logger, IDisposable scope) ScopeContext(Action<LogContext> configure)
+    public static (ILogger logger, IDisposable scope) ScopeContext(Action<Implantation.LogContext> configure)
     {
         return GetLogger(StringLoggingPart.Default().ScopeContext(configure));
     }
@@ -86,7 +85,7 @@ public static class Log
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    public static (ILogger logger, IDisposable scope) ScopeContext(LogContext context)
+    public static (ILogger logger, IDisposable scope) ScopeContext(Implantation.LogContext context)
     {
         return GetLogger(StringLoggingPart.Default().ScopeContext(context));
     }

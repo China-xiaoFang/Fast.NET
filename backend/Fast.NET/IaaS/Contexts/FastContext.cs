@@ -20,6 +20,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Fast.NET.Core")]
 [assembly: InternalsVisibleTo("Fast.DependencyInjection")]
 [assembly: InternalsVisibleTo("Fast.JwtBearer")]
+[assembly: InternalsVisibleTo("Fast.Logging")]
 [assembly: InternalsVisibleTo("Fast.Mapster")]
 [assembly: InternalsVisibleTo("Fast.SpecificationProcessor")]
 [assembly: InternalsVisibleTo("Fast.SqlSugar")]

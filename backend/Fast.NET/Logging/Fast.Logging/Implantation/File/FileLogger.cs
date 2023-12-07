@@ -12,7 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Logging.App;
+using Fast.IaaS;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 
@@ -22,6 +22,7 @@ namespace Fast.Logging.Implantation.File;
 /// 文件日志记录器
 /// </summary>
 /// <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
+[SuppressSniffer]
 public sealed class FileLogger : ILogger
 {
     /// <summary>
@@ -98,7 +99,7 @@ public sealed class FileLogger : ILogger
 
         var logDateTime = _options.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now;
         var logMsg = new LogMessage(_logName, logLevel, eventId, message, exception, null, state, logDateTime,
-            Environment.CurrentManagedThreadId, _options.UseUtcTimestamp, InternalApp.GetTraceId());
+            Environment.CurrentManagedThreadId, _options.UseUtcTimestamp, Penetrates.GetTraceId());
 
         // 设置日志上下文
         logMsg = Penetrates.SetLogContext(_fileLoggerProvider.ScopeProvider, logMsg, _options.IncludeScopes);

@@ -4,6 +4,38 @@
         <name>Fast.Cache</name>
     </assembly>
     <members>
+        <member name="T:Fast.Cache.Extensions.CacheIServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
+            </summary>
+        </member>
+        <member name="F:Fast.Cache.Extensions.CacheIServiceCollectionExtension.ConnectionString">
+            <summary>
+            连接字符串
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Extensions.CacheIServiceCollectionExtension.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            添加缓存
+            请确保 配置文件中存在 “RedisConnectionString” 节点
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="connectionString"><see cref="T:System.String"/>连接字符串，如若不传，需要配置在 JSON文件 “RedisConnectionString” 节点中</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Cache.Extensions.ValidateExtension">
+            <summary>
+            验证拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Extensions.ValidateExtension.IsEmpty``1(``0)">
+            <summary>
+            检查 Object 或者 集合 是否为 NULL 或者 空集合
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="T:Fast.Cache.ICache">
             <summary>
             缓存服务接口
@@ -257,38 +289,6 @@
             <param name="key"></param>
             <param name="expireTimeSpan"></param>
             <param name="func"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Fast.Cache.Extensions.CacheIServiceCollectionExtension">
-            <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
-            </summary>
-        </member>
-        <member name="F:Fast.Cache.Extensions.CacheIServiceCollectionExtension.ConnectionString">
-            <summary>
-            连接字符串
-            </summary>
-        </member>
-        <member name="M:Fast.Cache.Extensions.CacheIServiceCollectionExtension.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
-            <summary>
-            添加缓存
-            请确保 配置文件中存在 “RedisConnectionString” 节点
-            </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-            <param name="connectionString"><see cref="T:System.String"/>连接字符串，如若不传，需要配置在 JSON文件 “RedisConnectionString” 节点中</param>
-            <returns></returns>
-        </member>
-        <member name="T:Fast.Cache.Extensions.ValidateExtension">
-            <summary>
-            验证拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.Cache.Extensions.ValidateExtension.IsEmpty``1(``0)">
-            <summary>
-            检查 Object 或者 集合 是否为 NULL 或者 空集合
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="value"></param>
             <returns></returns>
         </member>
         <member name="T:Fast.Cache.Realize.Cache">

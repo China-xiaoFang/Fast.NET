@@ -12,26 +12,30 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Logging.App;
+using Fast.Logging.Internal;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
-namespace Fast.Logging.Extensions;
+namespace Fast.Logging.Filters;
 
 /// <summary>
-/// <see cref="IApplicationBuilder"/> 日志服务中间件拓展类
+/// 应用启动时自动注册中间件
 /// </summary>
-public static class LoggingIApplicationBuilderExtension
+/// <remarks>
+/// </remarks>
+public class StartupFilter : IStartupFilter
 {
     /// <summary>
-    /// 添加日志中间件
+    /// 配置中间件
     /// </summary>
-    /// <param name="app"><see cref="IApplicationBuilder"/></param>
-    /// <returns><see cref="IApplicationBuilder"/></returns>
-    public static IApplicationBuilder UseLogging(this IApplicationBuilder app)
+    /// <param name="action"></param>
+    /// <returns></returns>
+    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
     {
-        // 存储根服务
-        InternalApp.RootServices = app.ApplicationServices;
-
-        return app;
+        return app =>
+        {
+            // 存储根服务
+            Penetrates.RootServices = app.ApplicationServices;
+        };
     }
 }

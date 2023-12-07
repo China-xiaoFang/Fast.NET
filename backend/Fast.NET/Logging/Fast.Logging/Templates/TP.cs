@@ -79,7 +79,7 @@ public static class TP
             }
         }
 
-        stringBuilder.Append($"┗━━━━━━━━━━━  {title} ━━━━━━━━━━━");
+        stringBuilder.Append($"┗━━━━━━━━━━━  {title} ━━━━━━━━━━━").AppendLine();
         return stringBuilder.ToString();
     }
 

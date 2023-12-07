@@ -13,6 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Collections.Concurrent;
+using Fast.IaaS;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Implantation.File;
@@ -21,7 +22,7 @@ namespace Fast.Logging.Implantation.File;
 /// 文件日志记录器提供程序
 /// </summary>
 /// <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
-[ProviderAlias("File")]
+[SuppressSniffer,ProviderAlias("File")]
 public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
 {
     /// <summary>
@@ -55,23 +56,6 @@ public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
     /// </summary>
     /// <remarks>实现不间断写入</remarks>
     private readonly Task _processQueueTask;
-
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="fileName">日志文件名</param>
-    public FileLoggerProvider(string fileName) : this(fileName, true)
-    {
-    }
-
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="fileName">日志文件名</param>
-    /// <param name="append">追加到已存在日志文件或覆盖它们</param>
-    public FileLoggerProvider(string fileName, bool append) : this(fileName, new FileLoggerOptions {Append = append})
-    {
-    }
 
     /// <summary>
     /// 构造函数
@@ -155,6 +139,7 @@ public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
         }
         catch
         {
+            // ignored
         }
 
         // 清空文件日志记录器
@@ -185,6 +170,7 @@ public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
             }
             catch
             {
+                // ignored
             }
         }
     }

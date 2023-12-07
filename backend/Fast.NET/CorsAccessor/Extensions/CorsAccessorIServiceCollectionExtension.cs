@@ -30,7 +30,7 @@ public static class CorsAccessorIServiceCollectionExtension
     /// 配置跨域
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/> 服务集合</param>
-    /// <param name="configuration"><see cref="IConfiguration"/> 配置项</param>
+    /// <param name="configuration"><see cref="IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
     /// <param name="corsOptionsHandler"></param>
     /// <param name="corsPolicyBuilderHandler"></param>
     /// <returns>服务集合</returns>

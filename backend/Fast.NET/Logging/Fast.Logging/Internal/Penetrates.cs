@@ -14,13 +14,12 @@
 
 using System.Diagnostics;
 using System.Text;
-using Fast.Logging.App;
+using Fast.IaaS;
 using Fast.Logging.Extensions;
 using Fast.Logging.Implantation;
 using Fast.Logging.Implantation.Console;
-using Fast.Logging.Implantation.File;
-using Fast.NET;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Internal;
@@ -31,49 +30,138 @@ namespace Fast.Logging.Internal;
 internal static class Penetrates
 {
     /// <summary>
+    /// 默认日志级别
+    /// </summary>
+    internal static LogLevel DefaultLogLevel { get; set; }
+
+    /// <summary>
+    /// 应用服务
+    /// </summary>
+    internal static IServiceCollection InternalServices;
+
+    /// <summary>
+    /// 根服务
+    /// </summary>
+    internal static IServiceProvider RootServices;
+
+    /// <summary>
+    /// 请求上下文
+    /// </summary>
+    internal static HttpContext HttpContext =>
+        FastContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
+
+    /// <summary>
+    /// 获取当前请求 TraceId
+    /// </summary>
+    /// <returns></returns>
+    internal static string GetTraceId()
+    {
+        return Activity.Current?.Id ?? (RootServices == null
+            ? default
+            : FastContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext)?.TraceIdentifier);
+    }
+
+    /// <summary>
+    /// 获取请求生存周期的服务
+    /// </summary>
+    /// <param name="serviceType"></param>
+    /// <returns></returns>
+    internal static object GetRequiredService(Type serviceType)
+    {
+        // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
+        if (RootServices != null && InternalServices
+                .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
+                .Any(u => u.Lifetime == ServiceLifetime.Singleton))
+        {
+            return RootServices.GetRequiredService(serviceType);
+        }
+
+        // 第二选择是获取 HttpContext 对象的 RequestServices
+        if (HttpContext != null)
+        {
+            return HttpContext.RequestServices.GetRequiredService(serviceType);
+        }
+
+        // 第三选择，创建新的作用域并返回服务提供器
+        if (RootServices != null)
+        {
+            var scoped = RootServices.CreateScope();
+
+            var result = scoped.ServiceProvider.GetRequiredService(serviceType);
+
+            scoped.Dispose();
+
+            return result;
+        }
+
+        {
+            // 第四选择，构建新的服务对象（性能最差）
+            var serviceProvider = InternalServices.BuildServiceProvider();
+
+            var result = serviceProvider.GetRequiredService(serviceType);
+
+            serviceProvider.Dispose();
+
+            return result;
+        }
+    }
+
+    /// <summary>
+    /// 获取请求生存周期的服务
+    /// </summary>
+    /// <typeparam name="TService"></typeparam>
+    /// <returns></returns>
+    internal static TService GetRequiredService<TService>() where TService : class
+    {
+        var serviceType = typeof(TService);
+
+        // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
+        if (RootServices != null && InternalServices
+                .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
+                .Any(u => u.Lifetime == ServiceLifetime.Singleton))
+        {
+            return RootServices.GetRequiredService<TService>();
+        }
+        // 第二选择是获取 HttpContext 对象的 RequestServices
+
+        if (HttpContext != null)
+        {
+            return HttpContext.RequestServices.GetRequiredService<TService>();
+        }
+        // 第三选择，创建新的作用域并返回服务提供器
+
+        if (RootServices != null)
+        {
+            var scoped = RootServices.CreateScope();
+
+            var result = scoped.ServiceProvider.GetRequiredService<TService>();
+
+            scoped.Dispose();
+
+            return result;
+        }
+
+        {
+            // 第四选择，构建新的服务对象（性能最差）
+            var serviceProvider = InternalServices.BuildServiceProvider();
+
+            var result = serviceProvider.GetRequiredService<TService>();
+
+            serviceProvider.Dispose();
+
+            return result;
+        }
+    }
+
+    /// <summary>
+    /// 控制台默认格式化程序名称
+    /// </summary>
+    internal const string ConsoleFormatterName = "console-format";
+
+    /// <summary>
     /// 异常分隔符
     /// </summary>
     private const string EXCEPTION_SEPARATOR = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
-
-    /// <summary>
-    /// 从配置文件中加载配置并创建文件日志记录器提供程序
-    /// </summary>
-    /// <param name="configurationKey">获取配置文件对应的 Key</param>
-    /// <param name="configure">文件日志记录器配置选项委托</param>
-    /// <returns><see cref="FileLoggerProvider"/></returns>
-    internal static FileLoggerProvider CreateFromConfiguration(Func<string> configurationKey,
-        Action<FileLoggerOptions> configure = default)
-    {
-        // 检查 Key 是否存在
-        var key = configurationKey?.Invoke();
-        if (string.IsNullOrWhiteSpace(key))
-            return new FileLoggerProvider("application.log", new FileLoggerOptions());
-
-        // 加载配置文件中指定节点
-        var fileLoggerSettings =
-            InternalPenetrates.CatchOrDefault(() => InternalApp.Configuration, new ConfigurationBuilder().Build()).GetSection(key)
-                .Get<FileLoggerSettings>() ?? new FileLoggerSettings();
-
-        // 创建文件日志记录器配置选项
-        var fileLoggerOptions = new FileLoggerOptions
-        {
-            Append = fileLoggerSettings.Append,
-            FileSizeLimitBytes = fileLoggerSettings.FileSizeLimitBytes,
-            MaxRollingFiles = fileLoggerSettings.MaxRollingFiles,
-            MinimumLevel = fileLoggerSettings.MinimumLevel,
-            UseUtcTimestamp = fileLoggerSettings.UseUtcTimestamp,
-            DateFormat = fileLoggerSettings.DateFormat,
-            IncludeScopes = fileLoggerSettings.IncludeScopes,
-            WithTraceId = fileLoggerSettings.WithTraceId,
-            WithStackFrame = fileLoggerSettings.WithStackFrame
-        };
-
-        // 处理自定义配置
-        configure?.Invoke(fileLoggerOptions);
-
-        // 创建文件日志记录器提供程序
-        return new FileLoggerProvider(fileLoggerSettings.FileName ?? "application.log", fileLoggerOptions);
-    }
 
     /// <summary>
     /// 输出标准日志消息
@@ -144,9 +232,9 @@ internal static class Penetrates
         // 如果包含异常信息，则创建新一行写入
         if (logMsg.Exception != null)
         {
-            var EXCEPTION_SEPARATOR_WITHCOLOR = AppendWithColor(default, EXCEPTION_SEPARATOR, logLevelColors).ToString();
+            var EXCEPTION_SEPARATOR_WITH_COLOR = AppendWithColor(default, EXCEPTION_SEPARATOR, logLevelColors).ToString();
             var exceptionMessage =
-                $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITHCOLOR}{Environment.NewLine}{logMsg.Exception}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITHCOLOR}";
+                $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}{Environment.NewLine}{logMsg.Exception}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}";
 
             formatString.Append(PadLeftAlign(exceptionMessage));
         }

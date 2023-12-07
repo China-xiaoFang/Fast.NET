@@ -12,7 +12,6 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Logging.App;
 using Fast.Logging.Extensions;
 using Microsoft.Extensions.Logging;
 
@@ -126,7 +125,7 @@ public sealed partial class StringLoggingPart
         var hasException = false;
 
         // 解决启动时打印日志问题
-        if (InternalApp.RootServices == null)
+        if (Penetrates.RootServices == null)
         {
             hasException = true;
             loggerFactory = CreateDisposeLoggerFactory();
@@ -135,7 +134,7 @@ public sealed partial class StringLoggingPart
         {
             try
             {
-                logger = InternalApp.GetRequiredService(typeof(ILogger<>).MakeGenericType(categoryType)) as ILogger;
+                logger = Penetrates.GetRequiredService(typeof(ILogger<>).MakeGenericType(categoryType)) as ILogger;
             }
             catch
             {

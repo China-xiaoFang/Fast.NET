@@ -32,7 +32,7 @@ public static class SwaggerDocumentIServiceCollectionExtension
     /// 添加Swagger文档服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/> 服务集合</param>
-    /// <param name="configuration"><see cref="IConfiguration"/> 配置项</param>
+    /// <param name="configuration"><see cref="IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
     /// <param name="configure">自定义配置</param>
     /// <returns>服务集合</returns>
     public static IServiceCollection AddSwaggerDocument(this IServiceCollection services, IConfiguration configuration = null,
