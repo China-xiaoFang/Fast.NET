@@ -15,7 +15,7 @@
     </el-config-provider>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="App">
 import { useI18n } from "vue-i18n";
 import { useConfig } from "@/stores/config";
 import { ref } from "vue";
