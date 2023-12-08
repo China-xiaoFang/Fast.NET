@@ -32,7 +32,7 @@ const axiosDefaultConfig = {
     loading: {
         fullscreen: true,
         lock: true,
-        text: i18n.global.t("utils.axios.有效期应为一个有效数值"),
+        text: i18n.global.t("utils.axios.加载中..."),
         background: "rgba(0, 0, 0, 0.7)",
     },
     /**
