@@ -139,7 +139,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
 
             if (config.headers) {
                 // Token 处理
-                const { token, refreshToken } = localUserInfo.getToken();
+                const { token, refreshToken } = localUserInfo.resolveToken();
                 token && (config.headers["Authorization"] = token);
                 // 刷新 Token
                 refreshToken && (config.headers["X-Authorization"] = refreshToken);

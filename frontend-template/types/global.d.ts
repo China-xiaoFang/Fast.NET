@@ -1,4 +1,23 @@
 /**
+ * 拓展 Window 对象
+ * @interface Window
+ */
+interface Window {
+    /**
+     * 是否存在 Loading
+     * @type {boolean}
+     * @memberof Window
+     */
+    existLoading: boolean;
+    /**
+     * 加载语言包句柄
+     * @type {Record<string, any>}
+     * @memberof Window
+     */
+    loadLangHandle: Record<string, any>;
+}
+
+/**
  * 匿名对象
  * @interface anyObj
  */
