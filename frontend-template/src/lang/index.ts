@@ -42,17 +42,30 @@ export const loadLang = async (app: App) => {
     // 获取默认语言
     const locale = config.lang.defaultLang;
 
-    // 加载公用的语言包，除去 views 中的全部加载在这里，因 import.meta.glob 不支持变量，所以这里只能手动写死
+    /**
+     * 因 import.meta.glob 不支持变量，所以这里只能手动写死
+     * 加载公用的语言包，除去 views 中的全部加载在这里
+     * 按需加载语言包文件的句柄
+     */
     switch (locale) {
         case "zh-cn":
+            window.loadLangHandle = {
+                ...import.meta.glob("./zh-cn/views/**/*.ts"),
+            };
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/components/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/utils/**/*.ts", { eager: true }), locale));
             break;
         case "zh-tw":
+            window.loadLangHandle = {
+                ...import.meta.glob("./zh-tw/views/**/*.ts"),
+            };
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/components/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/utils/**/*.ts", { eager: true }), locale));
             break;
         case "en":
+            window.loadLangHandle = {
+                ...import.meta.glob("./en/views/**/*.ts"),
+            };
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/components/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/utils/**/*.ts", { eager: true }), locale));
             break;
@@ -90,10 +103,16 @@ function getLangFileMessage(mList: any, locale: string): anyObj {
         if (mList[path].default) {
             // 获取文件名
             const pathName = path.slice(path.lastIndexOf(locale) + (locale.length + 1), path.lastIndexOf("."));
+            /**
+             * 这里处理 index.ts 文件后缀的问题
+             * 原：utils.axios.index.
+             * 处理后：utils.axios.
+             */
+            const prefixName = pathName.endsWith("index") ? pathName.substring(0, pathName.lastIndexOf("/")) : pathName;
             if (pathName.indexOf("/") > 0) {
-                msg = handleMsgList(msg, mList[path].default, pathName);
+                msg = handleMsgList(msg, mList[path].default, prefixName);
             } else {
-                msg[pathName] = mList[path].default;
+                msg[prefixName] = mList[path].default;
             }
         }
     }
