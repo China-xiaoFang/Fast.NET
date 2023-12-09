@@ -11,7 +11,7 @@ import { isEmpty } from "lodash-es";
  * 但 i18n 的 messages 内是按需载入的
  */
 
-import elementZhCnLocale from 'element-plus/dist/locale/zh-cn.mjs';
+import elementZhCnLocale from "element-plus/dist/locale/zh-cn.mjs";
 import elementZhTwLocale from "element-plus/dist/locale/zh-tw.mjs";
 import elementEnLocale from "element-plus/dist/locale/en.mjs";
 
@@ -42,32 +42,26 @@ export const loadLang = async (app: App) => {
     // 获取默认语言
     const locale = config.lang.defaultLang;
 
-    // 加载全局语言包
-    const globalLang = await import(`./${locale}/global/index.ts`);
-    const message = globalLang.default ?? {};
-
-    // 加载公用的语言包，components，utils
-    switch(locale){
+    // 加载公用的语言包，除去 views 中的全部加载在这里，因 import.meta.glob 不支持变量，所以这里只能手动写死
+    switch (locale) {
         case "zh-cn":
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/components/**/.ts", { eager: true }), locale))
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/utils/**/.ts", { eager: true }), locale))
-        break;
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/components/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/utils/**/*.ts", { eager: true }), locale));
+            break;
         case "zh-tw":
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/components/**/.ts", { eager: true }), locale))
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/utils/**/.ts", { eager: true }), locale))
-        break;
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/components/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/utils/**/*.ts", { eager: true }), locale));
+            break;
         case "en":
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/components/**/.ts", { eager: true }), locale))
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/utils/**/.ts", { eager: true }), locale))
-        break;
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/components/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/utils/**/*.ts", { eager: true }), locale));
+            break;
     }
 
-    const messages = {
-        [locale]:{...message}
-    };
+    const messages = { [locale]: {} };
 
     // 合并语言包(含element-puls、页面语言包)
-    Object.assign(messages[locale], ...assignLocale[locale])
+    Object.assign(messages[locale], ...assignLocale[locale]);
 
     // 创建 i18n 实例
     i18n = createI18n({
