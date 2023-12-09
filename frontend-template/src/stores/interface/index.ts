@@ -28,7 +28,6 @@ export interface Lang {
 }
 
 import type { Options } from "@/utils/axios/interface";
-import type { LoadingOptions } from "element-plus";
 
 /**
  * Axios 配置
