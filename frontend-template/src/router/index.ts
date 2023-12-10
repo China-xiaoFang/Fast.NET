@@ -3,9 +3,11 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { whiteRoutes } from "./modules/whiteRoute";
 import { asyncRoutes } from "./modules/asyncRoute";
-// import { loading } from "@/plugins/loading";
-// import { useConfig } from "@/stores/config";
-// import { useUserInfo } from "@/stores/userInfo";
+import { loading } from "@/plugins/loading";
+import langAutoLoadMap from "@/lang/autoLoad";
+import { mergeMessage } from "@/lang/index";
+import { useConfig } from "@/stores/config";
+import { useUserInfo } from "@/stores/userInfo";
 
 const constantRoutes = [...whiteRoutes, ...asyncRoutes];
 
@@ -30,27 +32,52 @@ NProgress.configure({
     minimum: 0.3,
 });
 
-// router.beforeEach((to, from, next) => {
-//     // 开启进度条
-//     NProgress.start();
-//     // to.matched 是一个包含当前路由和所有嵌套路径片段的数组
-//     const matchedRoutes = to.matched.map((route) => route.path);
+/**
+ * 路由加载前
+ */
+router.beforeEach((to, from, next) => {
+    // 开启进度条
+    NProgress.start();
 
-//     debugger;
+    // 判断是否已经存在加载动画
+    if (!window.existLoading) {
+        // 显示加载动画
+        loading.show();
+        window.existLoading = true;
+    }
 
-//     // 判断是否已经存在加载动画
-//     if (!window.existLoading) {
-//         // 显示加载动画
-//         loading.show();
-//         window.existLoading = true;
-//     }
+    // 按需动态加载页面的语言包
+    let loadPath: string[] = [];
 
-//     // 按需动态加载页面的语言包
-//     let loadPath: string[] = [];
-//     const config = useConfig();
+    // 判断当前路由是否存在按需加载的语言包
+    if (to.path in langAutoLoadMap) {
+        loadPath.push(...langAutoLoadMap[to.path as keyof typeof langAutoLoadMap]);
+    }
 
-//     if (to.path) {
-//     }
-// });
+    const config = useConfig();
+
+    for (const key in loadPath) {
+        // 替换语言
+        loadPath[key] = loadPath[key].replaceAll("${lang}", config.lang.defaultLang);
+        // 判断是否存在语言包句柄中
+        if (loadPath[key] in window.loadLangHandle) {
+            window.loadLangHandle[loadPath[key]]().then((res: { default: anyObj }) => {
+                mergeMessage(res.default, loadPath[key]);
+            });
+        }
+    }
+
+    next();
+});
+
+/**
+ * 路由加载后
+ */
+router.afterEach(() => {
+    if (window.existLoading) {
+        loading.hide();
+    }
+    NProgress.done();
+});
 
 export default router;

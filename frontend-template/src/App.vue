@@ -11,7 +11,8 @@
         </div>
         <br />
         <!-- <router-view></router-view> -->
-        <h1>{{ $t("你好啊！") }}</h1>
+        <h1>{{ $t("App.你好啊！") }}</h1>
+        <loginForm />
     </el-config-provider>
 </template>
 
