@@ -20,7 +20,7 @@
  */
 
 export default {
-    ["/login"]: ["views/login/index.ts", "views/test/index.ts", "views/test/test.ts"],
-    ["/test"]: ["views/test/index.ts"],
-    ["/test/test"]: ["views/test/test.ts"],
+    ["/login"]: ["./${lang}/views/login/index.ts", "./${lang}/views/test/index.ts", "./${lang}/views/test/test.ts", "./${lang}/views/test1.ts"],
+    ["/test"]: ["./${lang}/views/test/index.ts"],
+    ["/test/test"]: ["./${lang}/views/test/test.ts", "./${lang}/views/test1.ts"],
 };
