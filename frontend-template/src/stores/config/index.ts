@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 import { STORE_CONFIG } from "@/stores/constant";
-import type { Lang, Axios } from "@/stores/interface";
+import type { Lang, Axios } from "./interface";
 
 export const useConfig = defineStore(
     "config",

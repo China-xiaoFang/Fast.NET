@@ -4,51 +4,60 @@
     position: fixed;
     z-index: 9990;
     background-color: var(--fast-bg-color);
-}
-.block-loading .block-loading-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-.block-loading .block-loading-box-warp {
-    width: 80px;
-    height: 80px;
-}
-.block-loading .block-loading-box-warp .block-loading-box-item {
-    width: 33.333333%;
-    height: 33.333333%;
-    background: #409eff;
-    float: left;
-    animation: block-loading-animation 1.2s infinite ease;
-    border-radius: 1px;
-}
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(7) {
-    animation-delay: 0s;
-}
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(4),
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(8) {
-    animation-delay: 0.1s;
-}
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(1),
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(5),
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(9) {
-    animation-delay: 0.2s;
-}
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(2),
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(6) {
-    animation-delay: 0.3s;
-}
-.block-loading .block-loading-box-warp .block-loading-box-item:nth-child(3) {
-    animation-delay: 0.4s;
-}
-@keyframes block-loading-animation {
-    0%,
-    70%,
-    100% {
-        transform: scale3D(1, 1, 1);
-    }
-    35% {
-        transform: scale3D(0, 0, 1);
+
+    .block-loading-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .block-loading-box-warp {
+            width: 80px;
+            height: 80px;
+
+            .block-loading-box-item {
+                width: 55px;
+                aspect-ratio: 1;
+                --g1: conic-gradient(from 90deg at 3px 3px, #0000 90deg, #409eff 0);
+                --g2: conic-gradient(from -90deg at 22px 22px, #0000 90deg, #409eff 0);
+                background: var(--g1), var(--g1), var(--g1), var(--g2), var(--g2), var(--g2);
+                background-size: 25px 25px;
+                background-repeat: no-repeat;
+                animation: block-loading-animation 1.2s infinite;
+            }
+
+            @keyframes block-loading-animation {
+                0% {
+                    background-position:
+                        0 0,
+                        0 100%,
+                        100% 100%;
+                }
+                25% {
+                    background-position:
+                        100% 0,
+                        0 100%,
+                        100% 100%;
+                }
+                50% {
+                    background-position:
+                        100% 0,
+                        0 0,
+                        100% 100%;
+                }
+                75% {
+                    background-position:
+                        100% 0,
+                        0 0,
+                        0 100%;
+                }
+                100% {
+                    background-position:
+                        100% 100%,
+                        0 0,
+                        0 100%;
+                }
+            }
+        }
     }
 }

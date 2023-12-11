@@ -10,14 +10,6 @@ export const loading = {
             <div class="block-loading-box">
                 <div class="block-loading-box-warp">
                     <div class="block-loading-box-item"></div>
-                    <div class="block-loading-box-item"></div>
-                    <div class="block-loading-box-item"></div>
-                    <div class="block-loading-box-item"></div>
-                    <div class="block-loading-box-item"></div>
-                    <div class="block-loading-box-item"></div>
-                    <div class="block-loading-box-item"></div>
-                    <div class="block-loading-box-item"></div>
-                    <div class="block-loading-box-item"></div>
                 </div>
             </div>
         `;

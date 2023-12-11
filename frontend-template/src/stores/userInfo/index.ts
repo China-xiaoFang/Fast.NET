@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { STORE_USER_INFO } from "@/stores/constant";
-import type { UserInfo } from "@/stores/interface";
+import type { UserInfo } from "./interface";
 import { type AxiosResponse } from "axios";
 
 export const useUserInfo = defineStore("userInfo", {
