@@ -58,6 +58,28 @@ export const useConfig = defineStore(
             // 是否暗黑模式
             isDark: false,
 
+            /* 侧边菜单 */
+            // 侧边菜单背景色
+            menuBackground: ["#ffffff", "#1d1e1f"],
+            // 侧边菜单文字颜色
+            menuColor: ["#303133", "#CFD3DC"],
+            // 侧边菜单激活项背景色
+            menuActiveBackground: ["#ffffff", "#1d1e1f"],
+            // 侧边菜单激活项文字色
+            menuActiveColor: ["#409eff", "#3375b9"],
+            // 侧边菜单顶栏背景色
+            menuTopBarBackground: ["#fcfcfc", "#1d1e1f"],
+            // 侧边菜单宽度(展开时)，单位px
+            menuWidth: 260,
+            // 侧边菜单项默认图标
+            menuDefaultIcon: "fa fa-circle-o",
+            // 是否水平折叠收起菜单
+            menuCollapse: false,
+            // 是否只保持一个子菜单的展开(手风琴)
+            menuUniqueOpened: false,
+            // 显示菜单栏顶栏(LOGO)
+            menuShowTopBar: true,
+
             /* 顶栏 */
             // 顶栏文字色
             headerBarTabColor: ["#000000", "#CFD3DC"],
@@ -81,12 +103,46 @@ export const useConfig = defineStore(
         };
 
         /**
+         * 获取菜单宽度
+         * @returns
+         */
+        function menuWidth() {
+            if (layout.shrink) {
+                return layout.menuCollapse ? "0px" : layout.menuWidth + "px";
+            }
+            // 菜单是否折叠
+            return layout.menuCollapse ? "64px" : layout.menuWidth + "px";
+        }
+
+        /**
+         * 设置布局颜色
+         * @param data
+         */
+        function onSetLayoutColor(data = layout.layoutMode) {
+            // 切换布局时，如果是为默认配色方案，对菜单激活背景色重新赋值
+            const tempValue = layout.isDark ? { idx: 1, color: "#1d1e1f", newColor: "#141414" } : { idx: 0, color: "#ffffff", newColor: "#f5f5f5" };
+            if (
+                data == "Classic" &&
+                layout.headerBarBackground[tempValue.idx] == tempValue.color &&
+                layout.headerBarTabActiveBackground[tempValue.idx] == tempValue.color
+            ) {
+                layout.headerBarTabActiveBackground[tempValue.idx] = tempValue.newColor;
+            } else if (
+                data == "Default" &&
+                layout.headerBarBackground[tempValue.idx] == tempValue.color &&
+                layout.headerBarTabActiveBackground[tempValue.idx] == tempValue.newColor
+            ) {
+                layout.headerBarTabActiveBackground[tempValue.idx] = tempValue.color;
+            }
+        }
+
+        /**
          * 设置布局方式
          * @param data
          */
-        function setLayoutMode(data: "Default" | "Classic") {
+        function setLayoutMode(data: string) {
             layout.layoutMode = data;
-            // onSetLayoutColor(data);
+            onSetLayoutColor(data);
         }
 
         /**
@@ -103,7 +159,7 @@ export const useConfig = defineStore(
             }
         };
 
-        return { lang, axios, layout, setLayout, setLayoutMode, getColorVal };
+        return { lang, axios, layout, setLayout, menuWidth, onSetLayoutColor, setLayoutMode, getColorVal };
     },
     {
         persist: {

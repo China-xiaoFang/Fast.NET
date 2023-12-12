@@ -33,6 +33,11 @@ export const STORE_NAV_TABS = "fast-store-nav-tabs";
 export const STORE_USER_INFO = "fast-store-user-info";
 
 /**
+ * 切换到手机端前的上次布局方式
+ */
+export const CACHE_BEFORE_RESIZE_LAYOUT = "beforeResizeLayout";
+
+/**
  * 用户信息
  */
 export const CACHE_USER_INFO = "userInfo";

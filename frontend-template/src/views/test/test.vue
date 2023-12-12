@@ -4,5 +4,5 @@
 </template>
 
 <script setup lang="ts">
-import test1Form from "../test1.vue";
+import test1Form from "./test1.vue";
 </script>

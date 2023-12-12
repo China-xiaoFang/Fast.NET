@@ -16,10 +16,10 @@ export interface NavTabs {
     activeIndex: number;
     /**
      * 激活的tab
-     * @type {Array<RouteLocationNormalized>}
+     * @type {RouteLocationNormalized}
      * @memberof NavTabs
      */
-    activeRoute: RouteLocationNormalized[] | null;
+    activeRoute: RouteLocationNormalized | null;
     /**
      * tab列表
      * @type {Array<RouteLocationNormalized>}

@@ -81,6 +81,67 @@ export interface Layout {
     isDark: boolean;
 
     /**
+     * 侧边菜单背景色
+     * @type {Array<string>}
+     * @memberof Layout
+     */
+    menuBackground: string[];
+    /**
+     * 侧边菜单文字颜色
+     * @type {Array<string>}
+     * @memberof Layout
+     */
+    menuColor: string[];
+    /**
+     * 侧边菜单激活项背景色
+     * @type {Array<string>}
+     * @memberof Layout
+     */
+    menuActiveBackground: string[];
+    /**
+     * 侧边菜单激活项文字色
+     * @type {Array<string>}
+     * @memberof Layout
+     */
+    menuActiveColor: string[];
+    /**
+     * 侧边菜单顶栏背景色
+     * @type {Array<string>}
+     * @memberof Layout
+     */
+    menuTopBarBackground: string[];
+    /**
+     * 侧边菜单宽度(展开时)，单位px
+     * @type {number}
+     * @memberof Layout
+     */
+    menuWidth: number;
+    /**
+     * 侧边菜单项默认图标
+     * @type {string}
+     * @memberof Layout
+     */
+    menuDefaultIcon: string;
+    /**
+     * 是否水平折叠收起菜单
+     * @type {boolean}
+     * @memberof Layout
+     */
+    menuCollapse: boolean;
+    /**
+     * 是否只保持一个子菜单的展开(手风琴)
+     * @type {boolean}
+     * @memberof Layout
+     */
+    menuUniqueOpened: boolean;
+    /**
+     * 显示菜单栏顶栏(LOGO)
+     * @type {boolean}
+     * @memberof Layout
+     */
+    menuShowTopBar: boolean;
+
+    /**
      * 顶栏文字色
      * @type {Array<string>}
      * @memberof Layout

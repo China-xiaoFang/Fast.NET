@@ -1,7 +1,9 @@
 <template>
-    <h1>{{ $t("views.login.你好啊！") }}</h1>
-    <indexForm />
-    <testForm />
+    <div>
+        <h1>{{ $t("views.login.你好啊！") }}</h1>
+        <indexForm />
+        <testForm />
+    </div>
 </template>
 
 <script setup lang="ts" name="HelloWorld">

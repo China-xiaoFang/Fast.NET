@@ -1,9 +1,27 @@
 import { RouteRecordRaw } from "vue-router";
 
-/** 白名单路由，免登录 */
-export const whiteRoutes: RouteRecordRaw[] = [];
+const Layout = () => import("@/layouts/index.vue");
 
-/**
- * layout 模板的白名单路由
- */
-export const layoutWhiteRoutes: RouteRecordRaw[] = [];
+/** 白名单路由，免登录 */
+export const whiteRoutes: RouteRecordRaw[] = [
+    {
+        path: "/",
+        name: "layout",
+        component: Layout,
+        redirect: "/login",
+        children: [
+            {
+                path: "/login",
+                component: () => import("@/views/login/index.vue"),
+                name: "Login",
+                meta: {
+                    title: "登录",
+                },
+            },
+        ],
+    },
+    {
+        path: "/:path(.*)*",
+        redirect: "/404",
+    },
+];

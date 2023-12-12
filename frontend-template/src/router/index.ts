@@ -2,14 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { whiteRoutes } from "./modules/whiteRoute";
-import { asyncRoutes } from "./modules/asyncRoute";
-import { loading } from "@/plugins/loading";
+import { loading } from "@/hooks/loading";
 import langAutoLoadMap from "@/lang/autoLoad";
 import { mergeMessage } from "@/lang/index";
 import { useConfig } from "@/stores/config";
-import { useUserInfo } from "@/stores/userInfo";
 
-const constantRoutes = [...whiteRoutes, ...asyncRoutes];
+const constantRoutes = [...whiteRoutes];
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
