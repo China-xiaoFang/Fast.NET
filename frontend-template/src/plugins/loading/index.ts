@@ -3,7 +3,7 @@ import "./index.scss";
 
 export const loading = {
     show: () => {
-        const bodys: Element = document.body;
+        const bodyEl: Element = document.body;
         const div = document.createElement("div");
         div.className = "block-loading";
         div.innerHTML = `
@@ -13,7 +13,7 @@ export const loading = {
                 </div>
             </div>
         `;
-        bodys.insertBefore(div, bodys.childNodes[0]);
+        bodyEl.insertBefore(div, bodyEl.childNodes[0]);
     },
     hide: () => {
         nextTick(() => {

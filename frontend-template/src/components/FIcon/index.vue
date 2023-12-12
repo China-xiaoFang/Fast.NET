@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" name="FIcon">
 import { createVNode, resolveComponent, defineComponent, computed, type CSSProperties } from "vue";
 import svg from "@/components/FIcon/svg/index.vue";
 import { isExternal } from "@/utils/validate";
@@ -7,6 +7,8 @@ export default defineComponent({
     props: {
         /**
          * 名称
+         * el-icon- 使用 El-icon 的图标
+         * local- 使用本地 svg 图标
          */
         name: {
             type: String,

@@ -5,7 +5,7 @@ import { ElLoading, ElMessage, ElMessageBox, type LoadingOptions } from "element
 import { useConfig } from "@/stores/config";
 import { useUserInfo } from "@/stores/userInfo";
 import { i18n } from "@/lang";
-import { downloadFile } from "@/utils/utils";
+import { downloadFile } from "@/utils";
 
 const pendingMap = new Map();
 
@@ -83,7 +83,7 @@ const axiosDefaultConfig = {
  * 获取请求 Url 地址
  * @returns
  */
-const getUrl = (): string => {
+export const getUrl = (): string => {
     // 获取请求路径
     const baseUrl: string = import.meta.env.VITE_AXIOS_BASE_URL;
     // 获取代理地址
@@ -96,10 +96,19 @@ const getUrl = (): string => {
     }
 };
 
+/**
+ * 获取请求 Url 地址的端口
+ * @returns
+ */
+export const getUrlPort = (): string => {
+    const url = getUrl();
+    return new URL(url).port;
+};
+
 function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequestConfig, options: Options = {}, loading: LoadingOptions = {}): T {
     const timestamp = new Date().getTime();
-    const localConfig = useConfig();
-    const localUserInfo = useUserInfo();
+    const configStore = useConfig();
+    const userInfoStore = useUserInfo();
 
     // 创建 Axios 请求
     const Axios = axios.create({
@@ -107,13 +116,13 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
         timeout: import.meta.env.VITE_AXIOS_API_TIMEOUT,
         headers: {
             // 携带浏览器语言环境表示
-            "fast-lang": localConfig.lang.defaultLang,
+            "fast-lang": configStore.lang.defaultLang,
         },
         responseType: "json",
     });
 
     // 合并选项
-    options = Object.assign(localConfig.axios.options, options);
+    options = Object.assign(configStore.axios.options, options);
 
     /**
      * 请求拦截
@@ -139,7 +148,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
 
             if (config.headers) {
                 // Token 处理
-                const { token, refreshToken } = localUserInfo.resolveToken();
+                const { token, refreshToken } = userInfoStore.resolveToken();
                 token && (config.headers["Authorization"] = token);
                 // 刷新 Token
                 refreshToken && (config.headers["X-Authorization"] = refreshToken);
@@ -176,7 +185,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
                 return Promise.resolve(true);
             }
             // 设置 Token
-            localUserInfo.setToken(response);
+            userInfoStore.setToken(response);
 
             // 重新登录处理
             if (
@@ -186,7 +195,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
                     axiosDefaultConfig.reloadLoginMessage,
                     axiosDefaultConfig.reloadLoginButtonText,
                     () => {
-                        localUserInfo.logout();
+                        userInfoStore.logout();
                     }
                 )
             ) {
@@ -198,7 +207,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
                 case "blob":
                     if (response.status === 200) {
                         // 判断是否自动下载
-                        if (localConfig.axios.options.autoDownloadFile === true) {
+                        if (configStore.axios.options.autoDownloadFile === true) {
                             // 下载文件
                             downloadFile(response);
                         }
@@ -251,7 +260,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
                     axiosDefaultConfig.reloadLoginMessage,
                     axiosDefaultConfig.reloadLoginButtonText,
                     () => {
-                        localUserInfo.logout();
+                        userInfoStore.logout();
                     }
                 )
             ) {

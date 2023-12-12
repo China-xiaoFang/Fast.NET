@@ -9,13 +9,14 @@
     </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="scss" name="LayoutExteriorSwitch">
 .theme-toggle-content {
     display: flex;
     align-items: center;
     height: 24px;
     padding: 0 12px;
 }
+
 .switch {
     display: inline-block;
     position: relative;
@@ -29,47 +30,54 @@
     transition:
         border-color 0.3s,
         background-color 0.5s;
-}
-.switch-action {
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    transform: translate(0);
-    color: var(--el-text-color-primary);
-    transition: all 0.3s;
-}
-.switch-icon {
-    position: absolute;
-    left: 1px;
-    bottom: 1px;
-    transition: all 0.3s;
-    cursor: pointer;
-}
-.light-icon {
-    opacity: 1;
-}
-.dark-icon {
-    opacity: 0;
+
+    .switch-action {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        transform: translate(0);
+        color: var(--el-text-color-primary);
+        transition: all 0.3s;
+    }
+
+    .switch-icon {
+        position: absolute;
+        left: 1px;
+        bottom: 1px;
+        transition: all 0.3s;
+        cursor: pointer;
+
+        .light-icon {
+            opacity: 1;
+        }
+
+        .dark-icon {
+            opacity: 0;
+        }
+    }
 }
 
 @at-root .dark {
     .switch {
         background-color: #2c2c2c;
     }
+
     .switch-action {
         transform: translate(20px);
         background-color: #141414;
     }
+
     .dark-icon {
         opacity: 1;
     }
+
     .light-icon {
         opacity: 0;
     }

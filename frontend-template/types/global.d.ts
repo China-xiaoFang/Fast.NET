@@ -15,6 +15,12 @@ interface Window {
      * @memberof Window
      */
     loadLangHandle: Record<string, any>;
+    /**
+     * 懒加载时间
+     * @type {number}
+     * @memberof Window
+     */
+    lazy: number;
 }
 
 /**

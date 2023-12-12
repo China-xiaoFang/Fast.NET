@@ -38,9 +38,9 @@ const assignLocale: anyObj = {
  */
 export const loadLang = async (app: App) => {
     // 获取配置信息
-    const config = useConfig();
+    const configStore = useConfig();
     // 获取默认语言
-    const locale = config.lang.defaultLang;
+    const locale = configStore.lang.defaultLang;
 
     /**
      * 因 import.meta.glob 不支持变量，所以这里只能手动写死
@@ -81,7 +81,7 @@ export const loadLang = async (app: App) => {
         locale: locale,
         legacy: false, // 使用组合式 API
         globalInjection: true, // 挂载 $t, $d 等到全局
-        fallbackLocale: config.lang.fallbackLang,
+        fallbackLocale: configStore.lang.fallbackLang,
         messages: messages,
     });
 

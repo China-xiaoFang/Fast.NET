@@ -13,14 +13,18 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 /**
- * 自动生成的语言包按需加载映射表
- * 使用 ${lang} 代替当前语言
- * key为页面路由的地址，value为页语言包文件相对路径
- * 访问时按需自动加载映射表的语言包（若存在）
+ * 前缀：layouts.components.NavMenus
+ * 使用方式：
+ * i18n.global.t("layouts.components.NavMenus.Fast.NET")
+ * t("layouts.components.NavMenus.Fast.NET")
+ * $t("layouts.components.NavMenus.Fast.NET")
  */
 
 export default {
-    ["/login"]: ["views/login/index.ts", "views/test/index.ts", "views/test/test.ts"],
-    ["/test"]: ["views/test/index.ts"],
-    ["/test/test"]: ["views/test/test.ts", "views/test1.ts"],
+    ["清理系统缓存"]: "清理系統快取",
+    ["清理浏览器缓存"]: "清理瀏覽器快取",
+    ["一键清理所有"]: "一鍵清理所有",
+    ["个人资料"]: "個人資料",
+    ["注销"]: "註銷",
+    ["您的浏览器不支持全屏，请更换浏览器再试~"]: "您的瀏覽器不支援全屏，請更換瀏覽器再試一次~",
 };

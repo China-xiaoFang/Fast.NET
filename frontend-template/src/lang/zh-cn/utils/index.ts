@@ -13,14 +13,21 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 /**
- * 自动生成的语言包按需加载映射表
- * 使用 ${lang} 代替当前语言
- * key为页面路由的地址，value为页语言包文件相对路径
- * 访问时按需自动加载映射表的语言包（若存在）
+ * 前缀：utils
+ * 使用方式：
+ * i18n.global.t("utils.Fast.NET")
+ * t("utils.Fast.NET")
+ * $t("utils.Fast.NET")
  */
 
 export default {
-    ["/login"]: ["views/login/index.ts", "views/test/index.ts", "views/test/test.ts"],
-    ["/test"]: ["views/test/index.ts"],
-    ["/test/test"]: ["views/test/test.ts", "views/test1.ts"],
+    ["无"]: "无",
+    ["夜深了，注意身体哦！"]: "夜深了，注意身体哦！",
+    ["早上好！"]: "早上好！",
+    ["欢迎回来！"]: "欢迎回来！",
+    ["上午好！"]: "上午好！",
+    ["中午好！"]: "中午好！",
+    ["下午好！"]: "下午好！",
+    ["晚上好！"]: "晚上好！",
+    ["您好！"]: "您好！",
 };

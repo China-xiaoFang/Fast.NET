@@ -23,6 +23,16 @@ export const STORE_SITE_CONFIG = "fast-store-site-config";
 export const STORE_CONFIG = "fast-store-config";
 
 /**
+ * Store NavTabs
+ */
+export const STORE_NAV_TABS = "fast-store-nav-tabs";
+
+/**
  * Store 用户信息
  */
 export const STORE_USER_INFO = "fast-store-user-info";
+
+/**
+ * 用户信息
+ */
+export const CACHE_USER_INFO = "userInfo";

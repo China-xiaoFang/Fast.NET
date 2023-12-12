@@ -54,11 +54,11 @@ router.beforeEach((to, from, next) => {
         loadPath.push(...langAutoLoadMap[to.path as keyof typeof langAutoLoadMap]);
     }
 
-    const config = useConfig();
+    const configStore = useConfig();
 
     for (const key in loadPath) {
         // 替换语言
-        loadPath[key] = loadPath[key].replaceAll("${lang}", config.lang.defaultLang);
+        loadPath[key] = loadPath[key].replaceAll("${lang}", configStore.lang.defaultLang);
         // 判断是否存在语言包句柄中
         if (loadPath[key] in window.loadLangHandle) {
             window.loadLangHandle[loadPath[key]]().then((res: { default: anyObj }) => {

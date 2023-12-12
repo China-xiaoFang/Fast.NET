@@ -2,7 +2,7 @@
     <el-config-provider :locale="lang">
         <br />
         <el-radio-group v-model="radioLang" class="ml-4" @change="changeLang">
-            <el-radio v-for="item in config.lang.langArray" :label="item.name">{{ item.value }}</el-radio>
+            <el-radio v-for="item in configStore.lang.langArray" :label="item.name">{{ item.value }}</el-radio>
         </el-radio-group>
         <br />
         <div class="demo-time-range">
@@ -28,9 +28,9 @@ const changeLang = (value: string) => {
     editDefaultLang(value);
 };
 
-const config = useConfig();
+const configStore = useConfig();
 
 // 初始化 element 的语言包
 const { getLocaleMessage } = useI18n();
-const lang = getLocaleMessage(config.lang.defaultLang) as any;
+const lang = getLocaleMessage(configStore.lang.defaultLang) as any;
 </script>

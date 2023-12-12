@@ -6,14 +6,22 @@ import { type AxiosResponse } from "axios";
 export const useUserInfo = defineStore("userInfo", {
     state: (): UserInfo => {
         return {
-            /**
-             * Token
-             */
+            // Token
             token: "",
-            /**
-             * Refresh Token
-             */
+            // Refresh Token
             refreshToken: "",
+            // 是否为超级管理员
+            supperAdmin: false,
+            // 是否为管理员
+            admin: false,
+            // 用户名称
+            userName: "",
+            // 用户昵称
+            nickName: "",
+            // 头像
+            avatar: "",
+            // 最后登录时间
+            lastLoginTime: "",
         };
     },
     actions: {

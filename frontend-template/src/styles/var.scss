@@ -5,7 +5,7 @@
 $main-space: 16px;
 $primary-light: #3f6ad8;
 
-// --ba-background
+// --fast-background
 $bg-color: () !default;
 $bg-color: map.merge(
     (
@@ -15,11 +15,12 @@ $bg-color: map.merge(
     $bg-color
 );
 
-// --ba-border-color
+// --fast-border-color
 $border-color: () !default;
 $border-color: map.merge(
     (
-        "": #f6f6f6,
+        // "": #f6f6f6,
+        "": #e4e7ed
     ),
     $border-color
 );
