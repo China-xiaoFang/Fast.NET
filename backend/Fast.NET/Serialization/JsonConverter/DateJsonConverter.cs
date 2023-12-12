@@ -122,7 +122,12 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
     /// <returns>The converted value.</returns>
     public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var value = reader.GetString()!;
+        var value = reader.GetString();
+
+        if (string.IsNullOrEmpty(value))
+        {
+            return null;
+        }
 
         if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
         {
