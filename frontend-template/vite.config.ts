@@ -4,6 +4,8 @@ import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { isProd } from "./src/utils/vite";
+// 加载本地svg图标
+import { svgBuilder } from "./src/components/FIcon/svg/index";
 // 解决 setup 语法糖导致不能给页面设置 name，导致 keep-alive 失效的问题。https://zhuanlan.zhihu.com/p/481640259
 import VueSetupExtend from "vite-plugin-vue-setup-extend";
 
@@ -134,6 +136,8 @@ const ViteConfig = ({ mode }: ConfigEnv): UserConfig => {
             vueJsx(),
             // name 可以写在 script 标签上
             VueSetupExtend(),
+            /** 本地 SVG 图标 */
+            svgBuilder("./src/assets/icons/"),
             /** 兼容旧版 Chrome 和 IE浏览器 */
             legacyPlugin({
                 /** 需要兼容的目标列表，可以设置多个 */

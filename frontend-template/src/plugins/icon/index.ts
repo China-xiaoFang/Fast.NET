@@ -11,6 +11,8 @@ export function loadIcon(app: App) {
 
     /** 注册所有 Element Plus Icon */
     for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+        // 这里是给 FIcon 使用的
+        app.component(`el-icon-${key}`, component);
         app.component(key, component);
     }
 }

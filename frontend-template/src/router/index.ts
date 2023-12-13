@@ -54,13 +54,23 @@ router.beforeEach((to, from, next) => {
 
     const configStore = useConfig();
 
+    const prefix = `./${configStore.lang.defaultLang}/`;
+
     for (const key in loadPath) {
         // 替换语言
         loadPath[key] = loadPath[key].replaceAll("${lang}", configStore.lang.defaultLang);
         // 判断是否存在语言包句柄中
         if (loadPath[key] in window.loadLangHandle) {
             window.loadLangHandle[loadPath[key]]().then((res: { default: anyObj }) => {
-                mergeMessage(res.default, loadPath[key]);
+                // 这里默认删除 ./${lang}/ 前缀
+                const pathName = loadPath[key].slice(prefix.length, loadPath[key].lastIndexOf("."));
+                /**
+                 * 这里处理 index.ts 文件后缀的问题
+                 * 原：utils.axios.index.
+                 * 处理后：utils.axios.
+                 */
+                const prefixName = pathName.endsWith("index") ? pathName.substring(0, pathName.lastIndexOf("/")) : pathName;
+                mergeMessage(res.default, prefixName);
             });
         }
     }

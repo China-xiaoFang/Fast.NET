@@ -53,6 +53,7 @@ export const loadLang = async (app: App) => {
                 ...import.meta.glob("./zh-cn/views/**/*.ts"),
             };
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/components/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/layouts/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/utils/**/*.ts", { eager: true }), locale));
             break;
         case "zh-tw":
@@ -60,6 +61,7 @@ export const loadLang = async (app: App) => {
                 ...import.meta.glob("./zh-tw/views/**/*.ts"),
             };
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/components/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/layouts/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/utils/**/*.ts", { eager: true }), locale));
             break;
         case "en":
@@ -67,6 +69,7 @@ export const loadLang = async (app: App) => {
                 ...import.meta.glob("./en/views/**/*.ts"),
             };
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/components/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/layouts/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/utils/**/*.ts", { eager: true }), locale));
             break;
     }
