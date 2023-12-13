@@ -15,7 +15,7 @@
             :hide-on-click="true"
         >
             <div class="nav-menu-item pt2" :class="state.currentNavMenu == 'lang' ? 'hover' : ''">
-                <Icon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" name="local-lang" size="18" />
+                <FIcon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" name="local-lang" size="18" />
             </div>
             <template #dropdown>
                 <el-dropdown-menu class="dropdown-menu-box">
@@ -26,14 +26,14 @@
             </template>
         </el-dropdown>
         <div @click="onClickFullScreenHandle" class="nav-menu-item" :class="state.isFullScreen ? 'hover' : ''">
-            <Icon
+            <FIcon
                 :color="configStore.getColorVal('headerBarTabColor')"
                 class="nav-menu-icon"
                 v-if="state.isFullScreen"
                 name="local-full-screen-cancel"
                 size="18"
             />
-            <Icon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" v-else name="el-icon-FullScreen" size="18" />
+            <FIcon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" v-else name="el-icon-FullScreen" size="18" />
         </div>
         <el-dropdown
             @visible-change="onChangeNavMenuHandle($event, 'clear')"
@@ -45,7 +45,7 @@
             :hide-on-click="true"
         >
             <div class="nav-menu-item" :class="state.currentNavMenu == 'clear' ? 'hover' : ''">
-                <Icon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" name="el-icon-Delete" size="18" />
+                <FIcon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" name="el-icon-Delete" size="18" />
             </div>
             <template #dropdown>
                 <el-dropdown-menu class="dropdown-menu-box">
@@ -96,7 +96,7 @@
             </div>
         </el-popover>
         <div @click="configStore.setLayout('showSettingDrawer', true)" class="nav-menu-item">
-            <Icon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" name="fa fa-cogs" size="18" />
+            <FIcon :color="configStore.getColorVal('headerBarTabColor')" class="nav-menu-icon" name="fa fa-cogs" size="18" />
         </div>
     </div>
 </template>

@@ -1,9 +1,12 @@
 <template>
-    <div class="nav-bar"></div>
+    <div class="nav-bar">
+        <NavMenus />
+    </div>
 </template>
 
 <script setup lang="ts" name="layoutDefaultNavBar">
 import { useConfig } from "@/stores/config";
+import NavMenus from "@/layouts/components/NavMenus/index.vue";
 
 const configStore = useConfig();
 </script>

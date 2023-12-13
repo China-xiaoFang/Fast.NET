@@ -24,7 +24,7 @@ const siteConfigStore = useSiteConfig();
     justify-content: center;
     box-sizing: border-box;
     padding: 10px;
-    background: v-bind('configStore.layout.layoutMode != "Streamline" ?  configStore.getColorVal("menuTopBarBackground"):"transparent"');
+    background: v-bind('configStore.layout.layoutMode != "Streamline" ? configStore.getColorVal("menuTopBarBackground") : "transparent"');
 }
 .logo-img {
     width: 28px;
