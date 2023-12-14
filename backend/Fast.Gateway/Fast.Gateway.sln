@@ -5,21 +5,19 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01_Core", "01_Core", "{68F86056-8C77-4351-BB10-E33C09D7E3C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Gateway.IaaS", "IaaS\Fast.Gateway.IaaS\Fast.Gateway.IaaS.csproj", "{8AC337B7-674D-41AC-9DF4-9055E1D3A139}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Gateway.Core", "Core\Fast.Gateway.Core\Fast.Gateway.Core.csproj", "{188EA568-32BB-439C-B9C7-0819DB416960}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Gateway.Core", "Core\Fast.Gateway.Core\Fast.Gateway.Core.csproj", "{188EA568-32BB-439C-B9C7-0819DB416960}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02_Entities", "02_Entities", "{94FDDBB6-768E-431D-8E9F-86C249C21349}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Gateway.Entities", "Entities\Fast.Gateway.Entities\Fast.Gateway.Entities.csproj", "{B11E0EEC-2E19-4036-9DD5-88C79A00C723}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Gateway.Entities", "Entities\Fast.Gateway.Entities\Fast.Gateway.Entities.csproj", "{B11E0EEC-2E19-4036-9DD5-88C79A00C723}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03_Services", "03_Services", "{7DC73ADD-D4DB-4855-A8F5-E77A72C92F14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Gateway.Service", "Services\Fast.Gateway.Service\Fast.Gateway.Service.csproj", "{876D827D-3EB2-45CC-ACA5-B66D94DEAD01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Gateway.Service", "Services\Fast.Gateway.Service\Fast.Gateway.Service.csproj", "{876D827D-3EB2-45CC-ACA5-B66D94DEAD01}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04_Application", "04_Application", "{133377DD-AD9D-4D24-81E0-072091E6BFDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Gateway.Application", "Applications\Fast.Gateway.Application\Fast.Gateway.Application.csproj", "{77BCC84F-BA3F-40D6-B075-8A43E94E441E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Gateway.Application", "Applications\Fast.Gateway.Application\Fast.Gateway.Application.csproj", "{77BCC84F-BA3F-40D6-B075-8A43E94E441E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05_API", "05_API", "{1D149DB3-5A75-4E2C-B615-47AAE765E5EC}"
 EndProject
@@ -29,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8AC337B7-674D-41AC-9DF4-9055E1D3A139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AC337B7-674D-41AC-9DF4-9055E1D3A139}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AC337B7-674D-41AC-9DF4-9055E1D3A139}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AC337B7-674D-41AC-9DF4-9055E1D3A139}.Release|Any CPU.Build.0 = Release|Any CPU
 		{188EA568-32BB-439C-B9C7-0819DB416960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{188EA568-32BB-439C-B9C7-0819DB416960}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{188EA568-32BB-439C-B9C7-0819DB416960}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,7 +48,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8AC337B7-674D-41AC-9DF4-9055E1D3A139} = {68F86056-8C77-4351-BB10-E33C09D7E3C5}
 		{188EA568-32BB-439C-B9C7-0819DB416960} = {68F86056-8C77-4351-BB10-E33C09D7E3C5}
 		{B11E0EEC-2E19-4036-9DD5-88C79A00C723} = {94FDDBB6-768E-431D-8E9F-86C249C21349}
 		{876D827D-3EB2-45CC-ACA5-B66D94DEAD01} = {7DC73ADD-D4DB-4855-A8F5-E77A72C92F14}
