@@ -22,13 +22,14 @@
 	</PropertyGroup>
 
 	<!-- NU1803 是为了解决使用 Http 源的Nuget包导致的警告 -->
+	<!-- IDE0017 是为了解决可以简化对象初始化导致的警告 -->
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<NoWarn>1701;1702;1591;NU1803</NoWarn>
+		<NoWarn>1701;1702;1591;NU1803;IDE0017</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<NoWarn>1701;1702;1591;NU1803</NoWarn>
+		<NoWarn>1701;1702;1591;NU1803;IDE0017</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -37,11 +38,6 @@
 		<None Include="$(SolutionDir)..\..\LICENSE" Pack="true" PackagePath="\" />
 		<None Include="$(SolutionDir)..\..\Fast.png" Pack="true" PackagePath="\" />
 		<None Include="$(SolutionDir)Directory.Build.props" Pack="true" PackagePath="\" />
-	</ItemGroup>
-
-	<!-- 默认所有的类库都引用 Fast.Gateway.IaaS 包，范围为私有的 -->
-	<ItemGroup>
-		<ProjectReference Include="$(SolutionDir)IaaS\Fast.Gateway.IaaS\Fast.Gateway.IaaS.csproj" PrivateAssets="all" />
 	</ItemGroup>
 
 </Project>

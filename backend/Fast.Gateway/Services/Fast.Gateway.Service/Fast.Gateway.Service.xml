@@ -88,7 +88,7 @@
             <see cref="T:Fast.Gateway.Service.Projects.ProjectService"/> 项目服务
             </summary>
         </member>
-        <member name="M:Fast.Gateway.Service.Projects.ProjectService.QueryProjectSelector(Fast.SqlSugar.Definition.SqlSugarPageInput)">
+        <member name="M:Fast.Gateway.Service.Projects.ProjectService.QueryProjectSelector(Fast.SqlSugar.SqlSugarPageInput)">
             <summary>
             分页获取项目下拉框
             </summary>

@@ -14,6 +14,7 @@
 
 using Fast.Gateway.Entities.Entities.Projects;
 using Fast.Gateway.Service.Projects.Dto;
+using Mapster;
 
 namespace Fast.Gateway.Service.Projects;
 
@@ -51,5 +52,25 @@ public class ProjectService
             .WhereIF(!input.SearchValue.IsEmpty(), wh => wh.ProjectName.Contains(input.SearchValue))
             .WhereIF(input.Enabled != null, wh => wh.Enabled == input.Enabled).Select<QueryProjectPageOutput>()
             .ToPagedListAsync(input);
+    }
+
+    /// <summary>
+    /// 添加项目
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    /// <exception cref="UserFriendlyException"></exception>
+    public async Task AddProject(AddProjectInput input)
+    {
+        // 判断项目名称是否重复
+        if (await _repository.IsExistsAsync(wh => wh.ProjectName == input.ProjectName))
+        {
+            throw new UserFriendlyException($"项目名称【{input.ProjectName}】重复！");
+        }
+
+        var model = input.Adapt<Project>();
+        // 默认启用
+        model.Enabled = true;
+        await _repository.InsertAsync(model);
     }
 }
