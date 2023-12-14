@@ -4,6 +4,14 @@
         <div v-if="!configStore.layout.menuCollapse" :style="{ color: configStore.getColorVal('menuActiveColor') }" class="website-name">
             {{ siteConfigStore.state.siteName }}
         </div>
+        <Icon
+            @click="onClickMenuCollapseHandle"
+            :name="configStore.layout.menuCollapse ? 'fa fa-indent' : 'fa fa-dedent'"
+            :class="configStore.layout.menuCollapse ? 'unfold' : ''"
+            :color="configStore.getColorVal('menuActiveColor')"
+            size="18"
+            class="fold"
+        />
     </div>
 </template>
 
@@ -13,6 +21,8 @@ import { useSiteConfig } from "@/stores/siteConfig";
 
 const configStore = useConfig();
 const siteConfigStore = useSiteConfig();
+
+const onClickMenuCollapseHandle = function () {};
 </script>
 
 <style scoped lang="scss">
