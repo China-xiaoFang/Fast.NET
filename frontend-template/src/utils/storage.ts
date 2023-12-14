@@ -3,7 +3,7 @@
  */
 
 import { i18n } from "@/lang";
-import { CACHE_PREFIX, CACHE_EXPIRE_SUFFIX } from "@/stores/constant/index";
+import { CACHE_PREFIX, CACHE_EXPIRE_SUFFIX } from "@/stores/constant";
 
 /**
  * window.localStorage

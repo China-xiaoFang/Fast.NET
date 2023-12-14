@@ -1,19 +1,27 @@
 import { defineStore } from "pinia";
 import { STORE_USER_INFO } from "@/stores/constant";
-import type { UserInfo } from "@/stores/interface";
+import type { UserInfo } from "./interface";
 import { type AxiosResponse } from "axios";
 
 export const useUserInfo = defineStore("userInfo", {
     state: (): UserInfo => {
         return {
-            /**
-             * Token
-             */
+            // Token
             token: "",
-            /**
-             * Refresh Token
-             */
+            // Refresh Token
             refreshToken: "",
+            // 是否为超级管理员
+            supperAdmin: false,
+            // 是否为管理员
+            admin: false,
+            // 用户名称
+            userName: "",
+            // 用户昵称
+            nickName: "",
+            // 头像
+            avatar: "",
+            // 最后登录时间
+            lastLoginTime: "",
         };
     },
     actions: {
@@ -52,20 +60,33 @@ export const useUserInfo = defineStore("userInfo", {
         },
         /**
          * 获取 Token
+         * @description 从缓存中获取
          * @returns
          */
         getToken(): { token: string | null; refreshToken: string | null } {
-            if (this.token) {
+            return { token: this.token, refreshToken: this.refreshToken };
+        },
+        /**
+         * 解析Token
+         * @description 如果Token过期，会解析不出来
+         * @param token 可以传入，也可以直接获取 pinia 中的
+         * @param refreshToken 可以传入，也可以直接获取 pinia 中的
+         * @returns
+         */
+        resolveToken(token: string | null = null, refreshToken: string | null = null): { token: string | null; refreshToken: string | null } {
+            token ??= this.token;
+            refreshToken ??= this.refreshToken;
+            if (token) {
                 // 解析 JwtToken
                 const jwtToken = JSON.parse(
-                    decodeURIComponent(encodeURIComponent(window.atob(this.token.replace(/_/g, "/").replace(/-/g, "+").split(".")[1])))
+                    decodeURIComponent(encodeURIComponent(window.atob(token.replace(/_/g, "/").replace(/-/g, "+").split(".")[1])))
                 ) as anyObj;
                 // 获取 Token 的过期时间
                 var exp = new Date(jwtToken.exp * 1000);
                 if (new Date() >= exp) {
-                    return { token: `Bearer ${this.token}`, refreshToken: `Bearer ${this.refreshToken}` };
+                    return { token: `Bearer ${token}`, refreshToken: `Bearer ${refreshToken}` };
                 }
-                return { token: `Bearer ${this.token}`, refreshToken: null };
+                return { token: `Bearer ${token}`, refreshToken: null };
             }
             return { token: null, refreshToken: null };
         },
