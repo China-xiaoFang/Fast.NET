@@ -6,8 +6,8 @@
 <script setup lang="ts" name="layoutHeader">
 import { useConfig } from "@/stores/config";
 import { useNavTabs } from "@/stores/navTabs";
-import DefaultNavBar from "@/layouts/components/DefaultNavBar/index.vue";
-import ClassicNavBar from "@/layouts/components/ClassicNavBar/index.vue";
+import DefaultNavBar from "@/layouts/components/Default/NavBar.vue";
+import ClassicNavBar from "@/layouts/components/Classic/NavBar.vue";
 
 defineOptions({
     components: { DefaultNavBar, ClassicNavBar },
