@@ -1,35 +1,26 @@
 <script lang="ts" name="FIcon">
 import { createVNode, resolveComponent, defineComponent, computed, type CSSProperties } from "vue";
+import type { Props } from "./interface";
 import svg from "@/components/FIcon/svg/index.vue";
 import { isExternal } from "@/utils/validate";
+
 export default defineComponent({
     name: "FIcon",
     props: {
-        /**
-         * 名称
-         * el-icon- 使用 El-icon 的图标
-         * local- 使用本地 svg 图标
-         */
         name: {
             type: String,
             required: true,
         },
-        /**
-         * 大小
-         */
         size: {
             type: String,
             default: "18px",
         },
-        /**
-         * 颜色
-         */
         color: {
             type: String,
             default: "#000000",
         },
     },
-    setup(props) {
+    setup(props: Props) {
         const iconStyle = computed((): CSSProperties => {
             const { size, color } = props;
             let s = `${size.replace("px", "")}px`;

@@ -4,16 +4,18 @@
         <el-container class="content-wrapper">
             <Header />
             <Main />
+            <Footer />
         </el-container>
     </el-container>
     <CloseFullScreen v-if="navTabsStore.state.tabFullScreen" />
 </template>
 
 <script setup lang="ts">
-import Aside from "@/layouts/components/Aside/index.vue";
-import Header from "@/layouts/components/Header/index.vue";
-import Main from "@/layouts/components/Main/index.vue";
-import CloseFullScreen from "@/layouts/components/CloseFullScreen/index.vue";
+import Aside from "@/layouts/components/Aside.vue";
+import Header from "@/layouts/components/Header.vue";
+import Main from "@/layouts/components/Main.vue";
+import Footer from "@/layouts/components/Footer.vue";
+import CloseFullScreen from "@/layouts/components/CloseFullScreen.vue";
 import { useNavTabs } from "@/stores/navTabs";
 
 const navTabsStore = useNavTabs();

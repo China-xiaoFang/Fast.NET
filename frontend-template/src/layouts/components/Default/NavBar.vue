@@ -6,7 +6,7 @@
 
 <script setup lang="ts" name="layoutDefaultNavBar">
 import { useConfig } from "@/stores/config";
-import NavMenus from "@/layouts/components/NavMenus/index.vue";
+import NavMenus from "@/layouts/components/NavMenus.vue";
 
 const configStore = useConfig();
 </script>
