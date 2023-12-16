@@ -4,7 +4,7 @@
         <div v-if="!configStore.layout.menuCollapse" :style="{ color: configStore.getColorVal('menuActiveColor') }" class="website-name">
             {{ siteConfigStore.state.siteName }}
         </div>
-        <Icon
+        <FIcon
             @click="onClickMenuCollapseHandle"
             :name="configStore.layout.menuCollapse ? 'fa fa-indent' : 'fa fa-dedent'"
             :class="configStore.layout.menuCollapse ? 'unfold' : ''"

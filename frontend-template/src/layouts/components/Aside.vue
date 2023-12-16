@@ -10,7 +10,7 @@
 
 <script setup lang="ts" name="LayoutAside">
 import { computed } from "vue";
-import Logo from "@/layouts/components/Logo/index.vue";
+import Logo from "@/layouts/components/Logo.vue";
 import { useConfig } from "@/stores/config";
 import { useNavTabs } from "@/stores/navTabs";
 
