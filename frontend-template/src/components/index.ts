@@ -1,7 +1,2 @@
-import FContextMenu from "@/components/FContextMenu/index.vue";
-import FIcon from "@/components/FIcon/index.vue";
-
-export default {
-    FContextMenu,
-    FIcon,
-};
+export { default as FContextMenu } from "./FContextMenu/index.vue";
+export { default as FIcon } from "./FIcon/index.vue";

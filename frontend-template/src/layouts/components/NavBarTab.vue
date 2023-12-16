@@ -11,7 +11,7 @@
         >
             {{ item.meta.title }}
             <transition @after-leave="selectNavTabHandle(tabsRefs[navTabsStore.state.activeIndex])" name="el-fade-in">
-                <Icon
+                <FIcon
                     v-show="navTabsStore.state.tabsView.length > 1"
                     class="close-icon"
                     @click.stop="onClickCloseTabHandle(item)"

@@ -1,7 +1,7 @@
-<script lang="tsx" name="FContextMenu">
+<script lang="tsx">
 import { defineComponent, onMounted, reactive, toRaw } from "vue";
 import { useEventListener } from "@vueuse/core";
-import FIcon from "@/components/FIcon/index.vue";
+import { FIcon } from "@/components";
 import type { Axis, ContextMenuItem, ContextMenuItemClickEmitArg, Props } from "./interface";
 import { RouteLocationNormalized } from "vue-router";
 
@@ -24,7 +24,7 @@ export default defineComponent({
          */
         onClick: (item: ContextMenuItemClickEmitArg) => null,
     },
-    setup(props: Props, { expose, emit }) {
+    setup(props: Props, { attrs, expose, emit }) {
         const state: {
             /**
              * 是否显示
@@ -75,7 +75,7 @@ export default defineComponent({
         expose({ show, hide });
 
         return () => (
-            <transition name="el-zoom-in-center">
+            <transition name="el-zoom-in-center" {...attrs}>
                 <div
                     class="el-popper is-pure is-light el-dropdown__popper fast-contextMenu"
                     style={`top: ${state.axis.y + 5}px;left: ${state.axis.x - 14}px;width:${props.width}px`}

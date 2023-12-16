@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync } from "fs";
 
-let idPerfix = "";
+let idPrefix = "";
 const iconNames: string[] = [];
 const svgTitle = /<svg([^>+].*?)>/;
 const clearHeightWidth = /(width|height)="([^>+].*?)"/g;
@@ -15,7 +15,7 @@ function findSvgFile(dir: string): string[] {
         withFileTypes: true,
     });
     for (const dirent of dirents) {
-        iconNames.push(`${idPerfix}-${dirent.name.replace(".svg", "")}`);
+        iconNames.push(`${idPrefix}-${dirent.name.replace(".svg", "")}`);
         if (dirent.isDirectory()) {
             svgRes.push(...findSvgFile(dir + dirent.name + "/"));
         } else {
@@ -37,7 +37,7 @@ function findSvgFile(dir: string): string[] {
                     if (!hasViewBox.test($2)) {
                         content += `viewBox="0 0 ${width} ${height}"`;
                     }
-                    return `<symbol id="${idPerfix}-${dirent.name.replace(".svg", "")}" ${content}>`;
+                    return `<symbol id="${idPrefix}-${dirent.name.replace(".svg", "")}" ${content}>`;
                 })
                 .replace("</svg>", "</symbol>");
             svgRes.push(svg);
@@ -48,7 +48,7 @@ function findSvgFile(dir: string): string[] {
 
 export const svgBuilder = (path: string, perfix = "local") => {
     if (path === "") return;
-    idPerfix = perfix;
+    idPrefix = perfix;
     const res = findSvgFile(path);
     return {
         name: "svg-transform",
