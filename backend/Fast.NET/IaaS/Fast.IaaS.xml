@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.IaaS</name>
+        <name>Fast.Iaas</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -24,6 +24,168 @@
             <summary>
             备注
             </summary>
+        </member>
+        <member name="T:Fast.IaaS.DateTimeRequiredAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.DateTimeRequiredAttribute"/> 验证 <see cref="T:System.DateTime"/> 类型属性必填
+            <remarks>默认必须在 1949-10-01 ~ 2099-12-31 之间</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DateTimeRequiredAttribute.MinValue">
+            <summary>
+            最小值
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DateTimeRequiredAttribute.MaxValue">
+            <summary>
+            最大值
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DateTimeRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:Fast.IaaS.DecimalRequiredAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.DecimalRequiredAttribute"/> 验证 <see cref="T:System.Decimal"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DecimalRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DecimalRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DecimalRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:Fast.IaaS.DoubleRequiredAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.DoubleRequiredAttribute"/> 验证 <see cref="T:System.Double"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DoubleRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.DoubleRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.DoubleRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:Fast.IaaS.FloatRequiredAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.FloatRequiredAttribute"/> 验证 <see cref="T:System.Single"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.FloatRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.FloatRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.FloatRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:Fast.IaaS.IntRequiredAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.IntRequiredAttribute"/> 验证 <see cref="T:System.Int32"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.IntRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.IntRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IntRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:Fast.IaaS.LongRequiredAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.LongRequiredAttribute"/> 验证 <see cref="T:System.Int64"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.LongRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.LongRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.LongRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:Fast.IaaS.StringRequiredAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.StringRequiredAttribute"/> 验证 <see cref="T:System.String"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.StringRequiredAttribute.AllowEmptyString">
+            <summary>
+            允许空字符串
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.StringRequiredAttribute.AllowWhitespace">
+            <summary>
+            允许前后空格
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.StringRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
         </member>
         <member name="T:Fast.IaaS.SuppressSnifferAttribute">
             <summary>
