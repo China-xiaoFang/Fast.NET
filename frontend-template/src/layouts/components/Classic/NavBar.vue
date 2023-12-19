@@ -1,7 +1,7 @@
 <template>
     <div class="nav-bar">
         <div v-if="configStore.layout.shrink && configStore.layout.menuCollapse" class="unfold">
-            <Icon @click="onMenuCollapse" name="fa fa-indent" :color="configStore.getColorVal('menuActiveColor')" size="18" />
+            <FIcon @click="onMenuCollapse" name="fa fa-indent" :color="configStore.getColorVal('menuActiveColor')" size="18" />
         </div>
     </div>
 </template>

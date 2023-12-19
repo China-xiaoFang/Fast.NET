@@ -5,7 +5,7 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { isProd } from "./src/utils/vite";
 // 加载本地svg图标
-import { svgBuilder } from "./src/components/FIcon/svg/index";
+import { svgBuilder } from "./src/utils/svg";
 // 解决 setup 语法糖导致不能给页面设置 name，导致 keep-alive 失效的问题。https://zhuanlan.zhihu.com/p/481640259
 import VueSetupExtend from "vite-plugin-vue-setup-extend";
 

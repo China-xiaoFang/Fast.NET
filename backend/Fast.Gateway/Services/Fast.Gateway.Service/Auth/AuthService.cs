@@ -14,7 +14,8 @@
 
 using Fast.Gateway.Entities.Entities.User;
 using Fast.Gateway.Service.Auth.Dto;
-using Fast.JwtBearer.Utils;
+using Fast.JwtBearer.Services;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Fast.Gateway.Service.Auth;
 
@@ -24,10 +25,12 @@ namespace Fast.Gateway.Service.Auth;
 public class AuthService : IAuthService, ITransientDependency
 {
     private readonly ISqlSugarRepository<UserAccount> _repository;
+    private readonly IJwtBearerCryptoService _jwtBearerCryptoService;
 
-    public AuthService(ISqlSugarRepository<UserAccount> repository)
+    public AuthService(ISqlSugarRepository<UserAccount> repository, IJwtBearerCryptoService jwtBearerCryptoService)
     {
         _repository = repository;
+        _jwtBearerCryptoService = jwtBearerCryptoService;
     }
 
     /// <summary>
@@ -57,19 +60,19 @@ public class AuthService : IAuthService, ITransientDependency
         }
 
         // 生成Token令牌，30分钟
-        var accessToken = JwtCryptoUtil.GenerateToken(new Dictionary<string, object>
+        var accessToken = _jwtBearerCryptoService.GenerateToken(new Dictionary<string, object>
         {
             {"Id", model.Id}, {"Account", model.Account}, {"Name", model.Name}
         });
 
         // 获取刷新Token，30天
-        var refreshToken = JwtCryptoUtil.GenerateRefreshToken(accessToken);
+        var refreshToken = _jwtBearerCryptoService.GenerateRefreshToken(accessToken);
 
         // 设置Token令牌
-        App.HttpContext.Response.Headers["access-token"] = accessToken;
+        FastContext.HttpContext.Response.Headers["access-token"] = accessToken;
 
         // 设置刷新Token令牌
-        App.HttpContext.Response.Headers["x-access-token"] = refreshToken;
+        FastContext.HttpContext.Response.Headers["x-access-token"] = refreshToken;
 
         return new LoginOutput {Account = model.Account, Name = model.Name};
     }

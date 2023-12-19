@@ -12,14 +12,22 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-global using System.ComponentModel.DataAnnotations;
-global using Fast.DependencyInjection;
-global using Fast.Gateway.IaaS.Outputs;
-global using Fast.IaaS;
-global using Fast.NET;
-global using Fast.NET.Core;
-global using Fast.SqlSugar;
-global using Fast.SqlSugar.BaseEntities;
-global using Fast.SqlSugar.Extensions;
-global using Fast.SqlSugar.Repository;
-global using SqlSugar;
+namespace Fast.Gateway.Service.Projects.Dto;
+
+/// <summary>
+/// <see cref="AddProjectInput"/> 添加项目输入
+/// </summary>
+public class AddProjectInput
+{
+    /// <summary>
+    /// 项目名称 
+    ///</summary>
+    [Required(ErrorMessage = "项目名称不能为空")]
+    public string ProjectName { get; set; }
+
+    /// <summary>
+    /// 排序字段 
+    ///</summary>
+    [Required(ErrorMessage = "排序字段不能为空")]
+    public int OrderIndex { get; set; }
+}
