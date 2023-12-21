@@ -1,4 +1,4 @@
-﻿using Fast.NET.Core.Attributes;
+﻿using Fast.IaaS;
 
 namespace Fast.Test.Api;
 

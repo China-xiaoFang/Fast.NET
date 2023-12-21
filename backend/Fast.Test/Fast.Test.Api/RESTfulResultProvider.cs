@@ -1,4 +1,4 @@
-﻿using Fast.NET.Core.Attributes;
+﻿using Fast.IaaS;
 using Fast.SpecificationProcessor.DataValidation;
 using Fast.SpecificationProcessor.FriendlyException.Metadatas;
 using Fast.SpecificationProcessor.UnifyResult;

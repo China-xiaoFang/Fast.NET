@@ -27,59 +27,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer">
-            <summary>
-            RabbitMQ 事件总线存储器
-            </summary>
-        </member>
-        <member name="F:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer._channel">
-            <summary>
-            内存通道事件源存储器
-            </summary>
-        </member>
-        <member name="F:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer._model">
-            <summary>
-            通道对象
-            </summary>
-        </member>
-        <member name="F:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer._connection">
-            <summary>
-            连接对象
-            </summary>
-        </member>
-        <member name="F:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer._routeKey">
-            <summary>
-            路由键
-            </summary>
-        </member>
-        <member name="M:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer.#ctor(RabbitMQ.Client.ConnectionFactory,System.String,System.Int32)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="factory">连接工厂</param>
-            <param name="routeKey">路由键</param>
-            <param name="capacity">存储器最多能够处理多少消息，超过该容量进入等待写入</param>
-        </member>
-        <member name="M:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer.WriteAsync(Fast.EventBus.IEventSource,System.Threading.CancellationToken)">
-            <summary>
-            将事件源写入存储器
-            </summary>
-            <param name="eventSource">事件源对象</param>
-            <param name="cancellationToken">取消任务 Token</param>
-            <returns><see cref="T:System.Threading.Tasks.ValueTask"/></returns>
-        </member>
-        <member name="M:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer.ReadAsync(System.Threading.CancellationToken)">
-            <summary>
-            从存储器中读取一条事件源
-            </summary>
-            <param name="cancellationToken">取消任务 Token</param>
-            <returns>事件源对象</returns>
-        </member>
-        <member name="M:Fast.Test.Api.EventSubscriber.RabbitMQEventSourceStorer.Dispose">
-            <summary>
-            释放非托管资源
-            </summary>
-        </member>
         <member name="M:Fast.Test.Api.Handlers.SqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient)">
             <summary>
             根据实体类型获取连接字符串

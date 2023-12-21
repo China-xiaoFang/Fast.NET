@@ -7,18 +7,15 @@ using Fast.NET.Core.Extensions;
 using Fast.Serialization.Extensions;
 using Fast.SpecificationProcessor.DataValidation.Extensions;
 using Fast.SpecificationProcessor.DynamicApplication.Extensions;
-using Fast.SpecificationProcessor.SpecificationDocument.Extensions;
+using Fast.SpecificationProcessor.Swagger.Extensions;
 using Fast.SpecificationProcessor.UnifyResult.Extensions;
 using Fast.SqlSugar.Extensions;
 using Fast.Test.Api;
 
 var builder = WebApplication.CreateBuilder(args).Initialize();
 
-// Customize the console log output template.
-builder.Logging.AddConsoleFormatter(options => { options.DateFormat = "yyyy-MM-dd HH:mm:ss"; });
-
 // 日志
-builder.AddLogging();
+builder.Services.AddLogging(builder.Configuration);
 
 // 跨域配置
 builder.Services.AddCorsAccessor(builder.Configuration);
@@ -42,7 +39,7 @@ builder.Services.AddSqlSugar(builder.Configuration);
 builder.Services.AddControllers();
 
 // 文档
-builder.AddSpecificationDocuments();
+builder.Services.AddSwaggerDocument(builder.Configuration);
 
 // 动态 API
 builder.Services.AddDynamicApplication();
@@ -81,14 +78,8 @@ var app = builder.Build();
 // Mandatory Https.
 app.UseHttpsRedirection();
 
-// 日志中间件
-app.UseLogging();
-
 // 跨域中间件
 app.UseCorsAccessor();
-
-// 依赖注入中间件
-app.UseDependencyInjection();
 
 // Enable compression.
 //app.UseResponseCompression();
@@ -102,7 +93,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Here, the default address is/API if no argument is entered, and/directory if string.empty is entered. If any string is entered, the/arbitrary string directory.
-app.UseSpecificationDocuments();
+app.UseSwaggerDocument();
 
 app.MapControllers();
 
