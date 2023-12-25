@@ -73,7 +73,7 @@ public static class SqlSugarIServiceCollectionExtension
             services.AddScoped(typeof(ISqlSugarEntityHandler), SqlSugarEntityHandlerType);
         }
 
-        // 注册 SqlSugarClient，这里注册一边是因为防止直接使用 ISqlSugarClient
+        // 注册 SqlSugarClient，这里注册一遍是因为防止直接使用 ISqlSugarClient
         services.AddScoped<ISqlSugarClient>(serviceProvider =>
         {
             // 获取 Sugar实体处理 接口的实现类
@@ -81,10 +81,19 @@ public static class SqlSugarIServiceCollectionExtension
 
             var sqlSugarClient = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfig);
 
+            // 执行超时时间
+            sqlSugarClient.Ado.CommandTimeOut = SqlSugarContext.ConnectionSettings.CommandTimeOut;
+
+            // 判断是否禁用 Aop
+            if (!SqlSugarContext.ConnectionSettings.DisableAop)
+            {
+                // Aop
+                SugarEntityFilter.LoadSugarAop(sqlSugarClient, SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds,
+                    SqlSugarContext.ConnectionSettings.DiffLog, sqlSugarEntityHandler);
+            }
+
             // 过滤器
-            SugarEntityFilter.LoadSugarFilter(sqlSugarClient, SqlSugarContext.ConnectionSettings.CommandTimeOut,
-                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog,
-                sqlSugarEntityHandler);
+            SugarEntityFilter.LoadSugarFilter(sqlSugarClient, sqlSugarEntityHandler);
 
             return sqlSugarClient;
         });
