@@ -50,11 +50,17 @@ export interface SiteConfig {
      */
     icpInfo?: string;
     /**
-     * 公安备案信息
+     * 公安备案省份
      * @type {string}
      * @memberof SiteConfig
      */
-    publicInfo?: string;
+    publicProvince?: string;
+    /**
+     * 公安备案号
+     * @type {string}
+     * @memberof SiteConfig
+     */
+    publicCode?: string;
     /**
      * 站点资源 cdn 加速地址
      * @type {string}

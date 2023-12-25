@@ -2,20 +2,21 @@ import { defineStore } from "pinia";
 import { reactive } from "vue";
 import { STORE_CONFIG } from "@/stores/constant";
 import type { Lang, Axios, Layout } from "./interface";
+import { getLocalLang } from "@/lang";
 
 export const useConfig = defineStore(
     "config",
     () => {
         // 多语言
         const lang: Lang = reactive({
-            // 默认语言
-            defaultLang: "zh-cn",
+            // 默认语言。这里获取浏览器默认语言
+            defaultLang: getLocalLang(navigator.language),
             // 当在默认语言包找不到翻译时，继续在 fallbackLang 语言包内查找翻译
-            fallbackLang: "zh-cn",
+            fallbackLang: getLocalLang(navigator.language),
             // 支持的语言列表
             langArray: [
-                { name: "zh-cn", value: "中文简体" },
-                { name: "zh-tw", value: "中文繁体" },
+                { name: "zh-CN", value: "中文简体" },
+                { name: "zh-TW", value: "中文繁体" },
                 { name: "en", value: "English" },
             ],
         });

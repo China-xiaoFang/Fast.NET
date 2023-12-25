@@ -15,16 +15,31 @@ export default defineComponent({
                     {siteConfigStore.state.copyrightValidEndYear !== null && <>~{siteConfigStore.state.copyrightValidEndYear} </>}
                     {siteConfigStore.state.copyrighted && (
                         <>
+                            {" "}
                             {siteConfigStore.state.copyrightedUrl ? (
                                 <a href={siteConfigStore.state.copyrightedUrl}>{siteConfigStore.state.copyrighted}</a>
                             ) : (
                                 <>{siteConfigStore.state.copyrighted}</>
-                            )}
+                            )}{" "}
                         </>
                     )}
-                    {siteConfigStore.state.version && <> {siteConfigStore.state.version}</>}
-                    {siteConfigStore.state.icpInfo && <a href="https://beian.miit.gov.cn/">{siteConfigStore.state.icpInfo}</a>}
-                    {siteConfigStore.state.publicInfo && <a href="https://beian.mps.gov.cn/">{siteConfigStore.state.publicInfo}</a>}
+                    {siteConfigStore.state.version && <> {siteConfigStore.state.version} </>}
+                    {siteConfigStore.state.icpInfo && (
+                        <>
+                            {" "}
+                            <a href="https://beian.miit.gov.cn/">{siteConfigStore.state.icpInfo}</a>{" "}
+                        </>
+                    )}
+                    {siteConfigStore.state.publicProvince && siteConfigStore.state.publicCode && (
+                        <>
+                            {" "}
+                            <img src="/src/assets/publicLogo.png" />{" "}
+                            <a href={`https://beian.mps.gov.cn/#/query/webSearch?code=${siteConfigStore.state.publicCode}`}>
+                                {siteConfigStore.state.publicProvince}
+                                {siteConfigStore.state.publicCode}号
+                            </a>{" "}
+                        </>
+                    )}
                 </div>
             </el-footer>
         );
@@ -40,12 +55,18 @@ export default defineComponent({
     align-items: center;
     height: 30px;
     background-color: var(--fast-bg-color);
+    margin: 5px 0;
 
     a {
         font-size: 14px;
         letter-spacing: 0.5px;
         text-decoration: none;
         color: var(--el-text-color-secondary);
+    }
+
+    img {
+        width: 16px;
+        vertical-align: top;
     }
 }
 </style>

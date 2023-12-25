@@ -26,8 +26,8 @@ export let i18n: {
  * 准备要合并的语言包
  */
 const assignLocale: anyObj = {
-    "zh-cn": [elementZhCnLocale],
-    "zh-tw": [elementZhTwLocale],
+    "zh-CN": [elementZhCnLocale],
+    "zh-TW": [elementZhTwLocale],
     en: [elementEnLocale],
 };
 
@@ -48,21 +48,21 @@ export const loadLang = async (app: App) => {
      * 按需加载语言包文件的句柄
      */
     switch (locale) {
-        case "zh-cn":
+        case "zh-CN":
             window.loadLangHandle = {
-                ...import.meta.glob("./zh-cn/views/**/*.ts"),
+                ...import.meta.glob("./zh-CN/views/**/*.ts"),
             };
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/components/**/*.ts", { eager: true }), locale));
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/layouts/**/*.ts", { eager: true }), locale));
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-cn/utils/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-CN/components/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-CN/layouts/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-CN/utils/**/*.ts", { eager: true }), locale));
             break;
-        case "zh-tw":
+        case "zh-TW":
             window.loadLangHandle = {
-                ...import.meta.glob("./zh-tw/views/**/*.ts"),
+                ...import.meta.glob("./zh-TW/views/**/*.ts"),
             };
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/components/**/*.ts", { eager: true }), locale));
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/layouts/**/*.ts", { eager: true }), locale));
-            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-tw/utils/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-TW/components/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-TW/layouts/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-TW/utils/**/*.ts", { eager: true }), locale));
             break;
         case "en":
             window.loadLangHandle = {
@@ -183,6 +183,27 @@ export function mergeMsg(msg: anyObj, obj: anyObj): anyObj {
 }
 
 /**
+ * 获取本地语言字符串
+ * @param lang
+ * @returns
+ */
+export function getLocalLang(lang: string): string {
+    switch (lang) {
+        case "zh-cn":
+        case "zh-CN":
+            return "zh-CN";
+        case "zh-tw":
+        case "zh-TW":
+            return "zh-TW";
+        case "en-US":
+        case "en":
+            return "en";
+        default:
+            return "zh-CN";
+    }
+}
+
+/**
  * 修改默认语言设置并重新加载应用
  * @param lang 新的默认语言
  */
@@ -190,7 +211,7 @@ export function editDefaultLang(lang: string): void {
     // 获取配置信息
     const config = useConfig();
     // 设置新的默认语言
-    config.lang.defaultLang = lang;
+    config.lang.defaultLang = getLocalLang(lang);
     // 语言包是按需加载的，比如默认语言为中文，则只在 app 实例内加载了中文语言包，所以切换语言需要进行 reload
     location.reload();
 }

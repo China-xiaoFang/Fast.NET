@@ -36,6 +36,11 @@
             <param name="value"></param>
             <returns></returns>
         </member>
+        <member name="T:Fast.Cache.Helpers.FastRedisHelper">
+            <summary>
+            <see cref="T:Fast.Cache.Helpers.FastRedisHelper"/>
+            </summary>
+        </member>
         <member name="T:Fast.Cache.ICache">
             <summary>
             缓存服务接口

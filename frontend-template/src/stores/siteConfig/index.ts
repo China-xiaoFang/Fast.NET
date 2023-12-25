@@ -22,8 +22,10 @@ export const useSiteConfig = defineStore(
             version: "v1.0.0",
             // ICP备案信息
             icpInfo: "xICP备xxx号",
-            // 公安备案信息
-            publicInfo: "x公网安备xxx号",
+            // 公安备案省份
+            publicProvince: "X",
+            // 公安备案号
+            publicCode: "xxxx",
             // 站点资源 cdn 加速地址
             cdnUrl: "",
         });
