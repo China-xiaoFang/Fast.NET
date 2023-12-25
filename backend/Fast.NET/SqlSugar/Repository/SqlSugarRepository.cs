@@ -55,10 +55,19 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
                 // 重新初始化Context
                 InitContext(newConnectionConfig);
 
-                // 加载过滤器
-                SugarEntityFilter.LoadSugarFilter(Context, SqlSugarContext.ConnectionSettings.CommandTimeOut,
-                    SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog,
-                    sqlSugarEntityHandler);
+                // 执行超时时间
+                Context.Ado.CommandTimeOut = connectionSettings.CommandTimeOut;
+
+                // 判断是否禁用 Aop
+                if (!connectionSettings.DisableAop)
+                {
+                    // Aop
+                    SugarEntityFilter.LoadSugarAop(Context, connectionSettings.SugarSqlExecMaxSeconds, connectionSettings.DiffLog,
+                        sqlSugarEntityHandler);
+                }
+
+                // 过滤器
+                SugarEntityFilter.LoadSugarFilter(Context, sqlSugarEntityHandler);
             }
         }
         else

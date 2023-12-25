@@ -28,8 +28,8 @@ public static class SqlSugarPageExtension
     /// SqlSugar分页扩展
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"></param>
-    /// <param name="input"></param>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="input"><see cref="SqlSugarPageInput"/> 通用SqlSugar 分页输入</param>
     /// <returns></returns>
     public static SqlSugarPageResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable,
         SqlSugarPageInput input)
@@ -41,8 +41,8 @@ public static class SqlSugarPageExtension
     /// SqlSugar分页扩展
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"></param>
-    /// <param name="input"></param>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="input"><see cref="SqlSugarPageInput"/> 通用SqlSugar 分页输入</param>
     /// <returns></returns>
     public static async Task<SqlSugarPageResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         SqlSugarPageInput input)
@@ -55,9 +55,9 @@ public static class SqlSugarPageExtension
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"></param>
-    /// <param name="input"></param>
-    /// <param name="expression"></param>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="input"><see cref="SqlSugarPageInput"/> 通用SqlSugar 分页输入</param>
+    /// <param name="expression"><see cref="Expression"/> where 条件</param>
     /// <returns></returns>
     public static SqlSugarPageResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
         SqlSugarPageInput input, Expression<Func<TEntity, TResult>> expression)
@@ -70,9 +70,9 @@ public static class SqlSugarPageExtension
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"></param>
-    /// <param name="input"></param>
-    /// <param name="expression"></param>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="input"><see cref="SqlSugarPageInput"/> 通用SqlSugar 分页输入</param>
+    /// <param name="expression"><see cref="Expression"/> where 条件</param>
     /// <returns></returns>
     public static async Task<SqlSugarPageResult<TResult>> ToPagedListAsync<TEntity, TResult>(
         this ISugarQueryable<TEntity> queryable, SqlSugarPageInput input, Expression<Func<TEntity, TResult>> expression)
@@ -84,9 +84,9 @@ public static class SqlSugarPageExtension
     /// SqlSugar分页扩展
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"></param>
-    /// <param name="pageIndex"></param>
-    /// <param name="pageSize"></param>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="pageIndex"><see cref="int"/> 页数</param>
+    /// <param name="pageSize"><see cref="int"/> 页码</param>
     /// <returns></returns>
     public static SqlSugarPageResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, int pageIndex,
         int pageSize)
@@ -110,9 +110,9 @@ public static class SqlSugarPageExtension
     /// SqlSugar分页扩展
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"></param>
-    /// <param name="pageIndex"></param>
-    /// <param name="pageSize"></param>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="pageIndex"><see cref="int"/> 页数</param>
+    /// <param name="pageSize"><see cref="int"/> 页码</param>
     /// <returns></returns>
     public static async Task<SqlSugarPageResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         int pageIndex, int pageSize)
@@ -137,10 +137,10 @@ public static class SqlSugarPageExtension
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"></param>
-    /// <param name="pageIndex"></param>
-    /// <param name="pageSize"></param>
-    /// <param name="expression"></param>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="pageIndex"><see cref="int"/> 页数</param>
+    /// <param name="pageSize"><see cref="int"/> 页码</param>
+    /// <param name="expression"><see cref="Expression"/> where 条件</param>
     /// <returns></returns>
     public static SqlSugarPageResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
         int pageIndex, int pageSize, Expression<Func<TEntity, TResult>> expression)
@@ -165,10 +165,10 @@ public static class SqlSugarPageExtension
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"></param>
-    /// <param name="pageIndex"></param>
-    /// <param name="pageSize"></param>
-    /// <param name="expression"></param>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="pageIndex"><see cref="int"/> 页数</param>
+    /// <param name="pageSize"><see cref="int"/> 页码</param>
+    /// <param name="expression"><see cref="Expression"/> where 条件</param>
     /// <returns></returns>
     public static async Task<SqlSugarPageResult<TResult>> ToPagedListAsync<TEntity, TResult>(
         this ISugarQueryable<TEntity> queryable, int pageIndex, int pageSize, Expression<Func<TEntity, TResult>> expression)

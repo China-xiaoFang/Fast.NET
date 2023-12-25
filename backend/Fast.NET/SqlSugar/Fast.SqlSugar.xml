@@ -317,8 +317,8 @@
             SqlSugar分页扩展
             </summary>
             <typeparam name="TEntity"></typeparam>
-            <param name="queryable"></param>
-            <param name="input"></param>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="input"><see cref="T:Fast.SqlSugar.SqlSugarPageInput"/> 通用SqlSugar 分页输入</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.SqlSugarPageInput)">
@@ -326,8 +326,8 @@
             SqlSugar分页扩展
             </summary>
             <typeparam name="TEntity"></typeparam>
-            <param name="queryable"></param>
-            <param name="input"></param>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="input"><see cref="T:Fast.SqlSugar.SqlSugarPageInput"/> 通用SqlSugar 分页输入</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.SqlSugarPageInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
@@ -336,9 +336,9 @@
             </summary>
             <typeparam name="TEntity"></typeparam>
             <typeparam name="TResult"></typeparam>
-            <param name="queryable"></param>
-            <param name="input"></param>
-            <param name="expression"></param>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="input"><see cref="T:Fast.SqlSugar.SqlSugarPageInput"/> 通用SqlSugar 分页输入</param>
+            <param name="expression"><see cref="T:System.Linq.Expressions.Expression"/> where 条件</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.SqlSugarPageInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
@@ -347,9 +347,9 @@
             </summary>
             <typeparam name="TEntity"></typeparam>
             <typeparam name="TResult"></typeparam>
-            <param name="queryable"></param>
-            <param name="input"></param>
-            <param name="expression"></param>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="input"><see cref="T:Fast.SqlSugar.SqlSugarPageInput"/> 通用SqlSugar 分页输入</param>
+            <param name="expression"><see cref="T:System.Linq.Expressions.Expression"/> where 条件</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
@@ -357,9 +357,9 @@
             SqlSugar分页扩展
             </summary>
             <typeparam name="TEntity"></typeparam>
-            <param name="queryable"></param>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="pageIndex"><see cref="T:System.Int32"/> 页数</param>
+            <param name="pageSize"><see cref="T:System.Int32"/> 页码</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
@@ -367,9 +367,9 @@
             SqlSugar分页扩展
             </summary>
             <typeparam name="TEntity"></typeparam>
-            <param name="queryable"></param>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="pageIndex"><see cref="T:System.Int32"/> 页数</param>
+            <param name="pageSize"><see cref="T:System.Int32"/> 页码</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
@@ -378,10 +378,10 @@
             </summary>
             <typeparam name="TEntity"></typeparam>
             <typeparam name="TResult"></typeparam>
-            <param name="queryable"></param>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
-            <param name="expression"></param>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="pageIndex"><see cref="T:System.Int32"/> 页数</param>
+            <param name="pageSize"><see cref="T:System.Int32"/> 页码</param>
+            <param name="expression"><see cref="T:System.Linq.Expressions.Expression"/> where 条件</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
@@ -390,10 +390,10 @@
             </summary>
             <typeparam name="TEntity"></typeparam>
             <typeparam name="TResult"></typeparam>
-            <param name="queryable"></param>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
-            <param name="expression"></param>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="pageIndex"><see cref="T:System.Int32"/> 页数</param>
+            <param name="pageSize"><see cref="T:System.Int32"/> 页码</param>
+            <param name="expression"><see cref="T:System.Linq.Expressions.Expression"/> where 条件</param>
             <returns></returns>
         </member>
         <member name="T:Fast.SqlSugar.Filters.SugarEntityFilter">
@@ -401,14 +401,20 @@
             <see cref="T:Fast.SqlSugar.Filters.SugarEntityFilter"/> Sugar实体过滤器
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarFilter(SqlSugar.ISqlSugarClient,System.Int32,System.Double,System.Boolean,Fast.SqlSugar.Handlers.ISqlSugarEntityHandler)">
+        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarAop(SqlSugar.ISqlSugarClient,System.Double,System.Boolean,Fast.SqlSugar.Handlers.ISqlSugarEntityHandler)">
+            <summary>
+            加载 Sugar Aop
+            </summary>
+            <param name="_db"></param>
+            <param name="sugarSqlExecMaxSeconds"><see cref="T:System.Double"/> Sql最大执行秒数</param>
+            <param name="diffLog"><see cref="T:System.Boolean"/> 是否启用差异日志</param>
+            <param name="sqlSugarEntityHandler"><see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理</param>
+        </member>
+        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarFilter(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Handlers.ISqlSugarEntityHandler)">
             <summary>
             加载Sugar过滤器
             </summary>
             <param name="_db"></param>
-            <param name="commandTimeOut"><see cref="T:System.Int32"/> 执行超时时间</param>
-            <param name="sugarSqlExecMaxSeconds"><see cref="T:System.Double"/> Sql最大执行秒数</param>
-            <param name="diffLog"><see cref="T:System.Boolean"/> 是否启用差异日志</param>
             <param name="sqlSugarEntityHandler"><see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理</param>
         </member>
         <member name="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler">
@@ -818,6 +824,12 @@
         <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DiffLog">
             <summary>
             差异日志
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DisableAop">
+            <summary>
+            禁用 SqlSugar 的 Aop
+            <remarks>如果是通过 <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
             </summary>
         </member>
         <member name="T:Fast.SqlSugar.Options.SnowflakeSettingsOptions">

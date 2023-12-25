@@ -13,6 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
+using Fast.SqlSugar.Handlers;
 using SqlSugar;
 
 namespace Fast.SqlSugar.Options;
@@ -94,4 +95,11 @@ public class ConnectionSettingsOptions
     /// </summary>
     [SugarColumn(ColumnDescription = "差异日志", IsNullable = false)]
     public bool DiffLog { get; set; }
+
+    /// <summary>
+    /// 禁用 SqlSugar 的 Aop
+    /// <remarks>如果是通过 <see cref="ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
+    /// </summary>
+    [SugarColumn(ColumnDescription = "差异日志", IsNullable = false)]
+    public bool DisableAop { get; set; }
 }
