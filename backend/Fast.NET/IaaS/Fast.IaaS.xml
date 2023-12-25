@@ -2765,14 +2765,6 @@
             <param name="expression">表达式</param>
             <returns>属性名</returns>
         </member>
-        <member name="M:System.Linq.ExpressionExtension.IsNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            是否是空集合
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <returns>是否为空集合</returns>
-        </member>
         <member name="T:System.Linq.IEnumerableExtension">
             <summary>
             <see cref="T:System.Linq.IEnumerableExtension"/> IEnumerable 拓展

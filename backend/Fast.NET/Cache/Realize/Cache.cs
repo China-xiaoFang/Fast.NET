@@ -14,6 +14,7 @@
 
 using CSRedis;
 using Fast.Cache.Extensions;
+using Fast.Cache.Helpers;
 using Fast.IaaS;
 using Microsoft.Extensions.Configuration;
 using ValidateExtension = Fast.Cache.Extensions.ValidateExtension;
@@ -47,7 +48,7 @@ public class Cache : ICache
         }
 
         var csRedis = new CSRedisClient(connectionString);
-        RedisHelper.Initialization(csRedis);
+        FastRedisHelper.Initialization(csRedis);
     }
 
     /// <summary>
@@ -57,7 +58,7 @@ public class Cache : ICache
     /// <returns></returns>
     public long Del(params string[] key)
     {
-        return RedisHelper.Del(key);
+        return FastRedisHelper.Del(key);
     }
 
     /// <summary>
@@ -67,7 +68,7 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<long> DelAsync(params string[] key)
     {
-        return await RedisHelper.DelAsync(key);
+        return await FastRedisHelper.DelAsync(key);
     }
 
     /// <summary>
@@ -81,10 +82,10 @@ public class Cache : ICache
         if (string.IsNullOrEmpty(pattern))
             return default;
 
-        var keys = RedisHelper.Scan(0, $"{pattern}*");
+        var keys = FastRedisHelper.Scan(0, $"{pattern}*");
         if (keys != null && keys.Items.Length > 0)
         {
-            return RedisHelper.Del(keys.Items);
+            return FastRedisHelper.Del(keys.Items);
         }
 
         return default;
@@ -101,10 +102,10 @@ public class Cache : ICache
         if (string.IsNullOrEmpty(pattern))
             return default;
 
-        var keys = await RedisHelper.ScanAsync(0, $"{pattern}*");
+        var keys = await FastRedisHelper.ScanAsync(0, $"{pattern}*");
         if (keys != null && keys.Items.Length > 0)
         {
-            return await RedisHelper.DelAsync(keys.Items);
+            return await FastRedisHelper.DelAsync(keys.Items);
         }
 
         return default;
@@ -117,7 +118,7 @@ public class Cache : ICache
     /// <returns></returns>
     public bool Exists(string key)
     {
-        return RedisHelper.Exists(key);
+        return FastRedisHelper.Exists(key);
     }
 
     /// <summary>
@@ -127,7 +128,7 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<bool> ExistsAsync(string key)
     {
-        return await RedisHelper.ExistsAsync(key);
+        return await FastRedisHelper.ExistsAsync(key);
     }
 
     /// <summary>
@@ -137,7 +138,7 @@ public class Cache : ICache
     /// <returns></returns>
     public string Get(string key)
     {
-        return RedisHelper.Get(key);
+        return FastRedisHelper.Get(key);
     }
 
     /// <summary>
@@ -147,7 +148,7 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<string> GetAsync(string key)
     {
-        return await RedisHelper.GetAsync(key);
+        return await FastRedisHelper.GetAsync(key);
     }
 
     /// <summary>
@@ -158,7 +159,7 @@ public class Cache : ICache
     /// <returns></returns>
     public T Get<T>(string key)
     {
-        return RedisHelper.Get<T>(key);
+        return FastRedisHelper.Get<T>(key);
     }
 
     /// <summary>
@@ -169,7 +170,7 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<T> GetAsync<T>(string key)
     {
-        return await RedisHelper.GetAsync<T>(key);
+        return await FastRedisHelper.GetAsync<T>(key);
     }
 
     /// <summary>
@@ -180,7 +181,7 @@ public class Cache : ICache
     /// <returns></returns>
     public bool Set(string key, object value)
     {
-        return RedisHelper.Set(key, value);
+        return FastRedisHelper.Set(key, value);
     }
 
     /// <summary>
@@ -191,7 +192,7 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<bool> SetAsync(string key, object value)
     {
-        return await RedisHelper.SetAsync(key, value);
+        return await FastRedisHelper.SetAsync(key, value);
     }
 
     /// <summary>
@@ -203,7 +204,7 @@ public class Cache : ICache
     /// <returns></returns>
     public bool Set(string key, object value, int expireSeconds)
     {
-        return RedisHelper.Set(key, value, expireSeconds);
+        return FastRedisHelper.Set(key, value, expireSeconds);
     }
 
     /// <summary>
@@ -215,7 +216,7 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<bool> SetAsync(string key, object value, int expireSeconds)
     {
-        return await RedisHelper.SetAsync(key, value, expireSeconds);
+        return await FastRedisHelper.SetAsync(key, value, expireSeconds);
     }
 
     /// <summary>
@@ -227,7 +228,7 @@ public class Cache : ICache
     /// <returns></returns>
     public bool Set(string key, object value, TimeSpan expireTimeSpan)
     {
-        return RedisHelper.Set(key, value, expireTimeSpan);
+        return FastRedisHelper.Set(key, value, expireTimeSpan);
     }
 
     /// <summary>
@@ -239,7 +240,7 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<bool> SetAsync(string key, object value, TimeSpan expireTimeSpan)
     {
-        return await RedisHelper.SetAsync(key, value, expireTimeSpan);
+        return await FastRedisHelper.SetAsync(key, value, expireTimeSpan);
     }
 
     /// <summary>
@@ -249,7 +250,7 @@ public class Cache : ICache
     /// <returns></returns>
     public List<string> GetAllKeys()
     {
-        var result = RedisHelper.Keys("*");
+        var result = FastRedisHelper.Keys("*");
         return result.ToList();
     }
 
@@ -260,7 +261,7 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<List<string>> GetAllKeysAsync()
     {
-        var result = await RedisHelper.KeysAsync("*");
+        var result = await FastRedisHelper.KeysAsync("*");
         return result.ToList();
     }
 
@@ -272,13 +273,13 @@ public class Cache : ICache
     /// <returns></returns>
     public string GetAndSet(string key, Func<string> func)
     {
-        var result = RedisHelper.Get(key);
+        var result = FastRedisHelper.Get(key);
 
         if (ValidateExtension.IsEmpty(result))
         {
             result = func.Invoke();
 
-            RedisHelper.Set(key, result);
+            FastRedisHelper.Set(key, result);
         }
 
         return result;
@@ -292,13 +293,13 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<string> GetAndSetAsync(string key, Func<Task<string>> func)
     {
-        var result = await RedisHelper.GetAsync(key);
+        var result = await FastRedisHelper.GetAsync(key);
 
         if (ValidateExtension.IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await RedisHelper.SetAsync(key, result);
+            await FastRedisHelper.SetAsync(key, result);
         }
 
         return result;
@@ -313,13 +314,13 @@ public class Cache : ICache
     /// <returns></returns>
     public T GetAndSet<T>(string key, Func<T> func)
     {
-        var result = RedisHelper.Get<T>(key);
+        var result = FastRedisHelper.Get<T>(key);
 
         if (result.IsEmpty())
         {
             result = func.Invoke();
 
-            RedisHelper.Set(key, result);
+            FastRedisHelper.Set(key, result);
         }
 
         return result;
@@ -334,13 +335,13 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, Func<Task<T>> func)
     {
-        var result = await RedisHelper.GetAsync<T>(key);
+        var result = await FastRedisHelper.GetAsync<T>(key);
 
         if (result.IsEmpty())
         {
             result = await func.Invoke();
 
-            await RedisHelper.SetAsync(key, result);
+            await FastRedisHelper.SetAsync(key, result);
         }
 
         return result;
@@ -355,13 +356,13 @@ public class Cache : ICache
     /// <returns></returns>
     public string GetAndSet(string key, int expireSeconds, Func<string> func)
     {
-        var result = RedisHelper.Get(key);
+        var result = FastRedisHelper.Get(key);
 
         if (ValidateExtension.IsEmpty(result))
         {
             result = func.Invoke();
 
-            RedisHelper.Set(key, result, expireSeconds);
+            FastRedisHelper.Set(key, result, expireSeconds);
         }
 
         return result;
@@ -376,13 +377,13 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<string> GetAndSetAsync(string key, int expireSeconds, Func<Task<string>> func)
     {
-        var result = await RedisHelper.GetAsync(key);
+        var result = await FastRedisHelper.GetAsync(key);
 
         if (ValidateExtension.IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await RedisHelper.SetAsync(key, result, expireSeconds);
+            await FastRedisHelper.SetAsync(key, result, expireSeconds);
         }
 
         return result;
@@ -398,13 +399,13 @@ public class Cache : ICache
     /// <returns></returns>
     public T GetAndSet<T>(string key, int expireSeconds, Func<T> func)
     {
-        var result = RedisHelper.Get<T>(key);
+        var result = FastRedisHelper.Get<T>(key);
 
         if (result.IsEmpty())
         {
             result = func.Invoke();
 
-            RedisHelper.Set(key, result, expireSeconds);
+            FastRedisHelper.Set(key, result, expireSeconds);
         }
 
         return result;
@@ -420,13 +421,13 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, int expireSeconds, Func<Task<T>> func)
     {
-        var result = await RedisHelper.GetAsync<T>(key);
+        var result = await FastRedisHelper.GetAsync<T>(key);
 
         if (result.IsEmpty())
         {
             result = await func.Invoke();
 
-            await RedisHelper.SetAsync(key, result, expireSeconds);
+            await FastRedisHelper.SetAsync(key, result, expireSeconds);
         }
 
         return result;
@@ -441,13 +442,13 @@ public class Cache : ICache
     /// <returns></returns>
     public string GetAndSet(string key, TimeSpan expireTimeSpan, Func<string> func)
     {
-        var result = RedisHelper.Get(key);
+        var result = FastRedisHelper.Get(key);
 
         if (ValidateExtension.IsEmpty(result))
         {
             result = func.Invoke();
 
-            RedisHelper.Set(key, result, expireTimeSpan);
+            FastRedisHelper.Set(key, result, expireTimeSpan);
         }
 
         return result;
@@ -462,13 +463,13 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<string> GetAndSetAsync(string key, TimeSpan expireTimeSpan, Func<Task<string>> func)
     {
-        var result = await RedisHelper.GetAsync(key);
+        var result = await FastRedisHelper.GetAsync(key);
 
         if (ValidateExtension.IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await RedisHelper.SetAsync(key, result, expireTimeSpan);
+            await FastRedisHelper.SetAsync(key, result, expireTimeSpan);
         }
 
         return result;
@@ -484,13 +485,13 @@ public class Cache : ICache
     /// <returns></returns>
     public T GetAndSet<T>(string key, TimeSpan expireTimeSpan, Func<T> func)
     {
-        var result = RedisHelper.Get<T>(key);
+        var result = FastRedisHelper.Get<T>(key);
 
         if (result.IsEmpty())
         {
             result = func.Invoke();
 
-            RedisHelper.Set(key, result, expireTimeSpan);
+            FastRedisHelper.Set(key, result, expireTimeSpan);
         }
 
         return result;
@@ -506,13 +507,13 @@ public class Cache : ICache
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, TimeSpan expireTimeSpan, Func<Task<T>> func)
     {
-        var result = await RedisHelper.GetAsync<T>(key);
+        var result = await FastRedisHelper.GetAsync<T>(key);
 
         if (result.IsEmpty())
         {
             result = await func.Invoke();
 
-            await RedisHelper.SetAsync(key, result, expireTimeSpan);
+            await FastRedisHelper.SetAsync(key, result, expireTimeSpan);
         }
 
         return result;
