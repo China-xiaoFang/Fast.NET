@@ -1,4 +1,5 @@
-﻿using Fast.SqlSugar.Handlers;
+﻿using Fast.SqlSugar.Attributes;
+using Fast.SqlSugar.Handlers;
 using Fast.SqlSugar.Options;
 using Fast.Test.Api.Entities;
 using SqlSugar;
@@ -12,8 +13,9 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="sqlSugarClient"><see cref="ISqlSugarClient"/> 默认库SqlSugar客户端</param>
+    /// <param name="sugarDbType">实体类头部的 <see cref="SugarDbTypeAttribute"/> 特性，如果不存在可能为空</param>
     /// <returns></returns>
-    public async Task<ConnectionSettingsOptions> GetConnectionSettings<TEntity>(ISqlSugarClient sqlSugarClient)
+    public async Task<ConnectionSettingsOptions> GetConnectionSettings<TEntity>(ISqlSugarClient sqlSugarClient, SugarDbTypeAttribute sugarDbType)
     {
         if (typeof(TEntity) == typeof(Entity1))
         {
@@ -28,7 +30,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
                 DbType = DbType.SqlServer,
                 CommandTimeOut = 60,
                 SugarSqlExecMaxSeconds = 30,
-                DiffLog = true
+                DiffLog = true,
             };
         }
 
