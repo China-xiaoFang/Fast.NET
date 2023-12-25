@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.SqlSugar.Attributes;
 using Fast.SqlSugar.Options;
 using SqlSugar;
 
@@ -27,8 +28,10 @@ public interface ISqlSugarEntityHandler
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="sqlSugarClient"><see cref="ISqlSugarClient"/> 默认库SqlSugar客户端</param>
+    /// <param name="sugarDbType">实体类头部的 <see cref="SugarDbTypeAttribute"/> 特性，如果不存在可能为空</param>
     /// <returns></returns>
-    Task<ConnectionSettingsOptions> GetConnectionSettings<TEntity>(ISqlSugarClient sqlSugarClient);
+    Task<ConnectionSettingsOptions> GetConnectionSettings<TEntity>(ISqlSugarClient sqlSugarClient,
+        SugarDbTypeAttribute sugarDbType);
 
     /// <summary>
     /// 执行Sql

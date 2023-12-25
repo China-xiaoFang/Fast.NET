@@ -13,6 +13,8 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Linq.Expressions;
+using System.Reflection;
+using Fast.SqlSugar.Attributes;
 using Fast.SqlSugar.Filters;
 using Fast.SqlSugar.Handlers;
 using Fast.SqlSugar.IBaseEntities;
@@ -40,11 +42,14 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     {
         _serviceProvider = serviceProvider;
 
+        // 获取当前实体类头部的 SugarDbTypeAttribute 特性
+        var sugarDbTypeAttribute = typeof(TEntity).GetCustomAttribute<SugarDbTypeAttribute>();
+
         // 根据 TEntity 加载对应的数据库连接字符串
         var sqlSugarEntityHandler = _serviceProvider.GetService<ISqlSugarEntityHandler>();
 
         // 获取新的连接字符串
-        var connectionSettings = sqlSugarEntityHandler?.GetConnectionSettings<TEntity>(Context).Result;
+        var connectionSettings = sqlSugarEntityHandler?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute).Result;
         if (connectionSettings != null)
         {
             DataBaseInfo = connectionSettings;

@@ -4,6 +4,31 @@
         <name>Fast.SqlSugar</name>
     </assembly>
     <members>
+        <member name="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute"/> SqlSugar DB类型
+            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> 自行解析</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Attributes.SugarDbTypeAttribute.Type">
+            <summary>
+            <see cref="T:System.Object"/> Entity 的DB类型
+            <remarks>如果为Null，则代表的默认库</remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Attributes.SugarDbTypeAttribute.#ctor">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute"/> SqlSugar DB类型
+            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> 自行解析</remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Attributes.SugarDbTypeAttribute.#ctor(System.Object)">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute"/> SqlSugar DB类型
+            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> 自行解析</remarks>
+            </summary>
+            <param name="type"><see cref="T:System.Object"/> Entity 的DB类型</param>
+        </member>
         <member name="T:Fast.SqlSugar.BaseEntities.BaseEntity">
             <summary>
             <see cref="T:Fast.SqlSugar.BaseEntities.BaseEntity"/> Entity基类
@@ -422,12 +447,13 @@
             <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient)">
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute)">
             <summary>
             根据实体类型获取连接字符串
             </summary>
             <typeparam name="TEntity"></typeparam>
             <param name="sqlSugarClient"><see cref="T:SqlSugar.ISqlSugarClient"/> 默认库SqlSugar客户端</param>
+            <param name="sugarDbType">实体类头部的 <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute"/> 特性，如果不存在可能为空</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.ExecuteAsync(System.String,SqlSugar.SugarParameter[],System.TimeSpan,System.String)">
