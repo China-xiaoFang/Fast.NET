@@ -5,7 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CSRedisCore" Version="3.8.801" />
+		<PackageReference Include="CSRedisCore" Version="3.8.802" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">

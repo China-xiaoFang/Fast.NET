@@ -84,67 +84,133 @@
             软删除标识
             </summary>
         </member>
-        <member name="T:Fast.SqlSugar.BaseEntities.BaseRecordEntity">
+        <member name="T:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity">
             <summary>
-            <see cref="T:Fast.SqlSugar.BaseEntities.BaseRecordEntity"/> 记录Entity基类
+            <see cref="T:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity"/> 自增主键记录Entity基类
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Device">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.Device">
             <summary>
             设备
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.OS">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.OS">
             <summary>
             操作系统（版本）
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Browser">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.Browser">
             <summary>
             浏览器（版本）
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Province">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.Province">
             <summary>
             省份
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.City">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.City">
             <summary>
             城市
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.Ip">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.Ip">
             <summary>
             Ip
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.DepartmentId">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.DepartmentId">
             <summary>
             部门Id
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.DepartmentName">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.DepartmentName">
             <summary>
             部门名称
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedUserId">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.CreatedUserId">
             <summary>
             创建者用户Id
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedUserName">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.CreatedUserName">
             <summary>
             创建者用户名称
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.BaseEntities.BaseRecordEntity.CreatedTime">
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.CreatedTime">
             <summary>
             创建时间
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.BaseEntities.BaseRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
+        <member name="M:Fast.SqlSugar.BaseEntities.BaseIdentityRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            记录表创建
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+        </member>
+        <member name="T:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity"/> 雪花主键记录Entity基类
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.Ip">
+            <summary>
+            Ip
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.CreatedUserId">
+            <summary>
+            创建者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.BaseEntities.BaseSnowflakeRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             记录表创建
             </summary>
@@ -611,67 +677,133 @@
             更新版本控制字段
             </summary>
         </member>
-        <member name="T:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity">
+        <member name="T:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity">
             <summary>
-            <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity"/> 记录Entity基类接口
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity"/> 自增主键记录Entity基类接口
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Device">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.Device">
             <summary>
             设备
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.OS">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.OS">
             <summary>
             操作系统（版本）
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Browser">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.Browser">
             <summary>
             浏览器（版本）
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Province">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.Province">
             <summary>
             省份
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.City">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.City">
             <summary>
             城市
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.Ip">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.Ip">
             <summary>
             Ip
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.DepartmentId">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.DepartmentId">
             <summary>
             部门Id
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.DepartmentName">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.DepartmentName">
             <summary>
             部门名称
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedUserId">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.CreatedUserId">
             <summary>
             创建者用户Id
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedUserName">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.CreatedUserName">
             <summary>
             创建者用户名称
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.CreatedTime">
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.CreatedTime">
             <summary>
             创建时间
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.IBaseEntities.IBaseRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
+        <member name="M:Fast.SqlSugar.IBaseEntities.IBaseIdentityRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            记录表创建
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+        </member>
+        <member name="T:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity">
+            <summary>
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity"/> 雪花主键记录Entity基类接口
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.Ip">
+            <summary>
+            Ip
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.CreatedUserId">
+            <summary>
+            创建者用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.IBaseEntities.IBaseSnowflakeRecordEntity.RecordCreate(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             记录表创建
             </summary>

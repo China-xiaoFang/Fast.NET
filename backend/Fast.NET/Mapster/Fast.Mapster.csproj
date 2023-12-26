@@ -9,4 +9,22 @@
 		<PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions" PrivateAssets="All">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions" PrivateAssets="All">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions" PrivateAssets="All">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
 </Project>
