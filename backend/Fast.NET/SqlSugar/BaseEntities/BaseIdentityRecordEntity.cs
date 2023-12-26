@@ -20,10 +20,10 @@ using SqlSugar;
 namespace Fast.SqlSugar.BaseEntities;
 
 /// <summary>
-/// <see cref="BaseRecordEntity"/> 记录Entity基类
+/// <see cref="BaseIdentityRecordEntity"/> 自增主键记录Entity基类
 /// </summary>
 [SuppressSniffer]
-public class BaseRecordEntity : IdentityKeyEntity, IBaseRecordEntity
+public class BaseIdentityRecordEntity : IdentityKeyEntity, IBaseIdentityRecordEntity
 {
     /// <summary>
     /// 设备

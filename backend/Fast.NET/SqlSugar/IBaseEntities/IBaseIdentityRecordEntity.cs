@@ -18,10 +18,10 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.SqlSugar.IBaseEntities;
 
 /// <summary>
-/// <see cref="IBaseRecordEntity"/> 记录Entity基类接口
+/// <see cref="IBaseIdentityRecordEntity"/> 自增主键记录Entity基类接口
 /// </summary>
 [SuppressSniffer]
-public interface IBaseRecordEntity : IDataBaseEntity
+public interface IBaseIdentityRecordEntity : IDataBaseEntity
 {
     /// <summary>
     /// 设备

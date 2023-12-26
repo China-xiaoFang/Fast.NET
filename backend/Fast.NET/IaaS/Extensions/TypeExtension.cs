@@ -61,12 +61,12 @@ public static class TypeExtension
             return true;
 
         // 检查类型
-        while (type != null && type != typeof(object))
+        while (type != typeof(object))
         {
             isTheRawGenericType = IsTheRawGenericType(type);
             if (isTheRawGenericType)
                 return true;
-            type = type.BaseType;
+            type = type.BaseType ?? type;
         }
 
         return false;

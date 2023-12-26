@@ -5,9 +5,9 @@
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-	  <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-	    <HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-	  </Reference>
+		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Http.Features">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
 		</Reference>
