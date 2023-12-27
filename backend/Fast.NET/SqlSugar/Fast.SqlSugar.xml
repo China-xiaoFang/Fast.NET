@@ -526,7 +526,7 @@
             <summary>
             执行Sql
             </summary>
-            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="rawSql"><see cref="T:System.String"/> 原始Sql语句</param>
             <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
             <param name="executionTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
             <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
@@ -556,7 +556,7 @@
             <param name="tableDescription"><see cref="T:System.String"/> 表描述</param>
             <param name="beforeColumnList"><see cref="T:System.String"/> 执行前列信息</param>
             <param name="afterColumnList"><see cref="T:System.String"/> 执行后列信息</param>
-            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="rawSql"><see cref="T:System.String"/> 原始Sql语句</param>
             <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
             <param name="executionTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
             <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
@@ -569,7 +569,7 @@
             <param name="fileName"><see cref="T:System.String"/> 文件名称</param>
             <param name="fileLine"><see cref="T:System.Int32"/> 文件行数</param>
             <param name="methodName"><see cref="T:System.String"/> 方法名称</param>
-            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="rawSql"><see cref="T:System.String"/> 原始Sql语句</param>
             <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
             <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
             <param name="message"><see cref="T:System.String"/></param>

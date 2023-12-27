@@ -34,26 +34,26 @@ internal static class SugarEntityFilter
     internal static void LoadSugarAop(ISqlSugarClient _db, double sugarSqlExecMaxSeconds, bool diffLog,
         ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
-        _db.Aop.OnLogExecuted = (sql, pars) =>
+        _db.Aop.OnLogExecuted = (rawSql, pars) =>
         {
-            var handleSql = SqlSugarContext.ParameterFormat(sql, pars);
+            var handleSql = SqlSugarContext.ParameterFormat(rawSql, pars);
 
 #if DEBUG
-            if (sql.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase))
+            if (rawSql.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase))
             {
                 // 如果是系统表则不输出，避免安全起见
-                if (sql.Contains("information_schema.TABLES", StringComparison.OrdinalIgnoreCase))
+                if (rawSql.Contains("information_schema.TABLES", StringComparison.OrdinalIgnoreCase))
                     return;
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
             }
 
-            if (sql.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase) ||
-                sql.StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
+            if (rawSql.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase) ||
+                rawSql.StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
             {
                 Console.ForegroundColor = ConsoleColor.DarkMagenta;
             }
 
-            if (sql.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
+            if (rawSql.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
             }
@@ -66,7 +66,7 @@ internal static class SugarEntityFilter
                 // 执行Sql处理
                 Task.Run(async () =>
                 {
-                    await sqlSugarEntityHandler.ExecuteAsync(sql, pars, _db.Ado.SqlExecutionTime, handleSql);
+                    await sqlSugarEntityHandler.ExecuteAsync(rawSql, pars, _db.Ado.SqlExecutionTime, handleSql);
                 }).Wait();
             }
 
@@ -92,7 +92,7 @@ internal static class SugarEntityFilter
                     // 执行Sql超时处理
                     Task.Run(async () =>
                     {
-                        await sqlSugarEntityHandler.ExecuteTimeoutAsync(fileName, fileLine, firstMethodName, sql, pars,
+                        await sqlSugarEntityHandler.ExecuteTimeoutAsync(fileName, fileLine, firstMethodName, rawSql, pars,
                             _db.Ado.SqlExecutionTime, handleSql, message);
                     }).Wait();
                 }
