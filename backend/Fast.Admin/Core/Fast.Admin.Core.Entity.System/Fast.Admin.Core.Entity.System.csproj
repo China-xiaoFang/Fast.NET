@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.Admin 应用租户实体模块库。</Description>
+		<Description>Fast.Admin 应用核心实体模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>

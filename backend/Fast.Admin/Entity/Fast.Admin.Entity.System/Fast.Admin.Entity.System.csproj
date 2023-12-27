@@ -5,7 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Sugar\Fast.Sugar\Fast.Sugar.csproj" />
+		<ProjectReference Include="$(SolutionDir)\Core\Fast.Admin.Core.Enum\Fast.Admin.Core.Enum.csproj" />
 	</ItemGroup>
 
 </Project>

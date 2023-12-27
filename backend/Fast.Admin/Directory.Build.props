@@ -38,7 +38,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="$(SolutionDir)..\..\README.md" Pack="true" PackagePath="\" />
+		<None Include="$(SolutionDir)README.md" Pack="true" PackagePath="\" />
+		<None Include="$(SolutionDir)README.zh.md" Pack="true" PackagePath="\" />
 		<None Include="$(SolutionDir)..\..\LICENSE" Pack="true" PackagePath="\" />
 		<None Include="$(SolutionDir)..\..\Fast.png" Pack="true" PackagePath="\" />
 		<None Include="$(SolutionDir)Directory.Build.props" Pack="true" PackagePath="\" />
