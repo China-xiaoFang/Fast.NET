@@ -271,6 +271,16 @@ public static class HttpContextExtension
     /// <returns><see cref="UserAgentInfo"/></returns>
     public static UserAgentInfo RequestUserAgentInfo(this HttpContext httpContext)
     {
+        // 从 HttpContext.Items 中尝试获取缓存数据
+        var userAgentObj = httpContext.Items[nameof(Fast) + nameof(UserAgentInfo)];
+
+        // 判断是否为空
+        if (userAgentObj != null)
+        {
+            // 直接返回缓存中的信息
+            return userAgentObj as UserAgentInfo;
+        }
+
         // 获取用户代理字符串
         var userAgent = httpContext.RequestUserAgent();
 
@@ -355,6 +365,16 @@ public static class HttpContextExtension
     /// <exception cref="Exception"></exception>
     public static async Task<WanNetIPInfo> RemoteIpv4InfoAsync(this HttpContext httpContext, string ip = null)
     {
+        // 从 HttpContext.Items 中尝试获取缓存数据
+        var wanNetIPInfoObj = httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)];
+
+        // 判断是否为空
+        if (wanNetIPInfoObj != null)
+        {
+            // 直接返回缓存中的信息
+            return wanNetIPInfoObj as WanNetIPInfo;
+        }
+
         // 判断是否传入IP地址
         ip ??= httpContext.RemoteIpv4();
 
