@@ -127,8 +127,8 @@ internal static class SugarEntityFilter
                         // 执行Sql差异处理
                         Task.Run(async () =>
                         {
-                            await sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, diff.BusinessData.ToString(),
-                                tableName, tableDescription, diff.BeforeData?.Select(sl => sl.Columns).ToList(),
+                            await sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, tableName, tableDescription,
+                                diff.BusinessData.ToString(), diff.BeforeData?.Select(sl => sl.Columns).ToList(),
                                 diff.AfterData?.Select(sl => sl.Columns).ToList(), diff.Sql, diff.Parameters, diff.Time,
                                 handleSql);
                         }).Wait();
