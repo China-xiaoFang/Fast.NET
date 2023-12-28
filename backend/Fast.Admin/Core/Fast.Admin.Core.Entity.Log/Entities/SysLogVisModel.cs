@@ -34,7 +34,7 @@ public class SysLogVisModel : BaseSnowflakeRecordEntity, IBaseTEntity
     /// <summary>
     /// 操作人工号
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作人账号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "操作人工号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
     public string UserJobNo { get; set; }
 
     /// <summary>

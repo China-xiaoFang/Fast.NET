@@ -5,10 +5,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Fast.Cache" Version="3.4.6.1" />
-	  <PackageReference Include="Fast.DependencyInjection" Version="3.4.6.1" />
-	  <PackageReference Include="Fast.Logging" Version="3.4.6.1" />
-	  <PackageReference Include="Fast.NET.Core" Version="3.4.6.1" />
+	  <PackageReference Include="Fast.Cache" Version="3.4.6.3" />
+	  <PackageReference Include="Fast.DependencyInjection" Version="3.4.6.3" />
+	  <PackageReference Include="Fast.Logging" Version="3.4.6.3" />
+	  <PackageReference Include="Fast.NET.Core" Version="3.4.6.3" />
 	</ItemGroup>
 
 </Project>

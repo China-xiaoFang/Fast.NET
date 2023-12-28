@@ -13,11 +13,6 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.Admin.Core.Enum.Db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fast.Admin.Core.Entity.Log.Entities;
 
@@ -38,7 +33,7 @@ public class SysLogSqlExecModel : BaseSnowflakeRecordEntity
     /// <summary>
     /// 操作人工号
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作人账号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "操作人工号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
     public string UserJobNo { get; set; }
 
     /// <summary>
@@ -64,7 +59,7 @@ public class SysLogSqlExecModel : BaseSnowflakeRecordEntity
     /// </summary>
     [SplitField]
     [SugarColumn(ColumnDescription = "执行时间", ColumnDataType = "datetimeoffset", IsNullable = false)]
-    public DateTime ExecTime { get; set; }
+    public DateTime ExecuteTime { get; set; }
 
     /// <summary>
     /// 租户Id

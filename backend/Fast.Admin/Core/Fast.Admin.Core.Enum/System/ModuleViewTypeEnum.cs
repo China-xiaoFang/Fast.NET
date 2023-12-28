@@ -1,5 +1,4 @@
-﻿
-namespace Fast.Admin.Core.Enum.System;
+﻿namespace Fast.Admin.Core.Enum.System;
 
 /// <summary>
 /// 模块查看类型枚举

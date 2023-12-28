@@ -27,7 +27,7 @@ public class User : IUser, IScopedDependency
     /// <summary>
     /// 租户Id
     /// </summary>
-    public  long TenantId { get; private set; }
+    public long TenantId { get; private set; }
 
     /// <summary>
     /// 租户编号

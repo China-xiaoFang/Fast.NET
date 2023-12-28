@@ -21,6 +21,12 @@ namespace Fast.Admin.Core.Enum.System;
 public enum DiffLogTypeEnum
 {
     /// <summary>
+    /// 未知
+    /// </summary>
+    [Description("未知")]
+    None = 0,
+
+    /// <summary>
     /// 添加
     /// </summary>
     [Description("添加")]
@@ -37,10 +43,4 @@ public enum DiffLogTypeEnum
     /// </summary>
     [Description("删除")]
     Delete = 3,
-
-    /// <summary>
-    /// 未知
-    /// </summary>
-    [Description("未知")]
-    None = 9,
 }

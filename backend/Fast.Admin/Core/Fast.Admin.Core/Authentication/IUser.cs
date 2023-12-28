@@ -56,12 +56,12 @@ public interface IUser
     /// <summary>
     /// 部门Id
     /// </summary>
-     long DepartmentId { get;  }
+    long DepartmentId { get; }
 
     /// <summary>
     /// 部门名称
     /// </summary>
-     string DepartmentName { get;  }
+    string DepartmentName { get; }
 
     /// <summary>
     /// 是否超级管理员

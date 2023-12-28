@@ -20,10 +20,10 @@ namespace Fast.Admin.Core.Entity.Log.Entities;
 /// <summary>
 /// <see cref="SysLogSqlDiffModel"/> 系统Sql差异日志表Model类
 /// </summary>
-[SugarTable("Sys_Log_Diff_{year}{month}{day}", "系统Sql差异日志表")]
+[SugarTable("Sys_Log_Sql_Diff_{year}{month}{day}", "系统Sql差异日志表")]
 [SplitTable(SplitType.Month)]
 [SugarDbType(FastDbTypeEnum.SysCoreLog)]
-public class SysLogSqlDiffModel: BaseSnowflakeRecordEntity
+public class SysLogSqlDiffModel : BaseSnowflakeRecordEntity
 {
     /// <summary>
     /// 操作人账号
@@ -34,44 +34,62 @@ public class SysLogSqlDiffModel: BaseSnowflakeRecordEntity
     /// <summary>
     /// 操作人工号
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作人账号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "操作人工号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
     public string UserJobNo { get; set; }
-    
-    /// <summary>
-    /// 差异描述
-    /// </summary>
-    [SugarColumn(ColumnDescription = "差异描述", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
-    public string DiffDescription { get; set; }
 
     /// <summary>
     /// 表名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "表名称", ColumnDataType = "Nvarchar(100)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "表名称", ColumnDataType = "Nvarchar(MAX)", IsNullable = false)]
     public string TableName { get; set; }
 
     /// <summary>
     /// 表描述
     /// </summary>
-    [SugarColumn(ColumnDescription = "表描述", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "表描述", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string TableDescription { get; set; }
+
+    /// <summary>
+    /// 差异描述
+    /// </summary>
+    [SugarColumn(ColumnDescription = "差异描述", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
+    public string DiffDescription { get; set; }
 
     /// <summary>
     /// 旧的列信息
     /// </summary>
     [SugarColumn(ColumnDescription = "旧的列信息", ColumnDataType = "Nvarchar(MAX)", IsNullable = true, IsJson = true)]
-    public List<List<DiffLogColumnInfo>> AfterColumnInfo { get; set; }
+    public List<List<DiffLogColumnInfo>> BeforeColumnList { get; set; }
 
     /// <summary>
     /// 新的列信息
     /// </summary>
     [SugarColumn(ColumnDescription = "新的列信息", ColumnDataType = "Nvarchar(MAX)", IsNullable = true, IsJson = true)]
-    public List<List<DiffLogColumnInfo>> BeforeColumnInfo { get; set; }
+    public List<List<DiffLogColumnInfo>> AfterColumnList { get; set; }
 
     /// <summary>
-    /// 执行的纯Sql语句
+    /// 执行秒数
     /// </summary>
-    [SugarColumn(ColumnDescription = "执行的纯Sql语句", ColumnDataType = "Nvarchar(MAX)", IsNullable = false)]
-    public string ExecuteSql { get; set; }
+    [SugarColumn(ColumnDescription = "执行秒数", IsNullable = true)]
+    public double? ExecuteSeconds { get; set; }
+
+    /// <summary>
+    /// 原始Sql
+    /// </summary>
+    [SugarColumn(ColumnDescription = "原始Sql", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
+    public string RawSql { get; set; }
+
+    /// <summary>
+    /// Sql参数
+    /// </summary>
+    [SugarColumn(ColumnDescription = "Sql参数", ColumnDataType = "Nvarchar(MAX)", IsNullable = true, IsJson = true)]
+    public SugarParameter[] Parameters { get; set; }
+
+    /// <summary>
+    /// 纯Sql，参数化之后的Sql
+    /// </summary>
+    [SugarColumn(ColumnDescription = "纯Sql，参数化之后的Sql", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
+    public string PureSql { get; set; }
 
     /// <summary>
     /// 差异日志类型

@@ -4,111 +4,44 @@
         <name>Fast.Admin.Core.Enum</name>
     </assembly>
     <members>
-        <member name="T:Fast.Core.AdminEnum.CommonStatusEnum">
+        <member name="T:Fast.Admin.Core.Enum.Common.CommonStatusEnum">
             <summary>
             公共状态枚举
             </summary>
         </member>
-        <member name="F:Fast.Core.AdminEnum.CommonStatusEnum.Enable">
+        <member name="F:Fast.Admin.Core.Enum.Common.CommonStatusEnum.Enable">
             <summary>
             正常
             </summary>
         </member>
-        <member name="F:Fast.Core.AdminEnum.CommonStatusEnum.Disable">
+        <member name="F:Fast.Admin.Core.Enum.Common.CommonStatusEnum.Disable">
             <summary>
             停用
             </summary>
         </member>
-        <member name="F:Fast.Core.AdminEnum.CommonStatusEnum.Delete">
+        <member name="F:Fast.Admin.Core.Enum.Common.CommonStatusEnum.Delete">
             <summary>
             删除
             </summary>
         </member>
-        <member name="T:Fast.Core.AdminEnum.SysLevelEnum">
+        <member name="T:Fast.Admin.Core.Enum.Common.SysLevelEnum">
             <summary>
             系统级别枚举
             </summary>
         </member>
-        <member name="F:Fast.Core.AdminEnum.SysLevelEnum.Default">
+        <member name="F:Fast.Admin.Core.Enum.Common.SysLevelEnum.Default">
             <summary>
             默认级
             </summary>
         </member>
-        <member name="F:Fast.Core.AdminEnum.SysLevelEnum.System">
+        <member name="F:Fast.Admin.Core.Enum.Common.SysLevelEnum.System">
             <summary>
             系统级
             </summary>
         </member>
-        <member name="F:Fast.Core.AdminEnum.SysLevelEnum.Custom">
+        <member name="F:Fast.Admin.Core.Enum.Common.SysLevelEnum.Custom">
             <summary>
             自定义级
-            </summary>
-        </member>
-        <member name="T:Fast.Core.AdminEnum.MenuTypeEnum">
-            <summary>
-            菜单类型枚举
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.MenuTypeEnum.Catalog">
-            <summary>
-            目录
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.MenuTypeEnum.Menu">
-            <summary>
-            菜单
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.MenuTypeEnum.Internal">
-            <summary>
-            内链
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.MenuTypeEnum.Outside">
-            <summary>
-            外链
-            </summary>
-        </member>
-        <member name="T:Fast.Core.AdminEnum.ModuleViewTypeEnum">
-            <summary>
-            模块查看类型枚举
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.ModuleViewTypeEnum.SuperAdmin">
-            <summary>
-            超级管理员
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.ModuleViewTypeEnum.SystemAdmin">
-            <summary>
-            系统管理员
-            只有超级管理员和管理员可以查看
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.ModuleViewTypeEnum.Admin">
-            <summary>
-            管理员
-            只要是管理员都可以查看
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.ModuleViewTypeEnum.All">
-            <summary>
-            全部
-            </summary>
-        </member>
-        <member name="T:Fast.Core.AdminEnum.TranslationSourceEnum">
-            <summary>
-            应用本地化配置来源
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.TranslationSourceEnum.Custom">
-            <summary>
-            自定义
-            </summary>
-        </member>
-        <member name="F:Fast.Core.AdminEnum.TranslationSourceEnum.BaiduTranslate">
-            <summary>
-            百度翻译
             </summary>
         </member>
         <member name="T:Fast.Admin.Core.Enum.Common.YesOrNotEnum">
@@ -268,6 +201,31 @@
             <remarks>用于追踪请求-响应的传输路径，主要用于故障诊断。</remarks>
             </summary>
         </member>
+        <member name="T:Fast.Admin.Core.Enum.Menus.MenuTypeEnum">
+            <summary>
+            菜单类型枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Menus.MenuTypeEnum.Catalog">
+            <summary>
+            目录
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Menus.MenuTypeEnum.Menu">
+            <summary>
+            菜单
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Menus.MenuTypeEnum.Internal">
+            <summary>
+            内链
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Menus.MenuTypeEnum.Outside">
+            <summary>
+            外链
+            </summary>
+        </member>
         <member name="T:Fast.Admin.Core.Enum.System.AppTypeEnum">
             <summary>
             <see cref="T:Fast.Admin.Core.Enum.System.AppTypeEnum"/> App应用枚举
@@ -283,6 +241,11 @@
             <see cref="T:Fast.Admin.Core.Enum.System.DiffLogTypeEnum"/> 差异日志类型
             </summary>
         </member>
+        <member name="F:Fast.Admin.Core.Enum.System.DiffLogTypeEnum.None">
+            <summary>
+            未知
+            </summary>
+        </member>
         <member name="F:Fast.Admin.Core.Enum.System.DiffLogTypeEnum.Insert">
             <summary>
             添加
@@ -296,11 +259,6 @@
         <member name="F:Fast.Admin.Core.Enum.System.DiffLogTypeEnum.Delete">
             <summary>
             删除
-            </summary>
-        </member>
-        <member name="F:Fast.Admin.Core.Enum.System.DiffLogTypeEnum.None">
-            <summary>
-            未知
             </summary>
         </member>
         <member name="T:Fast.Admin.Core.Enum.System.VisitTypeEnum">
@@ -328,6 +286,33 @@
             改密
             </summary>
         </member>
+        <member name="T:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum">
+            <summary>
+            模块查看类型枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum.SuperAdmin">
+            <summary>
+            超级管理员
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum.SystemAdmin">
+            <summary>
+            系统管理员
+            只有超级管理员和管理员可以查看
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum.Admin">
+            <summary>
+            管理员
+            只要是管理员都可以查看
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum.All">
+            <summary>
+            全部
+            </summary>
+        </member>
         <member name="T:Fast.Admin.Core.Enum.System.TenantTypeEnum">
             <summary>
             <see cref="T:Fast.Admin.Core.Enum.System.TenantTypeEnum"/> 租户类型枚举
@@ -341,6 +326,21 @@
         <member name="F:Fast.Admin.Core.Enum.System.TenantTypeEnum.Common">
             <summary>
             普通租户
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.System.TranslationSourceEnum">
+            <summary>
+            应用本地化配置来源
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.TranslationSourceEnum.Custom">
+            <summary>
+            自定义
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.TranslationSourceEnum.BaiduTranslate">
+            <summary>
+            百度翻译
             </summary>
         </member>
     </members>

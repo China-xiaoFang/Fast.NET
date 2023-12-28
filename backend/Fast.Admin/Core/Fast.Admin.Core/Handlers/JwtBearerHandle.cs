@@ -12,11 +12,6 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Fast.JwtBearer.Handlers;
 using Microsoft.AspNetCore.Authorization;
 
@@ -47,7 +42,8 @@ public class JwtBearerHandle : IJwtBearerHandle
     /// <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /></param>
     /// <param name="exception"><see cref="T:System.Exception" /></param>
     /// <returns></returns>
-    public async Task<object> AuthorizeFailHandle(AuthorizationHandlerContext context, HttpContext httpContext, Exception exception)
+    public async Task<object> AuthorizeFailHandle(AuthorizationHandlerContext context, HttpContext httpContext,
+        Exception exception)
     {
         return null;
     }
@@ -60,7 +56,8 @@ public class JwtBearerHandle : IJwtBearerHandle
     /// <param name="requirement"><see cref="T:Microsoft.AspNetCore.Authorization.IAuthorizationRequirement" /></param>
     /// <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /></param>
     /// <returns></returns>
-    public async Task<bool> PermissionHandle(AuthorizationHandlerContext context, IAuthorizationRequirement requirement, HttpContext httpContext)
+    public async Task<bool> PermissionHandle(AuthorizationHandlerContext context, IAuthorizationRequirement requirement,
+        HttpContext httpContext)
     {
         return false;
     }
@@ -74,8 +71,8 @@ public class JwtBearerHandle : IJwtBearerHandle
     /// <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /></param>
     /// <param name="exception"><see cref="T:System.Exception" /></param>
     /// <returns></returns>
-    public async Task<object> PermissionFailHandle(AuthorizationHandlerContext context, IAuthorizationRequirement requirement, HttpContext httpContext,
-        Exception exception)
+    public async Task<object> PermissionFailHandle(AuthorizationHandlerContext context, IAuthorizationRequirement requirement,
+        HttpContext httpContext, Exception exception)
     {
         return null;
     }

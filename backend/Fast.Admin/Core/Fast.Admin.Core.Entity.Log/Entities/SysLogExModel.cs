@@ -32,43 +32,43 @@ public class SysLogExModel : BaseIdentityRecordEntity, IBaseTEntity
     /// <summary>
     /// 操作人工号
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作人账号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "操作人工号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
     public string UserJobNo { get; set; }
 
     /// <summary>
     /// 类名
     /// </summary>
-    [SugarColumn(ColumnDescription = "类名", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "类名", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string ClassName { get; set; }
 
     /// <summary>
     /// 方法名
     /// </summary>
-    [SugarColumn(ColumnDescription = "方法名", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "方法名", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string MethodName { get; set; }
 
     /// <summary>
     /// 异常信息
     /// </summary>
-    [SugarColumn(ColumnDescription = "异常信息", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "异常信息", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string ExceptionMsg { get; set; }
 
     /// <summary>
     /// 异常源
     /// </summary>
-    [SugarColumn(ColumnDescription = "异常源", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "异常源", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string ExceptionSource { get; set; }
 
     /// <summary>
     /// 异常堆栈信息
     /// </summary>
-    [SugarColumn(ColumnDescription = "异常堆栈信息", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "异常堆栈信息", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string ExceptionStackTrace { get; set; }
 
     /// <summary>
     /// 参数对象
     /// </summary>
-    [SugarColumn(ColumnDescription = "参数对象", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "参数对象", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string ParamsObj { get; set; }
 
     /// <summary>

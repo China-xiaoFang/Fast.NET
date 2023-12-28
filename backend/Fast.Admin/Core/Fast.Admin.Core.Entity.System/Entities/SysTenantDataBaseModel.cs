@@ -31,7 +31,7 @@ public class SysTenantDataBaseModel : BaseTEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "数据库类型", ColumnDataType = "tinyint", IsNullable = false)]
     public FastDbTypeEnum FastDbType { get; set; }
-    
+
     /// <summary>
     /// 是否为系统库
     /// <remarks>如果为系统库，则不会有租户区分</remarks>

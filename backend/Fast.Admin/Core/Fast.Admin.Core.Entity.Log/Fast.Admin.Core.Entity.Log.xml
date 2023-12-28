@@ -154,11 +154,6 @@
             操作人工号
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.DiffDescription">
-            <summary>
-            差异描述
-            </summary>
-        </member>
         <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.TableName">
             <summary>
             表名称
@@ -169,19 +164,39 @@
             表描述
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.AfterColumnInfo">
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.DiffDescription">
+            <summary>
+            差异描述
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.BeforeColumnList">
             <summary>
             旧的列信息
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.BeforeColumnInfo">
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.AfterColumnList">
             <summary>
             新的列信息
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.ExecuteSql">
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.ExecuteSeconds">
             <summary>
-            执行的纯Sql语句
+            执行秒数
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.RawSql">
+            <summary>
+            原始Sql
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.Parameters">
+            <summary>
+            Sql参数
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.PureSql">
+            <summary>
+            纯Sql，参数化之后的Sql
             </summary>
         </member>
         <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlDiffModel.DiffType">
@@ -229,12 +244,127 @@
             纯Sql，参数化之后的Sql
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExecModel.ExecTime">
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExecModel.ExecuteTime">
             <summary>
             执行时间
             </summary>
         </member>
         <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExecModel.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel"/> 系统Sql异常日志表Model类
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.Account">
+            <summary>
+            操作人账号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.UserJobNo">
+            <summary>
+            操作人工号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.FileName">
+            <summary>
+            文件名称
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.FileLine">
+            <summary>
+            文件行数
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.MethodName">
+            <summary>
+            方法名
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.RawSql">
+            <summary>
+            原始Sql
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.Parameters">
+            <summary>
+            Sql参数
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.PureSql">
+            <summary>
+            纯Sql，参数化之后的Sql
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.ExceptionTime">
+            <summary>
+            异常时间
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlExModel.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel"/> 系统Sql超时日志表Model类
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.Account">
+            <summary>
+            操作人账号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.UserJobNo">
+            <summary>
+            操作人工号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.FileName">
+            <summary>
+            文件名称
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.FileLine">
+            <summary>
+            文件行数
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.MethodName">
+            <summary>
+            方法名
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.TimeoutSeconds">
+            <summary>
+            超时秒数
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.RawSql">
+            <summary>
+            原始Sql
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.Parameters">
+            <summary>
+            Sql参数
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.PureSql">
+            <summary>
+            纯Sql，参数化之后的Sql
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.TimeoutTime">
+            <summary>
+            超时时间
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Entity.Log.Entities.SysLogSqlTimeoutModel.TenantId">
             <summary>
             租户Id
             </summary>

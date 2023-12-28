@@ -35,7 +35,7 @@ public class SysLogOpModel : BaseSnowflakeRecordEntity, IBaseTEntity
     /// <summary>
     /// 操作人工号
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作人账号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "操作人工号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
     public string UserJobNo { get; set; }
 
     /// <summary>
@@ -53,25 +53,25 @@ public class SysLogOpModel : BaseSnowflakeRecordEntity, IBaseTEntity
     /// <summary>
     /// 操作名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作名称", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "操作名称", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string OperationName { get; set; }
 
     /// <summary>
     /// 类名
     /// </summary>
-    [SugarColumn(ColumnDescription = "类名", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "类名", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string ClassName { get; set; }
 
     /// <summary>
     /// 方法名
     /// </summary>
-    [SugarColumn(ColumnDescription = "方法名", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "方法名", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string MethodName { get; set; }
 
     /// <summary>
     /// 请求地址
     /// </summary>
-    [SugarColumn(ColumnDescription = "请求地址", ColumnDataType = "Nvarchar(100)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "请求地址", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string Url { get; set; }
 
     /// <summary>
@@ -83,19 +83,19 @@ public class SysLogOpModel : BaseSnowflakeRecordEntity, IBaseTEntity
     /// <summary>
     /// 请求参数
     /// </summary>
-    [SugarColumn(ColumnDescription = "请求参数", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "请求参数", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string Param { get; set; }
 
     /// <summary>
     /// 返回结果
     /// </summary>
-    [SugarColumn(ColumnDescription = "返回结果", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "返回结果", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string Result { get; set; }
 
     /// <summary>
     /// 地址
     /// </summary>
-    [SugarColumn(ColumnDescription = "地址", ColumnDataType = "Nvarchar(500)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "地址", ColumnDataType = "Nvarchar(MAX)", IsNullable = true)]
     public string Location { get; set; }
 
     /// <summary>
