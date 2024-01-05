@@ -91,6 +91,6 @@ app.UseRouting();
 // Here, the default address is/API if no argument is entered, and/directory if string.empty is entered. If any string is entered, the/arbitrary string directory.
 //app.UseSwaggerDocument();
 
-//app.MapControllers();
+app.MapControllers();
 
 app.Run();
