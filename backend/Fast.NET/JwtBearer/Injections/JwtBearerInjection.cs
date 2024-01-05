@@ -52,7 +52,8 @@ public class JwtBearerInjection : IHostingStartup
             Debugging.Info("Registering jwt bearer......");
 
             // 配置验证
-            services.AddOptions<JWTSettingsOptions>().BindConfiguration("JWTSettings").ValidateDataAnnotations();
+            services.AddOptions<JWTSettingsOptions>().BindConfiguration("JWTSettings").ValidateDataAnnotations()
+                .PostConfigure(options => options.PostConfigure());
 
             Penetrates.JWTSettings = hostContext.Configuration.GetSection("JWTSettings").Get<JWTSettingsOptions>()
                 .LoadPostConfigure();

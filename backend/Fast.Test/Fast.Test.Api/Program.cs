@@ -1,8 +1,4 @@
-using Fast.CorsAccessor.Extensions;
-using Fast.DependencyInjection.Extensions;
-using Fast.JwtBearer.Extensions;
 using Fast.Logging.Extensions;
-using Fast.Mapster.Extensions;
 using Fast.NET.Core.Extensions;
 using Fast.Serialization.Extensions;
 using Fast.SpecificationProcessor.DataValidation.Extensions;
@@ -17,29 +13,29 @@ var builder = WebApplication.CreateBuilder(args).Initialize();
 // 日志
 builder.Services.AddLogging(builder.Configuration);
 
-// 跨域配置
-builder.Services.AddCorsAccessor(builder.Configuration);
+//// 跨域配置
+//builder.Services.AddCorsAccessor(builder.Configuration);
 
-// GZIP 压缩
-builder.Services.AddGzipBrotliCompression();
+//// GZIP 压缩
+//builder.Services.AddGzipBrotliCompression();
 
-// JSON 序列化配置
-builder.Services.AddJsonOptions();
+//// JSON 序列化配置
+//builder.Services.AddJsonOptions();
 
-// 注册全局依赖注入
-builder.Services.AddDependencyInjection();
+//// 注册全局依赖注入
+//builder.Services.AddDependencyInjection();
 
-// 添加对象映射
-builder.Services.AddObjectMapper();
+//// 添加对象映射
+//builder.Services.AddObjectMapper();
 
-builder.Services.AddJwt();
+//builder.Services.AddJwt();
 
-builder.Services.AddSqlSugar(builder.Configuration);
+//builder.Services.AddSqlSugar(builder.Configuration);
 
 builder.Services.AddControllers();
 
 // 文档
-builder.Services.AddSwaggerDocument(builder.Configuration);
+//builder.Services.AddSwaggerDocument(builder.Configuration);
 
 // 动态 API
 builder.Services.AddDynamicApplication();
@@ -78,8 +74,8 @@ var app = builder.Build();
 // Mandatory Https.
 app.UseHttpsRedirection();
 
-// 跨域中间件
-app.UseCorsAccessor();
+//// 跨域中间件
+//app.UseCorsAccessor();
 
 // Enable compression.
 //app.UseResponseCompression();
@@ -93,8 +89,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Here, the default address is/API if no argument is entered, and/directory if string.empty is entered. If any string is entered, the/arbitrary string directory.
-app.UseSwaggerDocument();
+//app.UseSwaggerDocument();
 
-app.MapControllers();
+//app.MapControllers();
 
 app.Run();

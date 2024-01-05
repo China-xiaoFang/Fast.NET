@@ -132,6 +132,8 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
     /// </summary>
     public void PostConfigure()
     {
+        Enable = true;
+
         DocumentTitle ??= "Specification Api Document";
         DefaultGroupName ??= "Default";
         FormatAsV2 ??= false;

@@ -25,7 +25,7 @@ public sealed class CorsAccessorSettingsOptions : IPostConfigure
     /// <summary>
     /// 策略名称
     /// </summary>
-    [Required]
+    //[Required]
     public string PolicyName { get; set; }
 
     /// <summary>

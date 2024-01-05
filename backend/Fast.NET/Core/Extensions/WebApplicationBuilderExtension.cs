@@ -123,6 +123,8 @@ public static class WebApplicationBuilderExtension
         var iHostingStartupTypes = IaaSContext.EffectiveTypes.Where(wh =>
             typeof(IHostingStartup).IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
         {
+            var hostingStartup = Activator.CreateInstance(sl) as IHostingStartup;
+
             // 默认为 -1；
             var order = -1;
             // 尝试获取Order值
@@ -130,19 +132,18 @@ public static class WebApplicationBuilderExtension
 
             if (orderProperty != null && orderProperty.PropertyType == typeof(int))
             {
-                var orderVal = orderProperty.GetValue(sl)?.ToString();
+                var orderVal = orderProperty.GetValue(hostingStartup)?.ToString();
                 if (!orderVal.IsEmpty())
                 {
                     order = orderVal.ParseToInt();
                 }
             }
 
-            return new {Type = sl, Order = order};
+            return new {Type = hostingStartup, Order = order};
         }).OrderByDescending(ob => ob.Order).Select(sl => sl.Type);
 
-        foreach (var hostingStartupType in iHostingStartupTypes)
+        foreach (var hostingStartup in iHostingStartupTypes)
         {
-            var hostingStartup = Activator.CreateInstance(hostingStartupType) as IHostingStartup;
             hostingStartup?.Configure(builder);
         }
     }
