@@ -12,9 +12,11 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.Logging.Filters;
 using Fast.Logging.Implantation.File;
 using Fast.Logging.Internal;
 using Fast.Logging.Templates;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -45,6 +47,9 @@ public static class LoggingIServiceCollectionExtension
             // 释放服务对象
             serviceProvider.Dispose();
         }
+
+        // 注册 Startup 过滤器
+        services.AddTransient<IStartupFilter, LoggingStartupFilter>();
 
         // 获取默认日志级别
         var defaultLogLevelStr = configuration["Logging:LogLevel:Default"];

@@ -64,20 +64,6 @@
             EdDSA
             </summary>
         </member>
-        <member name="T:Fast.JwtBearer.Extensions.JwtBearerIServiceCollectionExtension">
-            <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> JWT 授权服务拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.JwtBearer.Extensions.JwtBearerIServiceCollectionExtension.AddJwt(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.Boolean)">
-            <summary>
-            添加 JWT 授权
-            </summary>
-            <param name="services"></param>
-            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
-            <param name="enableGlobalAuthorize"></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.JwtBearer.Handlers.AppAuthorizationHandler">
             <summary>
             授权策略执行程序
@@ -132,6 +118,22 @@
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
             <param name="exception"><see cref="T:System.Exception"/></param>
             <returns></returns>
+        </member>
+        <member name="T:Fast.JwtBearer.Injections.JwtBearerInjection">
+            <summary>
+            <see cref="T:Fast.JwtBearer.Injections.JwtBearerInjection"/> JwtBearer服务注入
+            </summary>
+        </member>
+        <member name="P:Fast.JwtBearer.Injections.JwtBearerInjection.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Fast.JwtBearer.Injections.JwtBearerInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
         </member>
         <member name="T:Fast.JwtBearer.Internal.Penetrates">
             <summary>
@@ -226,6 +228,12 @@
             <summary>
             加密算法
             <remarks>默认HS256</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.JwtBearer.Options.JWTSettingsOptions.Enable">
+            <summary>
+            启用
+            <remarks>默认true</remarks>
             </summary>
         </member>
         <member name="M:Fast.JwtBearer.Options.JWTSettingsOptions.PostConfigure">

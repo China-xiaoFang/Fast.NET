@@ -24,6 +24,29 @@ namespace Fast.IaaS;
 public static class AssemblyExtension
 {
     /// <summary>
+    /// 获取程序集中所有类型
+    /// </summary>
+    /// <remarks>这里默认获取所有 Public 声明的</remarks>
+    /// <param name="assembly"><see cref="Assembly"/> 程序集</param>
+    /// <param name="typeFilter"><see cref="Func{TResult}"/> 类型过滤条件</param>
+    /// <returns></returns>
+    public static IEnumerable<Type> GetAssemblyTypes(this Assembly assembly, Func<Type, bool> typeFilter = null)
+    {
+        var types = Array.Empty<Type>();
+
+        try
+        {
+            types = assembly.GetTypes();
+        }
+        catch
+        {
+            Console.WriteLine($"Error load `{assembly.FullName}` assembly.");
+        }
+
+        return types.Where(wh => wh.IsPublic && (typeFilter == null || typeFilter(wh)));
+    }
+
+    /// <summary>
     /// 获取所有类型
     /// </summary>
     /// <param name="assembly"><see cref="Assembly"/></param>
@@ -65,5 +88,16 @@ public static class AssemblyExtension
     public static string GetAssemblyName(this Assembly assembly)
     {
         return assembly.GetName().Name;
+    }
+
+    /// <summary>
+    /// 根据程序集和类型完整限定名获取运行时类型
+    /// </summary>
+    /// <param name="assembly"><see cref="Assembly"/> 程序集</param>
+    /// <param name="typeFullName"><see cref="string"/> 类型完整限定名称</param>
+    /// <returns><see cref="Type"/></returns>
+    public static Type GetType(Assembly assembly, string typeFullName)
+    {
+        return assembly.GetType(typeFullName);
     }
 }

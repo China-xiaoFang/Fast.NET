@@ -1,28 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 框架对象映射模块库。</Description>
+		<Description>Fast.NET 框架对象映射模块库。（因和 “Mapster” 官方包引用冲突，所以选择获取源码进行发布。源码地址：https://github.com/MapsterMapper/Mapster/tree/v7.4.0）</Description>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Mapster" Version="7.4.0" />
-		<PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
-	</ItemGroup>
-
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions" PrivateAssets="All">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions" PrivateAssets="All">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions" PrivateAssets="All">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
 		</Reference>
 	</ItemGroup>

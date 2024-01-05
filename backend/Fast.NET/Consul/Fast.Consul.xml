@@ -4,30 +4,33 @@
         <name>Fast.Consul</name>
     </assembly>
     <members>
-        <member name="T:Fast.Consul.Extensions.ConsulIApplicationBuilderExtension">
+        <member name="T:Fast.Consul.Filters.ConsulStartupFilter">
             <summary>
-            <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> Consul服务拓展类
+            <see cref="T:Fast.Consul.Filters.ConsulStartupFilter"/> 应用启动时自动注册中间件
             </summary>
         </member>
-        <member name="M:Fast.Consul.Extensions.ConsulIApplicationBuilderExtension.UseConsul(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="M:Fast.Consul.Filters.ConsulStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
             <summary>
-            配置Consul服务
+            配置中间件
             </summary>
-            <param name="app"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
-            <returns>服务集合</returns>
+            <param name="action"></param>
+            <returns></returns>
         </member>
-        <member name="T:Fast.Consul.Extensions.ConsulIServiceCollectionExtension">
+        <member name="T:Fast.Consul.Injections.ConsulInjection">
             <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> Consul服务拓展类
+            <see cref="T:Fast.Consul.Injections.ConsulInjection"/> Consul 服务注册
             </summary>
         </member>
-        <member name="M:Fast.Consul.Extensions.ConsulIServiceCollectionExtension.AddConsulService(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="P:Fast.Consul.Injections.ConsulInjection.Order">
             <summary>
-            配置Consul服务
+            排序
             </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
-            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
-            <returns>服务集合</returns>
+        </member>
+        <member name="M:Fast.Consul.Injections.ConsulInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
         </member>
         <member name="T:Fast.Consul.Internal.Penetrates">
             <summary>

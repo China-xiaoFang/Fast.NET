@@ -139,7 +139,7 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
 
         // 加载项目注册和模块化/插件注释
         var frameworkPackageName = GetType().GetTypeInfo().Assembly.GetName().Name;
-        var projectXmlComments = FastContext.Assemblies.Where(u => u.GetName().Name != frameworkPackageName)
+        var projectXmlComments = IaaSContext.Assemblies.Where(u => u.GetName().Name != frameworkPackageName)
             .Select(t => t.GetName().Name);
         XmlComments = projectXmlComments.ToArray();
 

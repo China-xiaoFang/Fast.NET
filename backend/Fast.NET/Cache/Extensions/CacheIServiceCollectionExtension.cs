@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.IaaS;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Cache.Extensions;
@@ -22,23 +23,17 @@ namespace Fast.Cache.Extensions;
 public static class CacheIServiceCollectionExtension
 {
     /// <summary>
-    /// 连接字符串
-    /// </summary>
-    internal static string ConnectionString;
-
-    /// <summary>
     /// 添加缓存
     /// 请确保 配置文件中存在 “RedisConnectionString” 节点
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="connectionString"><see cref="string"/>连接字符串，如若不传，需要配置在 JSON文件 “RedisConnectionString” 节点中</param>
     /// <returns></returns>
-    public static IServiceCollection AddCache(this IServiceCollection services, string connectionString = default)
+    public static IServiceCollection AddCache(this IServiceCollection services)
     {
-        ConnectionString = connectionString;
+        Debugging.Info("Registering cache......");
 
         // 单例注入
-        services.AddSingleton<ICache, Realize.Cache>();
+        services.AddSingleton<ICache, Implements.Cache>();
 
         return services;
     }

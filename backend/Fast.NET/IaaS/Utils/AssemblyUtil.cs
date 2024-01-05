@@ -13,6 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Text.Json;
 
 // ReSharper disable once CheckNamespace
@@ -99,7 +100,7 @@ public static class AssemblyUtil
             // 读取项目程序集 或 Fast 官方发布的包，或手动添加引用的dll，或配置特定的包前缀
             return depsLibraryList.Where(wh => (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) ||
                                                (wh.Type == "package" && (wh.Name.StartsWith(nameof(Fast)))))
-                .Select(sl => Reflect.GetAssembly(sl.Name));
+                .Select(sl => GetAssembly(sl.Name));
         }
 
         // 独立发布/单文件发布
@@ -107,25 +108,57 @@ public static class AssemblyUtil
     }
 
     /// <summary>
-    /// 获取程序集中所有类型
+    /// 根据程序集名称获取运行时程序集
     /// </summary>
-    /// <remarks>这里默认获取所有 Public 声明的</remarks>
-    /// <param name="assembly"><see cref="Assembly"/> 程序集</param>
-    /// <param name="typeFilter"><see cref="Func{TResult}"/> 类型过滤条件</param>
-    /// <returns></returns>
-    public static IEnumerable<Type> GetAssemblyTypes(Assembly assembly, Func<Type, bool> typeFilter = null)
+    /// <param name="assemblyName"><see cref="string"/> 程序集名称</param>
+    /// <returns><see cref="Assembly"/></returns>
+    public static Assembly GetAssembly(string assemblyName)
     {
-        var types = Array.Empty<Type>();
+        // 加载程序集
+        return AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(assemblyName));
+    }
 
-        try
-        {
-            types = assembly.GetTypes();
-        }
-        catch
-        {
-            Console.WriteLine($"Error load `{assembly.FullName}` assembly.");
-        }
+    /// <summary>
+    /// 根据路径加载程序集
+    /// </summary>
+    /// <param name="path"><see cref="string"/> 绝对路径</param>
+    /// <returns><see cref="Assembly"/></returns>
+    public static Assembly LoadAssembly(string path)
+    {
+        if (!File.Exists(path))
+            return default;
+        return Assembly.LoadFrom(path);
+    }
 
-        return types.Where(wh => wh.IsPublic && (typeFilter == null || typeFilter(wh)));
+    /// <summary>
+    /// 通过流加载程序集
+    /// </summary>
+    /// <param name="assembly"><see cref="MemoryStream"/> 内存流</param>
+    /// <returns><see cref="Assembly"/></returns>
+    public static Assembly LoadAssembly(MemoryStream assembly)
+    {
+        return Assembly.Load(assembly.ToArray());
+    }
+
+    /// <summary>
+    /// 根据程序集名称、类型完整限定名获取运行时类型
+    /// </summary>
+    /// <param name="assemblyName"><see cref="string"/> 程序集名称</param>
+    /// <param name="typeFullName"><see cref="string"/> 类型完整限定名称</param>
+    /// <returns><see cref="Type"/></returns>
+    public static Type GetType(string assemblyName, string typeFullName)
+    {
+        return GetAssembly(assemblyName).GetType(typeFullName);
+    }
+
+    /// <summary>
+    /// 根据程序集和类型完全限定名获取运行时类型
+    /// </summary>
+    /// <param name="assembly"><see cref="MemoryStream"/> 内存流</param>
+    /// <param name="typeFullName"><see cref="string"/> 类型完整限定名称</param>
+    /// <returns><see cref="Type"/></returns>
+    public static Type GetType(MemoryStream assembly, string typeFullName)
+    {
+        return LoadAssembly(assembly).GetType(typeFullName);
     }
 }

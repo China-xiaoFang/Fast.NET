@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.IaaS</name>
+        <name>Fast.Iaas</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -25,173 +25,92 @@
             备注
             </summary>
         </member>
-        <member name="T:Fast.IaaS.DateTimeRequiredAttribute">
-            <summary>
-            <see cref="T:Fast.IaaS.DateTimeRequiredAttribute"/> 验证 <see cref="T:System.DateTime"/> 类型属性必填
-            <remarks>默认必须在 1949-10-01 ~ 2099-12-31 之间</remarks>
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.DateTimeRequiredAttribute.MinValue">
-            <summary>
-            最小值
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.DateTimeRequiredAttribute.MaxValue">
-            <summary>
-            最大值
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.DateTimeRequiredAttribute.IsValid(System.Object)">
-            <summary>Determines whether the specified value of the object is valid.</summary>
-            <param name="value">The value of the object to validate.</param>
-            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-            <returns>
-            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
-        </member>
-        <member name="T:Fast.IaaS.DecimalRequiredAttribute">
-            <summary>
-            <see cref="T:Fast.IaaS.DecimalRequiredAttribute"/> 验证 <see cref="T:System.Decimal"/> 类型属性必填
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.DecimalRequiredAttribute.AllowZero">
-            <summary>
-            允许零
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.DecimalRequiredAttribute.AllowNegative">
-            <summary>
-            允许负数
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.DecimalRequiredAttribute.IsValid(System.Object)">
-            <summary>Determines whether the specified value of the object is valid.</summary>
-            <param name="value">The value of the object to validate.</param>
-            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-            <returns>
-            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
-        </member>
-        <member name="T:Fast.IaaS.DoubleRequiredAttribute">
-            <summary>
-            <see cref="T:Fast.IaaS.DoubleRequiredAttribute"/> 验证 <see cref="T:System.Double"/> 类型属性必填
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.DoubleRequiredAttribute.AllowZero">
-            <summary>
-            允许零
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.DoubleRequiredAttribute.AllowNegative">
-            <summary>
-            允许负数
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.DoubleRequiredAttribute.IsValid(System.Object)">
-            <summary>Determines whether the specified value of the object is valid.</summary>
-            <param name="value">The value of the object to validate.</param>
-            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-            <returns>
-            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
-        </member>
-        <member name="T:Fast.IaaS.FloatRequiredAttribute">
-            <summary>
-            <see cref="T:Fast.IaaS.FloatRequiredAttribute"/> 验证 <see cref="T:System.Single"/> 类型属性必填
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.FloatRequiredAttribute.AllowZero">
-            <summary>
-            允许零
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.FloatRequiredAttribute.AllowNegative">
-            <summary>
-            允许负数
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.FloatRequiredAttribute.IsValid(System.Object)">
-            <summary>Determines whether the specified value of the object is valid.</summary>
-            <param name="value">The value of the object to validate.</param>
-            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-            <returns>
-            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
-        </member>
-        <member name="T:Fast.IaaS.IntRequiredAttribute">
-            <summary>
-            <see cref="T:Fast.IaaS.IntRequiredAttribute"/> 验证 <see cref="T:System.Int32"/> 类型属性必填
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.IntRequiredAttribute.AllowZero">
-            <summary>
-            允许零
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.IntRequiredAttribute.AllowNegative">
-            <summary>
-            允许负数
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.IntRequiredAttribute.IsValid(System.Object)">
-            <summary>Determines whether the specified value of the object is valid.</summary>
-            <param name="value">The value of the object to validate.</param>
-            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-            <returns>
-            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
-        </member>
-        <member name="T:Fast.IaaS.LongRequiredAttribute">
-            <summary>
-            <see cref="T:Fast.IaaS.LongRequiredAttribute"/> 验证 <see cref="T:System.Int64"/> 类型属性必填
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.LongRequiredAttribute.AllowZero">
-            <summary>
-            允许零
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.LongRequiredAttribute.AllowNegative">
-            <summary>
-            允许负数
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.LongRequiredAttribute.IsValid(System.Object)">
-            <summary>Determines whether the specified value of the object is valid.</summary>
-            <param name="value">The value of the object to validate.</param>
-            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-            <returns>
-            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
-        </member>
-        <member name="T:Fast.IaaS.StringRequiredAttribute">
-            <summary>
-            <see cref="T:Fast.IaaS.StringRequiredAttribute"/> 验证 <see cref="T:System.String"/> 类型属性必填
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.StringRequiredAttribute.AllowEmptyString">
-            <summary>
-            允许空字符串
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.StringRequiredAttribute.AllowWhitespace">
-            <summary>
-            允许前后空格
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.StringRequiredAttribute.IsValid(System.Object)">
-            <summary>Determines whether the specified value of the object is valid.</summary>
-            <param name="value">The value of the object to validate.</param>
-            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-            <returns>
-            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
-        </member>
         <member name="T:Fast.IaaS.SuppressSnifferAttribute">
             <summary>
             <see cref="T:Fast.IaaS.SuppressSnifferAttribute"/> 不被扫描和发现的特性
             </summary>
             <remarks>用于程序集扫描类型或方法时候</remarks>
+        </member>
+        <member name="T:Fast.IaaS.EnumItem`1">
+            <summary>
+            <see cref="T:Fast.IaaS.EnumItem`1"/> 枚举项
+            </summary>
+            <typeparam name="TProperty">Value属性类型</typeparam>
+        </member>
+        <member name="P:Fast.IaaS.EnumItem`1.Describe">
+            <summary>  
+            枚举的描述  
+            </summary>  
+        </member>
+        <member name="P:Fast.IaaS.EnumItem`1.Name">
+            <summary>  
+            枚举名称  
+            </summary>  
+        </member>
+        <member name="P:Fast.IaaS.EnumItem`1.Value">
+            <summary>  
+            枚举对象的值  
+            </summary>  
+        </member>
+        <member name="T:Fast.IaaS.Commons.UserAgentInfo">
+            <summary>
+            <see cref="T:Fast.IaaS.Commons.UserAgentInfo"/> 用户代理信息
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.Commons.UserAgentInfo.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.Commons.UserAgentInfo.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.Commons.UserAgentInfo.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="T:Fast.IaaS.WanNetIPInfo">
+            <summary>
+            <see cref="T:Fast.IaaS.WanNetIPInfo"/> 公网IP信息
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.Ip">
+            <summary>
+            Ip地址
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.ProvinceZipCode">
+            <summary>
+            省份邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.CityZipCode">
+            <summary>
+            城市邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.Address">
+            <summary>
+            地理信息
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.WanNetIPInfo.Operator">
+            <summary>
+            运营商
+            </summary>
         </member>
         <member name="T:Fast.IaaS.GlobalConstant">
             <summary>
@@ -218,22 +137,22 @@
             Sql Server 最大时间
             </summary>
         </member>
-        <member name="T:Fast.IaaS.FastContext">
+        <member name="T:Fast.IaaS.IaaSContext">
             <summary>
-            <see cref="T:Fast.IaaS.FastContext"/> 框架内部的常量，公共方法配置类
+            <see cref="T:Fast.IaaS.IaaSContext"/> 框架内部的常量，公共方法配置类
             </summary>
         </member>
-        <member name="F:Fast.IaaS.FastContext.Assemblies">
+        <member name="F:Fast.IaaS.IaaSContext.Assemblies">
             <summary>
             应用有效程序集
             </summary>
         </member>
-        <member name="F:Fast.IaaS.FastContext.EffectiveTypes">
+        <member name="F:Fast.IaaS.IaaSContext.EffectiveTypes">
             <summary>
             有效程序集类型
             </summary>
         </member>
-        <member name="M:Fast.IaaS.FastContext.CatchOrDefault``1(System.Func{``0},``0)">
+        <member name="M:Fast.IaaS.IaaSContext.CatchOrDefault``1(System.Func{``0},``0)">
             <summary>
             处理获取对象异常问题
             </summary>
@@ -242,13 +161,13 @@
             <param name="defaultValue">默认值</param>
             <returns>T</returns>
         </member>
-        <member name="M:Fast.IaaS.FastContext.GetThreadId">
+        <member name="M:Fast.IaaS.IaaSContext.GetThreadId">
             <summary>
             获取当前线程 Id
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Fast.IaaS.FastContext.GetExecutionTime(System.Action)">
+        <member name="M:Fast.IaaS.IaaSContext.GetExecutionTime(System.Action)">
             <summary>
             获取一段代码执行耗时
             </summary>
@@ -475,6 +394,15 @@
             <see cref="T:System.Reflection.Assembly"/> 拓展类
             </summary>
         </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetAssemblyTypes(System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
+            <summary>
+            获取程序集中所有类型
+            </summary>
+            <remarks>这里默认获取所有 Public 声明的</remarks>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/> 程序集</param>
+            <param name="typeFilter"><see cref="T:System.Func`1"/> 类型过滤条件</param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.IaaS.AssemblyExtension.GetTypes(System.Reflection.Assembly,System.Boolean)">
             <summary>
             获取所有类型
@@ -503,6 +431,14 @@
             </summary>
             <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
             <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetType(System.Reflection.Assembly,System.String)">
+            <summary>
+            根据程序集和类型完整限定名获取运行时类型
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/> 程序集</param>
+            <param name="typeFullName"><see cref="T:System.String"/> 类型完整限定名称</param>
+            <returns><see cref="T:System.Type"/></returns>
         </member>
         <member name="T:Fast.IaaS.Base64Extension">
             <summary>
@@ -1094,7 +1030,7 @@
             <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 null</remarks>
             </summary>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
-            <returns><see cref="T:Fast.IaaS.UserAgentInfo"/></returns>
+            <returns><see cref="T:Fast.IaaS.Commons.UserAgentInfo"/></returns>
         </member>
         <member name="M:Fast.IaaS.HttpContextExtension.RemoteIpv4Info(Microsoft.AspNetCore.Http.HttpContext,System.String)">
             <summary>
@@ -1911,27 +1847,6 @@
             YYYY | YYYY-MM | YYYYMM | YYYY-MM-DD | YYYYMMDD | YYYY-MM-DD HH:MM:SS | YYYY-MM-DD HH:MM:SS.FFF
             </remarks>
         </member>
-        <member name="T:Fast.IaaS.EnumItem`1">
-            <summary>
-            <see cref="T:Fast.IaaS.EnumItem`1"/> 枚举项
-            </summary>
-            <typeparam name="TProperty">Value属性类型</typeparam>
-        </member>
-        <member name="P:Fast.IaaS.EnumItem`1.Describe">
-            <summary>  
-            枚举的描述  
-            </summary>  
-        </member>
-        <member name="P:Fast.IaaS.EnumItem`1.Name">
-            <summary>  
-            枚举名称  
-            </summary>  
-        </member>
-        <member name="P:Fast.IaaS.EnumItem`1.Value">
-            <summary>  
-            枚举对象的值  
-            </summary>  
-        </member>
         <member name="T:Fast.IaaS.IPostConfigure">
             <summary>
             <see cref="T:Fast.IaaS.IPostConfigure"/> 后期配置接口
@@ -2008,150 +1923,6 @@
             
             </summary>
         </member>
-        <member name="T:Fast.IaaS.UserAgentInfo">
-            <summary>
-            <see cref="T:Fast.IaaS.UserAgentInfo"/> 用户代理信息
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.UserAgentInfo.Device">
-            <summary>
-            设备
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.UserAgentInfo.OS">
-            <summary>
-            操作系统（版本）
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.UserAgentInfo.Browser">
-            <summary>
-            浏览器（版本）
-            </summary>
-        </member>
-        <member name="T:Fast.IaaS.WanNetIPInfo">
-            <summary>
-            <see cref="T:Fast.IaaS.WanNetIPInfo"/> 公网IP信息
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.WanNetIPInfo.Ip">
-            <summary>
-            Ip地址
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.WanNetIPInfo.Province">
-            <summary>
-            省份
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.WanNetIPInfo.ProvinceZipCode">
-            <summary>
-            省份邮政编码
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.WanNetIPInfo.City">
-            <summary>
-            城市
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.WanNetIPInfo.CityZipCode">
-            <summary>
-            城市邮政编码
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.WanNetIPInfo.Address">
-            <summary>
-            地理信息
-            </summary>
-        </member>
-        <member name="P:Fast.IaaS.WanNetIPInfo.Operator">
-            <summary>
-            运营商
-            </summary>
-        </member>
-        <member name="T:Fast.IaaS.Reflect">
-            <summary>
-            反射静态类
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetEntryAssembly">
-            <summary>
-            获取入口程序集
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetAssembly(System.String)">
-            <summary>
-            根据程序集名称获取运行时程序集
-            </summary>
-            <param name="assemblyName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.LoadAssembly(System.String)">
-            <summary>
-            根据路径加载程序集
-            </summary>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.LoadAssembly(System.IO.MemoryStream)">
-            <summary>
-            通过流加载程序集
-            </summary>
-            <param name="assembly"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetType(System.String,System.String)">
-            <summary>
-            根据程序集名称、类型完整限定名获取运行时类型
-            </summary>
-            <param name="assemblyName"></param>
-            <param name="typeFullName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetType(System.Reflection.Assembly,System.String)">
-            <summary>
-            根据程序集和类型完全限定名获取运行时类型
-            </summary>
-            <param name="assembly"></param>
-            <param name="typeFullName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetType(System.IO.MemoryStream,System.String)">
-            <summary>
-            根据程序集和类型完全限定名获取运行时类型
-            </summary>
-            <param name="assembly"></param>
-            <param name="typeFullName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetAssemblyName(System.Reflection.Assembly)">
-            <summary>
-            获取程序集名称
-            </summary>
-            <param name="assembly"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetAssemblyName(System.Type)">
-            <summary>
-            获取程序集名称
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetAssemblyName(System.Reflection.TypeInfo)">
-            <summary>
-            获取程序集名称
-            </summary>
-            <param name="typeInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.Reflect.GetStringType(System.String)">
-            <summary>
-            加载程序集类型，支持格式：程序集;网站类型命名空间
-            </summary>
-            <param name="str"></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.IaaS.AssemblyUtil">
             <summary>
             <see cref="T:System.Reflection.Assembly"/> 工具类
@@ -2164,14 +1935,42 @@
             <param name="referenced"><see cref="T:System.Boolean"/> 是否包含引用的，默认为 true</param>
             <returns><see cref="T:System.Collections.Generic.IEnumerable`1"/></returns>
         </member>
-        <member name="M:Fast.IaaS.AssemblyUtil.GetAssemblyTypes(System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
+        <member name="M:Fast.IaaS.AssemblyUtil.GetAssembly(System.String)">
             <summary>
-            获取程序集中所有类型
+            根据程序集名称获取运行时程序集
             </summary>
-            <remarks>这里默认获取所有 Public 声明的</remarks>
-            <param name="assembly"><see cref="T:System.Reflection.Assembly"/> 程序集</param>
-            <param name="typeFilter"><see cref="T:System.Func`1"/> 类型过滤条件</param>
-            <returns></returns>
+            <param name="assemblyName"><see cref="T:System.String"/> 程序集名称</param>
+            <returns><see cref="T:System.Reflection.Assembly"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyUtil.LoadAssembly(System.String)">
+            <summary>
+            根据路径加载程序集
+            </summary>
+            <param name="path"><see cref="T:System.String"/> 绝对路径</param>
+            <returns><see cref="T:System.Reflection.Assembly"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyUtil.LoadAssembly(System.IO.MemoryStream)">
+            <summary>
+            通过流加载程序集
+            </summary>
+            <param name="assembly"><see cref="T:System.IO.MemoryStream"/> 内存流</param>
+            <returns><see cref="T:System.Reflection.Assembly"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyUtil.GetType(System.String,System.String)">
+            <summary>
+            根据程序集名称、类型完整限定名获取运行时类型
+            </summary>
+            <param name="assemblyName"><see cref="T:System.String"/> 程序集名称</param>
+            <param name="typeFullName"><see cref="T:System.String"/> 类型完整限定名称</param>
+            <returns><see cref="T:System.Type"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyUtil.GetType(System.IO.MemoryStream,System.String)">
+            <summary>
+            根据程序集和类型完全限定名获取运行时类型
+            </summary>
+            <param name="assembly"><see cref="T:System.IO.MemoryStream"/> 内存流</param>
+            <param name="typeFullName"><see cref="T:System.String"/> 类型完整限定名称</param>
+            <returns><see cref="T:System.Type"/></returns>
         </member>
         <member name="T:Fast.IaaS.CryptoUtil">
             <summary>
@@ -2876,6 +2675,168 @@
             </summary>
             <param name="parameterExpression"></param>
             <returns></returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute"/> 验证 <see cref="T:System.DateTime"/> 类型属性必填
+            <remarks>默认必须在 1949-10-01 ~ 2099-12-31 之间</remarks>
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute.MinValue">
+            <summary>
+            最小值
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute.MaxValue">
+            <summary>
+            最大值
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute"/> 验证 <see cref="T:System.Decimal"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute"/> 验证 <see cref="T:System.Double"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.FloatRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.FloatRequiredAttribute"/> 验证 <see cref="T:System.Single"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.FloatRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.FloatRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.FloatRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.IntRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.IntRequiredAttribute"/> 验证 <see cref="T:System.Int32"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.IntRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.IntRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.IntRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.LongRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.LongRequiredAttribute"/> 验证 <see cref="T:System.Int64"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.LongRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.LongRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.LongRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.StringRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.StringRequiredAttribute"/> 验证 <see cref="T:System.String"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.StringRequiredAttribute.AllowEmptyString">
+            <summary>
+            允许空字符串
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.StringRequiredAttribute.AllowWhitespace">
+            <summary>
+            允许前后空格
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.StringRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
         </member>
     </members>
 </doc>

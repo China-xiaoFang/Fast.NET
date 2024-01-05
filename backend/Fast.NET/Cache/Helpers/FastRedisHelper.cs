@@ -20,6 +20,6 @@ namespace Fast.Cache.Helpers;
 /// <see cref="FastRedisHelper"/>
 /// </summary>
 [SuppressSniffer]
-public abstract class FastRedisHelper : RedisHelper<FastRedisHelper>
+internal abstract class FastRedisHelper : RedisHelper<FastRedisHelper>
 {
 }

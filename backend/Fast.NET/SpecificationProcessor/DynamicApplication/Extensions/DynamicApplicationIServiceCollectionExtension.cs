@@ -40,7 +40,7 @@ public static class DynamicApplicationIServiceCollectionExtension
                 $"`{nameof(AddDynamicApplication)}` must be invoked after `{nameof(MvcServiceCollectionExtensions.AddControllers)}`.");
 
         // 解决项目类型为 <Project Sdk="Microsoft.NET.Sdk"> 不能加载 API 问题，默认支持 <Project Sdk="Microsoft.NET.Sdk.Web">
-        foreach (var assembly in FastContext.Assemblies)
+        foreach (var assembly in IaaSContext.Assemblies)
         {
             if (partManager.ApplicationParts.Any(u => u.Name != assembly.GetName().Name))
             {

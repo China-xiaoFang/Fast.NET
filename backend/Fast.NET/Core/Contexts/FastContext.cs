@@ -14,10 +14,8 @@
 
 using System.Collections.Concurrent;
 using System.Reflection;
-using System.Text;
 using Fast.IaaS;
 using Fast.NET.Core.Extensions;
-using Fast.NET.Core.Filters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -37,11 +35,6 @@ public static class FastContext
     #region 内部属性
 
     /// <summary>
-    /// 默认配置文件扫描目录
-    /// </summary>
-    internal static IEnumerable<string> InternalConfigurationScanDirectories => new[] {"AppConfig", "JsonConfig"};
-
-    /// <summary>
     /// GC 回收默认间隔
     /// </summary>
     internal const int GC_COLLECT_INTERVAL_SECONDS = 5;
@@ -58,12 +51,12 @@ public static class FastContext
     /// <summary>
     /// 应用有效程序集
     /// </summary>
-    public static IEnumerable<Assembly> Assemblies => IaaS.FastContext.Assemblies;
+    public static IEnumerable<Assembly> Assemblies => IaaSContext.Assemblies;
 
     /// <summary>
     /// 有效程序集类型
     /// </summary>
-    public static IEnumerable<Type> EffectiveTypes => IaaS.FastContext.EffectiveTypes;
+    public static IEnumerable<Type> EffectiveTypes => IaaSContext.EffectiveTypes;
 
     /// <summary>
     /// 处理获取对象异常问题
@@ -74,7 +67,7 @@ public static class FastContext
     /// <returns>T</returns>
     public static T CatchOrDefault<T>(Func<T> action, T defaultValue = null) where T : class
     {
-        return IaaS.FastContext.CatchOrDefault(action, defaultValue);
+        return IaaSContext.CatchOrDefault(action, defaultValue);
     }
 
     /// <summary>
@@ -83,7 +76,7 @@ public static class FastContext
     /// <returns></returns>
     public static int GetThreadId()
     {
-        return IaaS.FastContext.GetThreadId();
+        return IaaSContext.GetThreadId();
     }
 
     /// <summary>
@@ -93,7 +86,7 @@ public static class FastContext
     /// <returns><see cref="long"/></returns>
     public static long GetExecutionTime(Action action)
     {
-        return IaaS.FastContext.GetExecutionTime(action);
+        return IaaSContext.GetExecutionTime(action);
     }
 
     #endregion
@@ -298,7 +291,7 @@ public static class FastContext
         }
 
         // 强制手动回收 GC 内存
-        if (UnmanagedObjects.Any())
+        if (UnmanagedObjects.IsEmpty)
         {
             var nowTime = DateTime.UtcNow;
             if ((LastGCCollectTime == null || (nowTime - LastGCCollectTime.Value).TotalSeconds > GC_COLLECT_INTERVAL_SECONDS))
@@ -310,145 +303,5 @@ public static class FastContext
         }
 
         UnmanagedObjects.Clear();
-    }
-
-    /// <summary>
-    /// 配置 Application
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <param name="hostBuilder"></param>
-    internal static void ConfigureApplication(IWebHostBuilder builder, IHostBuilder hostBuilder = default)
-    {
-        // 自动装载配置
-        if (hostBuilder == default)
-        {
-            builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
-            {
-                // 存储环境对象
-                InternalContext.HostEnvironment = InternalContext.WebHostEnvironment = hostContext.HostingEnvironment;
-
-                // 加载配置
-                AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
-            });
-        }
-        // 自动装载配置
-        else
-        {
-            builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
-            {
-                // 存储环境对象
-                InternalContext.HostEnvironment = hostContext.HostingEnvironment;
-
-                // 加载配置
-                AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
-            });
-        }
-
-        // 应用初始化服务
-        builder.ConfigureServices((hostContext, services) =>
-        {
-            // 存储配置对象
-            InternalContext.Configuration = hostContext.Configuration;
-
-            // 存储服务提供器
-            InternalContext.InternalServices = services;
-
-            // 注册 Startup 过滤器
-            services.AddTransient<IStartupFilter, StartupFilter>();
-
-            // 注册 HttpContextAccessor 服务
-            services.AddHttpContextAccessor();
-
-            // 注册 内存缓存
-            services.AddMemoryCache();
-
-            // 默认内置 GBK，Windows-1252, Shift-JIS, GB2312 编码支持
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        });
-    }
-
-    /// <summary>
-    /// 添加 JSON 文件
-    /// </summary>
-    /// <param name="configurationBuilder"></param>
-    /// <param name="hostEnvironment"></param>
-    private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
-    {
-        // 获取程序执行目录
-        var executeDirectory = AppContext.BaseDirectory;
-
-        // 扫描自定义配置扫描目录
-        var jsonFiles = new[] {executeDirectory}
-            .Concat(InternalConfigurationScanDirectories.Select(sl => $"{executeDirectory}{sl}")).Where(Directory.Exists)
-            .SelectMany(s => Directory.GetFiles(s, "*.json", SearchOption.TopDirectoryOnly)).ToList();
-
-        // 如果没有配置文件，中止执行
-        if (!jsonFiles.Any())
-            return;
-
-        // 获取环境变量名，如果没找到，则读取 NETCORE_ENVIRONMENT 环境变量信息识别（用于非 Web 环境）
-        var envName = hostEnvironment?.EnvironmentName ?? Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT") ?? "Unknown";
-
-        // 处理控制台应用程序
-        var _excludeJsonPrefixArr = hostEnvironment == default
-            ? excludeJsonPrefixArr.Where(u => !u.Equals("appsettings"))
-            : excludeJsonPrefixArr;
-
-        // 将所有文件进行分组
-        var jsonFilesGroups = SplitConfigFileNameToGroups(jsonFiles).Where(u =>
-            !_excludeJsonPrefixArr.Contains(u.Key, StringComparer.OrdinalIgnoreCase) && !u.Any(c =>
-                runtimeJsonSuffixArr.Any(z => c.EndsWith(z, StringComparison.OrdinalIgnoreCase))));
-
-        // 遍历所有配置分组
-        foreach (var group in jsonFilesGroups)
-        {
-            // 限制查找的 json 文件组
-            var limitFileNames = new[] {$"{group.Key}.json", $"{group.Key}.{envName}.json"};
-
-            // 查找默认配置和环境配置
-            var files = group.Where(u => limitFileNames.Contains(Path.GetFileName(u), StringComparer.OrdinalIgnoreCase))
-                .OrderBy(u => Path.GetFileName(u).Length);
-
-            // 循环加载
-            foreach (var jsonFile in files)
-            {
-                configurationBuilder.AddJsonFile(jsonFile, optional: true, reloadOnChange: true);
-            }
-        }
-    }
-
-    /// <summary>
-    /// 排除的配置文件前缀
-    /// </summary>
-    private static readonly string[] excludeJsonPrefixArr = {"appsettings", "bundleconfig", "compilerconfig"};
-
-    /// <summary>
-    /// 排除运行时 Json 后缀
-    /// </summary>
-    private static readonly string[] runtimeJsonSuffixArr =
-    {
-        "deps.json", "runtimeconfig.dev.json", "runtimeconfig.prod.json", "runtimeconfig.json", "staticwebassets.runtime.json"
-    };
-
-    /// <summary>
-    /// 对配置文件名进行分组
-    /// </summary>
-    /// <param name="configFiles"></param>
-    /// <returns></returns>
-    private static IEnumerable<IGrouping<string, string>> SplitConfigFileNameToGroups(IEnumerable<string> configFiles)
-    {
-        // 分组
-        return configFiles.GroupBy(Function);
-
-        // 本地函数
-        static string Function(string file)
-        {
-            // 根据 . 分隔
-            var fileNameParts = Path.GetFileName(file).Split('.', StringSplitOptions.RemoveEmptyEntries);
-            if (fileNameParts.Length == 2)
-                return fileNameParts[0];
-
-            return string.Join('.', fileNameParts.Take(fileNameParts.Length - 2));
-        }
     }
 }

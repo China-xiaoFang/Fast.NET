@@ -17,6 +17,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using Fast.IaaS.Commons;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Caching.Memory;
@@ -287,7 +288,7 @@ public static class HttpContextExtension
         try
         {
             // 判断是否安装了 UAParser 程序集
-            var uaParserAssembly = FastContext.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("UAParser") == true);
+            var uaParserAssembly = IaaSContext.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("UAParser") == true);
 
             if (uaParserAssembly == null)
             {
@@ -295,7 +296,7 @@ public static class HttpContextExtension
             }
 
             // 加载 UAParser 的 Parser 类型
-            var uaParserParserType = Reflect.GetType(uaParserAssembly, "UAParser.Parser");
+            var uaParserParserType = uaParserAssembly.GetType("UAParser.Parser");
 
             if (uaParserParserType == null)
             {

@@ -86,6 +86,12 @@ public sealed class JWTSettingsOptions : IPostConfigure
     public JwtBearerAlgorithmEnum? Algorithm { get; set; }
 
     /// <summary>
+    /// 启用
+    /// <remarks>默认true</remarks>
+    /// </summary>
+    public bool? Enable { get; set; }
+
+    /// <summary>
     /// 后期配置
     /// </summary>
     public void PostConfigure()
@@ -101,5 +107,6 @@ public sealed class JWTSettingsOptions : IPostConfigure
         TokenExpiredTime ??= 20;
         RefreshTokenExpireTime ??= 1440;
         Algorithm ??= JwtBearerAlgorithmEnum.HS256;
+        Enable ??= true;
     }
 }

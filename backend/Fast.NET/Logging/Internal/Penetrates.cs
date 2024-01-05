@@ -48,7 +48,7 @@ internal static class Penetrates
     /// 请求上下文
     /// </summary>
     internal static HttpContext HttpContext =>
-        FastContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
+        IaaSContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
 
     /// <summary>
     /// 获取当前请求 TraceId
@@ -58,7 +58,7 @@ internal static class Penetrates
     {
         return Activity.Current?.Id ?? (RootServices == null
             ? default
-            : FastContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext)?.TraceIdentifier);
+            : IaaSContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext)?.TraceIdentifier);
     }
 
     /// <summary>
@@ -215,7 +215,7 @@ internal static class Penetrates
             var stackTrace = new StackTrace();
             var stackFrames = stackTrace.GetFrames();
             var pos = isConsole ? 6 : 5;
-            if (stackFrames.Count() > pos)
+            if (stackFrames.Length > pos)
             {
                 var targetMethod = stackFrames.Where((u, i) => i == pos).First().GetMethod();
                 var declaringType = targetMethod?.DeclaringType;

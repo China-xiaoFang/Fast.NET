@@ -12,7 +12,13 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Text;
+using Fast.IaaS;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Fast.NET.Core.Extensions;
 
@@ -34,7 +40,7 @@ public static class WebApplicationBuilderExtension
         InternalContext.WebHostEnvironment = builder.Environment;
 
         // 初始化配置
-        FastContext.ConfigureApplication(builder.WebHost, builder.Host);
+        ConfigureApplication(builder.WebHost);
 
         return builder;
     }
@@ -66,5 +72,169 @@ public static class WebApplicationBuilderExtension
         期待您的PR，让.NET更好！
         ");
         Console.ResetColor();
+    }
+
+    /// <summary>
+    /// 配置 Application
+    /// </summary>
+    /// <param name="builder"></param>
+    private static void ConfigureApplication(IWebHostBuilder builder)
+    {
+        // 自动装载配置
+        builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+        {
+            // 存储环境对象
+            InternalContext.HostEnvironment = InternalContext.WebHostEnvironment = hostContext.HostingEnvironment;
+
+            // 加载配置
+            AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
+        });
+
+        // 应用初始化服务
+        builder.ConfigureServices((hostContext, services) =>
+        {
+            // 存储配置对象
+            InternalContext.Configuration = hostContext.Configuration;
+
+            // 存储服务提供器
+            InternalContext.InternalServices = services;
+
+            // 注册 HttpContextAccessor 服务
+            services.AddHttpContextAccessor();
+
+            // 注册 内存缓存
+            services.AddMemoryCache();
+
+            // 默认内置 GBK，Windows-1252, Shift-JIS, GB2312 编码支持
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            // 查找所有继承了 IStartupFilter 的类型
+            var iStartupFilterTypes = IaaSContext.EffectiveTypes.Where(wh =>
+                typeof(IStartupFilter).IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract);
+
+            foreach (var startupFilterType in iStartupFilterTypes)
+            {
+                // 注册 Startup 过滤器
+                services.AddTransient(typeof(IStartupFilter), startupFilterType);
+            }
+        });
+
+        // 查找所有继承了 IHostingStartup 的类型
+        var iHostingStartupTypes = IaaSContext.EffectiveTypes.Where(wh =>
+            typeof(IHostingStartup).IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
+        {
+            // 默认为 -1；
+            var order = -1;
+            // 尝试获取Order值
+            var orderProperty = sl.GetProperty("Order");
+
+            if (orderProperty != null && orderProperty.PropertyType == typeof(int))
+            {
+                var orderVal = orderProperty.GetValue(sl)?.ToString();
+                if (!orderVal.IsEmpty())
+                {
+                    order = orderVal.ParseToInt();
+                }
+            }
+
+            return new {Type = sl, Order = order};
+        }).OrderByDescending(ob => ob.Order).Select(sl => sl.Type);
+
+        foreach (var hostingStartupType in iHostingStartupTypes)
+        {
+            var hostingStartup = Activator.CreateInstance(hostingStartupType) as IHostingStartup;
+            hostingStartup?.Configure(builder);
+        }
+    }
+
+    /// <summary>
+    /// 默认配置文件扫描目录
+    /// </summary>
+    private static IEnumerable<string> InternalConfigurationScanDirectories =>
+        new[] {"AppConfig", "AppSettings", "JsonConfig", "Config", "Settings"};
+
+    /// <summary>
+    /// 排除的配置文件前缀
+    /// </summary>
+    private static readonly string[] excludeJsonPrefixArr = {"appsettings", "bundleconfig", "compilerconfig"};
+
+    /// <summary>
+    /// 排除运行时 Json 后缀
+    /// </summary>
+    private static readonly string[] runtimeJsonSuffixArr =
+    {
+        "deps.json", "runtimeconfig.dev.json", "runtimeconfig.prod.json", "runtimeconfig.json", "staticwebassets.runtime.json"
+    };
+
+    /// <summary>
+    /// 添加 JSON 文件
+    /// </summary>
+    /// <param name="configurationBuilder"></param>
+    /// <param name="hostEnvironment"></param>
+    private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
+    {
+        // 获取程序执行目录
+        var executeDirectory = AppContext.BaseDirectory;
+
+        // 扫描自定义配置扫描目录
+        var jsonFiles = new[] {executeDirectory}
+            .Concat(InternalConfigurationScanDirectories.Select(sl => $"{executeDirectory}{sl}")).Where(Directory.Exists)
+            .SelectMany(s => Directory.GetFiles(s, "*.json", SearchOption.TopDirectoryOnly)).ToList();
+
+        // 如果没有配置文件，中止执行
+        if (jsonFiles.Count == 0)
+            return;
+
+        // 获取环境变量名，如果没找到，则读取 NETCORE_ENVIRONMENT 环境变量信息识别（用于非 Web 环境）
+        var envName = hostEnvironment?.EnvironmentName ?? Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT") ?? "Unknown";
+
+        // 处理控制台应用程序
+        var _excludeJsonPrefixArr = hostEnvironment == default
+            ? excludeJsonPrefixArr.Where(u => !u.Equals("appsettings"))
+            : excludeJsonPrefixArr;
+
+        // 将所有文件进行分组
+        var jsonFilesGroups = SplitConfigFileNameToGroups(jsonFiles).Where(u =>
+            !_excludeJsonPrefixArr.Contains(u.Key, StringComparer.OrdinalIgnoreCase) && !u.Any(c =>
+                runtimeJsonSuffixArr.Any(z => c.EndsWith(z, StringComparison.OrdinalIgnoreCase))));
+
+        // 遍历所有配置分组
+        foreach (var group in jsonFilesGroups)
+        {
+            // 限制查找的 json 文件组
+            var limitFileNames = new[] {$"{group.Key}.json", $"{group.Key}.{envName}.json"};
+
+            // 查找默认配置和环境配置
+            var files = group.Where(u => limitFileNames.Contains(Path.GetFileName(u), StringComparer.OrdinalIgnoreCase))
+                .OrderBy(u => Path.GetFileName(u).Length);
+
+            // 循环加载
+            foreach (var jsonFile in files)
+            {
+                configurationBuilder.AddJsonFile(jsonFile, optional: true, reloadOnChange: true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 对配置文件名进行分组
+    /// </summary>
+    /// <param name="configFiles"></param>
+    /// <returns></returns>
+    private static IEnumerable<IGrouping<string, string>> SplitConfigFileNameToGroups(IEnumerable<string> configFiles)
+    {
+        // 分组
+        return configFiles.GroupBy(Function);
+
+        // 本地函数
+        static string Function(string file)
+        {
+            // 根据 . 分隔
+            var fileNameParts = Path.GetFileName(file).Split('.', StringSplitOptions.RemoveEmptyEntries);
+            if (fileNameParts.Length == 2)
+                return fileNameParts[0];
+
+            return string.Join('.', fileNameParts.Take(fileNameParts.Length - 2));
+        }
     }
 }

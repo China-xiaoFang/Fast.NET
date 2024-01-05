@@ -20,7 +20,7 @@ namespace Fast.DependencyInjection;
 /// <see cref="INamedServiceProvider{TService}"/> 命名服务提供器
 /// </summary>
 /// <typeparam name="TService">目标服务接口</typeparam>
-public interface INamedServiceProvider<out TService> where TService : class
+internal interface INamedServiceProvider<out TService> where TService : class
 {
     /// <summary>
     /// 根据服务名称获取服务

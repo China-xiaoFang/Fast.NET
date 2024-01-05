@@ -91,18 +91,22 @@
             <param name="source">需要拷贝的对象</param>
             <returns></returns>
         </member>
-        <member name="T:Fast.Serialization.Extensions.SerializationIServiceCollectionExtension">
+        <member name="T:Fast.Serialization.Injections.SerializationInjection">
             <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
+            <see cref="T:Fast.Serialization.Injections.SerializationInjection"/> 序列化服务注册
+            <remarks>DateTime 和 DateTimeOffset 格式化字符串，默认 "yyyy-MM-dd HH:mm:ss"</remarks>
             </summary>
         </member>
-        <member name="M:Fast.Serialization.Extensions.SerializationIServiceCollectionExtension.AddJsonOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+        <member name="P:Fast.Serialization.Injections.SerializationInjection.Order">
             <summary>
-            添加JSON序列化配置
+            排序
             </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-            <param name="dateTimeFormat"><see cref="T:System.String"/> DateTime 和 DateTimeOffset 格式化字符串，默认 "yyyy-MM-dd HH:mm:ss"</param>
-            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.Serialization.Injections.SerializationInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
         </member>
         <member name="T:Fast.Serialization.JsonConverter.DateJsonConverter">
             <summary>
