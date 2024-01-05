@@ -48,8 +48,8 @@ public class SqlSugarInjection : IHostingStartup
             Debugging.Info("Registering sql sugar......");
 
             // 配置验证
-            services.AddOptions<ConnectionSettingsOptions>().BindConfiguration("ConnectionSettings").ValidateDataAnnotations();
-            services.AddOptions<SnowflakeSettingsOptions>().BindConfiguration("SnowflakeSettings").ValidateDataAnnotations();
+            services.AddConfigurableOptions<ConnectionSettingsOptions>("ConnectionSettings");
+            services.AddConfigurableOptions<SnowflakeSettingsOptions>("SnowflakeSettings");
 
             // 获取配置选项
             SqlSugarContext.ConnectionSettings =

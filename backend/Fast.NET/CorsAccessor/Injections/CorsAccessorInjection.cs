@@ -45,8 +45,7 @@ public class CorsAccessorInjection : IHostingStartup
             Debugging.Info("Registering cors accessor......");
 
             // 配置验证
-            services.AddOptions<CorsAccessorSettingsOptions>().BindConfiguration("CorsAccessorSettings")
-                .ValidateDataAnnotations();
+            services.AddConfigurableOptions<CorsAccessorSettingsOptions>("CorsAccessorSettings");
 
             // 获取跨域配置选项
             var corsAccessorSettings = hostContext.Configuration.GetSection("CorsAccessorSettings")

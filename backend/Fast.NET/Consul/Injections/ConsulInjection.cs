@@ -46,7 +46,7 @@ public class ConsulInjection : IHostingStartup
             Debugging.Info("Registering consul......");
 
             // 配置验证
-            services.AddOptions<ConsulSettingsOptions>().BindConfiguration("ConsulSettings").ValidateDataAnnotations();
+            services.AddConfigurableOptions<ConsulSettingsOptions>("ConsulSettings");
 
             // 获取配置选项
             Penetrates.ConsulSettings = hostContext.Configuration.GetSection("ConsulSettings").Get<ConsulSettingsOptions>()

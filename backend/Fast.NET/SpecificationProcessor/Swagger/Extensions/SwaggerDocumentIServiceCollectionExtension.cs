@@ -49,7 +49,7 @@ public static class SwaggerDocumentIServiceCollectionExtension
         }
 
         // 配置验证
-        services.AddOptions<SwaggerSettingsOptions>().BindConfiguration("SwaggerSettings").ValidateDataAnnotations();
+        services.AddConfigurableOptions<SwaggerSettingsOptions>("SwaggerSettings");
 
         // 获取Swagger文档配置选项
         Penetrates.SwaggerSettings =

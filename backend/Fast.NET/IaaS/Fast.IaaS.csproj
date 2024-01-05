@@ -20,8 +20,20 @@
 		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Binder">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options.DataAnnotations">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.DataAnnotations.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Primitives">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Primitives.dll</HintPath>
@@ -44,8 +56,20 @@
 		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Binder">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options.DataAnnotations">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.DataAnnotations.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Primitives">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Primitives.dll</HintPath>
@@ -70,6 +94,18 @@
 		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Binder">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options.DataAnnotations">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Options.DataAnnotations.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Options">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Primitives">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Primitives.dll</HintPath>

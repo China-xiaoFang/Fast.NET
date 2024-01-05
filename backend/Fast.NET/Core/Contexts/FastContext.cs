@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
@@ -229,10 +230,13 @@ public static class FastContext
     /// 获取配置
     /// </summary>
     /// <typeparam name="TOptions">强类型选项类</typeparam>
-    /// <param name="path">配置中对应的Key</param>
-    /// <returns>TOptions</returns>
-    public static TOptions GetConfig<TOptions>(string path)
+    /// <param name="path"><see cref="string"/> 配置中对应的Key</param>
+    /// <returns></returns>
+    public static TOptions GetConfig<TOptions>(string path = null) where TOptions : class, new()
     {
+        // 获取配置选项名称
+        path ??= IaaSContext.GetOptionName<TOptions>();
+
         var options = Configuration.GetSection(path).Get<TOptions>();
 
         // 判断是否继承了 IPostConfigure
@@ -248,6 +252,16 @@ public static class FastContext
         }
 
         return options;
+    }
+
+    /// <summary>
+    /// 配置选项
+    /// </summary>
+    /// <typeparam name="TOptions">强类型选项类</typeparam>
+    /// <returns></returns>
+    public static TOptions GetOptions<TOptions>() where TOptions : class, new()
+    {
+        return GetService<IOptions<TOptions>>()?.Value;
     }
 
     /// <summary>

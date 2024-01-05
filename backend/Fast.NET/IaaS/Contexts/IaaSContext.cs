@@ -15,6 +15,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.DependencyInjection;
 
 // 只允许框架内部的类库访问
 [assembly: InternalsVisibleTo("Fast.NET.Core")]
@@ -102,5 +103,21 @@ internal static class IaaSContext
         action();
         timeOperation.Stop();
         return timeOperation.ElapsedMilliseconds;
+    }
+
+    /// <summary>
+    /// 获取选项名称
+    /// </summary>
+    /// <typeparam name="TOptions"></typeparam>
+    /// <returns></returns>
+    public static string GetOptionName<TOptions>() where TOptions : class, new()
+    {
+        // 默认后缀
+        const string defaultSuffix = "Options";
+
+        var optionsType = typeof(TOptions);
+
+        // 判断是否已 “Options” 结尾
+        return optionsType.Name.EndsWith(defaultSuffix) ? optionsType.Name[..^defaultSuffix.Length] : optionsType.Name;
     }
 }
