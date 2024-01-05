@@ -44,7 +44,7 @@ internal class EnumSchemaFilter : ISchemaFilter
         var type = context.Type;
 
         // 排除其他程序集的枚举
-        if (type.IsEnum && FastContext.Assemblies.Contains(type.Assembly))
+        if (type.IsEnum && IaaSContext.Assemblies.Contains(type.Assembly))
         {
             model.Enum.Clear();
             var stringBuilder = new StringBuilder();

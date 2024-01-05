@@ -1,0 +1,347 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Admin.Core.Enum</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.Admin.Core.Enum.Common.CommonStatusEnum">
+            <summary>
+            公共状态枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Common.CommonStatusEnum.Enable">
+            <summary>
+            正常
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Common.CommonStatusEnum.Disable">
+            <summary>
+            停用
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Common.CommonStatusEnum.Delete">
+            <summary>
+            删除
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.Common.SysLevelEnum">
+            <summary>
+            系统级别枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Common.SysLevelEnum.Default">
+            <summary>
+            默认级
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Common.SysLevelEnum.System">
+            <summary>
+            系统级
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Common.SysLevelEnum.Custom">
+            <summary>
+            自定义级
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.Common.YesOrNotEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enum.Common.YesOrNotEnum"/> 是否枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Common.YesOrNotEnum.Y">
+            <summary>
+            是
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Common.YesOrNotEnum.N">
+            <summary>
+            否
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.Db.FastDbTypeEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enum.Db.FastDbTypeEnum"/> Fast DataBase库类型
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Db.FastDbTypeEnum.SysCore">
+            <summary>
+            默认系统核心库
+            <remarks>默认系统核心库，只会对超级管理员进行开放编辑权限</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Db.FastDbTypeEnum.SysCoreLog">
+            <summary>
+            系统核心日志库
+            <remarks>系统核心日志库，只会对超级管理员和其所在的租户进行开放编辑权限</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Db.FastDbTypeEnum.SysAdminCore">
+            <summary>
+            系统Admin核心库
+            <remarks>管理系统核心库</remarks>
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum"/> Http请求行为枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Auth">
+            <summary>
+            登录
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Page">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Query">
+            <summary>
+            查询
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Add">
+            <summary>
+            添加
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Update">
+            <summary>
+            更新
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Delete">
+            <summary>
+            删除
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.BatchDelete">
+            <summary>
+            批量删除
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Download">
+            <summary>
+            下载
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Upload">
+            <summary>
+            上传
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Export">
+            <summary>
+            导出
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestActionEnum.Import">
+            <summary>
+            导入
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum"/> Http请求方式枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Get">
+            <summary>
+            Get请求
+            <remarks>用于从服务器获取资源。GET 请求将参数附加在 URL 后面，通过查询字符串传递给服务器。GET 请求是幂等的，即多次相同的 GET 请求应该返回相同的结果。</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Post">
+            <summary>
+            Post请求
+            <remarks>用于向服务器提交数据并处理。POST 请求将参数包含在请求体中发送给服务器。POST 请求不是幂等的，即多次相同的 POST 请求可能会导致不同的结果。</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Put">
+            <summary>
+            Put请求
+            <remarks>用于向服务器更新指定资源。PUT 请求将请求体中的数据保存到指定的 URL 上。</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Delete">
+            <summary>
+            Delete请求
+            <remarks>用于从服务器删除指定资源。DELETE 请求通过指定的 URL 删除服务器上的资源。</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Patch">
+            <summary>
+            Patch请求
+            <remarks>用于对服务器上的资源进行部分更新。PATCH 请求将请求体中的数据应用到指定的 URL 上，只更新部分字段。</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Head">
+            <summary>
+            Patch请求
+            <remarks>与 GET 请求类似，只是服务器返回的响应中不包含实体内容，主要用于获取资源的元数据（例如，响应头信息）。</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Options">
+            <summary>
+            Options请求
+            <remarks>用于获取指定资源所支持的通信选项，也就是说，当客户端想知道服务器支持的请求方式、响应头等信息时，可以发送 OPTIONS 请求。</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Connect">
+            <summary>
+            Connect请求
+            <remarks>用于建立与目标资源的网络链接，通常用于 HTTPS 中的隧道ing，将流量转发给真正的 HTTPS 服务器。</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Http.HttpRequestMethodEnum.Trace">
+            <summary>
+            Trace请求
+            <remarks>用于追踪请求-响应的传输路径，主要用于故障诊断。</remarks>
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.Menus.MenuTypeEnum">
+            <summary>
+            菜单类型枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Menus.MenuTypeEnum.Catalog">
+            <summary>
+            目录
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Menus.MenuTypeEnum.Menu">
+            <summary>
+            菜单
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Menus.MenuTypeEnum.Internal">
+            <summary>
+            内链
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.Menus.MenuTypeEnum.Outside">
+            <summary>
+            外链
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.System.AppTypeEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enum.System.AppTypeEnum"/> App应用枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.AppTypeEnum.WebAdmin">
+            <summary>
+            Web管理后台
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.System.DiffLogTypeEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enum.System.DiffLogTypeEnum"/> 差异日志类型
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.DiffLogTypeEnum.None">
+            <summary>
+            未知
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.DiffLogTypeEnum.Insert">
+            <summary>
+            添加
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.DiffLogTypeEnum.Update">
+            <summary>
+            更新
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.DiffLogTypeEnum.Delete">
+            <summary>
+            删除
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.System.VisitTypeEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enum.System.VisitTypeEnum"/> 访问类型枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.VisitTypeEnum.Login">
+            <summary>
+            登录
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.VisitTypeEnum.AuthorizedLogin">
+            <summary>
+            授权登录
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.VisitTypeEnum.Logout">
+            <summary>
+            登出
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.VisitTypeEnum.ChangePassword">
+            <summary>
+            改密
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum">
+            <summary>
+            模块查看类型枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum.SuperAdmin">
+            <summary>
+            超级管理员
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum.SystemAdmin">
+            <summary>
+            系统管理员
+            只有超级管理员和管理员可以查看
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum.Admin">
+            <summary>
+            管理员
+            只要是管理员都可以查看
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.ModuleViewTypeEnum.All">
+            <summary>
+            全部
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.System.TenantTypeEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enum.System.TenantTypeEnum"/> 租户类型枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.TenantTypeEnum.System">
+            <summary>
+            系统租户
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.TenantTypeEnum.Common">
+            <summary>
+            普通租户
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enum.System.TranslationSourceEnum">
+            <summary>
+            应用本地化配置来源
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.TranslationSourceEnum.Custom">
+            <summary>
+            自定义
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enum.System.TranslationSourceEnum.BaiduTranslate">
+            <summary>
+            百度翻译
+            </summary>
+        </member>
+    </members>
+</doc>

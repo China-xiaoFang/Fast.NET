@@ -14,6 +14,7 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using Fast.IaaS;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -72,7 +73,6 @@ internal static class InternalContext
     {
         return Activity.Current?.Id ?? (RootServices == null
             ? default
-            : IaaS.FastContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext)
-                ?.TraceIdentifier);
+            : IaaSContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext)?.TraceIdentifier);
     }
 }

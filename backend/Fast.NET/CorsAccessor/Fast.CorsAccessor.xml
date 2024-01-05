@@ -4,33 +4,34 @@
         <name>Fast.CorsAccessor</name>
     </assembly>
     <members>
-        <member name="T:Fast.CorsAccessor.Extensions.CorsAccessorIApplicationBuilderExtension">
+        <member name="T:Fast.CorsAccessor.Filters.CorsAccessorStartupFilter">
             <summary>
-            <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> 跨域中间件拓展类
+            <see cref="T:Fast.CorsAccessor.Filters.CorsAccessorStartupFilter"/> 应用启动时自动注册中间件
             </summary>
         </member>
-        <member name="M:Fast.CorsAccessor.Extensions.CorsAccessorIApplicationBuilderExtension.UseCorsAccessor(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder})">
+        <member name="M:Fast.CorsAccessor.Filters.CorsAccessorStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
             <summary>
-            添加跨域中间件
+            配置中间件
             </summary>
-            <param name="app"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></param>
-            <param name="corsPolicyBuilderHandler"></param>
-            <returns><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></returns>
+            <param name="action"></param>
+            <returns></returns>
         </member>
-        <member name="T:Fast.CorsAccessor.Extensions.CorsAccessorIServiceCollectionExtension">
+        <member name="T:Fast.CorsAccessor.Injections.CorsAccessorInjection">
             <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 跨域访问服务拓展类
+            <see cref="T:Fast.CorsAccessor.Injections.CorsAccessorInjection"/> 跨域服务注册
+            <remarks>默认解决跨域请求问题，默认允许所有来源</remarks>
             </summary>
         </member>
-        <member name="M:Fast.CorsAccessor.Extensions.CorsAccessorIServiceCollectionExtension.AddCorsAccessor(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions},System.Action{Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder})">
+        <member name="P:Fast.CorsAccessor.Injections.CorsAccessorInjection.Order">
             <summary>
-            配置跨域
+            排序
             </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
-            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
-            <param name="corsOptionsHandler"></param>
-            <param name="corsPolicyBuilderHandler"></param>
-            <returns>服务集合</returns>
+        </member>
+        <member name="M:Fast.CorsAccessor.Injections.CorsAccessorInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
         </member>
         <member name="T:Fast.CorsAccessor.Internal.Penetrates">
             <summary>

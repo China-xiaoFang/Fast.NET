@@ -35,7 +35,7 @@ public static class ExceptionIServiceCollectionExtension
     {
         // 查找全局异常处理实现类
         var globalExceptionHandler =
-            FastContext.EffectiveTypes.FirstOrDefault(f => typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
+            IaaSContext.EffectiveTypes.FirstOrDefault(f => typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
 
         if (globalExceptionHandler != null)
         {

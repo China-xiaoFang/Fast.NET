@@ -624,7 +624,7 @@ public static class SwaggerDocumentBuilder
     private static IEnumerable<string> ReadGroups()
     {
         // 获取所有的控制器和动作方法
-        var controllers = FastContext.EffectiveTypes.Where(Penetrates.IsApiController);
+        var controllers = IaaSContext.EffectiveTypes.Where(Penetrates.IsApiController);
         if (!controllers.Any())
         {
             var defaultGroups = new List<string> {Penetrates.SwaggerSettings.DefaultGroupName};

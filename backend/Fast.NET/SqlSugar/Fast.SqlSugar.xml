@@ -384,20 +384,6 @@
             <param name="list"></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.SqlSugar.Extensions.SqlSugarIServiceCollectionExtension">
-            <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarIServiceCollectionExtension.AddSqlSugar(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            SqlSugarClient的配置
-            Client不能单例注入
-            </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 服务集合</param>
-            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 配置项，建议通过框架自带的 App.Configuration 传入，否则会在内部自动解析 IConfiguration 性能会很低</param>
-            <returns>服务集合</returns>
-        </member>
         <member name="T:Fast.SqlSugar.Extensions.SqlSugarPageExtension">
             <summary>
             <see cref="T:SqlSugar.ISugarQueryable`1"/> ISugarQueryable 分页拓展类
@@ -526,9 +512,9 @@
             <summary>
             执行Sql
             </summary>
-            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="rawSql"><see cref="T:System.String"/> 原始Sql语句</param>
             <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
-            <param name="executionTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
+            <param name="executeTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
             <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
             <returns></returns>
         </member>
@@ -539,9 +525,9 @@
             <param name="fileName"><see cref="T:System.String"/> 文件名称</param>
             <param name="fileLine"><see cref="T:System.Int32"/> 文件行数</param>
             <param name="methodName"><see cref="T:System.String"/> 方法名称</param>
-            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="rawSql"><see cref="T:System.String"/> 未处理的Sql语句</param>
             <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
-            <param name="executionTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
+            <param name="executeTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
             <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
             <param name="message"><see cref="T:System.String"/></param>
             <returns></returns>
@@ -551,14 +537,14 @@
             执行Sql差异
             </summary>
             <param name="diffType"><see cref="T:SqlSugar.DiffType"/> 差异类型</param>
-            <param name="diffDescription"><see cref="T:System.String"/> 差异描述</param>
             <param name="tableName"><see cref="T:System.String"/> 表名称</param>
             <param name="tableDescription"><see cref="T:System.String"/> 表描述</param>
+            <param name="diffDescription"><see cref="T:System.String"/> 差异描述</param>
             <param name="beforeColumnList"><see cref="T:System.String"/> 执行前列信息</param>
             <param name="afterColumnList"><see cref="T:System.String"/> 执行后列信息</param>
-            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="rawSql"><see cref="T:System.String"/> 原始Sql语句</param>
             <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
-            <param name="executionTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
+            <param name="executeTime"><see cref="T:System.TimeSpan"/> 执行时间</param>
             <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
             <returns></returns>
         </member>
@@ -569,7 +555,7 @@
             <param name="fileName"><see cref="T:System.String"/> 文件名称</param>
             <param name="fileLine"><see cref="T:System.Int32"/> 文件行数</param>
             <param name="methodName"><see cref="T:System.String"/> 方法名称</param>
-            <param name="sql"><see cref="T:System.String"/> 未处理的Sql语句</param>
+            <param name="rawSql"><see cref="T:System.String"/> 原始Sql语句</param>
             <param name="parameters"><see cref="T:SqlSugar.SugarParameter"/> Sql参数</param>
             <param name="handlerSql"><see cref="T:System.String"/> 参数化处理后的Sql语句</param>
             <param name="message"><see cref="T:System.String"/></param>
@@ -918,6 +904,22 @@
             <summary>
             是否有下一页
             </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.Injections.SqlSugarInjection">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Injections.SqlSugarInjection"/> SqlSugar服务注入
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Injections.SqlSugarInjection.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.Injections.SqlSugarInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
         </member>
         <member name="T:Fast.SqlSugar.Options.ConnectionSettingsOptions">
             <summary>

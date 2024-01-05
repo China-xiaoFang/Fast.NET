@@ -4,5 +4,590 @@
         <name>Fast.Admin.Core</name>
     </assembly>
     <members>
+        <member name="T:Fast.Admin.Core.Authentication.AuthUserInfo">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Authentication.AuthUserInfo"/> 授权用户信息
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.TenantId">
+            <summary>
+            当前租户Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.TenantNo">
+            <summary>
+            租户编号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.UserId">
+            <summary>
+            当前用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.UserAccount">
+            <summary>
+            当前用户账号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.UserJobNo">
+            <summary>
+            当前用户工号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.UserName">
+            <summary>
+            当前用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.IsSuperAdmin">
+            <summary>
+            是否超级管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.IsSystemAdmin">
+            <summary>
+            是否系统管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.IsTenantAdmin">
+            <summary>
+            是否租户管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.LastLoginDevice">
+            <summary>
+            最后登录设备
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.LastLoginOS">
+            <summary>
+            最后登录操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.LastLoginBrowser">
+            <summary>
+            最后登录浏览器（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.LastLoginProvince">
+            <summary>
+            最后登录省份
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.LastLoginCity">
+            <summary>
+            最后登录城市
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.LastLoginIp">
+            <summary>
+            最后登录Ip
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.AuthUserInfo.LastLoginTime">
+            <summary>
+            最后登录时间
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Authentication.IUser">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Authentication.IUser"/> 授权用户信息
+            <remarks>作用域注册，保证当前请求管道中是唯一的，并且只会加载一次</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.TenantNo">
+            <summary>
+            租户编号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.UserAccount">
+            <summary>
+            用户账号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.UserJobNo">
+            <summary>
+            用户工号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.UserName">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.IsSuperAdmin">
+            <summary>
+            是否超级管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.IsSystemAdmin">
+            <summary>
+            是否系统管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.IsTenantAdmin">
+            <summary>
+            是否租户管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.IUser.AppEnvironment">
+            <summary>
+            App 运行环境
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Core.Authentication.IUser.Login(Fast.Admin.Core.Authentication.AuthUserInfo)">
+            <summary>
+            统一登录
+            </summary>
+            <param name="authUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Authentication.IUser.Logout">
+            <summary>
+            统一退出登录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Admin.Core.Authentication.User">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Authentication.User"/> 授权用户信息
+            <remarks>作用域注册，保证当前请求管道中是唯一的，并且只会加载一次</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.TenantNo">
+            <summary>
+            租户编号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.UserAccount">
+            <summary>
+            用户账号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.UserJobNo">
+            <summary>
+            用户工号
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.UserName">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.DepartmentId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.IsSuperAdmin">
+            <summary>
+            是否超级管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.IsSystemAdmin">
+            <summary>
+            是否系统管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.IsTenantAdmin">
+            <summary>
+            是否租户管理员
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.LastLoginDevice">
+            <summary>
+            最后登录设备
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.LastLoginOS">
+            <summary>
+            最后登录操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.LastLoginBrowser">
+            <summary>
+            最后登录浏览器（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.LastLoginProvince">
+            <summary>
+            最后登录省份
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.LastLoginCity">
+            <summary>
+            最后登录城市
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.LastLoginIp">
+            <summary>
+            最后登录Ip
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.LastLoginTime">
+            <summary>
+            最后登录时间
+            </summary>
+        </member>
+        <member name="P:Fast.Admin.Core.Authentication.User.AppEnvironment">
+            <summary>
+            App 运行环境
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Authentication.User.IdTag">
+            <summary>
+            身份标识
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Core.Authentication.User.SetAuthUser(Fast.Admin.Core.Authentication.AuthUserInfo)">
+            <summary>
+            设置授权用户
+            </summary>
+            <param name="authUserInfo"><see cref="T:Fast.Admin.Core.Authentication.AuthUserInfo"/> 授权用户信息</param>
+        </member>
+        <member name="M:Fast.Admin.Core.Authentication.User.Login(Fast.Admin.Core.Authentication.AuthUserInfo)">
+            <summary>
+            统一登录
+            </summary>
+            <param name="authUserInfo"><see cref="T:Fast.Admin.Core.Authentication.AuthUserInfo"/> 授权用户信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Authentication.User.Refresh(Fast.Admin.Core.Authentication.AuthUserInfo)">
+            <summary>
+            刷新登录信息
+            </summary>
+            <param name="authUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Authentication.User.Logout">
+            <summary>
+            统一退出登录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Admin.Core.Constants.CacheConst">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Constants.CacheConst"/> 缓存常量
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Core.Constants.CacheConst.GetCacheKey(System.String,System.Object[])">
+            <summary>
+            获取缓存Key
+            </summary>
+            <param name="cacheKey"><see cref="T:System.String"/> 缓存Key</param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.CacheConst.TenantDataBaseInfo">
+            <summary>
+            租户数据库信息
+            <remarks>{0}，租户编号 {1}，数据库名类型</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.CacheConst.AuthUserInfo">
+            <summary>
+            授权用户信息
+            <remarks>{0}，租户编号</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.CacheConst.ExpiredToken">
+            <summary>
+            过期 Token 缓存
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.CacheConst.ExpiredRefreshToken">
+            <summary>
+            过期 RefreshToken 缓存
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Constants.ClaimConst">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Constants.ClaimConst"/> 授权声明常量
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.ClaimConst.AppOrigin">
+            <summary>
+            App来源
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.ClaimConst.TenantNo">
+            <summary>
+            租户编号
+            <remarks>Base64 加密的字符串</remarks>
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.ClaimConst.UserJobNo">
+            <summary>
+            用户工号
+            <remarks>Base64 加密的字符串</remarks>
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Constants.SystemConst">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Constants.SystemConst"/> 系统常量
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.SystemConst.DefaultSystemTenantId">
+            <summary>
+            默认系统租户Id
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.SystemConst.DefaultSuperAdminId">
+            <summary>
+            默认超级管理员Id
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.SystemConst.DefaultSystemAdminId">
+            <summary>
+            默认系统管理员Id
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.SystemConst.DefaultPassword">
+            <summary>
+            默认密码
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Constants.SystemConst.DefaultAdminPassword">
+            <summary>
+            默认管理员密码
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Enums.AppEnvironmentEnum">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Enums.AppEnvironmentEnum"/> App运行环境枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.Web">
+            <summary>
+            网页
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.Pc">
+            <summary>
+            PC
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.WeChatMiniProgram">
+            <summary>
+            微信小程序
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.AndroidApp">
+            <summary>
+            安卓App
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.IOSApp">
+            <summary>
+            IOSApp
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.Other">
+            <summary>
+            其他
+            </summary>
+        </member>
+        <member name="T:Fast.Admin.Core.Handlers.JwtBearerHandle">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Handlers.JwtBearerHandle"/> Jwt验证提供器
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.JwtBearerHandle.AuthorizeHandle(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            授权处理
+            <remarks>这里已经判断了 Token 是否有效，并且已经处理了自动刷新 Token。只需要处理其余的逻辑即可。如果返回 false或抛出异常，搭配 AuthorizeFailHandle 则抛出 HttpStatusCode = 401 状态码，否则走默认处理 AuthorizationHandlerContext.Fail() 会返回 HttpStatusCode = 403 状态码</remarks>
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext" /></param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /></param>
+            <returns><see cref="T:System.Boolean" /></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.JwtBearerHandle.AuthorizeFailHandle(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
+            <summary>
+            授权失败处理
+            <remarks>如果返回 null，则走默认处理 AuthorizationHandlerContext.Fail()</remarks>
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext" /></param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /></param>
+            <param name="exception"><see cref="T:System.Exception" /></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.JwtBearerHandle.PermissionHandle(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Authorization.IAuthorizationRequirement,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            权限判断处理
+            <remarks>这里只需要判断你的权限逻辑即可，如果返回 false或抛出异常 则抛出 HttpStatusCode = 403 状态码</remarks>
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext" /></param>
+            <param name="requirement"><see cref="T:Microsoft.AspNetCore.Authorization.IAuthorizationRequirement" /></param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.JwtBearerHandle.PermissionFailHandle(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Authorization.IAuthorizationRequirement,Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
+            <summary>
+            权限判断失败处理
+            <remarks>如果返回 null，则走默认处理 AuthorizationHandlerContext.Fail()</remarks>
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext" /></param>
+            <param name="requirement"><see cref="T:Microsoft.AspNetCore.Authorization.IAuthorizationRequirement" /></param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /></param>
+            <param name="exception"><see cref="T:System.Exception" /></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Admin.Core.Handlers.SqlSugarEntityHandler">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Handlers.SqlSugarEntityHandler"/> Sugar实体处理
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.Handlers.SqlSugarEntityHandler._sqlSugarClient">
+            <summary>
+            这里为了防止死循环 Aop 的发生，直接注入 ISqlSugarClient，并且禁用 Aop 处理
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetCacheConnectionSettings(Fast.Admin.Core.Enum.Db.FastDbTypeEnum,System.Int64,Fast.Admin.Core.Enum.Common.YesOrNotEnum)">
+            <summary>
+            获取缓存连接字符串设置
+            </summary>
+            <param name="fastDbType"></param>
+            <param name="tenantId"></param>
+            <param name="isSystem"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetLogSqlSugarClient">
+            <summary>
+            获取日志上下文
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetUser">
+            <summary>
+            获取 IUser，如果未登录或者报错，则为空
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute)">
+            <summary>根据实体类型获取连接字符串</summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="sqlSugarClient"><see cref="T:SqlSugar.ISqlSugarClient" /> 默认库SqlSugar客户端</param>
+            <param name="sugarDbType">实体类头部的 <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute" /> 特性，如果不存在可能为空</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.ExecuteAsync(System.String,SqlSugar.SugarParameter[],System.TimeSpan,System.String)">
+            <summary>执行Sql</summary>
+            <param name="rawSql"><see cref="T:System.String" /> 原始Sql语句</param>
+            <param name="parameters"><see cref="T:SqlSugar.SugarParameter" /> Sql参数</param>
+            <param name="executionTime"><see cref="T:System.TimeSpan" /> 执行时间</param>
+            <param name="handlerSql"><see cref="T:System.String" /> 参数化处理后的Sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.ExecuteTimeoutAsync(System.String,System.Int32,System.String,System.String,SqlSugar.SugarParameter[],System.TimeSpan,System.String,System.String)">
+            <summary>执行Sql超时</summary>
+            <param name="fileName"><see cref="T:System.String" /> 文件名称</param>
+            <param name="fileLine"><see cref="T:System.Int32" /> 文件行数</param>
+            <param name="methodName"><see cref="T:System.String" /> 方法名称</param>
+            <param name="rawSql"><see cref="T:System.String" /> 未处理的Sql语句</param>
+            <param name="parameters"><see cref="T:SqlSugar.SugarParameter" /> Sql参数</param>
+            <param name="executeTime"><see cref="T:System.TimeSpan" /> 执行时间</param>
+            <param name="handlerSql"><see cref="T:System.String" /> 参数化处理后的Sql语句</param>
+            <param name="message"><see cref="T:System.String" /></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.ExecuteDiffLogAsync(SqlSugar.DiffType,System.String,System.String,System.String,System.Collections.Generic.List{System.Collections.Generic.List{SqlSugar.DiffLogColumnInfo}},System.Collections.Generic.List{System.Collections.Generic.List{SqlSugar.DiffLogColumnInfo}},System.String,SqlSugar.SugarParameter[],System.Nullable{System.TimeSpan},System.String)">
+            <summary>执行Sql差异</summary>
+            <param name="diffType"><see cref="T:SqlSugar.DiffType" /> 差异类型</param>
+            <param name="tableName"><see cref="T:System.String" /> 表名称</param>
+            <param name="tableDescription"><see cref="T:System.String" /> 表描述</param>
+            <param name="diffDescription"><see cref="T:System.String" /> 差异描述</param>
+            <param name="beforeColumnList"><see cref="T:System.String" /> 执行前列信息</param>
+            <param name="afterColumnList"><see cref="T:System.String" /> 执行后列信息</param>
+            <param name="rawSql"><see cref="T:System.String" /> 未处理的Sql语句</param>
+            <param name="parameters"><see cref="T:SqlSugar.SugarParameter" /> Sql参数</param>
+            <param name="executeTime"><see cref="T:System.TimeSpan" /> 执行时间</param>
+            <param name="handlerSql"><see cref="T:System.String" /> 参数化处理后的Sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.ExecuteErrorAsync(System.String,System.Int32,System.String,System.String,SqlSugar.SugarParameter[],System.String,System.String)">
+            <summary>执行Sql错误</summary>
+            <param name="fileName"><see cref="T:System.String" /> 文件名称</param>
+            <param name="fileLine"><see cref="T:System.Int32" /> 文件行数</param>
+            <param name="methodName"><see cref="T:System.String" /> 方法名称</param>
+            <param name="rawSql"><see cref="T:System.String" /> 原始Sql语句</param>
+            <param name="parameters"><see cref="T:SqlSugar.SugarParameter" /> Sql参数</param>
+            <param name="handlerSql"><see cref="T:System.String" /> 参数化处理后的Sql语句</param>
+            <param name="message"><see cref="T:System.String" /></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.AssignTenantId">
+            <summary>指派租户Id</summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.AssignDepartmentId">
+            <summary>指派部门Id</summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.AssignDepartmentName">
+            <summary>指派部门名称</summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.AssignUserId">
+            <summary>指派用户Id</summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.AssignUserName">
+            <summary>指派用户名称</summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.IsSuperAdmin">
+            <summary>是否为超级管理员</summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.IsAdmin">
+            <summary>是否为管理员</summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

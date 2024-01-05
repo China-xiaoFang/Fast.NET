@@ -1,4 +1,4 @@
-﻿using Fast.Authentication.Internal;
+﻿using Fast.Authentication.Infrastructures;
 using Fast.Cache;
 using Fast.IaaS.Extensions;
 using Fast.NET.Core.Enum;

@@ -17,6 +17,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using Fast.IaaS.Commons;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Caching.Memory;
@@ -271,13 +272,23 @@ public static class HttpContextExtension
     /// <returns><see cref="UserAgentInfo"/></returns>
     public static UserAgentInfo RequestUserAgentInfo(this HttpContext httpContext)
     {
+        // 从 HttpContext.Items 中尝试获取缓存数据
+        var userAgentObj = httpContext.Items[nameof(Fast) + nameof(UserAgentInfo)];
+
+        // 判断是否为空
+        if (userAgentObj != null)
+        {
+            // 直接返回缓存中的信息
+            return userAgentObj as UserAgentInfo;
+        }
+
         // 获取用户代理字符串
         var userAgent = httpContext.RequestUserAgent();
 
         try
         {
             // 判断是否安装了 UAParser 程序集
-            var uaParserAssembly = FastContext.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("UAParser") == true);
+            var uaParserAssembly = IaaSContext.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("UAParser") == true);
 
             if (uaParserAssembly == null)
             {
@@ -285,7 +296,7 @@ public static class HttpContextExtension
             }
 
             // 加载 UAParser 的 Parser 类型
-            var uaParserParserType = Reflect.GetType(uaParserAssembly, "UAParser.Parser");
+            var uaParserParserType = uaParserAssembly.GetType("UAParser.Parser");
 
             if (uaParserParserType == null)
             {
@@ -355,6 +366,16 @@ public static class HttpContextExtension
     /// <exception cref="Exception"></exception>
     public static async Task<WanNetIPInfo> RemoteIpv4InfoAsync(this HttpContext httpContext, string ip = null)
     {
+        // 从 HttpContext.Items 中尝试获取缓存数据
+        var wanNetIPInfoObj = httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)];
+
+        // 判断是否为空
+        if (wanNetIPInfoObj != null)
+        {
+            // 直接返回缓存中的信息
+            return wanNetIPInfoObj as WanNetIPInfo;
+        }
+
         // 判断是否传入IP地址
         ip ??= httpContext.RemoteIpv4();
 

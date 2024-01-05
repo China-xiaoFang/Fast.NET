@@ -12,13 +12,8 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using System.IO.Compression;
-using Fast.IaaS;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.NET.Core.Extensions;
@@ -28,27 +23,6 @@ namespace Fast.NET.Core.Extensions;
 /// </summary>
 public static class IServiceCollectionExtension
 {
-    /// <summary>
-    /// 添加Gzip Brotli 压缩
-    /// </summary>
-    /// <param name="service"></param>
-    public static void AddGzipBrotliCompression(this IServiceCollection service)
-    {
-        Debugging.Info("Registering for the Gzip compression service......");
-        service.Configure<BrotliCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
-        service.Configure<GzipCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
-        service.AddResponseCompression(options =>
-        {
-            options.EnableForHttps = true;
-            options.Providers.Add<BrotliCompressionProvider>();
-            options.Providers.Add<GzipCompressionProvider>();
-            options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
-            {
-                "text/html; charset=utf-8", "application/xhtml+xml", "application/atom+xml", "image/svg+xml"
-            });
-        });
-    }
-
     /// <summary>
     /// 注册 Mvc 过滤器
     /// </summary>
@@ -83,33 +57,6 @@ public static class IServiceCollectionExtension
         services.Configure<MvcOptions>(options =>
         {
             options.Filters.Add(filter);
-
-            // 其他额外配置
-            configure?.Invoke(options);
-        });
-
-        return services;
-    }
-
-    /// <summary>
-    /// 配置反向代理头部
-    /// <remarks>默认解决了“IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题”</remarks>
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configure"></param>
-    /// <returns></returns>
-    public static IServiceCollection ConfigureForwardedHeaders(this IServiceCollection services,
-        Action<ForwardedHeadersOptions> configure = default)
-    {
-        // 解决 IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题
-        services.Configure<ForwardedHeadersOptions>(options =>
-        {
-            //options.ForwardedHeaders = ForwardedHeaders.All;
-
-            // 若上面配置无效可尝试下列代码，比如在 IIS 中
-            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            options.KnownNetworks.Clear();
-            options.KnownProxies.Clear();
 
             // 其他额外配置
             configure?.Invoke(options);

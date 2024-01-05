@@ -102,7 +102,7 @@ public static class UnifyResultIServiceCollectionExtension
 
         // 查找规范化响应数据提供器实现类
         var unifyResponseProvider =
-            FastContext.EffectiveTypes.FirstOrDefault(f => typeof(IUnifyResponseProvider).IsAssignableFrom(f) && !f.IsInterface);
+            IaaSContext.EffectiveTypes.FirstOrDefault(f => typeof(IUnifyResponseProvider).IsAssignableFrom(f) && !f.IsInterface);
 
         if (unifyResponseProvider != null)
         {

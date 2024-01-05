@@ -9,14 +9,14 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageOutputPath>$(SolutionDir)..\..\nupkgs</PackageOutputPath>
-		<Version>3.4.6</Version>
+		<Version>3.4.7</Version>
 		<PackageVersion>$(Version)</PackageVersion>
 		<Authors>1.8K仔</Authors>
 		<Description>一个快速构建项目的 .NET 框架。</Description>
 		<PackageTags>Fast.NET;ASP.NET;dotNET China;Cross Platform;1.8K仔</PackageTags>
 		<Product>Fast.NET</Product>
 		<Copyright>版权所有 © 2018-2023 1.8K仔</Copyright>
-		<PackageProjectUrl>https://18kboy.icu</PackageProjectUrl>
+		<PackageProjectUrl>https://fastdotnet.com</PackageProjectUrl>
 		<PackageIcon>Fast.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET</RepositoryUrl>

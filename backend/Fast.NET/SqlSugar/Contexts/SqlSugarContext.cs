@@ -62,7 +62,7 @@ public sealed class SqlSugarContext
 
             var dataBaseEntityType = typeof(IDataBaseEntity);
 
-            CacheSqlSugarEntityList = FastContext.EffectiveTypes
+            CacheSqlSugarEntityList = IaaSContext.EffectiveTypes
                 .Where(wh => dataBaseEntityType.IsAssignableFrom(wh) && !wh.IsInterface).Select(sl =>
                 {
                     var sqlSugarTableAttribute = sl.GetSugarTableAttribute();

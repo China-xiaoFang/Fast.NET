@@ -4,35 +4,6 @@
         <name>Fast.Logging</name>
     </assembly>
     <members>
-        <member name="T:Fast.Logging.Extensions.ILoggerExtension">
-            <summary>
-            <see cref="T:Microsoft.Extensions.Logging.ILogger"/> 拓展
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Extensions.ILoggerExtension.ScopeContext(Microsoft.Extensions.Logging.ILogger,System.Collections.Generic.IDictionary{System.Object,System.Object})">
-            <summary>
-            配置日志上下文
-            </summary>
-            <param name="logger"></param>
-            <param name="properties">建议使用 ConcurrentDictionary 类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Extensions.ILoggerExtension.ScopeContext(Microsoft.Extensions.Logging.ILogger,System.Action{Fast.Logging.Implantation.LogContext})">
-            <summary>
-            配置日志上下文
-            </summary>
-            <param name="logger"></param>
-            <param name="configure"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.Logging.Extensions.ILoggerExtension.ScopeContext(Microsoft.Extensions.Logging.ILogger,Fast.Logging.Implantation.LogContext)">
-            <summary>
-            配置日志上下文
-            </summary>
-            <param name="logger"></param>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.Logging.Extensions.ILoggingBuilderExtension">
             <summary>
             <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> 拓展
@@ -127,14 +98,12 @@
             <param name="writeIndented">是否对 JSON 格式化</param>
             <returns><see cref="T:System.String"/></returns>
         </member>
-        <member name="T:Fast.Logging.Filters.StartupFilter">
+        <member name="T:Fast.Logging.Filters.LoggingStartupFilter">
             <summary>
-            应用启动时自动注册中间件
+            <see cref="T:Fast.Logging.Filters.LoggingStartupFilter"/> 应用启动时自动注册中间件
             </summary>
-            <remarks>
-            </remarks>
         </member>
-        <member name="M:Fast.Logging.Filters.StartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+        <member name="M:Fast.Logging.Filters.LoggingStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
             <summary>
             配置中间件
             </summary>
@@ -1164,6 +1133,7 @@
             </summary>
             <param name="loggingPart"></param>
             <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
         <member name="T:Fast.Logging.Internal.LoggerFormatter">

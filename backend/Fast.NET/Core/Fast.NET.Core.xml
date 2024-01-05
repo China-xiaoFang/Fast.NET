@@ -9,11 +9,6 @@
             <see cref="T:Fast.NET.Core.FastContext"/> App 上下文
             </summary>
         </member>
-        <member name="P:Fast.NET.Core.FastContext.InternalConfigurationScanDirectories">
-            <summary>
-            默认配置文件扫描目录
-            </summary>
-        </member>
         <member name="F:Fast.NET.Core.FastContext.GC_COLLECT_INTERVAL_SECONDS">
             <summary>
             GC 回收默认间隔
@@ -173,37 +168,6 @@
             释放所有未托管的对象
             </summary>
         </member>
-        <member name="M:Fast.NET.Core.FastContext.ConfigureApplication(Microsoft.AspNetCore.Hosting.IWebHostBuilder,Microsoft.Extensions.Hosting.IHostBuilder)">
-            <summary>
-            配置 Application
-            </summary>
-            <param name="builder"></param>
-            <param name="hostBuilder"></param>
-        </member>
-        <member name="M:Fast.NET.Core.FastContext.AddJsonFiles(Microsoft.Extensions.Configuration.IConfigurationBuilder,Microsoft.Extensions.Hosting.IHostEnvironment)">
-            <summary>
-            添加 JSON 文件
-            </summary>
-            <param name="configurationBuilder"></param>
-            <param name="hostEnvironment"></param>
-        </member>
-        <member name="F:Fast.NET.Core.FastContext.excludeJsonPrefixArr">
-            <summary>
-            排除的配置文件前缀
-            </summary>
-        </member>
-        <member name="F:Fast.NET.Core.FastContext.runtimeJsonSuffixArr">
-            <summary>
-            排除运行时 Json 后缀
-            </summary>
-        </member>
-        <member name="M:Fast.NET.Core.FastContext.SplitConfigFileNameToGroups(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            对配置文件名进行分组
-            </summary>
-            <param name="configFiles"></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.NET.Core.InternalContext">
             <summary>
             <see cref="T:Fast.NET.Core.InternalContext"/> 内部 App 上下文
@@ -258,14 +222,6 @@
             <param name="app"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></param>
             <returns><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></returns>
         </member>
-        <member name="M:Fast.NET.Core.Extensions.IApplicationBuilderExtension.UseApp(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
-            <summary>
-            添加应用中间件
-            </summary>
-            <param name="app"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>应用构建器</param>
-            <param name="configure">应用配置</param>
-            <returns><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>应用构建器</returns>
-        </member>
         <member name="T:Fast.NET.Core.Extensions.IConfigurationExtension">
             <summary>
             <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 拓展类
@@ -282,12 +238,6 @@
             <summary>
             <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
             </summary>
-        </member>
-        <member name="M:Fast.NET.Core.Extensions.IServiceCollectionExtension.AddGzipBrotliCompression(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加Gzip Brotli 压缩
-            </summary>
-            <param name="service"></param>
         </member>
         <member name="M:Fast.NET.Core.Extensions.IServiceCollectionExtension.AddMvcFilter``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.AspNetCore.Mvc.MvcOptions})">
             <summary>
@@ -307,15 +257,6 @@
             <param name="configure"></param>
             <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
         </member>
-        <member name="M:Fast.NET.Core.Extensions.IServiceCollectionExtension.ConfigureForwardedHeaders(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.AspNetCore.Builder.ForwardedHeadersOptions})">
-            <summary>
-            配置反向代理头部
-            <remarks>默认解决了“IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题”</remarks>
-            </summary>
-            <param name="services"></param>
-            <param name="configure"></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.NET.Core.Extensions.WebApplicationBuilderExtension">
             <summary>
             <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> 拓展类
@@ -328,19 +269,85 @@
             <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
             <returns><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></returns>
         </member>
-        <member name="T:Fast.NET.Core.Filters.StartupFilter">
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.ConfigureApplication(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
             <summary>
-            应用启动时自动注册中间件
+            配置 Application
             </summary>
-            <remarks>
-            </remarks>
+            <param name="builder"></param>
         </member>
-        <member name="M:Fast.NET.Core.Filters.StartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
+        <member name="P:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.InternalConfigurationScanDirectories">
+            <summary>
+            默认配置文件扫描目录
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.excludeJsonPrefixArr">
+            <summary>
+            排除的配置文件前缀
+            </summary>
+        </member>
+        <member name="F:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.runtimeJsonSuffixArr">
+            <summary>
+            排除运行时 Json 后缀
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.AddJsonFiles(Microsoft.Extensions.Configuration.IConfigurationBuilder,Microsoft.Extensions.Hosting.IHostEnvironment)">
+            <summary>
+            添加 JSON 文件
+            </summary>
+            <param name="configurationBuilder"></param>
+            <param name="hostEnvironment"></param>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.SplitConfigFileNameToGroups(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            对配置文件名进行分组
+            </summary>
+            <param name="configFiles"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.NET.Core.Filters.CoreStartupFilter">
+            <summary>
+            <see cref="T:Fast.NET.Core.Filters.CoreStartupFilter"/> 应用启动时自动注册中间件
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Filters.CoreStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
             <summary>
             配置中间件
             </summary>
             <param name="action"></param>
             <returns></returns>
+        </member>
+        <member name="T:Fast.NET.Core.Injections.ForwardedHeadersInjection">
+            <summary>
+            <see cref="T:Fast.NET.Core.Injections.ForwardedHeadersInjection"/> 反向代理头部注入
+            <remarks>默认解决了“IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题”</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.Injections.ForwardedHeadersInjection.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Injections.ForwardedHeadersInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="T:Fast.NET.Core.Injections.GzipBrotliCompressionInjection">
+            <summary>
+            <see cref="T:Fast.NET.Core.Injections.GzipBrotliCompressionInjection"/> Gzip压缩注入
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.Injections.GzipBrotliCompressionInjection.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Injections.GzipBrotliCompressionInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
         </member>
         <member name="T:Fast.NET.Core.RemoteRequest.RemoteRequestUtil">
             <summary>

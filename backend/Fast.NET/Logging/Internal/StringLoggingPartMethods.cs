@@ -81,7 +81,10 @@ public sealed partial class StringLoggingPart
 
         // 获取日志实例
         var (logger, loggerFactory, hasException) = GetLogger();
-        using var scope = logger.ScopeContext(LogContext);
+        if (logger == null)
+            throw new ArgumentNullException(nameof(logger));
+
+        using var scope = logger.BeginScope(LogContext);
 
         // 如果没有异常且事件 Id 为空
         if (Exception == null && EventId == null)
