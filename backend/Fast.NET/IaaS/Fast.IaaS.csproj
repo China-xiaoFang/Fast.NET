@@ -121,4 +121,10 @@
 		</Reference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+	    <HintPath>..\Librarys\NET6.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
 </Project>

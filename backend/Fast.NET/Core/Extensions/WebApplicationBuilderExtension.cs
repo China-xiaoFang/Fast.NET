@@ -32,6 +32,26 @@ public static class WebApplicationBuilderExtension
     /// </summary>
     /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
     /// <returns><see cref="WebApplicationBuilder"/></returns>
+    public static WebApplicationBuilder EighteenK(this WebApplicationBuilder builder)
+    {
+        return builder.Initialize();
+    }
+
+    /// <summary>
+    /// 框架初始化
+    /// </summary>
+    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
+    /// <returns><see cref="WebApplicationBuilder"/></returns>
+    public static WebApplicationBuilder HelloNet(this WebApplicationBuilder builder)
+    {
+        return builder.Initialize();
+    }
+
+    /// <summary>
+    /// 框架初始化
+    /// </summary>
+    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
+    /// <returns><see cref="WebApplicationBuilder"/></returns>
     public static WebApplicationBuilder Initialize(this WebApplicationBuilder builder)
     {
         // 运行控制台输出
@@ -108,44 +128,12 @@ public static class WebApplicationBuilderExtension
             // 默认内置 GBK，Windows-1252, Shift-JIS, GB2312 编码支持
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            // 查找所有继承了 IStartupFilter 的类型
-            var iStartupFilterTypes = IaaSContext.EffectiveTypes.Where(wh =>
-                typeof(IStartupFilter).IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract);
-
-            foreach (var startupFilterType in iStartupFilterTypes)
-            {
-                // 注册 Startup 过滤器
-                services.AddTransient(typeof(IStartupFilter), startupFilterType);
-            }
+            // 注册 Startup 过滤器
+            services.AddStartupFilter();
         });
 
-        // 查找所有继承了 IHostingStartup 的类型
-        var iHostingStartupTypes = IaaSContext.EffectiveTypes.Where(wh =>
-            typeof(IHostingStartup).IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
-        {
-            var hostingStartup = Activator.CreateInstance(sl) as IHostingStartup;
-
-            // 默认为 -1；
-            var order = -1;
-            // 尝试获取Order值
-            var orderProperty = sl.GetProperty("Order");
-
-            if (orderProperty != null && orderProperty.PropertyType == typeof(int))
-            {
-                var orderVal = orderProperty.GetValue(hostingStartup)?.ToString();
-                if (!orderVal.IsEmpty())
-                {
-                    order = orderVal.ParseToInt();
-                }
-            }
-
-            return new {Type = hostingStartup, Order = order};
-        }).OrderByDescending(ob => ob.Order).Select(sl => sl.Type);
-
-        foreach (var hostingStartup in iHostingStartupTypes)
-        {
-            hostingStartup?.Configure(builder);
-        }
+        // 添加管道启动服务
+        builder.HostingInjection();
     }
 
     /// <summary>

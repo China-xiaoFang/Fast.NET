@@ -207,6 +207,20 @@
             <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> 拓展类
             </summary>
         </member>
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.EighteenK(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            框架初始化
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></returns>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.HelloNet(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            框架初始化
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></returns>
+        </member>
         <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.Initialize(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
             框架初始化

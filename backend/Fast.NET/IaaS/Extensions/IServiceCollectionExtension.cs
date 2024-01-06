@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
@@ -57,6 +58,28 @@ public static class IServiceCollectionExtension
             {
                 optionsConfigure.PostConfigure(options => postConfigureMethod.Invoke(options, Array.Empty<object>()));
             }
+        }
+
+        return services;
+    }
+
+    /// <summary>
+    /// 添加启动过滤器
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <returns></returns>
+    public static IServiceCollection AddStartupFilter(this IServiceCollection services)
+    {
+        var iStartupFilterType = typeof(IStartupFilter);
+
+        // 查找所有继承了 IStartupFilter 的类型
+        var iStartupFilterTypes = IaaSContext.EffectiveTypes.Where(wh =>
+            iStartupFilterType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract);
+
+        foreach (var startupFilterType in iStartupFilterTypes)
+        {
+            // 注册 Startup 过滤器
+            services.AddTransient(typeof(IStartupFilter), startupFilterType);
         }
 
         return services;
