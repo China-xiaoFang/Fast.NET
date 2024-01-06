@@ -5,6 +5,9 @@
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
 		</Reference>
@@ -44,6 +47,9 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
 		</Reference>
@@ -83,6 +89,9 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
 		</Reference>
@@ -119,12 +128,6 @@
 		<Reference Include="Microsoft.Extensions.Primitives">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Primitives.dll</HintPath>
 		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
-	    <HintPath>..\Librarys\NET6.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
-	  </Reference>
 	</ItemGroup>
 
 </Project>
