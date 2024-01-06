@@ -28,7 +28,6 @@ namespace Fast.SpecificationProcessor.UnifyResult.Providers;
 /// <summary>
 /// 规范化RESTful风格返回值
 /// </summary>
-[UnifyModel(typeof(RestfulResult<>))]
 internal class RestfulResultProvider : IUnifyResultProvider
 {
     /// <summary>

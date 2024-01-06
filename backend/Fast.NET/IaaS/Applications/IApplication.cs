@@ -12,26 +12,17 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Runtime.CompilerServices;
 
-namespace Fast.SpecificationProcessor.UnifyResult.Metadatas;
+[assembly: InternalsVisibleTo("Fast.SpecificationProcessor")]
+
+// ReSharper disable once CheckNamespace
+namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="UnifyMetadata"/> 规范化元数据
+/// <see cref="IApplication"/> 内部Api接口
+/// <remarks>主要用于区分是否为Api请求，因为各个类库分的多，所以导致耦合度不够，故存在此接口增加耦合度</remarks>
 /// </summary>
-internal sealed class UnifyMetadata
+internal interface IApplication
 {
-    /// <summary>
-    /// 提供器名称
-    /// </summary>
-    public string ProviderName { get; set; }
-
-    /// <summary>
-    /// 提供器类型
-    /// </summary>
-    public Type ProviderType { get; set; }
-
-    /// <summary>
-    /// 统一的结果类型
-    /// </summary>
-    public Type ResultType { get; set; }
 }

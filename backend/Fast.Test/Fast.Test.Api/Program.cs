@@ -1,9 +1,5 @@
 using Fast.NET.Core.Extensions;
-using Fast.SpecificationProcessor.DataValidation.Extensions;
-using Fast.SpecificationProcessor.DynamicApplication.Extensions;
-using Fast.SpecificationProcessor.FriendlyException.Extensions;
 using Fast.SpecificationProcessor.Swagger.Extensions;
-using Fast.SpecificationProcessor.UnifyResult.Extensions;
 using Fast.Test.Api;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
@@ -46,17 +42,17 @@ var b = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(Application
 // 文档
 builder.Services.AddSwaggerDocument(builder.Configuration);
 
-// 动态 API
-builder.Services.AddDynamicApplication();
+//// 动态 API
+//builder.Services.AddDynamicApplication();
 
-// 数据验证
-builder.Services.AddDataValidation();
+//// 数据验证
+//builder.Services.AddDataValidation();
 
-// 友好异常
-builder.Services.AddFriendlyException();
+//// 友好异常
+//builder.Services.AddFriendlyException();
 
-// 规范返回
-builder.Services.AddUnifyResult<RESTfulResultProvider>();
+//// 规范返回
+//builder.Services.AddUnifyResult<RESTfulResultProvider>();
 
 
 //builder.Services.AddSqlSugar();
@@ -89,8 +85,8 @@ app.UseHttpsRedirection();
 // Enable compression.
 //app.UseResponseCompression();
 
-// Add the status code interception middleware.
-app.UseUnifyResultStatusCodes();
+//// Add the status code interception middleware.
+//app.UseUnifyResultStatusCodes();
 
 
 app.UseStaticFiles();

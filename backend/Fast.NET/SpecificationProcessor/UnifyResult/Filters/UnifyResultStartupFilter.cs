@@ -12,28 +12,27 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.IaaS;
+using Fast.SpecificationProcessor.UnifyResult.Middlewares;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
-// ReSharper disable once CheckNamespace
-namespace Fast.SpecificationProcessor.UnifyResult;
+namespace Fast.SpecificationProcessor.UnifyResult.Filters;
 
 /// <summary>
-/// <see cref="UnifyModelAttribute"/> 规范化模型特性
+/// <see cref="UnifyResultStartupFilter"/> 应用启动时自动注册中间件
 /// </summary>
-[SuppressSniffer, AttributeUsage(AttributeTargets.Class)]
-public class UnifyModelAttribute : Attribute
+public class UnifyResultStartupFilter : IStartupFilter
 {
     /// <summary>
-    /// 规范化模型
+    /// 配置中间件
     /// </summary>
-    /// <param name="modelType"></param>
-    public UnifyModelAttribute(Type modelType)
+    /// <param name="action"></param>
+    /// <returns></returns>
+    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
     {
-        ModelType = modelType;
+        return app =>
+        {
+            app.UseMiddleware<UnifyResultStatusCodesMiddleware>();
+        };
     }
-
-    /// <summary>
-    /// 模型类型（泛型）
-    /// </summary>
-    public Type ModelType { get; set; }
 }

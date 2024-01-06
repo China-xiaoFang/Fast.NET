@@ -15,7 +15,7 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using Fast.IaaS;
-using Fast.SpecificationProcessor.UnifyResult.Metadatas;
+using Fast.SpecificationProcessor.UnifyResult.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -36,14 +36,9 @@ internal static class UnifyContext
     internal static bool EnabledUnifyHandler = false;
 
     /// <summary>
-    /// 方法 规范化提供器 缓存
+    /// 统一返回类型
     /// </summary>
-    internal static ConcurrentDictionary<string, UnifyProviderAttribute> CacheMethodInfoUnifyProviderAttributes = new();
-
-    /// <summary>
-    /// 规范化结果提供器
-    /// </summary>
-    internal static ConcurrentDictionary<string, UnifyMetadata> UnifyProviders = new();
+    internal static Type UnifyResultType => typeof(RestfulResult<>);
 
     /// <summary>
     /// 检查请求成功是否进行规范化处理
@@ -57,14 +52,11 @@ internal static class UnifyContext
     internal static bool CheckSucceededNonUnify(HttpContext httpContext, MethodInfo method, out IUnifyResultProvider unifyResult,
         bool isWebRequest = true)
     {
-        // 解析规范化元数据
-        var unityMetadata = GetMethodUnityMetadata(method);
-
         // 判断是否跳过规范化处理
         var isSkip = !EnabledUnifyHandler;
 
         // 判断返回类型是否包含了规范化处理的返回类型
-        if (!isSkip && method.GetRealReturnType().HasImplementedRawGeneric(unityMetadata.ResultType))
+        if (!isSkip && method.GetRealReturnType().HasImplementedRawGeneric(UnifyResultType))
         {
             isSkip = true;
         }
@@ -110,7 +102,7 @@ internal static class UnifyContext
         }
         else
         {
-            unifyResult = httpContext?.RequestServices.GetService(unityMetadata.ProviderType) as IUnifyResultProvider;
+            unifyResult = httpContext?.RequestServices.GetService<IUnifyResultProvider>();
         }
 
         return unifyResult == null || isSkip;
@@ -126,9 +118,6 @@ internal static class UnifyContext
     /// <returns><see cref="bool"/></returns>
     internal static bool CheckFailedNonUnify(HttpContext httpContext, MethodInfo method, out IUnifyResultProvider unifyResult)
     {
-        // 解析规范化元数据
-        var unityMetadata = GetMethodUnityMetadata(method);
-
         // 判断是否跳过规范化处理
         var isSkip = !EnabledUnifyHandler;
 
@@ -163,7 +152,7 @@ internal static class UnifyContext
         }
         else
         {
-            unifyResult = httpContext.RequestServices.GetService(unityMetadata.ProviderType) as IUnifyResultProvider;
+            unifyResult = httpContext.RequestServices.GetService<IUnifyResultProvider>();
         }
 
         return unifyResult == null || isSkip;
@@ -273,17 +262,7 @@ internal static class UnifyContext
         }
         else
         {
-            // 解析规范化元数据
-            var unifyProviderAttribute = endpointFeature?.Endpoint?.Metadata?.GetMetadata<UnifyProviderAttribute>();
-
-            if (UnifyProviders.TryGetValue(unifyProviderAttribute?.Name ?? string.Empty, out var unityMetadata))
-            {
-                unifyResult = httpContext.RequestServices.GetService(unityMetadata.ProviderType) as IUnifyResultProvider;
-            }
-            else
-            {
-                unifyResult = null;
-            }
+            unifyResult = httpContext.RequestServices.GetService<IUnifyResultProvider>();
         }
 
         return unifyResult == null || isSkip;
@@ -335,41 +314,5 @@ internal static class UnifyContext
             };
 
         return isDataResult;
-    }
-
-    /// <summary>
-    /// 获取方法规范化元数据
-    /// </summary>
-    /// <param name="method"></param>
-    /// <returns></returns>
-    internal static UnifyMetadata GetMethodUnityMetadata(MethodInfo method)
-    {
-        if (method == default)
-            return default;
-
-        // 组装缓存字典的Key，这里使用 完全限定的类名(唯一的).方法名.参数名称
-        var cacheKey = method.DeclaringType?.FullName + "." + method.Name + "(" +
-                       string.Join(",", method.GetParameters().Select(p => p.ParameterType.FullName)) + ")";
-
-        // 尝试从缓存中读取
-        if (!CacheMethodInfoUnifyProviderAttributes.TryGetValue(cacheKey, out var unifyProviderAttribute))
-        {
-            // 不存在，再获取
-            unifyProviderAttribute = method.GetFoundAttribute<UnifyProviderAttribute>(true);
-
-            // 放入缓存中
-            CacheMethodInfoUnifyProviderAttributes.AddOrUpdate(cacheKey, _ => unifyProviderAttribute,
-                (_, _) => unifyProviderAttribute);
-        }
-
-        // 获取元数据
-        var isExists = UnifyProviders.TryGetValue(unifyProviderAttribute?.Name ?? string.Empty, out var metadata);
-        if (!isExists)
-        {
-            // 不存在则将默认的返回
-            UnifyProviders.TryGetValue(string.Empty, out metadata);
-        }
-
-        return metadata;
     }
 }

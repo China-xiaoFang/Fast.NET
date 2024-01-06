@@ -25,7 +25,7 @@ namespace Fast.SpecificationProcessor.UnifyResult;
 /// <summary>
 /// <see cref="IUnifyResultProvider"/> 规范化结果提供器
 /// </summary>
-public interface IUnifyResultProvider
+internal interface IUnifyResultProvider
 {
     /// <summary>
     /// 异常返回值

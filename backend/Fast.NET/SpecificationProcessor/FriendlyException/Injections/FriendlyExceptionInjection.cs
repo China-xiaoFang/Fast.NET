@@ -15,36 +15,46 @@
 using Fast.IaaS;
 using Fast.SpecificationProcessor.FriendlyException.Filters;
 using Fast.SpecificationProcessor.FriendlyException.Handlers;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.SpecificationProcessor.FriendlyException.Extensions;
+namespace Fast.Cache.Injections;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> 友好异常服务拓展类
+/// <see cref="FriendlyExceptionInjection"/> 友好异常注入
 /// </summary>
-[SuppressSniffer]
-public static class ExceptionIServiceCollectionExtension
+public class FriendlyExceptionInjection : IApiHostingStartup
 {
     /// <summary>
-    /// 添加友好异常服务拓展服务
+    /// 排序
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddFriendlyException(this IServiceCollection services)
+#pragma warning disable CA1822
+    public int Order => 69977;
+#pragma warning restore CA1822
+
+    /// <summary>
+    /// 配置
+    /// </summary>
+    /// <param name="builder"></param>
+    public void Configure(IWebHostBuilder builder)
     {
-        // 查找全局异常处理实现类
-        var globalExceptionHandler =
-            IaaSContext.EffectiveTypes.FirstOrDefault(f => typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
-
-        if (globalExceptionHandler != null)
+        builder.ConfigureServices((hostContext, services) =>
         {
-            // 注册全局异常处理实现类
-            services.AddSingleton(typeof(IGlobalExceptionHandler), globalExceptionHandler);
-        }
+            Debugging.Info("Registering friendly exception......");
 
-        services.Configure<MvcOptions>(options => { options.Filters.Add<FriendlyExceptionFilter>(); });
+            // 查找全局异常处理实现类
+            var globalExceptionHandler =
+                IaaSContext.EffectiveTypes.FirstOrDefault(f =>
+                    typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
 
-        return services;
+            if (globalExceptionHandler != null)
+            {
+                // 注册全局异常处理实现类
+                services.AddSingleton(typeof(IGlobalExceptionHandler), globalExceptionHandler);
+            }
+
+            services.Configure<MvcOptions>(options => { options.Filters.Add<FriendlyExceptionFilter>(); });
+        });
     }
 }

@@ -12,7 +12,6 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using System.Reflection;
 using Fast.IaaS;
 using Fast.SpecificationProcessor.UnifyResult.Contexts;
 using Microsoft.AspNetCore.Http;
@@ -55,33 +54,16 @@ public sealed class UnifyResultAttribute : ProducesResponseTypeAttribute
     }
 
     /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="type"></param>
-    /// <param name="statusCode"></param>
-    /// <param name="method"></param>
-    internal UnifyResultAttribute(Type type, int statusCode, MethodInfo method) : base(type, statusCode)
-    {
-        WrapType(type, method);
-    }
-
-    /// <summary>
     /// 包装类型
     /// </summary>
     /// <param name="type"></param>
-    /// <param name="method"></param>
-    private void WrapType(Type type, MethodInfo method = default)
+    private void WrapType(Type type)
     {
         if (type != null && UnifyContext.EnabledUnifyHandler)
         {
-            var unityMetadata = UnifyContext.GetMethodUnityMetadata(method);
-
-            if (unityMetadata != null && !type.HasImplementedRawGeneric(unityMetadata.ResultType))
-            {
-                Type = unityMetadata.ResultType.MakeGenericType(type);
-            }
-            else
-                Type = default;
+            Type = !type.HasImplementedRawGeneric(UnifyContext.UnifyResultType)
+                ? UnifyContext.UnifyResultType.MakeGenericType(type)
+                : default;
         }
     }
 }

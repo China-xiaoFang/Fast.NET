@@ -21,18 +21,6 @@
             <param name="errors"><see cref="T:System.Object"/></param>
             <returns><see cref="T:Fast.SpecificationProcessor.DataValidation.ValidationMetadata"/></returns>
         </member>
-        <member name="T:Fast.SpecificationProcessor.DataValidation.Extensions.DataValidationIServiceCollectionExtension">
-            <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 数据验证拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.DataValidation.Extensions.DataValidationIServiceCollectionExtension.AddDataValidation(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加全局数据验证
-            </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
-        </member>
         <member name="T:Fast.SpecificationProcessor.DataValidation.Filters.DataValidationFilter">
             <summary>
             <see cref="T:Fast.SpecificationProcessor.DataValidation.Filters.DataValidationFilter"/> 数据验证拦截器
@@ -354,18 +342,6 @@
             <see cref="T:Fast.SpecificationProcessor.DynamicApplication.IDynamicApplication"/> 动态API应用依赖接口
             </summary>
         </member>
-        <member name="T:Fast.SpecificationProcessor.DynamicApplication.Extensions.DynamicApplicationIServiceCollectionExtension">
-            <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 动态API应用拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.DynamicApplication.Extensions.DynamicApplicationIServiceCollectionExtension.AddDynamicApplication(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加动态接口控制器服务
-            </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
-        </member>
         <member name="T:Fast.SpecificationProcessor.DynamicApplication.Formatters.TextPlainMediaTypeFormatter">
             <summary>
             text/plain 请求 Body 参数支持
@@ -437,18 +413,6 @@
             </summary>
             <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.ActionContext"/></param>
             <returns><see cref="T:Fast.SpecificationProcessor.FriendlyException.Metadatas.ExceptionMetadata"/></returns>
-        </member>
-        <member name="T:Fast.SpecificationProcessor.FriendlyException.Extensions.ExceptionIServiceCollectionExtension">
-            <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 友好异常服务拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.FriendlyException.Extensions.ExceptionIServiceCollectionExtension.AddFriendlyException(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加友好异常服务拓展服务
-            </summary>
-            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
         </member>
         <member name="T:Fast.SpecificationProcessor.FriendlyException.Filters.FriendlyExceptionFilter">
             <summary>
@@ -1206,43 +1170,6 @@
             <see cref="T:Fast.SpecificationProcessor.UnifyResult.NonUnifyAttribute"/> 禁止规范化处理
             </summary>
         </member>
-        <member name="T:Fast.SpecificationProcessor.UnifyResult.UnifyModelAttribute">
-            <summary>
-            <see cref="T:Fast.SpecificationProcessor.UnifyResult.UnifyModelAttribute"/> 规范化模型特性
-            </summary>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.UnifyModelAttribute.#ctor(System.Type)">
-            <summary>
-            规范化模型
-            </summary>
-            <param name="modelType"></param>
-        </member>
-        <member name="P:Fast.SpecificationProcessor.UnifyResult.UnifyModelAttribute.ModelType">
-            <summary>
-            模型类型（泛型）
-            </summary>
-        </member>
-        <member name="T:Fast.SpecificationProcessor.UnifyResult.UnifyProviderAttribute">
-            <summary>
-            <see cref="T:Fast.SpecificationProcessor.UnifyResult.UnifyProviderAttribute"/> 规范化提供器特性
-            </summary>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.UnifyProviderAttribute.#ctor">
-            <summary>
-            构造函数
-            </summary>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.UnifyProviderAttribute.#ctor(System.String)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="name"></param>
-        </member>
-        <member name="P:Fast.SpecificationProcessor.UnifyResult.UnifyProviderAttribute.Name">
-            <summary>
-            提供器名称
-            </summary>
-        </member>
         <member name="T:Fast.SpecificationProcessor.UnifyResult.UnifyResultAttribute">
             <summary>
             <see cref="T:Fast.SpecificationProcessor.UnifyResult.UnifyResultAttribute"/> 规范化结果配置
@@ -1267,20 +1194,11 @@
             <param name="type"></param>
             <param name="statusCode"></param>
         </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.UnifyResultAttribute.#ctor(System.Type,System.Int32,System.Reflection.MethodInfo)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="type"></param>
-            <param name="statusCode"></param>
-            <param name="method"></param>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.UnifyResultAttribute.WrapType(System.Type,System.Reflection.MethodInfo)">
+        <member name="M:Fast.SpecificationProcessor.UnifyResult.UnifyResultAttribute.WrapType(System.Type)">
             <summary>
             包装类型
             </summary>
             <param name="type"></param>
-            <param name="method"></param>
         </member>
         <member name="T:Fast.SpecificationProcessor.UnifyResult.Contexts.UnifyContext">
             <summary>
@@ -1292,14 +1210,9 @@
             是否启用规范化结果
             </summary>
         </member>
-        <member name="F:Fast.SpecificationProcessor.UnifyResult.Contexts.UnifyContext.CacheMethodInfoUnifyProviderAttributes">
+        <member name="P:Fast.SpecificationProcessor.UnifyResult.Contexts.UnifyContext.UnifyResultType">
             <summary>
-            方法 规范化提供器 缓存
-            </summary>
-        </member>
-        <member name="F:Fast.SpecificationProcessor.UnifyResult.Contexts.UnifyContext.UnifyProviders">
-            <summary>
-            规范化结果提供器
+            统一返回类型
             </summary>
         </member>
         <member name="M:Fast.SpecificationProcessor.UnifyResult.Contexts.UnifyContext.CheckSucceededNonUnify(Microsoft.AspNetCore.Http.HttpContext,System.Reflection.MethodInfo,Fast.SpecificationProcessor.UnifyResult.IUnifyResultProvider@,System.Boolean)">
@@ -1349,62 +1262,6 @@
             <param name="data"><see cref="T:System.Object"/></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.Contexts.UnifyContext.GetMethodUnityMetadata(System.Reflection.MethodInfo)">
-            <summary>
-            获取方法规范化元数据
-            </summary>
-            <param name="method"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Fast.SpecificationProcessor.UnifyResult.Extensions.UnifyResultIApplicationBuilderExtension">
-            <summary>
-            <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> 规范化服务拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.Extensions.UnifyResultIApplicationBuilderExtension.UseUnifyResultStatusCodes(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-            添加状态码拦截中间件
-            </summary>
-            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></param>
-            <returns><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></returns>
-        </member>
-        <member name="T:Fast.SpecificationProcessor.UnifyResult.Extensions.UnifyResultIServiceCollectionExtension">
-            <summary>
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 规范化服务拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.Extensions.UnifyResultIServiceCollectionExtension.AddUnifyResult(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加默认规范化结果服务
-            </summary>
-            <param name="services"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.Extensions.UnifyResultIServiceCollectionExtension.AddUnifyResult(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
-            <summary>
-            添加默认规范化结果服务
-            </summary>
-            <param name="services"></param>
-            <param name="providerName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.Extensions.UnifyResultIServiceCollectionExtension.AddUnifyResult``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加规范化结果服务
-            </summary>
-            <typeparam name="TUnifyResultProvider"></typeparam>
-            <param name="services"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SpecificationProcessor.UnifyResult.Extensions.UnifyResultIServiceCollectionExtension.AddUnifyResult``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
-            <summary>
-            添加规范化结果服务
-            </summary>
-            <typeparam name="TUnifyResultProvider"></typeparam>
-            <param name="services"></param>
-            <param name="providerName"></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.SpecificationProcessor.UnifyResult.Filters.SucceededUnifyResultFilter">
             <summary>
             <see cref="T:Fast.SpecificationProcessor.UnifyResult.Filters.SucceededUnifyResultFilter"/> 规范化结构（请求成功）过滤器
@@ -1428,25 +1285,17 @@
             <param name="next"></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.SpecificationProcessor.UnifyResult.Metadatas.UnifyMetadata">
+        <member name="T:Fast.SpecificationProcessor.UnifyResult.Filters.UnifyResultStartupFilter">
             <summary>
-            <see cref="T:Fast.SpecificationProcessor.UnifyResult.Metadatas.UnifyMetadata"/> 规范化元数据
+            <see cref="T:Fast.SpecificationProcessor.UnifyResult.Filters.UnifyResultStartupFilter"/> 应用启动时自动注册中间件
             </summary>
         </member>
-        <member name="P:Fast.SpecificationProcessor.UnifyResult.Metadatas.UnifyMetadata.ProviderName">
+        <member name="M:Fast.SpecificationProcessor.UnifyResult.Filters.UnifyResultStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
             <summary>
-            提供器名称
+            配置中间件
             </summary>
-        </member>
-        <member name="P:Fast.SpecificationProcessor.UnifyResult.Metadatas.UnifyMetadata.ProviderType">
-            <summary>
-            提供器类型
-            </summary>
-        </member>
-        <member name="P:Fast.SpecificationProcessor.UnifyResult.Metadatas.UnifyMetadata.ResultType">
-            <summary>
-            统一的结果类型
-            </summary>
+            <param name="action"></param>
+            <returns></returns>
         </member>
         <member name="T:Fast.SpecificationProcessor.UnifyResult.Middlewares.UnifyResultStatusCodesMiddleware">
             <summary>
@@ -1601,6 +1450,70 @@
             <summary>
             时间戳
             </summary>
+        </member>
+        <member name="T:Fast.Cache.Injections.DataValidationInjection">
+            <summary>
+            <see cref="T:Fast.Cache.Injections.DataValidationInjection"/> 数据验证注入
+            </summary>
+        </member>
+        <member name="P:Fast.Cache.Injections.DataValidationInjection.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Injections.DataValidationInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="T:Fast.Cache.Injections.DynamicApplicationInjection">
+            <summary>
+            <see cref="T:Fast.Cache.Injections.DynamicApplicationInjection"/> 动态API注入
+            </summary>
+        </member>
+        <member name="P:Fast.Cache.Injections.DynamicApplicationInjection.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Injections.DynamicApplicationInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="T:Fast.Cache.Injections.FriendlyExceptionInjection">
+            <summary>
+            <see cref="T:Fast.Cache.Injections.FriendlyExceptionInjection"/> 友好异常注入
+            </summary>
+        </member>
+        <member name="P:Fast.Cache.Injections.FriendlyExceptionInjection.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Injections.FriendlyExceptionInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="T:Fast.Cache.Injections.UnifyResultInjection">
+            <summary>
+            <see cref="T:Fast.Cache.Injections.UnifyResultInjection"/> 统一返回注入
+            </summary>
+        </member>
+        <member name="P:Fast.Cache.Injections.UnifyResultInjection.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.Injections.UnifyResultInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            配置
+            </summary>
+            <param name="builder"></param>
         </member>
         <member name="T:Fast.NET.UserFriendlyException">
             <summary>

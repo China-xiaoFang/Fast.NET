@@ -532,7 +532,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             return;
 
         // 添加规范化结果特性
-        action.Filters.Add(new UnifyResultAttribute(returnType, StatusCodes.Status200OK, action.ActionMethod));
+        action.Filters.Add(new UnifyResultAttribute(returnType, StatusCodes.Status200OK));
     }
 
     /// <summary>
