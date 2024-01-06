@@ -12,22 +12,16 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.IaaS;
+using Fast.Logging.Commons;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Implantation.File;
 
 /// <summary>
-/// 文件日志记录器配置选项
+/// <see cref="FileLoggerOptions"/> 文件日志记录器配置选项
 /// </summary>
-[SuppressSniffer]
-public sealed class FileLoggerOptions
+internal class FileLoggerOptions
 {
-    /// <summary>
-    /// 追加到已存在日志文件或覆盖它们
-    /// </summary>
-    public bool Append { get; set; } = true;
-
     /// <summary>
     /// 控制每一个日志文件最大存储大小，默认无限制，单位是 B，也就是 1024 才等于 1KB
     /// </summary>
@@ -48,7 +42,7 @@ public sealed class FileLoggerOptions
     /// <summary>
     /// 是否使用 UTC 时间戳，默认 false
     /// </summary>
-    public bool UseUtcTimestamp { get; set; }
+    public bool UseUtcTimestamp { get; set; } = false;
 
     /// <summary>
     /// 自定义日志消息格式化程序

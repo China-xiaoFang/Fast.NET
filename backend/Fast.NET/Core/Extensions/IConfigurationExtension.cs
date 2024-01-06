@@ -32,7 +32,7 @@ public static class IConfigurationExtension
             return configuration;
 
         var newConfiguration = FastContext.GetService<IConfiguration>(FastContext.RootServices);
-        InternalContext.Configuration = newConfiguration;
+        FastContext.Configuration = newConfiguration;
 
         return newConfiguration;
     }

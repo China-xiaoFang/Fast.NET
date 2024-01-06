@@ -13,19 +13,19 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
+using Fast.Logging.Commons;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 
-namespace Fast.Logging.Implantation.Console;
+namespace Fast.Logging.Console;
 
 /// <summary>
 /// 控制台默认格式化程序拓展
 /// </summary>
-[SuppressSniffer]
-public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
+internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
 {
     /// <summary>
     /// 日志格式化选项刷新 Token
@@ -71,7 +71,7 @@ public sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
         var logDateTime = _formatterOptions.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now;
         var logMsg = new LogMessage(logEntry.Category, logEntry.LogLevel, logEntry.EventId, message, logEntry.Exception, null,
             logEntry.State, logDateTime, Environment.CurrentManagedThreadId, _formatterOptions.UseUtcTimestamp,
-            Penetrates.GetTraceId());
+            IaaSContext.GetTraceId(Penetrates.RootServices, Penetrates.HttpContext));
 
         string standardMessage;
 

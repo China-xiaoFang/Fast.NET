@@ -1,4 +1,3 @@
-using Fast.Logging.Extensions;
 using Fast.NET.Core.Extensions;
 using Fast.Serialization.Extensions;
 using Fast.SpecificationProcessor.DataValidation.Extensions;
@@ -7,11 +6,12 @@ using Fast.SpecificationProcessor.Swagger.Extensions;
 using Fast.SpecificationProcessor.UnifyResult.Extensions;
 using Fast.SqlSugar.Extensions;
 using Fast.Test.Api;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 var builder = WebApplication.CreateBuilder(args).Initialize();
 
-// 日志
-builder.Services.AddLogging(builder.Configuration);
+//// 日志
+//builder.Services.AddLogging(builder.Configuration);
 
 //// 跨域配置
 //builder.Services.AddCorsAccessor(builder.Configuration);
@@ -32,7 +32,17 @@ builder.Services.AddLogging(builder.Configuration);
 
 //builder.Services.AddSqlSugar(builder.Configuration);
 
+var a1 =builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager));
+
+var a =builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
+                ApplicationPartManager;
+
 builder.Services.AddControllers();
+
+var b1 =builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager));
+
+var b =builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
+                ApplicationPartManager;
 
 // 文档
 //builder.Services.AddSwaggerDocument(builder.Configuration);
@@ -91,6 +101,6 @@ app.UseRouting();
 // Here, the default address is/API if no argument is entered, and/directory if string.empty is entered. If any string is entered, the/arbitrary string directory.
 //app.UseSwaggerDocument();
 
-app.MapControllers();
+//app.MapControllers();
 
 app.Run();

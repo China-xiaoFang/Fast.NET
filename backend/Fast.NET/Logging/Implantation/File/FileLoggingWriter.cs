@@ -12,6 +12,8 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.Logging.Commons;
+
 namespace Fast.Logging.Implantation.File;
 
 /// <summary>
@@ -68,7 +70,7 @@ internal class FileLoggingWriter
         GetCurrentFileName();
 
         // 打开文件并持续写入
-        OpenFile(_options.Append);
+        OpenFile(true);
     }
 
     /// <summary>
@@ -175,7 +177,7 @@ internal class FileLoggingWriter
     /// <summary>
     /// 打开文件
     /// </summary>
-    /// <param name="append"></param>
+    /// <param name="append"><see cref="bool"/>追加还是覆盖</param>
     private void OpenFile(bool append)
     {
         try
@@ -225,9 +227,13 @@ internal class FileLoggingWriter
 
             // 判断是否追加还是覆盖
             if (append)
+            {
                 _fileStream.Seek(0, SeekOrigin.End);
+            }
             else
+            {
                 _fileStream.SetLength(0);
+            }
         }
     }
 

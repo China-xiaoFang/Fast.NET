@@ -12,9 +12,11 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.IaaS;
+using Fast.Logging.Commons;
 using Fast.Logging.Extensions;
-using Fast.Logging.Implantation;
 using Fast.Logging.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable once CheckNamespace
@@ -40,7 +42,9 @@ public static class Log
     /// <returns></returns>
     public static ILogger CreateLogger<T>()
     {
-        return Penetrates.GetRequiredService<ILogger<T>>();
+        return IaaSContext
+            .GetServiceProvider(typeof(ILogger<T>), Penetrates.RootServices, Penetrates.InternalServices, Penetrates.HttpContext)
+            .GetRequiredService<ILogger<T>>();
     }
 
     /// <summary>

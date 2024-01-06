@@ -16,7 +16,7 @@ using Fast.IaaS;
 using Fast.Logging.Internal;
 using Microsoft.Extensions.Logging;
 
-namespace Fast.Logging.Implantation;
+namespace Fast.Logging.Commons;
 
 /// <summary>
 /// 日志结构化消息

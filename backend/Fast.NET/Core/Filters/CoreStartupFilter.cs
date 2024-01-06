@@ -34,7 +34,7 @@ public class CoreStartupFilter : IStartupFilter
         return app =>
         {
             // 存储根服务
-            InternalContext.RootServices = app.ApplicationServices;
+            FastContext.RootServices = app.ApplicationServices;
 
             // 环境名
             var envName = FastContext.WebHostEnvironment?.EnvironmentName ?? "Unknown";
@@ -72,7 +72,7 @@ public class CoreStartupFilter : IStartupFilter
                     }
 
                     // 释放所有未托管的服务提供器
-                    FastContext.DisposeUnmanagedObjects();
+                    IaaSContext.DisposeUnmanagedObjects();
                 }
             });
 

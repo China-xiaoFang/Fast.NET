@@ -26,6 +26,9 @@
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
 		</Reference>
@@ -62,6 +65,9 @@
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
 		</Reference>
@@ -94,6 +100,9 @@
 		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.DependencyInjection">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Configuration.Binder">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>

@@ -12,9 +12,11 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 // 只允许框架内部的类库访问
@@ -35,6 +37,20 @@ namespace Fast.IaaS;
 // ReSharper disable once PartialTypeWithSinglePart
 internal static class IaaSContext
 {
+    #region 内部属性
+
+    /// <summary>
+    /// GC 回收默认间隔
+    /// </summary>
+    internal const int GC_COLLECT_INTERVAL_SECONDS = 5;
+
+    /// <summary>
+    /// 记录最近 GC 回收时间
+    /// </summary>
+    internal static DateTime? LastGCCollectTime { get; set; }
+
+    #endregion
+
     /// <summary>
     /// 应用有效程序集
     /// </summary>
@@ -45,8 +61,16 @@ internal static class IaaSContext
     /// </summary>
     public static readonly IEnumerable<Type> EffectiveTypes;
 
+    /// <summary>
+    /// 未托管的对象集合
+    /// </summary>
+    public static ConcurrentBag<IDisposable> UnmanagedObjects { get; private set; }
+
     static IaaSContext()
     {
+        // 未托管的对象
+        UnmanagedObjects = new ConcurrentBag<IDisposable>();
+
         // 加载程序集
         Assemblies = AssemblyUtil.GetEntryAssembly();
 
@@ -88,6 +112,15 @@ internal static class IaaSContext
     }
 
     /// <summary>
+    /// 获取当前请求 TraceId
+    /// </summary>
+    /// <returns></returns>
+    internal static string GetTraceId(IServiceProvider rootServices, HttpContext httpContext)
+    {
+        return Activity.Current?.Id ?? (rootServices == null ? default : httpContext?.TraceIdentifier);
+    }
+
+    /// <summary>
     /// 获取一段代码执行耗时
     /// </summary>
     /// <param name="action">委托</param>
@@ -106,6 +139,41 @@ internal static class IaaSContext
     }
 
     /// <summary>
+    /// 解析服务提供器
+    /// </summary>
+    /// <param name="serviceType"></param>
+    /// <param name="RootServices"></param>
+    /// <param name="internalServices"></param>
+    /// <param name="httpContext"></param>
+    /// <returns></returns>
+    public static IServiceProvider GetServiceProvider(Type serviceType, IServiceProvider RootServices,
+        IServiceCollection internalServices, HttpContext httpContext)
+    {
+        // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
+        if (RootServices != null && internalServices
+                .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
+                .Any(u => u.Lifetime == ServiceLifetime.Singleton))
+            return RootServices;
+
+        // 第二选择是获取 HttpContext 对象的 RequestServices
+        if (httpContext?.RequestServices != null)
+            return httpContext.RequestServices;
+
+        // 第三选择，创建新的作用域并返回服务提供器
+        if (RootServices != null)
+        {
+            var scoped = RootServices.CreateScope();
+            UnmanagedObjects.Add(scoped);
+            return scoped.ServiceProvider;
+        }
+
+        // 第四选择，构建新的服务对象（性能最差）
+        var serviceProvider = internalServices.BuildServiceProvider();
+        UnmanagedObjects.Add(serviceProvider);
+        return serviceProvider;
+    }
+
+    /// <summary>
     /// 获取选项名称
     /// </summary>
     /// <typeparam name="TOptions"></typeparam>
@@ -119,5 +187,30 @@ internal static class IaaSContext
 
         // 判断是否已 “Options” 结尾
         return optionsType.Name.EndsWith(defaultSuffix) ? optionsType.Name[..^defaultSuffix.Length] : optionsType.Name;
+    }
+
+    /// <summary>
+    /// 释放所有未托管的对象
+    /// </summary>
+    public static void DisposeUnmanagedObjects()
+    {
+        foreach (var dsp in UnmanagedObjects)
+        {
+            dsp?.Dispose();
+        }
+
+        // 强制手动回收 GC 内存
+        if (UnmanagedObjects.IsEmpty)
+        {
+            var nowTime = DateTime.UtcNow;
+            if ((LastGCCollectTime == null || (nowTime - LastGCCollectTime.Value).TotalSeconds > GC_COLLECT_INTERVAL_SECONDS))
+            {
+                LastGCCollectTime = nowTime;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        UnmanagedObjects.Clear();
     }
 }

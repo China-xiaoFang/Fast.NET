@@ -12,17 +12,16 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.IaaS;
+using Fast.Logging.Commons;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 
-namespace Fast.Logging.Implantation.Console;
+namespace Fast.Logging.Console;
 
 /// <summary>
 /// 控制台默认格式化选项拓展
 /// </summary>
-[SuppressSniffer]
-public sealed class ConsoleFormatterExtendOptions : ConsoleFormatterOptions
+internal class ConsoleFormatterExtendOptions : ConsoleFormatterOptions
 {
     /// <summary>
     /// 构造函数

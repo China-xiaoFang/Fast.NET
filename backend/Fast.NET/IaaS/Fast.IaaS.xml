@@ -142,6 +142,16 @@
             <see cref="T:Fast.IaaS.IaaSContext"/> 框架内部的常量，公共方法配置类
             </summary>
         </member>
+        <member name="F:Fast.IaaS.IaaSContext.GC_COLLECT_INTERVAL_SECONDS">
+            <summary>
+            GC 回收默认间隔
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.IaaSContext.LastGCCollectTime">
+            <summary>
+            记录最近 GC 回收时间
+            </summary>
+        </member>
         <member name="F:Fast.IaaS.IaaSContext.Assemblies">
             <summary>
             应用有效程序集
@@ -150,6 +160,11 @@
         <member name="F:Fast.IaaS.IaaSContext.EffectiveTypes">
             <summary>
             有效程序集类型
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.IaaSContext.UnmanagedObjects">
+            <summary>
+            未托管的对象集合
             </summary>
         </member>
         <member name="M:Fast.IaaS.IaaSContext.CatchOrDefault``1(System.Func{``0},``0)">
@@ -167,6 +182,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Fast.IaaS.IaaSContext.GetTraceId(System.IServiceProvider,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取当前请求 TraceId
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Fast.IaaS.IaaSContext.GetExecutionTime(System.Action)">
             <summary>
             获取一段代码执行耗时
@@ -174,12 +195,27 @@
             <param name="action">委托</param>
             <returns><see cref="T:System.Int64"/></returns>
         </member>
+        <member name="M:Fast.IaaS.IaaSContext.GetServiceProvider(System.Type,System.IServiceProvider,Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            解析服务提供器
+            </summary>
+            <param name="serviceType"></param>
+            <param name="RootServices"></param>
+            <param name="internalServices"></param>
+            <param name="httpContext"></param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.IaaS.IaaSContext.GetOptionName``1">
             <summary>
             获取选项名称
             </summary>
             <typeparam name="TOptions"></typeparam>
             <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.IaaSContext.DisposeUnmanagedObjects">
+            <summary>
+            释放所有未托管的对象
+            </summary>
         </member>
         <member name="T:Fast.IaaS.Debugging">
             <summary>

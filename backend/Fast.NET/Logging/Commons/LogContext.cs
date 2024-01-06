@@ -12,31 +12,25 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.Logging.Implantation.Console;
+using Fast.IaaS;
+
+namespace Fast.Logging.Commons;
 
 /// <summary>
-/// 控制台颜色结构
+/// 日志上下文
 /// </summary>
-internal readonly struct ConsoleColors
+[SuppressSniffer]
+public sealed class LogContext
 {
     /// <summary>
     /// 构造函数
     /// </summary>
-    /// <param name="foreground"></param>
-    /// <param name="background"></param>
-    public ConsoleColors(ConsoleColor? foreground, ConsoleColor? background)
+    public LogContext()
     {
-        Foreground = foreground;
-        Background = background;
     }
 
     /// <summary>
-    /// 前景色
+    /// 日志上下文数据
     /// </summary>
-    public ConsoleColor? Foreground { get; }
-
-    /// <summary>
-    /// 背景色
-    /// </summary>
-    public ConsoleColor? Background { get; }
+    public IDictionary<object, object> Properties { get; set; }
 }

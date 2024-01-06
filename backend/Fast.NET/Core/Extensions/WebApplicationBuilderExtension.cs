@@ -37,7 +37,7 @@ public static class WebApplicationBuilderExtension
         // 运行控制台输出
         UseDefault();
 
-        InternalContext.WebHostEnvironment = builder.Environment;
+        FastContext.WebHostEnvironment = builder.Environment;
 
         // 初始化配置
         ConfigureApplication(builder.WebHost);
@@ -84,7 +84,7 @@ public static class WebApplicationBuilderExtension
         builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
         {
             // 存储环境对象
-            InternalContext.HostEnvironment = InternalContext.WebHostEnvironment = hostContext.HostingEnvironment;
+            FastContext.HostEnvironment = FastContext.WebHostEnvironment = hostContext.HostingEnvironment;
 
             // 加载配置
             AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
@@ -94,10 +94,10 @@ public static class WebApplicationBuilderExtension
         builder.ConfigureServices((hostContext, services) =>
         {
             // 存储配置对象
-            InternalContext.Configuration = hostContext.Configuration;
+            FastContext.Configuration = hostContext.Configuration;
 
             // 存储服务提供器
-            InternalContext.InternalServices = services;
+            FastContext.InternalServices = services;
 
             // 注册 HttpContextAccessor 服务
             services.AddHttpContextAccessor();

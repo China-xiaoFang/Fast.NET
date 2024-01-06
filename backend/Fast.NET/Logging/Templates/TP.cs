@@ -18,9 +18,9 @@ using System.Text.RegularExpressions;
 namespace Fast.Logging.Templates;
 
 /// <summary>
-/// 模板静态类
+/// <see cref="TP"/> 模板静态类
 /// </summary>
-public static class TP
+internal static class TP
 {
     /// <summary>
     /// 模板正则表达式对象

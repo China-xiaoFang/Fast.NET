@@ -13,7 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Collections.Concurrent;
-using Fast.IaaS;
+using Fast.Logging.Commons;
 using Microsoft.Extensions.Logging;
 
 namespace Fast.Logging.Implantation.File;
@@ -22,8 +22,8 @@ namespace Fast.Logging.Implantation.File;
 /// 文件日志记录器提供程序
 /// </summary>
 /// <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
-[SuppressSniffer, ProviderAlias("File")]
-public sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
+[ProviderAlias("File")]
+internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
 {
     /// <summary>
     /// 存储多日志分类日志记录器

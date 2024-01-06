@@ -15,7 +15,7 @@
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Fast.Logging.Implantation;
+using Fast.Logging.Commons;
 
 namespace Fast.Logging.Extensions;
 
