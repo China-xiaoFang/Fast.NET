@@ -55,18 +55,19 @@ public static class TypeExtension
     /// <returns><see cref="bool"/></returns>
     public static bool HasImplementedRawGeneric(this Type type, Type generic)
     {
+        var localType = type;
         // 检查接口类型
         var isTheRawGenericType = type.GetInterfaces().Any(IsTheRawGenericType);
         if (isTheRawGenericType)
             return true;
 
         // 检查类型
-        while (type != typeof(object))
+        while (localType != null && localType != typeof(object))
         {
-            isTheRawGenericType = IsTheRawGenericType(type);
+            isTheRawGenericType = IsTheRawGenericType(localType);
             if (isTheRawGenericType)
                 return true;
-            type = type.BaseType ?? type;
+            localType = localType.BaseType;
         }
 
         return false;

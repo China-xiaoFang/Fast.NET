@@ -1,10 +1,9 @@
 using Fast.NET.Core.Extensions;
-using Fast.Serialization.Extensions;
 using Fast.SpecificationProcessor.DataValidation.Extensions;
 using Fast.SpecificationProcessor.DynamicApplication.Extensions;
+using Fast.SpecificationProcessor.FriendlyException.Extensions;
 using Fast.SpecificationProcessor.Swagger.Extensions;
 using Fast.SpecificationProcessor.UnifyResult.Extensions;
-using Fast.SqlSugar.Extensions;
 using Fast.Test.Api;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
@@ -32,20 +31,20 @@ var builder = WebApplication.CreateBuilder(args).Initialize();
 
 //builder.Services.AddSqlSugar(builder.Configuration);
 
-var a1 =builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager));
+var a1 = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager));
 
-var a =builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
-                ApplicationPartManager;
+var a = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
+    ApplicationPartManager;
 
 builder.Services.AddControllers();
 
-var b1 =builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager));
+var b1 = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager));
 
-var b =builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
-                ApplicationPartManager;
+var b = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
+    ApplicationPartManager;
 
 // 文档
-//builder.Services.AddSwaggerDocument(builder.Configuration);
+builder.Services.AddSwaggerDocument(builder.Configuration);
 
 // 动态 API
 builder.Services.AddDynamicApplication();
@@ -54,7 +53,7 @@ builder.Services.AddDynamicApplication();
 builder.Services.AddDataValidation();
 
 // 友好异常
-//builder.Services.AddFriendlyException();
+builder.Services.AddFriendlyException();
 
 // 规范返回
 builder.Services.AddUnifyResult<RESTfulResultProvider>();
@@ -99,8 +98,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Here, the default address is/API if no argument is entered, and/directory if string.empty is entered. If any string is entered, the/arbitrary string directory.
-//app.UseSwaggerDocument();
+app.UseSwaggerDocument();
 
-//app.MapControllers();
+app.MapControllers();
 
 app.Run();
