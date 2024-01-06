@@ -78,7 +78,7 @@ public static class IWebHostBuilderExtension
             if (services.All(a => a.ServiceType != typeof(ApplicationPartManager)))
             {
                 throw new InvalidOperationException(
-                    $"`{nameof(ApiHostingInjection)}` must be invoked after `AddControllers` or 'AddControllersWithViews'.");
+                    $"`{nameof(ApiHostingInjection)}` must be invoked after `AddControllers` or `AddControllersWithViews`.");
             }
         });
 
