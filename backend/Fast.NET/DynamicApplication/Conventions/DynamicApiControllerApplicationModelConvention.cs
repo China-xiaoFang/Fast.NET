@@ -15,6 +15,7 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Fast.DynamicApplication;
 using Fast.IaaS;
 using Fast.SpecificationProcessor.Internal;
 using Fast.SpecificationProcessor.UnifyResult;
@@ -59,7 +60,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     /// <param name="application">引用模型</param>
     public void Apply(ApplicationModel application)
     {
-        var controllers = application.Controllers.Where(u => Penetrates.IsApiController(u.ControllerType));
+        var controllers = application.Controllers.Where(u => IaaSContext.IsApiController(u.ControllerType));
         foreach (var controller in controllers)
         {
             var controllerType = controller.ControllerType;
@@ -75,7 +76,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 if (controller.ApiExplorer?.IsVisible == false)
                 {
                     // 存储排序给 Swagger 使用
-                    Penetrates.ControllerOrderCollection.TryAdd(controller.ControllerName,
+                    IaaSContext.ControllerOrderCollection.TryAdd(controller.ControllerName,
                         (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName,
                             controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
 
@@ -111,7 +112,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         ConfigureControllerRouteAttribute(controller, controllerApiDescriptionSettings);
 
         // 存储排序给 Swagger 使用
-        Penetrates.ControllerOrderCollection.TryAdd(controller.ControllerName,
+        IaaSContext.ControllerOrderCollection.TryAdd(controller.ControllerName,
             (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName, controllerApiDescriptionSettings?.Order ?? 0,
                 controller.ControllerType));
 

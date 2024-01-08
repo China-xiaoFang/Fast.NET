@@ -8,8 +8,6 @@
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.130" />
 		<PackageReference Include="UAParser" Version="3.1.47" />
 		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
-		<!-- 阻止 Newtonsoft.Json 包传递出去 -->
-		<PackageReference Update="Newtonsoft.Json" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">

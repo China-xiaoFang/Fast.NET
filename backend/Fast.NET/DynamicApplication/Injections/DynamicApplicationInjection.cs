@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Fast.Cache.Injections;
 
@@ -48,7 +49,7 @@ public class DynamicApplicationInjection : IApiHostingStartup
             var partManager =
                 services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
                     ApplicationPartManager ?? throw new InvalidOperationException(
-                    "`AddDynamicApplication` must be invoked after `AddControllers` or `AddControllersWithViews`.");
+                    $"`AddDynamicApplication` must be invoked after `AddControllers` or `AddControllersWithViews`.");
 
             // 解决项目类型为 <Project Sdk="Microsoft.NET.Sdk"> 不能加载 API 问题，默认支持 <Project Sdk="Microsoft.NET.Sdk.Web">
             foreach (var assembly in IaaSContext.Assemblies)

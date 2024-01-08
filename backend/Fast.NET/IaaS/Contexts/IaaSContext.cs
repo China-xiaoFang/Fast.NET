@@ -17,11 +17,16 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 // 只允许框架内部的类库访问
 [assembly: InternalsVisibleTo("Fast.NET.Core")]
 [assembly: InternalsVisibleTo("Fast.DependencyInjection")]
+[assembly: InternalsVisibleTo("Fast.DynamicApplication")]
+[assembly: InternalsVisibleTo("Fast.FriendlyException")]
+[assembly: InternalsVisibleTo("Fast.DataValidation")]
+[assembly: InternalsVisibleTo("Fast.UnifyResult")]
 [assembly: InternalsVisibleTo("Fast.JwtBearer")]
 [assembly: InternalsVisibleTo("Fast.Logging")]
 [assembly: InternalsVisibleTo("Fast.Mapster")]
@@ -66,6 +71,21 @@ internal static class IaaSContext
     /// </summary>
     public static ConcurrentBag<IDisposable> UnmanagedObjects { get; private set; }
 
+    /// <summary>
+    /// 控制器排序集合
+    /// </summary>
+    public static ConcurrentDictionary<string, (string, int, Type)> ControllerOrderCollection { get; set; }
+
+    /// <summary>
+    /// <see cref="IsApiController(Type)"/> 缓存集合
+    /// </summary>
+    private static readonly ConcurrentDictionary<Type, bool> IsApiControllerCached;
+
+    /// <summary>
+    /// IDynamicApplication 接口类型
+    /// </summary>
+    private static readonly Type IDynamicApplicationType;
+
     static IaaSContext()
     {
         // 未托管的对象
@@ -81,6 +101,20 @@ internal static class IaaSContext
         EffectiveTypes = Assemblies.SelectMany(s =>
             // 排除使用了 SuppressSnifferAttribute 特性的类型
             s.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)));
+
+        ControllerOrderCollection = new ConcurrentDictionary<string, (string, int, Type)>();
+
+        IsApiControllerCached = new ConcurrentDictionary<Type, bool>();
+
+        try
+        {
+            IDynamicApplicationType =
+                AssemblyUtil.GetType("Fast.DynamicApplication", "Fast.DynamicApplication.IDynamicApplication");
+        }
+        catch
+        {
+            IDynamicApplicationType = null;
+        }
     }
 
     /// <summary>
@@ -187,6 +221,47 @@ internal static class IaaSContext
 
         // 判断是否已 “Options” 结尾
         return optionsType.Name.EndsWith(defaultSuffix) ? optionsType.Name[..^defaultSuffix.Length] : optionsType.Name;
+    }
+
+    /// <summary>
+    /// 是否是Api控制器
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <returns></returns>
+    public static bool IsApiController(Type type)
+    {
+        return IsApiControllerCached.GetOrAdd(type, Function);
+
+        // 本地静态方法
+        static bool Function(Type type)
+        {
+            if (type == null)
+            {
+                return false;
+            }
+
+            // 排除 OData 控制器
+            if (type.Assembly.GetName().Name?.StartsWith("Microsoft.AspNetCore.OData") == true)
+            {
+                return false;
+            }
+
+            // 不能是非公开，基元类型，值类型，抽象类，接口，泛型类
+            if (!type.IsPublic || type.IsPrimitive || type.IsValueType || type.IsAbstract || type.IsInterface ||
+                type.IsGenericType)
+            {
+                return false;
+            }
+
+            // 继承 ControllerBase 或 实现 IApplication 的类型
+            if ((!typeof(Controller).IsAssignableFrom(type) && typeof(ControllerBase).IsAssignableFrom(type)) ||
+                IDynamicApplicationType?.IsAssignableFrom(type) == true)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 
     /// <summary>

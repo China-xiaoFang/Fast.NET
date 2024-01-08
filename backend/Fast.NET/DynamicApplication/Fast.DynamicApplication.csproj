@@ -1,16 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 框架基础设施模块库。</Description>
+		<Description>Fast.NET 框架动态Api模块库。</Description>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Remove="Assets\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="Assets\**" />
-	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
@@ -28,35 +20,17 @@
 		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
 		</Reference>
-		<Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
-			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
-			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
-			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Configuration.Binder">
-			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
-		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.DependencyInjection">
-			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
-			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Options.DataAnnotations">
-			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.DataAnnotations.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Options">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Primitives">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Primitives.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Net.Http.Headers">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Net.Http.Headers.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
@@ -76,35 +50,17 @@
 		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
 		</Reference>
-		<Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
-			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
-			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
-			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Configuration.Binder">
-			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
-		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.DependencyInjection">
-			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
-			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Options.DataAnnotations">
-			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.DataAnnotations.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Options">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Primitives">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Primitives.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Net.Http.Headers">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Net.Http.Headers.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
@@ -124,35 +80,17 @@
 		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
 		</Reference>
-		<Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
-			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
-			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
-			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
-		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.DependencyInjection">
-			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Configuration.Binder">
-			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
-			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Extensions.Options.DataAnnotations">
-			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Options.DataAnnotations.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Options">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Primitives">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Primitives.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Net.Http.Headers">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Net.Http.Headers.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.Iaas</name>
+        <name>Fast.IaaS</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -167,6 +167,21 @@
             未托管的对象集合
             </summary>
         </member>
+        <member name="P:Fast.IaaS.IaaSContext.ControllerOrderCollection">
+            <summary>
+            控制器排序集合
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.IaaSContext.IsApiControllerCached">
+            <summary>
+            <see cref="M:Fast.IaaS.IaaSContext.IsApiController(System.Type)"/> 缓存集合
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.IaaSContext.IDynamicApplicationType">
+            <summary>
+            IDynamicApplication 接口类型
+            </summary>
+        </member>
         <member name="M:Fast.IaaS.IaaSContext.CatchOrDefault``1(System.Func{``0},``0)">
             <summary>
             处理获取对象异常问题
@@ -210,6 +225,13 @@
             获取选项名称
             </summary>
             <typeparam name="TOptions"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.IaaSContext.IsApiController(System.Type)">
+            <summary>
+            是否是Api控制器
+            </summary>
+            <param name="type">type</param>
             <returns></returns>
         </member>
         <member name="M:Fast.IaaS.IaaSContext.DisposeUnmanagedObjects">
@@ -2021,6 +2043,81 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="T:Fast.IaaS.BadPageResult">
+            <summary>
+            <see cref="T:Fast.IaaS.BadPageResult"/> 错误页面
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Base64Icon">
+            <summary>
+            图标
+            </summary>
+            <remarks>必须是 base64 类型</remarks>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Code">
+            <summary>
+            错误代码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.CodeLang">
+            <summary>
+            错误代码语言
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Status401Unauthorized">
+            <summary>
+            返回通用 401 错误页
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Status403Forbidden">
+            <summary>
+            返回通用 403 错误页
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Status404NotFound">
+            <summary>
+            返回通用 404 错误页
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Status500InternalServerError">
+            <summary>
+            返回通用 500 错误页
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.BadPageResult.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.BadPageResult.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult" /> class
+            with the given <paramref name="statusCode" />.
+            </summary>
+            <param name="statusCode">The HTTP status code of the response.</param>
+        </member>
+        <member name="M:Fast.IaaS.BadPageResult.ExecuteResult(Microsoft.AspNetCore.Mvc.ActionContext)">
+            <summary>
+            重写返回结果
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Fast.IaaS.BadPageResult.ToString">
+            <summary>
+            将 <see cref="T:Fast.IaaS.BadPageResult"/> 转换成字符串
+            </summary>
+            <returns><see cref="T:System.String"/></returns>
         </member>
         <member name="T:Fast.IaaS.AssemblyUtil">
             <summary>

@@ -13,26 +13,32 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
+using Fast.SpecificationProcessor.DataValidation.Filters;
 using Fast.SpecificationProcessor.DynamicApplication.Conventions;
 using Fast.SpecificationProcessor.DynamicApplication.Formatters;
 using Fast.SpecificationProcessor.DynamicApplication.Providers;
+using Fast.SpecificationProcessor.UnifyResult;
+using Fast.SpecificationProcessor.UnifyResult.Contexts;
+using Fast.SpecificationProcessor.UnifyResult.Filters;
+using Fast.SpecificationProcessor.UnifyResult.Providers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Fast.Cache.Injections;
 
 /// <summary>
-/// <see cref="DynamicApplicationInjection"/> 动态API注入
+/// <see cref="DataValidationInjection"/> 数据验证注入
 /// </summary>
-public class DynamicApplicationInjection : IApiHostingStartup
+public class DataValidationInjection : IApiHostingStartup
 {
     /// <summary>
     /// 排序
     /// </summary>
 #pragma warning disable CA1822
-    public int Order => 69999;
+    public int Order => 69988;
 #pragma warning restore CA1822
 
     /// <summary>
@@ -43,33 +49,24 @@ public class DynamicApplicationInjection : IApiHostingStartup
     {
         builder.ConfigureServices((hostContext, services) =>
         {
-            Debugging.Info("Registering dynamic application......");
+            Debugging.Info("Registering data validation......");
 
-            var partManager =
-                services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
-                    ApplicationPartManager ?? throw new InvalidOperationException(
-                    "`AddDynamicApplication` must be invoked after `AddControllers` or `AddControllersWithViews`.");
-
-            // 解决项目类型为 <Project Sdk="Microsoft.NET.Sdk"> 不能加载 API 问题，默认支持 <Project Sdk="Microsoft.NET.Sdk.Web">
-            foreach (var assembly in IaaSContext.Assemblies)
+            // 启用了全局验证，则默认关闭原生 ModelStateInvalidFilter 验证
+            services.Configure<ApiBehaviorOptions>(options =>
             {
-                if (partManager.ApplicationParts.Any(u => u.Name != assembly.GetName().Name))
-                {
-                    partManager.ApplicationParts.Add(new AssemblyPart(assembly));
-                }
-            }
+                // 是否禁用映射异常
+                options.SuppressMapClientErrors = false;
+                // 是否禁用模型验证过滤器
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
-            // 添加控制器特性提供器
-            partManager.FeatureProviders.Add(new DynamicApplicationFeatureProvider());
-
-            // 配置 Mvc 选项
+            // 添加全局数据验证
             services.Configure<MvcOptions>(options =>
             {
-                // 添加应用模型转换器
-                options.Conventions.Add(new DynamicApiControllerApplicationModelConvention(services));
+                options.Filters.Add<DataValidationFilter>();
 
-                // 添加 text/plain 请求 Body 参数支持
-                options.InputFormatters.Add(new TextPlainMediaTypeFormatter());
+                // 关闭空引用对象验证
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             });
         });
     }

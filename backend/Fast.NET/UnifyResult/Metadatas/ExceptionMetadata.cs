@@ -12,17 +12,38 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using System.Runtime.CompilerServices;
+using Fast.IaaS;
 
-[assembly: InternalsVisibleTo("Fast.SpecificationProcessor")]
-
-// ReSharper disable once CheckNamespace
-namespace Fast.IaaS;
+namespace Fast.UnifyResult.Metadatas;
 
 /// <summary>
-/// <see cref="IApplication"/> 内部Api接口
-/// <remarks>主要用于区分是否为Api请求，因为各个类库分的多，所以导致耦合度不够，故存在此接口增加耦合度</remarks>
+/// <see cref="ExceptionMetadata"/> 异常元数据
 /// </summary>
-internal interface IApplication
+[SuppressSniffer]
+public sealed class ExceptionMetadata
 {
+    /// <summary>
+    /// 状态码
+    /// </summary>
+    public int StatusCode { get; set; }
+
+    /// <summary>
+    /// 错误码
+    /// </summary>
+    public object ErrorCode { get; set; }
+
+    /// <summary>
+    /// 错误码（没被复写过的 ErrorCode ）
+    /// </summary>
+    public object OriginErrorCode { get; set; }
+
+    /// <summary>
+    /// 错误对象（信息）
+    /// </summary>
+    public object Errors { get; set; }
+
+    /// <summary>
+    /// 额外数据
+    /// </summary>
+    public object Data { get; set; }
 }
