@@ -1,6 +1,6 @@
 // Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -12,7 +12,6 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.UnifyResult.Contexts;
 using Fast.UnifyResult.Metadatas;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +28,7 @@ internal interface IUnifyResultProvider
     /// <summary>
     /// 异常返回值
     /// </summary>
-    /// <param name="context"><see cref="ExceptorContext"/></param>
+    /// <param name="context"><see cref="ExceptionContext"/></param>
     /// <param name="metadata"><see cref="ExceptionMetadata"/> 异常元数据</param>
     /// <returns><see cref="IActionResult"/></returns>
     IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata);

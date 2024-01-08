@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -24,14 +24,12 @@ using Microsoft.Extensions.DependencyInjection;
 [assembly: InternalsVisibleTo("Fast.NET.Core")]
 [assembly: InternalsVisibleTo("Fast.DependencyInjection")]
 [assembly: InternalsVisibleTo("Fast.DynamicApplication")]
-[assembly: InternalsVisibleTo("Fast.FriendlyException")]
-[assembly: InternalsVisibleTo("Fast.DataValidation")]
-[assembly: InternalsVisibleTo("Fast.UnifyResult")]
 [assembly: InternalsVisibleTo("Fast.JwtBearer")]
 [assembly: InternalsVisibleTo("Fast.Logging")]
 [assembly: InternalsVisibleTo("Fast.Mapster")]
-[assembly: InternalsVisibleTo("Fast.SpecificationProcessor")]
 [assembly: InternalsVisibleTo("Fast.SqlSugar")]
+[assembly: InternalsVisibleTo("Fast.UnifyResult")]
+[assembly: InternalsVisibleTo("Fast.Swagger")]
 
 // ReSharper disable once CheckNamespace
 namespace Fast.IaaS;

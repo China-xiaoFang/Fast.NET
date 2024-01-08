@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.IaaS</name>
+        <name>Fast.Iaas</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -453,6 +453,74 @@
             </list>
             </param>
             <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.UserFriendlyException">
+            <summary>
+            <see cref="T:Fast.IaaS.UserFriendlyException"/> 用户友好异常
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor(System.String)">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor(System.String,System.Object)">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="errorCode">错误编码</param>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor(System.String,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor(System.String,System.Object,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="errorCode">错误编码</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.ErrorCode">
+            <summary>
+            错误码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.OriginErrorCode">
+            <summary>
+            错误码（没被复写过的 ErrorCode ）
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.ErrorMessage">
+            <summary>
+            错误消息（支持 Object 对象）
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.StatusCode">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.ValidationException">
+            <summary>
+            是否是数据验证异常
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.Data">
+            <summary>
+            额外数据
+            </summary>
         </member>
         <member name="T:Fast.IaaS.AssemblyExtension">
             <summary>
@@ -1728,6 +1796,27 @@
             <param name="type">类类型</param>
             <param name="inherit">是否继承查找</param>
             <returns>特性对象</returns>
+        </member>
+        <member name="T:Fast.IaaS.UserFriendlyExceptionExtension">
+            <summary>
+            <see cref="T:Fast.IaaS.UserFriendlyException"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyExceptionExtension.StatusCode(Fast.IaaS.UserFriendlyException,System.Int32)">
+            <summary>
+            设置异常状态码
+            </summary>
+            <param name="exception"><see cref="T:Fast.IaaS.UserFriendlyException"/></param>
+            <param name="statusCode"><see cref="T:System.Int32"/></param>
+            <returns><see cref="T:Fast.IaaS.UserFriendlyException"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyExceptionExtension.WithData(Fast.IaaS.UserFriendlyException,System.Object)">
+            <summary>
+            设置额外数据
+            </summary>
+            <param name="exception"><see cref="T:Fast.IaaS.UserFriendlyException"/></param>
+            <param name="data"><see cref="T:System.Object"/></param>
+            <returns><see cref="T:Fast.IaaS.UserFriendlyException"/></returns>
         </member>
         <member name="T:Fast.IaaS.ValidateExtension">
             <summary>

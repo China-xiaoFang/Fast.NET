@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -13,7 +13,6 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
-using Fast.UnifyResult.Contexts;
 using Fast.UnifyResult.Filters;
 using Fast.UnifyResult.Providers;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +31,7 @@ public class UnifyResultInjection : IApiHostingStartup
     /// 排序
     /// </summary>
 #pragma warning disable CA1822
-    public int Order => 69966;
+    public int Order => 69988;
 #pragma warning restore CA1822
 
     /// <summary>
@@ -45,8 +44,44 @@ public class UnifyResultInjection : IApiHostingStartup
         {
             Debugging.Info("Registering unify result......");
 
-            // 是否启用规范化结果
-            UnifyContext.EnabledUnifyHandler = true;
+            #region 数据验证
+
+            // 启用了全局验证，则默认关闭原生 ModelStateInvalidFilter 验证
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                // 是否禁用映射异常
+                options.SuppressMapClientErrors = false;
+                // 是否禁用模型验证过滤器
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+            // 添加全局数据验证
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add<DataValidationFilter>();
+
+                // 关闭空引用对象验证
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            });
+
+            #endregion
+
+            #region 友好异常
+
+            // 查找全局异常处理实现类
+            var globalExceptionHandler =
+                IaaSContext.EffectiveTypes.FirstOrDefault(f =>
+                    typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
+
+            if (globalExceptionHandler != null)
+            {
+                // 注册全局异常处理实现类
+                services.AddSingleton(typeof(IGlobalExceptionHandler), globalExceptionHandler);
+            }
+
+            services.Configure<MvcOptions>(options => { options.Filters.Add<FriendlyExceptionFilter>(); });
+
+            #endregion
 
             // 查找规范化响应数据提供器实现类
             var unifyResponseProvider =

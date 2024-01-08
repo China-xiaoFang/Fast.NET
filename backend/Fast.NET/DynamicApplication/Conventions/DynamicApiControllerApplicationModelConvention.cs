@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -15,18 +15,14 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Fast.DynamicApplication;
 using Fast.IaaS;
-using Fast.SpecificationProcessor.Internal;
-using Fast.SpecificationProcessor.UnifyResult;
-using Fast.SpecificationProcessor.UnifyResult.Contexts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.SpecificationProcessor.DynamicApplication.Conventions;
+namespace Fast.DynamicApplication.Conventions;
 
 /// <summary>
 /// <see cref="DynamicApiControllerApplicationModelConvention"/> 动态接口控制器应用模型转换器
@@ -44,6 +40,26 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     private readonly IServiceCollection _services;
 
     /// <summary>
+    /// 启用统一处理
+    /// </summary>
+    private static bool EnabledUnifyHandler { get; set; }
+
+    /// <summary>
+    /// Fast.UnifyResult.UnifyContext 实例
+    /// </summary>
+    private static object UnifyContextInstance { get; set; }
+
+    /// <summary>
+    /// Fast.UnifyResult.UnifyContext 的 CheckSucceededNonUnify() 方法
+    /// </summary>
+    private static MethodInfo UnifyCheckSucceededNonUnifyMethod { get; set; }
+
+    /// <summary>
+    /// Fast.UnifyResult.UnifyContext 的 UnifyResultType 属性
+    /// </summary>
+    private static Type UnifyResultType { get; set; }
+
+    /// <summary>
     /// 模板正则表达式
     /// </summary>
     private const string commonTemplatePattern = @"\{(?<p>.+?)\}";
@@ -52,6 +68,56 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     {
         _services = services;
         _nameVersionRegex = new Regex(@"V(?<version>[0-9_]+$)");
+
+        try
+        {
+            // 判断是否安装了 Fast.UnifyResult 程序集
+            var unifyResult = IaaSContext.Assemblies.FirstOrDefault(f => f.GetName().Name?.Equals("Fast.UnifyResult") == true);
+
+            if (unifyResult != null)
+            {
+                // 加载 Fast.UnifyResult 的 UnifyContext 类型
+                var unifyContextType = unifyResult.GetType("Fast.UnifyResult.UnifyContext");
+
+                if (unifyContextType != null)
+                {
+                    // 加载 UnifyContext 类型 的 CheckSucceededNonUnify() 方法
+                    var checkSucceededNonUnifyMethod = unifyContextType.GetMethod("CheckSucceededNonUnify",
+                        BindingFlags.Static | BindingFlags.NonPublic);
+
+                    if (checkSucceededNonUnifyMethod != null)
+                    {
+                        UnifyCheckSucceededNonUnifyMethod = checkSucceededNonUnifyMethod;
+
+                        // 创建 UnifyContext 静态实例
+                        UnifyContextInstance = Activator.CreateInstance(unifyContextType);
+
+                        // 获取 UnifyResultType 的值
+                        UnifyResultType =
+                            unifyContextType.GetProperty("UnifyResultType", BindingFlags.Static | BindingFlags.NonPublic)
+                                ?.GetValue(null) as Type;
+
+                        EnabledUnifyHandler = true;
+                    }
+                    else
+                    {
+                        EnabledUnifyHandler = false;
+                    }
+                }
+                else
+                {
+                    EnabledUnifyHandler = false;
+                }
+            }
+            else
+            {
+                EnabledUnifyHandler = false;
+            }
+        }
+        catch
+        {
+            EnabledUnifyHandler = false;
+        }
     }
 
     /// <summary>
@@ -81,7 +147,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                             controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
 
                     // 控制器默认处理规范化结果
-                    if (UnifyContext.EnabledUnifyHandler)
+                    if (EnabledUnifyHandler)
                     {
                         foreach (var action in controller.Actions)
                         {
@@ -206,7 +272,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             hasApiControllerAttribute);
 
         // 配置动作方法规范化特性
-        if (UnifyContext.EnabledUnifyHandler)
+        if (EnabledUnifyHandler)
             ConfigureActionUnifyResultAttribute(action);
     }
 
@@ -524,19 +590,26 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     private static void ConfigureActionUnifyResultAttribute(ActionModel action)
     {
         // 判断是否手动添加了标注或跳过规范化处理
-        if (UnifyContext.CheckSucceededNonUnify(null, action.ActionMethod, out var _, false))
+        var isSkipObj =
+            UnifyCheckSucceededNonUnifyMethod?.Invoke(UnifyContextInstance,
+                new object[] {null, action.ActionMethod, null, false});
+
+        if (isSkipObj is true)
+        {
             return;
+        }
 
         // 获取真实类型
         var returnType = action.ActionMethod.GetRealReturnType();
         if (returnType == typeof(void))
             return;
-        
+
         // 判断是否启用规范化结果处理
-        if (returnType != null && UnifyContext.EnabledUnifyHandler)
+        if (returnType != null && EnabledUnifyHandler)
         {
-            returnType = UnifyContext.UnifyResultType.MakeGenericType(returnType);
+            returnType = UnifyResultType?.MakeGenericType(returnType) ?? returnType;
         }
+
         // 添加规范化结果特性
         action.Filters.Add(new ProducesResponseTypeAttribute(returnType, StatusCodes.Status200OK));
     }

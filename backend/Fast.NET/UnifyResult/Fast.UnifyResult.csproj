@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 框架Swagger模块库。</Description>
+		<Description>Fast.NET 框架RESTful风格统一返回模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">

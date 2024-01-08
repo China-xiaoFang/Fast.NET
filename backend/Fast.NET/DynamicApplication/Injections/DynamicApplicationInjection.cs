@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -12,17 +12,16 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.DynamicApplication.Conventions;
+using Fast.DynamicApplication.Formatters;
+using Fast.DynamicApplication.Providers;
 using Fast.IaaS;
-using Fast.SpecificationProcessor.DynamicApplication.Conventions;
-using Fast.SpecificationProcessor.DynamicApplication.Formatters;
-using Fast.SpecificationProcessor.DynamicApplication.Providers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Fast.Cache.Injections;
+namespace Fast.DynamicApplication.Injections;
 
 /// <summary>
 /// <see cref="DynamicApplicationInjection"/> 动态API注入
@@ -49,7 +48,7 @@ public class DynamicApplicationInjection : IApiHostingStartup
             var partManager =
                 services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
                     ApplicationPartManager ?? throw new InvalidOperationException(
-                    $"`AddDynamicApplication` must be invoked after `AddControllers` or `AddControllersWithViews`.");
+                    "`AddDynamicApplication` must be invoked after `AddControllers` or `AddControllersWithViews`.");
 
             // 解决项目类型为 <Project Sdk="Microsoft.NET.Sdk"> 不能加载 API 问题，默认支持 <Project Sdk="Microsoft.NET.Sdk.Web">
             foreach (var assembly in IaaSContext.Assemblies)

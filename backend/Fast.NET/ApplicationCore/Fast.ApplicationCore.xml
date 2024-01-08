@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.ApplicationCore</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.DynamicApplication.ApiDescriptionSettingsAttribute">
+            <summary>
+            接口描述设置
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor(System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="enabled">是否启用</param>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor(System.String[])">
+            <summary>
+            构造函数
+            </summary>
+            <param name="groups">分组列表</param>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Name">
+            <summary>
+            自定义名称
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Module">
+            <summary>
+            模块名
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Version">
+            <summary>
+            版本号
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Groups">
+            <summary>
+            分组
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Tag">
+            <summary>
+            标签
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Description">
+            <summary>
+            额外描述，支持 HTML
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.ForceWithRoutePrefix">
+            <summary>
+            强制携带路由前缀，即使使用 [Route] 重写，仅对 Class/Controller 有效
+            </summary>
+        </member>
+        <member name="T:Fast.DynamicApplication.DynamicApplicationAttribute">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.DynamicApplicationAttribute"/> 动态API应用特性
+            </summary>
+        </member>
+        <member name="T:Fast.Swagger.OperationIdAttribute">
+            <summary>
+            <see cref="T:Fast.Swagger.OperationIdAttribute"/> 配置规范化文档 OperationId 问题
+            </summary>
+        </member>
+        <member name="M:Fast.Swagger.OperationIdAttribute.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="operationId">自定义 OperationId，可用户生成可读的前端代码</param>
+        </member>
+        <member name="P:Fast.Swagger.OperationIdAttribute.OperationId">
+            <summary>
+            自定义 OperationId
+            </summary>
+        </member>
+        <member name="T:Fast.Swagger.SchemaIdAttribute">
+            <summary>
+            <see cref="T:Fast.Swagger.SchemaIdAttribute"/> 解决规范化文档 SchemaId 冲突问题
+            </summary>
+        </member>
+        <member name="M:Fast.Swagger.SchemaIdAttribute.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="schemaId">自定义 SchemaId，只能是字母开头，只运行下划线_连接</param>
+        </member>
+        <member name="M:Fast.Swagger.SchemaIdAttribute.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="schemaId">自定义 SchemaId</param>
+            <param name="replace">默认在头部叠加，设置 true 之后，将直接使用 <see cref="P:Fast.Swagger.SchemaIdAttribute.SchemaId"/></param>
+        </member>
+        <member name="P:Fast.Swagger.SchemaIdAttribute.SchemaId">
+            <summary>
+            自定义 SchemaId
+            </summary>
+        </member>
+        <member name="P:Fast.Swagger.SchemaIdAttribute.Replace">
+            <summary>
+            完全覆盖
+            </summary>
+            <remarks>默认在头部叠加，设置 true 之后，将直接使用 <see cref="P:Fast.Swagger.SchemaIdAttribute.SchemaId"/></remarks>
+        </member>
+    </members>
+</doc>

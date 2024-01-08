@@ -4,6 +4,10 @@
 		<Description>Fast.NET 框架动态Api模块库。</Description>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)ApplicationCore\Fast.ApplicationCore.csproj" />
+	</ItemGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
