@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -11,6 +11,8 @@
 // 软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
+
+using Fast.Logging.Commons;
 
 namespace Fast.Logging.Implantation.File;
 
@@ -68,7 +70,7 @@ internal class FileLoggingWriter
         GetCurrentFileName();
 
         // 打开文件并持续写入
-        OpenFile(_options.Append);
+        OpenFile(true);
     }
 
     /// <summary>
@@ -175,7 +177,7 @@ internal class FileLoggingWriter
     /// <summary>
     /// 打开文件
     /// </summary>
-    /// <param name="append"></param>
+    /// <param name="append"><see cref="bool"/>追加还是覆盖</param>
     private void OpenFile(bool append)
     {
         try
@@ -225,9 +227,13 @@ internal class FileLoggingWriter
 
             // 判断是否追加还是覆盖
             if (append)
+            {
                 _fileStream.Seek(0, SeekOrigin.End);
+            }
             else
+            {
                 _fileStream.SetLength(0);
+            }
         }
     }
 

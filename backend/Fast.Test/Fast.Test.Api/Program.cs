@@ -1,57 +1,58 @@
-using Fast.CorsAccessor.Extensions;
-using Fast.DependencyInjection.Extensions;
-using Fast.JwtBearer.Extensions;
-using Fast.Logging.Extensions;
-using Fast.Mapster.Extensions;
 using Fast.NET.Core.Extensions;
-using Fast.Serialization.Extensions;
-using Fast.SpecificationProcessor.DataValidation.Extensions;
-using Fast.SpecificationProcessor.DynamicApplication.Extensions;
 using Fast.SpecificationProcessor.Swagger.Extensions;
-using Fast.SpecificationProcessor.UnifyResult.Extensions;
-using Fast.SqlSugar.Extensions;
 using Fast.Test.Api;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 var builder = WebApplication.CreateBuilder(args).Initialize();
 
-// 日志
-builder.Services.AddLogging(builder.Configuration);
+//// 日志
+//builder.Services.AddLogging(builder.Configuration);
 
-// 跨域配置
-builder.Services.AddCorsAccessor(builder.Configuration);
+//// 跨域配置
+//builder.Services.AddCorsAccessor(builder.Configuration);
 
-// GZIP 压缩
-builder.Services.AddGzipBrotliCompression();
+//// GZIP 压缩
+//builder.Services.AddGzipBrotliCompression();
 
-// JSON 序列化配置
-builder.Services.AddJsonOptions();
+//// JSON 序列化配置
+//builder.Services.AddJsonOptions();
 
-// 注册全局依赖注入
-builder.Services.AddDependencyInjection();
+//// 注册全局依赖注入
+//builder.Services.AddDependencyInjection();
 
-// 添加对象映射
-builder.Services.AddObjectMapper();
+//// 添加对象映射
+//builder.Services.AddObjectMapper();
 
-builder.Services.AddJwt();
+//builder.Services.AddJwt();
 
-builder.Services.AddSqlSugar(builder.Configuration);
+//builder.Services.AddSqlSugar(builder.Configuration);
+
+var a1 = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager));
+
+var a = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
+    ApplicationPartManager;
 
 builder.Services.AddControllers();
+
+var b1 = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager));
+
+var b = builder.Services.FirstOrDefault(f => f.ServiceType == typeof(ApplicationPartManager))?.ImplementationInstance as
+    ApplicationPartManager;
 
 // 文档
 builder.Services.AddSwaggerDocument(builder.Configuration);
 
-// 动态 API
-builder.Services.AddDynamicApplication();
+//// 动态 API
+//builder.Services.AddDynamicApplication();
 
-// 数据验证
-builder.Services.AddDataValidation();
+//// 数据验证
+//builder.Services.AddDataValidation();
 
-// 友好异常
+//// 友好异常
 //builder.Services.AddFriendlyException();
 
-// 规范返回
-builder.Services.AddUnifyResult<RESTfulResultProvider>();
+//// 规范返回
+//builder.Services.AddUnifyResult<RESTfulResultProvider>();
 
 
 //builder.Services.AddSqlSugar();
@@ -78,14 +79,14 @@ var app = builder.Build();
 // Mandatory Https.
 app.UseHttpsRedirection();
 
-// 跨域中间件
-app.UseCorsAccessor();
+//// 跨域中间件
+//app.UseCorsAccessor();
 
 // Enable compression.
 //app.UseResponseCompression();
 
-// Add the status code interception middleware.
-app.UseUnifyResultStatusCodes();
+//// Add the status code interception middleware.
+//app.UseUnifyResultStatusCodes();
 
 
 app.UseStaticFiles();

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Fast.NET 框架Application核心模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<Reference Include="Microsoft.AspNetCore.Mvc.Core">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

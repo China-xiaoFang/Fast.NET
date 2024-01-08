@@ -9,16 +9,6 @@
             <see cref="T:Fast.NET.Core.FastContext"/> App 上下文
             </summary>
         </member>
-        <member name="F:Fast.NET.Core.FastContext.GC_COLLECT_INTERVAL_SECONDS">
-            <summary>
-            GC 回收默认间隔
-            </summary>
-        </member>
-        <member name="P:Fast.NET.Core.FastContext.LastGCCollectTime">
-            <summary>
-            记录最近 GC 回收时间
-            </summary>
-        </member>
         <member name="P:Fast.NET.Core.FastContext.Assemblies">
             <summary>
             应用有效程序集
@@ -44,17 +34,18 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Fast.NET.Core.FastContext.GetTraceId">
+            <summary>
+            获取当前请求 TraceId
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Fast.NET.Core.FastContext.GetExecutionTime(System.Action)">
             <summary>
             获取一段代码执行耗时
             </summary>
             <param name="action">委托</param>
             <returns><see cref="T:System.Int64"/></returns>
-        </member>
-        <member name="P:Fast.NET.Core.FastContext.Configuration">
-            <summary>
-            配置
-            </summary>
         </member>
         <member name="P:Fast.NET.Core.FastContext.WebHostEnvironment">
             <summary>
@@ -76,22 +67,15 @@
             存储根服务，可能为空
             </summary>
         </member>
+        <member name="P:Fast.NET.Core.FastContext.Configuration">
+            <summary>
+            配置
+            </summary>
+        </member>
         <member name="P:Fast.NET.Core.FastContext.HttpContext">
             <summary>
             请求上下文
             </summary>
-        </member>
-        <member name="P:Fast.NET.Core.FastContext.UnmanagedObjects">
-            <summary>
-            未托管的对象集合
-            </summary>
-        </member>
-        <member name="M:Fast.NET.Core.FastContext.GetServiceProvider(System.Type)">
-            <summary>
-            解析服务提供器
-            </summary>
-            <param name="serviceType"></param>
-            <returns></returns>
         </member>
         <member name="M:Fast.NET.Core.FastContext.GetService``1(System.IServiceProvider)">
             <summary>
@@ -146,8 +130,15 @@
             获取配置
             </summary>
             <typeparam name="TOptions">强类型选项类</typeparam>
-            <param name="path">配置中对应的Key</param>
-            <returns>TOptions</returns>
+            <param name="path"><see cref="T:System.String"/> 配置中对应的Key</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.NET.Core.FastContext.GetOptions``1">
+            <summary>
+            配置选项
+            </summary>
+            <typeparam name="TOptions">强类型选项类</typeparam>
+            <returns></returns>
         </member>
         <member name="M:Fast.NET.Core.FastContext.GetCurrentStartupUri">
             <summary>
@@ -161,52 +152,6 @@
             获取服务注册的生命周期类型
             </summary>
             <param name="serviceType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.NET.Core.FastContext.DisposeUnmanagedObjects">
-            <summary>
-            释放所有未托管的对象
-            </summary>
-        </member>
-        <member name="T:Fast.NET.Core.InternalContext">
-            <summary>
-            <see cref="T:Fast.NET.Core.InternalContext"/> 内部 App 上下文
-            </summary>
-        </member>
-        <member name="F:Fast.NET.Core.InternalContext.InternalServices">
-            <summary>
-            应用服务
-            </summary>
-        </member>
-        <member name="F:Fast.NET.Core.InternalContext.RootServices">
-            <summary>
-            根服务
-            </summary>
-        </member>
-        <member name="F:Fast.NET.Core.InternalContext.Configuration">
-            <summary>
-            配置对象
-            </summary>
-        </member>
-        <member name="F:Fast.NET.Core.InternalContext.WebHostEnvironment">
-            <summary>
-            获取Web主机环境
-            </summary>
-        </member>
-        <member name="F:Fast.NET.Core.InternalContext.HostEnvironment">
-            <summary>
-            获取泛型主机环境
-            </summary>
-        </member>
-        <member name="F:Fast.NET.Core.InternalContext.UnmanagedObjects">
-            <summary>
-            未托管的对象集合
-            </summary>
-        </member>
-        <member name="M:Fast.NET.Core.InternalContext.GetTraceId">
-            <summary>
-            获取当前请求 TraceId
-            </summary>
             <returns></returns>
         </member>
         <member name="T:Fast.NET.Core.Extensions.IApplicationBuilderExtension">
@@ -261,6 +206,20 @@
             <summary>
             <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> 拓展类
             </summary>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.EighteenK(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            框架初始化
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></returns>
+        </member>
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.HelloNet(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            框架初始化
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></returns>
         </member>
         <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.Initialize(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>

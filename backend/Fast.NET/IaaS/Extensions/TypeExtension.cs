@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -55,18 +55,19 @@ public static class TypeExtension
     /// <returns><see cref="bool"/></returns>
     public static bool HasImplementedRawGeneric(this Type type, Type generic)
     {
+        var localType = type;
         // 检查接口类型
         var isTheRawGenericType = type.GetInterfaces().Any(IsTheRawGenericType);
         if (isTheRawGenericType)
             return true;
 
         // 检查类型
-        while (type != typeof(object))
+        while (localType != null && localType != typeof(object))
         {
-            isTheRawGenericType = IsTheRawGenericType(type);
+            isTheRawGenericType = IsTheRawGenericType(localType);
             if (isTheRawGenericType)
                 return true;
-            type = type.BaseType ?? type;
+            localType = localType.BaseType;
         }
 
         return false;

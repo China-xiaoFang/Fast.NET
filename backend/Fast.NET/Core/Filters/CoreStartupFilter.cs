@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -34,7 +34,7 @@ public class CoreStartupFilter : IStartupFilter
         return app =>
         {
             // 存储根服务
-            InternalContext.RootServices = app.ApplicationServices;
+            FastContext.RootServices = app.ApplicationServices;
 
             // 环境名
             var envName = FastContext.WebHostEnvironment?.EnvironmentName ?? "Unknown";
@@ -72,7 +72,7 @@ public class CoreStartupFilter : IStartupFilter
                     }
 
                     // 释放所有未托管的服务提供器
-                    FastContext.DisposeUnmanagedObjects();
+                    IaaSContext.DisposeUnmanagedObjects();
                 }
             });
 

@@ -142,6 +142,16 @@
             <see cref="T:Fast.IaaS.IaaSContext"/> 框架内部的常量，公共方法配置类
             </summary>
         </member>
+        <member name="F:Fast.IaaS.IaaSContext.GC_COLLECT_INTERVAL_SECONDS">
+            <summary>
+            GC 回收默认间隔
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.IaaSContext.LastGCCollectTime">
+            <summary>
+            记录最近 GC 回收时间
+            </summary>
+        </member>
         <member name="F:Fast.IaaS.IaaSContext.Assemblies">
             <summary>
             应用有效程序集
@@ -150,6 +160,26 @@
         <member name="F:Fast.IaaS.IaaSContext.EffectiveTypes">
             <summary>
             有效程序集类型
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.IaaSContext.UnmanagedObjects">
+            <summary>
+            未托管的对象集合
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.IaaSContext.ControllerOrderCollection">
+            <summary>
+            控制器排序集合
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.IaaSContext.IsApiControllerCached">
+            <summary>
+            <see cref="M:Fast.IaaS.IaaSContext.IsApiController(System.Type)"/> 缓存集合
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.IaaSContext.IDynamicApplicationType">
+            <summary>
+            IDynamicApplication 接口类型
             </summary>
         </member>
         <member name="M:Fast.IaaS.IaaSContext.CatchOrDefault``1(System.Func{``0},``0)">
@@ -167,12 +197,47 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Fast.IaaS.IaaSContext.GetTraceId(System.IServiceProvider,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取当前请求 TraceId
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Fast.IaaS.IaaSContext.GetExecutionTime(System.Action)">
             <summary>
             获取一段代码执行耗时
             </summary>
             <param name="action">委托</param>
             <returns><see cref="T:System.Int64"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.IaaSContext.GetServiceProvider(System.Type,System.IServiceProvider,Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            解析服务提供器
+            </summary>
+            <param name="serviceType"></param>
+            <param name="RootServices"></param>
+            <param name="internalServices"></param>
+            <param name="httpContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.IaaSContext.GetOptionName``1">
+            <summary>
+            获取选项名称
+            </summary>
+            <typeparam name="TOptions"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.IaaSContext.IsApiController(System.Type)">
+            <summary>
+            是否是Api控制器
+            </summary>
+            <param name="type">type</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.IaaSContext.DisposeUnmanagedObjects">
+            <summary>
+            释放所有未托管的对象
+            </summary>
         </member>
         <member name="T:Fast.IaaS.Debugging">
             <summary>
@@ -388,6 +453,74 @@
             </list>
             </param>
             <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.UserFriendlyException">
+            <summary>
+            <see cref="T:Fast.IaaS.UserFriendlyException"/> 用户友好异常
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor(System.String)">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor(System.String,System.Object)">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="errorCode">错误编码</param>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor(System.String,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyException.#ctor(System.String,System.Object,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:Fast.IaaS.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="errorCode">错误编码</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.ErrorCode">
+            <summary>
+            错误码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.OriginErrorCode">
+            <summary>
+            错误码（没被复写过的 ErrorCode ）
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.ErrorMessage">
+            <summary>
+            错误消息（支持 Object 对象）
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.StatusCode">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.ValidationException">
+            <summary>
+            是否是数据验证异常
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.UserFriendlyException.Data">
+            <summary>
+            额外数据
+            </summary>
         </member>
         <member name="T:Fast.IaaS.AssemblyExtension">
             <summary>
@@ -1196,6 +1329,47 @@
             <param name="xml"><see cref="T:System.String"/></param>
             <returns><see cref="T:System.Collections.Generic.SortedDictionary`2"/></returns>
         </member>
+        <member name="T:Fast.IaaS.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IServiceCollectionExtension.AddConfigurableOptions``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            添加选项配置
+            </summary>
+            <typeparam name="TOptions"></typeparam>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="path"><see cref="T:System.String"/> 配置中对应的Key</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.IServiceCollectionExtension.AddStartupFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加启动过滤器
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.IaaS.IWebHostBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IWebHostBuilderExtension.HostingInjection(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            添加管道启动服务注册
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.IWebHostBuilderExtension.ApiHostingInjection(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            添加Api管道启动服务注册
+            <remarks>必须在 AddControllers 或 AddControllersWithViews 之后注册</remarks>
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/></param>
+            <returns></returns>
+        </member>
         <member name="T:Fast.IaaS.LinqExpressionExtension">
             <summary>
             <see cref="T:System.Linq.Expressions.Expression"/> 拓展类
@@ -1623,6 +1797,27 @@
             <param name="inherit">是否继承查找</param>
             <returns>特性对象</returns>
         </member>
+        <member name="T:Fast.IaaS.UserFriendlyExceptionExtension">
+            <summary>
+            <see cref="T:Fast.IaaS.UserFriendlyException"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyExceptionExtension.StatusCode(Fast.IaaS.UserFriendlyException,System.Int32)">
+            <summary>
+            设置异常状态码
+            </summary>
+            <param name="exception"><see cref="T:Fast.IaaS.UserFriendlyException"/></param>
+            <param name="statusCode"><see cref="T:System.Int32"/></param>
+            <returns><see cref="T:Fast.IaaS.UserFriendlyException"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.UserFriendlyExceptionExtension.WithData(Fast.IaaS.UserFriendlyException,System.Object)">
+            <summary>
+            设置额外数据
+            </summary>
+            <param name="exception"><see cref="T:Fast.IaaS.UserFriendlyException"/></param>
+            <param name="data"><see cref="T:System.Object"/></param>
+            <returns><see cref="T:Fast.IaaS.UserFriendlyException"/></returns>
+        </member>
         <member name="T:Fast.IaaS.ValidateExtension">
             <summary>
             <see cref="T:Fast.IaaS.ValidateExtension"/> 验证拓展类
@@ -1847,6 +2042,21 @@
             YYYY | YYYY-MM | YYYYMM | YYYY-MM-DD | YYYYMMDD | YYYY-MM-DD HH:MM:SS | YYYY-MM-DD HH:MM:SS.FFF
             </remarks>
         </member>
+        <member name="T:Fast.IaaS.IApiHostingStartup">
+            <summary>
+            <see cref="T:Fast.IaaS.IApiHostingStartup"/> Represents platform specific configuration that will be applied to a <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> when building an <see cref="T:Microsoft.AspNetCore.Hosting.IWebHost"/>.
+            <remarks>AddControllers 或 AddControllersWithViews 之后注册的一些服务</remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IApiHostingStartup.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            Configure the <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/>.
+            </summary>
+            <remarks>
+            Configure is intended to be called before user code, allowing a user to overwrite any changes made.
+            </remarks>
+            <param name="builder"></param>
+        </member>
         <member name="T:Fast.IaaS.IPostConfigure">
             <summary>
             <see cref="T:Fast.IaaS.IPostConfigure"/> 后期配置接口
@@ -1922,6 +2132,81 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="T:Fast.IaaS.BadPageResult">
+            <summary>
+            <see cref="T:Fast.IaaS.BadPageResult"/> 错误页面
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Base64Icon">
+            <summary>
+            图标
+            </summary>
+            <remarks>必须是 base64 类型</remarks>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Code">
+            <summary>
+            错误代码
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.CodeLang">
+            <summary>
+            错误代码语言
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Status401Unauthorized">
+            <summary>
+            返回通用 401 错误页
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Status403Forbidden">
+            <summary>
+            返回通用 403 错误页
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Status404NotFound">
+            <summary>
+            返回通用 404 错误页
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.BadPageResult.Status500InternalServerError">
+            <summary>
+            返回通用 500 错误页
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.BadPageResult.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.BadPageResult.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult" /> class
+            with the given <paramref name="statusCode" />.
+            </summary>
+            <param name="statusCode">The HTTP status code of the response.</param>
+        </member>
+        <member name="M:Fast.IaaS.BadPageResult.ExecuteResult(Microsoft.AspNetCore.Mvc.ActionContext)">
+            <summary>
+            重写返回结果
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Fast.IaaS.BadPageResult.ToString">
+            <summary>
+            将 <see cref="T:Fast.IaaS.BadPageResult"/> 转换成字符串
+            </summary>
+            <returns><see cref="T:System.String"/></returns>
         </member>
         <member name="T:Fast.IaaS.AssemblyUtil">
             <summary>

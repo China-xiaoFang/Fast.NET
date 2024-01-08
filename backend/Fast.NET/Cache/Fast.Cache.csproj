@@ -6,10 +6,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="CSRedisCore" Version="3.8.802" />
-		<!-- 阻止 Newtonsoft.Json 包传递出去 -->
-		<PackageReference Update="Newtonsoft.Json" PrivateAssets="All" />
-		<!-- 阻止 System.ValueTuple 包传递出去 -->
-		<PackageReference Update="System.ValueTuple" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">

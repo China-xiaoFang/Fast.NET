@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -32,12 +32,32 @@ public static class WebApplicationBuilderExtension
     /// </summary>
     /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
     /// <returns><see cref="WebApplicationBuilder"/></returns>
+    public static WebApplicationBuilder EighteenK(this WebApplicationBuilder builder)
+    {
+        return builder.Initialize();
+    }
+
+    /// <summary>
+    /// 框架初始化
+    /// </summary>
+    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
+    /// <returns><see cref="WebApplicationBuilder"/></returns>
+    public static WebApplicationBuilder HelloNet(this WebApplicationBuilder builder)
+    {
+        return builder.Initialize();
+    }
+
+    /// <summary>
+    /// 框架初始化
+    /// </summary>
+    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
+    /// <returns><see cref="WebApplicationBuilder"/></returns>
     public static WebApplicationBuilder Initialize(this WebApplicationBuilder builder)
     {
         // 运行控制台输出
         UseDefault();
 
-        InternalContext.WebHostEnvironment = builder.Environment;
+        FastContext.WebHostEnvironment = builder.Environment;
 
         // 初始化配置
         ConfigureApplication(builder.WebHost);
@@ -84,7 +104,7 @@ public static class WebApplicationBuilderExtension
         builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
         {
             // 存储环境对象
-            InternalContext.HostEnvironment = InternalContext.WebHostEnvironment = hostContext.HostingEnvironment;
+            FastContext.HostEnvironment = FastContext.WebHostEnvironment = hostContext.HostingEnvironment;
 
             // 加载配置
             AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
@@ -94,10 +114,10 @@ public static class WebApplicationBuilderExtension
         builder.ConfigureServices((hostContext, services) =>
         {
             // 存储配置对象
-            InternalContext.Configuration = hostContext.Configuration;
+            FastContext.Configuration = hostContext.Configuration;
 
             // 存储服务提供器
-            InternalContext.InternalServices = services;
+            FastContext.InternalServices = services;
 
             // 注册 HttpContextAccessor 服务
             services.AddHttpContextAccessor();
@@ -108,43 +128,12 @@ public static class WebApplicationBuilderExtension
             // 默认内置 GBK，Windows-1252, Shift-JIS, GB2312 编码支持
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            // 查找所有继承了 IStartupFilter 的类型
-            var iStartupFilterTypes = IaaSContext.EffectiveTypes.Where(wh =>
-                typeof(IStartupFilter).IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract);
-
-            foreach (var startupFilterType in iStartupFilterTypes)
-            {
-                // 注册 Startup 过滤器
-                services.AddTransient(typeof(IStartupFilter), startupFilterType);
-            }
+            // 注册 Startup 过滤器
+            services.AddStartupFilter();
         });
 
-        // 查找所有继承了 IHostingStartup 的类型
-        var iHostingStartupTypes = IaaSContext.EffectiveTypes.Where(wh =>
-            typeof(IHostingStartup).IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
-        {
-            // 默认为 -1；
-            var order = -1;
-            // 尝试获取Order值
-            var orderProperty = sl.GetProperty("Order");
-
-            if (orderProperty != null && orderProperty.PropertyType == typeof(int))
-            {
-                var orderVal = orderProperty.GetValue(sl)?.ToString();
-                if (!orderVal.IsEmpty())
-                {
-                    order = orderVal.ParseToInt();
-                }
-            }
-
-            return new {Type = sl, Order = order};
-        }).OrderByDescending(ob => ob.Order).Select(sl => sl.Type);
-
-        foreach (var hostingStartupType in iHostingStartupTypes)
-        {
-            var hostingStartup = Activator.CreateInstance(hostingStartupType) as IHostingStartup;
-            hostingStartup?.Configure(builder);
-        }
+        // 添加管道启动服务
+        builder.HostingInjection();
     }
 
     /// <summary>

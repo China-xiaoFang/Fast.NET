@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -12,7 +12,6 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using System.Collections.Concurrent;
 using System.Reflection;
 using Fast.IaaS;
 using Fast.NET.Core.Extensions;
@@ -23,6 +22,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
@@ -32,20 +32,6 @@ namespace Fast.NET.Core;
 /// </summary>
 public static class FastContext
 {
-    #region 内部属性
-
-    /// <summary>
-    /// GC 回收默认间隔
-    /// </summary>
-    internal const int GC_COLLECT_INTERVAL_SECONDS = 5;
-
-    /// <summary>
-    /// 记录最近 GC 回收时间
-    /// </summary>
-    internal static DateTime? LastGCCollectTime { get; set; }
-
-    #endregion
-
     #region IaaS 映射过来的一些属性和方法
 
     /// <summary>
@@ -80,6 +66,15 @@ public static class FastContext
     }
 
     /// <summary>
+    /// 获取当前请求 TraceId
+    /// </summary>
+    /// <returns></returns>
+    internal static string GetTraceId()
+    {
+        return IaaSContext.GetTraceId(RootServices, HttpContext);
+    }
+
+    /// <summary>
     /// 获取一段代码执行耗时
     /// </summary>
     /// <param name="action">委托</param>
@@ -92,72 +87,40 @@ public static class FastContext
     #endregion
 
     /// <summary>
-    /// 配置
-    /// </summary>
-    public static IConfiguration Configuration =>
-        CatchOrDefault(() => InternalContext.Configuration.Reload(), new ConfigurationBuilder().Build());
-
-    /// <summary>
     /// 获取Web主机环境
     /// </summary>
-    public static IWebHostEnvironment WebHostEnvironment => InternalContext.WebHostEnvironment;
+    public static IWebHostEnvironment WebHostEnvironment { get; internal set; }
 
     /// <summary>
     /// 获取主机环境
     /// </summary>
-    public static IHostEnvironment HostEnvironment => InternalContext.HostEnvironment;
+    public static IHostEnvironment HostEnvironment { get; internal set; }
 
     /// <summary>
     /// 应用服务
     /// </summary>
-    public static IServiceCollection InternalServices => InternalContext.InternalServices;
+    public static IServiceCollection InternalServices { get; internal set; }
 
     /// <summary>
     /// 存储根服务，可能为空
     /// </summary>
-    public static IServiceProvider RootServices => InternalContext.RootServices;
+    public static IServiceProvider RootServices { get; internal set; }
+
+    private static IConfiguration _configuration { get; set; }
+
+    /// <summary>
+    /// 配置
+    /// </summary>
+    public static IConfiguration Configuration
+    {
+        get => CatchOrDefault(() => _configuration.Reload(), new ConfigurationBuilder().Build());
+        internal set => _configuration = value;
+    }
 
     /// <summary>
     /// 请求上下文
     /// </summary>
     public static HttpContext HttpContext => CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
-
-    /// <summary>
-    /// 未托管的对象集合
-    /// </summary>
-    public static ConcurrentBag<IDisposable> UnmanagedObjects => InternalContext.UnmanagedObjects;
-
-    /// <summary>
-    /// 解析服务提供器
-    /// </summary>
-    /// <param name="serviceType"></param>
-    /// <returns></returns>
-    public static IServiceProvider GetServiceProvider(Type serviceType)
-    {
-        // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
-        if (RootServices != null && InternalServices
-                .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
-                .Any(u => u.Lifetime == ServiceLifetime.Singleton))
-            return RootServices;
-
-        // 第二选择是获取 HttpContext 对象的 RequestServices
-        var httpContext = HttpContext;
-        if (httpContext?.RequestServices != null)
-            return httpContext.RequestServices;
-
-        // 第三选择，创建新的作用域并返回服务提供器
-        if (RootServices != null)
-        {
-            var scoped = RootServices.CreateScope();
-            UnmanagedObjects.Add(scoped);
-            return scoped.ServiceProvider;
-        }
-
-        // 第四选择，构建新的服务对象（性能最差）
-        var serviceProvider = InternalServices.BuildServiceProvider();
-        UnmanagedObjects.Add(serviceProvider);
-        return serviceProvider;
-    }
 
     /// <summary>
     /// 获取请求生存周期的服务
@@ -178,7 +141,8 @@ public static class FastContext
     /// <returns></returns>
     public static object GetService(Type type, IServiceProvider serviceProvider = default)
     {
-        return (serviceProvider ?? GetServiceProvider(type)).GetService(type);
+        return (serviceProvider ?? IaaSContext.GetServiceProvider(type, RootServices, InternalServices, HttpContext))
+            .GetService(type);
     }
 
     /// <summary>
@@ -189,7 +153,8 @@ public static class FastContext
     /// <returns></returns>
     public static IEnumerable<TService> GetServices<TService>(IServiceProvider serviceProvider = default) where TService : class
     {
-        return (serviceProvider ?? GetServiceProvider(typeof(TService))).GetServices<TService>();
+        return (serviceProvider ?? IaaSContext.GetServiceProvider(typeof(TService), RootServices, InternalServices, HttpContext))
+            .GetServices<TService>();
     }
 
     /// <summary>
@@ -200,7 +165,8 @@ public static class FastContext
     /// <returns></returns>
     public static IEnumerable<object> GetServices(Type type, IServiceProvider serviceProvider = default)
     {
-        return (serviceProvider ?? GetServiceProvider(type)).GetServices(type);
+        return (serviceProvider ?? IaaSContext.GetServiceProvider(type, RootServices, InternalServices, HttpContext))
+            .GetServices(type);
     }
 
     /// <summary>
@@ -222,17 +188,21 @@ public static class FastContext
     /// <returns></returns>
     public static object GetRequiredService(Type type, IServiceProvider serviceProvider = default)
     {
-        return (serviceProvider ?? GetServiceProvider(type)).GetRequiredService(type);
+        return (serviceProvider ?? IaaSContext.GetServiceProvider(type, RootServices, InternalServices, HttpContext))
+            .GetRequiredService(type);
     }
 
     /// <summary>
     /// 获取配置
     /// </summary>
     /// <typeparam name="TOptions">强类型选项类</typeparam>
-    /// <param name="path">配置中对应的Key</param>
-    /// <returns>TOptions</returns>
-    public static TOptions GetConfig<TOptions>(string path)
+    /// <param name="path"><see cref="string"/> 配置中对应的Key</param>
+    /// <returns></returns>
+    public static TOptions GetConfig<TOptions>(string path = null) where TOptions : class, new()
     {
+        // 获取配置选项名称
+        path ??= IaaSContext.GetOptionName<TOptions>();
+
         var options = Configuration.GetSection(path).Get<TOptions>();
 
         // 判断是否继承了 IPostConfigure
@@ -248,6 +218,16 @@ public static class FastContext
         }
 
         return options;
+    }
+
+    /// <summary>
+    /// 配置选项
+    /// </summary>
+    /// <typeparam name="TOptions">强类型选项类</typeparam>
+    /// <returns></returns>
+    public static TOptions GetOptions<TOptions>() where TOptions : class, new()
+    {
+        return GetService<IOptions<TOptions>>()?.Value;
     }
 
     /// <summary>
@@ -278,30 +258,5 @@ public static class FastContext
             u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType));
 
         return serviceDescriptor?.Lifetime;
-    }
-
-    /// <summary>
-    /// 释放所有未托管的对象
-    /// </summary>
-    public static void DisposeUnmanagedObjects()
-    {
-        foreach (var dsp in UnmanagedObjects)
-        {
-            dsp?.Dispose();
-        }
-
-        // 强制手动回收 GC 内存
-        if (UnmanagedObjects.IsEmpty)
-        {
-            var nowTime = DateTime.UtcNow;
-            if ((LastGCCollectTime == null || (nowTime - LastGCCollectTime.Value).TotalSeconds > GC_COLLECT_INTERVAL_SECONDS))
-            {
-                LastGCCollectTime = nowTime;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-        }
-
-        UnmanagedObjects.Clear();
     }
 }

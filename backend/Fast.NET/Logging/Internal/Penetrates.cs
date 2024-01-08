@@ -1,6 +1,6 @@
 // Apache开源许可证
 //
-// 版权所有 © 2018-2023 1.8K仔
+// 版权所有 © 2018-2024 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -15,9 +15,9 @@
 using System.Diagnostics;
 using System.Text;
 using Fast.IaaS;
+using Fast.Logging.Commons;
+using Fast.Logging.Console;
 using Fast.Logging.Extensions;
-using Fast.Logging.Implantation;
-using Fast.Logging.Implantation.Console;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -49,109 +49,6 @@ internal static class Penetrates
     /// </summary>
     internal static HttpContext HttpContext =>
         IaaSContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
-
-    /// <summary>
-    /// 获取当前请求 TraceId
-    /// </summary>
-    /// <returns></returns>
-    internal static string GetTraceId()
-    {
-        return Activity.Current?.Id ?? (RootServices == null
-            ? default
-            : IaaSContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext)?.TraceIdentifier);
-    }
-
-    /// <summary>
-    /// 获取请求生存周期的服务
-    /// </summary>
-    /// <param name="serviceType"></param>
-    /// <returns></returns>
-    internal static object GetRequiredService(Type serviceType)
-    {
-        // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
-        if (RootServices != null && InternalServices
-                .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
-                .Any(u => u.Lifetime == ServiceLifetime.Singleton))
-        {
-            return RootServices.GetRequiredService(serviceType);
-        }
-
-        // 第二选择是获取 HttpContext 对象的 RequestServices
-        if (HttpContext != null)
-        {
-            return HttpContext.RequestServices.GetRequiredService(serviceType);
-        }
-
-        // 第三选择，创建新的作用域并返回服务提供器
-        if (RootServices != null)
-        {
-            var scoped = RootServices.CreateScope();
-
-            var result = scoped.ServiceProvider.GetRequiredService(serviceType);
-
-            scoped.Dispose();
-
-            return result;
-        }
-
-        {
-            // 第四选择，构建新的服务对象（性能最差）
-            var serviceProvider = InternalServices.BuildServiceProvider();
-
-            var result = serviceProvider.GetRequiredService(serviceType);
-
-            serviceProvider.Dispose();
-
-            return result;
-        }
-    }
-
-    /// <summary>
-    /// 获取请求生存周期的服务
-    /// </summary>
-    /// <typeparam name="TService"></typeparam>
-    /// <returns></returns>
-    internal static TService GetRequiredService<TService>() where TService : class
-    {
-        var serviceType = typeof(TService);
-
-        // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
-        if (RootServices != null && InternalServices
-                .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
-                .Any(u => u.Lifetime == ServiceLifetime.Singleton))
-        {
-            return RootServices.GetRequiredService<TService>();
-        }
-        // 第二选择是获取 HttpContext 对象的 RequestServices
-
-        if (HttpContext != null)
-        {
-            return HttpContext.RequestServices.GetRequiredService<TService>();
-        }
-        // 第三选择，创建新的作用域并返回服务提供器
-
-        if (RootServices != null)
-        {
-            var scoped = RootServices.CreateScope();
-
-            var result = scoped.ServiceProvider.GetRequiredService<TService>();
-
-            scoped.Dispose();
-
-            return result;
-        }
-
-        {
-            // 第四选择，构建新的服务对象（性能最差）
-            var serviceProvider = InternalServices.BuildServiceProvider();
-
-            var result = serviceProvider.GetRequiredService<TService>();
-
-            serviceProvider.Dispose();
-
-            return result;
-        }
-    }
 
     /// <summary>
     /// 控制台默认格式化程序名称
