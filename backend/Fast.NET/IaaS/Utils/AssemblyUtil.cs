@@ -99,7 +99,7 @@ public static class AssemblyUtil
 
             // 读取项目程序集 或 Fast 官方发布的包，或手动添加引用的dll，或配置特定的包前缀
             return depsLibraryList.Where(wh => (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) ||
-                                               (wh.Type == "package" && (wh.Name.StartsWith(nameof(Fast)))))
+                                               (wh.Type == "package" && wh.Name.StartsWith(nameof(Fast))))
                 .Select(sl => GetAssembly(sl.Name));
         }
 

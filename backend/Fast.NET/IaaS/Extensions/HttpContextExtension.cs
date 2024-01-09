@@ -40,7 +40,7 @@ public static class HttpContextExtension
     /// <returns><see cref="string"/></returns>
     public static void UnifyResponseTimestamp(this HttpContext httpContext, long timestamp)
     {
-        httpContext?.Response.Headers.TryAdd("Fast-NET-Timestamp", $"{timestamp}");
+        httpContext?.Response.Headers.TryAdd(nameof(Fast) + "-NET-Timestamp", $"{timestamp}");
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public static class HttpContextExtension
     /// <returns><see cref="string"/></returns>
     public static long UnifyResponseTimestamp(this HttpContext httpContext)
     {
-        var timestampStr = httpContext?.Response.Headers["Fast-NET-Timestamp"];
+        var timestampStr = httpContext?.Response.Headers[nameof(Fast) + "-NET-Timestamp"];
 
         if (string.IsNullOrEmpty(timestampStr))
         {

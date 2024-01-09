@@ -50,14 +50,14 @@ public class CoreStartupFilter : IStartupFilter
                 else
                 {
                     // 输出当前环境标识
-                    context.Response.Headers["Fast-Environment"] = envName;
+                    context.Response.Headers[nameof(Fast) + "-Environment"] = envName;
 
                     // 默认输出信息
-                    context.Response.Headers["Fast-Site-Url"] = "https://fastdotnet.com";
-                    context.Response.Headers["Fast-Repository-Url"] = "https://gitee.com/Net-18K/Fast.NET";
+                    context.Response.Headers[nameof(Fast) + "-Site-Url"] = "https://fastdotnet.com";
+                    context.Response.Headers[nameof(Fast) + "-Repository-Url"] = "https://gitee.com/Net-18K/Fast.NET";
 
                     // 输出当前请求时间
-                    context.Response.Headers["Fast-Request-Time"] =
+                    context.Response.Headers[nameof(Fast) + "-Request-Time"] =
                         DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff zzz dddd");
 
                     // 执行下一个中间件
