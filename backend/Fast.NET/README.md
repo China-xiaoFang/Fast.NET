@@ -55,6 +55,7 @@ All I can say is that if you find it useful and can be used, then you can contin
 | [Fast.DynamicApplication](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/DynamicApplication) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication) | Fast.NET Framework Dynamic Api Module Library | |
 | [Fast.UnifyResult](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/UnifyResult) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult) | Fast.NET framework RESTful style unified return module library | |
 | [Fast.Swagger](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Swagger) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger) | Fast.NET Framework Swagger Module Library | |
+| [Fast.EventBus](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/EventBus) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus) | Fast.NET Framework Event Bus Module Library |  |
 | [Fast.Consul](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Consul) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Consul.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Consul) | Fast.NET Framework Consul module library | Some [Consul]( https://github.com/hashicorp/consul) Commonly used remote service request encapsulation |
 
 ## Recent plans
@@ -74,7 +75,7 @@ All I can say is that if you find it useful and can be used, then you can contin
 - [✅] Normalized return module
 - [✅] Log module
 - [✅] SqlSugar
-- [⚠️] Event bus (I am wondering whether to use a third party directly for this)
+- [✅] Event bus
 - [⚠️] ...
 
 > Status description

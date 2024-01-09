@@ -12,22 +12,26 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Options;
+using Fast.EventBus.Contexts;
 
-namespace Fast.Swagger.Internal;
+namespace Fast.EventBus.Monitors;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="IEventHandlerMonitor"/> 事件处理程序监视器
 /// </summary>
-internal static class Penetrates
+public interface IEventHandlerMonitor
 {
     /// <summary>
-    /// 规范化文档配置
+    /// 事件处理程序执行前
     /// </summary>
-    internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
+    /// <param name="context">上下文</param>
+    /// <returns><see cref="Task"/> 实例</returns>
+    Task OnExecutingAsync(EventHandlerExecutingContext context);
 
     /// <summary>
-    /// 规范化文档选项
+    /// 事件处理程序执行后
     /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
+    /// <param name="context">上下文</param>
+    /// <returns><see cref="Task"/> 实例</returns>
+    Task OnExecutedAsync(EventHandlerExecutedContext context);
 }

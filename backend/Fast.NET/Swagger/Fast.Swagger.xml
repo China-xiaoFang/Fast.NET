@@ -432,6 +432,33 @@
             规范化文档配置
             </summary>
         </member>
+        <member name="P:Fast.Swagger.Internal.Penetrates.SwaggerOptions">
+            <summary>
+            规范化文档选项
+            </summary>
+        </member>
+        <member name="T:Fast.Swagger.Options.ISwaggerOptions">
+            <summary>
+            <see cref="T:Fast.Swagger.Options.ISwaggerOptions"/> Swagger配置
+            </summary>
+        </member>
+        <member name="M:Fast.Swagger.Options.ISwaggerOptions.SwaggerGen">
+            <summary>
+            配置 Swagger生成器
+            </summary>
+        </member>
+        <member name="M:Fast.Swagger.Options.ISwaggerOptions.Swagger">
+            <summary>
+            配置 Swagger 全局参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Swagger.Options.ISwaggerOptions.SwaggerUI">
+            <summary>
+            配置 Swagger UI 全局参数
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Fast.Swagger.Options.SwaggerSettingsOptions">
             <summary>
             <see cref="T:Fast.Swagger.Options.SwaggerSettingsOptions"/> Swagger配置选项

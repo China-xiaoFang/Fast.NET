@@ -12,22 +12,23 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Options;
-
-namespace Fast.Swagger.Internal;
+namespace Fast.EventBus.Interfaces;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="IEventSubscriber"/> 事件订阅者依赖接口
 /// </summary>
-internal static class Penetrates
+/// <remarks>
+/// <para>可自定义事件处理方法，但须符合 Func{EventSubscribeExecutingContext, Task} 签名</para>
+/// <para>通常只做依赖查找，不做服务调用</para>
+/// </remarks>
+public interface IEventSubscriber
 {
-    /// <summary>
-    /// 规范化文档配置
-    /// </summary>
-    internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
-
-    /// <summary>
-    /// 规范化文档选项
-    /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
+    /*
+     * // 事件处理程序定义规范
+     * [EventSubscribe(YourEventID)]
+     * public Task YourHandler(EventHandlerExecutingContext context)
+     * {
+     *     // To Do...
+     * }
+     */
 }

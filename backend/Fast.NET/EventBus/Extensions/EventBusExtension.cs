@@ -12,36 +12,37 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Builders;
-using Fast.Swagger.Internal;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using System.Reflection;
 
-namespace Fast.Swagger.Filters;
+namespace Fast.EventBus.Extensions;
 
 /// <summary>
-/// <see cref="SwaggerStartupFilter"/> 应用启动时自动注册中间件
+/// <see cref="EventBusExtension"/> 事件总线拓展类
 /// </summary>
-public class SwaggerStartupFilter : IStartupFilter
+internal static class EventBusExtension
 {
     /// <summary>
-    /// 配置中间件
+    /// 将事件枚举 Id 转换成字符串对象
     /// </summary>
-    /// <param name="action"></param>
+    /// <param name="em"></param>
     /// <returns></returns>
-    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
+    public static string EventBusToString(this Enum em)
     {
-        return app =>
-        {
-            // 判断是否启用规范化文档
-            if (Penetrates.SwaggerSettings.Enable!.Value)
-            {
-                // 配置 Swagger 全局参数
-                app.UseSwagger(options => SwaggerDocumentBuilder.Build(options, Penetrates.SwaggerOptions?.Swagger()));
+        var enumType = em.GetType();
+        return $"{enumType.Assembly.GetName().Name};{enumType.FullName}.{em}";
+    }
 
-                // 配置 Swagger UI 参数
-                app.UseSwaggerUI(options => SwaggerDocumentBuilder.BuildUI(options, Penetrates.SwaggerOptions?.SwaggerUI()));
-            }
-        };
+    /// <summary>
+    /// 将事件枚举字符串转换成枚举对象
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static Enum EventBusToEnum(this string str)
+    {
+        var assemblyName = str[..str.IndexOf(';')];
+        var fullName = str[(str.IndexOf(';') + 1)..str.LastIndexOf('.')];
+        var name = str[(str.LastIndexOf('.') + 1)..];
+
+        return Enum.Parse(Assembly.Load(assemblyName).GetType(fullName), name) as Enum;
     }
 }
