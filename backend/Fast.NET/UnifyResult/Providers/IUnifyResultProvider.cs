@@ -23,7 +23,7 @@ namespace Fast.UnifyResult;
 /// <summary>
 /// <see cref="IUnifyResultProvider"/> 规范化结果提供器
 /// </summary>
-internal interface IUnifyResultProvider
+public interface IUnifyResultProvider
 {
     /// <summary>
     /// 异常返回值

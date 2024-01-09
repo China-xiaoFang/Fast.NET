@@ -19,6 +19,17 @@
             <see cref="T:Fast.UnifyResult.Contexts.UnifyContext"/> 规范化结果上下文
             </summary>
         </member>
+        <member name="M:Fast.UnifyResult.Contexts.UnifyContext.GetRestfulResult(System.Int32,System.Boolean,System.Object,System.Object,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取规范化RESTful风格返回值
+            </summary>
+            <param name="code"><see cref="T:System.Int32"/> 状态码</param>
+            <param name="success"><see cref="T:System.Boolean"/> 执行成功</param>
+            <param name="data"><see cref="T:System.Object"/> 数据</param>
+            <param name="message"><see cref="T:System.String"/> 错误信息</param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+            <returns></returns>
+        </member>
         <member name="P:Fast.UnifyResult.Contexts.UnifyContext.UnifyResultType">
             <summary>
             统一返回类型

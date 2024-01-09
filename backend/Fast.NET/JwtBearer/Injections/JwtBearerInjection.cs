@@ -52,7 +52,7 @@ public class JwtBearerInjection : IHostingStartup
             Debugging.Info("Registering jwt bearer......");
 
             // 配置验证
-            services.AddConfigurableOptions<JWTSettingsOptions>("CorsAccessorSettings");
+            services.AddConfigurableOptions<JWTSettingsOptions>("JWTSettings");
 
             Penetrates.JWTSettings = hostContext.Configuration.GetSection("JWTSettings").Get<JWTSettingsOptions>()
                 .LoadPostConfigure();
