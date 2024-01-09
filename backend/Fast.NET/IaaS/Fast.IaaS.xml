@@ -25,6 +25,22 @@
             备注
             </summary>
         </member>
+        <member name="T:Fast.IaaS.MapHubAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.MapHubAttribute"/> 集线器配置特征
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.MapHubAttribute.Pattern">
+            <summary>
+            配置终点路由地址
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.MapHubAttribute.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="pattern"></param>
+        </member>
         <member name="T:Fast.IaaS.SuppressSnifferAttribute">
             <summary>
             <see cref="T:Fast.IaaS.SuppressSnifferAttribute"/> 不被扫描和发现的特性
