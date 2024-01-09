@@ -13,12 +13,14 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Reflection;
+using Fast.IaaS;
 
 namespace Fast.EventBus.Contexts;
 
 /// <summary>
 /// <see cref="EventHandlerContext"/> 事件处理程序上下文
 /// </summary>
+[SuppressSniffer]
 public abstract class EventHandlerContext
 {
     /// <summary>

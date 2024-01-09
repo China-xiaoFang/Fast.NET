@@ -14,12 +14,14 @@
 
 using System.Reflection;
 using Fast.EventBus.Contexts;
+using Fast.IaaS;
 
 namespace Fast.EventBus.Factories;
 
 /// <summary>
 /// <see cref="IEventBusFactory"/> 事件总线工厂接口
 /// </summary>
+[SuppressSniffer]
 public interface IEventBusFactory
 {
     /// <summary>

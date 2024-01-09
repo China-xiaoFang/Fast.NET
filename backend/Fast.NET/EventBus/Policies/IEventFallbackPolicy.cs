@@ -13,12 +13,14 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.EventBus.Contexts;
+using Fast.IaaS;
 
 namespace Fast.EventBus.Policies;
 
 /// <summary>
 /// <see cref="IEventFallbackPolicy"/> 事件重试失败回调服务
 /// </summary>
+[SuppressSniffer]
 public interface IEventFallbackPolicy
 {
     /// <summary>

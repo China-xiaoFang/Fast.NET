@@ -12,6 +12,8 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.IaaS;
+
 // ReSharper disable once CheckNamespace
 
 namespace Fast.EventBus;
@@ -19,6 +21,7 @@ namespace Fast.EventBus;
 /// <summary>
 /// <see cref="IEventSource"/> 事件源（事件承载对象）依赖接口
 /// </summary>
+[SuppressSniffer]
 public interface IEventSource
 {
     /// <summary>

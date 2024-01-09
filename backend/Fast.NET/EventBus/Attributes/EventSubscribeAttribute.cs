@@ -15,6 +15,7 @@
 
 using Fast.EventBus.Extensions;
 using Fast.EventBus.Interfaces;
+using Fast.IaaS;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.EventBus;
@@ -26,7 +27,7 @@ namespace Fast.EventBus;
 /// <para>支持多个事件 Id 触发同一个事件处理程序</para>
 /// </remarks>
 /// </summary>
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+[SuppressSniffer, AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
 public sealed class EventSubscribeAttribute : Attribute
 {
     /// <summary>

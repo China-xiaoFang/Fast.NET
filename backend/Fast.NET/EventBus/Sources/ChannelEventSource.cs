@@ -14,6 +14,7 @@
 
 using System.Text.Json.Serialization;
 using Fast.EventBus.Extensions;
+using Fast.IaaS;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.EventBus;
@@ -21,6 +22,7 @@ namespace Fast.EventBus;
 /// <summary>
 /// <see cref="ChannelEventSource"/> 内存通道事件源（事件承载对象）
 /// </summary>
+[SuppressSniffer]
 public sealed class ChannelEventSource : IEventSource
 {
     /// <summary>
