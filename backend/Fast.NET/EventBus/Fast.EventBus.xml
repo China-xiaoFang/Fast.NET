@@ -13,6 +13,13 @@
             </remarks>
             </summary>
         </member>
+        <member name="M:Fast.EventBus.EventSubscribeAttribute.#ctor(System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="eventId">事件 Id</param>
+            <remarks>只支持事件类型和 Enum 类型</remarks>
+        </member>
         <member name="P:Fast.EventBus.EventSubscribeAttribute.EventId">
             <summary>
             事件 Id
