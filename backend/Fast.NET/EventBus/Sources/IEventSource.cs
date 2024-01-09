@@ -12,22 +12,33 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Options;
+// ReSharper disable once CheckNamespace
 
-namespace Fast.Swagger.Internal;
+namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="IEventSource"/> 事件源（事件承载对象）依赖接口
 /// </summary>
-internal static class Penetrates
+public interface IEventSource
 {
     /// <summary>
-    /// 规范化文档配置
+    /// 事件 Id
     /// </summary>
-    internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
+    string EventId { get; }
 
     /// <summary>
-    /// 规范化文档选项
+    /// 事件承载（携带）数据
     /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
+    object Payload { get; }
+
+    /// <summary>
+    /// 事件创建时间
+    /// </summary>
+    DateTime CreatedTime { get; }
+
+    /// <summary>
+    /// 取消任务 Token
+    /// </summary>
+    /// <remarks>用于取消本次消息处理</remarks>
+    CancellationToken CancellationToken { get; }
 }

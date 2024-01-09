@@ -12,22 +12,11 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Options;
-
-namespace Fast.Swagger.Internal;
+namespace Fast.EventBus.Internal;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="EventBusService"/> EventBusService 日志拓展默认分类名
 /// </summary>
-internal static class Penetrates
+internal sealed class EventBusService
 {
-    /// <summary>
-    /// 规范化文档配置
-    /// </summary>
-    internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
-
-    /// <summary>
-    /// 规范化文档选项
-    /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
 }

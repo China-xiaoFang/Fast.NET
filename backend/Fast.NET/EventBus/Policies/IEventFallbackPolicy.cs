@@ -12,36 +12,20 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Builders;
-using Fast.Swagger.Internal;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using Fast.EventBus.Contexts;
 
-namespace Fast.Swagger.Filters;
+namespace Fast.EventBus.Policies;
 
 /// <summary>
-/// <see cref="SwaggerStartupFilter"/> 应用启动时自动注册中间件
+/// <see cref="IEventFallbackPolicy"/> 事件重试失败回调服务
 /// </summary>
-public class SwaggerStartupFilter : IStartupFilter
+public interface IEventFallbackPolicy
 {
     /// <summary>
-    /// 配置中间件
+    /// 重试失败回调
     /// </summary>
-    /// <param name="action"></param>
+    /// <param name="context"></param>
+    /// <param name="ex"></param>
     /// <returns></returns>
-    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
-    {
-        return app =>
-        {
-            // 判断是否启用规范化文档
-            if (Penetrates.SwaggerSettings.Enable!.Value)
-            {
-                // 配置 Swagger 全局参数
-                app.UseSwagger(options => SwaggerDocumentBuilder.Build(options, Penetrates.SwaggerOptions?.Swagger()));
-
-                // 配置 Swagger UI 参数
-                app.UseSwaggerUI(options => SwaggerDocumentBuilder.BuildUI(options, Penetrates.SwaggerOptions?.SwaggerUI()));
-            }
-        };
-    }
+    Task CallbackAsync(EventHandlerExecutingContext context, Exception ex);
 }

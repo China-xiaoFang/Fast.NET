@@ -32,7 +32,7 @@ public class ConsulInjection : IHostingStartup
     /// 排序
     /// </summary>
 #pragma warning disable CA1822
-    public int Order => 69888;
+    public int Order => 69877;
 #pragma warning restore CA1822
 
     /// <summary>

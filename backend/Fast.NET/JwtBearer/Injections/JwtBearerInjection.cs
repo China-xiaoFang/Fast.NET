@@ -38,7 +38,7 @@ public class JwtBearerInjection : IHostingStartup
     /// 排序
     /// </summary>
 #pragma warning disable CA1822
-    public int Order => 69911;
+    public int Order => 69899;
 #pragma warning restore CA1822
 
     /// <summary>

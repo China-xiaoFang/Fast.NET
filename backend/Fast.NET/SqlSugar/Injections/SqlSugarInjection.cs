@@ -34,7 +34,7 @@ public class SqlSugarInjection : IHostingStartup
     /// 排序
     /// </summary>
 #pragma warning disable CA1822
-    public int Order => 69899;
+    public int Order => 69888;
 #pragma warning restore CA1822
 
     /// <summary>
@@ -64,13 +64,13 @@ public class SqlSugarInjection : IHostingStartup
             SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings);
 
             // 查找Sugar实体处理程序提供者
-            var SqlSugarEntityHandlerType =
+            var iSqlSugarEntityHandlerType =
                 IaaSContext.EffectiveTypes.FirstOrDefault(f =>
                     typeof(ISqlSugarEntityHandler).IsAssignableFrom(f) && !f.IsInterface);
-            if (SqlSugarEntityHandlerType != null)
+            if (iSqlSugarEntityHandlerType != null)
             {
                 // 注册Sugar实体处理程序
-                services.AddScoped(typeof(ISqlSugarEntityHandler), SqlSugarEntityHandlerType);
+                services.AddScoped(typeof(ISqlSugarEntityHandler), iSqlSugarEntityHandlerType);
             }
 
             // 注册 SqlSugarClient，这里注册一遍是因为防止直接使用 ISqlSugarClient

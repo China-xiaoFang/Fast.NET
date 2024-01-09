@@ -12,22 +12,29 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Options;
+using System.Reflection;
 
-namespace Fast.Swagger.Internal;
+namespace Fast.EventBus.Contexts;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="EventHandlerExecutingContext"/> 事件处理程序执行前上下文
 /// </summary>
-internal static class Penetrates
+public sealed class EventHandlerExecutingContext : EventHandlerContext
 {
     /// <summary>
-    /// 规范化文档配置
+    /// 构造函数
     /// </summary>
-    internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
+    /// <param name="eventSource">事件源（事件承载对象）</param>
+    /// <param name="properties">共享上下文数据</param>
+    /// <param name="handlerMethod">触发的方法</param>
+    /// <param name="attribute">订阅特性</param>
+    internal EventHandlerExecutingContext(IEventSource eventSource, IDictionary<object, object> properties,
+        MethodInfo handlerMethod, EventSubscribeAttribute attribute) : base(eventSource, properties, handlerMethod, attribute)
+    {
+    }
 
     /// <summary>
-    /// 规范化文档选项
+    /// 执行前时间
     /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
+    public DateTime ExecutingTime { get; internal set; }
 }

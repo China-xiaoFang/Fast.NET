@@ -12,22 +12,29 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Options;
-
-namespace Fast.Swagger.Internal;
+namespace Fast.EventBus.Storers;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="IEventSourceStorer"/> 事件源存储器
 /// </summary>
-internal static class Penetrates
+/// <remarks>
+/// <para>顾名思义，这里指的是事件消息存储中心，提供读写能力</para>
+/// <para>默认实现为内存中的 <see cref="System.Threading.Channels.Channel"/></para>
+/// </remarks>
+internal interface IEventSourceStorer
 {
     /// <summary>
-    /// 规范化文档配置
+    /// 将事件源写入存储器
     /// </summary>
-    internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
+    /// <param name="eventSource">事件源对象</param>
+    /// <param name="cancellationToken">取消任务 Token</param>
+    /// <returns><see cref="ValueTask"/></returns>
+    ValueTask WriteAsync(IEventSource eventSource, CancellationToken cancellationToken);
 
     /// <summary>
-    /// 规范化文档选项
+    /// 从存储器中读取一条事件源
     /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
+    /// <param name="cancellationToken">取消任务 Token</param>
+    /// <returns>事件源对象</returns>
+    ValueTask<IEventSource> ReadAsync(CancellationToken cancellationToken);
 }

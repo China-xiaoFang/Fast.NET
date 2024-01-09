@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 [assembly: InternalsVisibleTo("Fast.SqlSugar")]
 [assembly: InternalsVisibleTo("Fast.UnifyResult")]
 [assembly: InternalsVisibleTo("Fast.Swagger")]
+[assembly: InternalsVisibleTo("Fast.EventBus")]
 
 // ReSharper disable once CheckNamespace
 namespace Fast.IaaS;

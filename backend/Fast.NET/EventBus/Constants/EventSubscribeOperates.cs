@@ -12,22 +12,21 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Options;
-
-namespace Fast.Swagger.Internal;
+namespace Fast.EventBus.Constants;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="EventSubscribeOperates"/> 事件订阅器操作选项
 /// </summary>
-internal static class Penetrates
+/// <remarks>控制动态新增/删除事件订阅器</remarks>
+internal enum EventSubscribeOperates
 {
     /// <summary>
-    /// 规范化文档配置
+    /// 添加一条订阅器
     /// </summary>
-    internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
+    Append,
 
     /// <summary>
-    /// 规范化文档选项
+    /// 删除一条订阅器
     /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
+    Remove
 }

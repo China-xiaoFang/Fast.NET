@@ -54,12 +54,22 @@ public class SwaggerInjection : IApiHostingStartup
             // 判断是否启用规范化文档
             if (Penetrates.SwaggerSettings.Enable!.Value)
             {
+                // 查找 ISwaggerOptions 配置程序提供者
+                var iSwaggerOptionsType = IaaSContext.EffectiveTypes.FirstOrDefault(f =>
+                    typeof(ISwaggerOptions).IsAssignableFrom(f) && !f.IsInterface);
+
+                if (iSwaggerOptionsType != null)
+                {
+                    Penetrates.SwaggerOptions = Activator.CreateInstance(iSwaggerOptionsType) as ISwaggerOptions;
+                }
+
 #if !NET5_0
                 services.AddEndpointsApiExplorer();
 #endif
 
                 // 添加Swagger生成器服务
-                services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildGen(options));
+                services.AddSwaggerGen(options =>
+                    SwaggerDocumentBuilder.BuildGen(options, Penetrates.SwaggerOptions?.SwaggerGen()));
             }
         });
     }

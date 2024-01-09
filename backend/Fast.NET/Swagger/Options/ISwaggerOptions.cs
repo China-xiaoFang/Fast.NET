@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-2023 1.8K仔
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -12,22 +12,31 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.Swagger.Options;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace Fast.Swagger.Internal;
+namespace Fast.Swagger.Options;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="ISwaggerOptions"/> Swagger配置
 /// </summary>
-internal static class Penetrates
+public interface ISwaggerOptions
 {
     /// <summary>
-    /// 规范化文档配置
+    /// 配置 Swagger生成器
     /// </summary>
-    internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
+    Action<SwaggerGenOptions> SwaggerGen();
 
     /// <summary>
-    /// 规范化文档选项
+    /// 配置 Swagger 全局参数
     /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
+    /// <returns></returns>
+    Action<SwaggerOptions> Swagger();
+
+    /// <summary>
+    /// 配置 Swagger UI 全局参数
+    /// </summary>
+    /// <returns></returns>
+    Action<SwaggerUIOptions> SwaggerUI();
 }

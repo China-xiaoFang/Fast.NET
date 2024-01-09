@@ -55,6 +55,7 @@
 | [Fast.DynamicApplication](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/DynamicApplication) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication) | Fast.NET 框架动态Api模块库 |  |
 | [Fast.UnifyResult](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/UnifyResult) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult) | Fast.NET 框架RESTful风格统一返回模块库 |  |
 | [Fast.Swagger](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Swagger) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger) | Fast.NET 框架Swagger模块库 |  |
+| [Fast.EventBus](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/EventBus) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus) | Fast.NET 框架事件总线模块库 |  |
 | [Fast.Consul](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Consul) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Consul.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Consul) | Fast.NET 框架Consul模块库 | 一些 [Consul](https://github.com/hashicorp/consul) 常用的远程服务请求封装 |
 
 ## 近期计划
@@ -74,7 +75,7 @@
 - [✅] 规范化返回模块
 - [✅] 日志模块
 - [✅] SqlSugar
-- [⚠️] 事件总线（这个我在想是否直接使用第三方）
+- [✅] 事件总线
 - [⚠️] ...
 
 > 状态说明

@@ -4,26 +4,6 @@
         <name>Fast.DependencyInjection</name>
     </assembly>
     <members>
-        <member name="T:Fast.DependencyInjection.IDependency">
-            <summary>
-            依赖关系接口
-            </summary>
-        </member>
-        <member name="T:Fast.DependencyInjection.IScopedDependency">
-            <summary>
-            作用域服务注册依赖
-            </summary>
-        </member>
-        <member name="T:Fast.DependencyInjection.ISingletonDependency">
-            <summary>
-            单例服务注册依赖
-            </summary>
-        </member>
-        <member name="T:Fast.DependencyInjection.ITransientDependency">
-            <summary>
-            瞬时服务注册依赖
-            </summary>
-        </member>
         <member name="T:Fast.DependencyInjection.Injections.DependencyInjectionInjection">
             <summary>
             <see cref="T:Fast.DependencyInjection.Injections.DependencyInjectionInjection"/> 依赖注入服务注册
@@ -90,6 +70,26 @@
             </summary>
             <param name="dependencyType"></param>
             <returns></returns>
+        </member>
+        <member name="T:Fast.DependencyInjection.IDependency">
+            <summary>
+            依赖关系接口
+            </summary>
+        </member>
+        <member name="T:Fast.DependencyInjection.IScopedDependency">
+            <summary>
+            作用域服务注册依赖
+            </summary>
+        </member>
+        <member name="T:Fast.DependencyInjection.ISingletonDependency">
+            <summary>
+            单例服务注册依赖
+            </summary>
+        </member>
+        <member name="T:Fast.DependencyInjection.ITransientDependency">
+            <summary>
+            瞬时服务注册依赖
+            </summary>
         </member>
         <member name="T:Fast.DependencyInjection.INamedServiceProvider`1">
             <summary>
