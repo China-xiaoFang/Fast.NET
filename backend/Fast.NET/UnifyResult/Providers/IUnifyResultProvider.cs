@@ -30,8 +30,11 @@ internal interface IUnifyResultProvider
     /// </summary>
     /// <param name="context"><see cref="ExceptionContext"/></param>
     /// <param name="metadata"><see cref="ExceptionMetadata"/> 异常元数据</param>
+    /// <param name="statusCode"><see cref="int"/> 更改的状态码</param>
+    /// <param name="message"><see cref="string"/> 返回的错误消息</param>
     /// <returns><see cref="IActionResult"/></returns>
-    IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata);
+    IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata, int? statusCode = null,
+        string message = null);
 
     /// <summary>
     /// 成功返回值

@@ -33,16 +33,19 @@ internal class RestfulResultProvider : IUnifyResultProvider
     /// </summary>
     /// <param name="context"><see cref="ExceptionContext"/></param>
     /// <param name="metadata"><see cref="ExceptionMetadata"/> 异常元数据</param>
+    /// <param name="statusCode"><see cref="int"/> 更改的状态码</param>
+    /// <param name="message"><see cref="string"/> 返回的错误消息</param>
     /// <returns><see cref="IActionResult"/></returns>
-    public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata)
+    public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata, int? statusCode = null,
+        string message = null)
     {
 #if DEBUG
-        return new JsonResult(GetRestfulResult(metadata.StatusCode, false, context.Exception, context.Exception.Message,
-            context.HttpContext));
+        return new JsonResult(GetRestfulResult(statusCode ?? metadata.StatusCode, false, context.Exception,
+            message ?? context.Exception.Message, context.HttpContext));
 #else
         // 如果是发布模式，避免安全期间，则不返回错误对象
-        return new JsonResult(GetRestfulResult(metadata.StatusCode, false, null, context.Exception.Message,
-            context.HttpContext));
+        return new JsonResult(GetRestfulResult(statusCode ?? metadata.StatusCode, false, null,
+            message ?? context.Exception.Message, context.HttpContext));
 #endif
     }
 

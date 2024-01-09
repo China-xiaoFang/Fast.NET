@@ -327,6 +327,15 @@
             <see cref="T:Fast.UnifyResult.IUnifyResponseProvider"/> 规范化响应数据提供器
             </summary>
         </member>
+        <member name="M:Fast.UnifyResult.IUnifyResponseProvider.ResponseExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,Fast.UnifyResult.Metadatas.ExceptionMetadata,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            响应异常处理
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext"/></param>
+            <param name="metadata"><see cref="T:Fast.UnifyResult.Metadatas.ExceptionMetadata"/> 异常元数据</param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.UnifyResult.IUnifyResponseProvider.ResponseDataAsync(System.Int64,System.Object,Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             响应数据处理
@@ -342,12 +351,14 @@
             <see cref="T:Fast.UnifyResult.IUnifyResultProvider"/> 规范化结果提供器
             </summary>
         </member>
-        <member name="M:Fast.UnifyResult.IUnifyResultProvider.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,Fast.UnifyResult.Metadatas.ExceptionMetadata)">
+        <member name="M:Fast.UnifyResult.IUnifyResultProvider.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,Fast.UnifyResult.Metadatas.ExceptionMetadata,System.Nullable{System.Int32},System.String)">
             <summary>
             异常返回值
             </summary>
             <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext"/></param>
             <param name="metadata"><see cref="T:Fast.UnifyResult.Metadatas.ExceptionMetadata"/> 异常元数据</param>
+            <param name="statusCode"><see cref="T:System.Int32"/> 更改的状态码</param>
+            <param name="message"><see cref="T:System.String"/> 返回的错误消息</param>
             <returns><see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/></returns>
         </member>
         <member name="M:Fast.UnifyResult.IUnifyResultProvider.OnSucceeded(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext,System.Object)">
@@ -379,12 +390,14 @@
             规范化RESTful风格返回值
             </summary>
         </member>
-        <member name="M:Fast.UnifyResult.Providers.RestfulResultProvider.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,Fast.UnifyResult.Metadatas.ExceptionMetadata)">
+        <member name="M:Fast.UnifyResult.Providers.RestfulResultProvider.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,Fast.UnifyResult.Metadatas.ExceptionMetadata,System.Nullable{System.Int32},System.String)">
             <summary>
             异常返回值
             </summary>
             <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext"/></param>
             <param name="metadata"><see cref="T:Fast.UnifyResult.Metadatas.ExceptionMetadata"/> 异常元数据</param>
+            <param name="statusCode"><see cref="T:System.Int32"/> 更改的状态码</param>
+            <param name="message"><see cref="T:System.String"/> 返回的错误消息</param>
             <returns><see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/></returns>
         </member>
         <member name="M:Fast.UnifyResult.Providers.RestfulResultProvider.OnSucceeded(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext,System.Object)">
