@@ -470,6 +470,41 @@
             </param>
             <returns><see cref="T:System.String"/></returns>
         </member>
+        <member name="T:Fast.IaaS.AppEnvironmentEnum">
+            <summary>
+            <see cref="T:Fast.IaaS.AppEnvironmentEnum"/> App运行环境枚举
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.Web">
+            <summary>
+            网页
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.Pc">
+            <summary>
+            PC
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.WeChatMiniProgram">
+            <summary>
+            微信小程序
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.AndroidApp">
+            <summary>
+            安卓App
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.IOSApp">
+            <summary>
+            IOSApp
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.Other">
+            <summary>
+            其他
+            </summary>
+        </member>
         <member name="T:Fast.IaaS.UserFriendlyException">
             <summary>
             <see cref="T:Fast.IaaS.UserFriendlyException"/> 用户友好异常
