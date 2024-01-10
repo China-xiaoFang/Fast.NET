@@ -42,7 +42,7 @@ public class SwaggerInjection : IApiHostingStartup
     {
         builder.ConfigureServices((hostContext, services) =>
         {
-            Debugging.Info("Registering unify result......");
+            Debugging.Info("Registering swagger......");
 
             // 配置验证
             services.AddConfigurableOptions<SwaggerSettingsOptions>("SwaggerSettings");

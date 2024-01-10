@@ -9,6 +9,11 @@
             <see cref="T:Fast.Consul.Filters.ConsulStartupFilter"/> 应用启动时自动注册中间件
             </summary>
         </member>
+        <member name="P:Fast.Consul.Filters.ConsulStartupFilter.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
         <member name="M:Fast.Consul.Filters.ConsulStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
             <summary>
             配置中间件

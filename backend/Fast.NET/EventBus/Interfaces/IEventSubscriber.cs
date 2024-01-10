@@ -12,6 +12,8 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.IaaS;
+
 namespace Fast.EventBus.Interfaces;
 
 /// <summary>
@@ -21,6 +23,7 @@ namespace Fast.EventBus.Interfaces;
 /// <para>可自定义事件处理方法，但须符合 Func{EventSubscribeExecutingContext, Task} 签名</para>
 /// <para>通常只做依赖查找，不做服务调用</para>
 /// </remarks>
+[SuppressSniffer]
 public interface IEventSubscriber
 {
     /*

@@ -62,6 +62,9 @@ public static class WebApplicationBuilderExtension
         // 初始化配置
         ConfigureApplication(builder.WebHost);
 
+        // 添加管道启动服务
+        builder.HostingInjection();
+
         return builder;
     }
 
@@ -98,17 +101,32 @@ public static class WebApplicationBuilderExtension
     /// 配置 Application
     /// </summary>
     /// <param name="builder"></param>
-    private static void ConfigureApplication(IWebHostBuilder builder)
+    /// <param name="hostBuilder"></param>
+    private static void ConfigureApplication(IWebHostBuilder builder, IHostBuilder hostBuilder = default)
     {
-        // 自动装载配置
-        builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+        if (hostBuilder == default)
         {
-            // 存储环境对象
-            FastContext.HostEnvironment = FastContext.WebHostEnvironment = hostContext.HostingEnvironment;
+            // 自动装载配置
+            builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+            {
+                // 存储环境对象
+                FastContext.HostEnvironment = FastContext.WebHostEnvironment = hostContext.HostingEnvironment;
 
-            // 加载配置
-            AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
-        });
+                // 加载配置
+                AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
+            });
+        }
+        else
+        {
+            hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+            {
+                // 存储环境对象
+                FastContext.HostEnvironment = hostContext.HostingEnvironment;
+
+                // 加载配置
+                AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
+            });
+        }
 
         // 应用初始化服务
         builder.ConfigureServices((hostContext, services) =>
@@ -131,9 +149,6 @@ public static class WebApplicationBuilderExtension
             // 注册 Startup 过滤器
             services.AddStartupFilter();
         });
-
-        // 添加管道启动服务
-        builder.HostingInjection();
     }
 
     /// <summary>

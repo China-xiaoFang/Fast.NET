@@ -12,25 +12,29 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="IWebHostBuilder"/> 拓展类
+/// <see cref="WebApplicationBuilder"/> 拓展类
 /// </summary>
 [SuppressSniffer]
-public static class IWebHostBuilderExtension
+public static class WebApplicationBuilderExtension
 {
     /// <summary>
     /// 添加管道启动服务注册
     /// </summary>
-    /// <param name="builder"><see cref="IWebHostBuilder"/></param>
+    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
     /// <returns></returns>
-    public static IWebHostBuilder HostingInjection(this IWebHostBuilder builder)
+    public static WebApplicationBuilder HostingInjection(this WebApplicationBuilder builder)
     {
+        IWebHostBuilder webHostBuilder = builder.WebHost;
+
         var iHostingStartupType = typeof(IHostingStartup);
 
         // 查找所有继承了 IHostingStartup 的类型
@@ -58,8 +62,48 @@ public static class IWebHostBuilderExtension
 
         foreach (var hostingStartup in iHostingStartupTypes)
         {
-            hostingStartup?.Configure(builder);
+            hostingStartup?.Configure(webHostBuilder);
         }
+
+        return builder;
+    }
+
+    /// <summary>
+    /// 添加 MVC 控制器
+    /// <remarks>
+    /// <para>不包括对视图的支持</para>
+    /// <para>自带框架内部的一些注入</para>
+    /// </remarks>
+    /// </summary>
+    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
+    /// <returns></returns>
+    public static WebApplicationBuilder AddControllers(this WebApplicationBuilder builder)
+    {
+        // 添加控制器
+        builder.Services.AddControllers();
+
+        // 添加Api管道启动服务注册
+        builder.ApiHostingInjection();
+
+        return builder;
+    }
+
+    /// <summary>
+    /// 添加 MVC 控制器
+    /// <remarks>
+    /// <para>包括对视图的支持</para>
+    /// <para>自带框架内部的一些注入</para>
+    /// </remarks>
+    /// </summary>
+    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
+    /// <returns></returns>
+    public static WebApplicationBuilder AddControllersWithViews(this WebApplicationBuilder builder)
+    {
+        // 添加控制器
+        builder.Services.AddControllersWithViews();
+
+        // 添加Api管道启动服务注册
+        builder.ApiHostingInjection();
 
         return builder;
     }
@@ -68,12 +112,14 @@ public static class IWebHostBuilderExtension
     /// 添加Api管道启动服务注册
     /// <remarks>必须在 AddControllers 或 AddControllersWithViews 之后注册</remarks>
     /// </summary>
-    /// <param name="builder"><see cref="IWebHostBuilder"/></param>
+    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
     /// <returns></returns>
-    public static IWebHostBuilder ApiHostingInjection(this IWebHostBuilder builder)
+    public static WebApplicationBuilder ApiHostingInjection(this WebApplicationBuilder builder)
     {
+        IWebHostBuilder webHostBuilder = builder.WebHost;
+
         // 先判断是否是在 AddControllers 或 AddControllersWithViews 之后注册
-        builder.ConfigureServices((hostContext, services) =>
+        webHostBuilder.ConfigureServices((hostContext, services) =>
         {
             if (services.All(a => a.ServiceType != typeof(ApplicationPartManager)))
             {
@@ -109,7 +155,7 @@ public static class IWebHostBuilderExtension
 
         foreach (var apiHostingStartup in iApiHostingStartupTypes)
         {
-            apiHostingStartup?.Configure(builder);
+            apiHostingStartup?.Configure(webHostBuilder);
         }
 
         return builder;

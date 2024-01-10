@@ -24,12 +24,26 @@ namespace Fast.UnifyResult.Filters;
 public class UnifyResultStartupFilter : IStartupFilter
 {
     /// <summary>
+    /// 排序
+    /// </summary>
+#pragma warning disable CA1822
+    public int Order => 69966;
+#pragma warning restore CA1822
+
+    /// <summary>
     /// 配置中间件
     /// </summary>
     /// <param name="action"></param>
     /// <returns></returns>
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
     {
-        return app => { app.UseMiddleware<UnifyResultStatusCodesMiddleware>(); };
+        return app =>
+        {
+            // 注册状态码拦截中间件
+            app.UseMiddleware<UnifyResultStatusCodesMiddleware>();
+
+            // 调用启动层的 Startup
+            action(app);
+        };
     }
 }

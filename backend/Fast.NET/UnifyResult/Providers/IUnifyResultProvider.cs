@@ -23,15 +23,18 @@ namespace Fast.UnifyResult;
 /// <summary>
 /// <see cref="IUnifyResultProvider"/> 规范化结果提供器
 /// </summary>
-internal interface IUnifyResultProvider
+public interface IUnifyResultProvider
 {
     /// <summary>
     /// 异常返回值
     /// </summary>
     /// <param name="context"><see cref="ExceptionContext"/></param>
     /// <param name="metadata"><see cref="ExceptionMetadata"/> 异常元数据</param>
+    /// <param name="statusCode"><see cref="int"/> 更改的状态码</param>
+    /// <param name="message"><see cref="string"/> 返回的错误消息</param>
     /// <returns><see cref="IActionResult"/></returns>
-    IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata);
+    IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata, int? statusCode = null,
+        string message = null);
 
     /// <summary>
     /// 成功返回值

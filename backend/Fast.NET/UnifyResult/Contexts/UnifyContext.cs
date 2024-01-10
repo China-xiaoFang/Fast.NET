@@ -33,8 +33,50 @@ namespace Fast.UnifyResult.Contexts;
 /// <summary>
 /// <see cref="UnifyContext"/> 规范化结果上下文
 /// </summary>
-internal static class UnifyContext
+[SuppressSniffer]
+public static class UnifyContext
 {
+    /// <summary>
+    /// 获取规范化RESTful风格返回值
+    /// </summary>
+    /// <param name="code"><see cref="int"/> 状态码</param>
+    /// <param name="success"><see cref="bool"/> 执行成功</param>
+    /// <param name="data"><see cref="object"/> 数据</param>
+    /// <param name="message"><see cref="string"/> 错误信息</param>
+    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
+    /// <returns></returns>
+    public static RestfulResult<object> GetRestfulResult(int code, bool success, object data, object message,
+        HttpContext httpContext)
+    {
+        // 从请求响应头部中获取时间戳
+        var timestamp = httpContext.UnifyResponseTimestamp();
+
+        // 一般为Model验证失败返回的结果
+        if (message is Dictionary<string, string[]> messageObj)
+        {
+            var newMessage = "";
+            foreach (var dicVal in messageObj.SelectMany(dicItem => dicItem.Value))
+            {
+                newMessage += $"{dicVal}\r\n";
+            }
+
+            message = newMessage.Remove(newMessage.LastIndexOf("\r\n", StringComparison.Ordinal));
+        }
+        else
+        {
+            message = message.ToString();
+        }
+
+        return new RestfulResult<object>
+        {
+            Code = code,
+            Success = success,
+            Data = data,
+            Message = message,
+            Timestamp = timestamp
+        };
+    }
+
     /// <summary>
     /// 统一返回类型
     /// </summary>

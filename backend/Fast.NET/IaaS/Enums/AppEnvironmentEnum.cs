@@ -12,35 +12,49 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.Admin.Core.Enum.System;
+using System.ComponentModel;
+
+// ReSharper disable once CheckNamespace
+namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="VisitTypeEnum"/> 访问类型枚举
+/// <see cref="AppEnvironmentEnum"/> App运行环境枚举
 /// </summary>
-[FastEnum("访问类型枚举")]
-public enum VisitTypeEnum
+public enum AppEnvironmentEnum
 {
     /// <summary>
-    /// 登录
+    /// 网页
     /// </summary>
-    [Description("登录")]
-    Login = 1,
+    [Description("网页")]
+    Web = 1,
 
     /// <summary>
-    /// 授权登录
+    /// PC
     /// </summary>
-    [Description("授权登录")]
-    AuthorizedLogin = 2,
+    [Description("PC")]
+    Pc = 2,
 
     /// <summary>
-    /// 登出
+    /// 微信小程序
     /// </summary>
-    [Description("登出")]
-    Logout = 3,
+    [Description("微信小程序")]
+    WeChatMiniProgram = 4,
 
     /// <summary>
-    /// 改密
+    /// 安卓App
     /// </summary>
-    [Description("改密")]
-    ChangePassword = 4,
+    [Description("安卓App")]
+    AndroidApp = 8,
+
+    /// <summary>
+    /// IOSApp
+    /// </summary>
+    [Description("IOSApp")]
+    IOSApp = 16,
+
+    /// <summary>
+    /// 其他
+    /// </summary>
+    [Description("其他")]
+    Other = 512,
 }

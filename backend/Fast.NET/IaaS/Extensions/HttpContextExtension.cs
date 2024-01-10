@@ -40,7 +40,7 @@ public static class HttpContextExtension
     /// <returns><see cref="string"/></returns>
     public static void UnifyResponseTimestamp(this HttpContext httpContext, long timestamp)
     {
-        httpContext?.Response.Headers.TryAdd("Fast-NET-Timestamp", $"{timestamp}");
+        httpContext?.Response.Headers.TryAdd(nameof(Fast) + "-NET-Timestamp", $"{timestamp}");
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public static class HttpContextExtension
     /// <returns><see cref="string"/></returns>
     public static long UnifyResponseTimestamp(this HttpContext httpContext)
     {
-        var timestampStr = httpContext?.Response.Headers["Fast-NET-Timestamp"];
+        var timestampStr = httpContext?.Response.Headers[nameof(Fast) + "-NET-Timestamp"];
 
         if (string.IsNullOrEmpty(timestampStr))
         {
@@ -304,8 +304,8 @@ public static class HttpContextExtension
             }
 
             // 加载 Parser 类型 的 GetDefault() 方法
-            var uaParserParserGetDefaultMethod = uaParserParserType.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .FirstOrDefault(f => f.Name == "GetDefault");
+            var uaParserParserGetDefaultMethod =
+                uaParserParserType.GetMethod("GetDefault", BindingFlags.Public | BindingFlags.Static);
 
             if (uaParserParserGetDefaultMethod == null)
             {
@@ -314,10 +314,9 @@ public static class HttpContextExtension
 
             // 调用 Parser 类型 的 GetDefault() 方法
             var parser = uaParserParserGetDefaultMethod.Invoke(null, new object[] {null});
-
-            // 加载 Parser 类型 的 Parse() 方法
-            var uaParserParserParseMethod =
-                uaParserParserType.GetMethods(BindingFlags.Public).FirstOrDefault(f => f.Name == "Parse");
+            
+            // 加载 Parser 类型 的 Parse() 方法，这里是 Public | HideBySig，但是我没有找到 HideBySig 所以直接获取吧
+            var uaParserParserParseMethod = uaParserParserType.GetMethod("Parse");
 
             if (uaParserParserParseMethod == null)
             {

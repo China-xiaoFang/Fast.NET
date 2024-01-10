@@ -12,7 +12,9 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.UnifyResult.Metadatas;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.UnifyResult;
@@ -22,6 +24,16 @@ namespace Fast.UnifyResult;
 /// </summary>
 public interface IUnifyResponseProvider
 {
+    /// <summary>
+    /// 响应异常处理
+    /// </summary>
+    /// <param name="context"><see cref="ExceptionContext"/></param>
+    /// <param name="metadata"><see cref="ExceptionMetadata"/> 异常元数据</param>
+    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
+    /// <returns></returns>
+    Task<(int statusCode, string message)> ResponseExceptionAsync(ExceptionContext context, ExceptionMetadata metadata,
+        HttpContext httpContext);
+
     /// <summary>
     /// 响应数据处理
     /// <remarks>只有响应成功且为正常返回才会调用</remarks>

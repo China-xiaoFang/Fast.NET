@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.Iaas</name>
+        <name>Fast.IaaS</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -24,6 +24,22 @@
             <summary>
             备注
             </summary>
+        </member>
+        <member name="T:Fast.IaaS.MapHubAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.MapHubAttribute"/> 集线器配置特征
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.MapHubAttribute.Pattern">
+            <summary>
+            配置终点路由地址
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.MapHubAttribute.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="pattern"></param>
         </member>
         <member name="T:Fast.IaaS.SuppressSnifferAttribute">
             <summary>
@@ -453,6 +469,41 @@
             </list>
             </param>
             <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:Fast.IaaS.AppEnvironmentEnum">
+            <summary>
+            <see cref="T:Fast.IaaS.AppEnvironmentEnum"/> App运行环境枚举
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.Web">
+            <summary>
+            网页
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.Pc">
+            <summary>
+            PC
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.WeChatMiniProgram">
+            <summary>
+            微信小程序
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.AndroidApp">
+            <summary>
+            安卓App
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.IOSApp">
+            <summary>
+            IOSApp
+            </summary>
+        </member>
+        <member name="F:Fast.IaaS.AppEnvironmentEnum.Other">
+            <summary>
+            其他
+            </summary>
         </member>
         <member name="T:Fast.IaaS.UserFriendlyException">
             <summary>
@@ -1350,26 +1401,6 @@
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.IaaS.IWebHostBuilderExtension">
-            <summary>
-            <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> 拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.IaaS.IWebHostBuilderExtension.HostingInjection(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            添加管道启动服务注册
-            </summary>
-            <param name="builder"><see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/></param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.IaaS.IWebHostBuilderExtension.ApiHostingInjection(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            添加Api管道启动服务注册
-            <remarks>必须在 AddControllers 或 AddControllersWithViews 之后注册</remarks>
-            </summary>
-            <param name="builder"><see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.IaaS.LinqExpressionExtension">
             <summary>
             <see cref="T:System.Linq.Expressions.Expression"/> 拓展类
@@ -2041,6 +2072,48 @@
             可判断格式如下（其中-可替换为/，不影响验证):
             YYYY | YYYY-MM | YYYYMM | YYYY-MM-DD | YYYYMMDD | YYYY-MM-DD HH:MM:SS | YYYY-MM-DD HH:MM:SS.FFF
             </remarks>
+        </member>
+        <member name="T:Fast.IaaS.WebApplicationBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.WebApplicationBuilderExtension.HostingInjection(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            添加管道启动服务注册
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.WebApplicationBuilderExtension.AddControllers(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            添加 MVC 控制器
+            <remarks>
+            <para>不包括对视图的支持</para>
+            <para>自带框架内部的一些注入</para>
+            </remarks>
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.WebApplicationBuilderExtension.AddControllersWithViews(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            添加 MVC 控制器
+            <remarks>
+            <para>包括对视图的支持</para>
+            <para>自带框架内部的一些注入</para>
+            </remarks>
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.IaaS.WebApplicationBuilderExtension.ApiHostingInjection(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            添加Api管道启动服务注册
+            <remarks>必须在 AddControllers 或 AddControllersWithViews 之后注册</remarks>
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
+            <returns></returns>
         </member>
         <member name="T:Fast.IaaS.IApiHostingStartup">
             <summary>

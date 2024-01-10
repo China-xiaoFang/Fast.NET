@@ -13,7 +13,9 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 
+using Fast.EventBus.Extensions;
 using Fast.EventBus.Interfaces;
+using Fast.IaaS;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.EventBus;
@@ -25,9 +27,28 @@ namespace Fast.EventBus;
 /// <para>支持多个事件 Id 触发同一个事件处理程序</para>
 /// </remarks>
 /// </summary>
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+[SuppressSniffer, AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
 public sealed class EventSubscribeAttribute : Attribute
 {
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    /// <param name="eventId">事件 Id</param>
+    /// <remarks>只支持事件类型和 Enum 类型</remarks>
+    public EventSubscribeAttribute(object eventId)
+    {
+        if (eventId is string eventIdStr)
+        {
+            EventId = eventIdStr;
+        }
+        else if (eventId is Enum eventIdEnum)
+        {
+            EventId = eventIdEnum.EventBusToString();
+        }
+        else
+            throw new ArgumentException("Only support string or Enum data type.");
+    }
+
     /// <summary>
     /// 事件 Id
     /// </summary>

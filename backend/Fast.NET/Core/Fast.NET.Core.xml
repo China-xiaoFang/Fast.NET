@@ -228,11 +228,12 @@
             <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
             <returns><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></returns>
         </member>
-        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.ConfigureApplication(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+        <member name="M:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.ConfigureApplication(Microsoft.AspNetCore.Hosting.IWebHostBuilder,Microsoft.Extensions.Hosting.IHostBuilder)">
             <summary>
             配置 Application
             </summary>
             <param name="builder"></param>
+            <param name="hostBuilder"></param>
         </member>
         <member name="P:Fast.NET.Core.Extensions.WebApplicationBuilderExtension.InternalConfigurationScanDirectories">
             <summary>
@@ -266,6 +267,11 @@
         <member name="T:Fast.NET.Core.Filters.CoreStartupFilter">
             <summary>
             <see cref="T:Fast.NET.Core.Filters.CoreStartupFilter"/> 应用启动时自动注册中间件
+            </summary>
+        </member>
+        <member name="P:Fast.NET.Core.Filters.CoreStartupFilter.Order">
+            <summary>
+            排序
             </summary>
         </member>
         <member name="M:Fast.NET.Core.Filters.CoreStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">

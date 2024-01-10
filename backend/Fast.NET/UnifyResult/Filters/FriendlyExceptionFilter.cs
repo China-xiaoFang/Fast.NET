@@ -142,8 +142,19 @@ internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
             }
             else
             {
+                int? statusCode = null;
+                string message = null;
+                // 判断是否跳过规范化响应数据处理
+                if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, controllerActionDescriptor!.MethodInfo,
+                        out var unifyResponse))
+                {
+                    // 处理规范化响应数据
+                    (statusCode, message) =
+                        await unifyResponse.ResponseExceptionAsync(context, exceptionMetadata, context.HttpContext);
+                }
+
                 // 执行规范化异常处理
-                context.Result = unifyResult.OnException(context, exceptionMetadata);
+                context.Result = unifyResult.OnException(context, exceptionMetadata, statusCode, message);
             }
         }
     }

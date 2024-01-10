@@ -12,35 +12,27 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.Admin.Core.Enum.System;
+// ReSharper disable once CheckNamespace
+
+namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="VisitTypeEnum"/> 访问类型枚举
+/// <see cref="MapHubAttribute"/> 集线器配置特征
 /// </summary>
-[FastEnum("访问类型枚举")]
-public enum VisitTypeEnum
+[SuppressSniffer, AttributeUsage(AttributeTargets.Class)]
+public class MapHubAttribute : Attribute
 {
     /// <summary>
-    /// 登录
+    /// 配置终点路由地址
     /// </summary>
-    [Description("登录")]
-    Login = 1,
+    public string Pattern { get; set; }
 
     /// <summary>
-    /// 授权登录
+    /// 构造函数
     /// </summary>
-    [Description("授权登录")]
-    AuthorizedLogin = 2,
-
-    /// <summary>
-    /// 登出
-    /// </summary>
-    [Description("登出")]
-    Logout = 3,
-
-    /// <summary>
-    /// 改密
-    /// </summary>
-    [Description("改密")]
-    ChangePassword = 4,
+    /// <param name="pattern"></param>
+    public MapHubAttribute(string pattern)
+    {
+        Pattern = pattern;
+    }
 }

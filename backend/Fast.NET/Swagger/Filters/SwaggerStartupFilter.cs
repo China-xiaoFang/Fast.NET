@@ -25,6 +25,13 @@ namespace Fast.Swagger.Filters;
 public class SwaggerStartupFilter : IStartupFilter
 {
     /// <summary>
+    /// 排序
+    /// </summary>
+#pragma warning disable CA1822
+    public int Order => 69955;
+#pragma warning restore CA1822
+
+    /// <summary>
     /// 配置中间件
     /// </summary>
     /// <param name="action"></param>
@@ -42,6 +49,9 @@ public class SwaggerStartupFilter : IStartupFilter
                 // 配置 Swagger UI 参数
                 app.UseSwaggerUI(options => SwaggerDocumentBuilder.BuildUI(options, Penetrates.SwaggerOptions?.SwaggerUI()));
             }
+
+            // 调用启动层的 Startup
+            action(app);
         };
     }
 }

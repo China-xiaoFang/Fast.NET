@@ -45,11 +45,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     private static bool EnabledUnifyHandler { get; set; }
 
     /// <summary>
-    /// Fast.UnifyResult.UnifyContext 实例
-    /// </summary>
-    private static object UnifyContextInstance { get; set; }
-
-    /// <summary>
     /// Fast.UnifyResult.UnifyContext 的 CheckSucceededNonUnify() 方法
     /// </summary>
     private static MethodInfo UnifyCheckSucceededNonUnifyMethod { get; set; }
@@ -76,8 +71,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
 
             if (unifyResult != null)
             {
-                // 加载 Fast.UnifyResult 的 UnifyContext 类型
-                var unifyContextType = unifyResult.GetType("Fast.UnifyResult.UnifyContext");
+                // 加载 Fast.UnifyResult 的 UnifyContext 类型，这里是静态类
+                var unifyContextType = unifyResult.GetType("Fast.UnifyResult.Contexts.UnifyContext");
 
                 if (unifyContextType != null)
                 {
@@ -88,9 +83,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                     if (checkSucceededNonUnifyMethod != null)
                     {
                         UnifyCheckSucceededNonUnifyMethod = checkSucceededNonUnifyMethod;
-
-                        // 创建 UnifyContext 静态实例
-                        UnifyContextInstance = Activator.CreateInstance(unifyContextType);
 
                         // 获取 UnifyResultType 的值
                         UnifyResultType =
@@ -591,7 +583,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     {
         // 判断是否手动添加了标注或跳过规范化处理
         var isSkipObj =
-            UnifyCheckSucceededNonUnifyMethod?.Invoke(UnifyContextInstance,
+            UnifyCheckSucceededNonUnifyMethod?.Invoke(null,
                 new object[] {null, action.ActionMethod, null, false});
 
         if (isSkipObj is true)

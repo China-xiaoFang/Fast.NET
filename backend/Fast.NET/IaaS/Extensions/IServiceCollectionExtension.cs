@@ -74,7 +74,26 @@ public static class IServiceCollectionExtension
 
         // 查找所有继承了 IStartupFilter 的类型
         var iStartupFilterTypes = IaaSContext.EffectiveTypes.Where(wh =>
-            iStartupFilterType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract);
+            iStartupFilterType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
+        {
+            var iStartupFilter = Activator.CreateInstance(sl) as IStartupFilter;
+
+            // 默认为 -1；
+            var order = -1;
+            // 尝试获取Order值
+            var orderProperty = sl.GetProperty("Order");
+
+            if (orderProperty != null && orderProperty.PropertyType == typeof(int))
+            {
+                var orderVal = orderProperty.GetValue(iStartupFilter)?.ToString();
+                if (!orderVal.IsEmpty())
+                {
+                    order = orderVal.ParseToInt();
+                }
+            }
+
+            return new {Type = sl, Order = order};
+        }).OrderByDescending(ob => ob.Order).Select(sl => sl.Type);
 
         foreach (var startupFilterType in iStartupFilterTypes)
         {

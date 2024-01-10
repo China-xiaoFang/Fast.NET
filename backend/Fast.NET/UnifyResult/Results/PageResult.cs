@@ -12,35 +12,46 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.Admin.Core.Enum.System;
+namespace Fast.UnifyResult.Results;
 
 /// <summary>
-/// <see cref="VisitTypeEnum"/> 访问类型枚举
+/// <see cref="PageResult{T}"/> 统一分页返回结果类
 /// </summary>
-[FastEnum("访问类型枚举")]
-public enum VisitTypeEnum
+/// <typeparam name="T"></typeparam>
+public class PageResult<T>
 {
     /// <summary>
-    /// 登录
+    /// 当前页
     /// </summary>
-    [Description("登录")]
-    Login = 1,
+    public int PageIndex { get; set; }
 
     /// <summary>
-    /// 授权登录
+    /// 当前页码
     /// </summary>
-    [Description("授权登录")]
-    AuthorizedLogin = 2,
+    public int PageSize { get; set; }
 
     /// <summary>
-    /// 登出
+    /// 总页数
     /// </summary>
-    [Description("登出")]
-    Logout = 3,
+    public int TotalPage { get; set; }
 
     /// <summary>
-    /// 改密
+    /// 总条数
     /// </summary>
-    [Description("改密")]
-    ChangePassword = 4,
+    public int TotalRows { get; set; }
+
+    /// <summary>
+    /// Data
+    /// </summary>
+    public IEnumerable<T> Rows { get; set; }
+
+    /// <summary>
+    /// 是否有上一页
+    /// </summary>
+    public bool HasPrevPages { get; set; }
+
+    /// <summary>
+    /// 是否有下一页
+    /// </summary>
+    public bool HasNextPages { get; set; }
 }

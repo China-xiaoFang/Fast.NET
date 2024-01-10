@@ -29,6 +29,13 @@ namespace Fast.Consul.Filters;
 public class ConsulStartupFilter : IStartupFilter
 {
     /// <summary>
+    /// 排序
+    /// </summary>
+#pragma warning disable CA1822
+    public int Order => 69099;
+#pragma warning restore CA1822
+
+    /// <summary>
     /// 配置中间件
     /// </summary>
     /// <param name="action"></param>
@@ -61,6 +68,9 @@ public class ConsulStartupFilter : IStartupFilter
                 // 注册 Consul 服务
                 app.ApplicationServices.GetService<IConsulRegister>()?.ConsulRegisterAsync();
             });
+
+            // 调用启动层的 Startup
+            action(app);
         };
     }
 }
