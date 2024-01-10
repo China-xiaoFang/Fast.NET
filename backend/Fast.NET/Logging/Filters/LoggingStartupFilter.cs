@@ -24,6 +24,13 @@ namespace Fast.Logging.Filters;
 internal class LoggingStartupFilter : IStartupFilter
 {
     /// <summary>
+    /// 排序
+    /// </summary>
+#pragma warning disable CA1822
+    public int Order => 69977;
+#pragma warning restore CA1822
+
+    /// <summary>
     /// 配置中间件
     /// </summary>
     /// <param name="action"></param>

@@ -25,6 +25,13 @@ namespace Fast.NET.Core.Filters;
 public class CoreStartupFilter : IStartupFilter
 {
     /// <summary>
+    /// 排序
+    /// </summary>
+#pragma warning disable CA1822
+    public int Order => 69999;
+#pragma warning restore CA1822
+
+    /// <summary>
     /// 配置中间件
     /// </summary>
     /// <param name="action"></param>
@@ -50,15 +57,16 @@ public class CoreStartupFilter : IStartupFilter
                 else
                 {
                     // 输出当前环境标识
-                    context.Response.Headers[nameof(Fast) + "-Environment"] = envName;
+                    context.Response.Headers.TryAdd(nameof(Fast) + "-Environment", envName);
 
                     // 默认输出信息
-                    context.Response.Headers[nameof(Fast) + "-Site-Url"] = "https://fastdotnet.com";
-                    context.Response.Headers[nameof(Fast) + "-Repository-Url"] = "https://gitee.com/Net-18K/Fast.NET";
+                    context.Response.Headers.TryAdd(nameof(Fast) + "-Site-Url", "https://fastdotnet.com");
+                    context.Response.Headers.TryAdd(nameof(Fast) + "-Repository-Url", "https://gitee.com/Net-18K/Fast.NET");
 
                     // 输出当前请求时间
-                    context.Response.Headers[nameof(Fast) + "-Request-Time"] =
-                        DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff zzz dddd");
+                    context.Response.Headers.TryAdd(nameof(Fast) + "-Request-Time",
+                        DateTimeOffset.Now.ToString("dddd, zzz, yyyy-MM-dd HH:mm:ss.fffffff",
+                            new System.Globalization.CultureInfo("en-US")));
 
                     // 执行下一个中间件
                     await next.Invoke();

@@ -24,11 +24,6 @@
             启用统一处理
             </summary>
         </member>
-        <member name="P:Fast.DynamicApplication.Conventions.DynamicApiControllerApplicationModelConvention.UnifyContextInstance">
-            <summary>
-            Fast.UnifyResult.UnifyContext 实例
-            </summary>
-        </member>
         <member name="P:Fast.DynamicApplication.Conventions.DynamicApiControllerApplicationModelConvention.UnifyCheckSucceededNonUnifyMethod">
             <summary>
             Fast.UnifyResult.UnifyContext 的 CheckSucceededNonUnify() 方法

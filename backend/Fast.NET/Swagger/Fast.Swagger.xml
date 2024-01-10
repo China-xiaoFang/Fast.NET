@@ -387,6 +387,11 @@
             <see cref="T:Fast.Swagger.Filters.SwaggerStartupFilter"/> 应用启动时自动注册中间件
             </summary>
         </member>
+        <member name="P:Fast.Swagger.Filters.SwaggerStartupFilter.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
         <member name="M:Fast.Swagger.Filters.SwaggerStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
             <summary>
             配置中间件

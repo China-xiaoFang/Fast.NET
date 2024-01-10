@@ -16,6 +16,9 @@
 		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Hosting">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Hosting.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
 		</Reference>
@@ -31,8 +34,14 @@
 		<Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Mvc">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Mvc.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
@@ -45,6 +54,9 @@
 		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
@@ -64,6 +76,9 @@
 		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Hosting">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Hosting.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
 		</Reference>
@@ -79,8 +94,14 @@
 		<Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Mvc">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Mvc.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.AspNetCore">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
@@ -93,6 +114,9 @@
 		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
@@ -112,6 +136,9 @@
 		<Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Hosting">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Hosting.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Http.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
 		</Reference>
@@ -127,11 +154,20 @@
 		<Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Mvc">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Mvc.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.Extensions.Caching.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Binder">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
@@ -139,8 +175,8 @@
 		<Reference Include="Microsoft.Extensions.DependencyInjection">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
 		</Reference>
-		<Reference Include="Microsoft.Extensions.Configuration.Binder">
-			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+		<Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>

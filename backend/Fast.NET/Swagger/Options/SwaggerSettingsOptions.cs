@@ -29,7 +29,6 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
     /// <summary>
     /// 是否启用/注入规范化文档
     /// </summary>
-    [Required]
     public bool? Enable { get; set; }
 
     /// <summary>
@@ -132,7 +131,7 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
     /// </summary>
     public void PostConfigure()
     {
-        Enable = true;
+        Enable ??= true;
 
         DocumentTitle ??= "Specification Api Document";
         DefaultGroupName ??= "Default";
@@ -143,9 +142,9 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
         var frameworkPackageName = GetType().GetTypeInfo().Assembly.GetName().Name;
         var projectXmlComments = IaaSContext.Assemblies.Where(u => u.GetName().Name != frameworkPackageName)
             .Select(t => t.GetName().Name);
-        XmlComments = projectXmlComments.ToArray();
+        XmlComments ??= projectXmlComments.ToArray();
 
-        GroupOpenApiInfos = new[] {new SwaggerOpenApiInfo {Group = DefaultGroupName}};
+        GroupOpenApiInfos ??= new[] {new SwaggerOpenApiInfo {Group = DefaultGroupName}};
 
         EnableAuthorized ??= true;
         if (EnableAuthorized == true)

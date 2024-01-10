@@ -90,17 +90,21 @@ public static class AssemblyUtil
                 // 放入集合中
                 depsLibraryList.Add(new DepsLibrary(type, name, version, serviceable));
             }
-
-            /*
-             * 这里获取不到下面这两个：
-             *  Microsoft.AspNetCore.App.Runtime.win-x64
-             *  Microsoft.NETCore.App.Runtime.win-x64
-             */
-
-            // 读取项目程序集 或 Fast 官方发布的包，或手动添加引用的dll，或配置特定的包前缀
+            
+            // 读取项目程序集 或 第三方引用的包，或手动添加引用的dll，或配置特定的包前缀
             return depsLibraryList.Where(wh => (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) ||
-                                               (wh.Type == "package" && wh.Name.StartsWith(nameof(Fast))))
-                .Select(sl => GetAssembly(sl.Name));
+                                               wh.Type == "package").Select(sl =>
+            {
+                // 这里由于一些dll文件是运行时文件，但是却也包含了在 .deps.json 文件的 "libraries" 节点中，所以采用极限1换100操作，报错的不处理
+                try
+                {
+                    return GetAssembly(sl.Name);
+                }
+                catch
+                {
+                    return null;
+                }
+            }).Where(wh => wh != null);
         }
 
         // 独立发布/单文件发布
