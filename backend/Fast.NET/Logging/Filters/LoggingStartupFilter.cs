@@ -21,7 +21,7 @@ namespace Fast.Logging.Filters;
 /// <summary>
 /// <see cref="LoggingStartupFilter"/> 应用启动时自动注册中间件
 /// </summary>
-internal class LoggingStartupFilter : IStartupFilter
+public class LoggingStartupFilter : IStartupFilter
 {
     /// <summary>
     /// 排序

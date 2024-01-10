@@ -410,6 +410,12 @@
             <remarks>解决 <see cref="T:System.Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
             </summary>
         </member>
+        <member name="M:Fast.Serialization.JsonConverter.Internal.ExceptionJsonConverter.CanConvert(System.Type)">
+            <summary>Determines whether the specified type can be converted.</summary>
+            <param name="typeToConvert">The type to compare against.</param>
+            <returns>
+            <see langword="true" /> if the type can be converted; otherwise, <see langword="false" />.</returns>
+        </member>
         <member name="M:Fast.Serialization.JsonConverter.Internal.ExceptionJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
             <summary>Reads and converts the JSON to type <see cref="T:System.Exception"/>.</summary>
             <param name="reader">The reader.</param>
