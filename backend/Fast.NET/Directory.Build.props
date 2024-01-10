@@ -9,7 +9,7 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageOutputPath>$(SolutionDir)..\..\nupkgs</PackageOutputPath>
-		<Version>3.4.11</Version>
+		<Version>3.4.11.1</Version>
 		<PackageVersion>$(Version)</PackageVersion>
 		<Authors>1.8K仔</Authors>
 		<Description>一个快速构建项目的 .NET 框架。</Description>

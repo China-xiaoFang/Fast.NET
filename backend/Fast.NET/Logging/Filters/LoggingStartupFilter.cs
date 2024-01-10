@@ -41,6 +41,9 @@ internal class LoggingStartupFilter : IStartupFilter
         {
             // 存储根服务
             Penetrates.RootServices = app.ApplicationServices;
+
+            // 调用启动层的 Startup
+            action(app);
         };
     }
 }
