@@ -21,7 +21,7 @@ namespace Fast.Logging.Filters;
 /// <summary>
 /// <see cref="LoggingStartupFilter"/> 应用启动时自动注册中间件
 /// </summary>
-internal class LoggingStartupFilter : IStartupFilter
+public class LoggingStartupFilter : IStartupFilter
 {
     /// <summary>
     /// 排序
@@ -41,6 +41,9 @@ internal class LoggingStartupFilter : IStartupFilter
         {
             // 存储根服务
             Penetrates.RootServices = app.ApplicationServices;
+
+            // 调用启动层的 Startup
+            action(app);
         };
     }
 }

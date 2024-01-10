@@ -25,7 +25,10 @@
     // 版权Url
     "CRUrl": "https://gitee.com/Net-18K/Fast.NET"
   },
-  "SpecificationDocumentSettings": {
+  "JWTSettings": {
+    "Enable": false
+  },
+  "SwaggerSettings": {
     "DocumentTitle": "Fast",
     "DocExpansionState": "None",
     "HideServers": true,

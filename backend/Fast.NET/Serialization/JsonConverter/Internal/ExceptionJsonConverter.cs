@@ -23,6 +23,15 @@ namespace Fast.Serialization.JsonConverter.Internal;
 /// </summary>
 internal class ExceptionJsonConverter : JsonConverter<Exception>
 {
+    /// <summary>Determines whether the specified type can be converted.</summary>
+    /// <param name="typeToConvert">The type to compare against.</param>
+    /// <returns>
+    /// <see langword="true" /> if the type can be converted; otherwise, <see langword="false" />.</returns>
+    public override bool CanConvert(Type typeToConvert)
+    {
+        return typeof(Exception).IsAssignableFrom(typeToConvert);
+    }
+
     /// <summary>Reads and converts the JSON to type <see cref="Exception"/>.</summary>
     /// <param name="reader">The reader.</param>
     /// <param name="typeToConvert">The type to convert.</param>

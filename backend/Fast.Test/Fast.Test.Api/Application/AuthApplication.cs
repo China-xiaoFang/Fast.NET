@@ -1,4 +1,7 @@
-﻿using Fast.SpecificationProcessor.DynamicApplication;
+﻿using System.Text.Json;
+using Fast.DynamicApplication;
+using Fast.IaaS;
+using Fast.Logging;
 using Fast.SqlSugar.Repository;
 using Fast.Test.Api.Controllers;
 using Fast.Test.Api.Entities;
@@ -36,6 +39,9 @@ public class AuthApplication : IDynamicApplication
     [HttpGet("/getLoginUser")]
     public string Get()
     {
+        var a = JsonSerializer.Serialize(new Exception("撒旦健身卡就打开拉萨角度看"));
+        Log.Error("测试错误消息",new UserFriendlyException("123"));
+        throw new UserFriendlyException("消息错误");
         return "我是Get请求";
     }
 

@@ -50,11 +50,15 @@
     <ProjectReference Include="..\..\Fast.NET\Core\Fast.NET.Core.csproj" />
     <ProjectReference Include="..\..\Fast.NET\CorsAccessor\Fast.CorsAccessor.csproj" />
     <ProjectReference Include="..\..\Fast.NET\DependencyInjection\Fast.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Fast.NET\DynamicApplication\Fast.DynamicApplication.csproj" />
+    <ProjectReference Include="..\..\Fast.NET\EventBus\Fast.EventBus.csproj" />
     <ProjectReference Include="..\..\Fast.NET\SqlSugar\Fast.SqlSugar.csproj" />
     <ProjectReference Include="..\..\Fast.NET\JwtBearer\Fast.JwtBearer.csproj" />
     <ProjectReference Include="..\..\Fast.NET\Logging\Fast.Logging.csproj" />
     <ProjectReference Include="..\..\Fast.NET\Mapster\Fast.Mapster.csproj" />
     <ProjectReference Include="..\..\Fast.NET\Serialization\Fast.Serialization.csproj" />
+    <ProjectReference Include="..\..\Fast.NET\Swagger\Fast.Swagger.csproj" />
+    <ProjectReference Include="..\..\Fast.NET\UnifyResult\Fast.UnifyResult.csproj" />
   </ItemGroup>
 
 </Project>

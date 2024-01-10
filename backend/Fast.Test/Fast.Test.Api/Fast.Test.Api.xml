@@ -27,6 +27,15 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Fast.Test.Api.Handlers.LogExceptionHandler.OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,System.Boolean,System.Boolean)">
+            <summary>
+            异常拦截
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext"/></param>
+            <param name="isUserFriendlyException"><see cref="T:System.Boolean"/> 是否友好异常</param>
+            <param name="isValidationException"><see cref="T:System.Boolean"/> 是否验证异常</param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.Test.Api.Handlers.SqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute)">
             <summary>
             根据实体类型获取连接字符串
@@ -129,6 +138,28 @@
             <summary>
             是否为管理员
             </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Fast.Test.Api.Handlers.UnifyResponseProvider.JsonTypeWhiteList">
+            <summary>
+            JSON 类型处理白名单
+            </summary>
+        </member>
+        <member name="M:Fast.Test.Api.Handlers.UnifyResponseProvider.ResponseExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,Fast.UnifyResult.Metadatas.ExceptionMetadata,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>响应异常处理</summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext" /></param>
+            <param name="metadata"><see cref="T:Gejia.UnifyResult.Metadatas.ExceptionMetadata" /> 异常元数据</param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> 请求上下文</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Test.Api.Handlers.UnifyResponseProvider.ResponseDataAsync(System.Int64,System.Object,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            响应数据处理
+            <remarks>只有响应成功且为正常返回才会调用</remarks>
+            </summary>
+            <param name="timestamp"><see cref="T:System.Int64" /> 响应时间戳</param>
+            <param name="data"><see cref="T:System.Object" /> 数据</param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> 请求上下文</param>
             <returns></returns>
         </member>
         <member name="M:Fast.Test.Api.Services.ITestService.Test">
