@@ -12,7 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.SqlSugar.Options;
+using Fast.SqlSugar.Commons;
 using SqlSugar;
 
 namespace Fast.SqlSugar.DataBaseUtils;
@@ -25,13 +25,14 @@ internal partial class DataBaseUtil
     /// <summary>
     /// 得到数据库连接字符串
     /// </summary>
-    /// <param name="dbInfo"></param>
+    /// <param name="dbType"><see cref="DbType"/> 数据库类型</param>
+    /// <param name="dbInfo"><see cref="DbConnectionInfo"/> 数据库连接信息</param>
+    /// <remarks>目前只验证了Sql Server 和 MySql</remarks>
     /// <returns></returns>
-    internal static string GetConnectionStr(ConnectionSettingsOptions dbInfo)
+    internal static string GetConnectionStr(DbType dbType, DbConnectionInfo dbInfo)
     {
         var connectionStr = "";
-        // 目前只验证了Sql Server 和 MySql
-        switch (dbInfo.DbType)
+        switch (dbType)
         {
             case DbType.MySql:
                 connectionStr =

@@ -251,6 +251,50 @@
             <remarks>雪花Id</remarks>
             </summary>
         </member>
+        <member name="T:Fast.SqlSugar.Commons.DbConnectionInfo">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Commons.DbConnectionInfo"/> 数据库连接信息
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Commons.DbConnectionInfo.ServiceIp">
+            <summary>
+            服务器Ip地址
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Commons.DbConnectionInfo.Port">
+            <summary>
+            端口号
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Commons.DbConnectionInfo.DbName">
+            <summary>
+            数据库名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Commons.DbConnectionInfo.DbUser">
+            <summary>
+            数据库用户
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Commons.DbConnectionInfo.DbPwd">
+            <summary>
+            数据库密码
+            </summary>
+        </member>
+        <member name="T:Fast.SqlSugar.Commons.SlaveConnectionInfo">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Commons.SlaveConnectionInfo"/> 从库连接信息
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Commons.SlaveConnectionInfo.HitRate">
+            <summary>
+            从库命中率
+            <remarks>
+            <para>为 0 则不命中</para>
+            <para>建议相加不超过10</para>
+            </remarks>
+            </summary>
+        </member>
         <member name="T:Fast.SqlSugar.SqlSugarContext">
             <summary>
             <see cref="T:Fast.SqlSugar.SqlSugarContext"/> SqlSugar 上下文
@@ -328,11 +372,13 @@
             <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> SugarExternalServices工具类
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.GetConnectionStr(Fast.SqlSugar.Options.ConnectionSettingsOptions)">
+        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.GetConnectionStr(SqlSugar.DbType,Fast.SqlSugar.Commons.DbConnectionInfo)">
             <summary>
             得到数据库连接字符串
             </summary>
-            <param name="dbInfo"></param>
+            <param name="dbType"><see cref="T:SqlSugar.DbType"/> 数据库类型</param>
+            <param name="dbInfo"><see cref="T:Fast.SqlSugar.Commons.DbConnectionInfo"/> 数据库连接信息</param>
+            <remarks>目前只验证了Sql Server 和 MySql</remarks>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.SetDbTypeDateTime(SqlSugar.DbType,SqlSugar.EntityColumnInfo@)">
@@ -499,13 +545,14 @@
             <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute)">
+        <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute,System.Type)">
             <summary>
             根据实体类型获取连接字符串
             </summary>
             <typeparam name="TEntity"></typeparam>
             <param name="sqlSugarClient"><see cref="T:SqlSugar.ISqlSugarClient"/> 默认库SqlSugar客户端</param>
             <param name="sugarDbType">实体类头部的 <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute"/> 特性，如果不存在可能为空</param>
+            <param name="entityType"><see cref="T:System.Type"/> 实体类型</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.ExecuteAsync(System.String,SqlSugar.SugarParameter[],System.TimeSpan,System.String)">
@@ -931,31 +978,6 @@
             SqlSugarClient 连接Id
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.ServiceIp">
-            <summary>
-            服务器Ip地址
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.Port">
-            <summary>
-            端口号
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DbName">
-            <summary>
-            数据库名称
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DbUser">
-            <summary>
-            数据库用户
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DbPwd">
-            <summary>
-            数据库密码
-            </summary>
-        </member>
         <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.SugarSysDbType">
             <summary>
             系统数据库类型
@@ -990,6 +1012,12 @@
             <summary>
             禁用 SqlSugar 的 Aop
             <remarks>如果是通过 <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.SlaveConnectionList">
+            <summary>
+            从库信息
+            <remarks>一般默认库或者主库不建议设置从库</remarks>
             </summary>
         </member>
         <member name="T:Fast.SqlSugar.Options.SnowflakeSettingsOptions">

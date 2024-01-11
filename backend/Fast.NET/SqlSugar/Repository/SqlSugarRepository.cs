@@ -49,7 +49,8 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
         var sqlSugarEntityHandler = _serviceProvider.GetService<ISqlSugarEntityHandler>();
 
         // 获取新的连接字符串
-        var connectionSettings = sqlSugarEntityHandler?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute).Result;
+        var connectionSettings = sqlSugarEntityHandler
+            ?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute, typeof(TEntity)).Result;
         if (connectionSettings != null)
         {
             DataBaseInfo = connectionSettings;

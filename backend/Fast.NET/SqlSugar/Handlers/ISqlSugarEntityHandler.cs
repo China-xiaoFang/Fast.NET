@@ -29,9 +29,10 @@ public interface ISqlSugarEntityHandler
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="sqlSugarClient"><see cref="ISqlSugarClient"/> 默认库SqlSugar客户端</param>
     /// <param name="sugarDbType">实体类头部的 <see cref="SugarDbTypeAttribute"/> 特性，如果不存在可能为空</param>
+    /// <param name="entityType"><see cref="Type"/> 实体类型</param>
     /// <returns></returns>
     Task<ConnectionSettingsOptions> GetConnectionSettings<TEntity>(ISqlSugarClient sqlSugarClient,
-        SugarDbTypeAttribute sugarDbType);
+        SugarDbTypeAttribute sugarDbType, Type entityType);
 
     /// <summary>
     /// 执行Sql
