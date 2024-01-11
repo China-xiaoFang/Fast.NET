@@ -13,6 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
+using Fast.SqlSugar.Commons;
 using Fast.SqlSugar.Handlers;
 using SqlSugar;
 
@@ -22,43 +23,13 @@ namespace Fast.SqlSugar.Options;
 /// <see cref="ConnectionSettingsOptions"/> 连接字符串配置
 /// </summary>
 [SuppressSniffer]
-public class ConnectionSettingsOptions
+public class ConnectionSettingsOptions : DbConnectionInfo
 {
     /// <summary>
     /// SqlSugarClient 连接Id
     /// </summary>
     [SugarColumn(IsIgnore = true)]
     public string ConnectionId { get; set; }
-
-    /// <summary>
-    /// 服务器Ip地址
-    /// </summary>
-    [SugarColumn(ColumnDescription = "服务器Ip地址", ColumnDataType = "NVARCHAR(15)", IsNullable = false)]
-    public string ServiceIp { get; set; }
-
-    /// <summary>
-    /// 端口号
-    /// </summary>
-    [SugarColumn(ColumnDescription = "端口号", ColumnDataType = "NVARCHAR(5)", IsNullable = false)]
-    public string Port { get; set; }
-
-    /// <summary>
-    /// 数据库名称
-    /// </summary>
-    [SugarColumn(ColumnDescription = "数据库名称", ColumnDataType = "NVARCHAR(50)", IsNullable = false)]
-    public string DbName { get; set; }
-
-    /// <summary>
-    /// 数据库用户
-    /// </summary>
-    [SugarColumn(ColumnDescription = "数据库用户", ColumnDataType = "NVARCHAR(10)", IsNullable = false)]
-    public string DbUser { get; set; }
-
-    /// <summary>
-    /// 数据库密码
-    /// </summary>
-    [SugarColumn(ColumnDescription = "数据库密码", ColumnDataType = "NVARCHAR(20)", IsNullable = false)]
-    public string DbPwd { get; set; }
 
     /// <summary>
     /// 系统数据库类型
@@ -102,4 +73,11 @@ public class ConnectionSettingsOptions
     /// </summary>
     [SugarColumn(ColumnDescription = "差异日志", IsNullable = false)]
     public bool DisableAop { get; set; }
+
+    /// <summary>
+    /// 从库信息
+    /// <remarks>一般默认库或者主库不建议设置从库</remarks>
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public virtual List<SlaveConnectionInfo> SlaveConnectionList { get; set; }
 }
