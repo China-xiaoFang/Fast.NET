@@ -28,14 +28,16 @@ namespace Fast.EventBus.Injections;
 /// <summary>
 /// <see cref="EventBusInjection"/> 统一返回注入
 /// </summary>
-public class EventBusInjection : IHostingStartup
+public class EventBusInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69922;
-#pragma warning restore CA1822
 
     /// <summary>
     /// 配置

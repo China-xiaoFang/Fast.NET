@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.Iaas</name>
+        <name>Fast.IaaS</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -2078,7 +2078,7 @@
             <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> 拓展类
             </summary>
         </member>
-        <member name="M:Fast.IaaS.WebApplicationBuilderExtension.HostingInjection(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+        <member name="M:Fast.IaaS.WebApplicationBuilderExtension.AddHostInjection(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
             添加管道启动服务注册
             </summary>
@@ -2107,21 +2107,56 @@
             <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.IaaS.WebApplicationBuilderExtension.ApiHostingInjection(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+        <member name="M:Fast.IaaS.WebApplicationBuilderExtension.AddControllersInjection(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
-            添加Api管道启动服务注册
+            添加控制器之后的服务注册
             <remarks>必须在 AddControllers 或 AddControllersWithViews 之后注册</remarks>
             </summary>
             <param name="builder"><see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.IaaS.IApiHostingStartup">
+        <member name="T:Fast.IaaS.IControllersInjection">
             <summary>
-            <see cref="T:Fast.IaaS.IApiHostingStartup"/> Represents platform specific configuration that will be applied to a <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> when building an <see cref="T:Microsoft.AspNetCore.Hosting.IWebHost"/>.
+            <see cref="T:Fast.IaaS.IControllersInjection"/> Represents platform specific configuration that will be applied to a <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> when building an <see cref="T:Microsoft.AspNetCore.Hosting.IWebHost"/>.
+            <para>控制器注册</para>
             <remarks>AddControllers 或 AddControllersWithViews 之后注册的一些服务</remarks>
             </summary>
         </member>
-        <member name="M:Fast.IaaS.IApiHostingStartup.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+        <member name="P:Fast.IaaS.IControllersInjection.Order">
+            <summary>
+            排序
+            <remarks>
+            <para>顺序越大，越优先注册</para>
+            <para>建议最大不超过9999</para>
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IControllersInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            Configure the <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/>.
+            </summary>
+            <remarks>
+            Configure is intended to be called before user code, allowing a user to overwrite any changes made.
+            </remarks>
+            <param name="builder"></param>
+        </member>
+        <member name="T:Fast.IaaS.IHostInjection">
+            <summary>
+            <see cref="T:Fast.IaaS.IHostInjection"/> Represents platform specific configuration that will be applied to a <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> when building an <see cref="T:Microsoft.AspNetCore.Hosting.IWebHost"/>.
+            <para>主机注册</para>
+            <remarks>AddControllers 或 AddControllersWithViews 之前注册的一些服务</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.IHostInjection.Order">
+            <summary>
+            排序
+            <remarks>
+            <para>顺序越大，越优先注册</para>
+            <para>建议最大不超过9999</para>
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.IHostInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
             <summary>
             Configure the <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/>.
             </summary>

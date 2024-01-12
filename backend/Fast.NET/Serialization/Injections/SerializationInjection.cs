@@ -28,14 +28,16 @@ namespace Fast.Serialization.Injections;
 /// <see cref="SerializationInjection"/> 序列化服务注册
 /// <remarks>DateTime 和 DateTimeOffset 格式化字符串，默认 "yyyy-MM-dd HH:mm:ss"</remarks>
 /// </summary>
-public class SerializationInjection : IHostingStartup
+public class SerializationInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69944;
-#pragma warning restore CA1822
 
     /// <summary>
     /// 配置

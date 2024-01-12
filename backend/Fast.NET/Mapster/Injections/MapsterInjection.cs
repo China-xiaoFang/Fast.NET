@@ -24,14 +24,16 @@ namespace Fast.Mapster.Injections;
 /// <see cref="MapsterInjection"/> 对象映射注册
 /// <remarks>直接引用源码，源码地址：https://github.com/MapsterMapper/Mapster/tree/v7.4.0</remarks>
 /// </summary>
-public class MapsterInjection : IHostingStartup
+public class MapsterInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69955;
-#pragma warning restore CA1822
 
     /// <summary>
     /// 配置

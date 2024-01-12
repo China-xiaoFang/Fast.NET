@@ -22,14 +22,16 @@ namespace Fast.DependencyInjection.Injections;
 /// <summary>
 /// <see cref="DependencyInjectionInjection"/> 依赖注入服务注册
 /// </summary>
-public class DependencyInjectionInjection : IHostingStartup
+public class DependencyInjectionInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69933;
-#pragma warning restore CA1822
 
     /// <summary>
     /// 类型名称集合

@@ -26,14 +26,16 @@ namespace Fast.Consul.Injections;
 /// <summary>
 /// <see cref="ConsulInjection"/> Consul 服务注册
 /// </summary>
-public class ConsulInjection : IHostingStartup
+public class ConsulInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69877;
-#pragma warning restore CA1822
 
     /// <summary>
     /// 配置

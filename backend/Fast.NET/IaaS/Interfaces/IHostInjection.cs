@@ -19,11 +19,22 @@ using Microsoft.AspNetCore.Hosting;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="IApiHostingStartup"/> Represents platform specific configuration that will be applied to a <see cref="IWebHostBuilder"/> when building an <see cref="IWebHost"/>.
-/// <remarks>AddControllers 或 AddControllersWithViews 之后注册的一些服务</remarks>
+/// <see cref="IHostInjection"/> Represents platform specific configuration that will be applied to a <see cref="IWebHostBuilder"/> when building an <see cref="IWebHost"/>.
+/// <para>主机注册</para>
+/// <remarks>AddControllers 或 AddControllersWithViews 之前注册的一些服务</remarks>
 /// </summary>
-public interface IApiHostingStartup
+[SuppressSniffer]
+public interface IHostInjection
 {
+    /// <summary>
+    /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
+    /// </summary>
+    int Order { get; }
+
     /// <summary>
     /// Configure the <see cref="IWebHostBuilder"/>.
     /// </summary>

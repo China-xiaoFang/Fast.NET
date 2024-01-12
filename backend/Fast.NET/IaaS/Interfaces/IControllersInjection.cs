@@ -12,39 +12,35 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using System.Collections;
+using Microsoft.AspNetCore.Hosting;
 
 // ReSharper disable once CheckNamespace
+
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="ITreeNode{TProperty}"/> 树基类
+/// <see cref="IControllersInjection"/> Represents platform specific configuration that will be applied to a <see cref="IWebHostBuilder"/> when building an <see cref="IWebHost"/>.
+/// <para>控制器注册</para>
+/// <remarks>AddControllers 或 AddControllersWithViews 之后注册的一些服务</remarks>
 /// </summary>
-/// <typeparam name="TProperty">Id属性类型</typeparam>
 [SuppressSniffer]
-public interface ITreeNode<out TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable
+public interface IControllersInjection
 {
     /// <summary>
-    /// 获取节点id
+    /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-    /// <returns></returns>
-    TProperty GetId();
+    int Order { get; }
 
     /// <summary>
-    /// 获取节点父id
+    /// Configure the <see cref="IWebHostBuilder"/>.
     /// </summary>
-    /// <returns></returns>
-    TProperty GetPid();
-
-    /// <summary>
-    /// 获取排序字段
-    /// </summary>
-    /// <returns></returns>
-    TProperty Sort();
-
-    /// <summary>
-    /// 设置Children
-    /// </summary>
-    /// <param name="children"></param>
-    void SetChildren(IList children);
+    /// <remarks>
+    /// Configure is intended to be called before user code, allowing a user to overwrite any changes made.
+    /// </remarks>
+    /// <param name="builder"></param>
+    void Configure(IWebHostBuilder builder);
 }

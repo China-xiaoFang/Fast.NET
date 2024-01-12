@@ -31,38 +31,24 @@ public static class WebApplicationBuilderExtension
     /// </summary>
     /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
     /// <returns></returns>
-    public static WebApplicationBuilder HostingInjection(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddHostInjection(this WebApplicationBuilder builder)
     {
         IWebHostBuilder webHostBuilder = builder.WebHost;
 
-        var iHostingStartupType = typeof(IHostingStartup);
+        var iHostStartupType = typeof(IHostInjection);
 
-        // 查找所有继承了 IHostingStartup 的类型
-        var iHostingStartupTypes = IaaSContext.EffectiveTypes.Where(wh =>
-            iHostingStartupType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
+        // 查找所有继承了 IHostInjection 的类型
+        var iHostStartupTypes = IaaSContext.EffectiveTypes.Where(wh =>
+            iHostStartupType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
         {
-            var hostingStartup = Activator.CreateInstance(sl) as IHostingStartup;
+            var hostInjection = Activator.CreateInstance(sl) as IHostInjection;
 
-            // 默认为 -1；
-            var order = -1;
-            // 尝试获取Order值
-            var orderProperty = sl.GetProperty("Order");
-
-            if (orderProperty != null && orderProperty.PropertyType == typeof(int))
-            {
-                var orderVal = orderProperty.GetValue(hostingStartup)?.ToString();
-                if (!orderVal.IsEmpty())
-                {
-                    order = orderVal.ParseToInt();
-                }
-            }
-
-            return new {Type = hostingStartup, Order = order};
+            return new {Type = hostInjection, Order = hostInjection?.Order ?? -1};
         }).OrderByDescending(ob => ob.Order).Select(sl => sl.Type);
 
-        foreach (var hostingStartup in iHostingStartupTypes)
+        foreach (var hostInjection in iHostStartupTypes)
         {
-            hostingStartup?.Configure(webHostBuilder);
+            hostInjection?.Configure(webHostBuilder);
         }
 
         return builder;
@@ -82,8 +68,8 @@ public static class WebApplicationBuilderExtension
         // 添加控制器
         builder.Services.AddControllers();
 
-        // 添加Api管道启动服务注册
-        builder.ApiHostingInjection();
+        // 添加控制器之后的服务注册
+        builder.AddControllersInjection();
 
         return builder;
     }
@@ -102,19 +88,19 @@ public static class WebApplicationBuilderExtension
         // 添加控制器
         builder.Services.AddControllersWithViews();
 
-        // 添加Api管道启动服务注册
-        builder.ApiHostingInjection();
+        // 添加控制器之后的服务注册
+        builder.AddControllersInjection();
 
         return builder;
     }
 
     /// <summary>
-    /// 添加Api管道启动服务注册
+    /// 添加控制器之后的服务注册
     /// <remarks>必须在 AddControllers 或 AddControllersWithViews 之后注册</remarks>
     /// </summary>
     /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
     /// <returns></returns>
-    public static WebApplicationBuilder ApiHostingInjection(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddControllersInjection(this WebApplicationBuilder builder)
     {
         IWebHostBuilder webHostBuilder = builder.WebHost;
 
@@ -124,38 +110,24 @@ public static class WebApplicationBuilderExtension
             if (services.All(a => a.ServiceType != typeof(ApplicationPartManager)))
             {
                 throw new InvalidOperationException(
-                    $"`{nameof(ApiHostingInjection)}` must be invoked after `AddControllers` or `AddControllersWithViews`.");
+                    $"`{nameof(AddControllersInjection)}` must be invoked after `AddControllers` or `AddControllersWithViews`.");
             }
         });
 
-        var iApiHostingStartupType = typeof(IApiHostingStartup);
+        var iControllersInjectionType = typeof(IControllersInjection);
 
-        // 查找所有继承了 IHostingStartup 的类型
-        var iApiHostingStartupTypes = IaaSContext.EffectiveTypes.Where(wh =>
-            iApiHostingStartupType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
+        // 查找所有继承了 IControllersInjection 的类型
+        var iControllersInjectionTypes = IaaSContext.EffectiveTypes.Where(wh =>
+            iControllersInjectionType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract).Select(sl =>
         {
-            var apiHostingStartup = Activator.CreateInstance(sl) as IApiHostingStartup;
+            var controllersInjection = Activator.CreateInstance(sl) as IControllersInjection;
 
-            // 默认为 -1；
-            var order = -1;
-            // 尝试获取Order值
-            var orderProperty = sl.GetProperty("Order");
-
-            if (orderProperty != null && orderProperty.PropertyType == typeof(int))
-            {
-                var orderVal = orderProperty.GetValue(apiHostingStartup)?.ToString();
-                if (!orderVal.IsEmpty())
-                {
-                    order = orderVal.ParseToInt();
-                }
-            }
-
-            return new {Type = apiHostingStartup, Order = order};
+            return new {Type = controllersInjection, Order = controllersInjection?.Order ?? -1};
         }).OrderByDescending(ob => ob.Order).Select(sl => sl.Type);
 
-        foreach (var apiHostingStartup in iApiHostingStartupTypes)
+        foreach (var controllersInjection in iControllersInjectionTypes)
         {
-            apiHostingStartup?.Configure(webHostBuilder);
+            controllersInjection?.Configure(webHostBuilder);
         }
 
         return builder;
