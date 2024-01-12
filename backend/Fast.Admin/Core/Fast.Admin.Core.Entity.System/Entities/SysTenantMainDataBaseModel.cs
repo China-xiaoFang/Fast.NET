@@ -19,11 +19,11 @@ using Fast.SqlSugar.Handlers;
 namespace Fast.Admin.Core.Entity.System.Entities;
 
 /// <summary>
-/// <see cref="SysTenantDataBaseModel"/> 系统租户数据库Model类
+/// <see cref="SysTenantMainDataBaseModel"/> 系统租户主数据库Model类
 /// </summary>
-[SugarTable("Sys_Tenant_Database", "系统租户数据库表")]
+[SugarTable("Sys_Tenant_Main_Database", "系统租户主数据库表")]
 [SugarDbType(FastDbTypeEnum.SysCore)]
-public class SysTenantDataBaseModel : BaseTEntity
+public class SysTenantMainDataBaseModel : BaseTEntity
 {
     /// <summary>
     /// 数据库类型
@@ -76,18 +76,6 @@ public class SysTenantDataBaseModel : BaseTEntity
     public string DbPwd { get; set; }
 
     /// <summary>
-    /// 系统数据库类型
-    /// </summary>
-    [SugarColumn(ColumnDescription = "系统数据库类型", ColumnDataType = "tinyint", IsNullable = false)]
-    public int SugarSysDbType { get; set; }
-
-    /// <summary>
-    /// 系统数据库类型名称
-    /// </summary>
-    [SugarColumn(ColumnDescription = "系统数据库类型名称", ColumnDataType = "Nvarchar(50)", IsNullable = true)]
-    public string SugarDbTypeName { get; set; }
-
-    /// <summary>
     /// 数据库类型，用于区分使用的是那个类型的数据库
     /// </summary>
     [SugarColumn(ColumnDescription = "数据库类型", ColumnDataType = "tinyint", IsNullable = false)]
@@ -117,4 +105,10 @@ public class SysTenantDataBaseModel : BaseTEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "差异日志", IsNullable = false)]
     public bool DisableAop { get; set; }
+
+    /// <summary>
+    /// 从库信息
+    /// </summary>
+    [Navigate(NavigateType.OneToMany, nameof(SysTenantSlaveDataBaseModel.MainId), nameof(Id))]
+    public List<SysTenantSlaveDataBaseModel> SlaveDataBaseList { get; set; }
 }

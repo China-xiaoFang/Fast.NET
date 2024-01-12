@@ -13,7 +13,6 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.Admin.Core.Constants;
-using Fast.Admin.Core.Enums;
 using Fast.JwtBearer.Services;
 
 namespace Fast.Admin.Core.Authentication;
@@ -57,12 +56,12 @@ public class User : IUser, IScopedDependency
     /// <summary>
     /// 部门Id
     /// </summary>
-    public long DepartmentId { get; set; }
+    public long DepartmentId { get; private set; }
 
     /// <summary>
     /// 部门名称
     /// </summary>
-    public string DepartmentName { get; set; }
+    public string DepartmentName { get; private set; }
 
     /// <summary>
     /// 是否超级管理员
@@ -82,47 +81,42 @@ public class User : IUser, IScopedDependency
     /// <summary>
     /// 最后登录设备
     /// </summary>
-    public string LastLoginDevice { get; internal set; }
+    public string LastLoginDevice { get; private set; }
 
     /// <summary>
     /// 最后登录操作系统（版本）
     /// </summary>
-    public string LastLoginOS { get; internal set; }
+    public string LastLoginOS { get; private set; }
 
     /// <summary>
     /// 最后登录浏览器（版本）
     /// </summary>
-    public string LastLoginBrowser { get; internal set; }
+    public string LastLoginBrowser { get; private set; }
 
     /// <summary>
     /// 最后登录省份
     /// </summary>
-    public string LastLoginProvince { get; internal set; }
+    public string LastLoginProvince { get; private set; }
 
     /// <summary>
     /// 最后登录城市
     /// </summary>
-    public string LastLoginCity { get; internal set; }
+    public string LastLoginCity { get; private set; }
 
     /// <summary>
     /// 最后登录Ip
     /// </summary>
-    public string LastLoginIp { get; internal set; }
+    public string LastLoginIp { get; private set; }
 
     /// <summary>
     /// 最后登录时间
     /// </summary>
-    public DateTime? LastLoginTime { get; internal set; }
+    public DateTime? LastLoginTime { get; private set; }
 
     /// <summary>
     /// App 运行环境
     /// </summary>
-    public AppEnvironmentEnum AppEnvironment { get; }
-
-    /// <summary>
-    /// 身份标识
-    /// </summary>
-    private const string IdTag = "IdTag";
+    public AppEnvironmentEnum AppEnvironment { get; private set; }
 
     private readonly ICache _cache;
 

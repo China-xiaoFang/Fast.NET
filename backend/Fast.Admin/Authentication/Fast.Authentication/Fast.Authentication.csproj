@@ -5,8 +5,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Fast.Cache" Version="3.4.13" />
-	  <PackageReference Include="Fast.Logging" Version="3.4.13" />
+	  <PackageReference Include="Fast.Cache" Version="3.4.15" />
+	  <PackageReference Include="Fast.Logging" Version="3.4.15" />
 	</ItemGroup>
 
 </Project>
