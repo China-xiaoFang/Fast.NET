@@ -2,14 +2,40 @@
 
 # Fast.NET（v3）
 
-一个 .NET 行业中从业5年的小菜鸟。
+一个 `.NET` 行业中从业 `N年` 的 `小菜鸟`。
+
+### 框架介绍
+
+一个快速构建项目，集百家所长，专注于 `Web Api` 应用，提供开箱即用的功能，并紧跟最新的前沿技术的 `.NET` 框架。
 
 | 名称 | 详情 |
 | --- | ---- |
-| [Fast.NET](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET) | 一个快速构建项目，集百家所长，专注于 Web Api 应用，提供开箱即用的功能，并紧跟最新的前沿技术的 .NET 框架。 |
-| [Fast.MicroGateway](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.MicroGateway) |  |
-| [Fast.Admin](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.Admin) |  |
-| [Fast.Web](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/frontend) |  |
+| [Fast.NET](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET) | 框架底层工具类 |
+| [Fast.MicroGateway](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.MicroGateway) | 微服务网关 |
+| [Fast.Admin](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.Admin) | 框架核心管理系统Api |
+| [Fast.Web](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/frontend) | 框架Web端 |
+
+### 技术选择
+
+- `Fast.NET` v3 版本采用 `C#10` 和 `.NET6` `.NET7` `.NET8` 进行开发。
+
+#### 项目特点：
+
+- **集百家所长**：集百家好用功能于一体。
+- **开箱即用**：提供众多黑科技，无需额外的配置或开发工作，可以快速构建项目。
+- **紧随前沿技术**：采用最新的技术和框架，始终保持与行业的最新趋势和发展同步。
+
+### 项目背景
+
+过去 `.NET` 在国内并没有很好的开源环境和社区，随着国内使用 `.NET` 的程序猿越来越多，慢慢的国内的开源环境和社区也越来越好。
+
+各种 `.NET` 开源框架，也应时代而生。
+
+本人作为在 `.NET` 行业中从业 `N年` 的 `小菜鸟`，也用过了很多开源的框架，所以想基于自己的工作经验和经历，为 `.NET` 开源做出一份小小的贡献。
+
+所以 `Fast.NET`（v3）诞生了。
+
+**持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！**
 
 ## 分支说明
 
@@ -30,7 +56,7 @@
 ```
 Apache开源许可证
 
-版权所有 © 2018-2023 1.8K仔
+版权所有 © 2018-2024 1.8K仔
 
 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -59,6 +85,11 @@ Apache开源许可证
 ## 免责申明
 
     请勿用于违反我国法律的项目上
+
+    本框架可以说是在各位前辈的基础上继续进行造轮子，只是比市面上的一些框架会更简洁，更方便。更好用我不知道是否能相谈。
+
+    还有一点关于最近 “Furion” 的商业化之路引起了很多人的关注，也包括我。在此本人不做任何的建议和意见。
+    只能说的是，如果您觉得好用，能用，那么您继续使用。如果您觉得不好用，不能用，那么可以使用别的框架，或者选择自己造轮子。
 
 ## 补充说明
 
