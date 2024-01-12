@@ -582,9 +582,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     private static void ConfigureActionUnifyResultAttribute(ActionModel action)
     {
         // 判断是否手动添加了标注或跳过规范化处理
-        var isSkipObj =
-            UnifyCheckSucceededNonUnifyMethod?.Invoke(null,
-                new object[] {null, action.ActionMethod, null, false});
+        var isSkipObj = UnifyCheckSucceededNonUnifyMethod?.Invoke(null, new object[] {null, action.ActionMethod, null, false});
 
         if (isSkipObj is true)
         {

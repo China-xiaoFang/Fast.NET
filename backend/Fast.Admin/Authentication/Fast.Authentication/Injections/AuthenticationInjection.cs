@@ -12,29 +12,26 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using Fast.CorsAccessor.Internal;
-using Fast.CorsAccessor.Options;
+using System.IO.Compression;
 using Fast.IaaS;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fast.CorsAccessor.Injections;
+namespace Fast.NET.Core.Injections;
 
 /// <summary>
-/// <see cref="CorsAccessorInjection"/> 跨域服务注册
-/// <remarks>默认解决跨域请求问题，默认允许所有来源</remarks>
+/// <see cref="AuthenticationInjection"/> Gzip压缩注入
 /// </summary>
-public class CorsAccessorInjection : IHostInjection
+public class AuthenticationInjection : IHostingStartup
 {
     /// <summary>
     /// 排序
-    /// <remarks>
-    /// <para>顺序越大，越优先注册</para>
-    /// <para>建议最大不超过9999</para>
-    /// </remarks>
     /// </summary>
-    public int Order => 69966;
+#pragma warning disable CA1822
+    public int Order => 69977;
+#pragma warning restore CA1822
 
     /// <summary>
     /// 配置
@@ -44,23 +41,17 @@ public class CorsAccessorInjection : IHostInjection
     {
         builder.ConfigureServices((hostContext, services) =>
         {
-            Debugging.Info("Registering cors accessor......");
-
-            // 配置验证
-            services.AddConfigurableOptions<CorsAccessorSettingsOptions>("CorsAccessorSettings");
-
-            // 获取跨域配置选项
-            var corsAccessorSettings = hostContext.Configuration.GetSection("CorsAccessorSettings")
-                .Get<CorsAccessorSettingsOptions>().LoadPostConfigure();
-
-            // 添加跨域服务
-            services.AddCors(options =>
+            Debugging.Info("Registering for the Gzip compression service......");
+            services.Configure<BrotliCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
+            services.Configure<GzipCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
+            services.AddResponseCompression(options =>
             {
-                // 添加策略跨域
-                options.AddPolicy(corsAccessorSettings.PolicyName, configurePolicy =>
+                options.EnableForHttps = true;
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
                 {
-                    // 设置跨域策略
-                    Penetrates.SetCorsPolicy(configurePolicy, corsAccessorSettings);
+                    "text/html; charset=utf-8", "application/xhtml+xml", "application/atom+xml", "image/svg+xml"
                 });
             });
         });

@@ -28,14 +28,16 @@ namespace Fast.SqlSugar.Injections;
 /// <summary>
 /// <see cref="SqlSugarInjection"/> SqlSugar服务注入
 /// </summary>
-public class SqlSugarInjection : IHostingStartup
+public class SqlSugarInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69888;
-#pragma warning restore CA1822
 
     /// <summary>
     /// 配置

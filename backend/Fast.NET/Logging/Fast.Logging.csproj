@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.NET 框架日志模块库。（将在后续的版本进行重构）</Description>
+		<Description>Fast.NET 框架日志模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">

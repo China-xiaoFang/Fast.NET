@@ -21,14 +21,17 @@ namespace Fast.Cache.Injections;
 /// <summary>
 /// <see cref="CacheInjection"/> 缓存注入
 /// </summary>
-public class CacheInjection : IHostingStartup
+public class CacheInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69911;
-#pragma warning restore CA1822
+
 
     /// <summary>
     /// 配置

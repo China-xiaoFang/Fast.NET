@@ -100,6 +100,10 @@
         <member name="P:Fast.Serialization.Injections.SerializationInjection.Order">
             <summary>
             排序
+            <remarks>
+            <para>顺序越大，越优先注册</para>
+            <para>建议最大不超过9999</para>
+            </remarks>
             </summary>
         </member>
         <member name="M:Fast.Serialization.Injections.SerializationInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">

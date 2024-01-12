@@ -13,10 +13,10 @@
 		<PackageVersion>$(Version)</PackageVersion>
 		<Authors>1.8K仔</Authors>
 		<Description>一个持续集百家所长 众多黑科技的 .NET Web应用框架。</Description>
-		<PackageTags>Fast;ASP.NET;dotNET China;Cross Platform;1.8K仔1</PackageTags>
-		<Product>Fast</Product>
-		<Copyright>版权所有 © 2018-2023 1.8K仔</Copyright>
-		<PackageProjectUrl>https://18kboy.icu</PackageProjectUrl>
+		<PackageTags>Fast.NET;ASP.NET;dotNET China;Cross Platform;1.8K仔</PackageTags>
+		<Product>Fast.NET</Product>
+		<Copyright>版权所有 © 2018-2024 1.8K仔</Copyright>
+		<PackageProjectUrl>https://fastdotnet.com</PackageProjectUrl>
 		<PackageIcon>Fast.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://gitee.com/Net-18K/fast.net</RepositoryUrl>
@@ -24,6 +24,8 @@
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<DocumentationFile>$(MSBuildProjectName).xml</DocumentationFile>
 		<GenerateResxSourceIncludeDefaultValues>true</GenerateResxSourceIncludeDefaultValues>
+		<!-- 解决多个SDK版本生成报错的问题 -->
+		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
 	</PropertyGroup>
 
 	<!-- NU1803 是为了解决使用 Http 源的Nuget包导致的警告 -->

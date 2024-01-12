@@ -24,14 +24,16 @@ namespace Fast.NET.Core.Injections;
 /// <summary>
 /// <see cref="GzipBrotliCompressionInjection"/> Gzip压缩注入
 /// </summary>
-public class GzipBrotliCompressionInjection : IHostingStartup
+public class GzipBrotliCompressionInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69977;
-#pragma warning restore CA1822
 
     /// <summary>
     /// 配置

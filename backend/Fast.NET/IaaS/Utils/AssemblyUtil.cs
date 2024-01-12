@@ -90,7 +90,7 @@ public static class AssemblyUtil
                 // 放入集合中
                 depsLibraryList.Add(new DepsLibrary(type, name, version, serviceable));
             }
-            
+
             // 读取项目程序集 或 第三方引用的包，或手动添加引用的dll，或配置特定的包前缀
             return depsLibraryList.Where(wh => (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) ||
                                                wh.Type == "package").Select(sl =>

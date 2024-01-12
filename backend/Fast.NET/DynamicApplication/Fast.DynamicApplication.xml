@@ -187,6 +187,10 @@
         <member name="P:Fast.DynamicApplication.Injections.DynamicApplicationInjection.Order">
             <summary>
             排序
+            <remarks>
+            <para>顺序越大，越优先注册</para>
+            <para>建议最大不超过9999</para>
+            </remarks>
             </summary>
         </member>
         <member name="M:Fast.DynamicApplication.Injections.DynamicApplicationInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">

@@ -63,7 +63,7 @@ public static class WebApplicationBuilderExtension
         ConfigureApplication(builder.WebHost);
 
         // 添加管道启动服务
-        builder.HostingInjection();
+        builder.AddHostInjection();
 
         return builder;
     }

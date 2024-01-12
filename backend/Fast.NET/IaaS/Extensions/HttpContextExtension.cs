@@ -314,7 +314,7 @@ public static class HttpContextExtension
 
             // 调用 Parser 类型 的 GetDefault() 方法
             var parser = uaParserParserGetDefaultMethod.Invoke(null, new object[] {null});
-            
+
             // 加载 Parser 类型 的 Parse() 方法，这里是 Public | HideBySig，但是我没有找到 HideBySig 所以直接获取吧
             var uaParserParserParseMethod = uaParserParserType.GetMethod("Parse");
 

@@ -24,14 +24,16 @@ namespace Fast.NET.Core.Injections;
 /// <see cref="ForwardedHeadersInjection"/> 反向代理头部注入
 /// <remarks>默认解决了“IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题”</remarks>
 /// </summary>
-public class ForwardedHeadersInjection : IHostingStartup
+public class ForwardedHeadersInjection : IHostInjection
 {
     /// <summary>
     /// 排序
+    /// <remarks>
+    /// <para>顺序越大，越优先注册</para>
+    /// <para>建议最大不超过9999</para>
+    /// </remarks>
     /// </summary>
-#pragma warning disable CA1822
     public int Order => 69988;
-#pragma warning restore CA1822
 
     /// <summary>
     /// 配置

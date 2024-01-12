@@ -21,6 +21,7 @@ namespace Fast.IaaS;
 /// <see cref="IPostConfigure"/> 后期配置接口
 /// <remarks>可在一些不能通过构造函数载入默认配置的地方进行加载默认配置</remarks>
 /// </summary>
+[SuppressSniffer]
 public interface IPostConfigure
 {
     /// <summary>

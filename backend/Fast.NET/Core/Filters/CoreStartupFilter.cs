@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Globalization;
 using Fast.IaaS;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -65,8 +66,7 @@ public class CoreStartupFilter : IStartupFilter
 
                     // 输出当前请求时间
                     context.Response.Headers.TryAdd(nameof(Fast) + "-Request-Time",
-                        DateTimeOffset.Now.ToString("dddd, zzz, yyyy-MM-dd HH:mm:ss.fffffff",
-                            new System.Globalization.CultureInfo("en-US")));
+                        DateTimeOffset.Now.ToString("dddd, zzz, yyyy-MM-dd HH:mm:ss.fffffff", new CultureInfo("en-US")));
 
                     // 执行下一个中间件
                     await next.Invoke();
