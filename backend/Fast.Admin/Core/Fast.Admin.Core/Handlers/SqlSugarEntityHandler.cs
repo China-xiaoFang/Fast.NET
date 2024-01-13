@@ -19,6 +19,9 @@ using Fast.Admin.Core.Entity.System.Entities;
 using Fast.Admin.Core.Enum.Common;
 using Fast.Admin.Core.Enum.Db;
 using Fast.Admin.Core.Enum.System;
+using Fast.Admin.Core.EventSubscriber.Sources;
+using Fast.Admin.Core.EventSubscriber.SysLogSql;
+using Fast.EventBus;
 using Fast.SqlSugar.Attributes;
 using Fast.SqlSugar.Commons;
 using Fast.SqlSugar.Handlers;
@@ -42,19 +45,22 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
     private readonly ISqlSugarClient _sqlSugarClient;
 
     private readonly HttpContext _httpContext;
+    private readonly IEventPublisher _eventPublisher;
     private readonly ILogger<ISqlSugarEntityHandler> _logger;
 
+
     public SqlSugarEntityHandler(ICache cache, ISqlSugarClient sqlSugarClient, IHttpContextAccessor httpContextAccessor,
-        ILogger<ISqlSugarEntityHandler> logger)
+        IEventPublisher eventPublisher, ILogger<ISqlSugarEntityHandler> logger)
     {
         _cache = cache;
         // 禁用当前SugarClient的AOP，不然会存在死循环的问题
         sqlSugarClient.Ado.IsEnableLogEvent = true;
         _sqlSugarClient = sqlSugarClient;
         _httpContext = httpContextAccessor.HttpContext;
+        _eventPublisher = eventPublisher;
         _logger = logger;
     }
-    
+
     /// <summary>
     /// 获取缓存连接字符串设置
     /// </summary>
@@ -67,7 +73,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
     /// <param name="isSystem"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    internal async Task<ConnectionSettingsOptions> GetCacheConnectionSettings(HttpContext httpContext, ICache cache,
+    private async Task<ConnectionSettingsOptions> GetCacheConnectionSettings(HttpContext httpContext, ICache cache,
         ISqlSugarClient sqlSugarClient, ILogger<ISqlSugarEntityHandler> logger, FastDbTypeEnum fastDbType, long tenantId,
         YesOrNotEnum isSystem)
     {
@@ -110,31 +116,21 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
     }
 
     /// <summary>
-    /// 获取日志上下文
+    /// 获取日志库连接配置
     /// </summary>
     /// <param name="httpContext"></param>
     /// <param name="cache"></param>
     /// <param name="sqlSugarClient"></param>
     /// <param name="logger"></param>
     /// <returns></returns>
-    internal async Task<ISqlSugarClient> GetLogSqlSugarClient(HttpContext httpContext, ICache cache,
+    private async Task<ConnectionConfig> GetLogSqlSugarClient(HttpContext httpContext, ICache cache,
         ISqlSugarClient sqlSugarClient, ILogger<ISqlSugarEntityHandler> logger)
     {
         // 获取系统日志库连接字符串配置
         var logConnectionSettings = await GetCacheConnectionSettings(httpContext, cache, sqlSugarClient, logger,
             FastDbTypeEnum.SysCoreLog, SystemConst.DefaultSystemTenantId, YesOrNotEnum.Y);
 
-        // 类型转换
-        var _db = sqlSugarClient as SqlSugarClient;
-
-        // 判断是否日志库是否存在与当前上下文中
-        if (!_db!.IsAnyConnection(logConnectionSettings.ConnectionId))
-        {
-            // 不存在添加
-            _db.AddConnection(SqlSugarContext.GetConnectionConfig(logConnectionSettings));
-        }
-
-        return _db.GetConnection(logConnectionSettings.ConnectionId);
+        return SqlSugarContext.GetConnectionConfig(logConnectionSettings);
     }
 
     /// <summary>
@@ -152,14 +148,15 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
             return default;
         }
     }
-    
+
     /// <summary>根据实体类型获取连接字符串</summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="sqlSugarClient"><see cref="T:SqlSugar.ISqlSugarClient" /> 默认库SqlSugar客户端</param>
     /// <param name="sugarDbType">实体类头部的 <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute" /> 特性，如果不存在可能为空</param>
     /// <param name="entityType"><see cref="T:System.Type" /> 实体类型</param>
     /// <returns></returns>
-    public async Task<ConnectionSettingsOptions> GetConnectionSettings<TEntity>(ISqlSugarClient sqlSugarClient, SugarDbTypeAttribute sugarDbType, Type entityType)
+    public async Task<ConnectionSettingsOptions> GetConnectionSettings<TEntity>(ISqlSugarClient sqlSugarClient,
+        SugarDbTypeAttribute sugarDbType, Type entityType)
     {
         // 获取枚举字符串
         var fastDbTypeStr = sugarDbType.Type?.ToString();
@@ -230,8 +227,6 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         });
     }
 
-    // TODO:这里如果使用事件总线好像会存在获取不到日志库的问题，嗯...先这样吧，摆烂
-
     /// <summary>执行Sql</summary>
     /// <param name="rawSql"><see cref="T:System.String" /> 原始Sql语句</param>
     /// <param name="parameters"><see cref="T:SqlSugar.SugarParameter" /> Sql参数</param>
@@ -240,8 +235,8 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
     /// <returns></returns>
     public async Task ExecuteAsync(string rawSql, SugarParameter[] parameters, TimeSpan executionTime, string handlerSql)
     {
-        // 获取日志上下文
-        var _db = await GetLogSqlSugarClient();
+        // 获取日志库连接配置
+        var logConnectionConfig = await GetLogSqlSugarClient(_httpContext, _cache, _sqlSugarClient, _logger);
 
         var _user = GetUser();
 
@@ -265,8 +260,9 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         };
         sysLogSqlExecModel.RecordCreate(_httpContext);
 
-        // 保存数据
-        await _db.Insertable(sysLogSqlExecModel).ExecuteCommandAsync();
+        // 事件总线执行日志
+        await _eventPublisher.PublishAsync(new SqlSugarChannelEventSource(SysLogSqlEventSubscriberEnum.AddExecuteLog,
+            logConnectionConfig, sysLogSqlExecModel));
     }
 
     /// <summary>执行Sql超时</summary>
@@ -282,8 +278,8 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
     public async Task ExecuteTimeoutAsync(string fileName, int fileLine, string methodName, string rawSql,
         SugarParameter[] parameters, TimeSpan executeTime, string handlerSql, string message)
     {
-        // 获取日志上下文
-        var _db = await GetLogSqlSugarClient();
+        // 获取日志库连接配置
+        var logConnectionConfig = await GetLogSqlSugarClient(_httpContext, _cache, _sqlSugarClient, _logger);
 
         var _user = GetUser();
 
@@ -311,8 +307,9 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         };
         sysLogSqlTimeoutModel.RecordCreate(_httpContext);
 
-        // 保存数据
-        await _db.Insertable(sysLogSqlTimeoutModel).ExecuteCommandAsync();
+        // 事件总线执行日志
+        await _eventPublisher.PublishAsync(new SqlSugarChannelEventSource(SysLogSqlEventSubscriberEnum.AddTimeoutLog,
+            logConnectionConfig, sysLogSqlTimeoutModel));
     }
 
     /// <summary>执行Sql差异</summary>
@@ -331,8 +328,8 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         List<List<DiffLogColumnInfo>> beforeColumnList, List<List<DiffLogColumnInfo>> afterColumnList, string rawSql,
         SugarParameter[] parameters, TimeSpan? executeTime, string handlerSql)
     {
-        // 获取日志上下文
-        var _db = await GetLogSqlSugarClient();
+        // 获取日志库连接配置
+        var logConnectionConfig = await GetLogSqlSugarClient(_httpContext, _cache, _sqlSugarClient, _logger);
 
         var _user = GetUser();
 
@@ -371,8 +368,9 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         };
         sysLogSqlDiffModel.RecordCreate(_httpContext);
 
-        // 保存数据
-        await _db.Insertable(sysLogSqlDiffModel).ExecuteCommandAsync();
+        // 事件总线执行日志
+        await _eventPublisher.PublishAsync(new SqlSugarChannelEventSource(SysLogSqlEventSubscriberEnum.AddDiffLog,
+            logConnectionConfig, sysLogSqlDiffModel));
     }
 
     /// <summary>执行Sql错误</summary>
@@ -387,8 +385,8 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
     public async Task ExecuteErrorAsync(string fileName, int fileLine, string methodName, string rawSql,
         SugarParameter[] parameters, string handlerSql, string message)
     {
-        // 获取日志上下文
-        var _db = await GetLogSqlSugarClient();
+        // 获取日志库连接配置
+        var logConnectionConfig = await GetLogSqlSugarClient(_httpContext, _cache, _sqlSugarClient, _logger);
 
         var _user = GetUser();
 
@@ -415,8 +413,9 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         };
         sysLogSqlExModel.RecordCreate(_httpContext);
 
-        // 保存数据
-        await _db.Insertable(sysLogSqlExModel).ExecuteCommandAsync();
+        // 事件总线执行日志
+        await _eventPublisher.PublishAsync(new SqlSugarChannelEventSource(SysLogSqlEventSubscriberEnum.AddErrorLog,
+            logConnectionConfig, sysLogSqlExModel));
     }
 
     /// <summary>指派租户Id</summary>

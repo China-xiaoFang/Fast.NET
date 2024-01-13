@@ -279,11 +279,6 @@
             App 运行环境
             </summary>
         </member>
-        <member name="F:Fast.Admin.Core.Authentication.User.IdTag">
-            <summary>
-            身份标识
-            </summary>
-        </member>
         <member name="M:Fast.Admin.Core.Authentication.User.SetAuthUser(Fast.Admin.Core.Authentication.AuthUserInfo)">
             <summary>
             设置授权用户
@@ -397,39 +392,113 @@
             默认管理员密码
             </summary>
         </member>
-        <member name="T:Fast.Admin.Core.Enums.AppEnvironmentEnum">
+        <member name="T:Fast.Admin.Core.EventSubscriber.Policies.EventFallbackPolicy">
             <summary>
-            <see cref="T:Fast.Admin.Core.Enums.AppEnvironmentEnum"/> App运行环境枚举
+            <see cref="T:Fast.Admin.Core.EventSubscriber.Policies.EventFallbackPolicy"/> 事件重试失败回调服务提供者
             </summary>
         </member>
-        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.Web">
+        <member name="M:Fast.Admin.Core.EventSubscriber.Policies.EventFallbackPolicy.CallbackAsync(Fast.EventBus.Contexts.EventHandlerExecutingContext,System.Exception)">
+            <summary>重试失败回调</summary>
+            <param name="context"></param>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource">
             <summary>
-            网页
+            <see cref="T:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource"/> SqlSugar事件总线载体
             </summary>
         </member>
-        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.Pc">
+        <member name="P:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource.EventId">
             <summary>
-            PC
+            事件 Id
             </summary>
         </member>
-        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.WeChatMiniProgram">
+        <member name="P:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource.Payload">
             <summary>
-            微信小程序
+            事件承载（携带）数据
             </summary>
         </member>
-        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.AndroidApp">
+        <member name="P:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource.CreatedTime">
             <summary>
-            安卓App
+            事件创建时间
             </summary>
         </member>
-        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.IOSApp">
+        <member name="P:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource.CancellationToken">
             <summary>
-            IOSApp
+            取消任务 Token
+            </summary>
+            <remarks>用于取消本次消息处理</remarks>
+        </member>
+        <member name="P:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource.ConnectionConfig">
+            <summary>
+            SqlSugar连接配置
             </summary>
         </member>
-        <member name="F:Fast.Admin.Core.Enums.AppEnvironmentEnum.Other">
+        <member name="M:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource.#ctor(Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriberEnum,SqlSugar.ConnectionConfig,System.Object)">
             <summary>
-            其他
+            <see cref="T:Fast.Admin.Core.EventSubscriber.Sources.SqlSugarChannelEventSource"/> SqlSugar事件总线载体
+            </summary>
+            <param name="eventId"></param>
+            <param name="connectionConfig"></param>
+            <param name="payload"></param>
+        </member>
+        <member name="T:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriber">
+            <summary>
+            <see cref="T:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriber"/> 系统Sql日志事件订阅者
+            <remarks>这里为什么不写成同一个是为了方便查找问题</remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriber.AddExecuteLog(Fast.EventBus.Contexts.EventHandlerExecutingContext)">
+            <summary>
+            添加Sql执行日志
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriber.AddTimeoutLog(Fast.EventBus.Contexts.EventHandlerExecutingContext)">
+            <summary>
+            添加Sql执行超时日志
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriber.AddDiffLog(Fast.EventBus.Contexts.EventHandlerExecutingContext)">
+            <summary>
+            添加Sql执行差异日志
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriber.AddErrorLog(Fast.EventBus.Contexts.EventHandlerExecutingContext)">
+            <summary>
+            添加Sql执行错误日志
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriberEnum">
+            <summary>
+            系统Sql日志事件订阅枚举
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriberEnum.AddExecuteLog">
+            <summary>
+            添加执行日志
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriberEnum.AddTimeoutLog">
+            <summary>
+            添加超时日志
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriberEnum.AddDiffLog">
+            <summary>
+            添加差异日志
+            </summary>
+        </member>
+        <member name="F:Fast.Admin.Core.EventSubscriber.SysLogSql.SysLogSqlEventSubscriberEnum.AddErrorLog">
+            <summary>
+            添加执行错误日志
             </summary>
         </member>
         <member name="T:Fast.Admin.Core.Handlers.JwtBearerHandle">
@@ -487,20 +556,28 @@
             这里为了防止死循环 Aop 的发生，直接注入 ISqlSugarClient，并且禁用 Aop 处理
             </summary>
         </member>
-        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetCacheConnectionSettings(Fast.Admin.Core.Enum.Db.FastDbTypeEnum,System.Int64,Fast.Admin.Core.Enum.Common.YesOrNotEnum)">
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetCacheConnectionSettings(Microsoft.AspNetCore.Http.HttpContext,Fast.Cache.ICache,SqlSugar.ISqlSugarClient,Microsoft.Extensions.Logging.ILogger{Fast.SqlSugar.Handlers.ISqlSugarEntityHandler},Fast.Admin.Core.Enum.Db.FastDbTypeEnum,System.Int64,Fast.Admin.Core.Enum.Common.YesOrNotEnum)">
             <summary>
             获取缓存连接字符串设置
             </summary>
+            <param name="httpContext"></param>
+            <param name="cache"></param>
+            <param name="sqlSugarClient"></param>
+            <param name="logger"></param>
             <param name="fastDbType"></param>
             <param name="tenantId"></param>
             <param name="isSystem"></param>
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetLogSqlSugarClient">
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetLogSqlSugarClient(Microsoft.AspNetCore.Http.HttpContext,Fast.Cache.ICache,SqlSugar.ISqlSugarClient,Microsoft.Extensions.Logging.ILogger{Fast.SqlSugar.Handlers.ISqlSugarEntityHandler})">
             <summary>
-            获取日志上下文
+            获取日志库连接配置
             </summary>
+            <param name="httpContext"></param>
+            <param name="cache"></param>
+            <param name="sqlSugarClient"></param>
+            <param name="logger"></param>
             <returns></returns>
         </member>
         <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetUser">
@@ -509,11 +586,12 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute)">
+        <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute,System.Type)">
             <summary>根据实体类型获取连接字符串</summary>
             <typeparam name="TEntity"></typeparam>
             <param name="sqlSugarClient"><see cref="T:SqlSugar.ISqlSugarClient" /> 默认库SqlSugar客户端</param>
             <param name="sugarDbType">实体类头部的 <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute" /> 特性，如果不存在可能为空</param>
+            <param name="entityType"><see cref="T:System.Type" /> 实体类型</param>
             <returns></returns>
         </member>
         <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.ExecuteAsync(System.String,SqlSugar.SugarParameter[],System.TimeSpan,System.String)">
@@ -588,6 +666,36 @@
         <member name="M:Fast.Admin.Core.Handlers.SqlSugarEntityHandler.IsAdmin">
             <summary>是否为管理员</summary>
             <returns></returns>
+        </member>
+        <member name="T:Fast.Admin.Core.Providers.UnifyResponseProvider">
+            <summary>
+            <see cref="T:Fast.Admin.Core.Providers.UnifyResponseProvider"/> 规范化响应数据提供器
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Core.Providers.UnifyResponseProvider.ResponseExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,Fast.UnifyResult.Metadatas.ExceptionMetadata,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>响应异常处理</summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext" /></param>
+            <param name="metadata"><see cref="T:Fast.UnifyResult.Metadatas.ExceptionMetadata" /> 异常元数据</param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> 请求上下文</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Providers.UnifyResponseProvider.ResponseDataAsync(System.Int64,System.Object,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            响应数据处理
+            <remarks>只有响应成功且为正常返回才会调用</remarks>
+            </summary>
+            <param name="timestamp"><see cref="T:System.Int64" /> 响应时间戳</param>
+            <param name="data"><see cref="T:System.Object" /> 数据</param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> 请求上下文</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Admin.Core.Providers.UnifyResponseProvider.RecordHttpRequestData(Microsoft.AspNetCore.Http.HttpContext,System.Exception,System.String)">
+            <summary>
+            记录 Http 请求错误数据
+            </summary>
+            <param name="httpContent"></param>
+            <param name="exception"></param>
+            <param name="message"></param>
         </member>
     </members>
 </doc>
