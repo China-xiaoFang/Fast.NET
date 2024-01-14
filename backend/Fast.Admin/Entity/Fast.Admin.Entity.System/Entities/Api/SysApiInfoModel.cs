@@ -1,4 +1,6 @@
-﻿namespace Fast.Core.AdminModel.Sys.Api;
+﻿using Fast.Admin.Core.Enum.Http;
+
+namespace Fast.Core.AdminModel.Sys.Api;
 
 /// <summary>
 /// 系统接口信息表Model类

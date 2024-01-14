@@ -1,4 +1,7 @@
-﻿namespace Fast.Core.AdminModel.Sys.Menu;
+﻿using Fast.Admin.Core.Enum.Common;
+using Fast.Admin.Core.Enum.System;
+
+namespace Fast.Core.AdminModel.Sys.Menu;
 
 /// <summary>
 /// 系统模块表Model类
