@@ -11,13 +11,13 @@ builder.AddControllers();
 
 var app = builder.Build();
 
-// Mandatory Https.
-app.UseHttpsRedirection();
+//// Mandatory Https.
+//app.UseHttpsRedirection();
 
-app.UseStaticFiles();
+//app.UseStaticFiles();
 
-// Enable backward reading.
-app.EnableBuffering();
+//// Enable backward reading.
+//app.EnableBuffering();
 
 app.UseRouting();
 
