@@ -31,17 +31,17 @@ public class ConnectionSettingsOptions : DbConnectionInfo
     [SugarColumn(IsIgnore = true)]
     public string ConnectionId { get; set; }
 
-    /// <summary>
-    /// 系统数据库类型
-    /// </summary>
-    [SugarColumn(ColumnDescription = "系统数据库类型", ColumnDataType = "tinyint", IsNullable = false)]
-    public int SugarSysDbType { get; set; }
+    ///// <summary>
+    ///// 系统数据库类型
+    ///// </summary>
+    //[SugarColumn(ColumnDescription = "系统数据库类型", ColumnDataType = "tinyint", IsNullable = false)]
+    //public int SugarSysDbType { get; set; }
 
-    /// <summary>
-    /// 系统数据库类型名称
-    /// </summary>
-    [SugarColumn(ColumnDescription = "系统数据库类型名称", ColumnDataType = "NVARCHAR(50)", IsNullable = true)]
-    public string SugarDbTypeName { get; set; }
+    ///// <summary>
+    ///// 系统数据库类型名称
+    ///// </summary>
+    //[SugarColumn(ColumnDescription = "系统数据库类型名称", ColumnDataType = "NVARCHAR(50)", IsNullable = true)]
+    //public string SugarDbTypeName { get; set; }
 
     /// <summary>
     /// 数据库类型，用于区分使用的是那个类型的数据库
