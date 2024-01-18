@@ -12,49 +12,30 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-using System.ComponentModel;
-
-namespace Fast.Admin.Core.Enums;
+namespace Fast.Admin.Core.EventSubscriber.SysLogSql;
 
 /// <summary>
-/// <see cref="AppEnvironmentEnum"/> App运行环境枚举
+/// 系统Sql日志事件订阅枚举
 /// </summary>
-[SuppressSniffer, FastEnum("App运行环境", "AppEnvironment")]
-public enum AppEnvironmentEnum
+public enum SysLogSqlEventSubscriberEnum
 {
     /// <summary>
-    /// 网页
+    /// 添加执行日志
     /// </summary>
-    [Description("网页")]
-    Web = 1,
+    AddExecuteLog,
 
     /// <summary>
-    /// PC
+    /// 添加超时日志
     /// </summary>
-    [Description("PC")]
-    Pc = 2,
+    AddTimeoutLog,
 
     /// <summary>
-    /// 微信小程序
+    /// 添加差异日志
     /// </summary>
-    [Description("微信小程序")]
-    WeChatMiniProgram = 4,
+    AddDiffLog,
 
     /// <summary>
-    /// 安卓App
+    /// 添加执行错误日志
     /// </summary>
-    [Description("安卓App")]
-    AndroidApp = 8,
-
-    /// <summary>
-    /// IOSApp
-    /// </summary>
-    [Description("IOSApp")]
-    IOSApp = 16,
-
-    /// <summary>
-    /// 其他
-    /// </summary>
-    [Description("其他")]
-    Other = 512,
+    AddErrorLog,
 }

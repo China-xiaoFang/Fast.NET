@@ -37,4 +37,9 @@ public sealed class SqlSugarEntityInfo
     /// 实体类型
     /// </summary>
     public Type EntityType { get; set; }
+
+    /// <summary>
+    /// 是否分表
+    /// </summary>
+    public bool IsSplitTable { get; set; }
 }

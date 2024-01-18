@@ -887,6 +887,11 @@
             实体类型
             </summary>
         </member>
+        <member name="P:Fast.SqlSugar.SqlSugarEntityInfo.IsSplitTable">
+            <summary>
+            是否分表
+            </summary>
+        </member>
         <member name="T:Fast.SqlSugar.SqlSugarPageInput">
             <summary>
             <see cref="T:Fast.SqlSugar.SqlSugarPageInput"/> SqlSugar 统一分页输入
@@ -980,16 +985,6 @@
         <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.ConnectionId">
             <summary>
             SqlSugarClient 连接Id
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.SugarSysDbType">
-            <summary>
-            系统数据库类型
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.SugarDbTypeName">
-            <summary>
-            系统数据库类型名称
             </summary>
         </member>
         <member name="P:Fast.SqlSugar.Options.ConnectionSettingsOptions.DbType">

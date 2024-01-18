@@ -109,8 +109,8 @@ public class SysTenantModel : BaseEntity
     /// <summary>
     /// 数据库信息
     /// </summary>
-    [Navigate(NavigateType.OneToMany, nameof(SysTenantDataBaseModel.TenantId), nameof(Id))]
-    public List<SysTenantDataBaseModel> DataBaseList { get; set; }
+    [Navigate(NavigateType.OneToMany, nameof(SysTenantMainDataBaseModel.TenantId), nameof(Id))]
+    public List<SysTenantMainDataBaseModel> DataBaseList { get; set; }
 
     ///// <summary>
     ///// 系统管理员用户

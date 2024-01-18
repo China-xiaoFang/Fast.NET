@@ -13,6 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 
+using System.Reflection;
 using Fast.IaaS;
 using Fast.SqlSugar.DataBaseUtils;
 using Fast.SqlSugar.Extensions;
@@ -67,11 +68,14 @@ public sealed class SqlSugarContext
                 {
                     var sqlSugarTableAttribute = sl.GetSugarTableAttribute();
 
+                    var splitTableAttribute = sl.GetCustomAttribute<SplitTableAttribute>();
+
                     return new SqlSugarEntityInfo
                     {
                         TableName = sqlSugarTableAttribute?.TableName ?? sl.Name,
                         TableDescription = sqlSugarTableAttribute?.TableDescription,
-                        EntityType = sl
+                        EntityType = sl,
+                        IsSplitTable = splitTableAttribute != null,
                     };
                 }).ToList();
 

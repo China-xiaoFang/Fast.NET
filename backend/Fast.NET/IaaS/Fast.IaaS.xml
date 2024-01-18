@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.Iaas</name>
+        <name>Fast.IaaS</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -3162,6 +3162,26 @@
             </summary>
         </member>
         <member name="M:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.EnumRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.EnumRequiredAttribute"/> 验证 <see cref="T:System.Enum"/> 类型属性必填
+            <remarks>默认验证当前值是否在枚举值中，如果需要验证其余的逻辑，请自行验证</remarks>
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.EnumRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            <remarks>常用于默认的枚举值为 None = 0，但是不允许选择的问题</remarks>
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.EnumRequiredAttribute.IsValid(System.Object)">
             <summary>Determines whether the specified value of the object is valid.</summary>
             <param name="value">The value of the object to validate.</param>
             <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>

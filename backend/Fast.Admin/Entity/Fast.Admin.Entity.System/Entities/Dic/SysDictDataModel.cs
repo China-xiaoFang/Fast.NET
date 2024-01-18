@@ -1,4 +1,5 @@
-﻿
+﻿using Fast.Admin.Core.Enum.Common;
+
 namespace Fast.Core.AdminModel.Sys.Dic;
 
 /// <summary>
@@ -15,22 +16,16 @@ public class SysDictDataModel : BaseEntity
     public long TypeId { get; set; }
 
     /// <summary>
-    /// 中文值
+    /// 名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "中文名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string ChValue { get; set; }
+    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string Name { get; set; }
 
     /// <summary>
-    /// 英文值
+    /// 值
     /// </summary>
-    [SugarColumn(ColumnDescription = "英文名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string EnValue { get; set; }
-
-    /// <summary>
-    /// 编码
-    /// </summary>
-    [SugarColumn(ColumnDescription = "编码", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string Code { get; set; }
+    [SugarColumn(ColumnDescription = "值", ColumnDataType = "Nvarchar(200)", IsNullable = false)]
+    public string Value { get; set; }
 
     /// <summary>
     /// 顺序
@@ -49,4 +44,10 @@ public class SysDictDataModel : BaseEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "状态", ColumnDataType = "tinyint", IsNullable = false)]
     public CommonStatusEnum Status { get; set; } = CommonStatusEnum.Enable;
+
+    /// <summary>
+    /// 字典类型
+    /// </summary>
+    [Navigate(NavigateType.OneToOne, nameof(TypeId))]
+    public virtual SysDictTypeModel DictType { get; set; }
 }

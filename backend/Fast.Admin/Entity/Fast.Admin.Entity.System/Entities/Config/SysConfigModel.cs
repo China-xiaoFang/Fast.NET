@@ -1,5 +1,4 @@
-﻿
-namespace Fast.Core.AdminModel.Sys.Config;
+﻿namespace Fast.Core.AdminModel.Sys.Config;
 
 /// <summary>
 /// 系统配置表Model类
@@ -16,20 +15,26 @@ public class SysConfigModel : BaseEntity
     public string Code { get; set; }
 
     /// <summary>
-    /// 中文名称
+    /// 名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "中文名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string ChName { get; set; }
-
-    /// <summary>
-    /// 英文名称
-    /// </summary>
-    [SugarColumn(ColumnDescription = "英文名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
-    public string EnName { get; set; }
+    [SugarColumn(ColumnDescription = "名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    public string Name { get; set; }
 
     /// <summary>
     /// 值
     /// </summary>
     [SugarColumn(ColumnDescription = "值", ColumnDataType = "Nvarchar(200)", IsNullable = false)]
     public string Value { get; set; }
+
+    /// <summary>
+    /// 描述
+    /// </summary>
+    [SugarColumn(ColumnDescription = "描述", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    public string Description { get; set; }
+
+    /// <summary>
+    /// 备注
+    /// </summary>
+    [SugarColumn(ColumnDescription = "备注", ColumnDataType = "Nvarchar(200)", IsNullable = true)]
+    public string Remark { get; set; }
 }

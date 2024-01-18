@@ -1,4 +1,7 @@
-﻿namespace Fast.Core.AdminModel.Sys;
+﻿using Fast.Admin.Core.Enum.Common;
+using Fast.Admin.Core.Enum.System;
+
+namespace Fast.Core.AdminModel.Sys;
 
 /// <summary>
 /// 系统应用本地化表Model类
