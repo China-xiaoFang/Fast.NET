@@ -5,7 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Fast.SqlSugar" Version="3.4.15" />
+		<PackageReference Include="Fast.SqlSugar" Version="3.4.17.1" />
 	</ItemGroup>
 
 </Project>

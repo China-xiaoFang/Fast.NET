@@ -12,6 +12,8 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.Admin.Core.Entity.System.Account;
+
 namespace Fast.Admin.Core.Authentication;
 
 /// <summary>
@@ -38,12 +40,12 @@ public interface IUser
     /// <summary>
     /// 用户账号
     /// </summary>
-    string UserAccount { get; }
+    string Account { get; }
 
     /// <summary>
     /// 用户工号
     /// </summary>
-    string UserJobNo { get; }
+    string JobNumber { get; }
 
     /// <summary>
     /// 用户名称
@@ -81,11 +83,11 @@ public interface IUser
     AppEnvironmentEnum AppEnvironment { get; }
 
     /// <summary>
-    /// 统一登录
+    /// 刷新登录信息
     /// </summary>
-    /// <param name="authUserInfo"></param>
+    /// <param name="authUserInfo"><see cref="SysTenantAccountModel"/> 租户系统账户信息</param>
     /// <returns></returns>
-    Task Login(AuthUserInfo authUserInfo);
+    Task Refresh(SysTenantAccountModel authUserInfo);
 
     /// <summary>
     /// 统一退出登录

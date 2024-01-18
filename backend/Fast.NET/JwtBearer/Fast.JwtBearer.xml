@@ -390,11 +390,6 @@
             <see cref="T:Fast.JwtBearer.Services.JwtBearerCryptoService"/> JwtBearer 加密解密服务
             </summary>
         </member>
-        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.#ctor(Microsoft.Extensions.Options.IOptions{Fast.JwtBearer.Options.JWTSettingsOptions})">
-            <summary>
-            <see cref="T:Fast.JwtBearer.Services.JwtBearerCryptoService"/> JwtBearer 加密解密服务
-            </summary>
-        </member>
         <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.GenerateToken(System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.Int64})">
             <summary>
             生成 Token

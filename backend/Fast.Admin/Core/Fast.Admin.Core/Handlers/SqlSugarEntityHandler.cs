@@ -15,19 +15,16 @@
 using Fast.Admin.Core.Authentication;
 using Fast.Admin.Core.Constants;
 using Fast.Admin.Core.Entity.Log.Entities;
-using Fast.Admin.Core.Entity.System.Entities;
 using Fast.Admin.Core.Enum.Common;
 using Fast.Admin.Core.Enum.Db;
 using Fast.Admin.Core.Enum.System;
 using Fast.Admin.Core.EventSubscriber.Sources;
 using Fast.Admin.Core.EventSubscriber.SysLogSql;
+using Fast.Admin.Core.Services;
 using Fast.EventBus;
 using Fast.SqlSugar.Attributes;
-using Fast.SqlSugar.Commons;
 using Fast.SqlSugar.Handlers;
 using Fast.SqlSugar.Options;
-using Mapster;
-using Microsoft.Extensions.Logging;
 using SqlSugar;
 
 namespace Fast.Admin.Core.Handlers;
@@ -37,100 +34,16 @@ namespace Fast.Admin.Core.Handlers;
 /// </summary>
 public class SqlSugarEntityHandler : ISqlSugarEntityHandler
 {
-    private readonly ICache _cache;
-
-    /// <summary>
-    /// 这里为了防止死循环 Aop 的发生，直接注入 ISqlSugarClient，并且禁用 Aop 处理
-    /// </summary>
-    private readonly ISqlSugarClient _sqlSugarClient;
-
     private readonly HttpContext _httpContext;
+    private readonly ISqlSugarEntityService _sqlSugarEntityService;
     private readonly IEventPublisher _eventPublisher;
-    private readonly ILogger<ISqlSugarEntityHandler> _logger;
 
-
-    public SqlSugarEntityHandler(ICache cache, ISqlSugarClient sqlSugarClient, IHttpContextAccessor httpContextAccessor,
-        IEventPublisher eventPublisher, ILogger<ISqlSugarEntityHandler> logger)
+    public SqlSugarEntityHandler(IHttpContextAccessor httpContextAccessor, ISqlSugarEntityService sqlSugarEntityService,
+        IEventPublisher eventPublisher)
     {
-        _cache = cache;
-        // 禁用当前SugarClient的AOP，不然会存在死循环的问题
-        sqlSugarClient.Ado.IsEnableLogEvent = true;
-        _sqlSugarClient = sqlSugarClient;
         _httpContext = httpContextAccessor.HttpContext;
+        _sqlSugarEntityService = sqlSugarEntityService;
         _eventPublisher = eventPublisher;
-        _logger = logger;
-    }
-
-    /// <summary>
-    /// 获取缓存连接字符串设置
-    /// </summary>
-    /// <param name="httpContext"></param>
-    /// <param name="cache"></param>
-    /// <param name="sqlSugarClient"></param>
-    /// <param name="logger"></param>
-    /// <param name="fastDbType"></param>
-    /// <param name="tenantId"></param>
-    /// <param name="isSystem"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    private async Task<ConnectionSettingsOptions> GetCacheConnectionSettings(HttpContext httpContext, ICache cache,
-        ISqlSugarClient sqlSugarClient, ILogger<ISqlSugarEntityHandler> logger, FastDbTypeEnum fastDbType, long tenantId,
-        YesOrNotEnum isSystem)
-    {
-        // 禁用当前SugarClient的AOP，不然会存在死循环的问题
-        sqlSugarClient.Ado.IsEnableLogEvent = true;
-
-        // 获取缓存Key
-        var cacheKey = CacheConst.GetCacheKey(CacheConst.TenantDataBaseInfo, tenantId, System.Enum.GetName(fastDbType));
-
-        // 优先从 HttpContext.Items 中获取
-        var connectionSettingsObj =
-            httpContext.Items[nameof(Fast) + nameof(ConnectionSettingsOptions) + System.Enum.GetName(fastDbType)];
-
-        if (connectionSettingsObj is ConnectionSettingsOptions connectionSettings)
-        {
-            return connectionSettings;
-        }
-
-        return await cache.GetAndSetAsync(cacheKey, async () =>
-        {
-            var sysTenantDataBaseModel = await sqlSugarClient.Queryable<SysTenantMainDataBaseModel>().Where(wh =>
-                    wh.IsSystem == isSystem && wh.FastDbType == fastDbType && wh.TenantId == tenantId && wh.IsDeleted == false)
-                .SingleAsync();
-
-            if (sysTenantDataBaseModel == null)
-            {
-                var errorMessage = $"未能找到对应类型【{System.Enum.GetName(fastDbType)}】所存在的DataBase信息！";
-                // 写入错误日志
-                logger.LogError($"TenantId：{tenantId}；${errorMessage}");
-                throw new ArgumentNullException(errorMessage);
-            }
-
-            var data = sysTenantDataBaseModel.Adapt<ConnectionSettingsOptions>();
-
-            // 放入 HttpContext.Items 中
-            httpContext.Items[nameof(Fast) + nameof(ConnectionSettingsOptions) + System.Enum.GetName(fastDbType)] = data;
-
-            return data;
-        });
-    }
-
-    /// <summary>
-    /// 获取日志库连接配置
-    /// </summary>
-    /// <param name="httpContext"></param>
-    /// <param name="cache"></param>
-    /// <param name="sqlSugarClient"></param>
-    /// <param name="logger"></param>
-    /// <returns></returns>
-    private async Task<ConnectionConfig> GetLogSqlSugarClient(HttpContext httpContext, ICache cache,
-        ISqlSugarClient sqlSugarClient, ILogger<ISqlSugarEntityHandler> logger)
-    {
-        // 获取系统日志库连接字符串配置
-        var logConnectionSettings = await GetCacheConnectionSettings(httpContext, cache, sqlSugarClient, logger,
-            FastDbTypeEnum.SysCoreLog, SystemConst.DefaultSystemTenantId, YesOrNotEnum.Y);
-
-        return SqlSugarContext.GetConnectionConfig(logConnectionSettings);
     }
 
     /// <summary>
@@ -195,36 +108,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
                 break;
         }
 
-        // 获取缓存Key
-        var cacheKey = CacheConst.GetCacheKey(CacheConst.TenantDataBaseInfo, tenantId, System.Enum.GetName(fastDbType));
-
-        return await _cache.GetAndSetAsync(cacheKey, async () =>
-        {
-            // 查询主库
-            var sysTenantDataBaseModel = await _sqlSugarClient.Queryable<SysTenantMainDataBaseModel>().Where(wh =>
-                    wh.TenantId == tenantId && wh.IsSystem == isSystem && wh.FastDbType == fastDbType && wh.IsDeleted == false)
-                .SingleAsync();
-
-            if (sysTenantDataBaseModel == null)
-            {
-                var errorMessage = $"未能找到对应类型【{System.Enum.GetName(fastDbType)}】所存在的DataBase信息！";
-                // 写入错误日志
-                _logger.LogError($"TenantId：{tenantId}；${errorMessage}");
-                throw new ArgumentNullException(errorMessage);
-            }
-
-            // 查询从库
-            var sysTenantDataBaseSlaveList = await _sqlSugarClient.Queryable<SysTenantSlaveDataBaseModel>()
-                .Where(wh => wh.TenantId == tenantId && wh.MainId == sysTenantDataBaseModel.Id && wh.IsDeleted == false)
-                .ToListAsync();
-
-            // 组装返回数据
-            var result = sysTenantDataBaseModel.Adapt<ConnectionSettingsOptions>();
-
-            result.SlaveConnectionList = sysTenantDataBaseSlaveList?.Adapt<List<SlaveConnectionInfo>>();
-
-            return result;
-        });
+        return await _sqlSugarEntityService.GetConnectionSettings(fastDbType, tenantId, isSystem);
     }
 
     /// <summary>执行Sql</summary>
@@ -236,7 +120,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
     public async Task ExecuteAsync(string rawSql, SugarParameter[] parameters, TimeSpan executionTime, string handlerSql)
     {
         // 获取日志库连接配置
-        var logConnectionConfig = await GetLogSqlSugarClient(_httpContext, _cache, _sqlSugarClient, _logger);
+        var logConnectionConfig = await _sqlSugarEntityService.GetLogSqlSugarClient();
 
         var _user = GetUser();
 
@@ -250,8 +134,8 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
             CreatedUserId = _user?.UserId,
             CreatedUserName = _user?.UserName,
             CreatedTime = dateTime,
-            Account = _user?.UserAccount,
-            UserJobNo = _user?.UserJobNo,
+            Account = _user?.Account,
+            JobNumber = _user?.JobNumber,
             RawSql = rawSql,
             Parameters = parameters,
             PureSql = handlerSql,
@@ -279,7 +163,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         SugarParameter[] parameters, TimeSpan executeTime, string handlerSql, string message)
     {
         // 获取日志库连接配置
-        var logConnectionConfig = await GetLogSqlSugarClient(_httpContext, _cache, _sqlSugarClient, _logger);
+        var logConnectionConfig = await _sqlSugarEntityService.GetLogSqlSugarClient();
 
         var _user = GetUser();
 
@@ -293,8 +177,8 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
             CreatedUserId = _user?.UserId,
             CreatedUserName = _user?.UserName,
             CreatedTime = dateTime,
-            Account = _user?.UserAccount,
-            UserJobNo = _user?.UserJobNo,
+            Account = _user?.Account,
+            JobNumber = _user?.JobNumber,
             FileName = fileName,
             FileLine = fileLine,
             MethodName = methodName,
@@ -329,7 +213,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         SugarParameter[] parameters, TimeSpan? executeTime, string handlerSql)
     {
         // 获取日志库连接配置
-        var logConnectionConfig = await GetLogSqlSugarClient(_httpContext, _cache, _sqlSugarClient, _logger);
+        var logConnectionConfig = await _sqlSugarEntityService.GetLogSqlSugarClient();
 
         var _user = GetUser();
 
@@ -351,8 +235,8 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
             CreatedUserId = _user?.UserId,
             CreatedUserName = _user?.UserName,
             CreatedTime = dateTime,
-            Account = _user?.UserAccount,
-            UserJobNo = _user?.UserJobNo,
+            Account = _user?.Account,
+            JobNumber = _user?.JobNumber,
             TableName = tableName,
             TableDescription = tableDescription,
             DiffDescription = diffDescription,
@@ -386,7 +270,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         SugarParameter[] parameters, string handlerSql, string message)
     {
         // 获取日志库连接配置
-        var logConnectionConfig = await GetLogSqlSugarClient(_httpContext, _cache, _sqlSugarClient, _logger);
+        var logConnectionConfig = await _sqlSugarEntityService.GetLogSqlSugarClient();
 
         var _user = GetUser();
 
@@ -400,8 +284,8 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
             CreatedUserId = _user?.UserId,
             CreatedUserName = _user?.UserName,
             CreatedTime = dateTime,
-            Account = _user?.UserAccount,
-            UserJobNo = _user?.UserJobNo,
+            Account = _user?.Account,
+            JobNumber = _user?.JobNumber,
             FileName = fileName,
             FileLine = fileLine,
             MethodName = methodName,

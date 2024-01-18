@@ -892,6 +892,11 @@
             是否分表
             </summary>
         </member>
+        <member name="P:Fast.SqlSugar.SqlSugarEntityInfo.SugarDbType">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute"/> 特性的Type属性
+            </summary>
+        </member>
         <member name="T:Fast.SqlSugar.SqlSugarPageInput">
             <summary>
             <see cref="T:Fast.SqlSugar.SqlSugarPageInput"/> SqlSugar 统一分页输入

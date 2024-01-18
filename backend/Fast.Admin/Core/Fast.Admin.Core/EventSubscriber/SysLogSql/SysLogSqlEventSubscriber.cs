@@ -110,4 +110,23 @@ public class SysLogSqlEventSubscriber : IEventSubscriber
         // 保存数据
         await db.Insertable(source.Payload).ExecuteCommandAsync();
     }
+
+    /// <summary>
+    /// 添加访问日志
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    [EventSubscribe(SysLogSqlEventSubscriberEnum.AddVisLog, NumRetries = 3, FallbackPolicy = typeof(EventFallbackPolicy))]
+    public async Task AddVisLog(EventHandlerExecutingContext context)
+    {
+        var source = (SqlSugarChannelEventSource) context.Source;
+
+        if (source == null)
+            return;
+
+        var db = new SqlSugarClient(source.ConnectionConfig);
+
+        // 保存数据
+        await db.Insertable(source.Payload).ExecuteCommandAsync();
+    }
 }

@@ -15,6 +15,7 @@
 
 using System.Reflection;
 using Fast.IaaS;
+using Fast.SqlSugar.Attributes;
 using Fast.SqlSugar.DataBaseUtils;
 using Fast.SqlSugar.Extensions;
 using Fast.SqlSugar.IBaseEntities;
@@ -70,12 +71,15 @@ public sealed class SqlSugarContext
 
                     var splitTableAttribute = sl.GetCustomAttribute<SplitTableAttribute>();
 
+                    var sugarDbTypeAttribute = sl.GetCustomAttribute<SugarDbTypeAttribute>();
+
                     return new SqlSugarEntityInfo
                     {
                         TableName = sqlSugarTableAttribute?.TableName ?? sl.Name,
                         TableDescription = sqlSugarTableAttribute?.TableDescription,
                         EntityType = sl,
                         IsSplitTable = splitTableAttribute != null,
+                        SugarDbType = sugarDbTypeAttribute?.Type
                     };
                 }).ToList();
 
