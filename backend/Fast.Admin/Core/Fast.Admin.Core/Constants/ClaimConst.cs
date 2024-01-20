@@ -34,5 +34,5 @@ public class ClaimConst
     /// 用户工号
     /// <remarks>Base64 加密的字符串</remarks>
     /// </summary>
-    public const string UserJobNo = "Fast-UserJobNo";
+    public const string JobNumber = "Fast-JobNumber";
 }

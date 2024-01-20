@@ -13,7 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.Admin.Core.Enum.Db;
-using Fast.Admin.Core.Enum.System;
+using Fast.Admin.Core.Enum.Login;
 
 namespace Fast.Admin.Core.Entity.Log.Entities;
 
@@ -35,7 +35,7 @@ public class SysLogVisModel : BaseSnowflakeRecordEntity, IBaseTEntity
     /// 操作人工号
     /// </summary>
     [SugarColumn(ColumnDescription = "操作人工号", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
-    public string UserJobNo { get; set; }
+    public string JobNumber { get; set; }
 
     /// <summary>
     /// 访问类型

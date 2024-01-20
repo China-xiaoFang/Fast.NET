@@ -147,6 +147,11 @@ public static class HttpContextExtension
         {
             return remoteIpAddress.ToString();
         }
+        // 处理可能获取到的是 IPV6 的地址，且是 localhost，则获取到的为 ::1
+        if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && remoteIpAddress?.ToString() == "::1")
+        {
+            return "127.0.0.1";
+        }
 
         return string.Empty;
     }
@@ -174,6 +179,13 @@ public static class HttpContextExtension
     /// <returns><see cref="string"/></returns>
     public static string LocalIpv4(this HttpContext httpContext)
     {
+        var localIpAddress = httpContext.Connection.LocalIpAddress;
+        // 处理可能获取到的是 IPV6 的地址，且是 localhost，则获取到的为 ::1
+        if (localIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && localIpAddress?.ToString() == "::1")
+        {
+            return "127.0.0.1";
+        }
+
         return httpContext.Connection.LocalIpAddress?.MapToIPv4()?.ToString();
     }
 
@@ -197,7 +209,7 @@ public static class HttpContextExtension
         if (httpContext == null)
             return string.Empty;
 
-        var remoteIpv4 = httpContext.Connection.RemoteIpAddress?.MapToIPv4()?.ToString();
+        var remoteIpv4 = string.Empty;
 
         // 判断是否为 Nginx 反向代理
         if (httpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
@@ -217,7 +229,21 @@ public static class HttpContextExtension
             }
         }
 
-        return remoteIpv4 ?? string.Empty;
+        if (string.IsNullOrEmpty(remoteIpv4))
+        {
+            var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
+            // 处理可能获取到的是 IPV6 的地址，且是 localhost，则获取到的为 ::1
+            if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && remoteIpAddress?.ToString() == "::1")
+            {
+                remoteIpv4 = "127.0.0.1";
+            }
+            else
+            {
+                remoteIpv4 = remoteIpAddress?.MapToIPv4()?.ToString();
+            }
+        }
+
+        return remoteIpv4;
     }
 
     /// <summary>

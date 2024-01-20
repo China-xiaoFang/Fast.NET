@@ -15,6 +15,7 @@
 
 using System.Reflection;
 using Fast.IaaS;
+using Fast.SqlSugar.Attributes;
 using Fast.SqlSugar.DataBaseUtils;
 using Fast.SqlSugar.Extensions;
 using Fast.SqlSugar.IBaseEntities;
@@ -43,8 +44,15 @@ public sealed class SqlSugarContext
 
     /// <summary>
     /// 默认连接配置
+    /// <remarks>带 AOP 处理的</remarks>
     /// </summary>
     public static ConnectionConfig DefaultConnectionConfig { get; set; }
+
+    /// <summary>
+    /// 默认连接配置
+    /// <remarks>不带 AOP 处理的</remarks>
+    /// </summary>
+    public static ConnectionConfig DefaultConnectionConfigNoAop { get; set; }
 
     /// <summary>
     /// 内部缓存SqlSugar实体集合
@@ -70,12 +78,15 @@ public sealed class SqlSugarContext
 
                     var splitTableAttribute = sl.GetCustomAttribute<SplitTableAttribute>();
 
+                    var sugarDbTypeAttribute = sl.GetCustomAttribute<SugarDbTypeAttribute>();
+
                     return new SqlSugarEntityInfo
                     {
                         TableName = sqlSugarTableAttribute?.TableName ?? sl.Name,
                         TableDescription = sqlSugarTableAttribute?.TableDescription,
                         EntityType = sl,
                         IsSplitTable = splitTableAttribute != null,
+                        SugarDbType = sugarDbTypeAttribute?.Type
                     };
                 }).ToList();
 

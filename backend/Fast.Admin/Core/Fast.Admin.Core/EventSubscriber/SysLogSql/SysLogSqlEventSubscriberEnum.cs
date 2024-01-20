@@ -38,4 +38,14 @@ public enum SysLogSqlEventSubscriberEnum
     /// 添加执行错误日志
     /// </summary>
     AddErrorLog,
+
+    /// <summary>
+    /// 添加访问日志
+    /// </summary>
+    AddVisLog,
+
+    /// <summary>
+    /// 添加操作日志
+    /// </summary>
+    AddOpLog,
 }

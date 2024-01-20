@@ -13,6 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
+using Fast.SqlSugar.Attributes;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
@@ -42,4 +43,9 @@ public sealed class SqlSugarEntityInfo
     /// 是否分表
     /// </summary>
     public bool IsSplitTable { get; set; }
+
+    /// <summary>
+    /// <see cref="SugarDbTypeAttribute"/> 特性的Type属性
+    /// </summary>
+    public object SugarDbType { get; set; }
 }

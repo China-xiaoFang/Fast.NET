@@ -51,7 +51,7 @@ public class SysLogSqlEventSubscriber : IEventSubscriber
         var db = new SqlSugarClient(source.ConnectionConfig);
 
         // 保存数据
-        await db.Insertable(source.Payload).ExecuteCommandAsync();
+        await db.InsertableByObject(source.Payload).SplitTable().ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class SysLogSqlEventSubscriber : IEventSubscriber
         var db = new SqlSugarClient(source.ConnectionConfig);
 
         // 保存数据
-        await db.Insertable(source.Payload).ExecuteCommandAsync();
+        await db.InsertableByObject(source.Payload).ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public class SysLogSqlEventSubscriber : IEventSubscriber
         var db = new SqlSugarClient(source.ConnectionConfig);
 
         // 保存数据
-        await db.Insertable(source.Payload).ExecuteCommandAsync();
+        await db.InsertableByObject(source.Payload).SplitTable().ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -108,6 +108,44 @@ public class SysLogSqlEventSubscriber : IEventSubscriber
         var db = new SqlSugarClient(source.ConnectionConfig);
 
         // 保存数据
-        await db.Insertable(source.Payload).ExecuteCommandAsync();
+        await db.InsertableByObject(source.Payload).ExecuteCommandAsync();
+    }
+
+    /// <summary>
+    /// 添加访问日志
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    [EventSubscribe(SysLogSqlEventSubscriberEnum.AddVisLog, NumRetries = 3, FallbackPolicy = typeof(EventFallbackPolicy))]
+    public async Task AddVisLog(EventHandlerExecutingContext context)
+    {
+        var source = (SqlSugarChannelEventSource) context.Source;
+
+        if (source == null)
+            return;
+
+        var db = new SqlSugarClient(source.ConnectionConfig);
+
+        // 保存数据
+        await db.InsertableByObject(source.Payload).ExecuteCommandAsync();
+    }
+
+    /// <summary>
+    /// 添加操作日志
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    [EventSubscribe(SysLogSqlEventSubscriberEnum.AddOpLog, NumRetries = 3, FallbackPolicy = typeof(EventFallbackPolicy))]
+    public async Task AddOpLog(EventHandlerExecutingContext context)
+    {
+        var source = (SqlSugarChannelEventSource) context.Source;
+
+        if (source == null)
+            return;
+
+        var db = new SqlSugarClient(source.ConnectionConfig);
+
+        // 保存数据
+        await db.InsertableByObject(source.Payload).SplitTable().ExecuteCommandAsync();
     }
 }

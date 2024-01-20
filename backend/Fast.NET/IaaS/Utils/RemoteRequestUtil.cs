@@ -12,7 +12,9 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Web;
 
@@ -288,7 +290,11 @@ public static class RemoteRequestUtil
         headers ??= new Dictionary<string, string>();
 
         // 发送 Http 请求
-        using var httpClient = new HttpClient();
+        using var httpClient = new HttpClient(new HttpClientHandler
+        {
+            // 自动处理各种响应解压缩
+            AutomaticDecompression = DecompressionMethods.All
+        });
 
         // 设置请求超时时间
         httpClient.Timeout = TimeSpan.FromSeconds(timeout);
@@ -388,8 +394,12 @@ public static class RemoteRequestUtil
             // 发送请求
             using var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            var responseContent = response.Content.ReadAsStringAsync().Result;
-            return (responseContent, response.Headers);
+            var responseContent = response.Content.ReadAsByteArrayAsync().Result;
+            // 获取 charset 编码
+            var encoding = GetCharsetEncoding(response);
+            var result = encoding.GetString(responseContent); 
+            // 通过指定编码解码
+            return (result, response.Headers);
         }
         catch (HttpRequestException ex)
         {
@@ -399,5 +409,35 @@ public static class RemoteRequestUtil
         {
             throw new Exception("远程请求超时：" + ex.Message, ex);
         }
+    }
+
+    /// <summary>
+    /// 获取响应报文 charset 编码
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
+    private static Encoding GetCharsetEncoding(HttpResponseMessage response)
+    {
+        if (response == null)
+        {
+            return Encoding.UTF8;
+        }
+
+        // 获取 charset
+        string charset;
+
+        var withContentType = response.Content.Headers.TryGetValues("Content-Type", out var contentTypes);
+        if (withContentType)
+        {
+            charset = contentTypes.First().Split(';', StringSplitOptions.RemoveEmptyEntries)
+                .FirstOrDefault(u => u.Contains("charset", StringComparison.OrdinalIgnoreCase)) ?? "charset=UTF-8";
+        }
+        else
+        {
+            charset = "charset=UTF-8";
+        }
+
+        var encoding = charset.Split('=', StringSplitOptions.RemoveEmptyEntries).LastOrDefault() ?? "UTF-8";
+        return Encoding.GetEncoding(encoding);
     }
 }

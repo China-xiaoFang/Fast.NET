@@ -51,4 +51,14 @@ public class CacheConst
     /// 过期 RefreshToken 缓存
     /// </summary>
     public const string ExpiredRefreshToken = "{0}:Expired:RefreshToken:";
+
+    /// <summary>
+    /// 输入错误密码次数
+    /// </summary>
+    public const string InputErrorPassword = "Login:ErrorPassword:{0}";
+
+    /// <summary>
+    /// 选择租户登录时间限制
+    /// </summary>
+    public const string SelectTenantLogin = "Login:SelectTenant:{0}";
 }

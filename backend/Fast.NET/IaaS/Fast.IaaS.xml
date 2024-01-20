@@ -2695,6 +2695,13 @@
             <param name="timeout"><see cref="T:System.Int32"/> 请求超时时间，默认60秒</param>
             <returns></returns>
         </member>
+        <member name="M:Fast.IaaS.RemoteRequestUtil.GetCharsetEncoding(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            获取响应报文 charset 编码
+            </summary>
+            <param name="response"></param>
+            <returns></returns>
+        </member>
         <member name="T:Fast.IaaS.Utils.RetryUtil">
             <summary>
             <see cref="T:Fast.IaaS.Utils.RetryUtil"/> 重试静态类

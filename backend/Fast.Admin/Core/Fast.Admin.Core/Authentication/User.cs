@@ -13,6 +13,8 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.Admin.Core.Constants;
+using Fast.Admin.Core.Entity.System.Account;
+using Fast.Admin.Core.Enum.System;
 using Fast.JwtBearer.Services;
 
 namespace Fast.Admin.Core.Authentication;
@@ -21,7 +23,7 @@ namespace Fast.Admin.Core.Authentication;
 /// <see cref="User"/> 授权用户信息
 /// <remarks>作用域注册，保证当前请求管道中是唯一的，并且只会加载一次</remarks>
 /// </summary>
-public class User : IUser, IScopedDependency
+public sealed class User : IUser, IScopedDependency
 {
     /// <summary>
     /// 租户Id
@@ -36,22 +38,22 @@ public class User : IUser, IScopedDependency
     /// <summary>
     /// 用户Id
     /// </summary>
-    public virtual long UserId { get; private set; }
+    public long UserId { get; private set; }
 
     /// <summary>
     /// 用户账号
     /// </summary>
-    public virtual string UserAccount { get; private set; }
+    public string Account { get; private set; }
 
     /// <summary>
     /// 用户工号
     /// </summary>
-    public virtual string UserJobNo { get; private set; }
+    public string JobNumber { get; private set; }
 
     /// <summary>
     /// 用户名称
     /// </summary>
-    public virtual string UserName { get; private set; }
+    public string UserName { get; private set; }
 
     /// <summary>
     /// 部门Id
@@ -66,17 +68,17 @@ public class User : IUser, IScopedDependency
     /// <summary>
     /// 是否超级管理员
     /// </summary>
-    public virtual bool IsSuperAdmin { get; private set; }
+    public bool IsSuperAdmin { get; private set; }
 
     /// <summary>
     /// 是否系统管理员
     /// </summary>
-    public virtual bool IsSystemAdmin { get; private set; }
+    public bool IsSystemAdmin { get; private set; }
 
     /// <summary>
     /// 是否租户管理员
     /// </summary>
-    public virtual bool IsTenantAdmin { get; private set; }
+    public bool IsTenantAdmin { get; private set; }
 
     /// <summary>
     /// 最后登录设备
@@ -140,15 +142,26 @@ public class User : IUser, IScopedDependency
             // WebSocket 请求，从Url地址后面获取标识
             AppEnvironment = System.Enum.Parse<AppEnvironmentEnum>(_httpContext.Request.Query[ClaimConst.AppOrigin]);
             TenantNo = _httpContext.Request.Query[ClaimConst.TenantNo].ToString().Base64ToString();
-            UserJobNo = _httpContext.Request.Query[ClaimConst.UserJobNo].ToString().Base64ToString();
+            JobNumber = _httpContext.Request.Query[ClaimConst.JobNumber].ToString().Base64ToString();
         }
         else
         {
             AppEnvironment = System.Enum.Parse<AppEnvironmentEnum>(_httpContext.Request.Headers[ClaimConst.AppOrigin]);
             TenantNo = _httpContext.Request.Headers[ClaimConst.TenantNo].ToString().Base64ToString();
-            UserJobNo = _httpContext.Request.Headers[ClaimConst.UserJobNo].ToString().Base64ToString();
+            JobNumber = _httpContext.Request.Headers[ClaimConst.JobNumber].ToString().Base64ToString();
         }
 
+        // 获取缓存Key
+        var cacheKey = $"{CacheConst.GetCacheKey(CacheConst.AuthUserInfo, TenantNo)}{JobNumber}";
+
+        // 获取缓存信息
+        var authUserInfo = _cache.Get<SysTenantAccountModel>(cacheKey);
+
+        // 设置授权用户
+        SetAuthUser(authUserInfo);
+
+        // App 来源判断
+        // TODO：这里需要根据App授权信息，判断是否存在访问的权限
         switch (AppEnvironment)
         {
             case AppEnvironmentEnum.Web:
@@ -166,8 +179,8 @@ public class User : IUser, IScopedDependency
     /// <summary>
     /// 设置授权用户
     /// </summary>
-    /// <param name="authUserInfo"><see cref="AuthUserInfo"/> 授权用户信息</param>
-    public void SetAuthUser(AuthUserInfo authUserInfo)
+    /// <param name="authUserInfo"><see cref="SysTenantAccountModel"/> 租户系统账户信息</param>
+    public void SetAuthUser(SysTenantAccountModel authUserInfo)
     {
         // 判断授权用户信息是否为空
         if (authUserInfo == null)
@@ -176,16 +189,16 @@ public class User : IUser, IScopedDependency
         }
 
         TenantId = authUserInfo.TenantId;
-        TenantNo = authUserInfo.TenantNo;
+        TenantNo = authUserInfo.SysTenant.TenantNo;
         UserId = authUserInfo.UserId;
-        UserAccount = authUserInfo.UserAccount;
-        UserJobNo = authUserInfo.UserJobNo;
-        UserName = authUserInfo.UserName;
+        Account = authUserInfo.SysAccount.Account;
+        JobNumber = authUserInfo.JobNumber;
+        UserName = authUserInfo.SysAccount.UserName;
         DepartmentId = authUserInfo.DepartmentId;
         DepartmentName = authUserInfo.DepartmentName;
-        IsSuperAdmin = authUserInfo.IsSuperAdmin;
-        IsSystemAdmin = authUserInfo.IsSystemAdmin;
-        IsTenantAdmin = authUserInfo.IsTenantAdmin;
+        IsSuperAdmin = authUserInfo.AdminType == AdminTypeEnum.SuperAdmin;
+        IsSystemAdmin = authUserInfo.AdminType == AdminTypeEnum.SystemAdmin;
+        IsTenantAdmin = authUserInfo.AdminType == AdminTypeEnum.TenantAdmin;
         LastLoginDevice = authUserInfo.LastLoginDevice;
         LastLoginOS = authUserInfo.LastLoginOS;
         LastLoginBrowser = authUserInfo.LastLoginBrowser;
@@ -196,82 +209,18 @@ public class User : IUser, IScopedDependency
     }
 
     /// <summary>
-    /// 统一登录
-    /// </summary>
-    /// <param name="authUserInfo"><see cref="AuthUserInfo"/> 授权用户信息</param>
-    /// <returns></returns>
-    public async Task Login(AuthUserInfo authUserInfo)
-    {
-        // 判断授权用户信息是否为空
-        if (authUserInfo == null)
-        {
-            throw new UnauthorizedAccessException("授权用户信息不存在！");
-        }
-
-        try
-        {
-            // TODO:这里缺少菜单权限和按钮权限的查询
-
-            // 生成最后登录时间
-            authUserInfo.LastLoginTime = DateTime.Now;
-
-            // 获取设备信息
-            var userAgentInfo = _httpContext.RequestUserAgentInfo();
-            authUserInfo.LastLoginDevice = userAgentInfo.Device;
-            authUserInfo.LastLoginOS = userAgentInfo.OS;
-            authUserInfo.LastLoginBrowser = userAgentInfo.Browser;
-
-            // 获取Ip信息
-            var ip = _httpContext.RemoteIpv4();
-            authUserInfo.LastLoginIp = ip;
-
-            // 获取万网Ip信息
-            var wanNetIpInfo = await _httpContext.RemoteIpv4InfoAsync(ip);
-            authUserInfo.LastLoginProvince = wanNetIpInfo.Province;
-            authUserInfo.LastLoginCity = wanNetIpInfo.City;
-
-            // 刷新登录信息
-            await Refresh(authUserInfo);
-
-            // 生成Token令牌，默认20分钟
-            var accessToken = _jwtBearerCryptoService.GenerateToken(new Dictionary<string, object>
-            {
-                {nameof(ClaimConst.TenantNo), authUserInfo.TenantNo},
-                {nameof(ClaimConst.UserJobNo), authUserInfo.UserJobNo},
-                {nameof(authUserInfo.LastLoginIp), authUserInfo.LastLoginIp},
-                {nameof(authUserInfo.LastLoginTime), authUserInfo.LastLoginTime},
-            });
-
-            // 生成刷新Token，有效期24小时
-            var refreshToken = _jwtBearerCryptoService.GenerateRefreshToken(accessToken);
-
-            // 设置Token令牌
-            _httpContext.Response.Headers["access-token"] = accessToken;
-
-            // 设置刷新Token令牌
-            _httpContext.Response.Headers["x-access-token"] = refreshToken;
-
-            // 设置Swagger自动登录
-            _httpContext.SignInToSwagger(accessToken);
-        }
-        catch (Exception ex)
-        {
-            throw new UnauthorizedAccessException($"401 登录鉴权失败：{ex.Message}");
-        }
-    }
-
-    /// <summary>
     /// 刷新登录信息
     /// </summary>
-    /// <param name="authUserInfo"></param>
+    /// <param name="authUserInfo"><see cref="SysTenantAccountModel"/> 租户系统账户信息</param>
     /// <returns></returns>
-    public async Task Refresh(AuthUserInfo authUserInfo)
+    public async Task Refresh(SysTenantAccountModel authUserInfo)
     {
         // 设置授权用户信息
         SetAuthUser(authUserInfo);
 
         // 获取缓存Key
-        var cacheKey = $"{CacheConst.GetCacheKey(CacheConst.AuthUserInfo, authUserInfo.TenantNo)}{authUserInfo.UserJobNo}";
+        var cacheKey =
+            $"{CacheConst.GetCacheKey(CacheConst.AuthUserInfo, authUserInfo.SysTenant.TenantNo)}{authUserInfo.JobNumber}";
 
         // 设置授权信息缓存
         await _cache.SetAsync(cacheKey, authUserInfo);
@@ -297,14 +246,14 @@ public class User : IUser, IScopedDependency
             // 读取 Token 信息
             var jwtSecurityToken = _jwtBearerCryptoService.SecurityReadJwtToken(token);
 
-            // 从 Token 中读取 TenantNo 和 UserJobNo
+            // 从 Token 中读取 TenantNo 和 JobNumber
             var tenantNo = jwtSecurityToken.Payload[nameof(ClaimConst.TenantNo)].ToString();
-            var userJobNo = jwtSecurityToken.Payload[nameof(ClaimConst.UserJobNo)].ToString();
+            var JobNumber = jwtSecurityToken.Payload[nameof(ClaimConst.JobNumber)].ToString();
 
-            if (!tenantNo.IsEmpty() && !userJobNo.IsEmpty())
+            if (!tenantNo.IsEmpty() && !JobNumber.IsEmpty())
             {
                 // 获取缓存Key
-                var tokenCacheKey = $"{CacheConst.GetCacheKey(CacheConst.ExpiredToken, tenantNo)}{userJobNo}:{token[^10..]}";
+                var tokenCacheKey = $"{CacheConst.GetCacheKey(CacheConst.ExpiredToken, tenantNo)}{JobNumber}:{token[^10..]}";
                 // 将当前 Token 放入过期缓存中，建议设置缓存过期时间为 Token 过期时间 - 当前时间
                 await _cache.SetAsync(tokenCacheKey, token, jwtSecurityToken.ValidTo - DateTimeOffset.UtcNow);
 
@@ -317,14 +266,14 @@ public class User : IUser, IScopedDependency
 
                     // 获取缓存Key
                     var refreshTokenCacheKey =
-                        $"{CacheConst.GetCacheKey(CacheConst.ExpiredToken, tenantNo)}{userJobNo}:{refreshToken[^10..]}";
+                        $"{CacheConst.GetCacheKey(CacheConst.ExpiredToken, tenantNo)}{JobNumber}:{refreshToken[^10..]}";
                     // 将当前 Token 放入过期缓存中，建议设置缓存过期时间为 Token 过期时间 - 当前时间
                     await _cache.SetAsync(refreshTokenCacheKey, refreshToken,
                         jwtSecurityRefreshToken.ValidTo - DateTimeOffset.UtcNow);
                 }
 
                 // 获取缓存Key
-                var userCacheKey = $"{CacheConst.GetCacheKey(CacheConst.AuthUserInfo, tenantNo)}{userJobNo}";
+                var userCacheKey = $"{CacheConst.GetCacheKey(CacheConst.AuthUserInfo, tenantNo)}{JobNumber}";
             }
         }
     }

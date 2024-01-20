@@ -20,6 +20,7 @@ namespace Fast.SqlSugar.Handlers;
 
 /// <summary>
 /// <see cref="ISqlSugarEntityHandler"/> Sugar实体处理
+/// <remarks>不能在构造函数中注入 <see cref="ISqlSugarClient"/> 否则会出现循环引用的问题</remarks>
 /// </summary>
 public interface ISqlSugarEntityHandler
 {

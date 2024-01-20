@@ -313,6 +313,13 @@
         <member name="P:Fast.SqlSugar.SqlSugarContext.DefaultConnectionConfig">
             <summary>
             默认连接配置
+            <remarks>带 AOP 处理的</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.DefaultConnectionConfigNoAop">
+            <summary>
+            默认连接配置
+            <remarks>不带 AOP 处理的</remarks>
             </summary>
         </member>
         <member name="P:Fast.SqlSugar.SqlSugarContext.CacheSqlSugarEntityList">
@@ -543,6 +550,7 @@
         <member name="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler">
             <summary>
             <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理
+            <remarks>不能在构造函数中注入 <see cref="T:SqlSugar.ISqlSugarClient"/> 否则会出现循环引用的问题</remarks>
             </summary>
         </member>
         <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute,System.Type)">
@@ -890,6 +898,11 @@
         <member name="P:Fast.SqlSugar.SqlSugarEntityInfo.IsSplitTable">
             <summary>
             是否分表
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarEntityInfo.SugarDbType">
+            <summary>
+            <see cref="T:Fast.SqlSugar.Attributes.SugarDbTypeAttribute"/> 特性的Type属性
             </summary>
         </member>
         <member name="T:Fast.SqlSugar.SqlSugarPageInput">

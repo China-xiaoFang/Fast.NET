@@ -17,6 +17,7 @@ namespace Fast.Admin.Core.Enum.Http;
 /// <summary>
 /// <see cref="HttpRequestMethodEnum"/> Http请求方式枚举
 /// </summary>
+[FastEnum("Http请求方式枚举")]
 public enum HttpRequestMethodEnum
 {
     /// <summary>
