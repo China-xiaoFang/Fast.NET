@@ -27,25 +27,15 @@ namespace Fast.Admin.Core.Services;
 /// <summary>
 /// <see cref="SqlSugarEntityService"/> SqlSugar 实体服务
 /// </summary>
-public class SqlSugarEntityService : ISqlSugarEntityService, ITransientDependency
+public class SqlSugarEntityService : ISqlSugarEntityService, IScopedDependency
 {
     private readonly ICache _cache;
-
-    /// <summary>
-    /// 这里为了防止死循环 Aop 的发生，直接注入 ISqlSugarClient，并且禁用 Aop 处理
-    /// </summary>
-    private readonly ISqlSugarClient _sqlSugarClient;
-
     private readonly HttpContext _httpContext;
     private readonly ILogger<ISqlSugarEntityService> _logger;
 
-    public SqlSugarEntityService(ICache cache, ISqlSugarClient sqlSugarClient, IHttpContextAccessor httpContextAccessor,
-        ILogger<ISqlSugarEntityService> logger)
+    public SqlSugarEntityService(ICache cache, IHttpContextAccessor httpContextAccessor, ILogger<ISqlSugarEntityService> logger)
     {
         _cache = cache;
-        // 禁用当前SugarClient的AOP，不然会存在死循环的问题
-        sqlSugarClient.Ado.IsEnableLogEvent = true;
-        _sqlSugarClient = sqlSugarClient;
         _httpContext = httpContextAccessor.HttpContext;
         _logger = logger;
     }
@@ -61,9 +51,6 @@ public class SqlSugarEntityService : ISqlSugarEntityService, ITransientDependenc
     public async Task<ConnectionSettingsOptions> GetConnectionSettings(FastDbTypeEnum fastDbType, long tenantId,
         YesOrNotEnum isSystem = YesOrNotEnum.N)
     {
-        // 禁用当前SugarClient的AOP，不然会存在死循环的问题
-        _sqlSugarClient.Ado.IsEnableLogEvent = true;
-
         // 获取缓存Key
         var cacheKey = CacheConst.GetCacheKey(CacheConst.TenantDataBaseInfo, tenantId, System.Enum.GetName(fastDbType));
 
@@ -78,9 +65,11 @@ public class SqlSugarEntityService : ISqlSugarEntityService, ITransientDependenc
 
         return await _cache.GetAndSetAsync(cacheKey, async () =>
         {
-            var sysTenantDataBaseModel = await _sqlSugarClient.Queryable<SysTenantMainDataBaseModel>().Where(wh =>
+            var sqlSugarClient = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfigNoAop);
+
+            var sysTenantDataBaseModel = await sqlSugarClient.Queryable<SysTenantMainDataBaseModel>().Where(wh =>
                     wh.IsSystem == isSystem && wh.FastDbType == fastDbType && wh.TenantId == tenantId && wh.IsDeleted == false)
-                .SingleAsync();
+                .FirstAsync();
 
             if (sysTenantDataBaseModel == null)
             {
@@ -91,7 +80,7 @@ public class SqlSugarEntityService : ISqlSugarEntityService, ITransientDependenc
             }
 
             // 查询从库
-            var sysTenantDataBaseSlaveList = await _sqlSugarClient.Queryable<SysTenantSlaveDataBaseModel>()
+            var sysTenantDataBaseSlaveList = await sqlSugarClient.Queryable<SysTenantSlaveDataBaseModel>()
                 .Where(wh => wh.TenantId == tenantId && wh.MainId == sysTenantDataBaseModel.Id && wh.IsDeleted == false)
                 .ToListAsync();
 

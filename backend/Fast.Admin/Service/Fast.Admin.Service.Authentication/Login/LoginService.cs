@@ -17,6 +17,7 @@ using Fast.IaaS;
 using Fast.JwtBearer.Services;
 using Fast.NET.Core;
 using SqlSugar;
+using Yitter.IdGenerator;
 
 namespace Fast.Admin.Service.Authentication.Login;
 
@@ -53,7 +54,7 @@ public class LoginService : ILoginService, ITransientDependency
         switch (input.LoginMethod)
         {
             case LoginMethodEnum.Account:
-                account = await _repository.Queryable<SysAccountModel>().Where(wh => wh.Account == input.Account).SingleAsync();
+                account = await _repository.Queryable<SysAccountModel>().Where(wh => wh.Account == input.Account).FirstAsync();
                 break;
             case LoginMethodEnum.Mobile:
                 // 判断是否为一个有效的邮箱地址
@@ -63,7 +64,7 @@ public class LoginService : ILoginService, ITransientDependency
                     throw new UserFriendlyException("不是一个有效的手机号码！");
                 }
 
-                account = await _repository.Queryable<SysAccountModel>().Where(wh => wh.Mobile == input.Account).SingleAsync();
+                account = await _repository.Queryable<SysAccountModel>().Where(wh => wh.Mobile == input.Account).FirstAsync();
                 break;
             case LoginMethodEnum.Email:
                 // 判断是否为一个有效的邮箱地址
@@ -73,7 +74,7 @@ public class LoginService : ILoginService, ITransientDependency
                     throw new UserFriendlyException("不是一个有效的邮箱地址！");
                 }
 
-                account = await _repository.Queryable<SysAccountModel>().Where(wh => wh.Email == input.Account).SingleAsync();
+                account = await _repository.Queryable<SysAccountModel>().Where(wh => wh.Email == input.Account).FirstAsync();
                 break;
             default:
                 throw new UserFriendlyException("不是一个有效的登录方式！");
@@ -219,7 +220,7 @@ public class LoginService : ILoginService, ITransientDependency
     /// <exception cref="UnauthorizedAccessException"></exception>
     public async Task TenantLogin(TenantLoginInput input)
     {
-        var account = await _repository.Queryable<SysAccountModel>().Where(wh => wh.Id == input.AccountId).SingleAsync();
+        var account = await _repository.Queryable<SysAccountModel>().Where(wh => wh.Id == input.AccountId).FirstAsync();
 
         if (account == null)
         {
@@ -239,7 +240,7 @@ public class LoginService : ILoginService, ITransientDependency
 
         // 查询对应的租户信息
         var sysTenantAccount = await _repository.Queryable<SysTenantAccountModel>().Where(wh => wh.Id == input.TenantAccountId)
-            .SingleAsync();
+            .FirstAsync();
 
         if (sysTenantAccount == null)
         {
@@ -247,7 +248,7 @@ public class LoginService : ILoginService, ITransientDependency
         }
 
         // 查询租户信息
-        var tenant = await _repository.Queryable<SysTenantModel>().Where(wh => wh.Id == sysTenantAccount.TenantId).SingleAsync();
+        var tenant = await _repository.Queryable<SysTenantModel>().Where(wh => wh.Id == sysTenantAccount.TenantId).FirstAsync();
 
         if (tenant == null)
         {
@@ -261,7 +262,7 @@ public class LoginService : ILoginService, ITransientDependency
         var db = new SqlSugarClient(adminConnectionConfig);
 
         // 查询租户用户信息
-        var tenUser = await db.Queryable<TenUserModel>().Where(wh => wh.Id == sysTenantAccount.UserId).SingleAsync();
+        var tenUser = await db.Queryable<TenUserModel>().Where(wh => wh.Id == sysTenantAccount.UserId).FirstAsync();
 
         if (tenUser == null)
         {
@@ -313,6 +314,7 @@ public class LoginService : ILoginService, ITransientDependency
             // 添加访问日志
             var sysLogVisModel = new SysLogVisModel
             {
+                Id = YitIdHelper.NextId(),
                 Account = account.Account,
                 JobNumber = sysTenantAccount.JobNumber,
                 VisitType = VisitTypeEnum.Login,

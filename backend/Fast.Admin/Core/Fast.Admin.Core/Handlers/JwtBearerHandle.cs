@@ -12,8 +12,10 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.Admin.Core.Authentication;
 using Fast.JwtBearer.Handlers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.Admin.Core.Handlers;
 
@@ -31,6 +33,10 @@ public class JwtBearerHandle : IJwtBearerHandle
     /// <returns><see cref="T:System.Boolean" /></returns>
     public async Task<bool> AuthorizeHandle(AuthorizationHandlerContext context, HttpContext httpContext)
     {
+        // 获取 ICache，IUser
+        var _cache = httpContext.RequestServices.GetService<ICache>();
+        // 尝试解析 IUser，当前请求生命周期，只会解析一次
+        var _user = httpContext.RequestServices.GetService<IUser>();
         return false;
     }
 

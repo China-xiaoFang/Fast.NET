@@ -26,6 +26,7 @@ using Fast.SqlSugar.Attributes;
 using Fast.SqlSugar.Handlers;
 using Fast.SqlSugar.Options;
 using SqlSugar;
+using Yitter.IdGenerator;
 
 namespace Fast.Admin.Core.Handlers;
 
@@ -129,6 +130,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         // 组装数据
         var sysLogSqlExecModel = new SysLogSqlExecModel
         {
+            Id = YitIdHelper.NextId(),
             DepartmentId = _user?.DepartmentId,
             DepartmentName = _user?.DepartmentName,
             CreatedUserId = _user?.UserId,
@@ -230,6 +232,7 @@ public class SqlSugarEntityHandler : ISqlSugarEntityHandler
         // 组装数据
         var sysLogSqlDiffModel = new SysLogSqlDiffModel
         {
+            Id = YitIdHelper.NextId(),
             DepartmentId = _user?.DepartmentId,
             DepartmentName = _user?.DepartmentName,
             CreatedUserId = _user?.UserId,

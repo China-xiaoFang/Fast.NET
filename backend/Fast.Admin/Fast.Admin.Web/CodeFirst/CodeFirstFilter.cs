@@ -60,7 +60,7 @@ public class CodeFirstFilter : IStartupFilter
                     // 初始化数据库
 
                     // 获取默认库
-                    var db = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfig);
+                    var db = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfigNoAop);
 
                     // 创建核心业务库
                     db.DbMaintenance.CreateDatabase();

@@ -51,14 +51,14 @@ public class AuthService : IAuthService, ITransientDependency
         var tenantId = _user.TenantId;
 
         var tenantAccount = await _repository.Queryable<SysTenantAccountModel>().Includes(e => e.SysAccount)
-            .Where(wh => wh.TenantId == tenantId && wh.UserId == userId).SingleAsync();
+            .Where(wh => wh.TenantId == tenantId && wh.UserId == userId).FirstAsync();
 
         if (tenantAccount == null)
         {
             throw new UserFriendlyException("系统账号信息不存在！");
         }
 
-        var user = await _tenRepository.SingleAsync(wh => wh.Id == userId);
+        var user = await _tenRepository.FirstOrDefaultAsync(wh => wh.Id == userId);
 
         if (user == null)
         {
