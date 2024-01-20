@@ -178,8 +178,8 @@ public class CodeFirstFilter : IStartupFilter
                     {
                         Id = YitIdHelper.NextId(),
                         TenantId = SystemConst.DefaultSystemTenantId,
-                        FastDbType = FastDbTypeEnum.SysCoreLog,
-                        IsSystem = YesOrNotEnum.Y,
+                        FastDbType = FastDbTypeEnum.SysAdminCore,
+                        IsSystem = YesOrNotEnum.N,
                         ServiceIp = SqlSugarContext.ConnectionSettings.ServiceIp,
                         Port = SqlSugarContext.ConnectionSettings.Port,
                         DbName = $"Fast.Code_{SystemConst.DefaultSystemTenantId}",
@@ -236,6 +236,7 @@ public class CodeFirstFilter : IStartupFilter
                         DepartmentName = "",
                         AdminType = AdminTypeEnum.SuperAdmin,
                         Status = CommonStatusEnum.Enable,
+                        TenantId = SystemConst.DefaultSystemTenantId,
                     }).ExecuteCommand();
                     adminCodeDb.Insertable(new TenUserModel
                     {

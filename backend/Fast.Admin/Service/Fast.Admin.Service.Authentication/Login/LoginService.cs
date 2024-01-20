@@ -16,6 +16,7 @@ using Fast.EventBus;
 using Fast.IaaS;
 using Fast.JwtBearer.Services;
 using Fast.NET.Core;
+using Fast.SqlSugar.IBaseEntities;
 using SqlSugar;
 using Yitter.IdGenerator;
 
@@ -177,7 +178,8 @@ public class LoginService : ILoginService, ITransientDependency
         // 查询当前账号的所有租户信息
         result.TenantList = await _repository.Queryable<SysTenantAccountModel>()
             .LeftJoin<SysTenantModel>((t1, t2) => t1.TenantId == t2.Id)
-            .Where((t1, t2) => t1.AccountId == account.Id && t1.Status == CommonStatusEnum.Enable)
+            // 清除租户过滤器
+            .ClearFilter<IBaseTEntity>().Where((t1, t2) => t1.AccountId == account.Id && t1.Status == CommonStatusEnum.Enable)
             .Select<LoginOutput.LoginTenantDto>("[t1].*, [t2].[ChName]").ToListAsync();
 
         if (result.TenantList.Count == 0)
@@ -239,8 +241,9 @@ public class LoginService : ILoginService, ITransientDependency
         }
 
         // 查询对应的租户信息
-        var sysTenantAccount = await _repository.Queryable<SysTenantAccountModel>().Where(wh => wh.Id == input.TenantAccountId)
-            .FirstAsync();
+        var sysTenantAccount = await _repository.Queryable<SysTenantAccountModel>()
+            // 清除租户过滤器
+            .ClearFilter<IBaseTEntity>().Where(wh => wh.Id == input.TenantAccountId).FirstAsync();
 
         if (sysTenantAccount == null)
         {
