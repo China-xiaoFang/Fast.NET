@@ -44,8 +44,15 @@ public sealed class SqlSugarContext
 
     /// <summary>
     /// 默认连接配置
+    /// <remarks>带 AOP 处理的</remarks>
     /// </summary>
     public static ConnectionConfig DefaultConnectionConfig { get; set; }
+
+    /// <summary>
+    /// 默认连接配置
+    /// <remarks>不带 AOP 处理的</remarks>
+    /// </summary>
+    public static ConnectionConfig DefaultConnectionConfigNoAop { get; set; }
 
     /// <summary>
     /// 内部缓存SqlSugar实体集合

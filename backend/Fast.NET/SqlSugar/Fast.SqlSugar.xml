@@ -313,6 +313,13 @@
         <member name="P:Fast.SqlSugar.SqlSugarContext.DefaultConnectionConfig">
             <summary>
             默认连接配置
+            <remarks>带 AOP 处理的</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.SqlSugarContext.DefaultConnectionConfigNoAop">
+            <summary>
+            默认连接配置
+            <remarks>不带 AOP 处理的</remarks>
             </summary>
         </member>
         <member name="P:Fast.SqlSugar.SqlSugarContext.CacheSqlSugarEntityList">
