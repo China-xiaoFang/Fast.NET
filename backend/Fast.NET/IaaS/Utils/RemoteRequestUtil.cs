@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -289,7 +290,11 @@ public static class RemoteRequestUtil
         headers ??= new Dictionary<string, string>();
 
         // 发送 Http 请求
-        using var httpClient = new HttpClient();
+        using var httpClient = new HttpClient(new HttpClientHandler
+        {
+            // 自动处理各种响应解压缩
+            AutomaticDecompression = DecompressionMethods.All
+        });
 
         // 设置请求超时时间
         httpClient.Timeout = TimeSpan.FromSeconds(timeout);
@@ -392,8 +397,9 @@ public static class RemoteRequestUtil
             var responseContent = response.Content.ReadAsByteArrayAsync().Result;
             // 获取 charset 编码
             var encoding = GetCharsetEncoding(response);
+            var result = encoding.GetString(responseContent); 
             // 通过指定编码解码
-            return (encoding.GetString(responseContent), response.Headers);
+            return (result, response.Headers);
         }
         catch (HttpRequestException ex)
         {
