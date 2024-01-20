@@ -65,8 +65,6 @@ public class SqlSugarInjection : IHostInjection
 
             SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings);
 
-            ISqlSugarEntityHandler sqlSugarEntityHandler = null;
-
             // 查找Sugar实体处理程序提供者
             var iSqlSugarEntityHandlerType =
                 IaaSContext.EffectiveTypes.FirstOrDefault(f =>
@@ -75,16 +73,14 @@ public class SqlSugarInjection : IHostInjection
             {
                 // 注册Sugar实体处理程序
                 services.AddScoped(typeof(ISqlSugarEntityHandler), iSqlSugarEntityHandlerType);
-
-                var serviceProvider = services.BuildServiceProvider();
-                IaaSContext.UnmanagedObjects.Add(serviceProvider);
-                // 获取 Sugar实体处理 接口的实现类
-                sqlSugarEntityHandler = serviceProvider.GetRequiredService<ISqlSugarEntityHandler>();
             }
 
             // 注册 SqlSugarClient，这里注册一遍是因为防止直接使用 ISqlSugarClient
             services.AddScoped<ISqlSugarClient>(serviceProvider =>
             {
+                // 获取 Sugar实体处理 接口的实现类
+                var sqlSugarEntityHandler = serviceProvider.GetRequiredService<ISqlSugarEntityHandler>();
+
                 var sqlSugarClient = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfig);
 
                 // 执行超时时间

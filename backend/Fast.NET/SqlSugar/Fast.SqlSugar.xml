@@ -543,6 +543,7 @@
         <member name="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler">
             <summary>
             <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理
+            <remarks>不能在构造函数中注入 <see cref="T:SqlSugar.ISqlSugarClient"/> 否则会出现循环引用的问题</remarks>
             </summary>
         </member>
         <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Attributes.SugarDbTypeAttribute,System.Type)">
