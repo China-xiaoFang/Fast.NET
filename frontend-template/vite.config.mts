@@ -32,7 +32,7 @@ const ViteConfig = ({ mode }: ConfigEnv): UserConfig => {
 
     // 配置代理
     let proxy: Record<string, string | ProxyOptions> = {};
-    if (VITE_AXIOS_PROXY_URL && VITE_AXIOS_PROXY_URL !== "getCurrentDomain") {
+    if (VITE_AXIOS_PROXY_URL) {
         proxy = {
             "/api": {
                 target: VITE_AXIOS_PROXY_URL,

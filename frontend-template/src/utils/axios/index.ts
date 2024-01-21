@@ -79,32 +79,6 @@ const axiosDefaultConfig = {
     },
 };
 
-/**
- * 获取请求 Url 地址
- * @returns
- */
-export const getUrl = (): string => {
-    // 获取请求路径
-    const baseUrl: string = import.meta.env.VITE_AXIOS_BASE_URL;
-    // 获取代理地址
-    const url: string = import.meta.env.VITE_AXIOS_PROXY_URL;
-
-    if (url === "getCurrentDomain") {
-        return `${window.location.protocol}//${window.location.host}${baseUrl}`;
-    } else {
-        return `${url}${baseUrl}`;
-    }
-};
-
-/**
- * 获取请求 Url 地址的端口
- * @returns
- */
-export const getUrlPort = (): string => {
-    const url = getUrl();
-    return new URL(url).port;
-};
-
 function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequestConfig, options: Options = {}, loading: LoadingOptions = {}): T {
     const timestamp = new Date().getTime();
     const configStore = useConfig();
@@ -112,7 +86,7 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
 
     // 创建 Axios 请求
     const Axios = axios.create({
-        baseURL: getUrl(),
+        baseURL: import.meta.env.VITE_AXIOS_BASE_URL,
         timeout: import.meta.env.VITE_AXIOS_API_TIMEOUT,
         headers: {
             // 携带浏览器语言环境表示

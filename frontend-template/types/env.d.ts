@@ -39,7 +39,7 @@ declare interface ImportMetaEnv {
      * @type {string}
      * @memberof ImportMetaEnv
      */
-    readonly VITE_AXIOS_BASE_URL: string | "getCurrentDomain";
+    readonly VITE_AXIOS_BASE_URL: string;
     /**
      * 请求超时时间
      * @type {number}
@@ -48,7 +48,6 @@ declare interface ImportMetaEnv {
     readonly VITE_AXIOS_API_TIMEOUT: number;
     /**
      * 接口请求代理地址
-     * - "getCurrentDomain"：表示获取当前域名
      * - 尾部无需带 ’/‘
      * @type {string}
      * @memberof ImportMetaEnv

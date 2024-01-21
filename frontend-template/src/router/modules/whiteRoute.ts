@@ -8,17 +8,25 @@ export const whiteRoutes: RouteRecordRaw[] = [
         path: "/",
         name: "layout",
         component: Layout,
-        redirect: "/login",
+        redirect: "/",
         children: [
-            {
-                path: "/login",
-                component: () => import("@/views/login/index.vue"),
-                name: "Login",
-                meta: {
-                    title: "登录",
-                },
-            },
+            // {
+            //     path: "/login",
+            //     component: () => import("@/views/login/index.vue"),
+            //     name: "Login",
+            //     meta: {
+            //         title: "登录",
+            //     },
+            // },
         ],
+    },
+    {
+        path: "/login",
+        component: () => import("@/views/login/index.vue"),
+        name: "Login",
+        meta: {
+            title: "登录",
+        },
     },
     {
         path: "/:path(.*)*",

@@ -7,7 +7,6 @@ import { AxiosResponse } from "axios";
 import router from "@/router";
 import { useTitle } from "@vueuse/core";
 import { useSiteConfig } from "@/stores/siteConfig";
-import { getUrl } from "@/utils/axios";
 import { i18n } from "@/lang";
 
 /**
@@ -95,7 +94,7 @@ export const globalDebounce = (fn: Function, ms: number = 500) => {
 export const fullUrl = (relativeUrl: string, domain = "") => {
     const siteConfigStore = useSiteConfig();
     if (!domain) {
-        domain = siteConfigStore.state.cdnUrl ? siteConfigStore.state.cdnUrl : getUrl();
+        domain = siteConfigStore.state.cdnUrl ? siteConfigStore.state.cdnUrl : `${window.location.protocol}//${window.location.host}`;
     }
     if (!relativeUrl) return domain;
 

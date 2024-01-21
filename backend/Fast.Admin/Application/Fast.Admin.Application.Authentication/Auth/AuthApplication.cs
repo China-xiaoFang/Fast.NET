@@ -21,7 +21,7 @@ public class AuthApplication : IDynamicApplication
     /// 获取登录用户信息
     /// </summary>
     /// <returns></returns>
-    [HttpPost("/getLoginUserInfo")]
+    [HttpGet("/getLoginUserInfo")]
     public async Task<GetLoginUserInfoOutput> GetLoginUserInfo()
     {
         return await _authService.GetLoginUserInfo();

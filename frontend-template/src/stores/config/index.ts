@@ -30,7 +30,7 @@ export const useConfig = defineStore(
                 // 是否开启取消重复请求, 默认为 true
                 cancelDuplicateRequest: true,
                 // 是否开启loading层效果, 默认为 true
-                loading: false,
+                loading: true,
                 // Get请求缓存问题处理，默认为 true
                 getMethodCacheHandle: true,
                 // 是否开启简洁的数据结构响应, 默认为 true
