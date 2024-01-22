@@ -21,5 +21,6 @@
  */
 
 export default {
-    ["你好啊！"]: "Hello!",
+    ["账号"]: "account",
+    ["邮箱"]: "Mail",
 };

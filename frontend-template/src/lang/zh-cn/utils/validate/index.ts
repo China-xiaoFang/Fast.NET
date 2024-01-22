@@ -13,17 +13,17 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 /**
- * 自动生成的语言包按需加载映射表
- * 使用 ${lang} 代替当前语言
- * key为页面路由的地址，value为页语言包文件相对路径
- * 访问时按需自动加载映射表的语言包（若存在）
+ * 前缀：utils.validate
+ * 使用方式：
+ * i18n.global.t("utils.validate.Fast.NET")
+ * t("utils.validate.Fast.NET")
+ * $t("utils.validate.Fast.NET")
  */
 
 export default {
-    ["/login"]: ["./${lang}/views/login/index.ts", "./${lang}/views/login/modules/account.ts", "./${lang}/views/login/modules/mobile.ts", "./${lang}/views/login/modules/email.ts"],
-    ["/test"]: ["./${lang}/views/test/index.ts"],
-    ["/test/test"]: ["./${lang}/views/test/test.ts", "./${lang}/views/test/test1.ts"],
-    ["/login/modules/account"]: ["./${lang}/views/login/modules/account.ts"],
-    ["/login/modules/email"]: ["./${lang}/views/login/modules/email.ts"],
-    ["/login/modules/mobile"]: ["./${lang}/views/login/modules/mobile.ts"],
+    ["请输入正确的账号"]: "请输入正确的账号",
+    ["请输入正确的密码"]: "请输入正确的密码",
+    ["请输入正确的手机号码"]: "请输入正确的手机号码",
+    ["请输入正确的身份证号码"]: "请输入正确的身份证号码",
+    ["内容不能为空"]: "内容不能为空",
 };

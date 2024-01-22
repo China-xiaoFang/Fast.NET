@@ -13,17 +13,16 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 /**
- * 自动生成的语言包按需加载映射表
- * 使用 ${lang} 代替当前语言
- * key为页面路由的地址，value为页语言包文件相对路径
- * 访问时按需自动加载映射表的语言包（若存在）
+ * 前缀：views.login.modules.account
+ * 使用方式：
+ * i18n.global.t("views.login.modules.account.Fast.NET")
+ * t("views.login.modules.account.Fast.NET")
+ * $t("views.login.modules.account.Fast.NET")
  */
 
 export default {
-    ["/login"]: ["./${lang}/views/login/index.ts", "./${lang}/views/login/modules/account.ts", "./${lang}/views/login/modules/mobile.ts", "./${lang}/views/login/modules/email.ts"],
-    ["/test"]: ["./${lang}/views/test/index.ts"],
-    ["/test/test"]: ["./${lang}/views/test/test.ts", "./${lang}/views/test/test1.ts"],
-    ["/login/modules/account"]: ["./${lang}/views/login/modules/account.ts"],
-    ["/login/modules/email"]: ["./${lang}/views/login/modules/email.ts"],
-    ["/login/modules/mobile"]: ["./${lang}/views/login/modules/mobile.ts"],
+    ["请输入账号"]: "請輸入帳號",
+    ["请输入密码"]: "請輸入密碼",
+    ["记住密码"]: "記住密碼",
+    ["账号登录"]: "帳號登入",
 };

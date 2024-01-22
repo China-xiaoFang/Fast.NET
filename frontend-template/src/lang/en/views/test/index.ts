@@ -21,5 +21,5 @@
  */
 
 export default {
-    ["你好啊！"]: "Hello!",
+    ["你好啊！"]: "hello!",
 };

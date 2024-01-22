@@ -12,6 +12,7 @@ import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/display.css";
 import "font-awesome/css/font-awesome.min.css";
 import "@/styles/index.scss";
+import Particles from "particles.vue3";
 
 async function start() {
     const app = createApp(App);
@@ -30,6 +31,8 @@ async function start() {
     loadDirectives(app);
 
     app.mount("#app");
+
+    app.use(Particles);
 
     // 挂载全局事件总线
     app.config.globalProperties.eventBus = mitt();

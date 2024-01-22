@@ -13,17 +13,16 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 /**
- * 自动生成的语言包按需加载映射表
- * 使用 ${lang} 代替当前语言
- * key为页面路由的地址，value为页语言包文件相对路径
- * 访问时按需自动加载映射表的语言包（若存在）
+ * 前缀：router.utils
+ * 使用方式：
+ * i18n.global.t("router.utils.Fast.NET")
+ * t("router.utils.Fast.NET")
+ * $t("router.utils.Fast.NET")
  */
 
 export default {
-    ["/login"]: ["./${lang}/views/login/index.ts", "./${lang}/views/login/modules/account.ts", "./${lang}/views/login/modules/mobile.ts", "./${lang}/views/login/modules/email.ts"],
-    ["/test"]: ["./${lang}/views/test/index.ts"],
-    ["/test/test"]: ["./${lang}/views/test/test.ts", "./${lang}/views/test/test1.ts"],
-    ["/login/modules/account"]: ["./${lang}/views/login/modules/account.ts"],
-    ["/login/modules/email"]: ["./${lang}/views/login/modules/email.ts"],
-    ["/login/modules/mobile"]: ["./${lang}/views/login/modules/mobile.ts"],
+    ["导航失败，导航守卫拦截！"]: "導航失敗，導航守衛攔截！",
+    ["导航失败，已在导航目标位置！"]: "導航失敗，已在導航目標位置！",
+    ["导航失败，路由无效！"]: "導航失敗，路由無效！",
+    ["导航失败，菜单类型无法识别！"]: "導航失敗，選單類型無法辨識！",
 };

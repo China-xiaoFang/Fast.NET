@@ -13,18 +13,16 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 /**
- * 前缀：layouts.components.NavMenus
+ * 前缀：views.login.modules.mobile
  * 使用方式：
- * i18n.global.t("layouts.components.NavMenus.Fast.NET")
- * t("layouts.components.NavMenus.Fast.NET")
- * $t("layouts.components.NavMenus.Fast.NET")
+ * i18n.global.t("views.login.modules.mobile.Fast.NET")
+ * t("views.login.modules.mobile.Fast.NET")
+ * $t("views.login.modules.mobile.Fast.NET")
  */
 
 export default {
-    ["清理系统缓存"]: "Clear system cache",
-    ["清理浏览器缓存"]: "Clear browser cache",
-    ["一键清理所有"]: "Clean everything with one click",
-    ["个人资料"]: "personal information",
-    ["注销"]: "Log out",
-    ["您的浏览器不支持全屏，请更换浏览器再试~"]: "Your browser does not support full screen, please change the browser and try again~",
+    ["请输入手机号"]: "Please enter phone number",
+    ["请输入密码"]: "Please enter password",
+    ["记住密码"]: "Remember password",
+    ["手机号登录"]: "Mobile phone number login",
 };
