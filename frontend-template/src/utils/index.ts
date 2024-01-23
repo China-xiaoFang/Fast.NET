@@ -194,3 +194,34 @@ export const getGreet = () => {
     }
     return greet;
 };
+
+/**
+ * 生成随机字符串
+ * @param size 长度，默认16
+ * @returns
+ */
+export const genNonceStr = (size = 16) => {
+    let result = "";
+
+    const inOptions = "abcdefghijklmnopqrstuvwxyz0123456789";
+    const inOptionsLength = inOptions.length;
+
+    for (let i = 0; i < size; i++) {
+        result += inOptions.charAt(Math.floor(Math.random() * inOptionsLength));
+    }
+
+    return result;
+};
+
+export function getUrlParams(url: string) {
+    const regex = /[?&][^=?&]+=[^?&]+/g;
+    const params: any = {};
+
+    let match;
+    while ((match = regex.exec(url)) !== null) {
+        const [key, value] = match[0].substring(1).split("=");
+        params[key] = decodeURIComponent(value);
+    }
+
+    return params;
+}

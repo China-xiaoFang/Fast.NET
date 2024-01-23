@@ -1,7 +1,12 @@
 import { defineStore } from "pinia";
 import { STORE_USER_INFO } from "@/stores/constant";
+import { ElMessage } from "element-plus";
 import type { UserInfo } from "./interface";
 import { type AxiosResponse } from "axios";
+import * as loginApi from "@/api/login";
+import * as authApi from "@/api/auth";
+import { Local } from "@/utils/storage";
+import router from "@/router";
 
 export const useUserInfo = defineStore("userInfo", {
     state: (): UserInfo => {
@@ -21,7 +26,9 @@ export const useUserInfo = defineStore("userInfo", {
             // 头像
             avatar: "",
             // 最后登录时间
-            lastLoginTime: "",
+            lastLoginTime: null,
+            // 动态生成路由
+            asyncRouterGen: false,
         };
     },
     actions: {
@@ -91,9 +98,39 @@ export const useUserInfo = defineStore("userInfo", {
             return { token: null, refreshToken: null };
         },
         /**
+         * 刷新用户信息
+         */
+        async refreshUserInfo() {
+            const userInfo = await authApi.getLoginUserInfo();
+            if (userInfo.success) {
+                this.userName = userInfo.data.userName;
+                this.nickName = userInfo.data.nickName;
+                this.avatar = userInfo.data.avatar;
+                this.lastLoginTime = userInfo.data.lastLoginTime;
+            } else {
+                throw new Error(userInfo.message);
+            }
+        },
+        /**
+         * 登录
+         */
+        login(): void {
+            ElMessage.success("登录成功");
+            // 确保 getLoginUser 获取用户信息
+            this.asyncRouterGen = false;
+            // 进入系统
+            router.push({ path: "/" });
+        },
+        /**
          * 退出登录
          */
-        logout(): void {},
+        logout(): void {
+            // 调用退出登录的接口
+            loginApi.logout().finally(() => {
+                Local.remove(STORE_USER_INFO);
+                router.go(0);
+            });
+        },
     },
     persist: {
         key: STORE_USER_INFO,

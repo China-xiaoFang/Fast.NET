@@ -21,7 +21,7 @@
  */
 
 export default {
-    ["加载中..."]: "loading...",
+    ["加载中"]: "loading",
     ["登录已失效，请重新登录！"]: "Login has expired, please log in again!",
     ["重新登录"]: "re-register",
     ["重复请求，自动取消！"]: "Repeated requests will be automatically canceled!",

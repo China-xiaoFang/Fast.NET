@@ -55,6 +55,8 @@ export const loadLang = async (app: App) => {
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-CN/components/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-CN/layouts/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-CN/utils/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-CN/views/common/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-CN/views/login/**/*.ts", { eager: true }), locale));
             break;
         case "zh-TW":
             window.loadLangHandle = {
@@ -63,6 +65,8 @@ export const loadLang = async (app: App) => {
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-TW/components/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-TW/layouts/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-TW/utils/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-TW/views/common/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./zh-TW/views/login/**/*.ts", { eager: true }), locale));
             break;
         case "en":
             window.loadLangHandle = {
@@ -71,6 +75,8 @@ export const loadLang = async (app: App) => {
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/components/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/layouts/**/*.ts", { eager: true }), locale));
             assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/utils/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/views/common/**/*.ts", { eager: true }), locale));
+            assignLocale[locale].push(getLangFileMessage(import.meta.glob("./en/views/login/**/*.ts", { eager: true }), locale));
             break;
     }
 
