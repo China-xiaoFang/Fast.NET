@@ -242,12 +242,12 @@ public sealed class User : IUser, IScopedDependency
 
             // 从 Token 中读取 TenantNo 和 JobNumber
             var tenantNo = jwtSecurityToken.Payload[nameof(ClaimConst.TenantNo)].ToString();
-            var JobNumber = jwtSecurityToken.Payload[nameof(ClaimConst.JobNumber)].ToString();
+            var jobNumber = jwtSecurityToken.Payload[nameof(ClaimConst.JobNumber)].ToString();
 
-            if (!tenantNo.IsEmpty() && !JobNumber.IsEmpty())
+            if (!tenantNo.IsEmpty() && !jobNumber.IsEmpty())
             {
                 // 获取缓存Key
-                var tokenCacheKey = $"{CacheConst.GetCacheKey(CacheConst.ExpiredToken, tenantNo)}{JobNumber}:{token[^10..]}";
+                var tokenCacheKey = $"{CacheConst.GetCacheKey(CacheConst.ExpiredToken, tenantNo)}{jobNumber}:{token[^10..]}";
                 // 将当前 Token 放入过期缓存中，建议设置缓存过期时间为 Token 过期时间 - 当前时间
                 await _cache.SetAsync(tokenCacheKey, token, jwtSecurityToken.ValidTo - DateTimeOffset.UtcNow);
 
@@ -260,14 +260,20 @@ public sealed class User : IUser, IScopedDependency
 
                     // 获取缓存Key
                     var refreshTokenCacheKey =
-                        $"{CacheConst.GetCacheKey(CacheConst.ExpiredToken, tenantNo)}{JobNumber}:{refreshToken[^10..]}";
+                        $"{CacheConst.GetCacheKey(CacheConst.ExpiredToken, tenantNo)}{jobNumber}:{refreshToken[^10..]}";
                     // 将当前 Token 放入过期缓存中，建议设置缓存过期时间为 Token 过期时间 - 当前时间
                     await _cache.SetAsync(refreshTokenCacheKey, refreshToken,
                         jwtSecurityRefreshToken.ValidTo - DateTimeOffset.UtcNow);
                 }
 
                 // 获取缓存Key
-                var userCacheKey = $"{CacheConst.GetCacheKey(CacheConst.AuthUserInfo, tenantNo)}{JobNumber}";
+                var userCacheKey = $"{CacheConst.GetCacheKey(CacheConst.AuthUserInfo, tenantNo)}{jobNumber}";
+
+                // 清除缓存用户信息
+                await _cache.DelAsync(userCacheKey);
+
+                // 设置Swagger退出登录
+                _httpContext.SignOutToSwagger();
             }
         }
     }

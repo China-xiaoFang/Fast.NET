@@ -34,5 +34,11 @@
             <param name="input"></param>
             <returns></returns>
         </member>
+        <member name="M:Fast.Admin.Application.Authentication.Login.LoginApplication.Logout">
+            <summary>
+            退出登录
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

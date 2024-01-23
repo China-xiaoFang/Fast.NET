@@ -12,8 +12,10 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.Admin.Core.Authentication;
 using Fast.Admin.Service.Authentication.Login;
 using Fast.Admin.Service.Authentication.Login.Dto;
+using Fast.NET.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,5 +54,15 @@ public class LoginApplication : IDynamicApplication
     public async Task TenantLogin(TenantLoginInput input)
     {
         await _loginService.TenantLogin(input);
+    }
+
+    /// <summary>
+    /// 退出登录
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("/logout"), AllowAnonymous]
+    public async Task Logout()
+    {
+        await FastContext.GetService<IUser>().Logout();
     }
 }
