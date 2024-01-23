@@ -134,40 +134,6 @@ public class SystemCodeFirstService : ISystemCodeFirstService, ITransientDepende
             Mobile = "15188888888",
             Status = CommonStatusEnum.Enable
         }).ExecuteCommandAsync();
-        await db.Insertable(new SysTenantAccountModel
-        {
-            Id = YitIdHelper.NextId(),
-            AccountId = SystemConst.DefaultSuperAdminId,
-            UserId = SystemConst.DefaultSuperAdminId,
-            JobNumber = "2024010101",
-            NickName = "超级管理员",
-            AdminType = AdminTypeEnum.SuperAdmin,
-            Status = CommonStatusEnum.Enable,
-            TenantId = SystemConst.DefaultSystemTenantId,
-        }).ExecuteCommandAsync();
-        // 初始化系统管理员
-        await db.Insertable(new SysAccountModel
-        {
-            Id = SystemConst.DefaultSystemAdminId,
-            Account = "15288888888",
-            Password = CryptoUtil.MD5Encrypt(SystemConst.DefaultAdminPassword),
-            UserName = "小方",
-            Sex = GenderEnum.Man,
-            Email = "xiaofang@fastdotnet.com",
-            Mobile = "15288888888",
-            Status = CommonStatusEnum.Enable
-        }).ExecuteCommandAsync();
-        await db.Insertable(new SysTenantAccountModel
-        {
-            Id = YitIdHelper.NextId(),
-            AccountId = SystemConst.DefaultSystemAdminId,
-            UserId = SystemConst.DefaultSystemAdminId,
-            JobNumber = "2024010102",
-            NickName = "小方",
-            AdminType = AdminTypeEnum.SystemAdmin,
-            Status = CommonStatusEnum.Enable,
-            TenantId = SystemConst.DefaultSystemTenantId,
-        }).ExecuteCommandAsync();
 
         // 初始化系统日志库信息
         var sysCodeLogDatabaseModel = new SysTenantMainDatabaseModel
