@@ -26,3 +26,14 @@ export const tenantLogin = (input: TenantLoginInput) => {
         data: input,
     });
 };
+
+/**
+ * 退出登录
+ * @returns
+ */
+export const logout = () => {
+    return axios({
+        url: "logout",
+        method: "post",
+    });
+};
