@@ -89,7 +89,7 @@ public class SysTenantModel : BaseEntity
     /// <summary>
     /// 租户管理员邮箱
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户管理员邮箱", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "租户管理员邮箱", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
     public string Email { get; set; }
 
     /// <summary>

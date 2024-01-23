@@ -38,6 +38,8 @@ public class TenantCodeFirstService : ITenantCodeFirstService, ITransientDepende
         // 获取默认库
         var db = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfigNoAop);
 
+        sysAdminCoreDatabaseModel = await db.Insertable(sysAdminCoreDatabaseModel).ExecuteReturnEntityAsync();
+
         // 获取系统Admin核心库连接配置
         var adminCodeDb = new SqlSugarClient(
             SqlSugarContext.GetConnectionConfig(sysAdminCoreDatabaseModel.Adapt<ConnectionSettingsOptions>()));
@@ -83,21 +85,6 @@ public class TenantCodeFirstService : ITenantCodeFirstService, ITransientDepende
         // 初始化租户管理员角色
         newAdminRole = await adminCodeDb.Insertable(newAdminRole).ExecuteReturnEntityAsync();
 
-        // 添加超级管理员关联
-        await db.Insertable(new SysTenantAccountModel
-        {
-            Id = YitIdHelper.NextId(),
-            AccountId = SystemConst.DefaultSuperAdminId,
-            UserId = SystemConst.DefaultSuperAdminId,
-            JobNumber = "2024010101",
-            NickName = "超级管理员",
-            AdminType = AdminTypeEnum.SuperAdmin,
-            Status = CommonStatusEnum.Enable,
-            TenantId = newTenantModel.Id,
-        }).ExecuteCommandAsync();
-
-        TenUserModel adminTenUserModel;
-
         // 判断是否为初始化
         if (isInit)
         {
@@ -111,62 +98,61 @@ public class TenantCodeFirstService : ITenantCodeFirstService, ITransientDepende
                 AdminType = AdminTypeEnum.SuperAdmin,
                 Status = CommonStatusEnum.Enable,
             }).ExecuteCommandAsync();
-            // 初始化系统管理员
-            adminTenUserModel = await adminCodeDb.Insertable(new TenUserModel
-            {
-                Id = SystemConst.DefaultSystemAdminId,
-                AccountId = SystemConst.DefaultSystemAdminId,
-                JobNumber = "2024010102",
-                NickName = "小方",
-                AdminType = AdminTypeEnum.SystemAdmin,
-                Status = CommonStatusEnum.Enable,
-            }).ExecuteReturnEntityAsync();
-            await db.Queryable<SysAccountModel>().Where(wh => wh.Id == SystemConst.DefaultSystemAdminId).FirstAsync();
-        }
-        else
-        {
-            var adminSysAccountModel = await db.Queryable<SysAccountModel>()
-                .Where(wh => wh.Account == newTenantModel.Mobile).FirstAsync();
-
-            // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
-            if (adminSysAccountModel == null)
-            {
-                // 不存在，新增一个
-                adminSysAccountModel = await db.Insertable(new SysAccountModel
-                {
-                    Id = YitIdHelper.NextId(),
-                    Account = newTenantModel.Mobile,
-                    Password = CryptoUtil.MD5Encrypt(SystemConst.DefaultPassword),
-                    UserName = newTenantModel.AdminName,
-                    Sex = GenderEnum.Unknown,
-                    Email = newTenantModel.Email,
-                    Mobile = newTenantModel.Mobile,
-                    Status = CommonStatusEnum.Enable
-                }).ExecuteReturnEntityAsync();
-            }
-
-            adminTenUserModel = await adminCodeDb.Insertable(new TenUserModel
-            {
-                Id = YitIdHelper.NextId(),
-                AccountId = adminSysAccountModel.Id,
-                JobNumber = $"{DateTime.Now:yyyyMMdd}01",
-                NickName = "系统管理员",
-                AdminType = AdminTypeEnum.SystemAdmin,
-                Status = CommonStatusEnum.Enable,
-            }).ExecuteReturnEntityAsync();
-
+            // 添加超级管理员关联
             await db.Insertable(new SysTenantAccountModel
             {
                 Id = YitIdHelper.NextId(),
-                AccountId = adminSysAccountModel.Id,
-                UserId = adminTenUserModel.Id,
-                JobNumber = adminTenUserModel.JobNumber,
-                NickName = "系统管理员",
-                AdminType = AdminTypeEnum.SystemAdmin,
+                AccountId = SystemConst.DefaultSuperAdminId,
+                UserId = SystemConst.DefaultSuperAdminId,
+                JobNumber = "2001010101",
+                NickName = "超级管理员",
+                AdminType = AdminTypeEnum.SuperAdmin,
                 Status = CommonStatusEnum.Enable,
-                TenantId = SystemConst.DefaultSystemTenantId,
+                TenantId = newTenantModel.Id,
             }).ExecuteCommandAsync();
         }
+
+        var adminSysAccountModel = await db.Queryable<SysAccountModel>()
+            .Where(wh => wh.Account == newTenantModel.Mobile).FirstAsync();
+
+        // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+        if (adminSysAccountModel == null)
+        {
+            // 不存在，新增一个
+            adminSysAccountModel = await db.Insertable(new SysAccountModel
+            {
+                Id = YitIdHelper.NextId(),
+                Account = newTenantModel.Mobile,
+                Password = CryptoUtil.MD5Encrypt(SystemConst.DefaultPassword),
+                UserName = newTenantModel.AdminName,
+                Sex = GenderEnum.Unknown,
+                Email = newTenantModel.Email,
+                Mobile = newTenantModel.Mobile,
+                Status = CommonStatusEnum.Enable
+            }).ExecuteReturnEntityAsync();
+        }
+
+        var adminTenUserModel = await adminCodeDb.Insertable(new TenUserModel
+        {
+            Id = YitIdHelper.NextId(),
+            AccountId = adminSysAccountModel.Id,
+            JobNumber = $"{DateTime.Now:yyyyMMdd}01",
+            NickName = "系统管理员",
+            AdminType = AdminTypeEnum.SystemAdmin,
+            Status = CommonStatusEnum.Enable,
+        }).ExecuteReturnEntityAsync();
+
+        await db.Insertable(new SysTenantAccountModel
+        {
+            Id = YitIdHelper.NextId(),
+            AccountId = adminSysAccountModel.Id,
+            UserId = adminTenUserModel.Id,
+            JobNumber = adminTenUserModel.JobNumber,
+            NickName = "系统管理员",
+            AdminType = AdminTypeEnum.SystemAdmin,
+            Status = CommonStatusEnum.Enable,
+            TenantId = SystemConst.DefaultSystemTenantId,
+        }).ExecuteCommandAsync();
 
         // 初始化职工信息
         await adminCodeDb.Insertable(new TenEmpModel {UserId = adminTenUserModel.Id}).ExecuteCommandAsync();

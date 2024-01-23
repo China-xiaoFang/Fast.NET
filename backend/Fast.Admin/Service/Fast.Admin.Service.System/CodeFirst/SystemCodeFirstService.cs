@@ -79,8 +79,8 @@ public class SystemCodeFirstService : ISystemCodeFirstService, ITransientDepende
             Secret = GuidUtil.GetGuid(),
             PublicKey = "公钥",
             PrivateKey = "私钥",
-            AdminName = "租户管理员",
-            Email = "email@gmail.com",
+            AdminName = "小方",
+            Email = "xiaofang@fastdotnet.com",
             Mobile = "15288888888",
             TenantType = TenantTypeEnum.System,
             LogoUrl = "/logo.png"
