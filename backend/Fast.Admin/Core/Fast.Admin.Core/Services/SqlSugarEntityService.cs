@@ -13,7 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.Admin.Core.Constants;
-using Fast.Admin.Core.Entity.System.DataBase;
+using Fast.Admin.Core.Entity.System.Database;
 using Fast.Admin.Core.Enum.Common;
 using Fast.Admin.Core.Enum.Db;
 using Fast.SqlSugar.Commons;
@@ -52,7 +52,7 @@ public class SqlSugarEntityService : ISqlSugarEntityService, IScopedDependency
         YesOrNotEnum isSystem = YesOrNotEnum.N)
     {
         // 获取缓存Key
-        var cacheKey = CacheConst.GetCacheKey(CacheConst.TenantDataBaseInfo, tenantId, System.Enum.GetName(fastDbType));
+        var cacheKey = CacheConst.GetCacheKey(CacheConst.TenantDatabaseInfo, tenantId, System.Enum.GetName(fastDbType));
 
         // 优先从 HttpContext.Items 中获取
         var connectionSettingsObj =
@@ -67,27 +67,26 @@ public class SqlSugarEntityService : ISqlSugarEntityService, IScopedDependency
         {
             var sqlSugarClient = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfigNoAop);
 
-            var sysTenantDataBaseModel = await sqlSugarClient.Queryable<SysTenantMainDataBaseModel>().Where(wh =>
+            var sysTenantMainDatabaseModel = await sqlSugarClient.Queryable<SysTenantMainDatabaseModel>().Where(wh =>
                     wh.IsSystem == isSystem && wh.FastDbType == fastDbType && wh.TenantId == tenantId && wh.IsDeleted == false)
                 .FirstAsync();
 
-            if (sysTenantDataBaseModel == null)
+            if (sysTenantMainDatabaseModel == null)
             {
-                var errorMessage = $"未能找到对应类型【{System.Enum.GetName(fastDbType)}】所存在的DataBase信息！";
+                var errorMessage = $"未能找到对应类型【{System.Enum.GetName(fastDbType)}】所存在的Database信息！";
                 // 写入错误日志
                 _logger.LogError($"TenantId：{tenantId}；${errorMessage}");
                 throw new ArgumentNullException(errorMessage);
             }
 
             // 查询从库
-            var sysTenantDataBaseSlaveList = await sqlSugarClient.Queryable<SysTenantSlaveDataBaseModel>()
-                .Where(wh => wh.TenantId == tenantId && wh.MainId == sysTenantDataBaseModel.Id && wh.IsDeleted == false)
-                .ToListAsync();
+            var sysTenantDatabaseSlaveList = await sqlSugarClient.Queryable<SysTenantSlaveDatabaseModel>().Where(wh =>
+                wh.TenantId == tenantId && wh.MainId == sysTenantMainDatabaseModel.Id && wh.IsDeleted == false).ToListAsync();
 
             // 组装返回数据
-            var result = sysTenantDataBaseModel.Adapt<ConnectionSettingsOptions>();
+            var result = sysTenantMainDatabaseModel.Adapt<ConnectionSettingsOptions>();
 
-            result.SlaveConnectionList = sysTenantDataBaseSlaveList?.Adapt<List<SlaveConnectionInfo>>();
+            result.SlaveConnectionList = sysTenantDatabaseSlaveList?.Adapt<List<SlaveConnectionInfo>>();
 
             // 放入 HttpContext.Items 中
             _httpContext.Items[nameof(Fast) + nameof(ConnectionSettingsOptions) + System.Enum.GetName(fastDbType)] = result;

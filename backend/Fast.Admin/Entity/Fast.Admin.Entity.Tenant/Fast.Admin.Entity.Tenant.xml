@@ -44,7 +44,7 @@
             角色Id
             </summary>
         </member>
-        <member name="P:Fast.Admin.Entity.Tenant.DataScope.TenRoleDataScopeModel.SysOrgId">
+        <member name="P:Fast.Admin.Entity.Tenant.DataScope.TenRoleDataScopeModel.OrgId">
             <summary>
             机构Id
             </summary>
@@ -59,7 +59,7 @@
             用户Id
             </summary>
         </member>
-        <member name="P:Fast.Admin.Entity.Tenant.DataScope.TenUserDataScopeModel.SysOrgId">
+        <member name="P:Fast.Admin.Entity.Tenant.DataScope.TenUserDataScopeModel.OrgId">
             <summary>
             机构Id
             </summary>

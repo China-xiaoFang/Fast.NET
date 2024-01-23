@@ -34,7 +34,7 @@ public class CacheConst
     /// 租户数据库信息
     /// <remarks>{0}，租户编号 {1}，数据库名类型</remarks>
     /// </summary>
-    public const string TenantDataBaseInfo = "{0}:DataBase:{1}";
+    public const string TenantDatabaseInfo = "{0}:Database:{1}";
 
     /// <summary>
     /// 授权用户信息

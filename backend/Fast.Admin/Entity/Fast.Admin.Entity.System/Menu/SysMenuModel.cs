@@ -11,12 +11,6 @@ namespace Fast.Admin.Entity.System.Menu;
 public class SysMenuModel : BaseEntity
 {
     /// <summary>
-    /// 菜单编码
-    /// </summary>
-    [SugarColumn(ColumnDescription = "菜单编码", ColumnDataType = "Nvarchar(100)", IsNullable = false)]
-    public string MenuCode { get; set; }
-
-    /// <summary>
     /// 菜单名称
     /// </summary>
     [SugarColumn(ColumnDescription = "菜单名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]

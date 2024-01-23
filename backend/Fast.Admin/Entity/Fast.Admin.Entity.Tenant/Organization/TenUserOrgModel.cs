@@ -22,7 +22,7 @@ namespace Fast.Admin.Entity.Tenant.Organization;
 /// </summary>
 [SugarTable("Ten_User_Org", "租户用户机构表")]
 [SugarDbType(FastDbTypeEnum.SysAdminCore)]
-internal class TenUserOrgModel : IDataBaseEntity
+internal class TenUserOrgModel : IDatabaseEntity
 {
     /// <summary>
     /// 用户Id

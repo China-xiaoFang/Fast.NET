@@ -21,12 +21,6 @@ namespace Fast.Admin.Core.Enum.System;
 public enum AdminTypeEnum
 {
     /// <summary>
-    /// 系统默认账号
-    /// </summary>
-    [Description("系统默认账号")]
-    Default = 0,
-
-    /// <summary>
     /// 超级管理员
     /// </summary>
     [Description("超级管理员")]
@@ -40,14 +34,8 @@ public enum AdminTypeEnum
     SystemAdmin = 2,
 
     /// <summary>
-    /// 租户管理员
-    /// </summary>
-    [Description("租户管理员")]
-    TenantAdmin = 3,
-
-    /// <summary>
     /// 普通账号
     /// </summary>
     [Description("普通账号")]
-    None = 4,
+    None = 3,
 }

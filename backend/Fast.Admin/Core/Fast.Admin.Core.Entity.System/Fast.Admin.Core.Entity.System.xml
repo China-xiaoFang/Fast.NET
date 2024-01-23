@@ -180,115 +180,115 @@
             备注
             </summary>
         </member>
-        <member name="T:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel">
+        <member name="T:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel">
             <summary>
-            <see cref="T:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel"/> 系统租户主数据库Model类
+            <see cref="T:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel"/> 系统租户主数据库Model类
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.FastDbType">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.FastDbType">
             <summary>
             数据库类型
             <remarks>用于区分实体是那个链接字符串的</remarks>
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.IsSystem">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.IsSystem">
             <summary>
             是否为系统库
             <remarks>如果为系统库，则不会有租户区分</remarks>
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.ServiceIp">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.ServiceIp">
             <summary>
             服务器Ip地址
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.Port">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.Port">
             <summary>
             端口号
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.DbName">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.DbName">
             <summary>
             数据库名称
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.DbUser">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.DbUser">
             <summary>
             数据库用户
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.DbPwd">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.DbPwd">
             <summary>
             数据库密码
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.DbType">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.DbType">
             <summary>
             数据库类型，用于区分使用的是那个类型的数据库
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.CommandTimeOut">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.CommandTimeOut">
             <summary>
             超时时间，单位秒
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.SugarSqlExecMaxSeconds">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.SugarSqlExecMaxSeconds">
             <summary>
             SqlSugar Sql执行最大秒数，如果超过记录警告日志
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.DiffLog">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.DiffLog">
             <summary>
             差异日志
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.DisableAop">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.DisableAop">
             <summary>
             禁用 SqlSugar 的 Aop
             <remarks>如果是通过 <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantMainDataBaseModel.SlaveDataBaseList">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantMainDatabaseModel.SlaveDatabaseList">
             <summary>
             从库信息
             </summary>
         </member>
-        <member name="T:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel">
+        <member name="T:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel">
             <summary>
-            <see cref="T:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel"/> 系统租户从数据库Model类
+            <see cref="T:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel"/> 系统租户从数据库Model类
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel.MainId">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel.MainId">
             <summary>
             主库Id
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel.ServiceIp">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel.ServiceIp">
             <summary>
             服务器Ip地址
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel.Port">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel.Port">
             <summary>
             端口号
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel.DbName">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel.DbName">
             <summary>
             数据库名称
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel.DbUser">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel.DbUser">
             <summary>
             数据库用户
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel.DbPwd">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel.DbPwd">
             <summary>
             数据库密码
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.DataBase.SysTenantSlaveDataBaseModel.HitRate">
+        <member name="P:Fast.Admin.Core.Entity.System.Database.SysTenantSlaveDatabaseModel.HitRate">
             <summary>
             从库命中率
             <remarks>
@@ -374,7 +374,7 @@
             App授权信息
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Entity.System.Tenant.SysTenantModel.DataBaseList">
+        <member name="P:Fast.Admin.Core.Entity.System.Tenant.SysTenantModel.DatabaseList">
             <summary>
             数据库信息
             </summary>

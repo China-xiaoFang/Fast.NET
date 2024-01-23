@@ -15,9 +15,9 @@
 namespace Fast.Admin.Core.Enum.Db;
 
 /// <summary>
-/// <see cref="FastDbTypeEnum"/> Fast DataBase库类型
+/// <see cref="FastDbTypeEnum"/> Fast Database库类型
 /// </summary>
-[FastEnum("Fast DataBase库类型")]
+[FastEnum("Fast Database库类型")]
 public enum FastDbTypeEnum
 {
     /// <summary>

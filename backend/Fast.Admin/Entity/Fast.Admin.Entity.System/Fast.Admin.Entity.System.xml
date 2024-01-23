@@ -209,11 +209,6 @@
             系统菜单表Model类
             </summary>
         </member>
-        <member name="P:Fast.Admin.Entity.System.Menu.SysMenuModel.MenuCode">
-            <summary>
-            菜单编码
-            </summary>
-        </member>
         <member name="P:Fast.Admin.Entity.System.Menu.SysMenuModel.MenuName">
             <summary>
             菜单名称

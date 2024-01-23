@@ -4,5 +4,27 @@
         <name>Fast.Admin.Service.System</name>
     </assembly>
     <members>
+        <member name="T:Fast.Admin.Service.System.CodeFirst.ISystemCodeFirstService">
+            <summary>
+            <see cref="T:Fast.Admin.Service.System.CodeFirst.ISystemCodeFirstService"/> 系统库CodeFirst
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Service.System.CodeFirst.ISystemCodeFirstService.InitDatabase">
+            <summary>
+            初始化系统核心库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Admin.Service.System.CodeFirst.SystemCodeFirstService">
+            <summary>
+            <see cref="T:Fast.Admin.Service.System.CodeFirst.SystemCodeFirstService"/> 系统库CodeFirst
+            </summary>
+        </member>
+        <member name="M:Fast.Admin.Service.System.CodeFirst.SystemCodeFirstService.InitDatabase">
+            <summary>
+            初始化系统核心库
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

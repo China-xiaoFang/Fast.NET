@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Description>Fast.Admin 应用授权接口模块库。</Description>
+		<Description>Fast.Admin 应用租户接口模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="$(SolutionDir)\Service\Fast.Admin.Service.Authentication\Fast.Admin.Service.Authentication.csproj" />
+		<ProjectReference Include="$(SolutionDir)\Service\Fast.Admin.Service.Tenant\Fast.Admin.Service.Tenant.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

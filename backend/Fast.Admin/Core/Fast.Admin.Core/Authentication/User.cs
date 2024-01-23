@@ -76,11 +76,6 @@ public sealed class User : IUser, IScopedDependency
     public bool IsSystemAdmin { get; private set; }
 
     /// <summary>
-    /// 是否租户管理员
-    /// </summary>
-    public bool IsTenantAdmin { get; private set; }
-
-    /// <summary>
     /// 最后登录设备
     /// </summary>
     public string LastLoginDevice { get; private set; }
@@ -198,7 +193,6 @@ public sealed class User : IUser, IScopedDependency
         DepartmentName = authUserInfo.DepartmentName;
         IsSuperAdmin = authUserInfo.AdminType == AdminTypeEnum.SuperAdmin;
         IsSystemAdmin = authUserInfo.AdminType == AdminTypeEnum.SystemAdmin;
-        IsTenantAdmin = authUserInfo.AdminType == AdminTypeEnum.TenantAdmin;
         LastLoginDevice = authUserInfo.LastLoginDevice;
         LastLoginOS = authUserInfo.LastLoginOS;
         LastLoginBrowser = authUserInfo.LastLoginBrowser;

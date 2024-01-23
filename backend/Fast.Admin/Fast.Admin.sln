@@ -25,11 +25,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{091F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Admin.Service.System", "Service\Fast.Admin.Service.System\Fast.Admin.Service.System.csproj", "{443B9940-0ECA-4E47-ABE7-724FAB9E98C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Admin.Service.Authentication", "Service\Fast.Admin.Service.Authentication\Fast.Admin.Service.Authentication.csproj", "{50C18448-FC27-42E2-BBD3-1F8BF4C83800}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Admin.Service.Authentication", "Service\Fast.Admin.Service.Authentication\Fast.Admin.Service.Authentication.csproj", "{50C18448-FC27-42E2-BBD3-1F8BF4C83800}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{36DABD09-A167-4CE7-A6C4-2F301D850E6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Admin.Application.Authentication", "Application\Fast.Admin.Application.Authentication\Fast.Admin.Application.Authentication.csproj", "{8FA275E2-44FB-4C04-9ACB-D1245B707996}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Admin.Application.Authentication", "Application\Fast.Admin.Application.Authentication\Fast.Admin.Application.Authentication.csproj", "{8FA275E2-44FB-4C04-9ACB-D1245B707996}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Admin.Service.Tenant", "Service\Fast.Admin.Service.Tenant\Fast.Admin.Service.Tenant.csproj", "{5AE8E394-92DA-4DFA-BFE6-F7C66AD84758}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Admin.Application.Tenant", "Application\Fast.Admin.Application.Tenant\Fast.Admin.Application.Tenant.csproj", "{1CA622AA-56FF-43D3-BBC3-5BFD8C59A9B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.Admin.Application.System", "Application\Fast.Admin.Application.System\Fast.Admin.Application.System.csproj", "{A8CF4075-0145-4072-A2DC-D9A737C09203}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +83,18 @@ Global
 		{8FA275E2-44FB-4C04-9ACB-D1245B707996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FA275E2-44FB-4C04-9ACB-D1245B707996}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FA275E2-44FB-4C04-9ACB-D1245B707996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AE8E394-92DA-4DFA-BFE6-F7C66AD84758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AE8E394-92DA-4DFA-BFE6-F7C66AD84758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AE8E394-92DA-4DFA-BFE6-F7C66AD84758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AE8E394-92DA-4DFA-BFE6-F7C66AD84758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CA622AA-56FF-43D3-BBC3-5BFD8C59A9B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CA622AA-56FF-43D3-BBC3-5BFD8C59A9B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CA622AA-56FF-43D3-BBC3-5BFD8C59A9B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CA622AA-56FF-43D3-BBC3-5BFD8C59A9B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8CF4075-0145-4072-A2DC-D9A737C09203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8CF4075-0145-4072-A2DC-D9A737C09203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8CF4075-0145-4072-A2DC-D9A737C09203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8CF4075-0145-4072-A2DC-D9A737C09203}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +109,9 @@ Global
 		{443B9940-0ECA-4E47-ABE7-724FAB9E98C3} = {091FA43B-BD96-4BC3-BB6F-607023AD767D}
 		{50C18448-FC27-42E2-BBD3-1F8BF4C83800} = {091FA43B-BD96-4BC3-BB6F-607023AD767D}
 		{8FA275E2-44FB-4C04-9ACB-D1245B707996} = {36DABD09-A167-4CE7-A6C4-2F301D850E6D}
+		{5AE8E394-92DA-4DFA-BFE6-F7C66AD84758} = {091FA43B-BD96-4BC3-BB6F-607023AD767D}
+		{1CA622AA-56FF-43D3-BBC3-5BFD8C59A9B1} = {36DABD09-A167-4CE7-A6C4-2F301D850E6D}
+		{A8CF4075-0145-4072-A2DC-D9A737C09203} = {36DABD09-A167-4CE7-A6C4-2F301D850E6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2C78EC27-DB50-4AA0-A0BD-F06383709F87}

@@ -14,14 +14,14 @@
 
 using Fast.Admin.Core.Enum.Db;
 
-namespace Fast.Admin.Core.Entity.System.DataBase;
+namespace Fast.Admin.Core.Entity.System.Database;
 
 /// <summary>
-/// <see cref="SysTenantSlaveDataBaseModel"/> 系统租户从数据库Model类
+/// <see cref="SysTenantSlaveDatabaseModel"/> 系统租户从数据库Model类
 /// </summary>
 [SugarTable("Sys_Tenant_Slave_Database", "系统租户从数据库表")]
 [SugarDbType(FastDbTypeEnum.SysCore)]
-public class SysTenantSlaveDataBaseModel : BaseTEntity
+public class SysTenantSlaveDatabaseModel : BaseTEntity
 {
     /// <summary>
     /// 主库Id

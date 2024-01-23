@@ -10,7 +10,8 @@ public class SysButtonModel : BaseEntity
     /// <summary>
     /// 按钮编码
     /// </summary>
-    [SugarColumn(ColumnDescription = "按钮编码", ColumnDataType = "Nvarchar(100)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "按钮编码", ColumnDataType = "Nvarchar(100)", IsNullable = false,
+        UniqueGroupNameList = new[] {nameof(ButtonCode)})]
     public string ButtonCode { get; set; }
 
     /// <summary>

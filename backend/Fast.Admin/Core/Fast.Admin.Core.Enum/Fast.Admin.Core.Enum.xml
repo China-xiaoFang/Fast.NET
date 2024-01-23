@@ -81,7 +81,7 @@
         </member>
         <member name="T:Fast.Admin.Core.Enum.Db.FastDbTypeEnum">
             <summary>
-            <see cref="T:Fast.Admin.Core.Enum.Db.FastDbTypeEnum"/> Fast DataBase库类型
+            <see cref="T:Fast.Admin.Core.Enum.Db.FastDbTypeEnum"/> Fast Database库类型
             </summary>
         </member>
         <member name="F:Fast.Admin.Core.Enum.Db.FastDbTypeEnum.SysCore">
@@ -296,11 +296,6 @@
             <see cref="T:Fast.Admin.Core.Enum.System.AdminTypeEnum"/> 账号类型枚举
             </summary>
         </member>
-        <member name="F:Fast.Admin.Core.Enum.System.AdminTypeEnum.Default">
-            <summary>
-            系统默认账号
-            </summary>
-        </member>
         <member name="F:Fast.Admin.Core.Enum.System.AdminTypeEnum.SuperAdmin">
             <summary>
             超级管理员
@@ -310,11 +305,6 @@
             <summary>
             管理员
             每个租户有一个账号，方便管理租户系统
-            </summary>
-        </member>
-        <member name="F:Fast.Admin.Core.Enum.System.AdminTypeEnum.TenantAdmin">
-            <summary>
-            租户管理员
             </summary>
         </member>
         <member name="F:Fast.Admin.Core.Enum.System.AdminTypeEnum.None">

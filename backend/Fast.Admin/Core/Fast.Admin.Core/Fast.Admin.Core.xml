@@ -60,11 +60,6 @@
             是否系统管理员
             </summary>
         </member>
-        <member name="P:Fast.Admin.Core.Authentication.IUser.IsTenantAdmin">
-            <summary>
-            是否租户管理员
-            </summary>
-        </member>
         <member name="P:Fast.Admin.Core.Authentication.IUser.AppEnvironment">
             <summary>
             App 运行环境
@@ -137,11 +132,6 @@
         <member name="P:Fast.Admin.Core.Authentication.User.IsSystemAdmin">
             <summary>
             是否系统管理员
-            </summary>
-        </member>
-        <member name="P:Fast.Admin.Core.Authentication.User.IsTenantAdmin">
-            <summary>
-            是否租户管理员
             </summary>
         </member>
         <member name="P:Fast.Admin.Core.Authentication.User.LastLoginDevice">
@@ -227,7 +217,7 @@
             <param name="args"></param>
             <returns></returns>
         </member>
-        <member name="F:Fast.Admin.Core.Constants.CacheConst.TenantDataBaseInfo">
+        <member name="F:Fast.Admin.Core.Constants.CacheConst.TenantDatabaseInfo">
             <summary>
             租户数据库信息
             <remarks>{0}，租户编号 {1}，数据库名类型</remarks>
