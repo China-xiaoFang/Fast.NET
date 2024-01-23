@@ -9,7 +9,7 @@ import langAutoLoadMap from "@/lang/autoLoad";
 import { mergeMessage } from "@/lang/index";
 import { useConfig } from "@/stores/config";
 import { useUserInfo } from "@/stores/userInfo";
-import { genNonceStr, getUrlParams, getGreet } from "@/utils";
+import { genNonceStr, getGreet } from "@/utils";
 import { i18n } from "@/lang";
 
 const modules = import.meta.glob("/src/views/**/**.vue");
@@ -132,7 +132,7 @@ router.beforeEach(async (to, from, next) => {
             if (!userInfoStore.asyncRouterGen) {
                 try {
                     // 刷新用户信息
-                    await userInfoStore.refreshUserInfo();
+                    // await userInfoStore.refreshUserInfo();
 
                     // TODO：动态添加路由
 
@@ -148,20 +148,20 @@ router.beforeEach(async (to, from, next) => {
                             duration: 1000,
                         });
                     }, 1000);
-
-                    const redirect = decodeURIComponent((from.query.redirect as string) || "");
-                    if (redirect) {
-                        const _query = getUrlParams(redirect);
-                        // 设置 replace: true, 因此导航将不会留下历史记录
-                        next({ path: redirect, replace: true, query: _query });
-                        // next({ ...to, replace: true })
-                    } else {
-                        next({ ...to, replace: true });
-                    }
                 } catch (error: any) {
                     NProgress.done();
                     userInfoStore.logout();
                 }
+            }
+
+            const redirect = decodeURIComponent((from.query.redirect as string) || "");
+            if (redirect) {
+                // 设置 replace: true, 因此导航将不会留下历史记录
+                next({ path: redirect, replace: true });
+                // next({ ...to, replace: true })
+            } else {
+                // next({ ...to, replace: true });
+                next();
             }
         }
     } else {

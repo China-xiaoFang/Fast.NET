@@ -118,26 +118,33 @@ const loginHandle = (formData: any) => {
         })
         .then((res) => {
             if (res.success) {
-                // TODO：这里还有个租户选择
-                // 判断是否记住密码
-                if (formData.rememberPassword) {
-                    Local.set(
-                        "Login-Form",
-                        {
-                            rememberPassword: true,
-                            account: localAccount,
-                            password: localPassword,
-                            loginMethod: state.loginMethod,
-                        },
-                        null,
-                        true
-                    );
+                if (res.data.isAutoLogin) {
+                    loginSuccess(formData, {
+                        rememberPassword: true,
+                        account: localAccount,
+                        password: localPassword,
+                        loginMethod: state.loginMethod,
+                    });
+                } else {
+                    // TODO：这里还有个租户选择
                 }
-                useUserInfoStore.login();
             } else {
                 console.log(res);
             }
         });
+};
+
+/**
+ * 登录成功
+ * @param formData
+ * @param data
+ */
+const loginSuccess = (formData: any, data: any) => {
+    // 判断是否记住密码
+    if (formData.rememberPassword) {
+        Local.set("Login-Form", data, null, true);
+    }
+    useUserInfoStore.login();
 };
 </script>
 
