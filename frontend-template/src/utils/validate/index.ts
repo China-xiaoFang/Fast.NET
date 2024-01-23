@@ -164,7 +164,8 @@ export const isIdNumber = (arg: string): boolean => {
  */
 export const isAccount = (arg: string): boolean => {
     const reg = /^[a-zA-Z][a-zA-Z0-9_]{2,15}$/;
-    return reg.test(arg);
+    const reg1 = /^(1[3-9])\d{9}$/;
+    return reg.test(arg) || reg1.test(arg);
 };
 
 /**
@@ -174,6 +175,6 @@ export const isAccount = (arg: string): boolean => {
  * @returns 返回一个布尔值，指定参数是否为有效的密码
  */
 export const isPassword = (arg: string): boolean => {
-    const reg = /^(?!.*[&<>"'\n\r]).{6,16}$/;
+    const reg = /^(?!.*[&<>"'\n\r]).{6,32}$/;
     return reg.test(arg);
 };

@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts" name="LoginMobile">
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { useI18n } from "vue-i18n";
 import { validateScrollToField, buildFormValidator } from "@/utils/validate";
@@ -37,19 +37,19 @@ interface LoginMobileProps {
      */
     rememberPassword?: boolean;
     /**
+     * 缓存的账号
+     */
+    account?: string;
+    /**
      * 缓存的密码
      */
-    cachePassword?: string;
-    /**
-     * 是否存在缓存的密码
-     */
-    isCachePassword?: boolean;
+    password?: string;
 }
 
 const props = withDefaults(defineProps<LoginMobileProps>(), {
     rememberPassword: false,
+    account: "",
     password: "",
-    isCachePassword: false,
 });
 
 const emit = defineEmits(["login"]);
@@ -60,9 +60,18 @@ const state = reactive({
 });
 const loginForm = reactive({
     mobile: "",
-    password: props.isCachePassword ? props.cachePassword : "",
-    rememberPassword: props.rememberPassword,
+    password: "",
+    rememberPassword: false,
 });
+
+watch(
+    () => props.rememberPassword,
+    () => {
+        loginForm.mobile = props.account;
+        loginForm.password = props.password;
+        loginForm.rememberPassword = props.rememberPassword;
+    }
+);
 
 // 表单验证规则
 const rules: FormRules = reactive({
@@ -77,7 +86,11 @@ const formRef = ref<FormInstance>();
 
 const loginHandle = async () => {
     await validateScrollToField(formRef.value, () => {
-        emit("login", loginForm);
+        emit("login", {
+            account: loginForm.mobile,
+            password: loginForm.password,
+            rememberPassword: loginForm.rememberPassword,
+        });
     });
 };
 </script>
