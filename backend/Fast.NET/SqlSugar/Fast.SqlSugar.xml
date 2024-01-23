@@ -365,21 +365,21 @@
             <param name="setValue"></param>
             <param name="entityInfo"></param>
         </member>
-        <member name="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil">
+        <member name="T:Fast.SqlSugar.DatabaseUtils.DatabaseUtil">
             <summary>
-            <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> 连接字符串工具类
+            <see cref="T:Fast.SqlSugar.DatabaseUtils.DatabaseUtil"/> 连接字符串工具类
             </summary>
             <summary>
-            <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> Database Nvarchar 类型工具类
+            <see cref="T:Fast.SqlSugar.DatabaseUtils.DatabaseUtil"/> Database Nvarchar 类型工具类
             </summary>
             <summary>
-            <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> Database Nvarchar 类型工具类
+            <see cref="T:Fast.SqlSugar.DatabaseUtils.DatabaseUtil"/> Database Nvarchar 类型工具类
             </summary>
             <summary>
-            <see cref="T:Fast.SqlSugar.DataBaseUtils.DataBaseUtil"/> SugarExternalServices工具类
+            <see cref="T:Fast.SqlSugar.DatabaseUtils.DatabaseUtil"/> SugarExternalServices工具类
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.GetConnectionStr(SqlSugar.DbType,Fast.SqlSugar.Commons.DbConnectionInfo)">
+        <member name="M:Fast.SqlSugar.DatabaseUtils.DatabaseUtil.GetConnectionStr(SqlSugar.DbType,Fast.SqlSugar.Commons.DbConnectionInfo)">
             <summary>
             得到数据库连接字符串
             </summary>
@@ -388,14 +388,14 @@
             <remarks>目前只验证了Sql Server 和 MySql</remarks>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.SetDbTypeDateTime(SqlSugar.DbType,SqlSugar.EntityColumnInfo@)">
+        <member name="M:Fast.SqlSugar.DatabaseUtils.DatabaseUtil.SetDbTypeDateTime(SqlSugar.DbType,SqlSugar.EntityColumnInfo@)">
             <summary>
             设置DateTime类型
             </summary>
             <param name="dbType"></param>
             <param name="columnInfo"></param>
         </member>
-        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.SetDbTypeNvarchar(SqlSugar.DbType,System.String,SqlSugar.EntityColumnInfo@)">
+        <member name="M:Fast.SqlSugar.DatabaseUtils.DatabaseUtil.SetDbTypeNvarchar(SqlSugar.DbType,System.String,SqlSugar.EntityColumnInfo@)">
             <summary>
             设置NVARCHAR类型
             </summary>
@@ -403,7 +403,7 @@
             <param name="length"></param>
             <param name="columnInfo"></param>
         </member>
-        <member name="M:Fast.SqlSugar.DataBaseUtils.DataBaseUtil.GetSugarExternalServices(SqlSugar.DbType)">
+        <member name="M:Fast.SqlSugar.DatabaseUtils.DatabaseUtil.GetSugarExternalServices(SqlSugar.DbType)">
             <summary>
             目前只验证了Sql Server 和 MySql
             </summary>
@@ -860,9 +860,9 @@
             租户Id
             </summary>
         </member>
-        <member name="T:Fast.SqlSugar.IBaseEntities.IDataBaseEntity">
+        <member name="T:Fast.SqlSugar.IBaseEntities.IDatabaseEntity">
             <summary>
-            <see cref="T:Fast.SqlSugar.IBaseEntities.IDataBaseEntity"/> 实体接口
+            <see cref="T:Fast.SqlSugar.IBaseEntities.IDatabaseEntity"/> 实体接口
             </summary>
         </member>
         <member name="T:Fast.SqlSugar.IBaseEntities.IPrimaryKeyEntity`1">
@@ -1052,7 +1052,7 @@
             <see cref="T:Fast.SqlSugar.Repository.ISqlSugarRepository`1"/> SqlSugar仓储接口
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.Repository.ISqlSugarRepository`1.DataBaseInfo">
+        <member name="P:Fast.SqlSugar.Repository.ISqlSugarRepository`1.DatabaseInfo">
             <summary>
             当前仓储的数据库信息
             </summary>
@@ -1468,7 +1468,7 @@
             实体集合
             </summary>
         </member>
-        <member name="P:Fast.SqlSugar.Repository.SqlSugarRepository`1.DataBaseInfo">
+        <member name="P:Fast.SqlSugar.Repository.SqlSugarRepository`1.DatabaseInfo">
             <summary>
             当前仓储的数据库信息
             </summary>

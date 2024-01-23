@@ -53,7 +53,7 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
             ?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute, typeof(TEntity)).Result;
         if (connectionSettings != null)
         {
-            DataBaseInfo = connectionSettings;
+            DatabaseInfo = connectionSettings;
             if (connectionSettings.ConnectionId != (string) SqlSugarContext.DefaultConnectionConfig.ConfigId)
             {
                 var newConnectionConfig = SqlSugarContext.GetConnectionConfig(connectionSettings);
@@ -78,7 +78,7 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
         }
         else
         {
-            DataBaseInfo = SqlSugarContext.ConnectionSettings;
+            DatabaseInfo = SqlSugarContext.ConnectionSettings;
         }
     }
 
@@ -90,7 +90,7 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     /// <summary>
     /// 当前仓储的数据库信息
     /// </summary>
-    public ConnectionSettingsOptions DataBaseInfo { get; set; }
+    public ConnectionSettingsOptions DatabaseInfo { get; set; }
 
     #region Function
 

@@ -20,7 +20,7 @@ namespace Fast.SqlSugar.IBaseEntities;
 /// <see cref="IBaseDeletedEntity"/> 软删除实体接口
 /// </summary>
 [SuppressSniffer]
-public interface IBaseDeletedEntity : IDataBaseEntity
+public interface IBaseDeletedEntity : IDatabaseEntity
 {
     /// <summary>
     /// 软删除标识
