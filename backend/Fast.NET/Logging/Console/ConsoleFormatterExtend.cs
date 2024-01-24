@@ -65,8 +65,7 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
     {
         // 获取格式化后的消息
-        //var message = logEntry.Formatter?.Invoke(logEntry.State, logEntry.Exception);
-        var message = logEntry.State.ToString();
+        var message = logEntry.Formatter?.Invoke(logEntry.State, logEntry.Exception);
 
         // 创建日志消息
         var logDateTime = _formatterOptions.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now;
