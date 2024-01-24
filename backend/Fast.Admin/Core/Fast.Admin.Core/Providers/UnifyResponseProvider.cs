@@ -113,9 +113,8 @@ public class UnifyResponseProvider : IUnifyResponseProvider
                     if (httpContent.Request.Path.HasValue)
                     {
                         var queryParam = httpContent.Request.QueryString;
-                        _logger.LogError(
-                            $"请求异常时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}\r\n请求URL：{httpContent.Request.Scheme}://{httpContent.Request.Host}{httpContent.Request.Path}\r\n请求Method：{httpContent.Request.Method}\r\n请求参数：{queryParam}\r\n异常信息：{exception?.Message ?? message}",
-                            exception);
+                        _logger.LogError(exception,
+                            $"请求异常时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}\r\n请求URL：{httpContent.Request.Scheme}://{httpContent.Request.Host}{httpContent.Request.Path}\r\n请求Method：{httpContent.Request.Method}\r\n请求参数：{queryParam}\r\n异常信息：{exception?.Message ?? message}");
                     }
 
                     break;
@@ -133,9 +132,8 @@ public class UnifyResponseProvider : IUnifyResponseProvider
                         using var streamReader = new StreamReader(httpContent.Request.Body, Encoding.UTF8);
                         var requestParam = streamReader.ReadToEnd();
 
-                        _logger.LogError(
-                            $"请求异常时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}\r\n请求URL：{httpContent.Request.Scheme}://{httpContent.Request.Host}{httpContent.Request.Path}\r\n请求Method：{httpContent.Request.Method}\r\n请求参数：{requestParam}异常信息：{exception?.Message ?? message}",
-                            exception);
+                        _logger.LogError(exception,
+                            $"请求异常时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}\r\n请求URL：{httpContent.Request.Scheme}://{httpContent.Request.Host}{httpContent.Request.Path}\r\n请求Method：{httpContent.Request.Method}\r\n请求参数：{requestParam}\r\n异常信息：{exception?.Message ?? message}");
 
                         // 重置指针
                         httpContent.Request.Body.Position = 0;

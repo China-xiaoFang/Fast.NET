@@ -1,8 +1,8 @@
-<script lang="tsx">
-import { defineComponent, onMounted, reactive, toRaw } from "vue";
+import { defineComponent, SetupContext, onMounted, reactive, toRaw } from "vue";
 import { useEventListener } from "@vueuse/core";
+import styles from "./style/index.module.scss"
 import { FIcon } from "@/components";
-import type { Axis, ContextMenuItem, ContextMenuItemClickEmitArg, Props } from "./interface";
+import type { Axis, ContextMenuItem, ContextMenuItemClickEmitArg, Props, Emits } from "./interface";
 import { RouteLocationNormalized } from "vue-router";
 
 export default defineComponent({
@@ -18,13 +18,9 @@ export default defineComponent({
         },
     },
     emits: {
-        /**
-         * 上下文菜单点击
-         * @param item 点击项
-         */
         onClick: (item: ContextMenuItemClickEmitArg) => null,
     },
-    setup(props: Props, { attrs, expose, emit }) {
+    setup(props: Props, { attrs, expose, emit }: SetupContext<Emits>) {
         const state: {
             /**
              * 是否显示
@@ -77,7 +73,8 @@ export default defineComponent({
         return () => (
             <transition name="el-zoom-in-center" {...attrs}>
                 <div
-                    class="el-popper is-pure is-light el-dropdown__popper fast-contextMenu"
+                    className={[styles["fast-contextMenu"], styles["el-popper"], styles["is-pure"], styles["is-light"], styles["el-dropdown__popper"]]}
+                    class="el-popper is-pure is-light el-dropdown__popper"
                     style={`top: ${state.axis.y + 5}px;left: ${state.axis.x - 14}px;width:${props.width}px`}
                     key={Math.random()}
                     v-show={state.show}
@@ -87,6 +84,7 @@ export default defineComponent({
                     <ul class="el-dropdown-menu">
                         {props.items.map((item: any, index: number) => (
                             <li
+                                className={[styles["el-dropdown-menu__item"], item.disabled ? "is-disabled" : ""]}
                                 class={`el-dropdown-menu__item ${item.disabled ? "is-disabled" : ""}`}
                                 tabindex="-1"
                                 onClick={() => onClickContextMenuItemHandle(item)}
@@ -98,39 +96,7 @@ export default defineComponent({
                         ))}
                     </ul>
                 </div>
-            </transition>
+            </transition >
         );
     },
 });
-</script>
-
-<style scoped lang="scss">
-.fast-contextMenu {
-    z-index: 9999;
-}
-
-.el-popper,
-.el-popper.is-light .el-popper__arrow::before {
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    border: none;
-}
-
-.el-dropdown-menu__item {
-    padding: 8px 20px;
-    user-select: none;
-}
-
-.el-dropdown-menu__item .icon {
-    margin-right: 5px;
-}
-
-.el-dropdown-menu__item:not(.is-disabled) {
-    &:hover {
-        background-color: var(--el-dropdown-menuItem-hover-fill);
-        color: var(--el-dropdown-menuItem-hover-color);
-        .fa {
-            color: var(--el-dropdown-menuItem-hover-color) !important;
-        }
-    }
-}
-</style>

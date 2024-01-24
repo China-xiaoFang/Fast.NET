@@ -1,5 +1,4 @@
-<script lang="tsx">
-import { createVNode, resolveComponent, defineComponent, computed, type CSSProperties } from "vue";
+import { createVNode, SetupContext, resolveComponent, defineComponent, computed, type CSSProperties } from "vue";
 import type { Props } from "./interface";
 import FSvg from "@/components/FIcon/modules/FSvg.vue";
 import { isExternal } from "@/utils/validate";
@@ -20,7 +19,7 @@ export default defineComponent({
             default: "#000000",
         },
     },
-    setup(props: Props, { attrs }) {
+    setup(props: Props, { attrs }: SetupContext) {
         const iconStyle = computed((): CSSProperties => {
             const { size, color } = props;
             let s = `${size.replace("px", "")}px`;
@@ -45,4 +44,3 @@ export default defineComponent({
         );
     },
 });
-</script>

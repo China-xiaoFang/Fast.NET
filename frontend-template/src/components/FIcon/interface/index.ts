@@ -10,7 +10,7 @@ export interface Props {
      * @requires 必填
      * @interface Props
      */
-    name: string;
+    name?: string;
     /**
      * 大小
      * @type {string}

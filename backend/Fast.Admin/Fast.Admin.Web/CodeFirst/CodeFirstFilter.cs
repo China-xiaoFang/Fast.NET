@@ -50,7 +50,10 @@ public class CodeFirstFilter : IStartupFilter
 
                     var (sysTenantModel, sysTenantMainDatabaseModel) = systemCodeFirstService.InitDatabase().Result;
 
-                    tenantCodeFirstService.InitNewTenant(sysTenantModel, sysTenantMainDatabaseModel, true).Wait();
+                    if (sysTenantModel != null && sysTenantMainDatabaseModel != null)
+                    {
+                        tenantCodeFirstService.InitNewTenant(sysTenantModel, sysTenantMainDatabaseModel, true).Wait();
+                    }
                 });
             }
 

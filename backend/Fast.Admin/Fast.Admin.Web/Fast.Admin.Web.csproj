@@ -5,8 +5,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Fast.CorsAccessor" Version="3.4.17.8" />
-	  <PackageReference Include="Fast.Swagger" Version="3.4.17.8" />
+	  <PackageReference Include="Fast.CorsAccessor" Version="3.4.17.10" />
+	  <PackageReference Include="Fast.Swagger" Version="3.4.17.10" />
 	  <PackageReference Include="IGeekFan.AspNetCore.Knife4jUI" Version="0.0.16" />
 	</ItemGroup>
 

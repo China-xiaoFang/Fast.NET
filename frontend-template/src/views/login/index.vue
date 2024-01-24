@@ -88,6 +88,10 @@ onMounted(() => {
     }
 });
 
+/**
+ * 登录
+ * @param formData
+ */
 const loginHandle = (formData: any) => {
     state.loading = true;
     const localAccount = formData.account || formData.mobile || formData.email;

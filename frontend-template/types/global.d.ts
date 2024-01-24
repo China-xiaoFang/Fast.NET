@@ -123,6 +123,31 @@ interface PageResult<T = any> {
 }
 
 /**
+ * 通用分页排序
+ * @interface PageSortInput
+ */
+interface PageSortInput {
+    /**
+     * 排序字段英文
+     * @type {string}
+     * @memberof PageSortInput
+     */
+    enField?: string | null;
+    /**
+     * 排序字段中文
+     * @type {string}
+     * @memberof PageSortInput
+     */
+    cnField?: string | null;
+    /**
+     * 排序方法
+     * @type {string}
+     * @memberof PageSortInput
+     */
+    mode?: "ascending" | "descending" | null;
+}
+
+/**
  * 通用搜索输入
  * @interface PageInput
  */
@@ -151,4 +176,10 @@ interface PageInput {
      * @memberof PageInput
      */
     searchTimeList?: Array<Date>;
+    /**
+     * 排序集合
+     * @type {Array<PageSortInput>}
+     * @memberof PageInput
+     */
+    sortList?: Array<PageSortInput>;
 }
