@@ -26,7 +26,6 @@
   },
   // Redis缓存连接字符串
   "RedisConnectionString": "127.0.0.1:6379,password=,defaultDatabase=2",
-  //"RedisConnectionString": "127.0.0.1:6379,password=123456,defaultDatabase=2",
   // MQ
   "RabbitMQConnection": {
     "HostName": "127.0.0.1",
