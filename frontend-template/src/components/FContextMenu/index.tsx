@@ -20,7 +20,7 @@ export default defineComponent({
     emits: {
         onClick: (item: ContextMenuItemClickEmitArg) => null,
     },
-    setup(props: Props, { attrs, expose, emit }: SetupContext<Emits>) {
+    setup(props: Props, { attrs, emit, expose }: SetupContext<Emits>) {
         const state: {
             /**
              * 是否显示

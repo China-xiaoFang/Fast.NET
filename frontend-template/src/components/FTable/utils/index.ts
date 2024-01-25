@@ -187,3 +187,47 @@ export function arrayDynamicSort(sortList: PageSortInput[]): (a: any, b: any) =>
         return 0;
     };
 }
+
+/**
+ * 合并相同数据，导出合并列所需的方法(只适合el-table)
+ * @param {Object} data
+ * @param {Object} rowspanArray
+ */
+export function getRowspanMethod(data: any[], rowspanArray: { prop: string; spanProp: string }[]) {
+    /**
+     * 要合并列的数据
+     */
+    const rowspanNumObject: any = {};
+
+    //初始化 rowspanNumObject
+    rowspanArray.map((item) => {
+        rowspanNumObject[item.prop] = new Array(data.length).fill(1, 0, 1).fill(0, 1);
+        rowspanNumObject[`${item.prop}-index`] = 0;
+    });
+    //计算相关的合并信息
+    for (let i = 1; i < data.length; i++) {
+        rowspanArray.map((item) => {
+            const index = rowspanNumObject[`${item.prop}-index`];
+            if (data[i][item.spanProp] === data[i - 1][item.spanProp]) {
+                rowspanNumObject[item.prop][index]++;
+            } else {
+                rowspanNumObject[`${item.prop}-index`] = i;
+                rowspanNumObject[item.prop][i] = 1;
+            }
+        });
+    }
+
+    //提供合并的方法并导出
+    const spanMethod = function ({ column, rowIndex }: any) {
+        if (rowspanArray.findIndex((f) => f.prop === column["property"]) !== -1) {
+            const rowspan = rowspanNumObject[column["property"]][rowIndex];
+            if (rowspan > 0) {
+                return { rowspan: rowspan, colspan: 1 };
+            }
+            return { rowspan: 0, colspan: 0 };
+        }
+        return { rowspan: 1, colspan: 1 };
+    };
+
+    return spanMethod;
+}

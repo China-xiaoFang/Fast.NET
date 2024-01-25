@@ -9,21 +9,117 @@ import { TableColumnCtx } from "element-plus";
  * @field xl 最大
  * @type FTableBreakPoint
  */
-type FTableBreakPoint = "xs" | "sm" | "md" | "lg" | "xl";
+export type FTableBreakPoint = "xs" | "sm" | "md" | "lg" | "xl";
 
 /**
  * @type FTableResponsive
  */
-type FTableResponsive = {
+export type FTableResponsive = {
     span?: number;
     offset?: number;
 };
 
 /**
- * 枚举Props
- * @interface FTableEnumProps
+ * FTable 合计方法 Props
  */
-interface FTableEnumProps {
+export interface SummaryMethodProps<T = any> {
+    columns: FTableColumn<T>[];
+    data: T[];
+}
+
+/**
+ * FTable GridItem Props 属性
+ * @interface FTableGridItemProps
+ */
+export interface FTableGridItemProps {
+    offset?: number;
+    span?: number;
+    suffix?: boolean;
+    xs?: FTableResponsive;
+    sm?: FTableResponsive;
+    md?: FTableResponsive;
+    lg?: FTableResponsive;
+    xl?: FTableResponsive;
+}
+
+/**
+ * FTable Grid Props 属性
+ * @interface FTableGridProps
+ */
+export interface FTableGridProps {
+    cols?: number | Record<FTableBreakPoint, number>;
+    collapsed?: boolean;
+    collapsedRows?: number;
+    gap?: [number, number] | number;
+}
+
+/**
+ * FTable SearchFormItem Props 属性
+ * @interface FTableSearchFormItemProps
+ */
+export interface FTableSearchFormItemProps {
+    /**
+     * 类配置
+     */
+    column: FTableColumn;
+    /**
+     * 搜索参数
+     */
+    searchParam: anyObj;
+    /**
+     * 搜索方法
+     */
+    search: () => void;
+}
+
+/**
+ * FTable SearchForm Props 属性
+ * @interface FTableSearchFormProps
+ */
+export interface FTableSearchFormProps {
+    /**
+     * 加载状态
+     */
+    loading?: boolean;
+    /**
+     * 搜索配置列
+     */
+    columns?: FTableColumn[];
+    /**
+     * 搜索参数
+     */
+    searchParam: anyObj;
+    /**
+     * 搜索列配置
+     */
+    searchFormColumns: number | Record<FTableBreakPoint, number>;
+    /**
+     * 搜索方法
+     */
+    search: () => void;
+    /**
+     * 重置方法
+     */
+    reset: () => void;
+}
+
+/**
+ * FTable Pagination Props 属性
+ * @interface FTablePaginationProps
+ */
+export interface FTablePaginationProps {
+    handleSizeChange: (size: number) => void;
+    handleCurrentChange: (currentPage: number) => void;
+    pageIndex: number;
+    pageSize: number;
+    totalRows: number;
+}
+
+/**
+ * 枚举Props
+ * @interface FTableEnumColumn
+ */
+export interface FTableEnumColumn {
     /**
      * 选项框显示的文字
      */
@@ -47,7 +143,7 @@ interface FTableEnumProps {
     /**
      * 为树形选择是，可以通过 children 属性指定子选项
      */
-    children?: FTableEnumProps[];
+    children?: FTableEnumColumn[];
     /**
      * 提示
      */
@@ -63,11 +159,9 @@ interface FTableEnumProps {
 }
 
 /**
- * 搜索的 Props
- * @export
- * @interface FTableSearchProps
+ * @interface FTableSearchColumn
  */
-type FTableSearchProps = {
+type FTableSearchColumn = {
     /**
      * 当前项搜索框的类型
      */
@@ -118,15 +212,18 @@ type FTableSearchProps = {
 
 /**
  * FTable列Props
- * @interface FTableColumnProps
+ * @interface FTableColumn
  */
-export interface FTableColumnProps<T = any> extends Partial<Omit<TableColumnCtx<T>, "children" | "renderHeader" | "renderCell" | "sortable">> {
+export interface FTableColumn<T = any> extends Partial<Omit<TableColumnCtx<T>, "children" | "renderHeader" | "renderCell" | "sortable">> {
     /**
      * 对应列的类型
      * index：显示该行的索引（从 1 开始计算）
      * expand：可展开的按钮
+     * image：图片
+     * date：日期
+     * operation：操作列
      */
-    type?: "index" | "expand" | "image" | "date";
+    type?: "index" | "expand" | "image" | "date" | "operation";
     /**
      * 图片大小
      * 当 type 等于 image 的时候才会生效
@@ -174,11 +271,11 @@ export interface FTableColumnProps<T = any> extends Partial<Omit<TableColumnCtx<
     /**
      * 搜索项配置
      */
-    search?: FTableSearchProps;
+    search?: FTableSearchColumn;
     /**
      * 枚举类型（渲染值的字典）
      */
-    enum?: FTableEnumProps[] | ((params?: any) => Promise<any>);
+    enum?: FTableEnumColumn[] | ((params?: any) => Promise<any>);
     /**
      * 当前单元格值是否根据 enum 格式化
      */
@@ -192,7 +289,7 @@ export interface FTableColumnProps<T = any> extends Partial<Omit<TableColumnCtx<
      * @param row
      * @returns
      */
-    headerRender?: (row: FTableColumnProps, index?: number) => VNodeChild;
+    headerRender?: (row: FTableColumn, index?: number) => VNodeChild;
     /**
      * 自定义单元格内容渲染（tsx语法）
      * @param scope
@@ -202,7 +299,7 @@ export interface FTableColumnProps<T = any> extends Partial<Omit<TableColumnCtx<
     /**
      * 多级表头
      */
-    _children?: FTableColumnProps<T>[];
+    _children?: FTableColumn<T>[];
     /**
      * 是否为 Link Button
      */
@@ -230,95 +327,13 @@ export interface FTableColumnProps<T = any> extends Partial<Omit<TableColumnCtx<
 }
 
 /**
- * FTable 合计方法 Props
+ * FTable Column Props 属性
  */
-export interface SummaryMethodProps<T = any> {
-    columns: FTableColumnProps<T>[];
-    data: T[];
-}
-
-/**
- * FTable SearchFormItem Props 属性
- * @interface FTableSearchFormItemProps
- */
-export interface FTableSearchFormItemProps {
+export interface FTableColumnProps {
     /**
-     * 类配置
+     * 列配置
      */
-    column: FTableColumnProps;
-    /**
-     * 搜索参数
-     */
-    searchParam: anyObj;
-    /**
-     * 搜索方法
-     */
-    search: () => void;
-}
-
-/**
- * FTable SearchForm Props 属性
- * @interface FTableSearchFormProps
- */
-export interface FTableSearchFormProps {
-    /**
-     * 加载状态
-     */
-    loading?: boolean;
-    /**
-     * 搜索配置列
-     */
-    columns?: FTableColumnProps[];
-    /**
-     * 搜索参数
-     */
-    searchParam: anyObj;
-    /**
-     * 搜索方法
-     */
-    search: () => void;
-    /**
-     * 重置方法
-     */
-    reset: () => void;
-}
-
-/**
- * FTable Pagination Props 属性
- * @interface FTablePaginationProps
- */
-export interface FTablePaginationProps {
-    handleSizeChange: (size: number) => void;
-    handleCurrentChange: (currentPage: number) => void;
-    pageIndex: number;
-    pageSize: number;
-    totalRows: number;
-}
-
-/**
- * FTable GridItem Props 属性
- * @interface FTableGridItemProps
- */
-export interface FTableGridItemProps {
-    offset?: number;
-    span?: number;
-    suffix?: boolean;
-    xs?: FTableResponsive;
-    sm?: FTableResponsive;
-    md?: FTableResponsive;
-    lg?: FTableResponsive;
-    xl?: FTableResponsive;
-}
-
-/**
- * FTable Grid Props 属性
- * @interface FTableGridProps
- */
-export interface FTableGridItemProps {
-    cols?: number | Record<FTableBreakPoint, number>;
-    collapsed?: boolean;
-    collapsedRows?: number;
-    gap?: [number, number] | number;
+    column: FTableColumn;
 }
 
 /**
@@ -333,7 +348,11 @@ export interface FTableProps<TInput = any, TOutput = any> {
     /**
      * 列配置项
      */
-    columns?: FTableColumnProps[];
+    columns?: FTableColumn[];
+    /**
+     * 自动请求
+     */
+    requestAuto?: boolean;
     /**
      * 请求表格数据的api
      * @param params
@@ -353,6 +372,10 @@ export interface FTableProps<TInput = any, TOutput = any> {
      */
     initParam?: PageInput | TInput;
     /**
+     * 搜索列配置
+     */
+    searchFormColumns: number | Record<FTableBreakPoint, number>;
+    /**
      * 是否带有纵向边框 ==> 非必传（默认为true）
      */
     border?: boolean;
@@ -361,9 +384,9 @@ export interface FTableProps<TInput = any, TOutput = any> {
      */
     rowKey?: string;
     /**
-     * 是否显示表格功能按钮 ==> 非必传（默认为true）
+     * 显示搜索表单
      */
-    toolButton?: boolean;
+    showSearchForm?: boolean;
     /**
      * 显示表格头部区域
      */
@@ -381,7 +404,107 @@ export interface FTableProps<TInput = any, TOutput = any> {
      */
     showColumnBtn?: boolean;
     /**
-     * 显示搜索表单
+     * 是否显示表格功能按钮 ==> 非必传（默认为true）
      */
-    showSearchForm?: boolean;
+    toolButton?: boolean;
+    /**
+     * 是否为树形数据
+     */
+    treeData?: boolean;
+    /**
+     * 树形节点名称，默认 children
+     */
+    treeChildrenName?: string;
+    /**
+     * 单选
+     */
+    singleChoice?: boolean;
+}
+
+/**
+ * FTable state 属性
+ */
+export interface FTableState<TInput = any, TOutput = any> {
+    /**
+     * 表格加载
+     */
+    loading?: boolean;
+    /**
+     * 源列数据
+     */
+    orgColumns?: FTableColumn[];
+    /**
+     * 搜素列
+     */
+    searchColumns?: FTableColumn[];
+    /**
+     * 正常显示的列
+     */
+    tableColumns?: FTableColumn[];
+    /**
+     * 表格数据
+     */
+    tableData?: TOutput[];
+    /**
+     * 分页数据
+     */
+    tablePagination?: PageResult<TOutput>;
+    /**
+     * 搜索参数
+     */
+    searchParam?: PageInput | TInput;
+    /**
+     * 显示搜索
+     */
+    showSearch?: boolean;
+    /**
+     * 是否选中数据
+     */
+    selected?: boolean;
+    /**
+     * 选中数据列表
+     */
+    selectedList?: TOutput[];
+    /**
+     * 当前选中数据的ids
+     */
+    selectedListIds?: string[];
+}
+
+/**
+ * FTable Emits 属性
+ */
+export interface FTableEmits {
+    /**
+     * 表单重置
+     * @returns
+     */
+    tableReset: () => void;
+    /**
+     * 选中改变
+     * @param selectedList
+     * @returns
+     */
+    selectionChange: (selectedList: any[]) => void;
+    /**
+     * 排序更改
+     * @param column
+     * @param prop
+     * @param order
+     * @returns
+     */
+    sortChange: ({ column, prop, order }: { column: FTableColumn; prop: string; order: string }) => void;
+    /**
+     * 页面大小改变
+     * @param size
+     * @returns
+     */
+    sizeChange: (size: number) => void;
+    /**
+     * 分页改变
+     * @param index
+     * @param size
+     * @returns
+     */
+    paginationChange: (index, size) => void;
 }

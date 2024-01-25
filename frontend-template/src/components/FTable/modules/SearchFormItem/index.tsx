@@ -1,13 +1,13 @@
 import { defineComponent, SetupContext, computed, inject, ref, PropType } from "vue";
 import { handleProp } from "../../utils";
-import type { FTableSearchFormItemProps, FTableColumnProps } from '../../interface';
+import type { FTableSearchFormItemProps, FTableColumn } from '../../interface';
 import { i18n } from "@/lang";
 
 export default defineComponent({
     name: "SearchFormItem",
     props: {
         column: {
-            type: Object as PropType<FTableColumnProps>,
+            type: Object as PropType<FTableColumn>,
             require: true
         },
         searchParam: {
@@ -185,46 +185,52 @@ export default defineComponent({
         ];
 
         return () => (
-            <component
-                v-if={props.column.search?.el}
-                is={`el-${props.column.search.el}`}
-                {...{ ...handleSearchProps, ...placeholder }}
-                v-model_trim={props.searchParam[props.column.search.key ?? handleProp(props.column.prop!)]}
-                data={props.column.search?.el === "tree-select" ? columnEnum : []}
-                options={["cascader", "select-v2"].includes(props.column.search?.el) ? columnEnum : []}
-                clearable={clearable}
-                filterable
-                range-separator={i18n.global.t("components.FTable.modules.SearchFormItem.至")}
-                start-placeholder={i18n.global.t("components.FTable.modules.SearchFormItem.开始时间")}
-                end-placeholder={i18n.global.t("components.FTable.modules.SearchFormItem.结束时间")}
-                default-time={props.column.search?.props?.type === "date" ? simpleTime : defaultTime}
-                shortcuts={props.column.search?.props?.type === "date" ? simpleShortcuts : shortcuts}
-                onChange={() => props.search()}
-            >
-                {
-                    props.column.search?.el == "cascader" ? (
-                        <>
-                            {{
-                                default: ({ data }) => [<span>{data[fieldNames.value.label]}</span>]
-                            }}
-                        </>
-                    ) : props.column.search?.el == "select" ? (
-                        <>
-                            {columnEnum.value.map((col: any, index: number) => (
-                                <el-option
-                                    key={index}
-                                    label={col[fieldNames.value.label]}
-                                    value={col[fieldNames.value.value]}
-                                />
-                            ))}
-                        </>
-                    ) : (
-                        <>
-                            {slots.default()}
-                        </>
-                    )
+            <>
+                {props.column.search?.el ?
+                    (
+                        <component
+                            v-if={props.column.search?.el}
+                            is={`el-${props.column.search.el}`}
+                            {...{ ...handleSearchProps, ...placeholder }}
+                            v-model_trim={props.searchParam[props.column.search.key ?? handleProp(props.column.prop!)]}
+                            data={props.column.search?.el === "tree-select" ? columnEnum : []}
+                            options={["cascader", "select-v2"].includes(props.column.search?.el) ? columnEnum : []}
+                            clearable={clearable}
+                            filterable
+                            range-separator={i18n.global.t("components.FTable.modules.SearchFormItem.至")}
+                            start-placeholder={i18n.global.t("components.FTable.modules.SearchFormItem.开始时间")}
+                            end-placeholder={i18n.global.t("components.FTable.modules.SearchFormItem.结束时间")}
+                            default-time={props.column.search?.props?.type === "date" ? simpleTime : defaultTime}
+                            shortcuts={props.column.search?.props?.type === "date" ? simpleShortcuts : shortcuts}
+                            onChange={() => props.search()}
+                        >
+                            {
+                                props.column.search?.el == "cascader" ? (
+                                    <>
+                                        {{
+                                            default: ({ data }) => <span>{data[fieldNames.value.label]}</span>
+                                        }}
+                                    </>
+                                ) : props.column.search?.el == "select" ? (
+                                    <>
+                                        {columnEnum.value.map((col: any, index: number) => (
+                                            <el-option
+                                                key={index}
+                                                label={col[fieldNames.value.label]}
+                                                value={col[fieldNames.value.value]}
+                                            />
+                                        ))}
+                                    </>
+                                ) : (
+                                    <>
+                                        {slots.default()}
+                                    </>
+                                )
+                            }
+                        </component>
+                    ) : (null)
                 }
-            </component>
+            </>
         )
     }
 });
