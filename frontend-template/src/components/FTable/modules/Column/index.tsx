@@ -65,7 +65,7 @@ export default defineComponent({
                     props.column._children?.length ?
                         (
                             <el-table-column
-                                v-bind={props.column}
+                                {...props.column}
                                 width="auto"
                                 min-width={(props.column.width || props.column.minWidth) ?? "auto"}
                                 header-align="left"
@@ -83,7 +83,7 @@ export default defineComponent({
                                                         Object.keys(slots).map((slot: string) => (
                                                             <template key={slots} v-slots={{
                                                                 [slot]: (scope) => (
-                                                                    <slot name={slots} v-bind={scope} />
+                                                                    <slot name={slots} {...scope} />
                                                                 )
                                                             }}>
                                                             </template>
@@ -101,11 +101,14 @@ export default defineComponent({
                                                 {
                                                     props.column.headerRender ?
                                                         (
-                                                            <component is={props.column.headerRender} v-bind={{ column, index: $index }} />
+                                                            <component is={props.column.headerRender} column={column} $index={$index} />
                                                         )
                                                         : props.column.headerRender ?
                                                             (
-                                                                <slot name={props.column.headerSlot} column={column} index={$index} />
+                                                                <>
+                                                                    {slots[props.column.headerSlot] && slots[props.column.headerSlot](column, $index)}
+                                                                </>
+                                                                // <slot name={props.column.headerSlot} column={column} $index={$index} />
                                                             )
                                                             :
                                                             (
@@ -120,7 +123,7 @@ export default defineComponent({
                         // 其他正常的列
                         (
                             <el-table-column
-                                v-bind={props.column}
+                                {...props.column}
                                 width="auto"
                                 min-width={(props.column.width || props.column.minWidth) ?? "auto"}
                                 header-align="left"
@@ -130,28 +133,30 @@ export default defineComponent({
                                 show-overflow-tooltip={props.column.showOverflowTooltip ?? props.column.type != "operation"}
                             >
                                 {{
-                                    header: ({ column, index }: { column: FTableColumn; index: number }) =>
-                                        [
-                                            <>
-                                                {
-                                                    props.column.headerRender ?
+                                    header: ({ column, $index }: { column: FTableColumn; $index: number }) => (
+                                        <>
+                                            {
+                                                props.column.headerRender ?
+                                                    (
+                                                        <component is={props.column.headerRender} column={column} $index={$index} />
+                                                    )
+                                                    : props.column.headerRender ?
                                                         (
-                                                            <component is={props.column.headerRender} v-bind={{ column, index }} />
+                                                            <>
+                                                                {slots[props.column.headerSlot] && slots[props.column.headerSlot](column, $index)}
+                                                            </>
+                                                            // <slot name={props.column.headerSlot} column={column} $index={$index} />
                                                         )
-                                                        : props.column.headerRender ?
-                                                            (
-                                                                <slot name={props.column.headerSlot} column={column} index={index} />
-                                                            )
-                                                            :
-                                                            (
-                                                                <span>{column.label}</span>
-                                                            )
-                                                }
-                                            </>
-                                        ]
+                                                        :
+                                                        (
+                                                            <span>{column.label}</span>
+                                                        )
+                                            }
+                                        </>
+                                    )
                                 }}
                                 {{
-                                    default: ((row: any, index: number) => (
+                                    default: ({ row, column, $index }: { row: any, column: FTableColumn; $index: number }) => (
                                         <>
                                             {
                                                 props.column.tag ? (
@@ -196,16 +201,19 @@ export default defineComponent({
                                             {
                                                 // render函数 使用内置的component组件可以支持h函数渲染和txs语法
                                                 props.column.render ? (
-                                                    <component is={props.column.render} row={row} index={index} />
+                                                    <component is={props.column.render} row={row} column={column} $index={$index} />
                                                 ) : (null)
                                             }
                                             {
                                                 props.column.slot ? (
-                                                    <slot name={props.column.slot} row={row} index={index} />
+                                                    <>
+                                                        {slots[props.column.slot] && slots[props.column.slot](row, column, $index)}
+                                                    </>
+                                                    // <slot name={props.column.slot} row={row} column={column} $index={$index} />
                                                 ) : (null)
                                             }
                                         </>
-                                    ))
+                                    )
                                 }}
                             </el-table-column>
                         )

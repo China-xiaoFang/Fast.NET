@@ -106,6 +106,6 @@ public class LoginOutput
         /// <summary>
         /// 租户公司中文简称
         /// </summary>
-        public string ChShortName { get; set; }
+        public string ChName { get; set; }
     }
 }

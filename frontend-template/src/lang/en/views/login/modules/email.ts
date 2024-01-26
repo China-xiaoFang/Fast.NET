@@ -21,7 +21,7 @@
  */
 
 export default {
-    ["请输入邮箱"]: "Please input your email",
+    ["请输入邮箱"]: "please input your email",
     ["请输入密码"]: "Please enter password",
     ["记住密码"]: "Remember password",
     ["邮箱登录"]: "Email Login",

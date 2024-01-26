@@ -150,7 +150,7 @@ export default defineComponent({
 
         return () => (
             <div style={style.value}>
-                <slot />
+                {slots.default && slots.default()}
             </div>
         );
     },

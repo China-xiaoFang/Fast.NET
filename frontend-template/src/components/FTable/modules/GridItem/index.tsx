@@ -71,7 +71,7 @@ export default defineComponent({
 
         return () => (
             <div style={style.value} v-show={isShow.value}>
-                <slot />
+                {slots.default && slots.default()}
             </div>
         );
     },

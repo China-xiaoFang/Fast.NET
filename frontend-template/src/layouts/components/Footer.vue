@@ -33,7 +33,7 @@ export default defineComponent({
                     {siteConfigStore.state.publicProvince && siteConfigStore.state.publicCode && (
                         <>
                             {" "}
-                            <img src="/src/assets/publicLogo.png" />{" "}
+                            <img src="/src/assets/images/publicLogo.png" />{" "}
                             <a href={`https://beian.mps.gov.cn/#/query/webSearch?code=${siteConfigStore.state.publicCode}`}>
                                 {siteConfigStore.state.publicProvince}
                                 {siteConfigStore.state.publicCode}号

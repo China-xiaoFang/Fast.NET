@@ -1,7 +1,7 @@
 import { defineComponent, SetupContext, onMounted, reactive, toRaw } from "vue";
 import { useEventListener } from "@vueuse/core";
 import styles from "./style/index.module.scss"
-import { FIcon } from "@/components";
+import FIcon from "@/components/FIcon";
 import type { Axis, ContextMenuItem, ContextMenuItemClickEmitArg, Props, Emits } from "./interface";
 import { RouteLocationNormalized } from "vue-router";
 
@@ -16,9 +16,6 @@ export default defineComponent({
             type: Array<ContextMenuItem>,
             require: true,
         },
-    },
-    emits: {
-        onClick: (item: ContextMenuItemClickEmitArg) => null,
     },
     setup(props: Props, { attrs, emit, expose }: SetupContext<Emits>) {
         const state: {

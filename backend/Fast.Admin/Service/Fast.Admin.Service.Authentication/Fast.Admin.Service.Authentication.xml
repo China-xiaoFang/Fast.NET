@@ -259,7 +259,7 @@
             最后登录时间
             </summary>
         </member>
-        <member name="P:Fast.Admin.Service.Authentication.Login.Dto.LoginOutput.LoginTenantDto.ChShortName">
+        <member name="P:Fast.Admin.Service.Authentication.Login.Dto.LoginOutput.LoginTenantDto.ChName">
             <summary>
             租户公司中文简称
             </summary>

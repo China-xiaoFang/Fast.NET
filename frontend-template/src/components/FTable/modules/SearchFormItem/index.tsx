@@ -1,7 +1,7 @@
 import { defineComponent, SetupContext, computed, inject, ref, PropType } from "vue";
 import { handleProp } from "../../utils";
 import type { FTableSearchFormItemProps, FTableColumn } from '../../interface';
-import { i18n } from "@/lang";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
     name: "SearchFormItem",
@@ -20,6 +20,8 @@ export default defineComponent({
         }
     },
     setup(props: FTableSearchFormItemProps, { slots }: SetupContext) {
+        const { t } = useI18n();
+
         // 判断 fieldNames 设置 label && value 的 key 值
         const fieldNames = computed(() => {
             return {
@@ -62,14 +64,14 @@ export default defineComponent({
             const search = props.column.search;
             if (["datetimerange", "daterange", "monthrange"].includes(search?.props?.type) || search?.props?.isRange) {
                 return {
-                    rangeSeparator: i18n.global.t("components.FTable.modules.SearchFormItem.至"), startPlaceholder:
-                        i18n.global.t("components.FTable.modules.SearchFormItem.开始时间")
+                    rangeSeparator: t("components.FTable.modules.SearchFormItem.至"), startPlaceholder:
+                        t("components.FTable.modules.SearchFormItem.开始时间")
                     , endPlaceholder:
-                        i18n.global.t("components.FTable.modules.SearchFormItem.结束时间")
+                        t("components.FTable.modules.SearchFormItem.结束时间")
                 };
             }
-            const placeholder = search?.props?.placeholder ?? (search?.el.includes("input") ? i18n.global.t("components.FTable.modules.SearchFormItem.请输入") :
-                i18n.global.t("components.FTable.modules.SearchFormItem.请选择"));
+            const placeholder = search?.props?.placeholder ?? (search?.el.includes("input") ? t("components.FTable.modules.SearchFormItem.请输入") :
+                t("components.FTable.modules.SearchFormItem.请选择"));
 
             return { placeholder };
         });
@@ -82,11 +84,11 @@ export default defineComponent({
 
         const simpleShortcuts = [
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.今天"),
+                text: t("components.FTable.modules.SearchFormItem.今天"),
                 value: new Date(),
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.昨天"),
+                text: t("components.FTable.modules.SearchFormItem.昨天"),
                 value: () => {
                     const date = new Date();
                     date.setTime(date.getTime() - 3600 * 1000 * 24);
@@ -94,7 +96,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.一周前"),
+                text: t("components.FTable.modules.SearchFormItem.一周前"),
                 value: () => {
                     const date = new Date();
                     date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
@@ -102,7 +104,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.一月前"),
+                text: t("components.FTable.modules.SearchFormItem.一月前"),
                 value: () => {
                     const date = new Date();
                     date.setTime(date.getTime() - 3600 * 1000 * 24 * 30);
@@ -110,7 +112,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.一年前"),
+                text: t("components.FTable.modules.SearchFormItem.一年前"),
                 value: () => {
                     const date = new Date();
                     date.setTime(date.getTime() - 3600 * 1000 * 24 * 365);
@@ -120,7 +122,7 @@ export default defineComponent({
         ];
         const shortcuts = [
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.最近1天"),
+                text: t("components.FTable.modules.SearchFormItem.最近1天"),
                 value: () => {
                     const end = new Date();
                     const start = new Date();
@@ -129,7 +131,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.最近3天"),
+                text: t("components.FTable.modules.SearchFormItem.最近3天"),
                 value: () => {
                     const end = new Date();
                     const start = new Date();
@@ -138,7 +140,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.最近1周"),
+                text: t("components.FTable.modules.SearchFormItem.最近1周"),
                 value: () => {
                     const end = new Date();
                     const start = new Date();
@@ -147,7 +149,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.最近1个月"),
+                text: t("components.FTable.modules.SearchFormItem.最近1个月"),
                 value: () => {
                     const end = new Date();
                     const start = new Date();
@@ -156,7 +158,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.最近3个月"),
+                text: t("components.FTable.modules.SearchFormItem.最近3个月"),
                 value: () => {
                     const end = new Date();
                     const start = new Date();
@@ -165,7 +167,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.最近6个月"),
+                text: t("components.FTable.modules.SearchFormItem.最近6个月"),
                 value: () => {
                     const end = new Date();
                     const start = new Date();
@@ -174,7 +176,7 @@ export default defineComponent({
                 },
             },
             {
-                text: i18n.global.t("components.FTable.modules.SearchFormItem.最近1年"),
+                text: t("components.FTable.modules.SearchFormItem.最近1年"),
                 value: () => {
                     const end = new Date();
                     const start = new Date();
@@ -197,9 +199,9 @@ export default defineComponent({
                             options={["cascader", "select-v2"].includes(props.column.search?.el) ? columnEnum : []}
                             clearable={clearable}
                             filterable
-                            range-separator={i18n.global.t("components.FTable.modules.SearchFormItem.至")}
-                            start-placeholder={i18n.global.t("components.FTable.modules.SearchFormItem.开始时间")}
-                            end-placeholder={i18n.global.t("components.FTable.modules.SearchFormItem.结束时间")}
+                            range-separator={t("components.FTable.modules.SearchFormItem.至")}
+                            start-placeholder={t("components.FTable.modules.SearchFormItem.开始时间")}
+                            end-placeholder={t("components.FTable.modules.SearchFormItem.结束时间")}
                             default-time={props.column.search?.props?.type === "date" ? simpleTime : defaultTime}
                             shortcuts={props.column.search?.props?.type === "date" ? simpleShortcuts : shortcuts}
                             onChange={() => props.search()}
@@ -223,7 +225,7 @@ export default defineComponent({
                                     </>
                                 ) : (
                                     <>
-                                        {slots.default()}
+                                        {slots.default && slots.default()}
                                     </>
                                 )
                             }

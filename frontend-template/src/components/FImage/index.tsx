@@ -1,7 +1,7 @@
 import { SetupContext, defineComponent, watch, reactive } from "vue";
 import type { Props } from "./interface";
 import styles from "./style/index.module.scss"
-import { Picture } from "@element-plus/icons-vue";
+import FIcon from "@/components/FIcon";
 
 export default defineComponent({
     name: "FImage",
@@ -69,7 +69,7 @@ export default defineComponent({
 
         return () => (
             <el-image
-                v-bind={attrs}
+                {...attrs}
                 className={[styles["el-image-preview"]]}
                 src={state.src}
                 preview-src-list={state.previewList}
@@ -78,11 +78,13 @@ export default defineComponent({
             >
                 {
                     slots.error ? (
-                        <slot name="error" />
+                        <>
+                            {slots.error()}
+                        </>
                     ) : (
                         <div class="error-image">
                             {{
-                                error: () => <el-icon><Picture /></el-icon>
+                                error: () => <FIcon name="el-icon-Picture" />
                             }}
                         </div>
                     )

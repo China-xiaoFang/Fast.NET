@@ -428,47 +428,47 @@ export interface FTableState<TInput = any, TOutput = any> {
     /**
      * 表格加载
      */
-    loading?: boolean;
+    loading: boolean;
     /**
      * 源列数据
      */
-    orgColumns?: FTableColumn[];
+    orgColumns: FTableColumn[];
     /**
      * 搜素列
      */
-    searchColumns?: FTableColumn[];
+    searchColumns: FTableColumn[];
     /**
      * 正常显示的列
      */
-    tableColumns?: FTableColumn[];
+    tableColumns: FTableColumn[];
     /**
      * 表格数据
      */
-    tableData?: TOutput[];
+    tableData: TOutput[];
     /**
      * 分页数据
      */
-    tablePagination?: PageResult<TOutput>;
+    tablePagination: PageResult<TOutput>;
     /**
      * 搜索参数
      */
-    searchParam?: PageInput | TInput;
+    searchParam: PageInput | TInput;
     /**
      * 显示搜索
      */
-    showSearch?: boolean;
+    showSearch: boolean;
     /**
      * 是否选中数据
      */
-    selected?: boolean;
+    selected: boolean;
     /**
      * 选中数据列表
      */
-    selectedList?: TOutput[];
+    selectedList: TOutput[];
     /**
      * 当前选中数据的ids
      */
-    selectedListIds?: string[];
+    selectedListIds: string[];
 }
 
 /**

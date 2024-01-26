@@ -1,10 +1,13 @@
-import { defineComponent, ref, reactive, inject, PropType, SetupContext, provide, computed, onMounted, watch } from "vue";
+import { defineComponent, ref, reactive, PropType, SetupContext, provide, computed, onMounted, watch } from "vue";
 import type { FTableProps, FTableState, FTableEmits, FTableColumn, FTableBreakPoint } from "./interface";
 import { ElTable } from "element-plus";
+import { Refresh, Search, More } from "@element-plus/icons-vue";
 import styles from "./style/index.module.scss"
 import { arrayDynamicSort, getRowspanMethod } from "./utils";
 import SearchForm from "./modules/SearchForm"
 import TableColumn from "./modules/Column"
+import Pagination from "./modules/Pagination"
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
     name: "FTable",
@@ -83,6 +86,8 @@ export default defineComponent({
         },
     },
     setup(props: FTableProps, { attrs, slots, emit, expose }: SetupContext<FTableEmits>) {
+        const { t } = useI18n();
+
         const state: FTableState = reactive({
             loading: false,
             orgColumns: props.columns,
@@ -478,6 +483,7 @@ export default defineComponent({
 
         // 暴漏出去的方法
         expose({
+            element: tableRef.value,
             ...state,
             loadData,
             tableReset,
@@ -498,49 +504,241 @@ export default defineComponent({
                             search={tableSearch}
                             reset={tableReset}
                         >
-                            <>
-                                {
-                                    Object.keys(slots).map((slot: string) => (
-                                        <template key={slots} v-slots={{
-                                            [slot]: (scope) => (
-                                                <slot name={slots} v-bind={scope} />
-                                            )
-                                        }}>
-                                        </template>
-                                    ))
-                                }
-                            </>
+                            {
+                                Object.keys(slots).map((slot: string) => (
+                                    <template key={slots} v-slots={{
+                                        [slot]: (scope) => (
+                                            <slot name={slots} {...scope} />
+                                        )
+                                    }}>
+                                    </template>
+                                ))
+                            }
                         </SearchForm>
                     ) : (null)
                 }
                 <div>
-                    {slots.tableTopHeader()}
+                    {slots.tableTopHeader && slots.tableTopHeader()}
                 </div>
                 <div className={styles["f-table-main"]} class="el-card">
                     {
                         props.showHeaderCard ? (
                             <div className={styles["f-table-header"]}>
                                 <div className={styles["f-table-header-left"]}>
-                                    {slots.tableHeader(state)}
+                                    {slots.tableHeader && slots.tableHeader(state)}
                                 </div>
                                 {
                                     props.toolButton ? (
-                                        <div className={styles["f-table-header-right"]}>
-                                            {/* <el-input
-          loading={state.loading}
-          prefix-icon={Search}
-          placeholder="关键字搜索"
-          v-model.trim="searchParam.searchValue"
-          clearable
-          style="margin-right: 12px; width: 235px; margin-bottom: 5px"
-          @change="refreshTable(true)"
-        /> */}
-                                        </div>
+                                        <>
+                                            <div className={styles["f-table-header-right"]}>
+                                                <el-input
+                                                    loading={state.loading}
+                                                    prefix-icon={Search}
+                                                    placeholder={t("components.FTable.关键字搜索")}
+                                                    v-model={[state.searchParam.searchValue, ['trim']]}
+                                                    clearable
+                                                    style="margin-right: 12px; width: 235px; margin-bottom: 5px"
+                                                    onChange={refreshTable()}
+                                                />
+                                                {slots.toolButton && slots.toolButton(state)}
+                                                {
+                                                    props.showRefreshBtn ? (
+                                                        <el-tooltip
+                                                            class="f-table-header-box-item"
+                                                            placement="top"
+                                                            content={t("components.FTable.刷新")}
+                                                        >
+                                                            <el-button
+                                                                loading={state.loading}
+                                                                circle
+                                                                icon={Refresh}
+                                                                onClick={refreshTable()}
+                                                            ></el-button>
+                                                        </el-tooltip>
+                                                    ) : (null)
+                                                }
+                                                {
+                                                    props.showSearchBtn && state.searchColumns.length ? (
+                                                        <el-tooltip
+                                                            class="f-table-header-box-item"
+                                                            placement="top"
+                                                            content={state.showSearch ? t("components.FTable.隐藏搜索栏") : t("components.FTable.显示搜索栏")}
+                                                        >
+                                                            <el-button
+                                                                loading={state.loading}
+                                                                circle
+                                                                icon={Search}
+                                                                onClick={state.showSearch = !state.showSearch}
+                                                            ></el-button>
+                                                        </el-tooltip>
+                                                    ) : (null)
+                                                }
+                                                {
+                                                    slots.toolButtonAdv ? (
+                                                        <el-tooltip
+                                                            class="f-table-header-box-item"
+                                                            placement="top"
+                                                            content={t("components.FTable.高级操作")}
+                                                        >
+                                                            <el-dropdown trigger="click" style="margin-left: 12px">
+                                                                <el-button
+                                                                    loading={state.loading}
+                                                                    circle
+                                                                    icon={More}
+                                                                ></el-button>
+                                                                {{
+                                                                    dropdown: () =>
+                                                                        <el-dropdown-menu>
+                                                                            {slots.toolButtonAdv()}
+                                                                        </el-dropdown-menu>
+                                                                }}
+                                                            </el-dropdown>
+
+                                                        </el-tooltip>
+                                                    ) : (null)
+                                                }
+                                            </div>
+                                        </>
                                     ) : (null)
                                 }
                             </div>
                         ) : (null)
                     }
+                    <el-table
+                        {...attrs}
+                        scrollbar-always-on
+                        ref={tableRef}
+                        size="small"
+                        table-layout="fixed"
+                        v-loading={state.loading}
+                        element-loading-text={t("components.FTable.加载中")}
+                        data={state.tableData}
+                        border={props.border}
+                        row-key={props.rowKey}
+                        span-method={onSpanMethod}
+                        headerCellClassName={handleHeaderClass}
+                        onSelectionChange={handleSelectionChange}
+                        onSortChange={handleSortChange}
+                        onSelect={handleSelectClick}
+                        onSelectAll={handleSelectClick}
+                    >
+                        <el-table-column
+                            type="selection"
+                            fixed="left"
+                            width={35}
+                            align="left"
+                            reserve-selection
+                        />
+                        {
+                            state.tableColumns?.length === 0 ? (
+                                <>
+                                    {slots.default && slots.default()}
+                                </>
+                            ) : (
+                                state.tableColumns.map((col) => (
+                                    <>
+                                        {
+                                            col.type === "index" ? (
+                                                <el-table-column
+                                                    {...col}
+                                                    fixed={col.fixed ?? 'left'}
+                                                    width={col.width ?? 50}
+                                                    align={col.align ?? 'center'}
+                                                    index={indexMethod}
+                                                />
+                                            ) : (null)
+                                        }
+                                        {
+                                            col.type === "expand" ? (
+                                                <el-table-column
+                                                    {...col}
+                                                    fixed={col.fixed ?? 'left'}
+                                                >
+                                                    {{
+                                                        default: ({ row, column, $index }: { row: any, column: FTableColumn; $index: number }) => (
+                                                            <>
+                                                                <component is={col.render} row={row} column={column} $index={$index} />
+                                                                {slots[col.slot] && slots[col.slot](row, column, $index)}
+                                                                {/* <slot name={col.slot} row={row} column={column} $index={$index} /> */}
+                                                            </>
+                                                        )
+                                                    }}
+                                                </el-table-column>
+                                            ) : (null)
+                                        }
+                                        {
+                                            col.prop && col.show ? (
+                                                <TableColumn column={col}>
+                                                    {
+                                                        Object.keys(slots).map((slot: string) => (
+                                                            <template key={slots} v-slots={{
+                                                                [slot]: (scope) => (
+                                                                    <slot name={slots} {...scope} />
+                                                                )
+                                                            }}>
+                                                            </template>
+                                                        ))
+                                                    }
+                                                    {/* {Object.keys(this.$slots).map((slot) => (
+                                                        <template key={slot} v-slot={[slot]} v-bind={this.$slots[slot].props}>
+                                                            {this.$slots[slot]()}
+                                                        </template>
+                                                    ))} */}
+                                                </TableColumn>
+                                            ) : (null)
+                                        }
+                                    </>
+                                ))
+                            )
+                        }
+                        {{
+                            append: () => { slots.append && slots.append() }
+                        }}
+                        {{
+                            empty: () => (
+                                <>
+                                    <div class="table-empty">
+                                        {
+                                            slots.empty ? (
+                                                slots.empty()
+                                            ) : (
+                                                <>
+                                                    <img src="@/assets/images/notData.png" alt="notData" />
+                                                    <div>{t("components.FTable.暂无数据")}</div>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                </>
+                            )
+                        }}
+                    </el-table>
+                    {
+                        slots.pagination ? (
+                            slots.pagination()
+                        ) : (
+                            <>
+                                {
+                                    props.pagination ? (
+                                        <Pagination
+                                            pageIndex={state.tablePagination.pageIndex}
+                                            pageSize={state.tablePagination.pageSize}
+                                            totalRows={state.tablePagination.totalRows}
+                                            onHandleSizeChange={handleSizeChange}
+                                            onHandleCurrentChange={handleCurrentChange}
+                                        />
+                                    ) : (
+                                        <el-pagination
+                                            style="margin-top: 5px"
+                                            layout="total"
+                                            total={state.tableData.length}
+                                        />
+                                    )
+                                }
+                            </>
+                        )
+                    }
+                    {slots.tableFooter && slots.tableFooter()}
                 </div>
             </>
         )

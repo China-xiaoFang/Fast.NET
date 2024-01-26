@@ -13,11 +13,11 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 /**
- * 前缀：utils.axios
+ * 前缀：utils.axios.config
  * 使用方式：
- * i18n.global.t("utils.axios.Fast.NET")
- * t("utils.axios.Fast.NET")
- * $t("utils.axios.Fast.NET")
+ * i18n.global.t("utils.axios.config.Fast.NET")
+ * t("utils.axios.config.Fast.NET")
+ * $t("utils.axios.config.Fast.NET")
  */
 
 export default {

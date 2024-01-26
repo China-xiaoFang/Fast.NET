@@ -47,11 +47,19 @@
                 </el-col>
             </el-row>
         </el-card>
+        <FDialog
+            ref="fDialogRef"
+            :title="t('views.login.选择租户登录')"
+            :disabledConfirmButton="!fTableRef?.selected"
+            @confirmClick="handleSelectTenantConfirm"
+        >
+            <FTable ref="fTableRef" singleChoice :requestAuto="false" :data="state.tenantList" :columns="tableColumns"> </FTable>
+        </FDialog>
     </div>
 </template>
 
 <script setup lang="ts" name="Login">
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useConfig } from "@/stores/config";
 import { useUserInfo } from "@/stores/userInfo";
@@ -63,11 +71,15 @@ import { LoginMethodEnum } from "@/api/modules/login-method-enum";
 import AccountForm from "./modules/account.vue";
 import MobileForm from "./modules/mobile.vue";
 import EmailForm from "./modules/email.vue";
+import { FTableColumn } from "@/components/FTable/interface";
 
 const { t } = useI18n();
 
 const configStore = useConfig();
 const useUserInfoStore = useUserInfo();
+
+const fDialogRef = ref();
+const fTableRef = ref();
 
 const state = reactive({
     loading: false,
@@ -75,7 +87,39 @@ const state = reactive({
     account: "",
     password: "",
     loginMethod: LoginMethodEnum.Account,
+    tenantList: [],
 });
+
+const tableColumns: FTableColumn[] = reactive([
+    {
+        prop: "chName",
+        label: "租户名称",
+    },
+    {
+        prop: "adminType",
+        label: "类型",
+    },
+    {
+        prop: "nickName",
+        label: "昵称",
+    },
+    {
+        prop: "jobNumber",
+        label: "工号",
+    },
+    {
+        prop: "departmentName",
+        label: "部门名称",
+    },
+    {
+        prop: "lastLoginTime",
+        label: "最后登录时间",
+    },
+    {
+        prop: "lastLoginIp",
+        label: "最后登录Ip",
+    },
+]);
 
 onMounted(() => {
     // 判断是否记住密码，且存在缓存密码
@@ -130,13 +174,19 @@ const loginHandle = (formData: any) => {
                         loginMethod: state.loginMethod,
                     });
                 } else {
-                    // TODO：这里还有个租户选择
+                    state.tenantList = res.data.tenantList;
+                    fDialogRef.value.open();
                 }
             } else {
                 console.log(res);
             }
         });
 };
+
+/**
+ * 选择租户确认
+ */
+const handleSelectTenantConfirm = () => {};
 
 /**
  * 登录成功
