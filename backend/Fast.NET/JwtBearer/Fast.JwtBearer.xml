@@ -4,6 +4,11 @@
         <name>Fast.JwtBearer</name>
     </assembly>
     <members>
+        <member name="T:Fast.JwtBearer.Attributes.SkipPermissionAttribute">
+            <summary>
+            <see cref="T:Fast.JwtBearer.Attributes.SkipPermissionAttribute"/> 跳过权限判断
+            </summary>
+        </member>
         <member name="T:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum">
             <summary>
             <see cref="T:Fast.JwtBearer.Enums.JwtBearerAlgorithmEnum"/> JwtBearer 加密算法
@@ -386,6 +391,11 @@
             <returns></returns>
         </member>
         <member name="T:Fast.JwtBearer.Services.JwtBearerCryptoService">
+            <summary>
+            <see cref="T:Fast.JwtBearer.Services.JwtBearerCryptoService"/> JwtBearer 加密解密服务
+            </summary>
+        </member>
+        <member name="M:Fast.JwtBearer.Services.JwtBearerCryptoService.#ctor(Microsoft.Extensions.Options.IOptions{Fast.JwtBearer.Options.JWTSettingsOptions})">
             <summary>
             <see cref="T:Fast.JwtBearer.Services.JwtBearerCryptoService"/> JwtBearer 加密解密服务
             </summary>

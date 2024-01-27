@@ -12,11 +12,14 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Reflection;
 using Fast.IaaS;
+using Fast.JwtBearer.Attributes;
 using Fast.JwtBearer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -73,44 +76,54 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
                 // 授权检测
                 if (isAuthorizeSuccess)
                 {
-                    foreach (var requirement in pendingRequirements)
+                    // 判断是否跳过权限检查
+                    if ((filterContext?.ActionDescriptor as ControllerActionDescriptor)?.MethodInfo
+                        ?.GetCustomAttribute<SkipPermissionAttribute>(inherit: true) != null)
                     {
-                        bool isPermissionSuccess;
-                        Exception permissionException = null;
+                        foreach (var requirement in pendingRequirements)
+                        {
+                            bool isPermissionSuccess;
+                            Exception permissionException = null;
 
-                        try
-                        {
-                            isPermissionSuccess = await jwtBearerHandle.PermissionHandle(context, requirement, httpContext);
-                        }
-                        catch (Exception ex)
-                        {
-                            isPermissionSuccess = false;
-                            permissionException = ex;
-                        }
-
-                        // 权限检测
-                        if (isPermissionSuccess)
-                        {
-                            context.Succeed(requirement);
-                        }
-                        else
-                        {
-                            var result = await jwtBearerHandle.PermissionFailHandle(context, requirement, httpContext,
-                                permissionException);
-
-                            if (result != null)
+                            try
                             {
-                                // 存在自定义处理结果，则返回 403 状态码
-                                httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                                filterContext.Result = new JsonResult(result);
-                                // 退出 Swagger 登录
-                                httpContext?.SignOutToSwagger();
+                                isPermissionSuccess = await jwtBearerHandle.PermissionHandle(context, requirement, httpContext);
+                            }
+                            catch (Exception ex)
+                            {
+                                isPermissionSuccess = false;
+                                permissionException = ex;
+                            }
+
+                            // 权限检测
+                            if (isPermissionSuccess)
+                            {
+                                context.Succeed(requirement);
                             }
                             else
                             {
-                                // 权限判断失败，返回 403 状态码
-                                context.Fail();
+                                var result = await jwtBearerHandle.PermissionFailHandle(context, requirement, httpContext,
+                                    permissionException);
+
+                                if (result != null)
+                                {
+                                    // 存在自定义处理结果，则返回 403 状态码
+                                    httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                                    filterContext.Result = new JsonResult(result);
+                                }
+                                else
+                                {
+                                    // 权限判断失败，返回 403 状态码
+                                    context.Fail();
+                                }
                             }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var requirement in pendingRequirements)
+                        {
+                            context.Succeed(requirement);
                         }
                     }
                 }
