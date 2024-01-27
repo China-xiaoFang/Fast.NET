@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Fast.Admin 应用租户接口模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)\Service\Fast.Admin.Service.Tenant\Fast.Admin.Service.Tenant.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Fast.DynamicApplication" Version="3.4.17.10" />
+	</ItemGroup>
+
+</Project>

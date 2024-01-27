@@ -113,7 +113,8 @@ public class LoginService : ILoginService, ITransientDependency
 
         var errorPasswordCacheKey = CacheConst.GetCacheKey(CacheConst.InputErrorPassword, account.Id);
 
-        if (account.Password != CryptoUtil.MD5Encrypt(input.Password))
+        //if (account.Password != CryptoUtil.MD5Encrypt(input.Password))
+        if (account.Password != input.Password)
         {
             // 记录密码错误次数
             // 记录密码错误次数
@@ -187,6 +188,7 @@ public class LoginService : ILoginService, ITransientDependency
             throw new UserFriendlyException("没有任何的租户信息！");
         }
 
+#if !DEBUG
         // 判断是否只有一个租户，如果是则，自动登录
         if (result.TenantList.Count == 1)
         {
@@ -201,6 +203,7 @@ public class LoginService : ILoginService, ITransientDependency
 
             return result;
         }
+#endif
 
         result.IsAutoLogin = false;
 
@@ -235,7 +238,8 @@ public class LoginService : ILoginService, ITransientDependency
             throw new UserFriendlyException("账号已经被停用！");
         }
 
-        if (account.Password != CryptoUtil.MD5Encrypt(input.Password))
+        //if (account.Password != CryptoUtil.MD5Encrypt(input.Password))
+        if (account.Password != input.Password)
         {
             throw new UserFriendlyException("密码不正确！");
         }

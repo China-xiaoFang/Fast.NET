@@ -12,7 +12,7 @@
     "Fast.Admin.Web": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "",
       "applicationUrl": "http://localhost:5001;http://*:5001",
       "environmentVariables": {

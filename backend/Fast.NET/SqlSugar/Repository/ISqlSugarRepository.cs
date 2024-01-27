@@ -27,7 +27,7 @@ public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : 
     /// <summary>
     /// 当前仓储的数据库信息
     /// </summary>
-    ConnectionSettingsOptions DataBaseInfo { get; }
+    ConnectionSettingsOptions DatabaseInfo { get; }
 
     /// <summary>
     /// 构建查询分析器

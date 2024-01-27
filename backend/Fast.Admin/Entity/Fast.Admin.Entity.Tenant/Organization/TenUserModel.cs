@@ -46,7 +46,7 @@ public class TenUserModel : BaseEntity
     /// <summary>
     /// 头像
     /// </summary>
-    [SugarColumn(ColumnDescription = "头像", ColumnDataType = "Nvarchar(max)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "头像", ColumnDataType = "Nvarchar(max)", IsNullable = true)]
     public string Avatar { get; set; }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class TenUserModel : BaseEntity
     /// <summary>
     /// 主部门名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "部门名称", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "部门名称", ColumnDataType = "Nvarchar(50)", IsNullable = true)]
     public string DepartmentName { get; set; }
 
     /// <summary>

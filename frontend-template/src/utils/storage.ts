@@ -4,6 +4,7 @@
 
 import { i18n } from "@/lang";
 import { CACHE_PREFIX, CACHE_EXPIRE_SUFFIX } from "@/stores/constant";
+import base64 from "@/utils/base64";
 
 /**
  * window.localStorage
@@ -14,8 +15,9 @@ export const Local = {
      * @param key 缓存的Key
      * @param val 缓存值
      * @param expire 过期时间，单位分钟
+     * @param encrypt 是否对缓存的数据加密
      */
-    set(key: string, val: any, expire: number | null = null): void {
+    set(key: string, val: any, expire: number | null = null, encrypt: boolean = false): void {
         // 判断是否存在缓存过期时间
         if (expire !== null) {
             if (isNaN(expire) || expire < 1) {
@@ -30,19 +32,27 @@ export const Local = {
             window.localStorage.setItem(`${CACHE_PREFIX}${key}${CACHE_EXPIRE_SUFFIX}`, expireJson);
         }
         // 统一转为 JSON 字符串
-        const valJson = JSON.stringify(val);
+        let valJson = JSON.stringify(val);
+        if (encrypt) {
+            valJson = base64.toBase64(valJson);
+        }
         window.localStorage.setItem(`${CACHE_PREFIX}${key}`, valJson);
     },
     /**
      * 获取
      * @param key 缓存的Key
+     * @param decrypt 是否对缓存的数据解密
      * @returns {T} 传入的对象类型，默认为 string
      */
-    get<T = "string">(key: string): T | null {
+    get<T = "string">(key: string, decrypt: boolean = false): T | null {
         // 获取缓存 JSON 字符串
-        const valJson = window.localStorage.getItem(`${CACHE_PREFIX}${key}`);
+        let valJson = window.localStorage.getItem(`${CACHE_PREFIX}${key}`);
         if (valJson) {
             try {
+                // 判断是否解密
+                if (decrypt) {
+                    valJson = base64.base64ToStr(valJson);
+                }
                 // 尝试获取缓存过期时间的 JSON 字符串
                 const expireJson = window.localStorage.getItem(`${CACHE_PREFIX}${key}${CACHE_EXPIRE_SUFFIX}`);
                 // 判断是否存在过期时间
@@ -99,8 +109,9 @@ export const Session = {
      * @param key 缓存的Key
      * @param val 缓存值
      * @param expire 过期时间，单位分钟
+     * @param encrypt 是否对缓存的数据加密
      */
-    set(key: string, val: any, expire: number | null = null): void {
+    set(key: string, val: any, expire: number | null = null, encrypt: boolean = false): void {
         // 判断是否存在缓存过期时间
         if (expire !== null) {
             if (isNaN(expire) || expire < 1) {
@@ -115,19 +126,27 @@ export const Session = {
             window.sessionStorage.setItem(`${CACHE_PREFIX}${key}${CACHE_EXPIRE_SUFFIX}`, expireJson);
         }
         // 统一转为 JSON 字符串
-        const valJson = JSON.stringify(val);
+        let valJson = JSON.stringify(val);
+        if (encrypt) {
+            valJson = base64.toBase64(valJson);
+        }
         window.sessionStorage.setItem(`${CACHE_PREFIX}${key}`, valJson);
     },
     /**
      * 获取会话缓存
      * @param key 缓存的Key
+     * @param decrypt 是否对缓存的数据解密
      * @returns {T} 传入的对象类型，默认为 string
      */
-    get<T = "string">(key: string): T | null {
+    get<T = "string">(key: string, decrypt: boolean = false): T | null {
         // 获取缓存 JSON 字符串
-        const valJson = window.sessionStorage.getItem(`${CACHE_PREFIX}${key}`);
+        let valJson = window.sessionStorage.getItem(`${CACHE_PREFIX}${key}`);
         if (valJson) {
             try {
+                // 判断是否解密
+                if (decrypt) {
+                    valJson = base64.base64ToStr(valJson);
+                }
                 // 尝试获取缓存过期时间的 JSON 字符串
                 const expireJson = window.sessionStorage.getItem(`${CACHE_PREFIX}${key}${CACHE_EXPIRE_SUFFIX}`);
                 // 判断是否存在过期时间

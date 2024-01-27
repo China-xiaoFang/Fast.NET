@@ -1,9 +1,10 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import store from "@/stores";
-import router from "@/router";
-import mitt from "mitt";
 import { loadLang } from "@/lang";
+import router from "@/router";
+import "@/router/permission";
+import mitt from "mitt";
 
 import { loadPlugins } from "@/plugins";
 import { loadDirectives } from "@/directives";
@@ -20,7 +21,7 @@ async function start() {
     app.use(store);
 
     // 全局语言包加载
-    await loadLang(app);
+    loadLang(app);
 
     app.use(router);
 
@@ -29,10 +30,10 @@ async function start() {
     /** 加载自定义指令 */
     loadDirectives(app);
 
-    app.mount("#app");
-
     // 挂载全局事件总线
     app.config.globalProperties.eventBus = mitt();
+
+    app.mount("#app");
 }
 
-start();
+await start();

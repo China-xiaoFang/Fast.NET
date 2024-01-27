@@ -14,7 +14,7 @@
 
 using Fast.Admin.Core.Entity.System.Account;
 using Fast.Admin.Core.Entity.System.App;
-using Fast.Admin.Core.Entity.System.DataBase;
+using Fast.Admin.Core.Entity.System.Database;
 using Fast.Admin.Core.Enum.Db;
 using Fast.Admin.Core.Enum.System;
 
@@ -89,7 +89,7 @@ public class SysTenantModel : BaseEntity
     /// <summary>
     /// 租户管理员邮箱
     /// </summary>
-    [SugarColumn(ColumnDescription = "租户管理员邮箱", ColumnDataType = "Nvarchar(20)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "租户管理员邮箱", ColumnDataType = "Nvarchar(50)", IsNullable = false)]
     public string Email { get; set; }
 
     /// <summary>
@@ -119,8 +119,8 @@ public class SysTenantModel : BaseEntity
     /// <summary>
     /// 数据库信息
     /// </summary>
-    [Navigate(NavigateType.OneToMany, nameof(SysTenantMainDataBaseModel.TenantId), nameof(Id))]
-    public List<SysTenantMainDataBaseModel> DataBaseList { get; set; }
+    [Navigate(NavigateType.OneToMany, nameof(SysTenantMainDatabaseModel.TenantId), nameof(Id))]
+    public List<SysTenantMainDatabaseModel> DatabaseList { get; set; }
 
     /// <summary>
     /// 系统管理员账号

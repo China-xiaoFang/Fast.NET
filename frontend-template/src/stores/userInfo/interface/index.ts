@@ -51,8 +51,14 @@ export interface UserInfo {
     avatar: string;
     /**
      * 最后登录时间
-     * @type {string}
+     * @type {Date}
      * @memberof UserInfo
      */
-    lastLoginTime: string;
+    lastLoginTime?: Date;
+    /**
+     * 动态生成路由
+     * @type {boolean}
+     * @memberof UserInfo
+     */
+    asyncRouterGen: boolean;
 }

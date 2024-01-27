@@ -46,5 +46,7 @@
     "i18n-ally.translate.engines": ["deepl", "google"],
     // 翻译字段命名样式采用驼峰
     "i18n-ally.extract.keygenStyle": "camelCase",
-    "i18n-ally.enabledFrameworks": ["vue"]
+    "i18n-ally.enabledFrameworks": ["vue"],
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true
 }

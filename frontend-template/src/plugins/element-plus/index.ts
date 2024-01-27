@@ -12,7 +12,7 @@ const elMessageBox = (message: ElMessageBoxOptions["message"], options: ElMessag
     options = options ?? {};
     if (options?.title === undefined) {
         // 默认提示
-        options.title = i18n.global.t("common.温馨提示");
+        options.title = i18n.global.t("plugins.element-plus.温馨提示");
     }
     if (options?.draggable === undefined) {
         // 默认拖拽
@@ -20,11 +20,11 @@ const elMessageBox = (message: ElMessageBoxOptions["message"], options: ElMessag
     }
     if (options?.cancelButtonText === undefined) {
         // 默认 取消按钮的文本内容
-        options.cancelButtonText = i18n.global.t("common.取消");
+        options.cancelButtonText = i18n.global.t("plugins.element-plus.取消");
     }
     if (options?.confirmButtonText === undefined) {
         // 默认 确定按钮的文本内容
-        options.confirmButtonText = i18n.global.t("common.确定");
+        options.confirmButtonText = i18n.global.t("plugins.element-plus.确定");
     }
     if (options?.closeOnClickModal === undefined) {
         // 默认 是否可通过点击遮罩层关闭 MessageBox

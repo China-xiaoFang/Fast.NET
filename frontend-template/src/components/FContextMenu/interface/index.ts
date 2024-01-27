@@ -87,3 +87,16 @@ export interface Props {
      */
     items: ContextMenuItem[];
 }
+
+/**
+ * Emits 属性
+ * @interface Emits
+ */
+export interface Emits {
+    /**
+     * 上下文菜单点击
+     * @param item 点击项
+     * @interface Emits
+     */
+    onClick: (item: ContextMenuItemClickEmitArg) => null;
+}

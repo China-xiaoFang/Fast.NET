@@ -15,12 +15,12 @@
 using Fast.SqlSugar.Commons;
 using SqlSugar;
 
-namespace Fast.SqlSugar.DataBaseUtils;
+namespace Fast.SqlSugar.DatabaseUtils;
 
 /// <summary>
-/// <see cref="DataBaseUtil"/> 连接字符串工具类
+/// <see cref="DatabaseUtil"/> 连接字符串工具类
 /// </summary>
-internal partial class DataBaseUtil
+internal partial class DatabaseUtil
 {
     /// <summary>
     /// 得到数据库连接字符串

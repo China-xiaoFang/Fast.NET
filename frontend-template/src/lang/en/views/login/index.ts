@@ -21,5 +21,8 @@
  */
 
 export default {
-    ["你好啊！"]: "Hello!",
+    ["账号"]: "account",
+    ["手机号"]: "Phone number",
+    ["邮箱"]: "Mail",
+    ["选择租户登录"]: "Select tenant login",
 };

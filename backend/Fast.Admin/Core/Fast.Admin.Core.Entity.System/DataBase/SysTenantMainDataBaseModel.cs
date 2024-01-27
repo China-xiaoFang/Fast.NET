@@ -16,14 +16,14 @@ using Fast.Admin.Core.Enum.Common;
 using Fast.Admin.Core.Enum.Db;
 using Fast.SqlSugar.Handlers;
 
-namespace Fast.Admin.Core.Entity.System.DataBase;
+namespace Fast.Admin.Core.Entity.System.Database;
 
 /// <summary>
-/// <see cref="SysTenantMainDataBaseModel"/> 系统租户主数据库Model类
+/// <see cref="SysTenantMainDatabaseModel"/> 系统租户主数据库Model类
 /// </summary>
 [SugarTable("Sys_Tenant_Main_Database", "系统租户主数据库表")]
 [SugarDbType(FastDbTypeEnum.SysCore)]
-public class SysTenantMainDataBaseModel : BaseTEntity
+public class SysTenantMainDatabaseModel : BaseTEntity
 {
     /// <summary>
     /// 数据库类型
@@ -103,6 +103,6 @@ public class SysTenantMainDataBaseModel : BaseTEntity
     /// <summary>
     /// 从库信息
     /// </summary>
-    [Navigate(NavigateType.OneToMany, nameof(SysTenantSlaveDataBaseModel.MainId), nameof(Id))]
-    public List<SysTenantSlaveDataBaseModel> SlaveDataBaseList { get; set; }
+    [Navigate(NavigateType.OneToMany, nameof(SysTenantSlaveDatabaseModel.MainId), nameof(Id))]
+    public List<SysTenantSlaveDatabaseModel> SlaveDatabaseList { get; set; }
 }

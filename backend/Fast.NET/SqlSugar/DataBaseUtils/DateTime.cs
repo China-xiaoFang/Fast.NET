@@ -14,12 +14,12 @@
 
 using SqlSugar;
 
-namespace Fast.SqlSugar.DataBaseUtils;
+namespace Fast.SqlSugar.DatabaseUtils;
 
 /// <summary>
-/// <see cref="DataBaseUtil"/> Database Nvarchar 类型工具类
+/// <see cref="DatabaseUtil"/> Database Nvarchar 类型工具类
 /// </summary>
-internal partial class DataBaseUtil
+internal partial class DatabaseUtil
 {
     /// <summary>
     /// 设置DateTime类型

@@ -20,7 +20,7 @@ namespace Fast.SqlSugar.IBaseEntities;
 /// <see cref="IPrimaryKeyEntity{TId}"/> 主键实体接口
 /// </summary>
 [SuppressSniffer]
-public interface IPrimaryKeyEntity<TId> : IDataBaseEntity
+public interface IPrimaryKeyEntity<TId> : IDatabaseEntity
 {
     /// <summary>
     /// 主键Id

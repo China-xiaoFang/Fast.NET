@@ -4,11 +4,12 @@ import debounce from "./modules/debounce";
 import draggable from "./modules/draggable";
 import longpress from "./modules/longpress";
 import throttle from "./modules/throttle";
+import errorHandler from "@/utils/errorHandler";
 
 /** 挂载自定义指令 */
 export function loadDirectives(app: App) {
     // 全局代码错误捕捉
-    //   app.config.errorHandler = errorHandler;
+    app.config.errorHandler = errorHandler;
 
     const directivesList: any = {
         copy,

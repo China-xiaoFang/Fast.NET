@@ -21,7 +21,7 @@ namespace Fast.SqlSugar.IBaseEntities;
 /// <see cref="IBaseIdentityRecordEntity"/> 自增主键记录Entity基类接口
 /// </summary>
 [SuppressSniffer]
-public interface IBaseIdentityRecordEntity : IDataBaseEntity
+public interface IBaseIdentityRecordEntity : IDatabaseEntity
 {
     /// <summary>
     /// 设备

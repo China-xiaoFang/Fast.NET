@@ -22,7 +22,7 @@ namespace Fast.Admin.Entity.Tenant.DataScope;
 /// </summary>
 [SugarTable("Ten_User_DataScope", "租户用户数据范围表")]
 [SugarDbType(FastDbTypeEnum.SysAdminCore)]
-public class TenUserDataScopeModel : IDataBaseEntity
+public class TenUserDataScopeModel : IDatabaseEntity
 {
     /// <summary>
     /// 用户Id
@@ -34,5 +34,5 @@ public class TenUserDataScopeModel : IDataBaseEntity
     /// 机构Id
     /// </summary>
     [SugarColumn(ColumnDescription = "机构Id", IsNullable = false)]
-    public long SysOrgId { get; set; }
+    public long OrgId { get; set; }
 }

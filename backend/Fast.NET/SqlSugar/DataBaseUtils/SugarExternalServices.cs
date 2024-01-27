@@ -17,12 +17,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using SqlSugar;
 
-namespace Fast.SqlSugar.DataBaseUtils;
+namespace Fast.SqlSugar.DatabaseUtils;
 
 /// <summary>
-/// <see cref="DataBaseUtil"/> SugarExternalServices工具类
+/// <see cref="DatabaseUtil"/> SugarExternalServices工具类
 /// </summary>
-internal partial class DataBaseUtil
+internal partial class DatabaseUtil
 {
     /// <summary>
     /// 目前只验证了Sql Server 和 MySql

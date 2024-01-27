@@ -51,7 +51,7 @@ public class LoggingInjection : IHostInjection
             Penetrates.InternalServices = services;
 
             // 获取默认日志级别
-            var defaultLogLevelStr = hostContext.Configuration["Logging:LogLevel:Default"];
+            var defaultLogLevelStr = hostContext.Configuration["Logging:LogLevel:Fast"];
 
             if (string.IsNullOrEmpty(defaultLogLevelStr))
             {

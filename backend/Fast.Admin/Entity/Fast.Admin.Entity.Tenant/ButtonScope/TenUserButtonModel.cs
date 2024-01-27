@@ -22,7 +22,7 @@ namespace Fast.Admin.Entity.Tenant.ButtonScope;
 /// </summary>
 [SugarTable("Ten_User_Button", "租户角色按钮表")]
 [SugarDbType(FastDbTypeEnum.SysAdminCore)]
-public class TenUserButtonModel : IDataBaseEntity
+public class TenUserButtonModel : IDatabaseEntity
 {
     /// <summary>
     /// 用户Id

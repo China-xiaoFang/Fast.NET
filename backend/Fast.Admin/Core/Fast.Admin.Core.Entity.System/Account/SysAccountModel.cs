@@ -58,13 +58,15 @@ public class SysAccountModel : BaseEntity
     /// <summary>
     /// 邮箱
     /// </summary>
-    [SugarColumn(ColumnDescription = "邮箱", ColumnDataType = "Nvarchar(50)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "邮箱", ColumnDataType = "Nvarchar(50)", IsNullable = true,
+        UniqueGroupNameList = new[] {nameof(Email)})]
     public string Email { get; set; }
 
     /// <summary>
     /// 手机
     /// </summary>
-    [SugarColumn(ColumnDescription = "手机", ColumnDataType = "Nvarchar(20)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "手机", ColumnDataType = "Nvarchar(20)", IsNullable = true,
+        UniqueGroupNameList = new[] {nameof(Mobile)})]
     public string Mobile { get; set; }
 
     /// <summary>

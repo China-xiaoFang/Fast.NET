@@ -21,7 +21,7 @@ namespace Fast.SqlSugar.IBaseEntities;
 /// <see cref="IBaseSnowflakeRecordEntity"/> 雪花主键记录Entity基类接口
 /// </summary>
 [SuppressSniffer]
-public interface IBaseSnowflakeRecordEntity : IDataBaseEntity
+public interface IBaseSnowflakeRecordEntity : IDatabaseEntity
 {
     /// <summary>
     /// 设备

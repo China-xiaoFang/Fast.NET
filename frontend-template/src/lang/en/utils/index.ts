@@ -21,13 +21,13 @@
  */
 
 export default {
-    ["无"]: "None",
+    ["无"]: "none",
     ["夜深了，注意身体哦！"]: "It’s late at night, please take care of yourself!",
     ["早上好！"]: "Good morning!",
     ["欢迎回来！"]: "Welcome back!",
-    ["上午好！"]: "Good morning!",
-    ["中午好！"]: "Good afternoon!",
-    ["下午好！"]: "Good afternoon!",
+    ["上午好！"]: "good morning!",
+    ["中午好！"]: "good afternoon!",
+    ["下午好！"]: "good afternoon!",
     ["晚上好！"]: "Good evening!",
     ["您好！"]: "Hello!",
 };

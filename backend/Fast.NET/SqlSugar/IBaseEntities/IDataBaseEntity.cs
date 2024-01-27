@@ -17,9 +17,9 @@ using Fast.IaaS;
 namespace Fast.SqlSugar.IBaseEntities;
 
 /// <summary>
-/// <see cref="IDataBaseEntity"/> 实体接口
+/// <see cref="IDatabaseEntity"/> 实体接口
 /// </summary>
 [SuppressSniffer]
-public interface IDataBaseEntity
+public interface IDatabaseEntity
 {
 }

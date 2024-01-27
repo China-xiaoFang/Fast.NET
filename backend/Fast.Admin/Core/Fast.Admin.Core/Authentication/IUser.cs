@@ -73,11 +73,6 @@ public interface IUser
     bool IsSystemAdmin { get; }
 
     /// <summary>
-    /// 是否租户管理员
-    /// </summary>
-    bool IsTenantAdmin { get; }
-
-    /// <summary>
     /// App 运行环境
     /// </summary>
     AppEnvironmentEnum AppEnvironment { get; }

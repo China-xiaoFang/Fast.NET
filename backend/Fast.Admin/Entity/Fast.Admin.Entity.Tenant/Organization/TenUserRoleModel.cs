@@ -22,7 +22,7 @@ namespace Fast.Admin.Entity.Tenant.Organization;
 /// </summary>
 [SugarTable("Ten_User_Role", "租户用户角色表")]
 [SugarDbType(FastDbTypeEnum.SysAdminCore)]
-public class TenUserRoleModel : IDataBaseEntity
+public class TenUserRoleModel : IDatabaseEntity
 {
     /// <summary>
     /// 用户Id

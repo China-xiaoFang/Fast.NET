@@ -22,7 +22,7 @@ namespace Fast.Admin.Entity.Tenant.MenuScope;
 /// </summary>
 [SugarTable("Ten_User_Menu", "租户角色菜单表")]
 [SugarDbType(FastDbTypeEnum.SysAdminCore)]
-public class TenUserMenuModel : IDataBaseEntity
+public class TenUserMenuModel : IDatabaseEntity
 {
     /// <summary>
     /// 用户Id

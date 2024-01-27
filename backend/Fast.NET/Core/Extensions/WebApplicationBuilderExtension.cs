@@ -60,7 +60,7 @@ public static class WebApplicationBuilderExtension
         FastContext.WebHostEnvironment = builder.Environment;
 
         // 初始化配置
-        ConfigureApplication(builder.WebHost);
+        ConfigureApplication(builder.WebHost, builder.Host);
 
         // 添加管道启动服务
         builder.AddHostInjection();
