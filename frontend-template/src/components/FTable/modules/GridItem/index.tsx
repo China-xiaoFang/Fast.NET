@@ -1,4 +1,4 @@
-import { defineComponent, computed, ref, watch, Ref, inject, useAttrs, PropType, SetupContext } from "vue";
+import { defineComponent, computed, ref, watch, Ref, inject, useAttrs, PropType, SetupContext, reactive } from "vue";
 import type { FTableGridItemProps, FTableResponsive, FTableBreakPoint } from "../../interface";
 
 export default defineComponent({
@@ -30,7 +30,9 @@ export default defineComponent({
     },
     setup(props: FTableGridItemProps, { slots }: SetupContext) {
         const attrs = useAttrs() as any;
-        const isShow = ref(true);
+        const state = reactive({
+            show: true
+        })
 
         // 注入断点
         const breakPoint = inject<Ref<FTableBreakPoint>>("breakPoint", ref("xl"));
@@ -42,7 +44,7 @@ export default defineComponent({
                 if (~~attrs.index) {
                     // 这里的 -1 是为了将按钮显示在上面
                     // isShow.value = !(n[0] !== -1 && parseInt(attrs.index) >= (n[0] as number) - 1);
-                    isShow.value = !(n[0] !== -1 && parseInt(attrs.index) >= Number(n[0]));
+                    state.show = !(n[0] !== -1 && parseInt(attrs.index) >= Number(n[0]));
                 }
             },
             { immediate: true }
@@ -70,7 +72,7 @@ export default defineComponent({
         });
 
         return () => (
-            <div style={style.value} v-show={isShow.value}>
+            <div style={style.value} v-show={state.show}>
                 {slots.default && slots.default()}
             </div>
         );

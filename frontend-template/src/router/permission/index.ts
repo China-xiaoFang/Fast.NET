@@ -132,7 +132,7 @@ router.beforeEach(async (to, from, next) => {
             if (!userInfoStore.asyncRouterGen) {
                 try {
                     // 刷新用户信息
-                    // await userInfoStore.refreshUserInfo();
+                    await userInfoStore.refreshUserInfo();
 
                     // TODO：动态添加路由
 

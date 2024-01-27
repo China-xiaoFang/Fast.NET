@@ -1,4 +1,4 @@
-import { SetupContext, defineComponent, ref, reactive, PropType, watch } from "vue";
+import { SetupContext, defineComponent, ref, reactive, PropType, watch, toRefs } from "vue";
 import type { Props, Emits, State } from "./interface";
 import { ElDialog, ElLoading, ElMessageBox } from "element-plus";
 import FIcon from "@/components/FIcon";
@@ -129,9 +129,14 @@ export default defineComponent({
          */
         const handleBeforeClose = (done: () => void) => {
             if (props.showBeforeClose) {
-                ElMessageBox.confirm(t("components.FDialog.确定关闭？"), { type: "warning" }).then(() => {
-                    closeCallBack(done);
-                });
+                ElMessageBox.confirm(t("components.FDialog.确定关闭？"), { type: "warning" })
+                    .then(() => {
+                        closeCallBack(done);
+                    })
+                    .catch(() => {
+
+                    })
+                    ;
             } else {
                 closeCallBack(done);
             }
@@ -145,8 +150,8 @@ export default defineComponent({
         }
 
         expose({
-            element: dialogRef.value,
-            ...state,
+            element: dialogRef,
+            ...toRefs(state),
             open,
             close,
         })

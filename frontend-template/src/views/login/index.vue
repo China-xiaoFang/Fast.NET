@@ -51,9 +51,20 @@
             ref="fDialogRef"
             :title="t('views.login.选择租户登录')"
             :disabledConfirmButton="!fTableRef?.selected"
-            @confirmClick="handleSelectTenantConfirm"
+            showBeforeClose
+            @onConfirmClick="handleSelectTenantConfirm"
+            height="700px"
         >
-            <FTable ref="fTableRef" singleChoice :requestAuto="false" :data="state.tenantList" :columns="tableColumns"> </FTable>
+            <FTable
+                ref="fTableRef"
+                singleChoice
+                :requestAuto="false"
+                :pagination="false"
+                :data="state.tenantList"
+                :columns="tableColumns"
+                @row-dblclick="handleRowDblclick"
+            >
+            </FTable>
         </FDialog>
     </div>
 </template>
@@ -88,6 +99,13 @@ const state = reactive({
     password: "",
     loginMethod: LoginMethodEnum.Account,
     tenantList: [],
+    accountId: null,
+    loginForm: {
+        rememberPassword: false,
+        account: "",
+        password: "",
+        loginMethod: null,
+    },
 });
 
 const tableColumns: FTableColumn[] = reactive([
@@ -166,19 +184,19 @@ const loginHandle = (formData: any) => {
         })
         .then((res) => {
             if (res.success) {
+                state.accountId = res.data.accountId;
+                state.loginForm = {
+                    rememberPassword: true,
+                    account: localAccount,
+                    password: localPassword,
+                    loginMethod: state.loginMethod,
+                };
                 if (res.data.isAutoLogin) {
-                    loginSuccess(formData, {
-                        rememberPassword: true,
-                        account: localAccount,
-                        password: localPassword,
-                        loginMethod: state.loginMethod,
-                    });
+                    loginSuccess(formData, state.loginForm);
                 } else {
                     state.tenantList = res.data.tenantList;
                     fDialogRef.value.open();
                 }
-            } else {
-                console.log(res);
             }
         });
 };
@@ -186,7 +204,9 @@ const loginHandle = (formData: any) => {
 /**
  * 选择租户确认
  */
-const handleSelectTenantConfirm = () => {};
+const handleSelectTenantConfirm = () => {
+    handleRowDblclick(fTableRef.value.selectedList[0], null, null);
+};
 
 /**
  * 登录成功
@@ -199,6 +219,26 @@ const loginSuccess = (formData: any, data: any) => {
         Local.set("Login-Form", data, null, true);
     }
     useUserInfoStore.login();
+};
+
+/**
+ * 双击登录
+ * @param row
+ * @param column
+ * @param event
+ */
+const handleRowDblclick = (row: any, column: any, event: MouseEvent) => {
+    loginApi
+        .tenantLogin({
+            accountId: state.accountId,
+            tenantAccountId: row.id,
+            password: state.loginForm.password,
+        })
+        .then((res) => {
+            if (res.success) {
+                loginSuccess(state.loginForm, state.loginForm);
+            }
+        });
 };
 </script>
 

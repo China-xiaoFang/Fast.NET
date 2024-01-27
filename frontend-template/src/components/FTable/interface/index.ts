@@ -214,7 +214,11 @@ type FTableSearchColumn = {
  * FTable列Props
  * @interface FTableColumn
  */
-export interface FTableColumn<T = any> extends Partial<Omit<TableColumnCtx<T>, "children" | "renderHeader" | "renderCell" | "sortable">> {
+export interface FTableColumn<T = any> extends Partial<Omit<TableColumnCtx<T>, "prop" | "children" | "renderHeader" | "renderCell" | "sortable">> {
+    /**
+     * 字段名称
+     */
+    prop?: string;
     /**
      * 对应列的类型
      * index：显示该行的索引（从 1 开始计算）

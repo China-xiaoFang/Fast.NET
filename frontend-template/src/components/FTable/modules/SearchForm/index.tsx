@@ -28,6 +28,11 @@ export default defineComponent({
     setup(props: FTableSearchFormProps, { slots }: SetupContext) {
         const { t } = useI18n();
 
+        const state = reactive({
+            // 是否默认折叠搜索项
+            collapsed: true
+        })
+
         // 获取响应式设置
         const getResponsive = (item: FTableColumn) => {
             return {
@@ -40,9 +45,6 @@ export default defineComponent({
                 xl: item.search?.xl
             };
         };
-
-        // 是否默认折叠搜索项
-        const collapsed = ref(true);
 
         // 获取响应式断点
         const gridRef = ref();
@@ -77,7 +79,6 @@ export default defineComponent({
                                             {item.search?.slot ? (
                                                 <>
                                                     {slots[item.search.slot] && slots[item.search.slot]({ searchParam: props.searchParam, column: item, search: props.search })}
-                                                    {/* <slot name={item.search.slot} searchParam={props.searchParam} column={item} search={props.search} /> */}
                                                 </>
                                             ) : (
                                                 <SearchFormItem column={item} searchParam={props.searchParam} search={props.search} onChangeInputValue={props.search} />
@@ -94,10 +95,10 @@ export default defineComponent({
                                             <el-button loading={props.loading} icon={Delete} onClick={props.reset}></el-button>
                                         </el-tooltip>
                                         {showCollapse && (
-                                            <el-button type="primary" link class="search-isOpen" onClick={() => (collapsed.value = !collapsed.value)}>
-                                                {collapsed ? t("components.FTable.modules.SearchForm.展开") : t("components.FTable.modules.SearchForm.收起")}
+                                            <el-button type="primary" link class="search-isOpen" onClick={() => (state.collapsed = !state.collapsed)}>
+                                                {state.collapsed ? t("components.FTable.modules.SearchForm.展开") : t("components.FTable.modules.SearchForm.收起")}
                                                 <el-icon class="el-icon--right">
-                                                    <component is={collapsed ? ArrowDown : ArrowUp} />
+                                                    <component is={state.collapsed ? ArrowDown : ArrowUp} />
                                                 </el-icon>
                                             </el-button>
                                         )}

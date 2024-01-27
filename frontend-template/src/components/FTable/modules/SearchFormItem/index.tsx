@@ -194,7 +194,7 @@ export default defineComponent({
                             v-if={props.column.search?.el}
                             is={`el-${props.column.search.el}`}
                             {...{ ...handleSearchProps, ...placeholder }}
-                            v-model_trim={props.searchParam[props.column.search.key ?? handleProp(props.column.prop!)]}
+                            v-model={[props.searchParam[props.column.search.key ?? handleProp(props.column.prop!)], "trim"]}
                             data={props.column.search?.el === "tree-select" ? columnEnum : []}
                             options={["cascader", "select-v2"].includes(props.column.search?.el) ? columnEnum : []}
                             clearable={clearable}

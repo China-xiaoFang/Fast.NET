@@ -5,7 +5,6 @@ import type { UserInfo } from "./interface";
 import { type AxiosResponse } from "axios";
 import * as loginApi from "@/api/login";
 import * as authApi from "@/api/auth";
-import { Local } from "@/utils/storage";
 import router from "@/router";
 
 export const useUserInfo = defineStore("userInfo", {
@@ -125,9 +124,9 @@ export const useUserInfo = defineStore("userInfo", {
          * 退出登录
          */
         logout(): void {
+            this.removeToken();
             // 调用退出登录的接口
             loginApi.logout().finally(() => {
-                Local.remove(STORE_USER_INFO);
                 router.go(0);
             });
         },

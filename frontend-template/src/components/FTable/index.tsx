@@ -1,13 +1,14 @@
-import { defineComponent, ref, reactive, PropType, SetupContext, provide, computed, onMounted, watch } from "vue";
+import { defineComponent, ref, reactive, PropType, SetupContext, provide, onMounted, watch, toRefs } from "vue";
 import type { FTableProps, FTableState, FTableEmits, FTableColumn, FTableBreakPoint } from "./interface";
 import { ElTable } from "element-plus";
 import { Refresh, Search, More } from "@element-plus/icons-vue";
-import styles from "./style/index.module.scss"
+import "./style/index.scss"
 import { arrayDynamicSort, getRowspanMethod } from "./utils";
 import SearchForm from "./modules/SearchForm"
 import TableColumn from "./modules/Column"
 import Pagination from "./modules/Pagination"
 import { useI18n } from "vue-i18n";
+import notDataImage from "@/assets/images/notData.png";
 
 export default defineComponent({
     name: "FTable",
@@ -362,8 +363,8 @@ export default defineComponent({
         /**
          * 合并行列
          */
-        const onSpanMethod = computed(() =>
-            getRowspanMethod(state.tableData,
+        const handleSpanMethod = () => {
+            return getRowspanMethod(state.tableData,
                 (props.columns.filter(f => f.span == true) ?? []).map(col => {
                     return {
                         prop: col.prop,
@@ -371,7 +372,7 @@ export default defineComponent({
                     };
                 })
             )
-        );
+        };
 
         /**
          * 获取请求参数
@@ -483,8 +484,8 @@ export default defineComponent({
 
         // 暴漏出去的方法
         expose({
-            element: tableRef.value,
-            ...state,
+            element: tableRef,
+            ...toRefs(state),
             loadData,
             tableReset,
             clearSelection,
@@ -506,12 +507,13 @@ export default defineComponent({
                         >
                             {
                                 Object.keys(slots).map((slot: string) => (
-                                    <template key={slots} v-slots={{
+                                    {
                                         [slot]: (scope) => (
-                                            <slot name={slots} {...scope} />
+                                            <>
+                                                {slots[slot](scope)}
+                                            </>
                                         )
-                                    }}>
-                                    </template>
+                                    }
                                 ))
                             }
                         </SearchForm>
@@ -520,17 +522,17 @@ export default defineComponent({
                 <div>
                     {slots.tableTopHeader && slots.tableTopHeader()}
                 </div>
-                <div className={styles["f-table-main"]} class="el-card">
+                <div class="f-table-main el-card">
                     {
                         props.showHeaderCard ? (
-                            <div className={styles["f-table-header"]}>
-                                <div className={styles["f-table-header-left"]}>
+                            <div class="f-table-main-header">
+                                <div class="f-table-main-header-left">
                                     {slots.tableHeader && slots.tableHeader(state)}
                                 </div>
                                 {
                                     props.toolButton ? (
                                         <>
-                                            <div className={styles["f-table-header-right"]}>
+                                            <div class="f-table-main-header-right">
                                                 <el-input
                                                     loading={state.loading}
                                                     prefix-icon={Search}
@@ -544,7 +546,7 @@ export default defineComponent({
                                                 {
                                                     props.showRefreshBtn ? (
                                                         <el-tooltip
-                                                            class="f-table-header-box-item"
+                                                            class="f-table-main-header-box-item"
                                                             placement="top"
                                                             content={t("components.FTable.刷新")}
                                                         >
@@ -552,7 +554,7 @@ export default defineComponent({
                                                                 loading={state.loading}
                                                                 circle
                                                                 icon={Refresh}
-                                                                onClick={refreshTable()}
+                                                                onClick={refreshTable}
                                                             ></el-button>
                                                         </el-tooltip>
                                                     ) : (null)
@@ -560,7 +562,7 @@ export default defineComponent({
                                                 {
                                                     props.showSearchBtn && state.searchColumns.length ? (
                                                         <el-tooltip
-                                                            class="f-table-header-box-item"
+                                                            class="f-table-main-header-box-item"
                                                             placement="top"
                                                             content={state.showSearch ? t("components.FTable.隐藏搜索栏") : t("components.FTable.显示搜索栏")}
                                                         >
@@ -568,7 +570,7 @@ export default defineComponent({
                                                                 loading={state.loading}
                                                                 circle
                                                                 icon={Search}
-                                                                onClick={state.showSearch = !state.showSearch}
+                                                                onClick={() => state.showSearch = !state.showSearch}
                                                             ></el-button>
                                                         </el-tooltip>
                                                     ) : (null)
@@ -576,24 +578,27 @@ export default defineComponent({
                                                 {
                                                     slots.toolButtonAdv ? (
                                                         <el-tooltip
-                                                            class="f-table-header-box-item"
+                                                            class="f-table-main-header-box-item"
                                                             placement="top"
                                                             content={t("components.FTable.高级操作")}
                                                         >
                                                             <el-dropdown trigger="click" style="margin-left: 12px">
-                                                                <el-button
-                                                                    loading={state.loading}
-                                                                    circle
-                                                                    icon={More}
-                                                                ></el-button>
                                                                 {{
+                                                                    default: () => (
+                                                                        <el-button
+                                                                            loading={state.loading}
+                                                                            circle
+                                                                            icon={More}
+                                                                        ></el-button>
+                                                                    ),
                                                                     dropdown: () =>
+                                                                    (
                                                                         <el-dropdown-menu>
                                                                             {slots.toolButtonAdv()}
                                                                         </el-dropdown-menu>
+                                                                    )
                                                                 }}
                                                             </el-dropdown>
-
                                                         </el-tooltip>
                                                     ) : (null)
                                                 }
@@ -615,100 +620,100 @@ export default defineComponent({
                         data={state.tableData}
                         border={props.border}
                         row-key={props.rowKey}
-                        span-method={onSpanMethod}
+                        span-method={handleSpanMethod}
                         headerCellClassName={handleHeaderClass}
                         onSelectionChange={handleSelectionChange}
                         onSortChange={handleSortChange}
                         onSelect={handleSelectClick}
                         onSelectAll={handleSelectClick}
                     >
-                        <el-table-column
-                            type="selection"
-                            fixed="left"
-                            width={35}
-                            align="left"
-                            reserve-selection
-                        />
-                        {
-                            state.tableColumns?.length === 0 ? (
+                        {{
+                            append: () => (
                                 <>
-                                    {slots.default && slots.default()}
+                                    {slots.append && slots.append()}
                                 </>
-                            ) : (
-                                state.tableColumns.map((col) => (
-                                    <>
-                                        {
-                                            col.type === "index" ? (
-                                                <el-table-column
-                                                    {...col}
-                                                    fixed={col.fixed ?? 'left'}
-                                                    width={col.width ?? 50}
-                                                    align={col.align ?? 'center'}
-                                                    index={indexMethod}
-                                                />
-                                            ) : (null)
-                                        }
-                                        {
-                                            col.type === "expand" ? (
-                                                <el-table-column
-                                                    {...col}
-                                                    fixed={col.fixed ?? 'left'}
-                                                >
-                                                    {{
-                                                        default: ({ row, column, $index }: { row: any, column: FTableColumn; $index: number }) => (
-                                                            <>
-                                                                <component is={col.render} row={row} column={column} $index={$index} />
-                                                                {slots[col.slot] && slots[col.slot](row, column, $index)}
-                                                                {/* <slot name={col.slot} row={row} column={column} $index={$index} /> */}
-                                                            </>
-                                                        )
-                                                    }}
-                                                </el-table-column>
-                                            ) : (null)
-                                        }
-                                        {
-                                            col.prop && col.show ? (
-                                                <TableColumn column={col}>
-                                                    {
-                                                        Object.keys(slots).map((slot: string) => (
-                                                            <template key={slots} v-slots={{
-                                                                [slot]: (scope) => (
-                                                                    <slot name={slots} {...scope} />
-                                                                )
-                                                            }}>
-                                                            </template>
-                                                        ))
-                                                    }
-                                                    {/* {Object.keys(this.$slots).map((slot) => (
-                                                        <template key={slot} v-slot={[slot]} v-bind={this.$slots[slot].props}>
-                                                            {this.$slots[slot]()}
-                                                        </template>
-                                                    ))} */}
-                                                </TableColumn>
-                                            ) : (null)
-                                        }
-                                    </>
-                                ))
-                            )
-                        }
-                        {{
-                            append: () => { slots.append && slots.append() }
-                        }}
-                        {{
+                            ),
                             empty: () => (
+                                <div class="table-empty">
+                                    {
+                                        slots.empty ? (
+                                            slots.empty()
+                                        ) : (
+                                            <>
+                                                <img src={notDataImage} alt="notData" />
+                                                <div>{t("components.FTable.暂无数据")}</div>
+                                            </>
+                                        )
+                                    }
+                                </div>
+                            ),
+                            default: () => (
                                 <>
-                                    <div class="table-empty">
-                                        {
-                                            slots.empty ? (
-                                                slots.empty()
-                                            ) : (
+                                    <el-table-column
+                                        type="selection"
+                                        fixed="left"
+                                        width={35}
+                                        align="left"
+                                        reserve-selection
+                                    />
+                                    {
+                                        state.tableColumns?.length === 0 ? (
+                                            <>
+                                                {slots.default && slots.default()}
+                                            </>
+                                        ) : (
+                                            state.tableColumns.map((col) => (
                                                 <>
-                                                    <img src="@/assets/images/notData.png" alt="notData" />
-                                                    <div>{t("components.FTable.暂无数据")}</div>
+                                                    {
+                                                        col.type === "index" ? (
+                                                            <el-table-column
+                                                                {...col}
+                                                                fixed={col.fixed ?? 'left'}
+                                                                width={col.width ?? 50}
+                                                                align={col.align ?? 'center'}
+                                                                index={indexMethod}
+                                                            />
+                                                        ) : (null)
+                                                    }
+                                                    {
+                                                        col.type === "expand" ? (
+                                                            <el-table-column
+                                                                {...col}
+                                                                fixed={col.fixed ?? 'left'}
+                                                            >
+                                                                {{
+                                                                    default: ({ row, column, $index }: { row: any, column: FTableColumn; $index: number }) => (
+                                                                        <>
+                                                                            <component is={col.render} row={row} column={column} $index={$index} />
+                                                                            {slots[col.slot] && slots[col.slot](row, column, $index)}
+                                                                        </>
+                                                                    )
+                                                                }}
+                                                            </el-table-column>
+                                                        ) : (null)
+                                                    }
+                                                    {
+                                                        !col.prop && col.show == false ? (null) :
+                                                            (
+                                                                <TableColumn column={col}>
+                                                                    {
+                                                                        Object.keys(slots).map((slot: string) => (
+                                                                            {
+                                                                                [slot]: (scope) => (
+                                                                                    <>
+                                                                                        {slots[slot](scope)}
+                                                                                    </>
+                                                                                )
+                                                                            }
+                                                                        ))
+                                                                    }
+                                                                </TableColumn>
+                                                            )
+                                                    }
                                                 </>
-                                            )
-                                        }
-                                    </div>
+                                            ))
+                                        )
+                                    }
                                 </>
                             )
                         }}

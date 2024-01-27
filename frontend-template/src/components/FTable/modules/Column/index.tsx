@@ -62,7 +62,7 @@ export default defineComponent({
             <>
                 {
                     // 如果有配置多级表头的数据，则递归该组件
-                    props.column._children?.length ?
+                    props.column?._children?.length ?
                         (
                             <el-table-column
                                 {...props.column}
@@ -74,49 +74,42 @@ export default defineComponent({
                                 sortOrders={props.column.sortOrders ?? ['descending', 'ascending', null]}
                                 show-overflow-tooltip={props.column.showOverflowTooltip ?? props.column.type != "operation"}
                             >
-                                <>
-                                    {
-                                        props.column._children.map((col: FTableColumn) => (
-                                            <TableColumn column={col}>
-                                                <>
-                                                    {
-                                                        Object.keys(slots).map((slot: string) => (
-                                                            <template key={slots} v-slots={{
-                                                                [slot]: (scope) => (
-                                                                    <slot name={slots} {...scope} />
-                                                                )
-                                                            }}>
-                                                            </template>
-                                                        ))
-                                                    }
-                                                </>
-                                            </TableColumn>
-                                        ))
-                                    }
-                                </>
+
                                 {{
                                     header: ({ column, $index }: { column: FTableColumn; $index: number }) =>
-                                        [
-                                            <>
+                                    (
+                                        props.column.headerRender ?
+                                            (
+                                                <component is={props.column.headerRender} column={column} $index={$index} />
+                                            )
+                                            : props.column.headerRender ?
+                                                (
+                                                    <>
+                                                        {slots[props.column.headerSlot] && slots[props.column.headerSlot](column, $index)}
+                                                    </>
+                                                )
+                                                :
+                                                (
+                                                    <span>{column.label}</span>
+                                                )
+                                    ),
+                                    default: () => (
+                                        props.column._children.map((col: FTableColumn) => (
+                                            <TableColumn column={col}>
                                                 {
-                                                    props.column.headerRender ?
-                                                        (
-                                                            <component is={props.column.headerRender} column={column} $index={$index} />
-                                                        )
-                                                        : props.column.headerRender ?
-                                                            (
+                                                    Object.keys(slots).map((slot: string) => (
+                                                        {
+                                                            [slot]: (scope) => (
                                                                 <>
-                                                                    {slots[props.column.headerSlot] && slots[props.column.headerSlot](column, $index)}
+                                                                    {slots[slot](scope)}
                                                                 </>
-                                                                // <slot name={props.column.headerSlot} column={column} $index={$index} />
                                                             )
-                                                            :
-                                                            (
-                                                                <span>{column.label}</span>
-                                                            )
+                                                        }
+                                                    ))
                                                 }
-                                            </>
-                                        ]
+                                            </TableColumn>
+                                        ))
+                                    )
                                 }}
                             </el-table-column>
                         ) :
@@ -134,85 +127,83 @@ export default defineComponent({
                             >
                                 {{
                                     header: ({ column, $index }: { column: FTableColumn; $index: number }) => (
-                                        <>
-                                            {
-                                                props.column.headerRender ?
-                                                    (
-                                                        <component is={props.column.headerRender} column={column} $index={$index} />
-                                                    )
-                                                    : props.column.headerRender ?
-                                                        (
-                                                            <>
-                                                                {slots[props.column.headerSlot] && slots[props.column.headerSlot](column, $index)}
-                                                            </>
-                                                            // <slot name={props.column.headerSlot} column={column} $index={$index} />
-                                                        )
-                                                        :
-                                                        (
-                                                            <span>{column.label}</span>
-                                                        )
-                                            }
-                                        </>
-                                    )
-                                }}
-                                {{
+                                        props.column.headerRender ?
+                                            (
+                                                <component is={props.column.headerRender} column={column} $index={$index} />
+                                            )
+                                            : props.column.headerRender ?
+                                                (
+                                                    <>
+                                                        {slots[props.column.headerSlot] && slots[props.column.headerSlot](column, $index)}
+                                                    </>
+                                                )
+                                                :
+                                                (
+                                                    <span>{column.label}</span>
+                                                )
+                                    ),
                                     default: ({ row, column, $index }: { row: any, column: FTableColumn; $index: number }) => (
-                                        <>
-                                            {
-                                                props.column.tag ? (
-                                                    // Tag
-                                                    <el-tag type={getTagType(props.column, { row })}>
-                                                        {renderCellData(props.column, { row })}
-                                                    </el-tag>
-                                                ) : (null)
-                                            }
-                                            {
-                                                props.column.type == "image" ? (
-                                                    <FImage
-                                                        loading="lazy"
-                                                        src={row[props.column.prop]}
-                                                        fit="cover"
-                                                        style="width: 32px; height:32px; border-radius: 4px;"
-                                                    ></FImage>
-                                                ) : (null)
-                                            }
-                                            {
-                                                props.column.type == "date" && row[props.column.prop] ? (
-                                                    <>
-                                                        {dayjs(row[props.column.prop]).format(props.column.dateFormat ?? "YYYY-MM-DD")}
-                                                        {
-                                                            props.column.dateFix ? (
-                                                                <>
-                                                                    <br />
-                                                                    <el-tag type="info" round effect="light">
-                                                                        {dateTimeFix(row[props.column.prop])}
-                                                                    </el-tag>
-                                                                </>
-                                                            ) : (null)
-                                                        }
-                                                    </>
-                                                ) : (null)
-                                            }
-                                            {
-                                                props.column.link ? (
-                                                    <el-button link type="primary" onClick={props.column.click(row)}>{row[props.column.prop]}</el-button>
-                                                ) : (null)
-                                            }
-                                            {
-                                                // render函数 使用内置的component组件可以支持h函数渲染和txs语法
-                                                props.column.render ? (
-                                                    <component is={props.column.render} row={row} column={column} $index={$index} />
-                                                ) : (null)
-                                            }
-                                            {
-                                                props.column.slot ? (
-                                                    <>
-                                                        {slots[props.column.slot] && slots[props.column.slot](row, column, $index)}
-                                                    </>
-                                                    // <slot name={props.column.slot} row={row} column={column} $index={$index} />
-                                                ) : (null)
-                                            }
-                                        </>
+                                        !props.column?.tag && !props.column?.type && !props.column?.link && !props.column?.render && !props.column?.slot
+                                            ? (
+                                                row[props.column.prop]
+                                            ) :
+                                            (
+                                                <>
+                                                    {
+                                                        props.column?.tag ? (
+                                                            // Tag
+                                                            <el-tag type={getTagType(props.column, { row })}>
+                                                                {renderCellData(props.column, { row })}
+                                                            </el-tag>
+                                                        ) : (null)
+                                                    }
+                                                    {
+                                                        props.column?.type == "image" ? (
+                                                            <FImage
+                                                                loading="lazy"
+                                                                src={row[props.column.prop]}
+                                                                fit="cover"
+                                                                style="width: 32px; height:32px; border-radius: 4px;"
+                                                            ></FImage>
+                                                        ) : (null)
+                                                    }
+                                                    {
+                                                        props.column?.type == "date" && row[props.column.prop] ? (
+                                                            <>
+                                                                {dayjs(row[props.column.prop]).format(props.column.dateFormat ?? "YYYY-MM-DD")}
+                                                                {
+                                                                    props.column.dateFix ? (
+                                                                        <>
+                                                                            <br />
+                                                                            <el-tag type="info" round effect="light">
+                                                                                {dateTimeFix(row[props.column.prop])}
+                                                                            </el-tag>
+                                                                        </>
+                                                                    ) : (null)
+                                                                }
+                                                            </>
+                                                        ) : (null)
+                                                    }
+                                                    {
+                                                        props.column?.link ? (
+                                                            <el-button link type="primary" onClick={props.column.click(row)}>{row[props.column.prop]}</el-button>
+                                                        ) : (null)
+                                                    }
+                                                    {
+                                                        // render函数 使用内置的component组件可以支持h函数渲染和txs语法
+                                                        props.column?.render ? (
+                                                            <component is={props.column.render} row={row} column={column} $index={$index} />
+                                                        ) : (null)
+                                                    }
+                                                    {
+                                                        props.column?.slot ? (
+                                                            <>
+                                                                {slots[props.column.slot] && slots[props.column.slot](row, column, $index)}
+                                                            </>
+                                                        ) : (null)
+                                                    }
+                                                </>
+                                            )
                                     )
                                 }}
                             </el-table-column>
