@@ -1,6 +1,6 @@
 import { createVNode, SetupContext, resolveComponent, defineComponent, computed, type CSSProperties } from "vue";
 import type { Props } from "./interface";
-import FSvg from "@/components/FIcon/modules/FSvg.vue";
+import FSvg from "./modules/FSvg";
 import { isExternal } from "@/utils/validate";
 
 export default defineComponent({

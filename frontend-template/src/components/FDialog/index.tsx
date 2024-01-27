@@ -47,6 +47,10 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        showFooterOperator: {
+            type: Boolean,
+            default: true,
+        },
         fullscreen: {
             type: Boolean,
             default: false,
@@ -148,61 +152,59 @@ export default defineComponent({
         })
 
         return () => (
-            <>
-                <el-dialog
-                    ref={dialogRef}
-                    {...attrs}
-                    class={["f-dialog", state.fullscreen ? "f-dialog-fill-height" : ""]}
-                    style={{ maxHeight: props.height ? props.height : "", maxWidth: props.width ? props.width : "" }}
-                    v-model={state.visible}
-                    appendToBody={props.appendToBody}
-                    fullscreen={state.fullscreen ? true : false}
-                    beforeClose={handleBeforeClose}
-                    draggable
-                    destroy-on-close
-                    showClose={false}
-                >
-                    {{
-                        header: () => (
-                            <>
-                                {attrs.title}
-                                {slots.header && slots.header()}
-                                {
-                                    props.showFullscreen ? (
+            <el-dialog
+                {...attrs}
+                ref={dialogRef}
+                class={["f-dialog", state.fullscreen ? "f-dialog-fill-height" : ""]}
+                style={{ maxHeight: props.height ? props.height : "", maxWidth: props.width ? props.width : "" }}
+                v-model={state.visible}
+                appendToBody={props.appendToBody}
+                fullscreen={state.fullscreen ? true : false}
+                beforeClose={handleBeforeClose}
+                draggable
+                destroy-on-close
+                showClose={false}
+            >
+                {{
+                    header: () => (
+                        <>
+                            {attrs.title}
+                            {slots.header && slots.header()}
+                            {
+                                props.showFullscreen ? (
+                                    <el-tooltip
+                                        content={state.fullscreen ? t("components.FDialog.关闭全屏显示") : t("components.FDialog.全屏显示")}
+                                        placement="bottom"
+                                    >
                                         <el-button
                                             class="f-dialog-header-fullscreen"
                                             link
-                                            onClick={state.fullscreen = !state.fullscreen}
+                                            onClick={() => state.fullscreen = !state.fullscreen}
                                         >
-                                            <el-tooltip
-                                                content={state.fullscreen ? t("components.FDialog.关闭全屏显示") : t("components.FDialog.全屏显示")}
-                                                placement="bottom"
-                                            >
-                                                <FIcon name={state.fullscreen ? "local-fullscreen-exit" : "local-fullscreen"} />
-                                            </el-tooltip>
+                                            <FIcon name={state.fullscreen ? "local-fullscreen-exit" : "local-fullscreen"} />
                                         </el-button>
-                                    ) : (null)
-                                }
-                                {
-                                    props.showClose ? (
+                                    </el-tooltip>
+                                ) : (null)
+                            }
+                            {
+                                props.showClose ? (
+                                    <el-tooltip
+                                        content={t("components.FDialog.关闭")}
+                                        placement="bottom"
+                                    >
                                         <el-button
                                             class="f-dialog-header-close"
                                             link
                                             onClick={close}
                                         >
-                                            <el-tooltip
-                                                content={t("components.FDialog.关闭")}
-                                                placement="bottom"
-                                            >
-                                                <FIcon name="el-icon-Close" />
-                                            </el-tooltip>
+                                            <FIcon name="el-icon-Close" />
                                         </el-button>
-                                    ) : (null)
-                                }
-                            </>
-                        )
-                    }}
-                    {
+                                    </el-tooltip>
+                                ) : (null)
+                            }
+                        </>
+                    ),
+                    default: () => (
                         props.scrollbar ? (
                             <el-scrollbar>
                                 {slots.default && slots.default(state)}
@@ -212,42 +214,36 @@ export default defineComponent({
                                 {slots.default && slots.default(state)}
                             </>
                         )
-                    }
-                    {
+                    ),
+                    footer: () => (
                         props.showFooterOperator ? (
                             <>
-                                {{
-                                    footer: () => (
-                                        <>
-                                            {slots.footer(state)}
-                                            {
-                                                props.showCloseButton ? (
-                                                    <el-button
-                                                        onClick={close}
-                                                    >
-                                                        {t("components.FDialog.取消")}
-                                                    </el-button>
-                                                ) : (null)
-                                            }
-                                            {
-                                                props.showConfirmButton ? (
-                                                    <el-button
-                                                        disabled={props.disabledConfirmButton}
-                                                        type="primary"
-                                                        onClick={handleConfirmClick}
-                                                    >
-                                                        {t("components.FDialog.确认")}
-                                                    </el-button>
-                                                ) : (null)
-                                            }
-                                        </>
-                                    )
-                                }}
+                                {slots.footer && slots.footer(state)}
+                                {
+                                    props.showCloseButton ? (
+                                        <el-button
+                                            onClick={close}
+                                        >
+                                            {t("components.FDialog.取消")}
+                                        </el-button>
+                                    ) : (null)
+                                }
+                                {
+                                    props.showConfirmButton ? (
+                                        <el-button
+                                            disabled={props.disabledConfirmButton}
+                                            type="primary"
+                                            onClick={handleConfirmClick}
+                                        >
+                                            {t("components.FDialog.确认")}
+                                        </el-button>
+                                    ) : (null)
+                                }
                             </>
                         ) : (null)
-                    }
-                </el-dialog>
-            </>
+                    )
+                }}
+            </el-dialog>
         );
     },
 });

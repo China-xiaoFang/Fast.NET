@@ -1,7 +1,7 @@
-<script lang="tsx">
 import { defineComponent, computed, type CSSProperties } from "vue";
 import type { Props } from "../interface";
 import { isExternal } from "@/utils/validate";
+import "./style/index.scss"
 
 export default defineComponent({
     name: "FSvg",
@@ -51,13 +51,3 @@ export default defineComponent({
         );
     },
 });
-</script>
-
-<style scoped>
-.svg-icon {
-    width: 1em;
-    height: 1em;
-    fill: currentColor;
-    overflow: hidden;
-}
-</style>
