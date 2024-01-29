@@ -49,9 +49,15 @@ internal class ExceptionJsonConverter : JsonConverter<Exception>
     /// <param name="options">An object that specifies serialization options to use.</param>
     public override void Write(Utf8JsonWriter writer, Exception value, JsonSerializerOptions options)
     {
+        // 默认只写入 Message，Source，StackTrace，InnerException
+        var writeNameArr = new[]
+        {
+            nameof(Exception.Message), nameof(Exception.Source), nameof(Exception.StackTrace),
+            nameof(Exception.InnerException)
+        };
         // 获取可序列化的属性，排除 TargetSite 属性
         var serializableProperties = value.GetType().GetProperties().Select(sl => new {sl.Name, Value = sl.GetValue(value)})
-            .Where(wh => wh.Name != nameof(Exception.TargetSite));
+            .Where(wh => writeNameArr.Contains(wh.Name));
 
         // 如果设置了 DefaultIgnoreCondition 为 JsonIgnoreCondition.WhenWritingNull，则过滤掉值为 Null 的属性
         if (options?.DefaultIgnoreCondition == JsonIgnoreCondition.WhenWritingNull)
@@ -81,4 +87,43 @@ internal class ExceptionJsonConverter : JsonConverter<Exception>
         // 结束写入对象
         writer.WriteEndObject();
     }
+
+    ///// <summary>Writes a specified value as JSON.</summary>
+    ///// <param name="writer">The writer to write to.</param>
+    ///// <param name="value">The value to convert to JSON.</param>
+    ///// <param name="options">An object that specifies serialization options to use.</param>
+    //public override void Write(Utf8JsonWriter writer, Exception value, JsonSerializerOptions options)
+    //{
+    //    // 获取可序列化的属性，排除 TargetSite 属性
+    //    var serializableProperties = value.GetType().GetProperties().Select(sl => new {sl.Name, Value = sl.GetValue(value)})
+    //        .Where(wh => wh.Name != nameof(Exception.TargetSite));
+
+    //    // 如果设置了 DefaultIgnoreCondition 为 JsonIgnoreCondition.WhenWritingNull，则过滤掉值为 Null 的属性
+    //    if (options?.DefaultIgnoreCondition == JsonIgnoreCondition.WhenWritingNull)
+    //    {
+    //        serializableProperties = serializableProperties.Where(wh => wh.Value != null);
+    //    }
+
+    //    var propList = serializableProperties.ToList();
+
+    //    // 判断是否还存在可以序列化的属性
+    //    if (propList.Count == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    // 开始写入对象
+    //    writer.WriteStartObject();
+
+    //    foreach (var prop in propList)
+    //    {
+    //        // 写入属性名
+    //        writer.WritePropertyName(prop.Name);
+    //        // 使用 JsonSerializer 序列化属性值
+    //        JsonSerializer.Serialize(writer, prop.Value, options);
+    //    }
+
+    //    // 结束写入对象
+    //    writer.WriteEndObject();
+    //}
 }
