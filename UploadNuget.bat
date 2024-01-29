@@ -41,7 +41,7 @@ REM 换行
 echo.
 
 REM 设置要编译和生成的 .sln 项目文件路径。使用 %~dp0 变量来获取 当前批处理文件所在的目录
-set solution_file=%~dp0backend\Fast.NET\Fast.NET.sln
+set solution_file=%~dp0backend\Fast.NET.sln
 
 REM 设置多个可选择的 devenv.com 文件路径
 set "devenv_path[1]=C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.com"
