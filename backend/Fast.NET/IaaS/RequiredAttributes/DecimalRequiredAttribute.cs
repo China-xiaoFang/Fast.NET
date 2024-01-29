@@ -46,7 +46,7 @@ public class DecimalRequiredAttribute : ValidationAttribute
             return false;
         }
 
-        if (long.TryParse(value.ToString(), out var valueParse))
+        if (decimal.TryParse(value.ToString(), out var valueParse))
         {
             // 允许零，负数
             if (AllowZero && AllowNegative)
