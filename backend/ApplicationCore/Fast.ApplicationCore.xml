@@ -71,6 +71,11 @@
             <see cref="T:Fast.DynamicApplication.DynamicApplicationAttribute"/> 动态API应用特性
             </summary>
         </member>
+        <member name="T:Fast.DynamicApplication.IDynamicApplication">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.IDynamicApplication"/> 动态API应用依赖接口
+            </summary>
+        </member>
         <member name="T:Fast.Swagger.OperationIdAttribute">
             <summary>
             <see cref="T:Fast.Swagger.OperationIdAttribute"/> 配置规范化文档 OperationId 问题
