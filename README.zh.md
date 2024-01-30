@@ -26,12 +26,38 @@ dotnet add package Fast.NET.Core
 
 ## 例子
 
-一行代码注入整个框架，就是这么 Nice ~~~
+两行代码注入整个框架，就是这么 Nice ~~~
 
 ```cs
+using Fast.IaaS;
 using Fast.NET.Core.Extensions;
 
-WebApplication.CreateBuilder(args).Initialize();
+var builder = WebApplication.CreateBuilder(args);
+
+// 关键代码1：初始化 框架
+builder.Initialize();
+
+// 关键代码2：Add controller.
+builder.AddControllers();
+
+var app = builder.Build();
+
+// Mandatory Https.
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+// Enable backward reading.
+app.EnableBuffering();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
 ```
 
 ## 文档
