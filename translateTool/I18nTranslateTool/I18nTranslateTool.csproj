@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Fast.IaaS" Version="3.4.17.6" />
+	  <PackageReference Update="Fast.IaaS" Version="3.4.18.4" />
 	</ItemGroup>
 
 </Project>
