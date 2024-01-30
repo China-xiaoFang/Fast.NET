@@ -26,12 +26,38 @@ dotnet add package Fast.NET.Core
 
 ## example
 
-One line of code is injected into the entire framework, that's it. Nice ~~~
+Two lines of code are injected into the entire framework, that’s how Nice ~~~
 
 ```cs
+using Fast.IaaS;
 using Fast.NET.Core.Extensions;
 
-WebApplication.CreateBuilder(args).Initialize();
+var builder = WebApplication.CreateBuilder(args);
+
+//Key code 1: initialization framework
+builder.Initialize();
+
+// Key code 2: Add controller.
+builder.AddControllers();
+
+var app = builder.Build();
+
+// Mandatory HTTPS.
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+// Enable backward reading.
+app.EnableBuffering();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
 ```
 
 ## document
