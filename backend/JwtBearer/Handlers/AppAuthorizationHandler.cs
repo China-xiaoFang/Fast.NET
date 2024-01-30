@@ -82,6 +82,13 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
                     {
                         foreach (var requirement in pendingRequirements)
                         {
+                            context.Succeed(requirement);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var requirement in pendingRequirements)
+                        {
                             bool isPermissionSuccess;
                             Exception permissionException = null;
 
@@ -117,13 +124,6 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
                                     context.Fail();
                                 }
                             }
-                        }
-                    }
-                    else
-                    {
-                        foreach (var requirement in pendingRequirements)
-                        {
-                            context.Succeed(requirement);
                         }
                     }
                 }
