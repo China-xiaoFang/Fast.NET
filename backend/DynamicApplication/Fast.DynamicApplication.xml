@@ -199,11 +199,6 @@
             </summary>
             <param name="builder"></param>
         </member>
-        <member name="T:Fast.DynamicApplication.IDynamicApplication">
-            <summary>
-            <see cref="T:Fast.DynamicApplication.IDynamicApplication"/> 动态API应用依赖接口
-            </summary>
-        </member>
         <member name="T:Fast.DynamicApplication.Internal.ParameterRouteTemplate">
             <summary>
             <see cref="T:Fast.DynamicApplication.Internal.ParameterRouteTemplate"/> 参数路由模板
