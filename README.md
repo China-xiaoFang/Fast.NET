@@ -135,9 +135,6 @@ Since it is still in the development stage and all functions are not very stable
 
      This framework can be said to continue to reinvent the wheel based on the predecessors, but it is simpler and more convenient than some frameworks on the market. It's better to use. I don't know if we can talk about it.
 
-     There is another point about the recent commercialization of "Furion" that has attracted the attention of many people, including me. I do not make any suggestions or opinions here.
-     All I can say is that if you find it useful and can be used, then you can continue to use it. If you find it difficult to use, you can use another frame, or choose to make your own wheels.
-
 ## Supplementary instructions
 
      If it is helpful to you, you can click "Star" in the upper right corner to collect it and get the latest updates. Thank you!
