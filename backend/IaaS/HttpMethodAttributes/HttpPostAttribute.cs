@@ -30,6 +30,7 @@ public class HttpPostAttribute : HttpMethodAttribute
     /// </summary>
     public HttpPostAttribute() : base(_supportedMethods)
     {
+        Method = HttpRequestMethodEnum.Post;
     }
 
     /// <summary>
@@ -45,5 +46,6 @@ public class HttpPostAttribute : HttpMethodAttribute
         }
 
         Tags = tags;
+        Method = HttpRequestMethodEnum.Post;
     }
 }

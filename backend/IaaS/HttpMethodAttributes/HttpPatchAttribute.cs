@@ -30,6 +30,7 @@ public class HttpPatchAttribute : HttpMethodAttribute
     /// </summary>
     public HttpPatchAttribute() : base(_supportedMethods)
     {
+        Method = HttpRequestMethodEnum.Patch;
     }
 
     /// <summary>
@@ -45,5 +46,6 @@ public class HttpPatchAttribute : HttpMethodAttribute
         }
 
         Tags = tags;
+        Method = HttpRequestMethodEnum.Patch;
     }
 }

@@ -30,6 +30,7 @@ public class HttpOptionsAttribute : HttpMethodAttribute
     /// </summary>
     public HttpOptionsAttribute() : base(_supportedMethods)
     {
+        Method = HttpRequestMethodEnum.Options;
     }
 
     /// <summary>
@@ -45,5 +46,6 @@ public class HttpOptionsAttribute : HttpMethodAttribute
         }
 
         Tags = tags;
+        Method = HttpRequestMethodEnum.Options;
     }
 }

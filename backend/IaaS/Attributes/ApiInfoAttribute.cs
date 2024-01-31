@@ -15,23 +15,41 @@
 namespace Fast.IaaS.Attributes;
 
 /// <summary>
-/// <see cref="ApiNameAttribute"/> 接口名称
+/// <see cref="ApiInfoAttribute"/> 接口信息
 /// </summary>
 [SuppressSniffer, AttributeUsage(AttributeTargets.Method)]
-public class ApiNameAttribute : Attribute
+public class ApiInfoAttribute : Attribute
 {
     /// <summary>
-    /// 名称
+    /// Api名称
     /// </summary>
-    public string Name { get; set; }
+    public string ApiName { get; set; }
 
     /// <summary>
-    /// <see cref="ApiNameAttribute"/> 接口名称
+    /// 接口操作方式
     /// </summary>
-    /// <param name="name"></param>
+    public HttpRequestActionEnum ApiAction { get; set; }
+
+    /// <summary>
+    /// <see cref="ApiInfoAttribute"/> 接口名称
+    /// </summary>
+    /// <param name="apiName"><see cref="string"/> Api名称</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public ApiNameAttribute(string name)
+    public ApiInfoAttribute(string apiName)
     {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
+        ApiName = apiName ?? throw new ArgumentNullException(nameof(apiName));
+        ApiAction = HttpRequestActionEnum.None;
+    }
+
+    /// <summary>
+    /// <see cref="ApiInfoAttribute"/> 接口名称
+    /// </summary>
+    /// <param name="apiName"><see cref="string"/> Api名称</param>
+    /// <param name="apiAction"><see cref="HttpRequestActionEnum"/> 接口操作方式</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    public ApiInfoAttribute(string apiName, HttpRequestActionEnum apiAction)
+    {
+        ApiName = apiName ?? throw new ArgumentNullException(nameof(apiName));
+        ApiAction = apiAction;
     }
 }
