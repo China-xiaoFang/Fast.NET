@@ -1052,23 +1052,15 @@
             <see cref="T:Fast.SqlSugar.Repository.ISqlSugarRepository`1"/> SqlSugar仓储接口
             </summary>
         </member>
+        <member name="P:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Entities">
+            <summary>
+            实体集合
+            </summary>
+        </member>
         <member name="P:Fast.SqlSugar.Repository.ISqlSugarRepository`1.DatabaseInfo">
             <summary>
             当前仓储的数据库信息
             </summary>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AsQueryable">
-            <summary>
-            构建查询分析器
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.AsQueryable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>
-            构建查询分析器
-            </summary>
-            <param name="whereExpression"></param>
-            <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Repository.ISqlSugarRepository`1.Change``1">
             <summary>
@@ -1472,19 +1464,6 @@
             <summary>
             当前仓储的数据库信息
             </summary>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AsQueryable">
-            <summary>
-            构建查询分析器
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.AsQueryable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
-            <summary>
-            构建查询分析器
-            </summary>
-            <param name="whereExpression"></param>
-            <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Repository.SqlSugarRepository`1.Change``1">
             <summary>
