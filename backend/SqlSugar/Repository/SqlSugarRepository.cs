@@ -85,33 +85,12 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     /// <summary>
     /// 实体集合
     /// </summary>
-    private ISugarQueryable<TEntity> Entities => Queryable<TEntity>();
+    public ISugarQueryable<TEntity> Entities => Queryable<TEntity>();
 
     /// <summary>
     /// 当前仓储的数据库信息
     /// </summary>
     public ConnectionSettingsOptions DatabaseInfo { get; set; }
-
-    #region Function
-
-    /// <summary>
-    /// 构建查询分析器
-    /// </summary>
-    /// <returns></returns>
-    public ISugarQueryable<TEntity> AsQueryable()
-    {
-        return Entities;
-    }
-
-    /// <summary>
-    /// 构建查询分析器
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
-    public ISugarQueryable<TEntity> AsQueryable(Expression<Func<TEntity, bool>> whereExpression)
-    {
-        return Entities.Where(whereExpression);
-    }
 
     /// <summary>
     /// 切换仓储/切换租户仓储
@@ -122,8 +101,6 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     {
         return _serviceProvider.GetService(typeof(ISqlSugarRepository<TChangeEntity>)) as ISqlSugarRepository<TChangeEntity>;
     }
-
-    #endregion
 
     #region Select
 
@@ -309,7 +286,7 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     /// <returns></returns>
     public ISugarQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
     {
-        return AsQueryable(predicate);
+        return Entities.Where(predicate);
     }
 
     /// <summary>
@@ -320,7 +297,7 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     /// <returns></returns>
     public ISugarQueryable<TEntity> Where(bool condition, Expression<Func<TEntity, bool>> predicate)
     {
-        return AsQueryable().WhereIF(condition, predicate);
+        return Entities.WhereIF(condition, predicate);
     }
 
     #endregion

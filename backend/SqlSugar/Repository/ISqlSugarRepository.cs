@@ -25,22 +25,14 @@ namespace Fast.SqlSugar.Repository;
 public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : class, new()
 {
     /// <summary>
+    /// 实体集合
+    /// </summary>
+    ISugarQueryable<TEntity> Entities { get; }
+
+    /// <summary>
     /// 当前仓储的数据库信息
     /// </summary>
     ConnectionSettingsOptions DatabaseInfo { get; }
-
-    /// <summary>
-    /// 构建查询分析器
-    /// </summary>
-    /// <returns></returns>
-    ISugarQueryable<TEntity> AsQueryable();
-
-    /// <summary>
-    /// 构建查询分析器
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
-    ISugarQueryable<TEntity> AsQueryable(Expression<Func<TEntity, bool>> whereExpression);
 
     /// <summary>
     /// 切换仓储/切换租户仓储
