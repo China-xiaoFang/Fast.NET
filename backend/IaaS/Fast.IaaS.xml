@@ -1,34 +1,34 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.IaaS</name>
+        <name>Fast.Iaas</name>
     </assembly>
     <members>
-        <member name="T:Fast.IaaS.Attributes.ApiInfoAttribute">
+        <member name="T:Fast.IaaS.ApiInfoAttribute">
             <summary>
-            <see cref="T:Fast.IaaS.Attributes.ApiInfoAttribute"/> 接口信息
+            <see cref="T:Fast.IaaS.ApiInfoAttribute"/> 接口信息
             </summary>
         </member>
-        <member name="P:Fast.IaaS.Attributes.ApiInfoAttribute.ApiName">
+        <member name="P:Fast.IaaS.ApiInfoAttribute.ApiName">
             <summary>
             Api名称
             </summary>
         </member>
-        <member name="P:Fast.IaaS.Attributes.ApiInfoAttribute.ApiAction">
+        <member name="P:Fast.IaaS.ApiInfoAttribute.ApiAction">
             <summary>
             接口操作方式
             </summary>
         </member>
-        <member name="M:Fast.IaaS.Attributes.ApiInfoAttribute.#ctor(System.String)">
+        <member name="M:Fast.IaaS.ApiInfoAttribute.#ctor(System.String)">
             <summary>
-            <see cref="T:Fast.IaaS.Attributes.ApiInfoAttribute"/> 接口名称
+            <see cref="T:Fast.IaaS.ApiInfoAttribute"/> 接口名称
             </summary>
             <param name="apiName"><see cref="T:System.String"/> Api名称</param>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:Fast.IaaS.Attributes.ApiInfoAttribute.#ctor(System.String,Fast.IaaS.HttpRequestActionEnum)">
+        <member name="M:Fast.IaaS.ApiInfoAttribute.#ctor(System.String,Fast.IaaS.HttpRequestActionEnum)">
             <summary>
-            <see cref="T:Fast.IaaS.Attributes.ApiInfoAttribute"/> 接口名称
+            <see cref="T:Fast.IaaS.ApiInfoAttribute"/> 接口名称
             </summary>
             <param name="apiName"><see cref="T:System.String"/> Api名称</param>
             <param name="apiAction"><see cref="T:Fast.IaaS.HttpRequestActionEnum"/> 接口操作方式</param>
