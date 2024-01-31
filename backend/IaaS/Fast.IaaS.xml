@@ -4,6 +4,23 @@
         <name>Fast.IaaS</name>
     </assembly>
     <members>
+        <member name="T:Fast.IaaS.Attributes.ApiNameAttribute">
+            <summary>
+            <see cref="T:Fast.IaaS.Attributes.ApiNameAttribute"/> 接口名称
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.Attributes.ApiNameAttribute.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.Attributes.ApiNameAttribute.#ctor(System.String)">
+            <summary>
+            <see cref="T:Fast.IaaS.Attributes.ApiNameAttribute"/> 接口名称
+            </summary>
+            <param name="name"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
         <member name="T:Fast.IaaS.FastEnumAttribute">
             <summary>
             <see cref="T:Fast.IaaS.FastEnumAttribute"/> 枚举特性
