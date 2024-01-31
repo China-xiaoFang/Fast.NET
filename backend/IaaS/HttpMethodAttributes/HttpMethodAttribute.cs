@@ -25,7 +25,12 @@ public class HttpMethodAttribute : Microsoft.AspNetCore.Mvc.Routing.HttpMethodAt
     /// <summary>
     /// 权限标识
     /// </summary>
-    public string[] Tags { get; set; } = { };
+    public string[] Tags { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// 接口请求方式
+    /// </summary>
+    public HttpRequestMethodEnum Method { get; set; }
 
     /// <summary>
     /// Creates a new <see cref="HttpMethodAttribute"/> with the given

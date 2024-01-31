@@ -4,21 +4,34 @@
         <name>Fast.IaaS</name>
     </assembly>
     <members>
-        <member name="T:Fast.IaaS.Attributes.ApiNameAttribute">
+        <member name="T:Fast.IaaS.Attributes.ApiInfoAttribute">
             <summary>
-            <see cref="T:Fast.IaaS.Attributes.ApiNameAttribute"/> 接口名称
+            <see cref="T:Fast.IaaS.Attributes.ApiInfoAttribute"/> 接口信息
             </summary>
         </member>
-        <member name="P:Fast.IaaS.Attributes.ApiNameAttribute.Name">
+        <member name="P:Fast.IaaS.Attributes.ApiInfoAttribute.ApiName">
             <summary>
-            名称
+            Api名称
             </summary>
         </member>
-        <member name="M:Fast.IaaS.Attributes.ApiNameAttribute.#ctor(System.String)">
+        <member name="P:Fast.IaaS.Attributes.ApiInfoAttribute.ApiAction">
             <summary>
-            <see cref="T:Fast.IaaS.Attributes.ApiNameAttribute"/> 接口名称
+            接口操作方式
             </summary>
-            <param name="name"></param>
+        </member>
+        <member name="M:Fast.IaaS.Attributes.ApiInfoAttribute.#ctor(System.String)">
+            <summary>
+            <see cref="T:Fast.IaaS.Attributes.ApiInfoAttribute"/> 接口名称
+            </summary>
+            <param name="apiName"><see cref="T:System.String"/> Api名称</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Fast.IaaS.Attributes.ApiInfoAttribute.#ctor(System.String,Fast.IaaS.HttpRequestActionEnum)">
+            <summary>
+            <see cref="T:Fast.IaaS.Attributes.ApiInfoAttribute"/> 接口名称
+            </summary>
+            <param name="apiName"><see cref="T:System.String"/> Api名称</param>
+            <param name="apiAction"><see cref="T:Fast.IaaS.HttpRequestActionEnum"/> 接口操作方式</param>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
         <member name="T:Fast.IaaS.FastEnumAttribute">
@@ -2325,6 +2338,11 @@
         <member name="P:Fast.IaaS.HttpMethodAttribute.Tags">
             <summary>
             权限标识
+            </summary>
+        </member>
+        <member name="P:Fast.IaaS.HttpMethodAttribute.Method">
+            <summary>
+            接口请求方式
             </summary>
         </member>
         <member name="M:Fast.IaaS.HttpMethodAttribute.#ctor(System.Collections.Generic.IEnumerable{System.String})">

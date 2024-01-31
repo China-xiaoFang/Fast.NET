@@ -30,6 +30,7 @@ public class HttpDeleteAttribute : HttpMethodAttribute
     /// </summary>
     public HttpDeleteAttribute() : base(_supportedMethods)
     {
+        Method = HttpRequestMethodEnum.Delete;
     }
 
     /// <summary>
@@ -45,5 +46,6 @@ public class HttpDeleteAttribute : HttpMethodAttribute
         }
 
         Tags = tags;
+        Method = HttpRequestMethodEnum.Delete;
     }
 }
