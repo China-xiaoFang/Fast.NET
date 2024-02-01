@@ -51,7 +51,8 @@ public class BaseEntity : SnowflakeKeyEntity, IBaseEntity, IBaseDeletedEntity
     /// <summary>
     /// 创建时间
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建时间", ColumnDataType = "datetimeoffset", IsNullable = true, CreateTableFieldSort = 993)]
+    [SugarSearchTime,
+     SugarColumn(ColumnDescription = "创建时间", ColumnDataType = "datetimeoffset", IsNullable = true, CreateTableFieldSort = 993)]
     public DateTime? CreatedTime { get; set; }
 
     /// <summary>
