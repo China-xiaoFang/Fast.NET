@@ -636,6 +636,28 @@
             <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
             <returns></returns>
         </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.String)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
+            <param name="select"><see cref="T:System.String"/> 对应的Sql语句映射，例如 t1.*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.String)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
+            <param name="select"><see cref="T:System.String"/> 对应的Sql语句映射，例如 t1.*</param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
             <summary>
             SqlSugar分页扩展

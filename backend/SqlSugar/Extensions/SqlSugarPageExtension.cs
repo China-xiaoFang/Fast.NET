@@ -58,6 +58,50 @@ public static class SqlSugarPageExtension
     /// <typeparam name="TResult"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
+    /// <param name="select"><see cref="string"/> 对应的Sql语句映射，例如 t1.*</param>
+    /// <returns></returns>
+    public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, PagedInput input,
+        string select = null)
+    {
+        queryable = queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList);
+        if (string.IsNullOrEmpty(select))
+        {
+            return queryable.Select<TResult>().ToPagedList(input.PageIndex, input.PageSize);
+        }
+
+        return queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select<TResult>(select)
+            .ToPagedList(input.PageIndex, input.PageSize);
+    }
+
+    /// <summary>
+    /// SqlSugar分页扩展
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
+    /// <param name="select"><see cref="string"/> 对应的Sql语句映射，例如 t1.*</param>
+    /// <returns></returns>
+    public static async Task<PagedResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
+        PagedInput input, string select = null)
+    {
+        queryable = queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList);
+        if (string.IsNullOrEmpty(select))
+        {
+            return await queryable.Select<TResult>().ToPagedListAsync(input.PageIndex, input.PageSize);
+        }
+
+        return await queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select<TResult>(select)
+            .ToPagedListAsync(input.PageIndex, input.PageSize);
+    }
+
+    /// <summary>
+    /// SqlSugar分页扩展
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
     /// <param name="expression"><see cref="Expression"/> where 条件</param>
     /// <returns></returns>
     public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, PagedInput input,
