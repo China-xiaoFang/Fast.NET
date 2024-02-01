@@ -328,6 +328,36 @@
             <remarks>默认启用</remarks>
             </summary>
         </member>
+        <member name="T:Fast.SqlSugar.PagedOutput">
+            <summary>
+            <see cref="T:Fast.SqlSugar.PagedOutput"/> SqlSugar 统一分页输出
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.PagedOutput.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.PagedOutput.CreatedUserName">
+            <summary>
+            创建者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.PagedOutput.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.PagedOutput.UpdatedUserName">
+            <summary>
+            更新者用户名称
+            </summary>
+        </member>
+        <member name="P:Fast.SqlSugar.PagedOutput.UpdatedTime">
+            <summary>
+            更新时间
+            </summary>
+        </member>
         <member name="T:Fast.SqlSugar.PagedResult`1">
             <summary>
             <see cref="T:Fast.SqlSugar.PagedResult`1"/> SqlSugar 统一分页返回结果类
