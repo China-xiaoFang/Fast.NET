@@ -397,7 +397,7 @@ public static class RemoteRequestUtil
             var responseContent = response.Content.ReadAsByteArrayAsync().Result;
             // 获取 charset 编码
             var encoding = GetCharsetEncoding(response);
-            var result = encoding.GetString(responseContent); 
+            var result = encoding.GetString(responseContent);
             // 通过指定编码解码
             return (result, response.Headers);
         }

@@ -12,46 +12,16 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
-namespace Fast.UnifyResult.Results;
+using Fast.IaaS;
+
+// ReSharper disable once CheckNamespace
+namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PageResult{T}"/> 统一分页返回结果类
+/// <see cref="SugarSearchTimeAttribute"/> SqlSugar 分页搜索列
+/// <remarks>仅支持 <see cref="DateTime"/> 类型</remarks>
 /// </summary>
-/// <typeparam name="T"></typeparam>
-public class PageResult<T>
+[SuppressSniffer, AttributeUsage(AttributeTargets.Property)]
+public class SugarSearchTimeAttribute : Attribute
 {
-    /// <summary>
-    /// 当前页
-    /// </summary>
-    public int PageIndex { get; set; }
-
-    /// <summary>
-    /// 当前页码
-    /// </summary>
-    public int PageSize { get; set; }
-
-    /// <summary>
-    /// 总页数
-    /// </summary>
-    public int TotalPage { get; set; }
-
-    /// <summary>
-    /// 总条数
-    /// </summary>
-    public int TotalRows { get; set; }
-
-    /// <summary>
-    /// Data
-    /// </summary>
-    public IEnumerable<T> Rows { get; set; }
-
-    /// <summary>
-    /// 是否有上一页
-    /// </summary>
-    public bool HasPrevPages { get; set; }
-
-    /// <summary>
-    /// 是否有下一页
-    /// </summary>
-    public bool HasNextPages { get; set; }
 }

@@ -16,7 +16,6 @@ using Fast.IaaS;
 using Fast.SqlSugar.Filters;
 using Fast.SqlSugar.Handlers;
 using Fast.SqlSugar.Options;
-using Fast.SqlSugar.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

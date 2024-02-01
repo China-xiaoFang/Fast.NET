@@ -13,40 +13,44 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
-using Fast.SqlSugar.Handlers;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-/// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
+/// <see cref="PagedInput"/> SqlSugar 统一分页输入
 /// </summary>
-[SuppressSniffer, AttributeUsage(AttributeTargets.Class)]
-public class SugarDbTypeAttribute : Attribute
+[SuppressSniffer]
+public class PagedInput
 {
     /// <summary>
-    /// <see cref="object"/> Entity 的DB类型
-    /// <remarks>如果为Null，则代表的默认库</remarks>
+    /// 当前页面索引值，默认为1
     /// </summary>
-    public object Type { get; set; }
+    public virtual int PageIndex { get; set; } = 1;
 
     /// <summary>
-    /// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-    /// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
+    /// 页码容量
     /// </summary>
-    public SugarDbTypeAttribute()
-    {
-        Type = null;
-    }
+    public virtual int PageSize { get; set; } = 30;
 
     /// <summary>
-    /// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-    /// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
+    /// 搜索值
     /// </summary>
-    /// <param name="type"><see cref="object"/> Entity 的DB类型</param>
-    public SugarDbTypeAttribute(object type)
-    {
-        Type = type;
-    }
+    public virtual string SearchValue { get; set; }
+
+    /// <summary>
+    /// 搜索时间
+    /// </summary>
+    public virtual IList<DateTime?> SearchTimeList { get; set; }
+
+    /// <summary>
+    /// 分页排序集合
+    /// </summary>
+    public virtual PagedSortInput[] PagedSortList { get; set; }
+
+    /// <summary>
+    /// 启用分页
+    /// <remarks>默认启用</remarks>
+    /// </summary>
+    public bool EnablePaged { get; set; } = true;
 }

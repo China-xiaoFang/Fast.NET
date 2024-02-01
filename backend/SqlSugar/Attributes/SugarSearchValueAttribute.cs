@@ -13,39 +13,14 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
-using Fast.SqlSugar.Attributes;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarEntityInfo"/> SqlSugar 实体信息
+/// <see cref="SugarSearchValueAttribute"/> SqlSugar 分页搜索列
 /// </summary>
-[SuppressSniffer]
-public sealed class SqlSugarEntityInfo
+[SuppressSniffer, AttributeUsage(AttributeTargets.Property)]
+public class SugarSearchValueAttribute : Attribute
 {
-    /// <summary>
-    /// 数据库表名称
-    /// </summary>
-    public string TableName { get; set; }
-
-    /// <summary>
-    /// 数据库表描述
-    /// </summary>
-    public string TableDescription { get; set; }
-
-    /// <summary>
-    /// 实体类型
-    /// </summary>
-    public Type EntityType { get; set; }
-
-    /// <summary>
-    /// 是否分表
-    /// </summary>
-    public bool IsSplitTable { get; set; }
-
-    /// <summary>
-    /// <see cref="SugarDbTypeAttribute"/> 特性的Type属性
-    /// </summary>
-    public object SugarDbType { get; set; }
 }

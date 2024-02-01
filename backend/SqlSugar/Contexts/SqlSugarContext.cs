@@ -15,7 +15,6 @@
 
 using System.Reflection;
 using Fast.IaaS;
-using Fast.SqlSugar.Attributes;
 using Fast.SqlSugar.DatabaseUtils;
 using Fast.SqlSugar.Extensions;
 using Fast.SqlSugar.IBaseEntities;

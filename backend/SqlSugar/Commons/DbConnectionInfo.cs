@@ -15,7 +15,9 @@
 using Fast.IaaS;
 using SqlSugar;
 
-namespace Fast.SqlSugar.Commons;
+
+// ReSharper disable once CheckNamespace
+namespace Fast.SqlSugar;
 
 /// <summary>
 /// <see cref="DbConnectionInfo"/> 数据库连接信息
