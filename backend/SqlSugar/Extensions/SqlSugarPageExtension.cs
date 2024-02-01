@@ -102,13 +102,13 @@ public static class SqlSugarPageExtension
     /// <typeparam name="TResult"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
-    /// <param name="expression"><see cref="Expression"/> where 条件</param>
+    /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
     /// <returns></returns>
     public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, PagedInput input,
-        Expression<Func<TEntity, TResult>> expression)
+        Expression<Func<TEntity, TResult>> selectExpression)
     {
-        return queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList)
-            .ToPagedList(input.PageIndex, input.PageSize, expression);
+        return queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select(selectExpression)
+            .ToPagedList(input.PageIndex, input.PageSize);
     }
 
     /// <summary>
@@ -118,13 +118,13 @@ public static class SqlSugarPageExtension
     /// <typeparam name="TResult"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
-    /// <param name="expression"><see cref="Expression"/> where 条件</param>
+    /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
     /// <returns></returns>
     public static async Task<PagedResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
-        PagedInput input, Expression<Func<TEntity, TResult>> expression)
+        PagedInput input, Expression<Func<TEntity, TResult>> selectExpression)
     {
-        return await queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList)
-            .ToPagedListAsync(input.PageIndex, input.PageSize, expression);
+        return await queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select(selectExpression)
+            .ToPagedListAsync(input.PageIndex, input.PageSize);
     }
 
     /// <summary>
@@ -167,62 +167,6 @@ public static class SqlSugarPageExtension
         var rows = await queryable.ToPageListAsync(pageIndex, pageSize, totalRows);
         var totalPage = (int) Math.Ceiling(totalRows.Value / (double) pageSize);
         return new PagedResult<TEntity>
-        {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            Rows = rows,
-            TotalRows = totalRows.Value,
-            TotalPage = totalPage,
-            HasNextPages = pageIndex < totalPage,
-            HasPrevPages = pageIndex - 1 > 0
-        };
-    }
-
-    /// <summary>
-    /// SqlSugar分页扩展
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="pageIndex"><see cref="int"/> 页数</param>
-    /// <param name="pageSize"><see cref="int"/> 页码</param>
-    /// <param name="expression"><see cref="Expression"/> where 条件</param>
-    /// <returns></returns>
-    public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, int pageIndex,
-        int pageSize, Expression<Func<TEntity, TResult>> expression = null)
-    {
-        var totalRows = 0;
-        var rows = queryable.ToPageList(pageIndex, pageSize, ref totalRows, expression);
-        var totalPage = (int) Math.Ceiling(totalRows / (double) pageSize);
-        return new PagedResult<TResult>
-        {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            Rows = rows,
-            TotalRows = totalRows,
-            TotalPage = totalPage,
-            HasNextPages = pageIndex < totalPage,
-            HasPrevPages = pageIndex - 1 > 0
-        };
-    }
-
-    /// <summary>
-    /// SqlSugar分页扩展
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="pageIndex"><see cref="int"/> 页数</param>
-    /// <param name="pageSize"><see cref="int"/> 页码</param>
-    /// <param name="expression"><see cref="Expression"/> where 条件</param>
-    /// <returns></returns>
-    public static async Task<PagedResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
-        int pageIndex, int pageSize, Expression<Func<TEntity, TResult>> expression = null)
-    {
-        RefAsync<int> totalRows = 0;
-        var rows = await queryable.ToPageListAsync(pageIndex, pageSize, totalRows, expression);
-        var totalPage = (int) Math.Ceiling(totalRows.Value / (double) pageSize);
-        return new PagedResult<TResult>
         {
             PageIndex = pageIndex,
             PageSize = pageSize,
