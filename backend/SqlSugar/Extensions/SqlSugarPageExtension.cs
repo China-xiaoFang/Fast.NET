@@ -103,11 +103,12 @@ public static class SqlSugarPageExtension
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
     /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
+    /// <param name="isAutoFill"><see cref="bool"/> 其余字段自动映射，根据字段名称，默认为 false</param>
     /// <returns></returns>
     public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, PagedInput input,
-        Expression<Func<TEntity, TResult>> selectExpression)
+        Expression<Func<TEntity, TResult>> selectExpression, bool isAutoFill = false)
     {
-        return queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select(selectExpression)
+        return queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select(selectExpression, isAutoFill)
             .ToPagedList(input.PageIndex, input.PageSize);
     }
 
@@ -119,11 +120,12 @@ public static class SqlSugarPageExtension
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
     /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
+    /// <param name="isAutoFill"><see cref="bool"/> 其余字段自动映射，根据字段名称，默认为 false</param>
     /// <returns></returns>
     public static async Task<PagedResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
-        PagedInput input, Expression<Func<TEntity, TResult>> selectExpression)
+        PagedInput input, Expression<Func<TEntity, TResult>> selectExpression, bool isAutoFill = false)
     {
-        return await queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select(selectExpression)
+        return await queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select(selectExpression, isAutoFill)
             .ToPagedListAsync(input.PageIndex, input.PageSize);
     }
 

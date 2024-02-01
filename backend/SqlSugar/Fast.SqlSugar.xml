@@ -658,7 +658,7 @@
             <param name="select"><see cref="T:System.String"/> 对应的Sql语句映射，例如 t1.*</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -667,9 +667,10 @@
             <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
             <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
             <param name="selectExpression"><see cref="T:System.Linq.Expressions.Expression"/> Select关系映射</param>
+            <param name="isAutoFill"><see cref="T:System.Boolean"/> 其余字段自动映射，根据字段名称，默认为 false</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -678,6 +679,7 @@
             <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
             <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
             <param name="selectExpression"><see cref="T:System.Linq.Expressions.Expression"/> Select关系映射</param>
+            <param name="isAutoFill"><see cref="T:System.Boolean"/> 其余字段自动映射，根据字段名称，默认为 false</param>
             <returns></returns>
         </member>
         <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
