@@ -550,7 +550,7 @@
             鉴权
             </summary>
         </member>
-        <member name="F:Fast.IaaS.HttpRequestActionEnum.Page">
+        <member name="F:Fast.IaaS.HttpRequestActionEnum.Paged">
             <summary>
             分页查询
             </summary>

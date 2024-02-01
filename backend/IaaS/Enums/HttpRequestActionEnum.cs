@@ -39,7 +39,7 @@ public enum HttpRequestActionEnum
     /// 分页查询
     /// </summary>
     [Description("分页查询")]
-    Page = 11,
+    Paged = 11,
 
     /// <summary>
     /// 查询
