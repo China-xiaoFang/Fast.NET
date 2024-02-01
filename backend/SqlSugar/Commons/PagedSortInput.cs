@@ -12,49 +12,41 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.ComponentModel.DataAnnotations;
 using Fast.IaaS;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarPageResult{TResult}"/> SqlSugar 统一分页返回结果类
+/// <see cref="PagedSortInput"/> SqlSugar 统一分页排序输入
 /// </summary>
 [SuppressSniffer]
-public class SqlSugarPageResult<TResult>
+public class PagedSortInput
 {
     /// <summary>
-    /// 当前页
+    /// 排序字段英文
+    /// <remarks>主要字段，用于生成排序语句</remarks>
     /// </summary>
-    public int PageIndex { get; set; }
+    [StringRequired(ErrorMessage = "排序字段不能为空")]
+    public virtual string EnField { get; set; }
 
     /// <summary>
-    /// 当前页码
+    /// 排序字段中文
+    /// <remarks>次要字段，用于提示</remarks>
     /// </summary>
-    public int PageSize { get; set; }
+    public virtual string ChField { get; set; }
 
     /// <summary>
-    /// 总页数
+    /// 排序方式
+    /// <remarks>ElementPlus 的 Table 排序方式</remarks>
+    /// <remarks>ascending 正序；descending：倒序；为空默认正序</remarks>
     /// </summary>
-    public int TotalPage { get; set; }
+    public virtual string Mode { get; set; }
 
     /// <summary>
-    /// 总条数
+    /// 是否倒序排序
     /// </summary>
-    public int TotalRows { get; set; }
-
-    /// <summary>
-    /// Data
-    /// </summary>
-    public IEnumerable<TResult> Rows { get; set; }
-
-    /// <summary>
-    /// 是否有上一页
-    /// </summary>
-    public bool HasPrevPages { get; set; }
-
-    /// <summary>
-    /// 是否有下一页
-    /// </summary>
-    public bool HasNextPages { get; set; }
+    public virtual bool IsDescending =>
+        !string.IsNullOrEmpty(Mode) && Mode.Equals("descending", StringComparison.InvariantCultureIgnoreCase);
 }

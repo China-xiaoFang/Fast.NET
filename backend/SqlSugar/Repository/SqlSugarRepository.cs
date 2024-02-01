@@ -14,7 +14,6 @@
 
 using System.Linq.Expressions;
 using System.Reflection;
-using Fast.SqlSugar.Attributes;
 using Fast.SqlSugar.Filters;
 using Fast.SqlSugar.Handlers;
 using Fast.SqlSugar.IBaseEntities;
@@ -22,7 +21,9 @@ using Fast.SqlSugar.Options;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 
-namespace Fast.SqlSugar.Repository;
+
+// ReSharper disable once CheckNamespace
+namespace Fast.SqlSugar;
 
 /// <summary>
 /// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar仓储实现

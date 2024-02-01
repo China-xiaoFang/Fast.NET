@@ -13,40 +13,48 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
-using Fast.SqlSugar.Handlers;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-/// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
+/// <see cref="PagedResult{TResult}"/> SqlSugar 统一分页返回结果类
 /// </summary>
-[SuppressSniffer, AttributeUsage(AttributeTargets.Class)]
-public class SugarDbTypeAttribute : Attribute
+[SuppressSniffer]
+public class PagedResult<TResult>
 {
     /// <summary>
-    /// <see cref="object"/> Entity 的DB类型
-    /// <remarks>如果为Null，则代表的默认库</remarks>
+    /// 当前页
     /// </summary>
-    public object Type { get; set; }
+    public virtual int PageIndex { get; set; }
 
     /// <summary>
-    /// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-    /// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
+    /// 当前页码
     /// </summary>
-    public SugarDbTypeAttribute()
-    {
-        Type = null;
-    }
+    public virtual int PageSize { get; set; }
 
     /// <summary>
-    /// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-    /// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
+    /// 总页数
     /// </summary>
-    /// <param name="type"><see cref="object"/> Entity 的DB类型</param>
-    public SugarDbTypeAttribute(object type)
-    {
-        Type = type;
-    }
+    public virtual int TotalPage { get; set; }
+
+    /// <summary>
+    /// 总条数
+    /// </summary>
+    public virtual int TotalRows { get; set; }
+
+    /// <summary>
+    /// Data
+    /// </summary>
+    public virtual IEnumerable<TResult> Rows { get; set; }
+
+    /// <summary>
+    /// 是否有上一页
+    /// </summary>
+    public virtual bool HasPrevPages { get; set; }
+
+    /// <summary>
+    /// 是否有下一页
+    /// </summary>
+    public bool HasNextPages { get; set; }
 }

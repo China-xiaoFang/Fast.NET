@@ -147,6 +147,7 @@ public static class HttpContextExtension
         {
             return remoteIpAddress.ToString();
         }
+
         // 处理可能获取到的是 IPV6 的地址，且是 localhost，则获取到的为 ::1
         if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && remoteIpAddress?.ToString() == "::1")
         {

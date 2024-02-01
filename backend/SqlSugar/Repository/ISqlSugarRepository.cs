@@ -17,7 +17,9 @@ using Fast.SqlSugar.IBaseEntities;
 using Fast.SqlSugar.Options;
 using SqlSugar;
 
-namespace Fast.SqlSugar.Repository;
+
+// ReSharper disable once CheckNamespace
+namespace Fast.SqlSugar;
 
 /// <summary>
 /// <see cref="ISqlSugarRepository{TEntity}"/> SqlSugar仓储接口

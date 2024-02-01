@@ -18,28 +18,33 @@ using Fast.IaaS;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarPageInput"/> SqlSugar 统一分页输入
+/// <see cref="SqlSugarEntityInfo"/> SqlSugar 实体信息
 /// </summary>
 [SuppressSniffer]
-public class SqlSugarPageInput
+public sealed class SqlSugarEntityInfo
 {
     /// <summary>
-    /// 当前页面索引值，默认为1
+    /// 数据库表名称
     /// </summary>
-    public virtual int PageIndex { get; set; } = 1;
+    public string TableName { get; set; }
 
     /// <summary>
-    /// 页码容量
+    /// 数据库表描述
     /// </summary>
-    public virtual int PageSize { get; set; } = 30;
+    public string TableDescription { get; set; }
 
     /// <summary>
-    /// 搜索值
+    /// 实体类型
     /// </summary>
-    public string SearchValue { get; set; }
+    public Type EntityType { get; set; }
 
     /// <summary>
-    /// 搜索时间
+    /// 是否分表
     /// </summary>
-    public List<DateTime> SearchTimeList { get; set; }
+    public bool IsSplitTable { get; set; }
+
+    /// <summary>
+    /// <see cref="SugarDbTypeAttribute"/> 特性的Type属性
+    /// </summary>
+    public object SugarDbType { get; set; }
 }
