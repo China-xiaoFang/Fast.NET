@@ -59,10 +59,10 @@ public enum HttpRequestMethodEnum
     Patch = 5,
 
     /// <summary>
-    /// Patch请求
+    /// Head请求
     /// <remarks>与 GET 请求类似，只是服务器返回的响应中不包含实体内容，主要用于获取资源的元数据（例如，响应头信息）。</remarks>
     /// </summary>
-    [Description("Patch请求")]
+    [Description("Head请求")]
     Head = 6,
 
     /// <summary>
