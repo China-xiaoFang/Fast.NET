@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Fast.Iaas</name>
+        <name>Fast.IaaS</name>
     </assembly>
     <members>
         <member name="T:Fast.IaaS.ApiInfoAttribute">
@@ -647,7 +647,7 @@
         </member>
         <member name="F:Fast.IaaS.HttpRequestMethodEnum.Head">
             <summary>
-            Patch请求
+            Head请求
             <remarks>与 GET 请求类似，只是服务器返回的响应中不包含实体内容，主要用于获取资源的元数据（例如，响应头信息）。</remarks>
             </summary>
         </member>
