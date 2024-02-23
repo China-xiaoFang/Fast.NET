@@ -30,8 +30,8 @@ public static class CryptoUtil
     /// 使用AES算法对给定字符串进行加密。
     /// </summary>
     /// <param name="dataStr">要加密的字符串。</param>
-    /// <param name="key">用于加密的密钥。</param>
-    /// <param name="vector">用于加密的向量（IV）。</param>
+    /// <param name="key">用于加密的密钥。<remarks>必须32位</remarks></param>
+    /// <param name="vector">用于加密的向量（IV）。<remarks>必须16位</remarks></param>
     /// <param name="cipherMode">加密模式，默认为CBC模式。</param>
     /// <param name="paddingMode">填充模式，默认为PKCS7。</param>
     /// <returns>加密后的Base64编码字符串。</returns>
@@ -51,6 +51,34 @@ public static class CryptoUtil
         if (string.IsNullOrEmpty(vector))
         {
             return null;
+        }
+
+        // 处理Key不足32位的问题
+        if (key.Length < 32)
+        {
+            // 不足
+            key = key.PadRight(32, 'f');
+        }
+
+        // 处理Key超过32位的问题
+        if (key.Length > 32)
+        {
+            // 超过
+            key = key[..32];
+        }
+
+        // 处理IV不足32位的问题
+        if (vector.Length < 16)
+        {
+            // 不足
+            vector = vector.PadRight(16, 'f');
+        }
+
+        // 处理IV超过32位的问题
+        if (vector.Length > 16)
+        {
+            // 超过
+            vector = vector[..16];
         }
 
         // 将输入的字符串、密钥和向量转换为字节数组
@@ -81,8 +109,8 @@ public static class CryptoUtil
     /// 使用AES算法对给定的Base64编码字符串进行解密。
     /// </summary>
     /// <param name="dataStr">要解密的Base64编码字符串。</param>
-    /// <param name="key">用于解密的密钥。</param>
-    /// <param name="vector">用于解密的向量（IV）。</param>
+    /// <param name="key">用于解密的密钥。<remarks>必须32位</remarks></param>
+    /// <param name="vector">用于解密的向量（IV）。<remarks>必须16位</remarks></param>
     /// <param name="cipherMode">解密模式，默认为CBC模式。</param>
     /// <param name="paddingMode">填充模式，默认为PKCS7。</param>
     /// <returns>解密后的原始字符串。</returns>
@@ -102,6 +130,34 @@ public static class CryptoUtil
         if (string.IsNullOrEmpty(vector))
         {
             return null;
+        }
+
+        // 处理Key不足32位的问题
+        if (key.Length < 32)
+        {
+            // 不足
+            key = key.PadRight(32, 'f');
+        }
+
+        // 处理Key超过32位的问题
+        if (key.Length > 32)
+        {
+            // 超过
+            key = key[..32];
+        }
+
+        // 处理IV不足32位的问题
+        if (vector.Length < 16)
+        {
+            // 不足
+            vector = vector.PadRight(16, 'f');
+        }
+
+        // 处理IV超过32位的问题
+        if (vector.Length > 16)
+        {
+            // 超过
+            vector = vector[..16];
         }
 
         // 将输入的Base64字符串、密钥和向量转换为字节数组

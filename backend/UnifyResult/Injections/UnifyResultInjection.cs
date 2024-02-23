@@ -14,9 +14,11 @@
 
 using Fast.IaaS;
 using Fast.UnifyResult.Filters;
+using Fast.UnifyResult.Internal;
 using Fast.UnifyResult.Providers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -82,6 +84,26 @@ public class UnifyResultInjection : IControllersInjection
             }
 
             services.Configure<MvcOptions>(options => { options.Filters.Add<FriendlyExceptionFilter>(); });
+
+            #endregion
+
+            #region AES加密解密
+
+            Penetrates.RequestCipher = hostContext.Configuration.GetSection("AppSettings:RequestCipher").Get<bool>();
+
+            // 判断是否启用请求解密响应加密处理
+            if (Penetrates.RequestCipher)
+            {
+                // 查找请求解密响应加密处理实现类
+                var requestCipherHandler = IaaSContext.EffectiveTypes.FirstOrDefault(f =>
+                    typeof(IRequestCipherHandler).IsAssignableFrom(f) && !f.IsInterface);
+
+                if (requestCipherHandler != null)
+                {
+                    // 注册请求解密响应加密处理实现类
+                    services.AddSingleton(typeof(IRequestCipherHandler), requestCipherHandler);
+                }
+            }
 
             #endregion
 

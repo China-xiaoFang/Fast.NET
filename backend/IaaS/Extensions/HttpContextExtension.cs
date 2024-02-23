@@ -587,4 +587,27 @@ public static class HttpContextExtension
             }
         }
     }
+
+    /// <summary>
+    /// 获取请求方式
+    /// </summary>
+    /// <param name="httpContext"><see cref="HttpContext"/></param>
+    /// <returns></returns>
+    /// <exception cref="HttpRequestException"></exception>
+    public static HttpRequestMethodEnum GetRequestMethod(this HttpContext httpContext)
+    {
+        return httpContext.Request.Method switch
+        {
+            "GET" => HttpRequestMethodEnum.Get,
+            "POST" => HttpRequestMethodEnum.Post,
+            "PUT" => HttpRequestMethodEnum.Put,
+            "DELETE" => HttpRequestMethodEnum.Delete,
+            "PATCH" => HttpRequestMethodEnum.Patch,
+            "HEAD" => HttpRequestMethodEnum.Head,
+            "OPTIONS" => HttpRequestMethodEnum.Options,
+            "CONNECT" => HttpRequestMethodEnum.Connect,
+            "TRACE" => HttpRequestMethodEnum.Trace,
+            _ => throw new HttpRequestException("Unknown request mode.")
+        };
+    }
 }
