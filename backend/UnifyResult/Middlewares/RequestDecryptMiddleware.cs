@@ -17,6 +17,7 @@ using System.Text.Json;
 using Fast.IaaS;
 using Fast.UnifyResult.Inputs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.UnifyResult.Middlewares;
 
@@ -26,12 +27,10 @@ namespace Fast.UnifyResult.Middlewares;
 internal class RequestDecryptMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IRequestCipherHandler _requestCipherHandler;
 
-    public RequestDecryptMiddleware(RequestDelegate next, IRequestCipherHandler requestCipherHandler)
+    public RequestDecryptMiddleware(RequestDelegate next)
     {
         _next = next;
-        _requestCipherHandler = requestCipherHandler;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -44,6 +43,9 @@ internal class RequestDecryptMiddleware
         }
         else
         {
+            // 获取回调服务
+            var requestCipherHandler = context.RequestServices.GetService<IRequestCipherHandler>();
+
             try
             {
                 // 允许读取请求的Body
@@ -134,19 +136,20 @@ internal class RequestDecryptMiddleware
                         throw new HttpRequestException("This request mode is not supported.");
                 }
 
+
                 // 判断密文数据和回调服务是否为空
-                if (ciphertextData != null && _requestCipherHandler != null)
+                if (ciphertextData != null && requestCipherHandler != null)
                 {
                     // 回调请求解密
-                    await _requestCipherHandler.DecipherAsync(context, requestMethod, plaintextData, ciphertextData);
+                    await requestCipherHandler.DecipherAsync(context, requestMethod, plaintextData, ciphertextData);
                 }
             }
             catch (Exception ex)
             {
-                if (_requestCipherHandler != null)
+                if (requestCipherHandler != null)
                 {
                     // 反馈解密异常
-                    await _requestCipherHandler.DecipherExceptionAsync(context, ex);
+                    await requestCipherHandler.DecipherExceptionAsync(context, ex);
                 }
 
                 // 抛出异常

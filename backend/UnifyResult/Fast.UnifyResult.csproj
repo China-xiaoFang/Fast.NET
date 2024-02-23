@@ -158,7 +158,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="RequestCipher\" />
+	  <Compile Remove="RequestCipher\**" />
+	  <EmbeddedResource Remove="RequestCipher\**" />
+	  <None Remove="RequestCipher\**" />
 	</ItemGroup>
 
 </Project>
