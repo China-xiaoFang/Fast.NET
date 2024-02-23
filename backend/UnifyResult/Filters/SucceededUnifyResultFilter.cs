@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.UnifyResult.Filters;
 
@@ -38,13 +39,6 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
     /// 排序属性
     /// </summary>
     public int Order => FilterOrder;
-
-    private readonly IRequestCipherHandler _requestCipherHandler;
-
-    public SucceededUnifyResultFilter(IRequestCipherHandler requestCipherHandler)
-    {
-        _requestCipherHandler = requestCipherHandler;
-    }
 
     /// <summary>
     /// 处理规范化结果
@@ -135,6 +129,9 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
                 // 判断是否存在响应数据，判断是否启用响应加密处理
                 if (data != null && Penetrates.RequestCipher)
                 {
+                    // 获取回调服务
+                    var requestCipherHandler = context.HttpContext.RequestServices.GetService<IRequestCipherHandler>();
+
                     try
                     {
                         var dataJsonStr = JsonSerializer.Serialize(data);
@@ -143,10 +140,10 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
                         var plaintextData = CryptoUtil.AESEncrypt(dataJsonStr, timestamp.ToString(), $"FIV{timestamp}");
 
                         // 判断回调服务是否为空
-                        if (_requestCipherHandler != null)
+                        if (requestCipherHandler != null)
                         {
                             // 回调请求解密
-                            await _requestCipherHandler.EncipherAsync(context.HttpContext, context.HttpContext.GetRequestMethod(),
+                            await requestCipherHandler.EncipherAsync(context.HttpContext, context.HttpContext.GetRequestMethod(),
                                 data, plaintextData);
                         }
 
@@ -158,10 +155,10 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
                     }
                     catch (Exception ex)
                     {
-                        if (_requestCipherHandler != null)
+                        if (requestCipherHandler != null)
                         {
                             // 反馈加密异常
-                            await _requestCipherHandler.EncipherExceptionAsync(context.HttpContext, ex);
+                            await requestCipherHandler.EncipherExceptionAsync(context.HttpContext, ex);
                         }
 
                         // 抛出异常
