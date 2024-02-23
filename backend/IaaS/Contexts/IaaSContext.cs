@@ -107,8 +107,7 @@ internal static class IaaSContext
 
         try
         {
-            IDynamicApplicationType =
-                AssemblyUtil.GetType("Fast.ApplicationCore", "Fast.DynamicApplication.IDynamicApplication");
+            IDynamicApplicationType = AssemblyUtil.GetType("Fast.ApplicationCore", "Fast.DynamicApplication.IDynamicApplication");
         }
         catch
         {

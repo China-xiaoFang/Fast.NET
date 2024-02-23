@@ -218,6 +218,47 @@
             <param name="isValidationException"><see cref="T:System.Boolean"/> 是否验证异常</param>
             <returns></returns>
         </member>
+        <member name="T:Fast.UnifyResult.IRequestCipherHandler">
+            <summary>
+            <see cref="T:Fast.UnifyResult.IRequestCipherHandler"/> 请求解密响应加密处理
+            </summary>
+        </member>
+        <member name="M:Fast.UnifyResult.IRequestCipherHandler.DecipherAsync(Microsoft.AspNetCore.Http.HttpContext,Fast.IaaS.HttpRequestMethodEnum,System.Collections.Generic.IDictionary{System.String,System.Object},Fast.UnifyResult.Inputs.RequestDecryptInput)">
+            <summary>
+            请求解密
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+            <param name="requestMethod"><see cref="T:Fast.IaaS.HttpRequestMethodEnum"/> 请求方式</param>
+            <param name="plaintextData"><see cref="T:System.Collections.Generic.IDictionary`2"/> 明文数据（解密后的数据）</param>
+            <param name="ciphertextData"><see cref="T:Fast.UnifyResult.Inputs.RequestDecryptInput"/> 密文数据（请求源数据）</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.UnifyResult.IRequestCipherHandler.EncipherAsync(Microsoft.AspNetCore.Http.HttpContext,Fast.IaaS.HttpRequestMethodEnum,System.Object,System.Object)">
+            <summary>
+            响应加密
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+            <param name="requestMethod"><see cref="T:Fast.IaaS.HttpRequestMethodEnum"/> 请求方式</param>
+            <param name="plaintextData"><see cref="T:System.Object"/> 明文数据（返回源数据）</param>
+            <param name="ciphertextData"><see cref="T:System.Object"/> 密文数据（加密后的数据）</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.UnifyResult.IRequestCipherHandler.DecipherExceptionAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
+            <summary>
+            解密异常
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+            <param name="exception"><see cref="T:System.Exception"/> 异常信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.UnifyResult.IRequestCipherHandler.EncipherExceptionAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
+            <summary>
+            加密异常
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+            <param name="exception"><see cref="T:System.Exception"/> 异常信息</param>
+            <returns></returns>
+        </member>
         <member name="T:Fast.UnifyResult.Injections.UnifyResultInjection">
             <summary>
             <see cref="T:Fast.UnifyResult.Injections.UnifyResultInjection"/> 统一返回注入
@@ -237,6 +278,32 @@
             配置
             </summary>
             <param name="builder"></param>
+        </member>
+        <member name="T:Fast.UnifyResult.Inputs.RequestDecryptInput">
+            <summary>
+            <see cref="T:Fast.UnifyResult.Inputs.RequestDecryptInput"/> 请求加密输入
+            </summary>
+        </member>
+        <member name="P:Fast.UnifyResult.Inputs.RequestDecryptInput.Data">
+            <summary>
+            请求数据
+            </summary>
+        </member>
+        <member name="P:Fast.UnifyResult.Inputs.RequestDecryptInput.Timestamp">
+            <summary>
+            时间戳
+            <remarks>一定要是毫秒时间戳，13位</remarks>
+            </summary>
+        </member>
+        <member name="T:Fast.UnifyResult.Internal.Penetrates">
+            <summary>
+            <see cref="T:Fast.UnifyResult.Internal.Penetrates"/> 常量，公共方法配置类
+            </summary>
+        </member>
+        <member name="P:Fast.UnifyResult.Internal.Penetrates.RequestCipher">
+            <summary>
+            请求解密响应加密
+            </summary>
         </member>
         <member name="T:Fast.UnifyResult.Metadatas.ExceptionMetadata">
             <summary>
@@ -317,6 +384,11 @@
         <member name="P:Fast.UnifyResult.Metadatas.ValidationMetadata.Data">
             <summary>
             额外数据
+            </summary>
+        </member>
+        <member name="T:Fast.UnifyResult.Middlewares.RequestDecryptMiddleware">
+            <summary>
+            <see cref="T:Fast.UnifyResult.Middlewares.RequestDecryptMiddleware"/> 请求解密中间件
             </summary>
         </member>
         <member name="T:Fast.UnifyResult.Middlewares.UnifyResultStatusCodesMiddleware">
@@ -407,7 +479,7 @@
         </member>
         <member name="T:Fast.UnifyResult.Providers.RestfulResultProvider">
             <summary>
-            规范化RESTful风格返回值
+            <see cref="T:Fast.UnifyResult.Providers.RestfulResultProvider"/> 规范化RESTful风格返回值
             </summary>
         </member>
         <member name="M:Fast.UnifyResult.Providers.RestfulResultProvider.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext,Fast.UnifyResult.Metadatas.ExceptionMetadata,System.Nullable{System.Int32},System.String)">

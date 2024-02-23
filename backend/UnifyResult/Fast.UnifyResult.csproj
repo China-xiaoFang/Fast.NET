@@ -17,6 +17,15 @@
 		<Reference Include="Microsoft.AspNetCore.Http.Features">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Http">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Http.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Binder">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Mvc.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
 		</Reference>
@@ -34,6 +43,9 @@
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Features">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Features.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Options">
 			<HintPath>$(SolutionDir)Librarys\NET6.0\Microsoft.Extensions.Options.dll</HintPath>
@@ -56,6 +68,15 @@
 		<Reference Include="Microsoft.AspNetCore.Http.Features">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Http">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Http.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Binder">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Mvc.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
 		</Reference>
@@ -73,6 +94,9 @@
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Features">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Features.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Options">
 			<HintPath>$(SolutionDir)Librarys\NET7.0\Microsoft.Extensions.Options.dll</HintPath>
@@ -95,6 +119,15 @@
 		<Reference Include="Microsoft.AspNetCore.Http.Features">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.AspNetCore.Http">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Http.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Extensions.Configuration.Binder">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.AspNetCore.Mvc.Abstractions">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
 		</Reference>
@@ -113,12 +146,19 @@
 		<Reference Include="Microsoft.Extensions.Features">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Features.dll</HintPath>
 		</Reference>
+		<Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+		</Reference>
 		<Reference Include="Microsoft.Extensions.Options">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Options.dll</HintPath>
 		</Reference>
 		<Reference Include="Microsoft.Extensions.Primitives">
 			<HintPath>$(SolutionDir)Librarys\NET8.0\Microsoft.Extensions.Primitives.dll</HintPath>
 		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="RequestCipher\" />
 	</ItemGroup>
 
 </Project>

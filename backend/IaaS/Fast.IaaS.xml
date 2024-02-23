@@ -1459,6 +1459,14 @@
                 adaptStatusCodes = [[401, 200], [403, 200]]
             </remarks>
         </member>
+        <member name="M:Fast.IaaS.HttpContextExtension.GetRequestMethod(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取请求方式
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns></returns>
+            <exception cref="T:System.Net.Http.HttpRequestException"></exception>
+        </member>
         <member name="T:Fast.IaaS.IDictionaryExtension">
             <summary>
             <see cref="T:System.Collections.Generic.IDictionary`2"/> 拓展类
@@ -2688,8 +2696,8 @@
             使用AES算法对给定字符串进行加密。
             </summary>
             <param name="dataStr">要加密的字符串。</param>
-            <param name="key">用于加密的密钥。</param>
-            <param name="vector">用于加密的向量（IV）。</param>
+            <param name="key">用于加密的密钥。<remarks>必须32位</remarks></param>
+            <param name="vector">用于加密的向量（IV）。<remarks>必须16位</remarks></param>
             <param name="cipherMode">加密模式，默认为CBC模式。</param>
             <param name="paddingMode">填充模式，默认为PKCS7。</param>
             <returns>加密后的Base64编码字符串。</returns>
@@ -2699,8 +2707,8 @@
             使用AES算法对给定的Base64编码字符串进行解密。
             </summary>
             <param name="dataStr">要解密的Base64编码字符串。</param>
-            <param name="key">用于解密的密钥。</param>
-            <param name="vector">用于解密的向量（IV）。</param>
+            <param name="key">用于解密的密钥。<remarks>必须32位</remarks></param>
+            <param name="vector">用于解密的向量（IV）。<remarks>必须16位</remarks></param>
             <param name="cipherMode">解密模式，默认为CBC模式。</param>
             <param name="paddingMode">填充模式，默认为PKCS7。</param>
             <returns>解密后的原始字符串。</returns>

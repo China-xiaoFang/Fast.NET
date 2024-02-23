@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using Fast.UnifyResult.Internal;
 using Fast.UnifyResult.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,6 +42,13 @@ public class UnifyResultStartupFilter : IStartupFilter
         {
             // 注册状态码拦截中间件
             app.UseMiddleware<UnifyResultStatusCodesMiddleware>();
+
+            // 判断是否启用请求解密响应加密处理
+            if (Penetrates.RequestCipher)
+            {
+                // 注册请求解密中间件
+                app.UseMiddleware<RequestDecryptMiddleware>();
+            }
 
             // 调用启动层的 Startup
             action(app);

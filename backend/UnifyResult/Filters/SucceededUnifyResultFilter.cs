@@ -12,8 +12,10 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Text.Json;
 using Fast.IaaS;
 using Fast.UnifyResult.Contexts;
+using Fast.UnifyResult.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -36,6 +38,13 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
     /// 排序属性
     /// </summary>
     public int Order => FilterOrder;
+
+    private readonly IRequestCipherHandler _requestCipherHandler;
+
+    public SucceededUnifyResultFilter(IRequestCipherHandler requestCipherHandler)
+    {
+        _requestCipherHandler = requestCipherHandler;
+    }
 
     /// <summary>
     /// 处理规范化结果
@@ -121,13 +130,51 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
             // 检查是否是有效的结果（可进行规范化的结果）
             if (UnifyContext.CheckValidResult(actionExecutedContext.Result, out var data))
             {
+                var timestamp = context.HttpContext.UnifyResponseTimestamp();
+
+                // 判断是否存在响应数据，判断是否启用响应加密处理
+                if (data != null && Penetrates.RequestCipher)
+                {
+                    try
+                    {
+                        var dataJsonStr = JsonSerializer.Serialize(data);
+
+                        // 使用 AES 加密
+                        var plaintextData = CryptoUtil.AESEncrypt(dataJsonStr, timestamp.ToString(), $"FIV{timestamp}");
+
+                        // 判断回调服务是否为空
+                        if (_requestCipherHandler != null)
+                        {
+                            // 回调请求解密
+                            await _requestCipherHandler.EncipherAsync(context.HttpContext, context.HttpContext.GetRequestMethod(),
+                                data, plaintextData);
+                        }
+
+                        // 赋值
+                        data = plaintextData;
+
+                        // 响应头部增加加密标识
+                        context.HttpContext.Response.Headers["Fast-Encipher"] = "true";
+                    }
+                    catch (Exception ex)
+                    {
+                        if (_requestCipherHandler != null)
+                        {
+                            // 反馈加密异常
+                            await _requestCipherHandler.EncipherExceptionAsync(context.HttpContext, ex);
+                        }
+
+                        // 抛出异常
+                        throw;
+                    }
+                }
+
                 // 判断是否跳过规范化响应数据处理
                 if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, controllerActionDescriptor!.MethodInfo,
                         out var unifyResponse))
                 {
                     // 处理规范化响应数据
-                    data = await unifyResponse.ResponseDataAsync(context.HttpContext.UnifyResponseTimestamp(), data,
-                        context.HttpContext);
+                    data = await unifyResponse.ResponseDataAsync(timestamp, data, context.HttpContext);
                 }
 
                 result = unifyResult.OnSucceeded(actionExecutedContext, data);

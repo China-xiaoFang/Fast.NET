@@ -13,18 +13,20 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.IaaS;
+using Fast.UnifyResult.Contexts;
 using Fast.UnifyResult.Metadatas;
 using Fast.UnifyResult.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace Fast.UnifyResult.Providers;
 
 /// <summary>
-/// 规范化RESTful风格返回值
+/// <see cref="RestfulResultProvider"/> 规范化RESTful风格返回值
 /// </summary>
 internal class RestfulResultProvider : IUnifyResultProvider
 {
@@ -39,14 +41,18 @@ internal class RestfulResultProvider : IUnifyResultProvider
     public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata, int? statusCode = null,
         string message = null)
     {
-#if DEBUG
-        return new JsonResult(GetRestfulResult(statusCode ?? metadata.StatusCode, false, context.Exception,
+        // 判断是否为生产环境，避免安全起见，生产环境不返回错误对象
+        var hostEnvironment = context.HttpContext.RequestServices.GetService<IHostEnvironment>();
+
+        // 如果获取到的为空，或者非开发环境，则不返回错误对象
+        if (hostEnvironment == null || !hostEnvironment.IsDevelopment())
+        {
+            return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode, false, null,
+                message ?? context.Exception.Message, context.HttpContext));
+        }
+
+        return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode, false, context.Exception,
             message ?? context.Exception.Message, context.HttpContext));
-#else
-        // 如果是发布模式，避免安全期间，则不返回错误对象
-        return new JsonResult(GetRestfulResult(statusCode ?? metadata.StatusCode, false, null,
-            message ?? context.Exception.Message, context.HttpContext));
-#endif
     }
 
     /// <summary>
