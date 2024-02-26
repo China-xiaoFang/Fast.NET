@@ -36,12 +36,7 @@ internal class RequestDecryptMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         // 判断是否为WebStock请求
-        if (context.IsWebSocketRequest())
-        {
-            // 继续执行下一个中间件
-            await _next(context);
-        }
-        else
+        if (!context.IsWebSocketRequest())
         {
             // 获取回调服务
             var requestCipherHandler = context.RequestServices.GetService<IRequestCipherHandler>();
@@ -86,7 +81,8 @@ internal class RequestDecryptMiddleware
                                     $"FIV{ciphertextData.Timestamp}");
 
                                 // 转换密文数据
-                                plaintextData = JsonSerializer.Deserialize<Dictionary<string, object>>(decryptData);
+                                plaintextData = JsonSerializer.Deserialize<Dictionary<string, object>>(decryptData,
+                                    new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
 
                                 // 替换请求参数
                                 context.Request.QueryString =
@@ -108,14 +104,16 @@ internal class RequestDecryptMiddleware
                         if (!requestParam.IsEmpty())
                         {
                             // JSON序列化请求参数
-                            ciphertextData = JsonSerializer.Deserialize<RequestDecryptInput>(requestParam);
+                            ciphertextData = JsonSerializer.Deserialize<RequestDecryptInput>(requestParam,
+                                new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
 
                             // 使用 AES 解密
                             var decryptData = CryptoUtil.AESDecrypt(ciphertextData.Data, ciphertextData.Timestamp.ToString(),
                                 $"FIV{ciphertextData.Timestamp}");
 
                             // 转换密文数据
-                            plaintextData = JsonSerializer.Deserialize<Dictionary<string, object>>(decryptData);
+                            plaintextData = JsonSerializer.Deserialize<Dictionary<string, object>>(decryptData,
+                                new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
 
                             // 写入解密后的参数
                             var memoryStream = new MemoryStream();
@@ -136,7 +134,6 @@ internal class RequestDecryptMiddleware
                         throw new HttpRequestException("This request mode is not supported.");
                 }
 
-
                 // 判断密文数据和回调服务是否为空
                 if (ciphertextData != null && requestCipherHandler != null)
                 {
@@ -156,5 +153,8 @@ internal class RequestDecryptMiddleware
                 throw;
             }
         }
+
+        // 继续执行下一个中间件
+        await _next(context);
     }
 }
