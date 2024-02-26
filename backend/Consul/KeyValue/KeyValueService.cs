@@ -43,7 +43,8 @@ public class KeyValueService : IKeyValueService
 
         var value = result.First().Value;
 
-        return JsonSerializer.Deserialize<T>(Encoding.Default.GetString(Convert.FromBase64String(value)));
+        return JsonSerializer.Deserialize<T>(Encoding.Default.GetString(Convert.FromBase64String(value)),
+            new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
     }
 
     /// <summary>

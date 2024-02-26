@@ -134,7 +134,8 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
 
                     try
                     {
-                        var dataJsonStr = JsonSerializer.Serialize(data);
+                        var dataJsonStr = JsonSerializer.Serialize(data,
+                            new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
                         // 使用 AES 加密
                         var plaintextData = CryptoUtil.AESEncrypt(dataJsonStr, timestamp.ToString(), $"FIV{timestamp}");
