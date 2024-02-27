@@ -17,7 +17,9 @@ using System.Text.Json;
 using Fast.IaaS;
 using Fast.UnifyResult.Inputs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Fast.UnifyResult.Middlewares;
 
@@ -40,6 +42,9 @@ internal class RequestDecryptMiddleware
         {
             // 获取回调服务
             var requestCipherHandler = context.RequestServices.GetService<IRequestCipherHandler>();
+
+            // 获取 System.Text.Json 全局配置
+            var jsonSerializerOptions = context.RequestServices.GetService<IOptions<JsonOptions>>().Value?.JsonSerializerOptions;
 
             try
             {
@@ -81,8 +86,8 @@ internal class RequestDecryptMiddleware
                                     $"FIV{ciphertextData.Timestamp}");
 
                                 // 转换密文数据
-                                plaintextData = JsonSerializer.Deserialize<Dictionary<string, object>>(decryptData,
-                                    new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
+                                plaintextData =
+                                    JsonSerializer.Deserialize<Dictionary<string, object>>(decryptData, jsonSerializerOptions);
 
                                 // 替换请求参数
                                 context.Request.QueryString =
@@ -104,16 +109,15 @@ internal class RequestDecryptMiddleware
                         if (!requestParam.IsEmpty())
                         {
                             // JSON序列化请求参数
-                            ciphertextData = JsonSerializer.Deserialize<RequestDecryptInput>(requestParam,
-                                new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
+                            ciphertextData = JsonSerializer.Deserialize<RequestDecryptInput>(requestParam, jsonSerializerOptions);
 
                             // 使用 AES 解密
                             var decryptData = CryptoUtil.AESDecrypt(ciphertextData.Data, ciphertextData.Timestamp.ToString(),
                                 $"FIV{ciphertextData.Timestamp}");
 
                             // 转换密文数据
-                            plaintextData = JsonSerializer.Deserialize<Dictionary<string, object>>(decryptData,
-                                new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
+                            plaintextData =
+                                JsonSerializer.Deserialize<Dictionary<string, object>>(decryptData, jsonSerializerOptions);
 
                             // 写入解密后的参数
                             var memoryStream = new MemoryStream();

@@ -271,8 +271,12 @@ public static class RemoteRequestUtil
     {
         var (responseContent, responseHeaders) = await SendAsync(httpMethod, url, urlParam, bodyData, headers, timeout);
 
-        return (JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions {PropertyNameCaseInsensitive = true}),
-            responseHeaders);
+        return (
+            JsonSerializer.Deserialize<T>(responseContent,
+                new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase, PropertyNameCaseInsensitive = true
+                }), responseHeaders);
     }
 
     /// <summary>
@@ -380,7 +384,10 @@ public static class RemoteRequestUtil
             {
                 // 请求数据转为 JSON 字符串
                 var reqBodyDataJson = JsonSerializer.Serialize(bodyData,
-                    new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+                    new JsonSerializerOptions
+                    {
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase, PropertyNameCaseInsensitive = true
+                    });
 
                 var httpContent = new StringContent(reqBodyDataJson);
 
