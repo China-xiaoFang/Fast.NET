@@ -36,8 +36,7 @@ internal static class RemoteRequestUtil
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<DaySentenceEntity>(responseBody,
-                new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
+            return JsonSerializer.Deserialize<DaySentenceEntity>(responseBody);
         }
         catch (HttpRequestException ex)
         {

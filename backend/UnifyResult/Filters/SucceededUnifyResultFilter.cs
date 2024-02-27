@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Fast.UnifyResult.Filters;
 
@@ -132,10 +133,13 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
                     // 获取回调服务
                     var requestCipherHandler = context.HttpContext.RequestServices.GetService<IRequestCipherHandler>();
 
+                    // 获取 System.Text.Json 全局配置
+                    var jsonSerializerOptions = context.HttpContext.RequestServices.GetService<IOptions<JsonOptions>>().Value
+                        ?.JsonSerializerOptions;
+
                     try
                     {
-                        var dataJsonStr = JsonSerializer.Serialize(data,
-                            new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+                        var dataJsonStr = JsonSerializer.Serialize(data, jsonSerializerOptions);
 
                         // 使用 AES 加密
                         var plaintextData = CryptoUtil.AESEncrypt(dataJsonStr, timestamp.ToString(), $"FIV{timestamp}");
