@@ -35,6 +35,15 @@ public interface IUnifyResponseProvider
         HttpContext httpContext);
 
     /// <summary>
+    /// 响应数据验证异常处理
+    /// </summary>
+    /// <param name="context"><see cref="ActionExecutingContext"/></param>
+    /// <param name="metadata"><see cref="ValidationMetadata"/> 验证信息元数据</param>
+    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
+    /// <returns></returns>
+    Task ResponseValidationExceptionAsync(ActionExecutingContext context, ValidationMetadata metadata, HttpContext httpContext);
+
+    /// <summary>
     /// 响应数据处理
     /// <remarks>只有响应成功且为正常返回才会调用</remarks>
     /// </summary>

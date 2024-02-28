@@ -66,6 +66,8 @@ public class DateTimeRequiredAttribute : ValidationAttribute
             {
                 return false;
             }
+
+            return true;
         }
 
         return false;

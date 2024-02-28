@@ -89,7 +89,7 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
         }
 
         // 处理执行前验证信息
-        var handledResult = HandleValidation(context, method, actionDescriptor, modelState);
+        var handledResult = await HandleValidation(context, method, actionDescriptor, modelState);
 
         // 处理 Mvc 未处理结果情况
         if (!handledResult)
@@ -120,7 +120,7 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
             context.HttpContext.Items[nameof(DataValidationFilter) + nameof(UserFriendlyException)] = resultContext;
 
             // 处理验证信息
-            _ = HandleValidation(context, method, actionDescriptor, userFriendlyException.ErrorMessage, resultContext,
+            _ = await HandleValidation(context, method, actionDescriptor, userFriendlyException.ErrorMessage, resultContext,
                 userFriendlyException);
         }
     }
@@ -135,7 +135,7 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     /// <param name="resultContext"></param>
     /// <param name="userFriendlyException"></param>
     /// <returns>返回 false 表示结果没有处理</returns>
-    private bool HandleValidation(ActionExecutingContext context, MethodInfo method, ControllerActionDescriptor actionDescriptor,
+    private async Task<bool> HandleValidation(ActionExecutingContext context, MethodInfo method, ControllerActionDescriptor actionDescriptor,
         object errors, ActionExecutedContext resultContext = default, UserFriendlyException userFriendlyException = default)
     {
         dynamic finalContext = resultContext != null ? resultContext : context;
@@ -178,6 +178,13 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
         }
         else
         {
+            // 判断是否跳过规范化响应数据处理
+            if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, actionDescriptor.MethodInfo, out var unifyResponse))
+            {
+                // 处理规范化响应数据
+                await unifyResponse.ResponseValidationExceptionAsync(context, validationMetadata, context.HttpContext);
+            }
+
             // 执行规范化异常处理
             finalContext.Result = unifyResult.OnValidateFailed(context, validationMetadata);
         }

@@ -428,6 +428,15 @@
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
             <returns></returns>
         </member>
+        <member name="M:Fast.UnifyResult.IUnifyResponseProvider.ResponseValidationExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Fast.UnifyResult.Metadatas.ValidationMetadata,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            响应数据验证异常处理
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext"/></param>
+            <param name="metadata"><see cref="T:Fast.UnifyResult.Metadatas.ValidationMetadata"/> 验证信息元数据</param>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>
+            <returns></returns>
+        </member>
         <member name="M:Fast.UnifyResult.IUnifyResponseProvider.ResponseDataAsync(System.Int64,System.Object,Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             响应数据处理

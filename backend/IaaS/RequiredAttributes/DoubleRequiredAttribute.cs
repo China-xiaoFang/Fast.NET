@@ -25,12 +25,12 @@ public class DoubleRequiredAttribute : ValidationAttribute
     /// <summary>
     /// 允许零
     /// </summary>
-    public bool AllowZero { get; set; } = false;
+    public bool AllowZero { get; set; } = true;
 
     /// <summary>
     /// 允许负数
     /// </summary>
-    public bool AllowNegative { get; set; } = false;
+    public bool AllowNegative { get; set; } = true;
 
     /// <summary>Determines whether the specified value of the object is valid.</summary>
     /// <param name="value">The value of the object to validate.</param>
