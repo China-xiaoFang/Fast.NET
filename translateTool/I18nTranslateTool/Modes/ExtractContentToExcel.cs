@@ -12,6 +12,7 @@
 // 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Fast.IaaS;
@@ -48,7 +49,7 @@ internal class ExtractContentToExcel
 
         // 获取 lang 文件夹中的语言，只获取文件夹名称，并且默认剔除 zh-CN，因为项目默认的就是 zh-CN
         var langList = Directory.GetDirectories(langPath, "*", SearchOption.TopDirectoryOnly)
-            .Select(sl => sl.Split(Path.DirectorySeparatorChar).Last()).Where(wh => wh != "zh-CN").ToList();
+            .Select(sl => sl.Split(Path.DirectorySeparatorChar).Last()).Where(wh => wh != "zh-CN" && wh != "common").ToList();
 
         // 匹配 $t 和 t 对应的文案（包含单引号）
         var i18nRegex = new Regex(@"(\$t\(['""](.+?)['""]\))|(t\(['""](.+?)['""]\))");

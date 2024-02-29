@@ -36,7 +36,7 @@ internal class UpdateTranslateToProject
 
         // 获取 lang 文件夹中的语言，只获取文件夹名称
         var langList = Directory.GetDirectories(langPath, "*", SearchOption.TopDirectoryOnly)
-            .Select(sl => sl.Split(Path.DirectorySeparatorChar).Last()).ToList();
+            .Select(sl => sl.Split(Path.DirectorySeparatorChar).Last()).Where(wh => wh != "common").ToList();
 
         // 获取翻译文件目录下最后一次更新的 xlsx 文件，这里使用文件名称排序的方式
         var excelFile = Directory.GetFiles(translateFilePath, "*.xlsx", SearchOption.TopDirectoryOnly)
