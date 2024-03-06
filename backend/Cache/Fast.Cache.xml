@@ -37,7 +37,7 @@
         </member>
         <member name="T:Fast.Cache.Implements.Cache">
             <summary>
-            缓存实现
+            <see cref="T:Fast.Cache.Implements.Cache"/> Redis缓存服务
             </summary>
         </member>
         <member name="M:Fast.Cache.Implements.Cache.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
@@ -319,7 +319,7 @@
         </member>
         <member name="T:Fast.Cache.ICache">
             <summary>
-            缓存服务接口
+            <see cref="T:Fast.Cache.ICache"/> Redis缓存服务接口
             </summary>
         </member>
         <member name="M:Fast.Cache.ICache.Del(System.String[])">

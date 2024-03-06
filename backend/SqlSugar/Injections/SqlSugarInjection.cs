@@ -79,9 +79,6 @@ public class SqlSugarInjection : IHostInjection
             // 注册 SqlSugarClient，这里注册一遍是因为防止直接使用 ISqlSugarClient
             services.AddScoped<ISqlSugarClient>(serviceProvider =>
             {
-                // 获取 Sugar实体处理 接口的实现类
-                var sqlSugarEntityHandler = serviceProvider.GetRequiredService<ISqlSugarEntityHandler>();
-
                 var sqlSugarClient = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfig);
 
                 // 执行超时时间
@@ -91,12 +88,12 @@ public class SqlSugarInjection : IHostInjection
                 if (!SqlSugarContext.ConnectionSettings.DisableAop)
                 {
                     // Aop
-                    SugarEntityFilter.LoadSugarAop(sqlSugarClient, SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds,
-                        SqlSugarContext.ConnectionSettings.DiffLog, sqlSugarEntityHandler);
+                    SugarEntityFilter.LoadSugarAop(serviceProvider, sqlSugarClient,
+                        SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog);
                 }
 
                 // 过滤器
-                SugarEntityFilter.LoadSugarFilter(sqlSugarClient, sqlSugarEntityHandler);
+                SugarEntityFilter.LoadSugarFilter(serviceProvider, sqlSugarClient);
 
                 return sqlSugarClient;
             });

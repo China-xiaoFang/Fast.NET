@@ -17,7 +17,7 @@
 namespace Fast.Cache;
 
 /// <summary>
-/// 缓存服务接口
+/// <see cref="ICache"/> Redis缓存服务接口
 /// </summary>
 public interface ICache
 {

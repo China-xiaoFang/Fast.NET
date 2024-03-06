@@ -727,21 +727,21 @@
             <see cref="T:Fast.SqlSugar.Filters.SugarEntityFilter"/> Sugar实体过滤器
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarAop(SqlSugar.ISqlSugarClient,System.Double,System.Boolean,Fast.SqlSugar.Handlers.ISqlSugarEntityHandler)">
+        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarAop(System.IServiceProvider,SqlSugar.ISqlSugarClient,System.Double,System.Boolean)">
             <summary>
             加载 Sugar Aop
             </summary>
-            <param name="_db"></param>
+            <param name="serviceProvider"><see cref="T:System.IServiceProvider"/></param>
+            <param name="_db"><see cref="T:SqlSugar.ISqlSugarClient"/></param>
             <param name="sugarSqlExecMaxSeconds"><see cref="T:System.Double"/> Sql最大执行秒数</param>
             <param name="diffLog"><see cref="T:System.Boolean"/> 是否启用差异日志</param>
-            <param name="sqlSugarEntityHandler"><see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理</param>
         </member>
-        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarFilter(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Handlers.ISqlSugarEntityHandler)">
+        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarFilter(System.IServiceProvider,SqlSugar.ISqlSugarClient)">
             <summary>
             加载Sugar过滤器
             </summary>
-            <param name="_db"></param>
-            <param name="sqlSugarEntityHandler"><see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理</param>
+            <param name="serviceProvider"><see cref="T:System.IServiceProvider"/></param>
+            <param name="_db"><see cref="T:SqlSugar.ISqlSugarClient"/></param>
         </member>
         <member name="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler">
             <summary>

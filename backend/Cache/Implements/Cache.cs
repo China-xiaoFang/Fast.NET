@@ -22,7 +22,7 @@ using ValidateExtension = Fast.Cache.Extensions.ValidateExtension;
 namespace Fast.Cache.Implements;
 
 /// <summary>
-/// 缓存实现
+/// <see cref="Cache"/> Redis缓存服务
 /// </summary>
 [SuppressSniffer]
 internal class Cache : ICache
