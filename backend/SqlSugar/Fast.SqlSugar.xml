@@ -727,26 +727,29 @@
             <see cref="T:Fast.SqlSugar.Filters.SugarEntityFilter"/> Sugar实体过滤器
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarAop(System.IServiceProvider,SqlSugar.ISqlSugarClient,System.Double,System.Boolean)">
+        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarAop(SqlSugar.ISqlSugarClient,System.Double,System.Boolean,Fast.SqlSugar.Handlers.ISqlSugarEntityHandler)">
             <summary>
             加载 Sugar Aop
             </summary>
-            <param name="serviceProvider"><see cref="T:System.IServiceProvider"/></param>
             <param name="_db"><see cref="T:SqlSugar.ISqlSugarClient"/></param>
             <param name="sugarSqlExecMaxSeconds"><see cref="T:System.Double"/> Sql最大执行秒数</param>
             <param name="diffLog"><see cref="T:System.Boolean"/> 是否启用差异日志</param>
+            <param name="sqlSugarEntityHandler"><see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
         </member>
-        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarFilter(System.IServiceProvider,SqlSugar.ISqlSugarClient)">
+        <member name="M:Fast.SqlSugar.Filters.SugarEntityFilter.LoadSugarFilter(SqlSugar.ISqlSugarClient,Fast.SqlSugar.Handlers.ISqlSugarEntityHandler)">
             <summary>
             加载Sugar过滤器
             </summary>
-            <param name="serviceProvider"><see cref="T:System.IServiceProvider"/></param>
             <param name="_db"><see cref="T:SqlSugar.ISqlSugarClient"/></param>
+            <param name="sqlSugarEntityHandler"><see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
         </member>
         <member name="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler">
             <summary>
             <see cref="T:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler"/> Sugar实体处理
-            <remarks>不能在构造函数中注入 <see cref="T:SqlSugar.ISqlSugarClient"/> 否则会出现循环引用的问题</remarks>
+            <remarks>
+            <para>不能在构造函数中注入 <see cref="T:SqlSugar.ISqlSugarClient"/> 否则会出现循环引用的问题</para>
+            <para>不能在构造函数中注入 <see cref="T:Microsoft.AspNetCore.Http.IHttpContextAccessor"/> 或 <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 否则会出现并发线程释放的问题</para>
+            </remarks>
             </summary>
         </member>
         <member name="M:Fast.SqlSugar.Handlers.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.SugarDbTypeAttribute,System.Type)">

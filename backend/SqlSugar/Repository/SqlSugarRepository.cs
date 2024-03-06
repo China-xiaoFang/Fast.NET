@@ -69,12 +69,12 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
                 if (!connectionSettings.DisableAop)
                 {
                     // Aop
-                    SugarEntityFilter.LoadSugarAop(serviceProvider, Context, connectionSettings.SugarSqlExecMaxSeconds,
-                        connectionSettings.DiffLog);
+                    SugarEntityFilter.LoadSugarAop(Context, connectionSettings.SugarSqlExecMaxSeconds, connectionSettings.DiffLog,
+                        sqlSugarEntityHandler);
                 }
 
                 // 过滤器
-                SugarEntityFilter.LoadSugarFilter(serviceProvider, Context);
+                SugarEntityFilter.LoadSugarFilter(Context, sqlSugarEntityHandler);
             }
         }
         else

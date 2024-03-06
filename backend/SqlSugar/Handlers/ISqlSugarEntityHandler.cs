@@ -13,13 +13,17 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using Fast.SqlSugar.Options;
+using Microsoft.AspNetCore.Http;
 using SqlSugar;
 
 namespace Fast.SqlSugar.Handlers;
 
 /// <summary>
 /// <see cref="ISqlSugarEntityHandler"/> Sugar实体处理
-/// <remarks>不能在构造函数中注入 <see cref="ISqlSugarClient"/> 否则会出现循环引用的问题</remarks>
+/// <remarks>
+/// <para>不能在构造函数中注入 <see cref="ISqlSugarClient"/> 否则会出现循环引用的问题</para>
+/// <para>不能在构造函数中注入 <see cref="IHttpContextAccessor"/> 或 <see cref="HttpContext"/> 否则会出现并发线程释放的问题</para>
+/// </remarks>
 /// </summary>
 public interface ISqlSugarEntityHandler
 {
