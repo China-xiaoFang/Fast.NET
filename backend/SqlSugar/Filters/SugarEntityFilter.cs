@@ -14,7 +14,6 @@
 
 using Fast.SqlSugar.Handlers;
 using Fast.SqlSugar.IBaseEntities;
-using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using Yitter.IdGenerator;
 
@@ -28,12 +27,12 @@ internal static class SugarEntityFilter
     /// <summary>
     /// 加载 Sugar Aop
     /// </summary>
-    /// <param name="serviceProvider"><see cref="IServiceProvider"/></param>
     /// <param name="_db"><see cref="ISqlSugarClient"/></param>
     /// <param name="sugarSqlExecMaxSeconds"><see cref="double"/> Sql最大执行秒数</param>
     /// <param name="diffLog"><see cref="bool"/> 是否启用差异日志</param>
-    internal static void LoadSugarAop(IServiceProvider serviceProvider, ISqlSugarClient _db, double sugarSqlExecMaxSeconds,
-        bool diffLog)
+    /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
+    internal static void LoadSugarAop(ISqlSugarClient _db, double sugarSqlExecMaxSeconds, bool diffLog,
+        ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
         _db.Aop.OnLogExecuted = (rawSql, pars) =>
         {
@@ -61,9 +60,6 @@ internal static class SugarEntityFilter
 
             Console.WriteLine($"\r\n\r\n{handleSql}\r\nTime：{_db.Ado.SqlExecutionTime}");
 #endif
-
-            // 获取 Sugar实体处理 程序
-            var sqlSugarEntityHandler = serviceProvider.GetService<ISqlSugarEntityHandler>();
 
             if (sqlSugarEntityHandler != null)
             {
@@ -108,9 +104,6 @@ internal static class SugarEntityFilter
         {
             _db.Aop.OnDiffLogEvent = diff =>
             {
-                // 获取 Sugar实体处理 程序
-                var sqlSugarEntityHandler = serviceProvider.GetService<ISqlSugarEntityHandler>();
-
                 if (sqlSugarEntityHandler != null)
                 {
                     // 差异日志
@@ -165,10 +158,6 @@ internal static class SugarEntityFilter
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"\r\n\r\n{message}");
 #endif
-
-            // 获取 Sugar实体处理 程序
-            var sqlSugarEntityHandler = serviceProvider.GetService<ISqlSugarEntityHandler>();
-
             if (sqlSugarEntityHandler != null)
             {
                 // 执行Sql错误处理
@@ -183,9 +172,6 @@ internal static class SugarEntityFilter
         // Model基类处理
         _db.Aop.DataExecuting = (oldValue, entityInfo) =>
         {
-            // 获取 Sugar实体处理 程序
-            var sqlSugarEntityHandler = serviceProvider.GetService<ISqlSugarEntityHandler>();
-
             switch (entityInfo.OperationType)
             {
                 // 新增操作
@@ -261,13 +247,10 @@ internal static class SugarEntityFilter
     /// <summary>
     /// 加载Sugar过滤器
     /// </summary>
-    /// <param name="serviceProvider"><see cref="IServiceProvider"/></param>
     /// <param name="_db"><see cref="ISqlSugarClient"/></param>
-    internal static void LoadSugarFilter(IServiceProvider serviceProvider, ISqlSugarClient _db)
+    /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
+    internal static void LoadSugarFilter(ISqlSugarClient _db, ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
-        // 获取 Sugar实体处理 程序
-        var sqlSugarEntityHandler = serviceProvider.GetService<ISqlSugarEntityHandler>();
-
         if (sqlSugarEntityHandler != null)
         {
             // 配置多租户全局过滤器
