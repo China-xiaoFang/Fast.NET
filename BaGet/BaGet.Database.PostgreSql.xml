@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BaGet.Database.PostgreSql</name>
+    </assembly>
+    <members>
+        <member name="F:BaGet.Database.PostgreSql.PostgreSqlContext.UniqueConstraintViolationErrorCode">
+            <summary>
+            The PostgreSql error code for when a unique constraint is violated.
+            See: https://www.postgresql.org/docs/9.6/errcodes-appendix.html
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BaGet</name>
+    </assembly>
+    <members>
+        <member name="T:BaGet.ConfigureBaGetOptions">
+            <summary>
+            BaGet's options configuration, specific to the default BaGet application.
+            Don't use this if you are embedding BaGet into your own custom ASP.NET Core application.
+            </summary>
+        </member>
+    </members>
+</doc>

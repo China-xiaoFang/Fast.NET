@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BaGet.Database.Sqlite</name>
+    </assembly>
+    <members>
+        <member name="F:BaGet.Database.Sqlite.SqliteContext.SqliteUniqueConstraintViolationErrorCode">
+            <summary>
+            The Sqlite error code for when a unique constraint is violated.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,1755 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BaGet.Protocol</name>
+    </assembly>
+    <members>
+        <member name="T:BaGet.Protocol.NuGetClientFactory">
+            <summary>
+            The <see cref="T:BaGet.Protocol.NuGetClientFactory"/> creates clients to interact with a NuGet server.
+            Use this for advanced scenarios. For most scenarios, consider using <see cref="T:BaGet.Protocol.NuGetClient"/> instead.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactory.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:BaGet.Protocol.NuGetClientFactory"/> class
+            for mocking.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactory.#ctor(System.Net.Http.HttpClient,System.String)">
+             <summary>
+             Initializes a new instance of the <see cref="T:BaGet.Protocol.NuGetClientFactory"/> class.
+             </summary>
+             <param name="httpClient">The client used for HTTP requests.</param>
+             <param name="serviceIndexUrl">
+             The NuGet Service Index resource URL.
+            
+             For NuGet.org, use https://api.nuget.org/v3/index.json
+             </param>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactory.CreateServiceIndexClient">
+            <summary>
+            Create a client to interact with the NuGet Service Index resource.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/service-index
+            </summary>
+            <returns>A client to interact with the NuGet Service Index resource.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactory.CreatePackageContentClient">
+             <summary>
+             Create a client to interact with the NuGet Package Content resource.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource
+             </summary>
+             <returns>A client to interact with the NuGet Package Content resource.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactory.CreatePackageMetadataClient">
+            <summary>
+            Create a client to interact with the NuGet Package Metadata resource.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource
+            </summary>
+            <returns>A client to interact with the NuGet Package Metadata resource.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactory.CreateSearchClient">
+            <summary>
+            Create a client to interact with the NuGet Search resource.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource
+            </summary>
+            <returns>A client to interact with the NuGet Search resource.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactory.CreateAutocompleteClient">
+            <summary>
+            Create a client to interact with the NuGet Autocomplete resource.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource
+            </summary>
+            <returns>A client to interact with the NuGet Autocomplete resource.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactory.CreateCatalogClient">
+            <summary>
+            Create a client to interact with the NuGet catalog resource.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/catalog-resource
+            </summary>
+            <returns>A client to interact with the Catalog resource.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.Catalog.CatalogProcessor">
+            <summary>
+            Processes catalog leafs in chronological order.
+            See: https://docs.microsoft.com/en-us/nuget/api/catalog-resource
+            Based off: https://github.com/NuGet/NuGet.Services.Metadata/blob/3a468fe534a03dcced897eb5992209fdd3c4b6c9/src/NuGet.Protocol.Catalog/CatalogProcessor.cs
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Catalog.CatalogProcessor.#ctor(BaGet.Protocol.Catalog.ICursor,BaGet.Protocol.ICatalogClient,BaGet.Protocol.Catalog.ICatalogLeafProcessor,BaGet.Protocol.Catalog.CatalogProcessorOptions,Microsoft.Extensions.Logging.ILogger{BaGet.Protocol.Catalog.CatalogProcessor})">
+            <summary>
+            Create a processor to discover and download catalog leafs. Leafs are processed
+            by the <see cref="T:BaGet.Protocol.Catalog.ICatalogLeafProcessor"/>.
+            </summary>
+            <param name="cursor">Cursor to track succesfully processed leafs. Leafs before the cursor are skipped.</param>
+            <param name="client">The client to interact with the catalog resource.</param>
+            <param name="leafProcessor">The leaf processor.</param>
+            <param name="options">The options to configure catalog processing.</param>
+            <param name="logger">The logger used for telemetry.</param>
+        </member>
+        <member name="M:BaGet.Protocol.Catalog.CatalogProcessor.ProcessAsync(System.Threading.CancellationToken)">
+            <summary>
+            Discovers and downloads all of the catalog leafs after the current cursor value and before the maximum
+            commit timestamp found in the settings. Each catalog leaf is passed to the catalog leaf processor in
+            chronological order. After a commit is completed, its commit timestamp is written to the cursor, i.e. when
+            transitioning from commit timestamp A to B, A is written to the cursor so that it never is processed again.
+            </summary>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>True if all of the catalog leaves found were processed successfully.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.Catalog.CatalogProcessorOptions">
+            <summary>
+            The options to configure <see cref="T:BaGet.Protocol.Catalog.CatalogProcessor"/>.
+            Based off: https://github.com/NuGet/NuGet.Services.Metadata/blob/3a468fe534a03dcced897eb5992209fdd3c4b6c9/src/NuGet.Protocol.Catalog/CatalogProcessorSettings.cs
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Catalog.CatalogProcessorOptions.DefaultMinCommitTimestamp">
+            <summary>
+            The minimum commit timestamp to use when no cursor value has been saved.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Catalog.CatalogProcessorOptions.MinCommitTimestamp">
+            <summary>
+            The absolute minimum (exclusive) commit timestamp to process in the catalog.
+            Use this to filter out catalog items that are "too old".
+            Set this to <see cref="F:System.DateTimeOffset.MinValue"/> to process all catalog items.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Catalog.CatalogProcessorOptions.MaxCommitTimestamp">
+            <summary>
+            The absolute maximum (inclusive) commit timestamp to process in the catalog.
+            Use this to filter out catalog items that are "too new".
+            Set this to <see cref="F:System.DateTimeOffset.MaxValue"/> to process all catalog items.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Catalog.CatalogProcessorOptions.ExcludeRedundantLeaves">
+            <summary>
+            If multiple catalog leaves are found in a page concerning the same package ID and version, only the latest
+            is processed.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Catalog.FileCursor">
+            <summary>
+            A cursor implementation which stores the cursor in local file. The cursor value is written to the file as
+            a JSON object.
+            Based off: https://github.com/NuGet/NuGet.Services.Metadata/blob/3a468fe534a03dcced897eb5992209fdd3c4b6c9/src/NuGet.Protocol.Catalog/FileCursor.cs
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Catalog.ICatalogLeafProcessor">
+            <summary>
+            An interface which allows custom processing of catalog leaves. This interface should be implemented when the
+            catalog leaf documents need to be downloaded and processed in chronological order.
+            Based off: https://github.com/NuGet/NuGet.Services.Metadata/blob/master/src/NuGet.Protocol.Catalog/ICatalogLeafProcessor.cs
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Catalog.ICatalogLeafProcessor.ProcessPackageDetailsAsync(BaGet.Protocol.Models.PackageDetailsCatalogLeaf,System.Threading.CancellationToken)">
+            <summary>
+            Process a catalog leaf containing package details. This method should return false or throw an exception
+            if the catalog leaf cannot be processed. In this case, the <see cref="T:BaGet.Protocol.Catalog.CatalogProcessor" /> will stop
+            processing items. Note that the same package ID/version combination can be passed to this multiple times,
+            for example due to an edit in the package metadata or due to a transient error and retry on the part of the
+            <see cref="T:BaGet.Protocol.Catalog.CatalogProcessor" />.
+            </summary>
+            <param name="leaf">The leaf document.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>True, if the leaf was successfully processed. False, otherwise.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.Catalog.ICatalogLeafProcessor.ProcessPackageDeleteAsync(BaGet.Protocol.Models.PackageDeleteCatalogLeaf,System.Threading.CancellationToken)">
+            <summary>
+            Process a catalog leaf containing a package delete. This method should return false or throw an exception
+            if the catalog leaf cannot be processed. In this case, the <see cref="T:BaGet.Protocol.Catalog.CatalogProcessor" /> will stop
+            processing items. Note that the same package ID/version combination can be passed to this multiple times,
+            for example due to a package being deleted again due to a transient error and retry on the part of the
+            <see cref="T:BaGet.Protocol.Catalog.CatalogProcessor" />.
+            </summary>
+            <param name="leaf">The leaf document.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>True, if the leaf was successfully processed. False, otherwise.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.Catalog.ICursor">
+            <summary>
+            The NuGet Catalog resource is an append-only data structure indexed by time.
+            The <see cref="T:BaGet.Protocol.Catalog.ICursor"/> tracks up to what point in the catalog has been successfully
+            processed. The value is a catalog commit timestamp.
+            See: https://docs.microsoft.com/en-us/nuget/api/catalog-resource#cursor
+            Based off: https://github.com/NuGet/NuGet.Services.Metadata/blob/3a468fe534a03dcced897eb5992209fdd3c4b6c9/src/NuGet.Protocol.Catalog/ICursor.cs
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Catalog.ICursor.GetAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get the value of the cursor.
+            </summary>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The cursor value. Null if the cursor has no value yet.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.Catalog.ICursor.SetAsync(System.DateTimeOffset,System.Threading.CancellationToken)">
+            <summary>
+            Set the value of the cursor.
+            </summary>
+            <param name="value">The new cursor value.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+        </member>
+        <member name="T:BaGet.Protocol.Catalog.NullCursor">
+            <summary>
+            A cursor that does not persist any state. Use this with a <see cref="T:BaGet.Protocol.Catalog.CatalogProcessor"/>
+            to process all leafs each time <see cref="M:BaGet.Protocol.Catalog.CatalogProcessor.ProcessAsync(System.Threading.CancellationToken)"/>
+            is called.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.ICatalogClient">
+            <summary>
+            The Catalog client, used to discover package events.
+            You can use this resource to query for all published packages.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/catalog-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.ICatalogClient.GetIndexAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get the entry point for the catalog resource.
+            See: https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-index
+            </summary>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The catalog index.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.ICatalogClient.GetPageAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get a single catalog page, used to discover catalog leafs.
+            See: https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-page
+            </summary>
+            <param name="pageUrl">The URL of the page, from the <see cref="T:BaGet.Protocol.Models.CatalogIndex"/>.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>A catalog page.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.ICatalogClient.GetPackageDeleteLeafAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get a single catalog leaf, representing a package deletion event.
+            See: https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-leaf
+            </summary>
+            <param name="leafUrl">The URL of the leaf, from a <see cref="T:BaGet.Protocol.Models.CatalogPage"/>.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>A catalog leaf.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.ICatalogClient.GetPackageDetailsLeafAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get a single catalog leaf, representing a package creation or update event.
+            See: https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-leaf
+            </summary>
+            <param name="leafUrl">The URL of the leaf, from a <see cref="T:BaGet.Protocol.Models.CatalogPage"/>.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>A catalog leaf.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.Internal.PackageDependencyRangeJsonConverter">
+            <summary>
+            This is an internal API that may be changed or removed without notice in any release.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Internal.StringOrStringArrayJsonConverter">
+            <summary>
+            This is an internal API that may be changed or removed without notice in any release.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Internal.RawPackageContentClient">
+            <summary>
+            The client to interact with an upstream source's Package Content resource.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawPackageContentClient.#ctor(System.Net.Http.HttpClient,System.String)">
+            <summary>
+            Create a new Package Content client.
+            </summary>
+            <param name="httpClient">The HTTP client used to send requests.</param>
+            <param name="packageContentUrl">The NuGet Server's package content URL.</param>
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawPackageContentClient.GetPackageVersionsOrNullAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawPackageContentClient.DownloadPackageOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawPackageContentClient.DownloadPackageManifestOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:BaGet.Protocol.Internal.RawPackageMetadataClient">
+            <summary>
+            The client to interact with an upstream source's Package Metadata resource.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawPackageMetadataClient.#ctor(System.Net.Http.HttpClient,System.String)">
+            <summary>
+            Create a new Package Metadata client.
+            </summary>
+            <param name="httpClient">The HTTP client used to send requests.</param>
+            <param name="registrationBaseUrl">The NuGet server's registration resource URL.</param>
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawPackageMetadataClient.GetRegistrationIndexOrNullAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawPackageMetadataClient.GetRegistrationPageAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawPackageMetadataClient.GetRegistrationLeafAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:BaGet.Protocol.Internal.RawAutocompleteClient">
+            <summary>
+            The client used to search for packages.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawAutocompleteClient.#ctor(System.Net.Http.HttpClient,System.String)">
+            <summary>
+            Create a new Search client.
+            </summary>
+            <param name="httpClient">The HTTP client used to send requests.</param>
+            <param name="autocompleteUrl">The NuGet server's autocomplete URL.</param>
+        </member>
+        <member name="T:BaGet.Protocol.Internal.RawSearchClient">
+            <summary>
+            The client used to search for packages.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawSearchClient.#ctor(System.Net.Http.HttpClient,System.String)">
+            <summary>
+            Create a new Search client.
+            </summary>
+            <param name="httpClient">The HTTP client used to send requests.</param>
+            <param name="searchUrl">The NuGet server's search URL.</param>
+        </member>
+        <member name="T:BaGet.Protocol.Internal.RawServiceIndexClient">
+            <summary>
+            The NuGet Service Index client, used to discover other resources.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/service-index
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawServiceIndexClient.#ctor(System.Net.Http.HttpClient,System.String)">
+            <summary>
+            Create a service index for the upstream source.
+            </summary>
+            <param name="httpClient">The HTTP client used to send requests.</param>
+            <param name="serviceIndexUrl">The NuGet server's service index URL.</param>
+        </member>
+        <member name="M:BaGet.Protocol.Internal.RawServiceIndexClient.GetAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:BaGet.Protocol.CatalogModelExtensions">
+            <summary>
+            These are documented interpretations of values returned by the catalog API.
+            Based off: https://github.com/NuGet/NuGet.Services.Metadata/blob/64af0b59c5a79e0143f0808b39946df9f16cb2e7/src/NuGet.Protocol.Catalog/Models/ModelExtensions.cs
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.GetLeavesInBounds(BaGet.Protocol.Models.CatalogPage,System.DateTimeOffset,System.DateTimeOffset,System.Boolean)">
+            <summary>
+            Gets the leaves that lie within the provided commit timestamp bounds. The result is sorted by commit
+            timestamp, then package ID, then package version (SemVer order).
+            </summary>
+            <param name="catalogPage"></param>
+            <param name="minCommitTimestamp">The exclusive lower time bound on <see cref="P:BaGet.Protocol.Models.CatalogLeafItem.CommitTimestamp"/>.</param>
+            <param name="maxCommitTimestamp">The inclusive upper time bound on <see cref="P:BaGet.Protocol.Models.CatalogLeafItem.CommitTimestamp"/>.</param>
+            <param name="excludeRedundantLeaves">Only show the latest leaf concerning each package.</param>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.GetPagesInBounds(BaGet.Protocol.Models.CatalogIndex,System.DateTimeOffset,System.DateTimeOffset)">
+            <summary>
+            Gets the pages that may have catalog leaves within the provided commit timestamp bounds. The result is
+            sorted by commit timestamp.
+            </summary>
+            <param name="catalogIndex">The catalog index to fetch pages from.</param>
+            <param name="minCommitTimestamp">The exclusive lower time bound on <see cref="P:BaGet.Protocol.Models.CatalogPageItem.CommitTimestamp"/>.</param>
+            <param name="maxCommitTimestamp">The inclusive upper time bound on <see cref="P:BaGet.Protocol.Models.CatalogPageItem.CommitTimestamp"/>.</param>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.ParsePackageVersion(BaGet.Protocol.Models.ICatalogLeafItem)">
+            <summary>
+            Parse the package version as a <see cref="T:NuGet.Versioning.NuGetVersion" />.
+            </summary>
+            <param name="leaf">The catalog leaf.</param>
+            <returns>The package version.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.ParseTargetFramework(BaGet.Protocol.Models.DependencyGroupItem)">
+            <summary>
+            Parse the target framework as a <see cref="T:NuGet.Frameworks.NuGetFramework" />.
+            </summary>
+            <param name="packageDependencyGroup">The package dependency group.</param>
+            <returns>The framework.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.ParseRange(BaGet.Protocol.Models.DependencyItem)">
+            <summary>
+            Parse the version range as a <see cref="T:NuGet.Versioning.VersionRange"/>.
+            </summary>
+            <param name="packageDependency">The package dependency.</param>
+            <returns>The version range.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.IsPackageDelete(BaGet.Protocol.Models.CatalogLeafItem)">
+            <summary>
+            Determines if the provided catalog leaf is a package delete.
+            </summary>
+            <param name="leaf">The catalog leaf.</param>
+            <returns>True if the catalog leaf represents a package delete.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.IsPackageDelete(BaGet.Protocol.Models.CatalogLeaf)">
+            <summary>
+            Determines if the provided catalog leaf is a package delete.
+            </summary>
+            <param name="leaf">The catalog leaf.</param>
+            <returns>True if the catalog leaf represents a package delete.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.IsPackageDetails(BaGet.Protocol.Models.CatalogLeafItem)">
+            <summary>
+            Determines if the provided catalog leaf is contains package details.
+            </summary>
+            <param name="leaf">The catalog leaf.</param>
+            <returns>True if the catalog leaf contains package details.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.IsPackageDetails(BaGet.Protocol.Models.CatalogLeaf)">
+            <summary>
+            Determines if the provided catalog leaf is contains package details.
+            </summary>
+            <param name="leaf">The catalog leaf.</param>
+            <returns>True if the catalog leaf contains package details.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.IsListed(BaGet.Protocol.Models.PackageDetailsCatalogLeaf)">
+            <summary>
+            Determines if the provided package details leaf represents a listed package.
+            </summary>
+            <param name="leaf">The catalog leaf.</param>
+            <returns>True if the package is listed.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.CatalogModelExtensions.IsSemVer2(BaGet.Protocol.Models.PackageDetailsCatalogLeaf)">
+            <summary>
+            Determines if the provied package details leaf represents a SemVer 2.0.0 package. A package is considered
+            SemVer 2.0.0 if it's version is SemVer 2.0.0 or one of its dependency version ranges is SemVer 2.0.0.
+            </summary>
+            <param name="leaf">The catalog leaf.</param>
+            <returns>True if the package is SemVer 2.0.0.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.HttpClientExtensions.GetFromJsonAsync``1(System.Net.Http.HttpClient,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deserialize JSON content.
+            </summary>
+            <typeparam name="TResult">The JSON type to deserialize.</typeparam>
+            <param name="httpClient">The HTTP client that will perform the request.</param>
+            <param name="requestUri">The request URI.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The deserialized JSON content</returns>
+        </member>
+        <member name="M:BaGet.Protocol.HttpClientExtensions.GetFromJsonOrDefaultAsync``1(System.Net.Http.HttpClient,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deserialize JSON content. If the HTTP response status code is 404,
+            returns the default value.
+            </summary>
+            <typeparam name="TResult">The JSON type to deserialize.</typeparam>
+            <param name="httpClient">The HTTP client that will perform the request.</param>
+            <param name="requestUri">The request URI.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The JSON content, or, the default value if the HTTP response status code is 404.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClientFactoryExtensions.CreateCatalogProcessor(BaGet.Protocol.NuGetClientFactory,BaGet.Protocol.Catalog.ICursor,BaGet.Protocol.Catalog.ICatalogLeafProcessor,BaGet.Protocol.Catalog.CatalogProcessorOptions,Microsoft.Extensions.Logging.ILogger{BaGet.Protocol.Catalog.CatalogProcessor})">
+            <summary>
+            Create a new <see cref="T:BaGet.Protocol.Catalog.CatalogProcessor"/> to discover and download catalog leafs.
+            Leafs are processed by the <see cref="T:BaGet.Protocol.Catalog.ICatalogLeafProcessor"/>.
+            </summary>
+            <param name="clientFactory">The factory used to create NuGet clients.</param>
+            <param name="cursor">Cursor to track succesfully processed leafs. Leafs before the cursor are skipped.</param>
+            <param name="leafProcessor">The leaf processor.</param>
+            <param name="options">The options to configure catalog processing.</param>
+            <param name="logger">The logger used for telemetry.</param>
+            <returns>The catalog processor.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.PackageContentModelExtensions">
+            <summary>
+            These are documented interpretations of values returned by the Package Content resource.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.PackageContentModelExtensions.ParseVersions(BaGet.Protocol.Models.PackageVersionsResponse)">
+            <summary>
+            Parse the package versions as <see cref="T:NuGet.Versioning.NuGetVersion" />s.
+            </summary>
+            <param name="response">The package versions response.</param>
+            <returns>The package versions.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.RegistrationModelExtensions">
+            <summary>
+            These are documented interpretations of values returned by the
+            Package Metadata resource API.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.RegistrationModelExtensions.ParseVersion(BaGet.Protocol.Models.PackageMetadata)">
+            <summary>
+            Parse the package version as a <see cref="T:NuGet.Versioning.NuGetVersion" />.
+            </summary>
+            <param name="package">The package metadata.</param>
+            <returns>The package version.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.RegistrationModelExtensions.IsListed(BaGet.Protocol.Models.PackageMetadata)">
+            <summary>
+            Determines if the provided package metadata represents a listed package.
+            </summary>
+            <param name="package">The package metadata.</param>
+            <returns>True if the package is listed.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.RegistrationModelExtensions.ParseLower(BaGet.Protocol.Models.RegistrationIndexPage)">
+            <summary>
+            Parse the registration page's lower version as a <see cref="T:NuGet.Versioning.NuGetVersion" />.
+            </summary>
+            <param name="page">The registration page.</param>
+            <returns>The page's lower version.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.RegistrationModelExtensions.ParseUpper(BaGet.Protocol.Models.RegistrationIndexPage)">
+            <summary>
+            Parse the registration page's upper version as a <see cref="T:NuGet.Versioning.NuGetVersion" />.
+            </summary>
+            <param name="page">The registration page.</param>
+            <returns>The page's upper version.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.SearchModelExtensions">
+            <summary>
+            These are documented interpretations of values returned by the Search resource.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.SearchModelExtensions.ParseVersion(BaGet.Protocol.Models.SearchResult)">
+            <summary>
+            Parse the search result's version as a <see cref="T:NuGet.Versioning.NuGetVersion" />.
+            </summary>
+            <param name="result">The search result.</param>
+            <returns>The search result's version.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.SearchModelExtensions.ParseVersion(BaGet.Protocol.Models.SearchResultVersion)">
+            <summary>
+            Parse the search result's version as a <see cref="T:NuGet.Versioning.NuGetVersion" />.
+            </summary>
+            <param name="result">The search result.</param>
+            <returns>The search result's version.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.ServiceIndexModelExtensions">
+            <summary>
+            These are documented interpretations of values returned by the Service Index resource.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.AlternatePackage">
+            <summary>
+            The alternate package that should be used instead of a deprecated package.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#package-deprecation
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.AlternatePackage.Id">
+            <summary>
+            The ID of the alternate package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.AlternatePackage.Range">
+            <summary>
+            The allowed version range, or * if any version is allowed.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.AutocompleteResponse">
+            <summary>
+            The package ids that matched the autocomplete query.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource#search-for-package-ids
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.AutocompleteResponse.TotalHits">
+            <summary>
+            The total number of matches, disregarding skip and take.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.AutocompleteResponse.Data">
+            <summary>
+            The package IDs matched by the autocomplete query.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.CatalogIndex">
+            <summary>
+            The catalog index is the entry point for the catalog resource.
+            Use this to discover catalog pages, which in turn can be used to discover catalog leafs.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-index
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogIndex.CommitTimestamp">
+            <summary>
+            A timestamp of the most recent commit.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogIndex.Count">
+            <summary>
+            The number of catalog pages in the catalog index.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogIndex.Items">
+            <summary>
+            The items used to discover <see cref="T:BaGet.Protocol.Models.CatalogPage"/>s.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.CatalogLeaf">
+            <summary>
+            A catalog leaf. Represents a single package event.
+            Leafs can be discovered from a <see cref="T:BaGet.Protocol.Models.CatalogPage"/>.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-leaf
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeaf.CatalogLeafUrl">
+            <summary>
+            The URL to the current catalog leaf.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeaf.Type">
+            <summary>
+            The type of the current catalog leaf.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeaf.CommitId">
+            <summary>
+            The catalog commit ID associated with this catalog item.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeaf.CommitTimestamp">
+            <summary>
+            The commit timestamp of this catalog item.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeaf.PackageId">
+            <summary>
+            The package ID of the catalog item.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeaf.Published">
+            <summary>
+            The published date of the package catalog item.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeaf.PackageVersion">
+            <summary>
+            The package version of the catalog item.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.CatalogLeafItem">
+            <summary>
+            An item in a <see cref="T:BaGet.Protocol.Models.CatalogPage"/> that references a <see cref="T:BaGet.Protocol.Models.CatalogLeaf"/>.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-item-object-in-a-page
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeafItem.CatalogLeafUrl">
+            <summary>
+            The URL to the current catalog leaf.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeafItem.Type">
+            <summary>
+            The type of the current catalog leaf.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeafItem.CommitTimestamp">
+            <summary>
+            The commit timestamp of this catalog item.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeafItem.PackageId">
+            <summary>
+            The package ID of the catalog item.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogLeafItem.PackageVersion">
+            <summary>
+            The package version of the catalog item.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.CatalogPage">
+            <summary>
+            A catalog page, used to discover catalog leafs.
+            Pages can be discovered from a <see cref="T:BaGet.Protocol.Models.CatalogIndex"/>.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-page
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogPage.CommitTimestamp">
+            <summary>
+            A unique ID associated with the most recent commit in this page.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogPage.Count">
+            <summary>
+            The number of items in the page.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogPage.Items">
+            <summary>
+            The items used to discover <see cref="T:BaGet.Protocol.Models.CatalogLeaf"/>s.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogPage.CatalogIndexUrl">
+            <summary>
+            The URL to the Catalog Index.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.CatalogPageItem">
+             <summary>
+             An item in the <see cref="T:BaGet.Protocol.Models.CatalogIndex"/> that references a <see cref="T:BaGet.Protocol.Models.CatalogPage"/>.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-page-object-in-the-index
+             </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogPageItem.CatalogPageUrl">
+            <summary>
+            The URL to this item's corresponding <see cref="T:BaGet.Protocol.Models.CatalogPage"/>.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogPageItem.CommitTimestamp">
+            <summary>
+            A timestamp of the most recent commit in this page.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.CatalogPageItem.Count">
+            <summary>
+            The number of items in the page.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.DependencyGroupItem">
+            <summary>
+            The dependencies of the package for a specific target framework.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#package-dependency-group
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.DependencyGroupItem.TargetFramework">
+            <summary>
+            The target framework that these dependencies are applicable to.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.DependencyGroupItem.Dependencies">
+            <summary>
+            A list of dependencies.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.DependencyItem">
+             <summary>
+             Represents a package dependency.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#package-dependency
+             </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.DependencyItem.Id">
+            <summary>
+            The ID of the package dependency.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.DependencyItem.Range">
+            <summary>
+            The allowed version range of the dependency.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.ICatalogLeafItem">
+            <summary>
+            A catalog leaf. Represents a single package event.
+            Leafs can be discovered from a <see cref="T:BaGet.Protocol.Models.CatalogPage"/>.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-leaf
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ICatalogLeafItem.CommitTimestamp">
+            <summary>
+            The commit timestamp of this catalog item.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ICatalogLeafItem.PackageId">
+            <summary>
+            The package ID of the catalog item.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ICatalogLeafItem.PackageVersion">
+            <summary>
+            The package version of the catalog item.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.PackageDeleteCatalogLeaf">
+            <summary>
+            A "package delete" catalog leaf. Represents a single package deletion event.
+            Leafs can be discovered from a <see cref="T:BaGet.Protocol.Models.CatalogPage"/>.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-leaf
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.PackageDeprecation">
+            <summary>
+            A package's metadata.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#package-deprecation
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDeprecation.CatalogLeafUrl">
+            <summary>
+            The URL to the document used to produce this object.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDeprecation.Reasons">
+            <summary>
+            The reasons why the package was deprecated.
+            Deprecation reasons include: "Legacy", "CriticalBugs", and "Other".
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDeprecation.Message">
+            <summary>
+            The additional details about this deprecation.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDeprecation.AlternatePackage">
+            <summary>
+            The alternate package that should be used instead.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.PackageDetailsCatalogLeaf">
+            This class is based off https://github.com/NuGet/NuGet.Services.Metadata/blob/64af0b59c5a79e0143f0808b39946df9f16cb2e7/src/NuGet.Protocol.Catalog/Models/PackageDetailsCatalogLeaf.cs
+            <summary>
+            A "package details" catalog leaf. Represents a single package create or update event.
+            <see cref="T:BaGet.Protocol.Models.PackageDetailsCatalogLeaf"/>s can be discovered from a <see cref="T:BaGet.Protocol.Models.CatalogPage"/>.
+            
+            See: https://docs.microsoft.com/en-us/nuget/api/catalog-resource#catalog-leaf
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Authors">
+            <summary>
+            The package's authors.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Copyright">
+            <summary>
+            The package's copyright.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Created">
+            <summary>
+            A timestamp of when the package was first created. Fallback property: <see cref="P:BaGet.Protocol.Models.CatalogLeaf.Published"/>.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.LastEdited">
+            <summary>
+            A timestamp of when the package was last edited.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.DependencyGroups">
+            <summary>
+            The dependencies of the package, grouped by target framework.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Description">
+            <summary>
+            The package's description.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.IconUrl">
+            <summary>
+            The URL to the package's icon.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.IsPrerelease">
+            <summary>
+            Whether or not the package is prerelease. Can be detected from <see cref="P:BaGet.Protocol.Models.CatalogLeaf.PackageVersion"/>.
+            Note that the NuGet.org catalog had this wrong in some cases.
+            Example: https://api.nuget.org/v3/catalog0/data/2016.03.11.21.02.55/mvid.fody.2.json
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Language">
+            <summary>
+            The package's language.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.LicenseUrl">
+            <summary>
+            THe URL to the package's license.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Listed">
+            <summary>
+            Whether the pacakge is listed.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.MinClientVersion">
+            <summary>
+            The minimum NuGet client version needed to use this package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.PackageHash">
+            <summary>
+            The hash of the package encoded using Base64.
+            Hash algorithm can be detected using <see cref="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.PackageHashAlgorithm"/>.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.PackageHashAlgorithm">
+            <summary>
+            The algorithm used to hash <see cref="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.PackageHash"/>.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.PackageSize">
+            <summary>
+            The size of the package .nupkg in bytes.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.ProjectUrl">
+            <summary>
+            The URL for the package's home page.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.ReleaseNotes">
+            <summary>
+            The package's release notes.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.RequireLicenseAcceptance">
+            <summary>
+            If true, the package requires its license to be accepted.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Summary">
+            <summary>
+            The package's summary.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Tags">
+            <summary>
+            The package's tags.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.Title">
+            <summary>
+            The package's title.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.VerbatimVersion">
+            <summary>
+            The version string as it's originally found in the .nuspec.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.LicenseExpression">
+            <summary>
+            The package's License Expression.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.LicenseFile">
+            <summary>
+            The package's license file.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageDetailsCatalogLeaf.IconFile">
+            <summary>
+            The package's icon file.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.PackageMetadata">
+            <summary>
+            A package's metadata.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#catalog-entry
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.CatalogLeafUrl">
+            <summary>
+            The URL to the document used to produce this object.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.PackageId">
+            <summary>
+            The ID of the package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Version">
+            <summary>
+            The full NuGet version after normalization, including any SemVer 2.0.0 build metadata.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Authors">
+            <summary>
+            The package's authors.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.DependencyGroups">
+            <summary>
+            The dependencies of the package, grouped by target framework.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Deprecation">
+            <summary>
+            The deprecation associated with the package, if any.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Description">
+            <summary>
+            The package's description.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.IconUrl">
+            <summary>
+            The URL to the package's icon.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Language">
+            <summary>
+            The package's language.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.LicenseUrl">
+            <summary>
+            The URL to the package's license.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Listed">
+            <summary>
+            Whether the package is listed in search results.
+            If <see langword="null"/>, the package should be considered as listed.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.MinClientVersion">
+            <summary>
+            The minimum NuGet client version needed to use this package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.PackageContentUrl">
+            <summary>
+            The URL to download the package's content.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.ProjectUrl">
+            <summary>
+            The URL for the package's home page.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Published">
+            <summary>
+            The package's publish date.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.RequireLicenseAcceptance">
+            <summary>
+            If true, the package requires its license to be accepted.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Summary">
+            <summary>
+            The package's summary.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Tags">
+            <summary>
+            The package's tags.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageMetadata.Title">
+            <summary>
+            The package's title.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.PackageNotFoundException">
+            <summary>
+            An exception thrown when a package could not be found on the NuGet server.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Models.PackageNotFoundException.#ctor(System.String,NuGet.Versioning.NuGetVersion)">
+            <summary>
+            Create a new instance of the <see cref="T:BaGet.Protocol.Models.PackageNotFoundException"/>.
+            </summary>
+            <param name="packageId">The ID of the package that could not be found.</param>
+            <param name="packageVersion">The version of the package that could not be found.</param>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageNotFoundException.PackageId">
+            <summary>
+            The package ID that could not be found.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageNotFoundException.PackageVersion">
+            <summary>
+            The package version that could not be found.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.PackageVersionsResponse">
+             <summary>
+             The full list of versions for a single package.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#enumerate-package-versions
+             </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.PackageVersionsResponse.Versions">
+            <summary>
+            The versions, lowercased and normalized.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.ProtocolException">
+            <summary>
+            An exception that is thrown when an API has returned an unexpected result.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.Models.ProtocolException.#ctor(System.String,System.Net.Http.HttpMethod,System.String,System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Create a new <see cref="T:BaGet.Protocol.Models.ProtocolException"/>.
+            </summary>
+            <param name="message">The HTTP response message.</param>
+            <param name="method">The HTTP request method.</param>
+            <param name="requestUri">The URI that was requested.</param>
+            <param name="statusCode">The response status code.</param>
+            <param name="reasonPhrase">The HTTP reason phrase.</param>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ProtocolException.Method">
+            <summary>
+            The HTTP response message.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ProtocolException.RequestUri">
+            <summary>
+            The URI that was requested.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ProtocolException.StatusCode">
+            <summary>
+            The response status code.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ProtocolException.ReasonPhrase">
+            <summary>
+            The response reason phrase.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.RegistrationIndexPage">
+            <summary>
+            The registration page object found in the registration index.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-page-object
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexPage.RegistrationPageUrl">
+            <summary>
+            The URL to the registration page.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexPage.Count">
+            <summary>
+            The number of registration leafs in the page.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexPage.ItemsOrNull">
+            <summary>
+            <see langword="null"/> if this package's registration is paged. The items can be found
+            by following the page's <see cref="P:BaGet.Protocol.Models.RegistrationIndexPage.RegistrationPageUrl"/>.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexPage.Lower">
+            <summary>
+            This page's lowest package version. The version should be lowercased, normalized,
+            and the SemVer 2.0.0 build metadata removed, if any.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexPage.Upper">
+            <summary>
+            This page's highest package version. The version should be lowercased, normalized,
+            and the SemVer 2.0.0 build metadata removed, if any.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.RegistrationIndexPageItem">
+             <summary>
+             An item in the <see cref="T:BaGet.Protocol.Models.CatalogIndex"/> that references a <see cref="T:BaGet.Protocol.Models.CatalogLeaf"/>.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-leaf-object-in-a-page
+             </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexPageItem.RegistrationLeafUrl">
+            <summary>
+            The URL to the registration leaf.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexPageItem.PackageMetadata">
+            <summary>
+            The catalog entry containing the package metadata.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexPageItem.PackageContentUrl">
+            <summary>
+            The URL to the package content (.nupkg)
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.RegistrationIndexResponse">
+            <summary>
+            The metadata for a package and all of its versions.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-index
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexResponse.RegistrationIndexUrl">
+            <summary>
+            The URL to the registration index.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexResponse.Type">
+            <summary>
+            The registration index's type.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexResponse.Count">
+            <summary>
+            The number of registration pages. See <see cref="P:BaGet.Protocol.Models.RegistrationIndexResponse.Pages"/>.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationIndexResponse.Pages">
+            <summary>
+            The pages that contain all of the versions of the package, ordered
+            by the package's version.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.RegistrationLeafResponse">
+            <summary>
+            The metadata for a single version of a package.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-leaf
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationLeafResponse.RegistrationLeafUrl">
+            <summary>
+            The URL to the registration leaf.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationLeafResponse.Type">
+            <summary>
+            The registration leaf's type.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationLeafResponse.Listed">
+            <summary>
+            Whether the package is listed.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationLeafResponse.PackageContentUrl">
+            <summary>
+            The URL to the package content (.nupkg).
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationLeafResponse.Published">
+            <summary>
+            The date the package was published. On NuGet.org, <see cref="P:BaGet.Protocol.Models.RegistrationLeafResponse.Published"/>
+            is set to the year 1900 if the package is unlisted.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.RegistrationLeafResponse.RegistrationIndexUrl">
+            <summary>
+            The URL to the package's registration index.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.RegistrationPageResponse">
+             <summary>
+             A page of package metadata entries.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-page
+             </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.SearchResponse">
+             <summary>
+             The response to a search query.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource#response
+             </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResponse.TotalHits">
+            <summary>
+            The total number of matches, disregarding skip and take.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResponse.Data">
+            <summary>
+            The packages that matched the search query.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.SearchResult">
+            <summary>
+            A package that matched a search query.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource#search-result
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.PackageId">
+            <summary>
+            The ID of the matched package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.Version">
+            <summary>
+            The latest version of the matched pacakge. This is the full NuGet version after normalization,
+            including any SemVer 2.0.0 build metadata.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.Description">
+            <summary>
+            The description of the matched package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.Authors">
+            <summary>
+            The authors of the matched package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.IconUrl">
+            <summary>
+            The URL of the matched package's icon.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.LicenseUrl">
+            <summary>
+            The URL of the matched package's license.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.PackageTypes">
+            <summary>
+            The package types defined by the package author.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.ProjectUrl">
+            <summary>
+            The URL of the matched package's homepage.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.RegistrationIndexUrl">
+            <summary>
+            The URL for the matched package's registration index.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.Summary">
+            <summary>
+            The summary of the matched package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.Tags">
+            <summary>
+            The tags of the matched package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.Title">
+            <summary>
+            The title of the matched package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.TotalDownloads">
+            <summary>
+            The total downloads for all versions of the matched package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResult.Versions">
+            <summary>
+            The versions of the matched package.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.SearchResultPackageType">
+            <summary>
+            A single package type from a <see cref="T:BaGet.Protocol.Models.SearchResult"/>.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource#search-result
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResultPackageType.Name">
+            <summary>
+            The name of the package type.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.SearchResultVersion">
+            <summary>
+            A single version from a <see cref="T:BaGet.Protocol.Models.SearchResult"/>.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource#search-result
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResultVersion.RegistrationLeafUrl">
+            <summary>
+            The registration leaf URL for this single version of the matched package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResultVersion.Version">
+            <summary>
+            The package's full NuGet version after normalization, including any SemVer 2.0.0 build metadata.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.SearchResultVersion.Downloads">
+            <summary>
+            The downloads for this single version of the matched package.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.ServiceIndexItem">
+             <summary>
+             A resource in the <see cref="T:BaGet.Protocol.Models.ServiceIndexResponse"/>.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/service-index#resources
+             </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ServiceIndexItem.ResourceUrl">
+            <summary>
+            The resource's base URL.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ServiceIndexItem.Type">
+            <summary>
+            The resource's type.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ServiceIndexItem.Comment">
+            <summary>
+            Human readable comments about the resource.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.Models.ServiceIndexResponse">
+             <summary>
+             The entry point for a NuGet package source used by the client to discover NuGet APIs.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/overview
+             </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ServiceIndexResponse.Version">
+            <summary>
+            The service index's version.
+            </summary>
+        </member>
+        <member name="P:BaGet.Protocol.Models.ServiceIndexResponse.Resources">
+            <summary>
+            The resources declared by this service index.
+            </summary>
+        </member>
+        <member name="T:BaGet.Protocol.NuGetClient">
+            <summary>
+            The client to interact with a NuGet server.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:BaGet.Protocol.NuGetClient"/> class
+            for mocking.
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.#ctor(System.String)">
+             <summary>
+             Initializes a new instance of the <see cref="T:BaGet.Protocol.NuGetClient"/> class.
+             </summary>
+             <param name="serviceIndexUrl">
+             The NuGet Service Index resource URL.
+            
+             For NuGet.org, use https://api.nuget.org/v3/index.json
+             </param>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.#ctor(BaGet.Protocol.NuGetClientFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:BaGet.Protocol.NuGetClient"/> class.
+            </summary>
+            <param name="clientFactory">The factory used to create NuGet clients.</param>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Check if a package exists.
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>Whether the package exists.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.ExistsAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Check if a package exists.
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="packageVersion">The package version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>Whether the package exists.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.DownloadPackageAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package (.nupkg), or throws if the package does not exist.
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="packageVersion">The package version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's content stream. The stream may be unseekable and may be unbuffered.</returns>
+            <exception cref="T:BaGet.Protocol.Models.PackageNotFoundException">
+                The package could not be found.
+            </exception>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.DownloadPackageManifestAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package's manifest (.nuspec), or throws if the package does not exist.
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="packageVersion">The package version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's manifest stream. The stream may not be seekable.</returns>
+            <exception cref="T:BaGet.Protocol.Models.PackageNotFoundException">
+                The package could not be found.
+            </exception>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.ListPackageVersionsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Find all versions of a package, excluding unlisted versions.
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's listed versions, if any.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.ListPackageVersionsAsync(System.String,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Find all versions of a package.
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="includeUnlisted">Whether to include unlisted versions.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's versions, or an empty list if the package does not exist.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.GetPackageMetadataAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Find the metadata for all versions of a package, including unlisted versions.
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's metadata, or an empty list if the package does not exist.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.GetPackageMetadataAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Find the metadata for a single version of a package, or throws if the package does not exist.
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="packageVersion">The package version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's metadata.</returns>
+            <exception cref="T:BaGet.Protocol.Models.PackageNotFoundException">
+                The package could not be found.
+            </exception>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.SearchAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Search for packages. Includes prerelease packages.
+            </summary>
+            <param name="query">
+            The search query. If <see langword="null"/>, gets default search results.
+            </param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The search results, including prerelease packages.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.SearchAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Search for packages. Includes prerelease packages.
+            </summary>
+            <param name="query">
+            The search query. If <see langword="null"/>, gets default search results.
+            </param>
+            <param name="skip">The number of results to skip.</param>
+            <param name="take">The number of results to include.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The search results, including prerelease packages.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.SearchAsync(System.String,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Search for packages.
+            </summary>
+            <param name="query">
+            The search query. If <see langword="null"/>, gets default search results.
+            </param>
+            <param name="includePrerelease">Whether to include prerelease packages.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The search results.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.SearchAsync(System.String,System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Search for packages.
+            </summary>
+            <param name="query">
+            The search query. If <see langword="null"/>, gets default search results.
+            </param>
+            <param name="skip">The number of results to skip.</param>
+            <param name="take">The number of results to include.</param>
+            <param name="includePrerelease">Whether to include prerelease packages.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The search results, including prerelease packages.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.AutocompleteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Search for package IDs. Includes prerelease packages.
+            </summary>
+            <param name="query">
+            The search query. If <see langword="null"/>, gets default autocomplete results.
+            </param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package IDs that matched the query.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.AutocompleteAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Search for package IDs. Includes prerelease packages.
+            </summary>
+            <param name="query">
+            The search query. If <see langword="null"/>, gets default autocomplete results.
+            </param>
+            <param name="skip">The number of results to skip.</param>
+            <param name="take">The number of results to include.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package IDs that matched the query.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.AutocompleteAsync(System.String,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Search for package IDs.
+            </summary>
+            <param name="query">
+            The search query. If <see langword="null"/>, gets default autocomplete results.
+            </param>
+            <param name="includePrerelease">Whether to include prerelease packages.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package IDs that matched the query.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.NuGetClient.AutocompleteAsync(System.String,System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Search for package IDs.
+            </summary>
+            <param name="query">
+            The search query. If <see langword="null"/>, gets default autocomplete results.
+            </param>
+            <param name="skip">The number of results to skip.</param>
+            <param name="take">The number of results to include.</param>
+            <param name="includePrerelease">Whether to include prerelease packages.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package IDs that matched the query.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.IPackageContentClient">
+            <summary>
+            The Package Content resource, used to download NuGet packages and to fetch other metadata.
+            
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.IPackageContentClient.GetPackageVersionsOrNullAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get a package's versions, or null if the package does not exist.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#enumerate-package-versions
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's versions, or null if the package does not exist.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.IPackageContentClient.DownloadPackageOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package, or null if the package does not exist.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#download-package-content-nupkg
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="packageVersion">The package's version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>
+            The package's content stream, or null if the package does not exist. The stream may not be seekable.
+            </returns>
+        </member>
+        <member name="M:BaGet.Protocol.IPackageContentClient.DownloadPackageManifestOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package's manifest (nuspec), or null if the package does not exist.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#download-package-manifest-nuspec
+            </summary>
+            <param name="packageId">The package id.</param>
+            <param name="packageVersion">The package's version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>
+            The package's manifest stream, or null if the package does not exist. The stream may not be seekable.
+            </returns>
+        </member>
+        <member name="T:BaGet.Protocol.IPackageMetadataClient">
+             <summary>
+             The Package Metadata client, used to fetch packages' metadata.
+            
+             See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource
+             </summary>
+        </member>
+        <member name="M:BaGet.Protocol.IPackageMetadataClient.GetRegistrationIndexOrNullAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to get a package's registration index, if it exists.
+            See: https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-page
+            </summary>
+            <param name="packageId">The package's ID.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's registration index, or null if the package does not exist</returns>
+        </member>
+        <member name="M:BaGet.Protocol.IPackageMetadataClient.GetRegistrationPageAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get a page that was linked from the package's registration index.
+            See: https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-page
+            </summary>
+            <param name="pageUrl">The URL of the page, from the <see cref="T:BaGet.Protocol.Models.RegistrationIndexResponse"/>.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The registration index page.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.IPackageMetadataClient.GetRegistrationLeafAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get the metadata for a single package version.
+            </summary>
+            <param name="leafUrl">The URL of the leaf, from the <see cref="T:BaGet.Protocol.Models.RegistrationIndexPageItem"/>.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The registration leaf.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.IAutocompleteClient">
+            <summary>
+            The client used to search for packages.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.IAutocompleteClient.AutocompleteAsync(System.String,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Perform an autocomplete query on package IDs.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource#search-for-package-ids
+            </summary>
+            <param name="query">The autocomplete query.</param>
+            <param name="skip">How many results to skip.</param>
+            <param name="take">How many results to return.</param>
+            <param name="includePrerelease">Whether pre-release packages should be returned.</param>
+            <param name="includeSemVer2">Whether packages that require SemVer 2.0.0 compatibility should be returned.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The autocomplete response.</returns>
+        </member>
+        <member name="M:BaGet.Protocol.IAutocompleteClient.ListPackageVersionsAsync(System.String,System.Boolean,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Enumerate listed package versions.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource#enumerate-package-versions
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="includePrerelease">Whether pre-release packages should be returned.</param>
+            <param name="includeSemVer2">Whether packages that require SemVer 2.0.0 compatibility should be returned.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package versions that matched the request.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.ISearchClient">
+            <summary>
+            The client used to search for packages.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.ISearchClient.SearchAsync(System.String,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Perform a search query.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource#search-for-packages
+            </summary>
+            <param name="query">The search query.</param>
+            <param name="skip">How many results to skip.</param>
+            <param name="take">How many results to return.</param>
+            <param name="includePrerelease">Whether pre-release packages should be returned.</param>
+            <param name="includeSemVer2">Whether packages that require SemVer 2.0.0 compatibility should be returned.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The search response.</returns>
+        </member>
+        <member name="T:BaGet.Protocol.IServiceIndexClient">
+            <summary>
+            The NuGet Service Index client, used to discover other resources.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/service-index
+            </summary>
+        </member>
+        <member name="M:BaGet.Protocol.IServiceIndexClient.GetAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get the resources available on this package feed.
+            See: https://docs.microsoft.com/en-us/nuget/api/service-index#resources
+            </summary>
+            <returns>The resources available on this package feed.</returns>
+        </member>
+    </members>
+</doc>

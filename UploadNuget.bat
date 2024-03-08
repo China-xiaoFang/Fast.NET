@@ -124,6 +124,18 @@ set /p api_key=请输入 NuGet Api 密钥：
 REM 换行
 echo.
 
+REM 输入 APIKey
+set /p private_nuget_url=请输入 私网 Nuget 包地址（域名即可）：
+
+REM 换行
+echo.
+
+REM 输入 APIKey
+set /p private_api_key=请输入 私网 NuGet Api 密钥：
+
+REM 换行
+echo.
+
 echo 当前上传的所有 NuGet 包信息：
 
 REM 获取 nupkgs 文件夹中所有的包文件
@@ -157,7 +169,7 @@ for %%f in (%nuget_file_list%) do (
 		REM 换行
 		echo.
 
-		echo 上传：%%f 成功...... 
+		echo 上传公网：%%f 成功...... 
 	) || (
 		REM 记录失败次数
 		set /a error_count+=1
@@ -168,7 +180,29 @@ for %%f in (%nuget_file_list%) do (
 		REM 换行
 		echo.
 
-		echo 上传：%%f 失败......
+		echo 上传公网：%%f 失败......
+	)
+	
+	REM 上传 NuGet 服务器
+	dotnet nuget push --api-key %private_api_key% --skip-duplicate --source https://nuget.%private_nuget_url%/v3/index.json %%f && (
+		REM 记录成功次数
+		set /a success_count+=1
+	
+		REM 换行
+		echo.
+
+		echo 上传私网：%%f 成功...... 
+	) || (
+		REM 记录失败次数
+		set /a error_count+=1
+		
+		REM 记录失败文件
+		set "error_file=!error_file! %%f"
+	
+		REM 换行
+		echo.
+
+		echo 上传私网：%%f 失败......
 	)
 )
 

@@ -1,0 +1,1320 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BaGet.Core</name>
+    </assembly>
+    <members>
+        <member name="P:BaGet.Core.BaGetOptions.ApiKey">
+            <summary>
+            The API Key required to authenticate package
+            operations. If empty, package operations do not require authentication.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.BaGetOptions.PathBase">
+            <summary>
+            The application root URL for usage in reverse proxy scenarios.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.BaGetOptions.RunMigrationsAtStartup">
+            <summary>
+            If enabled, the database will be updated at app startup by running
+            Entity Framework migrations. This is not recommended in production.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.BaGetOptions.PackageDeletionBehavior">
+            <summary>
+            How BaGet should interpret package deletion requests.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.BaGetOptions.AllowPackageOverwrites">
+            <summary>
+            If enabled, pushing a package that already exists will replace the
+            existing package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.BaGetOptions.IsReadOnlyMode">
+            <summary>
+            If true, disables package pushing, deleting, and re-listing.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.BaGetOptions.Urls">
+            <summary>
+            The URLs the BaGet server will use.
+            As per documentation <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/web-host?view=aspnetcore-3.1#server-urls">here (Server URLs)</a>.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.BindOptions`1">
+            <summary>
+            Automatically binds configs to options.
+            </summary>
+            <typeparam name="TOptions">The options to bind to.</typeparam>
+        </member>
+        <member name="M:BaGet.Core.BindOptions`1.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Automatically bind these configurations to the options.
+            </summary>
+            <param name="config">The configs to automatically bind to options.</param>
+        </member>
+        <member name="P:BaGet.Core.FileSystemStorageOptions.Path">
+            <summary>
+            The path at which content will be stored. Defaults to the same path
+            as the main BaGet executable. This path will be created if it does not
+            exist at startup. Packages will be stored in a subfolder named "packages".
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.MirrorOptions.Enabled">
+            <summary>
+            If true, packages that aren't found locally will be indexed
+            using the upstream source.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.MirrorOptions.PackageSource">
+            <summary>
+            The v3 index that will be mirrored.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.MirrorOptions.Legacy">
+            <summary>
+            Whether or not the package source is a v2 package source feed.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.MirrorOptions.PackageDownloadTimeoutSeconds">
+            <summary>
+            The time before a download from the package source times out.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.PackageDeletionBehavior">
+            <summary>
+            How BaGet should interpret package deletion requests.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-publish-resource#delete-a-package
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.PackageDeletionBehavior.Unlist">
+            <summary>
+            Package "deletions" make the package undiscoverable. The package is still restorable
+            by consumers that know its id and version. This is the recommended behavior as it prevents
+            the "left pad" problem.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.PackageDeletionBehavior.HardDelete">
+            <summary>
+            Removes the package from the database and storage. Existing consumers will no longer
+            be able to restore the package.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.DefaultPackageContentService">
+            <summary>
+            Implements the NuGet Package Content resource in NuGet's V3 protocol.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.IPackageContentService">
+             <summary>
+             The Package Content resource, used to download NuGet packages and to fetch other metadata.
+            
+             See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource
+             </summary>
+        </member>
+        <member name="M:BaGet.Core.IPackageContentService.GetPackageVersionsOrNullAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get a package's versions, or null if the package does not exist.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#enumerate-package-versions
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's versions, or null if the package does not exist.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageContentService.GetPackageContentStreamOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package, or null if the package does not exist.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#download-package-content-nupkg
+            </summary>
+            <param name="packageId">The package ID.</param>
+            <param name="packageVersion">The package's version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>
+            The package's content stream, or null if the package does not exist. The stream may not be seekable.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageContentService.GetPackageManifestStreamOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package's manifest (nuspec), or null if the package does not exist.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#download-package-manifest-nuspec
+            </summary>
+            <param name="packageId">The package id.</param>
+            <param name="packageVersion">The package's version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>
+            The package's manifest stream, or null if the package does not exist. The stream may not be seekable.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageContentService.GetPackageReadmeStreamOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package's readme, or null if the package or readme does not exist.
+            </summary>
+            <param name="id">The package id.</param>
+            <param name="version">The package's version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>
+            The package's readme stream, or null if the package or readme does not exist. The stream may not be seekable.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageContentService.GetPackageIconStreamOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package's icon, or null if the package or icon does not exist.
+            </summary>
+            <param name="id">The package id.</param>
+            <param name="version">The package's version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>
+            The package's icon stream, or null if the package or icon does not exist. The stream may not be seekable.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IContext.IsUniqueConstraintViolationException(Microsoft.EntityFrameworkCore.DbUpdateException)">
+            <summary>
+            Check whether a <see cref="T:Microsoft.EntityFrameworkCore.DbUpdateException"/> is due to a SQL unique constraint violation.
+            </summary>
+            <param name="exception">The exception to inspect.</param>
+            <returns>Whether the exception was caused to SQL unique constraint violation.</returns>
+        </member>
+        <member name="P:BaGet.Core.IContext.SupportsLimitInSubqueries">
+            <summary>
+            Whether this database engine supports LINQ "Take" in subqueries.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IContext.RunMigrationsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Applies any pending migrations for the context to the database.
+            Creates the database if it does not already exist.
+            </summary>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>A task that completes once migrations are applied.</returns>
+        </member>
+        <member name="P:BaGet.Core.Package.RowVersion">
+            <summary>
+            Used for optimistic concurrency.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.PackageDependency.Id">
+            <summary>
+            The dependency's package ID. Null if this is a dependency group without any dependencies.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.PackageDependency.VersionRange">
+            <summary>
+            The dependency's package version. Null if this is a dependency group without any dependencies.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.SemVerLevel.Unknown">
+            <summary>
+            Either an invalid semantic version or a semantic version v1.0.0
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.SemVerLevel.SemVer2">
+            <summary>
+            A valid semantic version v2.0.0
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.DependencyInjectionExtensions.AddBaGetOptions``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            Configures and validates options.
+            </summary>
+            <typeparam name="TOptions">The options type that should be added.</typeparam>
+            <param name="services">The dependency injection container to add options.</param>
+            <param name="key">
+            The configuration key that should be used when configuring the options.
+            If null, the root configuration will be used to configure the options.
+            </param>
+            <returns>The dependency injection container.</returns>
+        </member>
+        <member name="M:BaGet.Core.DependencyInjectionExtensions.AddProvider``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,Microsoft.Extensions.Configuration.IConfiguration,``0})">
+            <summary>
+            Add a new provider to the dependency injection container. The provider may
+            provide an implementation of the service, or it may return null.
+            </summary>
+            <typeparam name="TService">The service that may be provided.</typeparam>
+            <param name="services">The dependency injection container.</param>
+            <param name="func">A handler that provides the service, or null.</param>
+            <returns>The dependency injection container.</returns>
+        </member>
+        <member name="M:BaGet.Core.DependencyInjectionExtensions.HasDatabaseType(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Determine whether a database type is currently active.
+            </summary>
+            <param name="config">The application's configuration.</param>
+            <param name="value">The database type that should be checked.</param>
+            <returns>Whether the database type is active.</returns>
+        </member>
+        <member name="M:BaGet.Core.DependencyInjectionExtensions.HasSearchType(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Determine whether a search type is currently active.
+            </summary>
+            <param name="config">The application's configuration.</param>
+            <param name="value">The search type that should be checked.</param>
+            <returns>Whether the search type is active.</returns>
+        </member>
+        <member name="M:BaGet.Core.DependencyInjectionExtensions.HasStorageType(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Determine whether a storage type is currently active.
+            </summary>
+            <param name="config">The application's configuration.</param>
+            <param name="value">The storage type that should be checked.</param>
+            <returns>Whether the database type is active.</returns>
+        </member>
+        <member name="M:BaGet.Core.DependencyInjectionExtensions.GetServiceFromProviders``1(System.IServiceProvider)">
+            <summary>
+            Runs through all providers to resolve the <typeparamref name="TService"/>.
+            </summary>
+            <typeparam name="TService">The service that will be resolved using providers.</typeparam>
+            <param name="services">The dependency injection container.</param>
+            <returns>An instance of the service created by the providers.</returns>
+        </member>
+        <member name="T:BaGet.Core.IProvider`1">
+            <summary>
+            Attempts to provide the <typeparamref name="TService"/>.
+            </summary>
+            <typeparam name="TService">The service that may be provided.</typeparam>
+        </member>
+        <member name="M:BaGet.Core.IProvider`1.GetOrNull(System.IServiceProvider,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Attempt to provide the <typeparamref name="TService"/>.
+            </summary>
+            <param name="provider">The dependency injection container.</param>
+            <param name="configuration">The app's configuration.</param>
+            <returns>
+            An instance of <typeparamref name="TService"/>, or, null if the
+            provider is not currently active in the <paramref name="configuration"/>.
+            </returns>
+        </member>
+        <member name="T:BaGet.Core.DelegateProvider`1">
+            <summary>
+            Implements <see cref="T:BaGet.Core.IProvider`1"/> as a delegate.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.DelegateProvider`1.#ctor(System.Func{System.IServiceProvider,Microsoft.Extensions.Configuration.IConfiguration,`0})">
+            <summary>
+            Create an <see cref="T:BaGet.Core.IProvider`1"/> using a delegate.
+            </summary>
+            <param name="func">
+            A delegate that returns an instance of <typeparamref name="TService"/>, or,
+            null if the provider is not currently active due to the app's configuration.</param>
+        </member>
+        <member name="M:BaGet.Core.StreamExtensions.AsTemporaryFileStreamAsync(System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Copies a stream to a file, and returns that file as a stream. The underlying file will be
+            deleted when the resulting stream is disposed.
+            </summary>
+            <param name="original">The stream to be copied, at its current position.</param>
+            <param name="cancellationToken"></param>
+            <returns>The copied stream, with its position reset to the beginning.</returns>
+        </member>
+        <member name="T:BaGet.Core.SystemTime">
+            <summary>
+            A wrapper that allows for unit tests related to system time.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.IFrameworkCompatibilityService">
+            <summary>
+            Used to determine the compatibility matrix between frameworks.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IFrameworkCompatibilityService.FindAllCompatibleFrameworks(System.String)">
+            <summary>
+            Given a framework, find all other compatible frameworks.
+            </summary>
+            <param name="framework">The input framework.</param>
+            <returns>The list of compatible frameworks.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDeletionService.TryDeletePackageAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to delete a package.
+            </summary>
+            <param name="id">The id of the package to delete.</param>
+            <param name="version">The version of the package to delete.</param>
+            <param name="cancellationToken"></param>
+            <returns>False if the package does not exist.</returns>
+        </member>
+        <member name="T:BaGet.Core.PackageIndexingResult">
+            <summary>
+            The result of attempting to index a package.
+            See <see cref="M:BaGet.Core.IPackageIndexingService.IndexAsync(System.IO.Stream,System.Threading.CancellationToken)"/>.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.PackageIndexingResult.InvalidPackage">
+            <summary>
+            The package is malformed. This may also happen if BaGet is in a corrupted state.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.PackageIndexingResult.PackageAlreadyExists">
+            <summary>
+            The package has already been indexed.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.PackageIndexingResult.Success">
+            <summary>
+            The package has been indexed successfully.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.IPackageIndexingService">
+            <summary>
+            The service used to accept new packages.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IPackageIndexingService.IndexAsync(System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to index a new package.
+            </summary>
+            <param name="stream">The stream containing the package's content.</param>
+            <param name="cancellationToken"></param>
+            <returns>The result of the attempted indexing operation.</returns>
+        </member>
+        <member name="T:BaGet.Core.SymbolIndexingResult">
+            <summary>
+            The result of attempting to index a symbol package.
+            See <see cref="M:BaGet.Core.ISymbolIndexingService.IndexAsync(System.IO.Stream,System.Threading.CancellationToken)"/>.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.SymbolIndexingResult.InvalidSymbolPackage">
+            <summary>
+            The symbol package is malformed.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.SymbolIndexingResult.PackageNotFound">
+            <summary>
+            A corresponding package with the provided ID and version does not exist.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.SymbolIndexingResult.Success">
+            <summary>
+            The symbol package has been indexed successfully.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.ISymbolIndexingService">
+            <summary>
+            The service used to accept new symbol packages.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.ISymbolIndexingService.IndexAsync(System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to index a new symbol package.
+            </summary>
+            <param name="stream">The stream containing the symbol package's content.</param>
+            <param name="cancellationToken"></param>
+            <returns>The result of the attempted indexing operation.</returns>
+        </member>
+        <member name="T:BaGet.Core.IPackageDatabase">
+            <summary>
+            The "source of truth" for packages' state. Packages' content
+            are stored by the <see cref="T:BaGet.Core.IPackageStorageService"/>.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.AddAsync(BaGet.Core.Package,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to add a new package to the database.
+            </summary>
+            <param name="package">The package to add to the database.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The result of attempting to add the package to the database.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.FindOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to find a package with the given id and version.
+            </summary>
+            <param name="id">The package's id.</param>
+            <param name="version">The package's version.</param>
+            <param name="includeUnlisted">Whether unlisted results should be included.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package found, or null.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.FindAsync(System.String,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to find all packages with a given id.
+            </summary>
+            <param name="id">The packages' id.</param>
+            <param name="includeUnlisted">Whether unlisted results should be included.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The packages found. Always non-null.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Determine whether a package exists in the database (even if the package is unlisted).
+            </summary>
+            <param name="id">The package id to search.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>Whether the package exists in the database.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.ExistsAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Determine whether a package exists in the database (even if the package is unlisted).
+            </summary>
+            <param name="id">The package id to search.</param>
+            <param name="version">The package version to search.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>Whether the package exists in the database.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.UnlistPackageAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Unlist a package, making it undiscoverable.
+            </summary>
+            <param name="id">The id of the package to unlist.</param>
+            <param name="version">The version of the package to unlist.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>False if the package does not exist.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.RelistPackageAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Relist a package, making it discoverable.
+            </summary>
+            <param name="id">The id of the package to relist.</param>
+            <param name="version">The version of the package to relist.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>False if the package does not exist.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.AddDownloadAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Increment a package's download count.
+            </summary>
+            <param name="id">The id of the package to update.</param>
+            <param name="version">The id of the package to update.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>Task that completes when the package's download has been incremented.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageDatabase.HardDeletePackageAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Completely remove the package from the database.
+            </summary>
+            <param name="id">The id of the package to remove.</param>
+            <param name="version">The version of the pacakge to remove.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>False if the package doesn't exist.</returns>
+        </member>
+        <member name="T:BaGet.Core.PackageAddResult">
+            <summary>
+            The result of attempting to add the package to the database.
+            See <see cref="M:BaGet.Core.IPackageDatabase.AddAsync(BaGet.Core.Package,System.Threading.CancellationToken)"/>
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.PackageAddResult.PackageAlreadyExists">
+            <summary>
+            Failed to add the package as it already exists.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.PackageAddResult.Success">
+            <summary>
+            The package was added successfully.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.IPackageService">
+            <summary>
+            The service that combines the state of indexed packages and
+            upstream packages.
+            For upstream packages, see <see cref="T:BaGet.Core.IUpstreamClient"/>.
+            For indexed packages, see <see cref="T:BaGet.Core.IPackageDatabase"/>.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IPackageService.FindPackageVersionsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to find a package's versions using mirroring. This will merge
+            results from the configured upstream source with the locally indexed packages.
+            </summary>
+            <param name="id">The package's id to lookup</param>
+            <param name="cancellationToken">The token to cancel the lookup</param>
+            <returns>
+            The package's versions, or an empty list if the package cannot be found.
+            This includes unlisted versions.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageService.FindPackagesAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to find a package's metadata using mirroring. This will merge
+            results from the configured upstream source with the locally indexed packages.
+            </summary>
+            <param name="id">The package's id to lookup</param>
+            <param name="cancellationToken">The token to cancel the lookup</param>
+            <returns>
+            The metadata for all versions of a package, including unlisted versions.
+            Returns an empty list if the package cannot be found.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageService.FindPackageOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to find a package's metadata using mirroring. This will merge
+            results from the configured upstream source with the locally indexed packages.
+            </summary>
+            <param name="id">The package's id to lookup</param>
+            <param name="version">The package's version to lookup</param>
+            <param name="cancellationToken">The token to cancel the lookup</param>
+            <returns>
+            The metadata for single version of a package.
+            Returns null if the package does not exist.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageService.ExistsAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Determine whether a package exists locally or on the upstream source.
+            </summary>
+            <param name="id">The package id to search.</param>
+            <param name="version">The package version to search.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>Whether the package exists in the database.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageService.AddDownloadAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Increment a package's download count.
+            </summary>
+            <param name="packageId">The id of the package to update.</param>
+            <param name="version">The id of the package to update.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+        </member>
+        <member name="T:BaGet.Core.IUrlGenerator">
+            <summary>
+            Used to create URLs to resources in the NuGet protocol.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetServiceIndexUrl">
+            <summary>
+            Get the URL for the package source (also known as the "service index").
+            See: https://docs.microsoft.com/en-us/nuget/api/service-index
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetPackageContentResourceUrl">
+            <summary>
+            Get the URL for the root of the package content resource.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetPackageMetadataResourceUrl">
+            <summary>
+            Get the URL for the root of the package metadata resource.
+            See: https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetPackagePublishResourceUrl">
+            <summary>
+            Get the URL to publish packages.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-publish-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetSymbolPublishResourceUrl">
+            <summary>
+            Get the URL to publish symbol packages.
+            See: https://docs.microsoft.com/en-us/nuget/api/symbol-package-publish-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetSearchResourceUrl">
+            <summary>
+            Get the URL to search for packages.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetAutocompleteResourceUrl">
+            <summary>
+            Get the URL to autocomplete package IDs.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetRegistrationIndexUrl(System.String)">
+            <summary>
+            Get the URL for the entry point of a package's metadata.
+            See: https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-index
+            </summary>
+            <param name="id">The package's ID.</param>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetRegistrationPageUrl(System.String,NuGet.Versioning.NuGetVersion,NuGet.Versioning.NuGetVersion)">
+            <summary>
+            Get the URL for the metadata of several versions of a single package.
+            See: https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-page
+            </summary>
+            <param name="id">The package's ID</param>
+            <param name="lower">The lowest SemVer 2.0.0 version in the page (inclusive)</param>
+            <param name="upper">The highest SemVer 2.0.0 version in the page (inclusive)</param>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetRegistrationLeafUrl(System.String,NuGet.Versioning.NuGetVersion)">
+            <summary>
+            Get the URL for the metadata of a specific package ID and version.
+            See: https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-leaf
+            </summary>
+            <param name="id">The package's ID</param>
+            <param name="version">The package's version</param>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetPackageVersionsUrl(System.String)">
+            <summary>
+            Get the URL that lists a package's versions.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#enumerate-package-versions
+            </summary>
+            <param name="id">The package's ID</param>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetPackageDownloadUrl(System.String,NuGet.Versioning.NuGetVersion)">
+            <summary>
+            Get the URL to download a package (.nupkg).
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource#download-package-content-nupkg
+            </summary>
+            <param name="id">The package's ID</param>
+            <param name="version">The package's version</param>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetPackageManifestDownloadUrl(System.String,NuGet.Versioning.NuGetVersion)">
+            <summary>
+            Get the URL to download a package's manifest (.nuspec).
+            </summary>
+            <param name="id">The package's ID</param>
+            <param name="version">The package's version</param>
+        </member>
+        <member name="M:BaGet.Core.IUrlGenerator.GetPackageIconDownloadUrl(System.String,NuGet.Versioning.NuGetVersion)">
+            <summary>
+            Get the URL to download a package icon.
+            </summary>
+            <param name="id">The package's ID</param>
+            <param name="version">The package's version</param>
+        </member>
+        <member name="T:BaGet.Core.BaGetPackageMetadata">
+            <summary>
+            BaGet's extensions to the package metadata model. These additions
+            are not part of the official protocol.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.BaGetPackageMetadata.ReleaseNotes">
+            <summary>
+            The package's release notes.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.BaGetRegistrationIndexPage">
+            <summary>
+            BaGet's extensions to a registration index page.
+            Extends <see cref="T:BaGet.Protocol.Models.RegistrationIndexPage"/>.
+            </summary>
+            <remarks>
+            TODO: After this project is updated to .NET 5, make <see cref="T:BaGet.Core.BaGetRegistrationIndexPage"/>
+            extend <see cref="T:BaGet.Protocol.Models.RegistrationIndexPage"/> and remove identical properties.
+            Properties that are modified should be marked with the "new" modified.
+            See: https://github.com/dotnet/runtime/pull/32107
+            </remarks>
+        </member>
+        <member name="P:BaGet.Core.BaGetRegistrationIndexPage.ItemsOrNull">
+            <summary>
+            This was modified to use BaGet's extended registration index page item model.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.BaGetRegistrationIndexPageItem">
+            <summary>
+            BaGet's extensions to a registration index page.
+            Extends <see cref="T:BaGet.Protocol.Models.RegistrationIndexPageItem"/>.
+            </summary>
+            <remarks>
+            TODO: After this project is updated to .NET 5, make <see cref="T:BaGet.Core.BaGetRegistrationIndexPageItem"/>
+            extend <see cref="T:BaGet.Protocol.Models.RegistrationIndexPageItem"/> and remove identical properties.
+            Properties that are modified should be marked with the "new" modified.
+            See: https://github.com/dotnet/runtime/pull/32107
+            </remarks>
+        </member>
+        <member name="P:BaGet.Core.BaGetRegistrationIndexPageItem.PackageMetadata">
+            <summary>
+            The catalog entry containing the package metadata.
+            This was modified to use BaGet's extended package metadata model.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.BaGetRegistrationIndexResponse">
+            <summary>
+            BaGet's extensions to a registration index response.
+            Extends <see cref="T:BaGet.Protocol.Models.RegistrationIndexResponse"/>.
+            </summary>
+            <remarks>
+            TODO: After this project is updated to .NET 5, make <see cref="T:BaGet.Core.BaGetRegistrationIndexResponse"/>
+            extend <see cref="T:BaGet.Protocol.Models.RegistrationIndexResponse"/> and remove identical properties.
+            Properties that are modified should be marked with the "new" modified.
+            See: https://github.com/dotnet/runtime/pull/32107
+            </remarks>
+        </member>
+        <member name="P:BaGet.Core.BaGetRegistrationIndexResponse.Pages">
+            <summary>
+            The pages that contain all of the versions of the package, ordered
+            by the package's version. This was modified to use BaGet's extended
+            registration index page model.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.BaGetRegistrationIndexResponse.TotalDownloads">
+            <summary>
+            The package's total downloads across all versions.
+            This is not part of the official NuGet protocol.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.DefaultPackageMetadataService">
+            <inheritdoc />
+        </member>
+        <member name="T:BaGet.Core.IPackageMetadataService">
+            <summary>
+            The Package Metadata client, used to fetch packages' metadata.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IPackageMetadataService.GetRegistrationIndexOrNullAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempt to get a package's registration index, if it exists.
+            See: https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#registration-page
+            </summary>
+            <param name="packageId">The package's ID.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package's registration index, or null if the package does not exist</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageMetadataService.GetRegistrationLeafOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Get the metadata for a single package version, if the package exists.
+            </summary>
+            <param name="packageId">The package's id.</param>
+            <param name="packageVersion">The package's version.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The registration leaf, or null if the package does not exist.</returns>
+        </member>
+        <member name="T:BaGet.Core.PackageRegistration">
+            <summary>
+            The information on all versions of a package.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.PackageRegistration.#ctor(System.String,System.Collections.Generic.IReadOnlyList{BaGet.Core.Package})">
+            <summary>
+            Create a new registration object.
+            </summary>
+            <param name="packageId"></param>
+            <param name="packages">All versions of the package.</param>
+        </member>
+        <member name="P:BaGet.Core.PackageRegistration.PackageId">
+            <summary>
+            The package's ID.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.PackageRegistration.Packages">
+            <summary>
+            The information for each version of the package.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.PackageService.MirrorAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Index the package from an upstream if it does not exist locally.
+            </summary>
+            <param name="id">The package ID to index from an upstream.</param>
+            <param name="version">The package version to index from an upstream.</param>
+            <param name="cancellationToken"></param>
+            <returns>True if the package exists locally or was indexed from an upstream source.</returns>
+        </member>
+        <member name="T:BaGet.Core.AutocompleteRequest">
+            <summary>
+            The NuGet V3 search request.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource#request-parameters
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.AutocompleteRequest.Skip">
+            <summary>
+            The number of results to skip, for pagination.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.AutocompleteRequest.Take">
+            <summary>
+            The number of results to return, for pagination.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.AutocompleteRequest.IncludePrerelease">
+            <summary>
+            Whether to include pre-release packages.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.AutocompleteRequest.IncludeSemVer2">
+            <summary>
+            Whether to include SemVer 2.0.0 compatible packages.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.AutocompleteRequest.PackageType">
+            <summary>
+            Filter results to a package type. If null, no filter is applied.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.AutocompleteRequest.Query">
+            <summary>
+            The search query.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.DependentsResponse">
+            <summary>
+            The package ids that depend on the queried package.
+            This is an unofficial API that isn't part of the NuGet protocol.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.DependentsResponse.TotalHits">
+            <summary>
+            The total number of matches, disregarding skip and take.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.DependentsResponse.Data">
+            <summary>
+            The package IDs matched by the dependent query.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.PackageDependent">
+            <summary>
+            A package that depends on the queried package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.PackageDependent.Id">
+            <summary>
+            The dependent package id.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.PackageDependent.Description">
+            <summary>
+            The description of the dependent package.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.PackageDependent.TotalDownloads">
+            <summary>
+            The total downloads for the dependent package.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.ISearchIndexer.IndexAsync(BaGet.Core.Package,System.Threading.CancellationToken)">
+            <summary>
+            Add a package to the search index.
+            </summary>
+            <param name="package">The package to add.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>A task that completes once the package has been added.</returns>
+        </member>
+        <member name="T:BaGet.Core.ISearchService">
+            <summary>
+            The service used to search for packages.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.ISearchService.SearchAsync(BaGet.Core.SearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Perform a search query.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource#search-for-packages
+            </summary>
+            <param name="request">The search request.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The search response.</returns>
+        </member>
+        <member name="M:BaGet.Core.ISearchService.AutocompleteAsync(BaGet.Core.AutocompleteRequest,System.Threading.CancellationToken)">
+            <summary>
+            Perform an autocomplete query.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource#search-for-package-ids
+            </summary>
+            <param name="request">The autocomplete request.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The autocomplete response.</returns>
+        </member>
+        <member name="M:BaGet.Core.ISearchService.ListPackageVersionsAsync(BaGet.Core.VersionsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Enumerate listed package versions.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource#enumerate-package-versions
+            </summary>
+            <param name="request">The autocomplete request.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The package versions that matched the request.</returns>
+        </member>
+        <member name="M:BaGet.Core.ISearchService.FindDependentsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Find the packages that depend on a given package.
+            </summary>
+            <param name="packageId">The package whose dependents should be found.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The dependents response.</returns>
+        </member>
+        <member name="T:BaGet.Core.NullSearchIndexer">
+            <summary>
+            A no-op indexer, used when search does not need to index packages.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.NullSearchService">
+            <summary>
+            A minimal search service implementation, used for advanced scenarios.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.SearchRequest">
+            <summary>
+            The NuGet V3 search request.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource#request-parameters
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.SearchRequest.Skip">
+            <summary>
+            The number of results to skip, for pagination.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.SearchRequest.Take">
+            <summary>
+            The number of results to return, for pagination.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.SearchRequest.IncludePrerelease">
+            <summary>
+            Whether to include pre-release packages.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.SearchRequest.IncludeSemVer2">
+            <summary>
+            Whether to include SemVer 2.0.0 compatible packages.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.SearchRequest.PackageType">
+            <summary>
+            Filter results to a package type. If null, no filter is applied.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.SearchRequest.Framework">
+            <summary>
+            Filters results to a target framework. If null, no filter is applied.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.SearchRequest.Query">
+            <summary>
+            The search query.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.VersionsRequest">
+            <summary>
+            The NuGet V3 enumerate package versions request.
+            See: https://docs.microsoft.com/en-us/nuget/api/search-autocomplete-service-resource#request-parameters-1
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.VersionsRequest.IncludePrerelease">
+            <summary>
+            Whether to include pre-release packages.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.VersionsRequest.IncludeSemVer2">
+            <summary>
+            Whether to include SemVer 2.0.0 compatible packages.
+            </summary>
+        </member>
+        <member name="P:BaGet.Core.VersionsRequest.PackageId">
+            <summary>
+            The package ID whose versions should be fetched.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.IServiceIndexService">
+            <summary>
+            The NuGet Service Index service, used to discover other resources.
+            
+            See https://docs.microsoft.com/en-us/nuget/api/service-index
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IServiceIndexService.GetAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get the resources available on this package feed.
+            See: https://docs.microsoft.com/en-us/nuget/api/service-index#resources
+            </summary>
+            <returns>The resources available on this package feed.</returns>
+        </member>
+        <member name="T:BaGet.Core.FileStorageService">
+            <summary>
+            Stores content on disk.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.IPackageStorageService">
+            <summary>
+            Stores packages' content. Packages' state are stored by the
+            <see cref="T:BaGet.Core.IPackageDatabase"/>.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IPackageStorageService.SavePackageContentAsync(BaGet.Core.Package,System.IO.Stream,System.IO.Stream,System.IO.Stream,System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Persist a package's content to storage. This operation MUST fail if a package
+            with the same id/version but different content has already been stored.
+            </summary>
+            <param name="package">The package's metadata.</param>
+            <param name="packageStream">The package's nupkg stream.</param>
+            <param name="nuspecStream">The package's nuspec stream.</param>
+            <param name="readmeStream">The package's readme stream, or null if none.</param>
+            <param name="iconStream">The package's icon stream, or null if none.</param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageStorageService.GetPackageStreamAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Retrieve a package's nupkg stream.
+            </summary>
+            <param name="id">The package's id.</param>
+            <param name="version">The package's version.</param>
+            <param name="cancellationToken"></param>
+            <returns>The package's nupkg stream.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageStorageService.GetNuspecStreamAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Retrieve a package's nuspec stream.
+            </summary>
+            <param name="id">The package's id.</param>
+            <param name="version">The package's version.</param>
+            <param name="cancellationToken"></param>
+            <returns>The package's nuspec stream.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageStorageService.GetReadmeStreamAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Retrieve a package's readme stream.
+            </summary>
+            <param name="id">The package's id.</param>
+            <param name="version">The package's version.</param>
+            <param name="cancellationToken"></param>
+            <returns>The package's readme stream.</returns>
+        </member>
+        <member name="M:BaGet.Core.IPackageStorageService.DeleteAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Remove a package's content from storage. This operation SHOULD succeed
+            even if the package does not exist.
+            </summary>
+            <param name="id">The package's id.</param>
+            <param name="version">The package's version.</param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BaGet.Core.IStorageService">
+             <summary>
+             A low-level storage abstraction.
+             </summary>
+             <remarks>
+             This is used to store:
+            
+             * Packages, through <see cref="T:BaGet.Core.PackageStorageService"/>
+             * Symbols, through <see cref="T:BaGet.Core.SymbolStorageService"/>
+            
+             This storage abstraction has implementations for disk,
+             Azure Blob Storage, Amazon Web Services S3, and Google Cloud Storage.
+             </remarks>
+        </member>
+        <member name="M:BaGet.Core.IStorageService.GetAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get content from storage.
+            </summary>
+            <param name="path">The content's path.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The path's content or null if the content does not exist.</returns>
+        </member>
+        <member name="M:BaGet.Core.IStorageService.GetDownloadUriAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get a URI that can be used to download the content.
+            </summary>
+            <param name="path">The content's path.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>
+            The content's URI. This may be a local file. Returns null if the content
+            does not exist or if a URI could not be created.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IStorageService.PutAsync(System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Store content into storage.
+            </summary>
+            <param name="path">The path at which to store the content.</param>
+            <param name="content">The content to store at the given path.</param>
+            <param name="contentType">The type of content that is being stored.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>The result of the put operation.</returns>
+        </member>
+        <member name="M:BaGet.Core.IStorageService.DeleteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Remove content from storage.
+            </summary>
+            <param name="path">The path to the content to delete.</param>
+            <param name="cancellationToken">A token to cancel the task.</param>
+            <returns>A task that completes when the content has been deleted.</returns>
+        </member>
+        <member name="T:BaGet.Core.StoragePutResult">
+            <summary>
+            The result of a <see cref="M:BaGet.Core.IStorageService.PutAsync(System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)"/> operation.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.StoragePutResult.Conflict">
+            <summary>
+            The given path is already used to store different content.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.StoragePutResult.AlreadyExists">
+            <summary>
+            This content is already stored at the given path.
+            </summary>
+        </member>
+        <member name="F:BaGet.Core.StoragePutResult.Success">
+            <summary>
+            The content was sucessfully stored.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.ISymbolStorageService">
+            <summary>
+            Stores the content of symbols, also known as PDBs.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.ISymbolStorageService.SavePortablePdbContentAsync(System.String,System.String,System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Persist a portable PDB's content to storage. This operation MUST fail if a PDB
+            with the same key but different content has already been stored.
+            </summary>
+            <param name="file">The portable PDB's file name.</param>
+            <param name="key">The portable PDB's Signature GUID followed by its age.</param>
+            <param name="pdbStream">The PDB's content stream.</param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaGet.Core.ISymbolStorageService.GetPortablePdbContentStreamOrNullAsync(System.String,System.String)">
+            <summary>
+            Retrieve a portable PDB's content stream.
+            </summary>
+            <param name="file">The portable PDB's file name.</param>
+            <param name="key">The portable PDB's Signature GUID followed by its age.</param>
+            <returns>The portable PDB's stream, or null if it does not exist.</returns>
+        </member>
+        <member name="T:BaGet.Core.NullStorageService">
+            <summary>
+            A minimal storage implementation, used for advanced scenarios.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.DisabledUpstreamClient">
+            <summary>
+            The client used when there are no upstream package sources.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.V2UpstreamClient">
+            <summary>
+            The client to upstream a NuGet server that uses the V2 protocol.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.V3UpstreamClient">
+            <summary>
+            The mirroring client for a NuGet server that uses the V3 protocol.
+            </summary>
+        </member>
+        <member name="T:BaGet.Core.IUpstreamClient">
+            <summary>
+            A client to interact with an upstream package source.
+            </summary>
+        </member>
+        <member name="M:BaGet.Core.IUpstreamClient.ListPackageVersionsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Try to get all versions of a package from the upstream package source. Returns empty
+            if the package could not be found.
+            </summary>
+            <param name="id">The package ID to lookup</param>
+            <param name="cancellationToken"></param>
+            <returns>
+            All versions of a package, including unlisted packages.
+            Returns an empty list if the package could not be found.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IUpstreamClient.ListPackagesAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Try to get the metadata for all versions of a package from the upstream package source. Returns empty
+            if the package could not be found.
+            </summary>
+            <param name="id">The package ID to lookup</param>
+            <param name="cancellationToken"></param>
+            <returns>
+            The metadata for all versions of a package, including unlisted versions.
+            Returns an empty list if the package could not be found.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.IUpstreamClient.DownloadPackageOrNullAsync(System.String,NuGet.Versioning.NuGetVersion,System.Threading.CancellationToken)">
+            <summary>
+            Download a package from the upstream package source. Returns null if the package does not exist.
+            </summary>
+            <param name="id">The package ID to download.</param>
+            <param name="version">The package version to download.</param>
+            <param name="cancellationToken"></param>
+            <returns>
+            The package stream or null if the package cannot be found.
+            The stream is guaranteed to be seekable if not not null.
+            </returns>
+        </member>
+        <member name="T:BaGet.Core.RequiredIfAttribute">
+             <summary>
+             Provides conditional validation based on related property value.
+            
+             Inspiration: https://stackoverflow.com/a/27666044
+             </summary>
+        </member>
+        <member name="P:BaGet.Core.RequiredIfAttribute.OtherProperty">
+            <summary>
+            Gets or sets the other property name that will be used during validation.
+            </summary>
+            <value>
+            The other property name.
+            </value>
+        </member>
+        <member name="P:BaGet.Core.RequiredIfAttribute.OtherPropertyDisplayName">
+            <summary>
+            Gets or sets the display name of the other property.
+            </summary>
+            <value>
+            The display name of the other property.
+            </value>
+        </member>
+        <member name="P:BaGet.Core.RequiredIfAttribute.OtherPropertyValue">
+            <summary>
+            Gets or sets the other property value that will be relevant for validation.
+            </summary>
+            <value>
+            The other property value.
+            </value>
+        </member>
+        <member name="P:BaGet.Core.RequiredIfAttribute.IsInverted">
+            <summary>
+            Gets or sets a value indicating whether other property's value should match or differ from provided other property's value (default is <c>false</c>).
+            </summary>
+            <value>
+              <c>true</c> if other property's value validation should be inverted; otherwise, <c>false</c>.
+            </value>
+            <remarks>
+            How this works
+            - true: validated property is required when other property doesn't equal provided value
+            - false: validated property is required when other property matches provided value
+            </remarks>
+        </member>
+        <member name="P:BaGet.Core.RequiredIfAttribute.RequiresValidationContext">
+            <summary>
+            Gets a value that indicates whether the attribute requires validation context.
+            </summary>
+            <returns><c>true</c> if the attribute requires validation context; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:BaGet.Core.RequiredIfAttribute.#ctor(System.String,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:BaGet.Core.RequiredIfAttribute"/> class.
+            </summary>
+            <param name="otherProperty">The other property.</param>
+            <param name="otherPropertyValue">The other property value.</param>
+        </member>
+        <member name="M:BaGet.Core.RequiredIfAttribute.FormatErrorMessage(System.String)">
+            <summary>
+            Applies formatting to an error message, based on the data field where the error occurred.
+            </summary>
+            <param name="name">The name to include in the formatted message.</param>
+            <returns>
+            An instance of the formatted error message.
+            </returns>
+        </member>
+        <member name="M:BaGet.Core.RequiredIfAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Validates the specified value with respect to the current validation attribute.
+            </summary>
+            <param name="value">The value to validate.</param>
+            <param name="validationContext">The context information about the validation operation.</param>
+            <returns>
+            An instance of the <see cref="T:System.ComponentModel.DataAnnotations.ValidationResult" /> class.
+            </returns>
+        </member>
+        <member name="T:BaGet.Core.ValidateBaGetOptions`1">
+            <summary>
+            A configuration that validates options using data annotations.
+            </summary>
+            <typeparam name="TOptions">The type of options to validate.</typeparam>
+        </member>
+        <member name="M:BaGet.Core.ValidateBaGetOptions`1.#ctor(System.String)">
+            <summary>
+            Create a new validator.
+            </summary>
+            <param name="optionsName">
+            The option's key in the configuration or appsettings.json file,
+            or null if the options was created from the root configuration.
+            </param>
+        </member>
+        <member name="T:BaGet.Core.ValidateStartupOptions">
+            <summary>
+            Validates BaGet's options, used at startup.
+            </summary>
+        </member>
+    </members>
+</doc>

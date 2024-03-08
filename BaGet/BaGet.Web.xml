@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BaGet.Web</name>
+    </assembly>
+    <members>
+        <member name="T:BaGet.Web.PackageContentController">
+            <summary>
+            The Package Content resource, used to download content from packages.
+            See: https://docs.microsoft.com/en-us/nuget/api/package-base-address-resource
+            </summary>
+        </member>
+        <member name="T:BaGet.Web.PackageMetadataController">
+            <summary>
+            The Package Metadata resource, used to fetch packages' information.
+            See: https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource
+            </summary>
+        </member>
+        <member name="T:BaGet.Web.ServiceIndexController">
+            <summary>
+            The NuGet Service Index. This aids NuGet client to discover this server's services.
+            </summary>
+        </member>
+        <member name="T:BaGet.Web.OperationCancelledMiddleware">
+            <summary>
+            Captures <see cref="T:System.OperationCanceledException" /> and converts to HTTP 409 response.
+            Based off: https://github.com/aspnet/AspNetCore/blob/28157e62597bf0e043bc7e937e44c5ec81946b83/src/Middleware/Diagnostics/src/DeveloperExceptionPage/DeveloperExceptionPageMiddleware.cs
+            </summary>
+        </member>
+    </members>
+</doc>

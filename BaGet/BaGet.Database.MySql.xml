@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BaGet.Database.MySql</name>
+    </assembly>
+    <members>
+        <member name="F:BaGet.Database.MySql.MySqlContext.UniqueConstraintViolationErrorCode">
+            <summary>
+            The MySQL Server error code for when a unique constraint is violated.
+            </summary>
+        </member>
+        <member name="P:BaGet.Database.MySql.MySqlContext.SupportsLimitInSubqueries">
+            <summary>
+            MySQL does not support LIMIT clauses in subqueries for certain subquery operators.
+            See: https://dev.mysql.com/doc/refman/8.0/en/subquery-restrictions.html
+            </summary>
+        </member>
+    </members>
+</doc>

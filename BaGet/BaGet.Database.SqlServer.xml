@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BaGet.Database.SqlServer</name>
+    </assembly>
+    <members>
+        <member name="F:BaGet.Database.SqlServer.SqlServerContext.UniqueConstraintViolationErrorCode">
+            <summary>
+            The SQL Server error code for when a unique contraint is violated.
+            </summary>
+        </member>
+        <member name="M:BaGet.Database.SqlServer.SqlServerContext.IsUniqueConstraintViolationException(Microsoft.EntityFrameworkCore.DbUpdateException)">
+            <summary>
+            Check whether a <see cref="T:Microsoft.EntityFrameworkCore.DbUpdateException"/> is due to a SQL unique constraint violation.
+            </summary>
+            <param name="exception">The exception to inspect.</param>
+            <returns>Whether the exception was caused to SQL unique constraint violation.</returns>
+        </member>
+    </members>
+</doc>
