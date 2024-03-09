@@ -14,7 +14,7 @@ REM 换行
 echo.
 
 REM 删除包缓存
-rd /s /q "%~dp0nupkgs"
+REM rd /s /q "%~dp0nupkgs"
 
 REM 判断删除包缓存是否成功
 if %errorlevel% equ 0 (
@@ -118,20 +118,35 @@ REM 编译生成项目，指定生成模式，先清理，再生成
 REM 换行
 echo.
 
-REM 输入 APIKey
-set /p api_key=请输入 NuGet Api 密钥：
+REM 参数定义
+set "public_api_key="
+set "private_nuget_url="
+set "private_api_key="
+
+REM 是否上传外网
+set /p public_choice=是否上传外网？(y/n)
+
+if /i "!public_choice!"=="y" (
+	REM 输入 APIKey
+	set /p public_api_key=请输入 NuGet Api 密钥：
+)
 
 REM 换行
 echo.
 
-REM 输入 APIKey
-set /p private_nuget_url=请输入 私网 Nuget 包地址（域名即可）：
+REM 是否上传外网
+set /p private_choice=是否上传私网？(y/n)
 
-REM 换行
-echo.
+if /i "!private_choice!"=="y" (
+	REM 输入 APIKey
+	set /p private_nuget_url=请输入 私网 Nuget 包地址（域名即可）：
 
-REM 输入 APIKey
-set /p private_api_key=请输入 私网 NuGet Api 密钥：
+	REM 换行
+	echo.
+
+	REM 输入 APIKey
+	set /p private_api_key=请输入 私网 NuGet Api 密钥：
+)
 
 REM 换行
 echo.
@@ -161,48 +176,52 @@ for %%f in (%nuget_file_list%) do (
 	
 	REM 这里因为 dotnet 命令的错误码不会直接传递给批处理脚本的 %errorlevel% 变量。所以这里使用 && 和 || 运算符进行判断
 	
-	REM 上传 NuGet 服务器
-	dotnet nuget push --api-key %api_key% --skip-duplicate --source https://api.nuget.org/v3/index.json %%f && (
-		REM 记录成功次数
-		set /a success_count+=1
-	
-		REM 换行
-		echo.
-
-		echo 上传公网：%%f 成功...... 
-	) || (
-		REM 记录失败次数
-		set /a error_count+=1
+	if /i "!public_choice!"=="y" (
+		REM 上传 NuGet 服务器
+		dotnet nuget push --api-key !public_api_key! --skip-duplicate --source https://api.nuget.org/v3/index.json %%f && (
+			REM 记录成功次数
+			set /a success_count+=1
 		
-		REM 记录失败文件
-		set "error_file=!error_file! %%f"
-	
-		REM 换行
-		echo.
+			REM 换行
+			echo.
 
-		echo 上传公网：%%f 失败......
+			echo 上传公网：%%f 成功...... 
+		) || (
+			REM 记录失败次数
+			set /a error_count+=1
+			
+			REM 记录失败文件
+			set "error_file=!error_file! %%f"
+		
+			REM 换行
+			echo.
+
+			echo 上传公网：%%f 失败......
+		)
 	)
 	
-	REM 上传 NuGet 服务器
-	dotnet nuget push --api-key %private_api_key% --skip-duplicate --source https://nuget.%private_nuget_url%/v3/index.json %%f && (
-		REM 记录成功次数
-		set /a success_count+=1
-	
-		REM 换行
-		echo.
-
-		echo 上传私网：%%f 成功...... 
-	) || (
-		REM 记录失败次数
-		set /a error_count+=1
+	if /i "%private_choice%"=="y" (
+		REM 上传 NuGet 服务器
+		dotnet nuget push --api-key !private_api_key! --skip-duplicate --source http://nuget.!private_nuget_url!/v3/index.json %%f && (
+			REM 记录成功次数
+			set /a success_count+=1
 		
-		REM 记录失败文件
-		set "error_file=!error_file! %%f"
-	
-		REM 换行
-		echo.
+			REM 换行
+			echo.
 
-		echo 上传私网：%%f 失败......
+			echo 上传私网：%%f 成功...... 
+		) || (
+			REM 记录失败次数
+			set /a error_count+=1
+			
+			REM 记录失败文件
+			set "error_file=!error_file! %%f"
+		
+			REM 换行
+			echo.
+
+			echo 上传私网：%%f 失败......
+		)
 	)
 )
 
