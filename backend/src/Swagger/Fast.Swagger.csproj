@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>Fast.Swagger</PackageId>
+		<Description>Fast.NET 框架Swagger模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Assets\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)src\ApplicationCore\Fast.ApplicationCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	</ItemGroup>
+
+</Project>

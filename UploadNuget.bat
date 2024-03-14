@@ -14,7 +14,7 @@ REM 换行
 echo.
 
 REM 删除包缓存
-REM rd /s /q "%~dp0nupkgs"
+rd /s /q "%~dp0nupkgs"
 
 REM 判断删除包缓存是否成功
 if %errorlevel% equ 0 (

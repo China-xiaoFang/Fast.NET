@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>Fast.EventBus</PackageId>
+		<Description>Fast.NET 框架事件总线模块库。</Description>
+	</PropertyGroup>
+
+</Project>

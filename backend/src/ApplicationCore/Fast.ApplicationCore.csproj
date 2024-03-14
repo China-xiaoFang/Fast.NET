@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>Fast.ApplicationCore</PackageId>
+		<Description>Fast.NET 框架Application核心模块库。</Description>
+	</PropertyGroup>
+
+</Project>
