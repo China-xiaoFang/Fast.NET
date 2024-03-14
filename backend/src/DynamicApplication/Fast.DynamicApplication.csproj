@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>Fast.DynamicApplication</PackageId>
+		<Description>Fast.NET 框架动态Api模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)src\ApplicationCore\Fast.ApplicationCore.csproj" />
+	</ItemGroup>
+
+</Project>
