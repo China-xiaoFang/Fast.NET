@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>Fast.Mapster.Core</PackageId>
+		<Version>7.4.0</Version>
+		<Description>因和 “Mapster.Core” 官方包引用冲突，所以选择获取源码进行发布。源码地址：https://github.com/MapsterMapper/Mapster/tree/v7.4.0/src/Mapster.Core</Description>
+	</PropertyGroup>
+</Project>

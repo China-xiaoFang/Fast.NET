@@ -10,7 +10,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="$(SolutionDir)src\ApplicationCore\Fast.ApplicationCore.csproj" />
+		<ProjectReference Include="$(SolutionDir)src\DynamicApplication\Fast.DynamicApplication.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

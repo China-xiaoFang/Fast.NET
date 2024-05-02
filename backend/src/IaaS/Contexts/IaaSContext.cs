@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -16,16 +16,11 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 // 只允许框架内部的类库访问
-[assembly: InternalsVisibleTo("Fast.ApplicationCore")]
 [assembly: InternalsVisibleTo("Fast.Cache")]
-[assembly: InternalsVisibleTo("Fast.Consul")]
-[assembly: InternalsVisibleTo("Fast.CorsAccessor")]
 [assembly: InternalsVisibleTo("Fast.DependencyInjection")]
 [assembly: InternalsVisibleTo("Fast.DynamicApplication")]
 [assembly: InternalsVisibleTo("Fast.EventBus")]
@@ -76,76 +71,6 @@ internal static class IaaSContext
     /// </summary>
     public static ConcurrentBag<IDisposable> UnmanagedObjects { get; private set; }
 
-    /// <summary>
-    /// 控制器排序集合
-    /// </summary>
-    public static ConcurrentDictionary<string, (string, int, Type)> ControllerOrderCollection { get; set; }
-
-    /// <summary>
-    /// <see cref="IsApiController(Type)"/> 缓存集合
-    /// </summary>
-    private static readonly ConcurrentDictionary<Type, bool> IsApiControllerCached;
-
-    /// <summary>
-    /// IDynamicApplication 接口类型
-    /// </summary>
-    private static readonly Type IDynamicApplicationType;
-
-    /// <summary>
-    /// Fast.NET 框架 <see cref="IHostInjection"/> 类型
-    /// </summary>
-    public static readonly IEnumerable<Type> HostInjectionTypes;
-
-    /// <summary>
-    /// Fast.NET 框架 <see cref="IControllersInjection"/> 类型
-    /// </summary>
-    public static readonly IEnumerable<Type> ControllersInjectionTypes;
-
-    /// <summary>
-    /// Fast.NET 框架 <see cref="IStartupFilter"/> 类型
-    /// </summary>
-    public static readonly IEnumerable<Type> StartupFilterTypes;
-
-    /// <summary>
-    /// Fast.NET 框架 <see cref="IHostInjection"/> 注入顺序
-    /// </summary>
-    private static IEnumerable<string> HostInjectionSequence =>
-        new List<string>
-        {
-            "LoggingInjection",
-            "ForwardedHeadersInjection",
-            "GzipBrotliCompressionInjection",
-            "CorsAccessorInjection",
-            "MapsterInjection",
-            "SerializationInjection",
-            "DependencyInjection",
-            "EventBusInjection",
-            "CacheInjection",
-            "JwtBearerInjection",
-            "SqlSugarInjection",
-            "ConsulInjection",
-        };
-
-    /// <summary>
-    /// Fast.NET 框架 <see cref="IControllersInjection"/> 注入顺序
-    /// </summary>
-    private static IEnumerable<string> ControllersInjectionSequence =>
-        new List<string> {"DynamicApplicationInjection", "UnifyResultInjection", "SwaggerInjection"};
-
-    /// <summary>
-    /// Fast.NET 框架 <see cref="IStartupFilter"/> 注入顺序
-    /// </summary>
-    private static IEnumerable<string> StartupFilterSequence =>
-        new List<string>
-        {
-            "CoreStartupFilter",
-            "CorsAccessorStartupFilter",
-            "LoggingStartupFilter",
-            "UnifyResultStartupFilter",
-            "SwaggerStartupFilter",
-            "ConsulStartupFilter"
-        };
-
     static IaaSContext()
     {
         // 未托管的对象
@@ -161,85 +86,6 @@ internal static class IaaSContext
         EffectiveTypes = Assemblies.SelectMany(s =>
             // 排除使用了 SuppressSnifferAttribute 特性的类型
             s.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)));
-
-        ControllerOrderCollection = new ConcurrentDictionary<string, (string, int, Type)>();
-
-        IsApiControllerCached = new ConcurrentDictionary<Type, bool>();
-
-        try
-        {
-            IDynamicApplicationType = AssemblyUtil.GetType("Fast.ApplicationCore", "Fast.DynamicApplication.IDynamicApplication");
-        }
-        catch
-        {
-            IDynamicApplicationType = null;
-        }
-
-        var hostInjectionType = typeof(IHostInjection);
-
-        // 获取框架内部继承了 IHostInjection 接口的所有类型，可能是 internal，public
-        // ReSharper disable once PossibleMultipleEnumeration
-        HostInjectionTypes = Assemblies.SelectMany(assembly =>
-        {
-            var types = Array.Empty<Type>();
-
-            try
-            {
-                types = assembly.GetTypes();
-            }
-            catch
-            {
-                Console.WriteLine($"Error load `{assembly.FullName}` assembly.");
-            }
-
-            return types.Where(wh =>
-                (wh.IsPublic || wh.IsNotPublic) && hostInjectionType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface &&
-                !wh.IsAbstract);
-        }).OrderBy(ob => HostInjectionSequence.ToList().IndexOf(ob.Name));
-
-        var controllersInjectionType = typeof(IControllersInjection);
-
-        // 获取框架内部继承了 IControllersInjection 接口的所有类型，可能是 internal，public
-        // ReSharper disable once PossibleMultipleEnumeration
-        ControllersInjectionTypes = Assemblies.SelectMany(assembly =>
-        {
-            var types = Array.Empty<Type>();
-
-            try
-            {
-                types = assembly.GetTypes();
-            }
-            catch
-            {
-                Console.WriteLine($"Error load `{assembly.FullName}` assembly.");
-            }
-
-            return types.Where(wh =>
-                (wh.IsPublic || wh.IsNotPublic) && controllersInjectionType.IsAssignableFrom(wh) && wh.IsClass &&
-                !wh.IsInterface && !wh.IsAbstract);
-        }).OrderBy(ob => ControllersInjectionSequence.ToList().IndexOf(ob.Name));
-
-        var startupFilterType = typeof(IStartupFilter);
-
-        // 获取框架内部继承了 IStartupFilter 接口的所有类型，可能是 internal，public
-        // ReSharper disable once PossibleMultipleEnumeration
-        StartupFilterTypes = Assemblies.SelectMany(assembly =>
-        {
-            var types = Array.Empty<Type>();
-
-            try
-            {
-                types = assembly.GetTypes();
-            }
-            catch
-            {
-                Console.WriteLine($"Error load `{assembly.FullName}` assembly.");
-            }
-
-            return types.Where(wh =>
-                (wh.IsPublic || wh.IsNotPublic) && startupFilterType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface &&
-                !wh.IsAbstract);
-        }).OrderBy(ob => StartupFilterSequence.ToList().IndexOf(ob.Name));
     }
 
     /// <summary>
@@ -346,47 +192,6 @@ internal static class IaaSContext
 
         // 判断是否已 “Options” 结尾
         return optionsType.Name.EndsWith(defaultSuffix) ? optionsType.Name[..^defaultSuffix.Length] : optionsType.Name;
-    }
-
-    /// <summary>
-    /// 是否是Api控制器
-    /// </summary>
-    /// <param name="type">type</param>
-    /// <returns></returns>
-    public static bool IsApiController(Type type)
-    {
-        return IsApiControllerCached.GetOrAdd(type, Function);
-
-        // 本地静态方法
-        static bool Function(Type type)
-        {
-            if (type == null)
-            {
-                return false;
-            }
-
-            // 排除 OData 控制器
-            if (type.Assembly.GetName().Name?.StartsWith("Microsoft.AspNetCore.OData") == true)
-            {
-                return false;
-            }
-
-            // 不能是非公开，基元类型，值类型，抽象类，接口，泛型类
-            if (!type.IsPublic || type.IsPrimitive || type.IsValueType || type.IsAbstract || type.IsInterface ||
-                type.IsGenericType)
-            {
-                return false;
-            }
-
-            // 继承 ControllerBase 或 实现 IApplication 的类型
-            if ((!typeof(Controller).IsAssignableFrom(type) && typeof(ControllerBase).IsAssignableFrom(type)) ||
-                IDynamicApplicationType?.IsAssignableFrom(type) == true)
-            {
-                return true;
-            }
-
-            return false;
-        }
     }
 
     /// <summary>

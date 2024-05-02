@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -13,14 +13,15 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Text;
-using Fast.IaaS;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Fast.NET.Core.Extensions;
+// ReSharper disable once CheckNamespace
+namespace Fast.NET.Core;
 
 /// <summary>
 /// <see cref="WebApplicationBuilder"/> 拓展类
@@ -61,9 +62,6 @@ public static class WebApplicationBuilderExtension
 
         // 初始化配置
         ConfigureApplication(builder.WebHost, builder.Host);
-
-        // 添加管道启动服务
-        builder.AddHostInjection();
 
         return builder;
     }
@@ -112,6 +110,14 @@ public static class WebApplicationBuilderExtension
                 // 存储环境对象
                 FastContext.HostEnvironment = FastContext.WebHostEnvironment = hostContext.HostingEnvironment;
 
+                // 处理命令行启动参数 公共JSON 文件地址
+                var publicJsonPath = hostContext.Configuration["publicJsonPath"];
+
+                if (!string.IsNullOrEmpty(publicJsonPath) && Path.IsPathRooted(publicJsonPath))
+                {
+                    configurationBuilder.AddJsonFile(publicJsonPath, optional: true, reloadOnChange: true);
+                }
+
                 // 加载配置
                 AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
             });
@@ -122,6 +128,14 @@ public static class WebApplicationBuilderExtension
             {
                 // 存储环境对象
                 FastContext.HostEnvironment = hostContext.HostingEnvironment;
+
+                // 处理命令行启动参数 公共JSON 文件地址
+                var publicJsonPath = hostContext.Configuration["publicJsonPath"];
+
+                if (!string.IsNullOrEmpty(publicJsonPath) && Path.IsPathRooted(publicJsonPath))
+                {
+                    configurationBuilder.AddJsonFile(publicJsonPath, optional: true, reloadOnChange: true);
+                }
 
                 // 加载配置
                 AddJsonFiles(configurationBuilder, hostContext.HostingEnvironment);
@@ -146,8 +160,16 @@ public static class WebApplicationBuilderExtension
             // 默认内置 GBK，Windows-1252, Shift-JIS, GB2312 编码支持
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            // 注册 Startup 过滤器
-            services.AddStartupFilter();
+            // 解决 IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                //options.ForwardedHeaders = ForwardedHeaders.All;
+
+                // 若上面配置无效可尝试下列代码，比如在 IIS 中
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
         });
     }
 

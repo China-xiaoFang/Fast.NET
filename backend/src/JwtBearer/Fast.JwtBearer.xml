@@ -69,6 +69,51 @@
             EdDSA
             </summary>
         </member>
+        <member name="T:Fast.JwtBearer.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 动态Api 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.JwtBearer.IServiceCollectionExtension.AddJwtBearerCrypto(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            添加JwtBearer加密解密服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
+            <param name="section"><see cref="T:System.String"/>
+            <para>Json配置文件节点的Key</para>
+            <remarks>默认值：JWTSettings</remarks>
+            </param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.IServiceCollectionExtension.AddJwtBearerCrypto(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Fast.JwtBearer.Options.JWTSettingsOptions})">
+            <summary>
+            添加JwtBearer加密解密服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="optionAction"><see cref="T:System.Action`1"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.IServiceCollectionExtension.AddJwtBearer(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            添加JwtBearer服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
+            <param name="section"><see cref="T:System.String"/>
+            <para>Json配置文件节点的Key</para>
+            <remarks>默认值：JWTSettings</remarks>
+            </param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.JwtBearer.IServiceCollectionExtension.AddJwtBearer(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Fast.JwtBearer.Options.JWTSettingsOptions})">
+            <summary>
+            添加JwtBearer服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="optionAction"><see cref="T:System.Action`1"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
         <member name="T:Fast.JwtBearer.Handlers.AppAuthorizationHandler">
             <summary>
             授权策略执行程序
@@ -123,26 +168,6 @@
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
             <param name="exception"><see cref="T:System.Exception"/></param>
             <returns></returns>
-        </member>
-        <member name="T:Fast.JwtBearer.Injections.JwtBearerInjection">
-            <summary>
-            <see cref="T:Fast.JwtBearer.Injections.JwtBearerInjection"/> JwtBearer服务注入
-            </summary>
-        </member>
-        <member name="P:Fast.JwtBearer.Injections.JwtBearerInjection.Order">
-            <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
-            </summary>
-        </member>
-        <member name="M:Fast.JwtBearer.Injections.JwtBearerInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
         </member>
         <member name="T:Fast.JwtBearer.Internal.Penetrates">
             <summary>

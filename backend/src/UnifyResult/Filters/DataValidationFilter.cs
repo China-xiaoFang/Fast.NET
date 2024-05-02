@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -154,27 +154,18 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
         // 判断是否跳过规范化结果，如果跳过，返回 400 BadRequestResult
         if (UnifyContext.CheckFailedNonUnify(context.HttpContext, actionDescriptor.MethodInfo, out var unifyResult))
         {
-            // WebAPI 情况
-            if (IaaSContext.IsApiController(method.DeclaringType))
+            // 如果不启用 SuppressModelStateInvalidFilter，则跳过，理应手动验证
+            if (!_apiBehaviorOptions.SuppressModelStateInvalidFilter)
             {
-                // 如果不启用 SuppressModelStateInvalidFilter，则跳过，理应手动验证
-                if (!_apiBehaviorOptions.SuppressModelStateInvalidFilter)
-                {
-                    finalContext.Result = _apiBehaviorOptions.InvalidModelStateResponseFactory(context);
-                }
-                else
-                {
-                    // 返回 JsonResult
-                    finalContext.Result = new JsonResult(validationMetadata.ValidationResult)
-                    {
-                        StatusCode = StatusCodes.Status400BadRequest
-                    };
-                }
+                finalContext.Result = _apiBehaviorOptions.InvalidModelStateResponseFactory(context);
             }
             else
             {
-                // 返回自定义错误页面
-                finalContext.Result = new BadPageResult(StatusCodes.Status400BadRequest) {Code = validationMetadata.Message};
+                // 返回 JsonResult
+                finalContext.Result = new JsonResult(validationMetadata.ValidationResult)
+                {
+                    StatusCode = StatusCodes.Status400BadRequest
+                };
             }
         }
         else

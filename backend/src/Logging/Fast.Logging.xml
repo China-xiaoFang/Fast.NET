@@ -222,12 +222,32 @@
             <param name="builder"><see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.Logging.Extensions.LogContextExtension">
+        <member name="T:Fast.Logging.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 动态Api 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Logging.IServiceCollectionExtension.AddLoggingService(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Hosting.IHostEnvironment)">
+            <summary>
+            注册日志服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="hostEnvironment"><see cref="T:Microsoft.Extensions.Hosting.IHostEnvironment"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.Logging.IServiceCollectionExtension.GetLogOptions(Microsoft.Extensions.Logging.LogLevel,System.Int64)">
+            <summary>
+            配置日志
+            </summary>
+            <param name="logLevel"></param>
+            <param name="fileSizeLimitBytes">日志文件大小 控制每一个日志文件最大存储大小，默认无限制，单位是 B，也就是 1024 才等于 1KB</param>
+        </member>
+        <member name="T:Fast.Logging.LogContextExtension">
             <summary>
             LogContext 拓展
             </summary>
         </member>
-        <member name="M:Fast.Logging.Extensions.LogContextExtension.Set(Fast.Logging.Commons.LogContext,System.Object,System.Object)">
+        <member name="M:Fast.Logging.LogContextExtension.Set(Fast.Logging.Commons.LogContext,System.Object,System.Object)">
             <summary>
             设置上下文数据
             </summary>
@@ -236,7 +256,7 @@
             <param name="value">值</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.Logging.Extensions.LogContextExtension.SetRange(Fast.Logging.Commons.LogContext,System.Collections.Generic.IDictionary{System.Object,System.Object})">
+        <member name="M:Fast.Logging.LogContextExtension.SetRange(Fast.Logging.Commons.LogContext,System.Collections.Generic.IDictionary{System.Object,System.Object})">
             <summary>
             批量设置上下文数据
             </summary>
@@ -244,7 +264,7 @@
             <param name="properties"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.Logging.Extensions.LogContextExtension.Get(Fast.Logging.Commons.LogContext,System.Object)">
+        <member name="M:Fast.Logging.LogContextExtension.Get(Fast.Logging.Commons.LogContext,System.Object)">
             <summary>
             获取上下文数据
             </summary>
@@ -252,7 +272,7 @@
             <param name="key">键</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.Logging.Extensions.LogContextExtension.Get``1(Fast.Logging.Commons.LogContext,System.Object)">
+        <member name="M:Fast.Logging.LogContextExtension.Get``1(Fast.Logging.Commons.LogContext,System.Object)">
             <summary>
             获取上下文数据
             </summary>
@@ -260,12 +280,12 @@
             <param name="key">键</param>
             <returns></returns>
         </member>
-        <member name="T:Fast.Logging.Extensions.LogMessageExtension">
+        <member name="T:Fast.Logging.LogMessageExtension">
             <summary>
             <see cref="T:Fast.Logging.Commons.LogMessage"/> 拓展
             </summary>
         </member>
-        <member name="M:Fast.Logging.Extensions.LogMessageExtension.Write(Fast.Logging.Commons.LogMessage,System.Action{System.Text.Json.Utf8JsonWriter},System.Boolean)">
+        <member name="M:Fast.Logging.LogMessageExtension.Write(Fast.Logging.Commons.LogMessage,System.Action{System.Text.Json.Utf8JsonWriter},System.Boolean)">
             <summary>
             高性能创建 JSON 对象字符串
             </summary>
@@ -274,7 +294,7 @@
             <param name="writeIndented">是否对 JSON 格式化</param>
             <returns><see cref="T:System.String"/></returns>
         </member>
-        <member name="M:Fast.Logging.Extensions.LogMessageExtension.WriteArray(Fast.Logging.Commons.LogMessage,System.Action{System.Text.Json.Utf8JsonWriter},System.Boolean)">
+        <member name="M:Fast.Logging.LogMessageExtension.WriteArray(Fast.Logging.Commons.LogMessage,System.Action{System.Text.Json.Utf8JsonWriter},System.Boolean)">
             <summary>
             高性能创建 JSON 数组字符串
             </summary>
@@ -646,33 +666,6 @@
             配置日志文件写入错误后新的备用日志文件名
             </summary>
             <param name="rollbackFileName">备用日志文件名</param>
-        </member>
-        <member name="T:Fast.Logging.Injections.LoggingInjection">
-            <summary>
-            <see cref="T:Fast.Logging.Injections.LoggingInjection"/> 日志服务注册
-            </summary>
-        </member>
-        <member name="P:Fast.Logging.Injections.LoggingInjection.Order">
-            <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
-            </summary>
-        </member>
-        <member name="M:Fast.Logging.Injections.LoggingInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
-        </member>
-        <member name="M:Fast.Logging.Injections.LoggingInjection.GetLogOptions(Microsoft.Extensions.Logging.LogLevel,System.Int64)">
-            <summary>
-            配置日志
-            </summary>
-            <param name="logLevel"></param>
-            <param name="fileSizeLimitBytes">日志文件大小 控制每一个日志文件最大存储大小，默认无限制，单位是 B，也就是 1024 才等于 1KB</param>
         </member>
         <member name="T:Fast.Logging.Log">
             <summary>

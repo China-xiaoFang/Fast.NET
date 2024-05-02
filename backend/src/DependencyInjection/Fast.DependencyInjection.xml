@@ -4,39 +4,24 @@
         <name>Fast.DependencyInjection</name>
     </assembly>
     <members>
-        <member name="T:Fast.DependencyInjection.Injections.DependencyInjection">
+        <member name="T:Fast.DependencyInjection.IServiceCollectionExtension">
             <summary>
-            <see cref="T:Fast.DependencyInjection.Injections.DependencyInjection"/> 依赖注入服务注册
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 依赖注入 拓展类
             </summary>
         </member>
-        <member name="P:Fast.DependencyInjection.Injections.DependencyInjection.Order">
-            <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
-            </summary>
-        </member>
-        <member name="F:Fast.DependencyInjection.Injections.DependencyInjection.TypeNamedCollection">
+        <member name="F:Fast.DependencyInjection.IServiceCollectionExtension.TypeNamedCollection">
             <summary>
             类型名称集合
             </summary>
         </member>
-        <member name="M:Fast.DependencyInjection.Injections.DependencyInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+        <member name="M:Fast.DependencyInjection.IServiceCollectionExtension.AddDependencyInjection(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
-        </member>
-        <member name="M:Fast.DependencyInjection.Injections.DependencyInjection.AddInnerDependencyInjection(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            添加扫描注入
+            添加依赖注入服务
             </summary>
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
         </member>
-        <member name="M:Fast.DependencyInjection.Injections.DependencyInjection.RegisterService(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,System.Type,System.Collections.Generic.IEnumerable{System.Type})">
+        <member name="M:Fast.DependencyInjection.IServiceCollectionExtension.RegisterService(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,System.Type,System.Collections.Generic.IEnumerable{System.Type})">
             <summary>
             注册服务
             </summary>
@@ -45,7 +30,7 @@
             <param name="type">类型</param>
             <param name="canInjectInterfaces">能被注册的接口</param>
         </member>
-        <member name="M:Fast.DependencyInjection.Injections.DependencyInjection.Register(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,System.Type,System.Type)">
+        <member name="M:Fast.DependencyInjection.IServiceCollectionExtension.Register(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type,System.Type,System.Type)">
             <summary>
             注册类型
             </summary>
@@ -54,21 +39,21 @@
             <param name="type">类型</param>
             <param name="inter">接口</param>
         </member>
-        <member name="M:Fast.DependencyInjection.Injections.DependencyInjection.FixedGenericType(System.Type)">
+        <member name="M:Fast.DependencyInjection.IServiceCollectionExtension.FixedGenericType(System.Type)">
             <summary>
             修复泛型类型注册类型问题
             </summary>
             <param name="type">类型</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.DependencyInjection.Injections.DependencyInjection.RegisterNamedService``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Fast.DependencyInjection.IServiceCollectionExtension.RegisterNamedService``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             注册命名服务（接口多实现）
             </summary>
             <typeparam name="TDependency"></typeparam>
             <param name="services"></param>
         </member>
-        <member name="M:Fast.DependencyInjection.Injections.DependencyInjection.TryGetServiceLifetime(System.Type)">
+        <member name="M:Fast.DependencyInjection.IServiceCollectionExtension.TryGetServiceLifetime(System.Type)">
             <summary>
             根据依赖接口类型解析 ServiceLifetime 对象
             </summary>

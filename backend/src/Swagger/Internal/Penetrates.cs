@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -25,9 +25,4 @@ internal static class Penetrates
     /// 规范化文档配置
     /// </summary>
     internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
-
-    /// <summary>
-    /// 规范化文档选项
-    /// </summary>
-    internal static ISwaggerOptions SwaggerOptions { get; set; }
 }

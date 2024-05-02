@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -34,6 +34,11 @@ public class ApiInfoAttribute : Attribute
     public HttpRequestActionEnum ApiAction { get; set; }
 
     /// <summary>
+    /// 接口权限标识集合
+    /// </summary>
+    public List<string> TagList { get; set; }
+
+    /// <summary>
     /// <see cref="ApiInfoAttribute"/> 接口名称
     /// </summary>
     /// <param name="apiName"><see cref="string"/> Api名称</param>
@@ -42,6 +47,7 @@ public class ApiInfoAttribute : Attribute
     {
         ApiName = apiName ?? throw new ArgumentNullException(nameof(apiName));
         ApiAction = HttpRequestActionEnum.None;
+        TagList = null;
     }
 
     /// <summary>
@@ -54,5 +60,20 @@ public class ApiInfoAttribute : Attribute
     {
         ApiName = apiName ?? throw new ArgumentNullException(nameof(apiName));
         ApiAction = apiAction;
+        TagList = null;
+    }
+
+    /// <summary>
+    /// <see cref="ApiInfoAttribute"/> 接口名称
+    /// </summary>
+    /// <param name="apiName"><see cref="string"/> Api名称</param>
+    /// <param name="apiAction"><see cref="HttpRequestActionEnum"/> 接口操作方式</param>
+    /// <param name="tagArray"><see cref="Array"/> 接口权限标识</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    public ApiInfoAttribute(string apiName, HttpRequestActionEnum apiAction, params string[] tagArray)
+    {
+        ApiName = apiName ?? throw new ArgumentNullException(nameof(apiName));
+        ApiAction = apiAction;
+        TagList = tagArray.ToList();
     }
 }
