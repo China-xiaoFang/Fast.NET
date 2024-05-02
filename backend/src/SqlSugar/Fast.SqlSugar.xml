@@ -586,26 +586,49 @@
             <param name="dbType"></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.SqlSugar.Extensions.SqlSugarExtension">
+        <member name="T:Fast.SqlSugar.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 动态Api 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.SqlSugar.IServiceCollectionExtension.AddSqlSugar(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.String,System.String)">
+            <summary>
+            注册SqlSugar服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
+            <param name="connectionSection">
+            <see cref="T:System.String"/>
+            <para>Json配置文件节点的Key</para>
+            <remarks>默认值：ConnectionSettings</remarks>
+            </param>
+            <param name="snowflakeSetion">
+            <see cref="T:System.String"/>
+            <para>Json配置文件节点的Key</para>
+            <remarks>默认值：SnowflakeSettings</remarks>
+            </param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="T:Fast.SqlSugar.SqlSugarExtension">
             <summary>
             <see cref="T:SqlSugar.ISqlSugarClient"/> SqlSugar 拓展类
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarExtension.GetSugarTableName(System.Type)">
+        <member name="M:Fast.SqlSugar.SqlSugarExtension.GetSugarTableName(System.Type)">
             <summary>
             获取SugarTable特性中的TableName
             </summary>
             <param name="type"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarExtension.GetSugarTableAttribute(System.Type)">
+        <member name="M:Fast.SqlSugar.SqlSugarExtension.GetSugarTableAttribute(System.Type)">
             <summary>
             获取SugarTable特性
             </summary>
             <param name="type"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarExtension.ToDataTable``1(System.Collections.Generic.List{``0})">
+        <member name="M:Fast.SqlSugar.SqlSugarExtension.ToDataTable``1(System.Collections.Generic.List{``0})">
             <summary>
             转为DataTable
             </summary>
@@ -613,12 +636,12 @@
             <param name="list"></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.SqlSugar.Extensions.SqlSugarPageExtension">
+        <member name="T:Fast.SqlSugar.SqlSugarPageExtension">
             <summary>
             <see cref="T:SqlSugar.ISugarQueryable`1"/> ISugarQueryable 分页拓展类
             </summary>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput)">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -627,7 +650,7 @@
             <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput)">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -636,18 +659,7 @@
             <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.String)">
-            <summary>
-            SqlSugar分页扩展
-            </summary>
-            <typeparam name="TEntity"></typeparam>
-            <typeparam name="TResult"></typeparam>
-            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
-            <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
-            <param name="select"><see cref="T:System.String"/> 对应的Sql语句映射，例如 t1.*</param>
-            <returns></returns>
-        </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.String)">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.String)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -658,7 +670,18 @@
             <param name="select"><see cref="T:System.String"/> 对应的Sql语句映射，例如 t1.*</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.String)">
+            <summary>
+            SqlSugar分页扩展
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
+            <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 通用SqlSugar 分页输入</param>
+            <param name="select"><see cref="T:System.String"/> 对应的Sql语句映射，例如 t1.*</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.ToPagedList``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -670,7 +693,7 @@
             <param name="isAutoFill"><see cref="T:System.Boolean"/> 其余字段自动映射，根据字段名称，默认为 false</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.ToPagedListAsync``2(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -682,7 +705,7 @@
             <param name="isAutoFill"><see cref="T:System.Boolean"/> 其余字段自动映射，根据字段名称，默认为 false</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.ToPagedList``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -692,7 +715,7 @@
             <param name="pageSize"><see cref="T:System.Int32"/> 页码</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.ToPagedListAsync``1(SqlSugar.ISugarQueryable{``0},System.Int32,System.Int32)">
             <summary>
             SqlSugar分页扩展
             </summary>
@@ -702,7 +725,7 @@
             <param name="pageSize"><see cref="T:System.Int32"/> 页码</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.PagedWhere``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput)">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.PagedWhere``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput)">
             <summary>
             分页搜索
             <remarks>支持多库</remarks>
@@ -712,7 +735,7 @@
             <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 统一分页输入</param>
             <returns></returns>
         </member>
-        <member name="M:Fast.SqlSugar.Extensions.SqlSugarPageExtension.PagedOrderBy``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedSortInput[])">
+        <member name="M:Fast.SqlSugar.SqlSugarPageExtension.PagedOrderBy``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedSortInput[])">
             <summary>
             分页排序
             <remarks>支持多库</remarks>
@@ -1073,26 +1096,6 @@
             <summary>
             主键Id
             </summary>
-        </member>
-        <member name="T:Fast.SqlSugar.Injections.SqlSugarInjection">
-            <summary>
-            <see cref="T:Fast.SqlSugar.Injections.SqlSugarInjection"/> SqlSugar服务注入
-            </summary>
-        </member>
-        <member name="P:Fast.SqlSugar.Injections.SqlSugarInjection.Order">
-            <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
-            </summary>
-        </member>
-        <member name="M:Fast.SqlSugar.Injections.SqlSugarInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
         </member>
         <member name="T:Fast.SqlSugar.Options.ConnectionSettingsOptions">
             <summary>

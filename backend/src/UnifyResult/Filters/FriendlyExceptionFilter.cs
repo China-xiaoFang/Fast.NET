@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -125,20 +125,8 @@ internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
             // 判断是否跳过规范化结果，如果是，则只处理友好异常消息
             if (UnifyContext.CheckFailedNonUnify(context.HttpContext, controllerActionDescriptor.MethodInfo, out var unifyResult))
             {
-                // WebAPI 情况
-                if (IaaSContext.IsApiController(controllerActionDescriptor.MethodInfo.DeclaringType))
-                {
-                    // 返回 JsonResult
-                    context.Result = new JsonResult(exceptionMetadata.Errors) {StatusCode = exceptionMetadata.StatusCode,};
-                }
-                else
-                {
-                    // 返回自定义错误页面
-                    context.Result = new BadPageResult(exceptionMetadata.StatusCode)
-                    {
-                        Title = "Internal Server: " + exceptionMetadata.Errors, Code = context.Exception.ToString()
-                    };
-                }
+                // 返回 JsonResult
+                context.Result = new JsonResult(exceptionMetadata.Errors) {StatusCode = exceptionMetadata.StatusCode,};
             }
             else
             {

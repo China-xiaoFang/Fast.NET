@@ -24,6 +24,30 @@
             服务名称
             </summary>
         </member>
+        <member name="T:Fast.Cache.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> Cache 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Cache.IServiceCollectionExtension.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            添加Redis缓存服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="section"><see cref="T:System.String"/>
+            <para>Json配置文件节点的Key</para>
+            <remarks>默认值：RedisSettings</remarks>
+            </param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.Cache.IServiceCollectionExtension.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Fast.Cache.Options.RedisSettingsOptions})">
+            <summary>
+            添加Redis缓存服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="optionAction"><see cref="T:System.Action`1"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
         <member name="T:Fast.Cache.Implements.Cache">
             <summary>
             <see cref="T:Fast.Cache.Implements.Cache"/> 默认缓存实现
@@ -304,26 +328,6 @@
             <typeparam name="T"></typeparam>
             <param name="value"></param>
             <returns></returns>
-        </member>
-        <member name="T:Fast.Cache.Injections.CacheInjection">
-            <summary>
-            <see cref="T:Fast.Cache.Injections.CacheInjection"/> 缓存注入
-            </summary>
-        </member>
-        <member name="P:Fast.Cache.Injections.CacheInjection.Order">
-            <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
-            </summary>
-        </member>
-        <member name="M:Fast.Cache.Injections.CacheInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
         </member>
         <member name="T:Fast.Cache.ICache">
             <summary>

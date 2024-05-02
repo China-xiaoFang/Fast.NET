@@ -4,6 +4,51 @@
         <name>Fast.Swagger</name>
     </assembly>
     <members>
+        <member name="T:Fast.Swagger.OperationIdAttribute">
+            <summary>
+            <see cref="T:Fast.Swagger.OperationIdAttribute"/> 配置规范化文档 OperationId 问题
+            </summary>
+        </member>
+        <member name="M:Fast.Swagger.OperationIdAttribute.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="operationId">自定义 OperationId，可用户生成可读的前端代码</param>
+        </member>
+        <member name="P:Fast.Swagger.OperationIdAttribute.OperationId">
+            <summary>
+            自定义 OperationId
+            </summary>
+        </member>
+        <member name="T:Fast.Swagger.SchemaIdAttribute">
+            <summary>
+            <see cref="T:Fast.Swagger.SchemaIdAttribute"/> 解决规范化文档 SchemaId 冲突问题
+            </summary>
+        </member>
+        <member name="M:Fast.Swagger.SchemaIdAttribute.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="schemaId">自定义 SchemaId，只能是字母开头，只运行下划线_连接</param>
+        </member>
+        <member name="M:Fast.Swagger.SchemaIdAttribute.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="schemaId">自定义 SchemaId</param>
+            <param name="replace">默认在头部叠加，设置 true 之后，将直接使用 <see cref="P:Fast.Swagger.SchemaIdAttribute.SchemaId"/></param>
+        </member>
+        <member name="P:Fast.Swagger.SchemaIdAttribute.SchemaId">
+            <summary>
+            自定义 SchemaId
+            </summary>
+        </member>
+        <member name="P:Fast.Swagger.SchemaIdAttribute.Replace">
+            <summary>
+            完全覆盖
+            </summary>
+            <remarks>默认在头部叠加，设置 true 之后，将直接使用 <see cref="P:Fast.Swagger.SchemaIdAttribute.SchemaId"/></remarks>
+        </member>
         <member name="T:Fast.Swagger.Builders.SwaggerDocumentBuilder">
             <summary>
             <see cref="T:Fast.Swagger.Builders.SwaggerDocumentBuilder"/> 规范化文档构建器
@@ -340,6 +385,44 @@
             安全需求
             </summary>
         </member>
+        <member name="T:Fast.Swagger.IApplicationBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> Swagger 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Swagger.IApplicationBuilderExtension.UseSwaggerDocuments(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Swashbuckle.AspNetCore.Swagger.SwaggerOptions},System.Action{Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIOptions})">
+            <summary>
+            启用 Swagger
+            </summary>
+            <param name="app"><see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/></param>
+            <param name="configure"><see cref="T:System.Action`1"/></param>
+            <param name="configureUI"><see cref="T:System.Action`1"/></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Swagger.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> Swagger 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Swagger.IServiceCollectionExtension.AddSwaggerDocuments(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})">
+            <summary>
+            添加 Swagger 服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
+            <param name="section"><see cref="T:System.String"/></param>
+            <param name="configure"></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.Swagger.IServiceCollectionExtension.AddSwaggerDocuments(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Fast.Swagger.Options.SwaggerSettingsOptions},System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})">
+            <summary>
+            添加 Swagger 服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="optionAction"><see cref="T:System.Action`1"/></param>
+            <param name="configure"></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
         <member name="T:Fast.Swagger.Filters.AnySchemaFilter">
             <summary>
             修正 规范化文档 object schema，统一显示为 any
@@ -382,18 +465,6 @@
             <param name="model"></param>
             <param name="context"></param>
         </member>
-        <member name="T:Fast.Swagger.Filters.SwaggerStartupFilter">
-            <summary>
-            <see cref="T:Fast.Swagger.Filters.SwaggerStartupFilter"/> 应用启动时自动注册中间件
-            </summary>
-        </member>
-        <member name="M:Fast.Swagger.Filters.SwaggerStartupFilter.Configure(System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder})">
-            <summary>
-            配置中间件
-            </summary>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
         <member name="T:Fast.Swagger.Filters.TagsOrderDocumentFilter">
             <summary>
             标签文档排序/注释拦截器
@@ -406,26 +477,6 @@
             <param name="swaggerDoc"></param>
             <param name="context"></param>
         </member>
-        <member name="T:Fast.Swagger.Injections.SwaggerInjection">
-            <summary>
-            <see cref="T:Fast.Swagger.Injections.SwaggerInjection"/> Swagger注入
-            </summary>
-        </member>
-        <member name="P:Fast.Swagger.Injections.SwaggerInjection.Order">
-            <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
-            </summary>
-        </member>
-        <member name="M:Fast.Swagger.Injections.SwaggerInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
-        </member>
         <member name="T:Fast.Swagger.Internal.Penetrates">
             <summary>
             <see cref="T:Fast.Swagger.Internal.Penetrates"/> 常量，公共方法配置类
@@ -434,11 +485,6 @@
         <member name="P:Fast.Swagger.Internal.Penetrates.SwaggerSettings">
             <summary>
             规范化文档配置
-            </summary>
-        </member>
-        <member name="P:Fast.Swagger.Internal.Penetrates.SwaggerOptions">
-            <summary>
-            规范化文档选项
             </summary>
         </member>
         <member name="T:Fast.Swagger.Options.ISwaggerOptions">

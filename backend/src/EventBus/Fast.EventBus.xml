@@ -153,24 +153,36 @@
             执行前时间
             </summary>
         </member>
-        <member name="T:Fast.EventBus.Extensions.EventBusExtension">
+        <member name="T:Fast.EventBus.EventBusExtension">
             <summary>
-            <see cref="T:Fast.EventBus.Extensions.EventBusExtension"/> 事件总线拓展类
+            <see cref="T:Fast.EventBus.EventBusExtension"/> 事件总线拓展类
             </summary>
         </member>
-        <member name="M:Fast.EventBus.Extensions.EventBusExtension.EventBusToString(System.Enum)">
+        <member name="M:Fast.EventBus.EventBusExtension.EventBusToString(System.Enum)">
             <summary>
             将事件枚举 Id 转换成字符串对象
             </summary>
             <param name="em"></param>
             <returns></returns>
         </member>
-        <member name="M:Fast.EventBus.Extensions.EventBusExtension.EventBusToEnum(System.String)">
+        <member name="M:Fast.EventBus.EventBusExtension.EventBusToEnum(System.String)">
             <summary>
             将事件枚举字符串转换成枚举对象
             </summary>
             <param name="str"></param>
             <returns></returns>
+        </member>
+        <member name="T:Fast.EventBus.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 动态Api 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.EventBus.IServiceCollectionExtension.AddEventBus(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加事件总线服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
         </member>
         <member name="T:Fast.EventBus.Factories.EventBusFactory">
             <summary>
@@ -320,26 +332,6 @@
             <param name="message">消息</param>
             <param name="args">参数</param>
             <param name="ex">异常</param>
-        </member>
-        <member name="T:Fast.EventBus.Injections.EventBusInjection">
-            <summary>
-            <see cref="T:Fast.EventBus.Injections.EventBusInjection"/> 统一返回注入
-            </summary>
-        </member>
-        <member name="P:Fast.EventBus.Injections.EventBusInjection.Order">
-            <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
-            </summary>
-        </member>
-        <member name="M:Fast.EventBus.Injections.EventBusInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
         </member>
         <member name="T:Fast.EventBus.Interfaces.IEventSubscriber">
             <summary>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Mapster.DependencyInjection</name>
+    </assembly>
+    <members>
+        <member name="M:MapsterMapper.ServiceMapper.From``1(``0)">
+            <summary>
+            Create mapping builder.
+            </summary>
+            <typeparam name="TSource">Source type to create mapping builder.</typeparam>
+            <param name="source">Source object to create mapping builder.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MapsterMapper.ServiceMapper.Map``1(System.Object)">
+            <summary>
+            Perform mapping from source object to type of destination.
+            </summary>
+            <typeparam name="TDestination">Destination type to create mapping builder.</typeparam>
+            <param name="source">Source object to create mapping builder.</param>
+            <returns>Type of destination object that mapped.</returns>
+        </member>
+        <member name="M:MapsterMapper.ServiceMapper.Map``2(``0)">
+            <summary>
+            Perform mapping from type of source to type of destination.
+            </summary>
+            <typeparam name="TSource">Source type to map.</typeparam>
+            <typeparam name="TDestination">Destination type to map.</typeparam>
+            <param name="source">Source object to map.</param>
+            <returns>Type of destination object that mapped.</returns>
+        </member>
+        <member name="M:MapsterMapper.ServiceMapper.Map``2(``0,``1)">
+            <summary>
+            Perform mapping from type of source to type of destination.
+            </summary>
+            <typeparam name="TSource">Source type to map.</typeparam>
+            <typeparam name="TDestination">Destination type to map.</typeparam>
+            <param name="source">Source object to map.</param>
+            <param name="destination">Destination object to map.</param>
+            <returns>Type of destination object that mapped.</returns>
+        </member>
+        <member name="M:MapsterMapper.ServiceMapper.Map(System.Object,System.Type,System.Type)">
+            <summary>
+            Perform mapping source object from source type to destination type.
+            </summary>
+            <param name="source">Source object to map.</param>
+            <param name="sourceType">Source type to map.</param>
+            <param name="destinationType">Destination type to map.</param>
+            <returns>Mapped object.</returns>
+        </member>
+        <member name="M:MapsterMapper.ServiceMapper.Map(System.Object,System.Object,System.Type,System.Type)">
+            <summary>
+            Perform mapping source object from source type to destination type.
+            </summary>
+            <param name="source">Source object to map.</param>
+            <param name="destination">Destination object to map.</param>
+            <param name="sourceType">Source type to map.</param>
+            <param name="destinationType">Destination type to map.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

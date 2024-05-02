@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -13,13 +13,10 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using Fast.IaaS;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-
-[assembly: InternalsVisibleTo("Fast.IaaS")]
 
 namespace Fast.NET.Core.Filters;
 
@@ -37,8 +34,14 @@ internal class CoreStartupFilter : IStartupFilter
     {
         return app =>
         {
+            // 存储应用程序构建起
+            FastContext.WebApplication = app;
+
             // 存储根服务
             FastContext.RootServices = app.ApplicationServices;
+
+            // 解决 IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题
+            app.UseForwardedHeaders();
 
             // 环境名
             var envName = FastContext.WebHostEnvironment?.EnvironmentName ?? "Unknown";

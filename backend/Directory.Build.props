@@ -9,13 +9,13 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageOutputPath>$(SolutionDir)..\nupkgs</PackageOutputPath>
-		<Version>3.4.20</Version>
+		<Version>3.5.0</Version>
 		<PackageVersion>$(Version)</PackageVersion>
-		<Authors>1.8K仔</Authors>
+		<Authors>小方</Authors>
 		<Description>一个快速构建项目的 .NET 框架。</Description>
-		<PackageTags>Fast.NET;ASP.NET;dotNET China;Cross Platform;1.8K仔</PackageTags>
+		<PackageTags>Fast.NET;ASP.NET;dotNET China;Cross Platform;1.8K仔;小方</PackageTags>
 		<Product>Fast.NET</Product>
-		<Copyright>版权所有 © 2018-2024 1.8K仔</Copyright>
+		<Copyright>版权所有 © 2018-Now 小方</Copyright>
 		<PackageProjectUrl>https://fastdotnet.com</PackageProjectUrl>
 		<PackageIcon>Fast.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -47,7 +47,7 @@
 	</ItemGroup>
 
 	<!-- 默认所有模块，全部引用基础设施模块 -->
-	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Fast.IaaS'">
+	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Fast.IaaS' And '$(MSBuildProjectName.StartsWith(Fast.))' == 'True'">
 		<ProjectReference Include="$(SolutionDir)src\IaaS\Fast.IaaS.csproj" />
 	</ItemGroup>
 

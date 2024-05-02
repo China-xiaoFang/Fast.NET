@@ -4,6 +4,95 @@
         <name>Fast.DynamicApplication</name>
     </assembly>
     <members>
+        <member name="T:Fast.DynamicApplication.ApiDescriptionSettingsAttribute">
+            <summary>
+            接口描述设置
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor(System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="enabled">是否启用</param>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor(System.String[])">
+            <summary>
+            构造函数
+            </summary>
+            <param name="groups">分组列表</param>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Name">
+            <summary>
+            自定义名称
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Module">
+            <summary>
+            模块名
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Version">
+            <summary>
+            版本号
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Groups">
+            <summary>
+            分组
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Tag">
+            <summary>
+            标签
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Description">
+            <summary>
+            额外描述，支持 HTML
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.ForceWithRoutePrefix">
+            <summary>
+            强制携带路由前缀，即使使用 [Route] 重写，仅对 Class/Controller 有效
+            </summary>
+        </member>
+        <member name="T:Fast.DynamicApplication.DynamicApplicationAttribute">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.DynamicApplicationAttribute"/> 动态API应用特性
+            </summary>
+        </member>
+        <member name="T:Fast.DynamicApplication.DynamicApplicationContext">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.DynamicApplicationContext"/> Dynamic Application 上下文
+            </summary>
+        </member>
+        <member name="F:Fast.DynamicApplication.DynamicApplicationContext.IsApiControllerCached">
+            <summary>
+            <see cref="M:Fast.DynamicApplication.DynamicApplicationContext.IsApiController(System.Type)"/> 缓存集合
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.DynamicApplicationContext.ControllerOrderCollection">
+            <summary>
+            控制器排序集合
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApplicationContext.IsApiController(System.Type)">
+            <summary>
+            是否是Api控制器
+            </summary>
+            <param name="type">type</param>
+            <returns></returns>
+        </member>
         <member name="T:Fast.DynamicApplication.Conventions.DynamicApiControllerApplicationModelConvention">
             <summary>
             <see cref="T:Fast.DynamicApplication.Conventions.DynamicApiControllerApplicationModelConvention"/> 动态接口控制器应用模型转换器
@@ -161,6 +250,18 @@
             <param name="template"></param>
             <returns></returns>
         </member>
+        <member name="T:Fast.DynamicApplication.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 动态Api 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.IServiceCollectionExtension.AddDynamicApplication(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加动态Api服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
         <member name="T:Fast.DynamicApplication.Formatters.TextPlainMediaTypeFormatter">
             <summary>
             text/plain 请求 Body 参数支持
@@ -179,25 +280,10 @@
             <param name="effectiveEncoding"></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.DynamicApplication.Injections.DynamicApplicationInjection">
+        <member name="T:Fast.DynamicApplication.IDynamicApplication">
             <summary>
-            <see cref="T:Fast.DynamicApplication.Injections.DynamicApplicationInjection"/> 动态API注入
+            <see cref="T:Fast.DynamicApplication.IDynamicApplication"/> 动态API应用依赖接口
             </summary>
-        </member>
-        <member name="P:Fast.DynamicApplication.Injections.DynamicApplicationInjection.Order">
-            <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
-            </summary>
-        </member>
-        <member name="M:Fast.DynamicApplication.Injections.DynamicApplicationInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
         </member>
         <member name="T:Fast.DynamicApplication.Internal.ParameterRouteTemplate">
             <summary>

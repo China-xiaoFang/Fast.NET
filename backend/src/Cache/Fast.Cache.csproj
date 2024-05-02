@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CSRedisCore" Version="3.8.802" />
+		<ProjectReference Include="$(SolutionDir)Library\CSRedis\CSRedis.csproj" />
 	</ItemGroup>
 
 </Project>

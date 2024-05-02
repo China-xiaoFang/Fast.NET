@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -118,7 +118,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     /// <param name="application">引用模型</param>
     public void Apply(ApplicationModel application)
     {
-        var controllers = application.Controllers.Where(u => IaaSContext.IsApiController(u.ControllerType));
+        var controllers = application.Controllers.Where(u => DynamicApplicationContext.IsApiController(u.ControllerType));
         foreach (var controller in controllers)
         {
             var controllerType = controller.ControllerType;
@@ -134,7 +134,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 if (controller.ApiExplorer?.IsVisible == false)
                 {
                     // 存储排序给 Swagger 使用
-                    IaaSContext.ControllerOrderCollection.TryAdd(controller.ControllerName,
+                    DynamicApplicationContext.ControllerOrderCollection.TryAdd(controller.ControllerName,
                         (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName,
                             controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
 
@@ -170,7 +170,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         ConfigureControllerRouteAttribute(controller, controllerApiDescriptionSettings);
 
         // 存储排序给 Swagger 使用
-        IaaSContext.ControllerOrderCollection.TryAdd(controller.ControllerName,
+        DynamicApplicationContext.ControllerOrderCollection.TryAdd(controller.ControllerName,
             (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName, controllerApiDescriptionSettings?.Order ?? 0,
                 controller.ControllerType));
 

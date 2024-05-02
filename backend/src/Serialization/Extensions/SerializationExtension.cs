@@ -1,6 +1,6 @@
 ﻿// Apache开源许可证
 //
-// 版权所有 © 2018-2024 1.8K仔
+// 版权所有 © 2018-Now 小方
 //
 // 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
 // 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
@@ -16,7 +16,8 @@ using System.Collections;
 using System.Text.Json;
 using Fast.IaaS;
 
-namespace Fast.Serialization.Extensions;
+// ReSharper disable once CheckNamespace
+namespace Fast.Serialization;
 
 /// <summary>
 /// <see cref="SerializationExtension"/> 序列化拓展类
@@ -33,7 +34,7 @@ public static class SerializationExtension
     public static T ToObject<T>(this string json)
     {
         json = json.Replace("&nbsp;", "");
-        return JsonSerializer.Deserialize<T>(json);
+        return JsonSerializer.Deserialize<T>(json, JsonContext.JsonOptions?.JsonSerializerOptions);
     }
 
     /// <summary>
@@ -45,7 +46,7 @@ public static class SerializationExtension
     public static object ToObject(this string json, Type type)
     {
         json = json.Replace("&nbsp;", "");
-        return JsonSerializer.Deserialize(json, type);
+        return JsonSerializer.Deserialize(json, type, JsonContext.JsonOptions?.JsonSerializerOptions);
     }
 
     /// <summary>
@@ -55,7 +56,7 @@ public static class SerializationExtension
     /// <returns><see cref="string"/> 反序列化后的 JSON 字符串</returns>
     public static string ToJsonString(this object obj)
     {
-        return JsonSerializer.Serialize(obj);
+        return JsonSerializer.Serialize(obj, JsonContext.JsonOptions?.JsonSerializerOptions);
     }
 
     /// <summary>
@@ -89,6 +90,9 @@ public static class SerializationExtension
     /// <returns></returns>
     public static T DeepCopy<T>(this T source)
     {
-        return source is null ? default : JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(source));
+        return source is null
+            ? default
+            : JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(source, JsonContext.JsonOptions?.JsonSerializerOptions),
+                JsonContext.JsonOptions?.JsonSerializerOptions);
     }
 }

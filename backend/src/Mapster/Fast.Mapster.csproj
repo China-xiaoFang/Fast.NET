@@ -2,7 +2,13 @@
 
 	<PropertyGroup>
 		<PackageId>Fast.Mapster</PackageId>
-		<Description>Fast.NET 框架对象映射模块库。（因和 “Mapster” 官方包引用冲突，所以选择获取源码进行发布。源码地址：https://github.com/MapsterMapper/Mapster/tree/v7.4.0）</Description>
+		<Description>Fast.NET 框架对象映射模块库。</Description>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)Library\Mapster\Mapster.csproj" />
+		<ProjectReference Include="$(SolutionDir)Library\Mapster.Core\Mapster.Core.csproj" />
+		<ProjectReference Include="$(SolutionDir)Library\Mapster.DependencyInjection\Mapster.DependencyInjection.csproj" />
+	</ItemGroup>
 
 </Project>
