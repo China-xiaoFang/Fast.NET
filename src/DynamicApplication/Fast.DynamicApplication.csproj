@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Version>3.5.1</Version>
+		<PackageId>Fast.DynamicApplication</PackageId>
+		<Description>Fast.NET 框架动态Api模块库。</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)src\Runtime\Fast.Runtime.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)src\UnifyResult\Fast.UnifyResult.csproj" />
+	</ItemGroup>
+
+</Project>

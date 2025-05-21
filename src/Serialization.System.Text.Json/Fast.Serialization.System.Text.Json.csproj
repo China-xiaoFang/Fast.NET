@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Version>3.5.1</Version>
+		<PackageId>Fast.Serialization.System.Text.Json</PackageId>
+		<Description>Fast.NET 框架 System.Text.Json 序列化模块库。</Description>
+	</PropertyGroup>
+
+	<!-- 使用 ASPNETCore.App 包 -->
+	<!-- https://learn.microsoft.com/zh-cn/aspnet/core/fundamentals/target-aspnetcore?view=aspnetcore-8.0&tabs=visual-studio -->
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+</Project>

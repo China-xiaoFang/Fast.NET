@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<PackageId>Fast.UnifyResult</PackageId>
-		<Description>Fast.NET 框架RESTful风格统一返回模块库。</Description>
-	</PropertyGroup>
-
-</Project>

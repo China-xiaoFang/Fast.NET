@@ -1,0 +1,562 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Serialization.Newtonsoft.Json</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.Serialization.JsonContext">
+            <summary>
+            <see cref="T:Fast.Serialization.JsonContext"/> Newtonsoft.Json 序列化上下文
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.JsonContext.JsonOptionsAction">
+            <summary>
+            Newtonsoft.Json 选项
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.JsonContext.SerializerOptions">
+            <summary>
+            Newtonsoft.Json 序列化选项
+            </summary>
+        </member>
+        <member name="T:Fast.Serialization.IMvcBuilderExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> Newtonsoft.Json 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.IMvcBuilderExtension.AddSerialization(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            添加 Newtonsoft.Json 序列化服务
+            </summary>
+            <param name="builder"><see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/></returns>
+        </member>
+        <member name="T:Fast.Serialization.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> Newtonsoft.Json 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.IServiceCollectionExtension.AddSerialization(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.AspNetCore.Mvc.MvcNewtonsoftJsonOptions})">
+            <summary>
+            添加 Newtonsoft.Json 序列化服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="configureOptions"><see cref="T:System.Action`1"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="T:Fast.Serialization.SerializationExtension">
+            <summary>
+            <see cref="T:Fast.Serialization.SerializationExtension"/> Newtonsoft.Json 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToObject``1(System.String)">
+            <summary>
+            JSON 字符串转 Object
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="json"><see cref="T:System.String"/> 需要序列化的 JSON 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToObject(System.String,System.Type)">
+            <summary>
+            JSON 字符串转 Object
+            </summary>
+            <param name="json"><see cref="T:System.String"/> 需要序列化的 JSON 字符串</param>
+            <param name="type"><see cref="T:System.Type"/> 需要序列化成的类型</param>
+            <returns><see cref="T:System.Object"/> 序列化后的对象</returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToJsonString(System.Object)">
+            <summary>
+            Object 转 JSON字符串
+            </summary>
+            <param name="obj"><see cref="T:System.Object"/> 需要反序列化的对象</param>
+            <returns><see cref="T:System.String"/> 反序列化后的 JSON 字符串</returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToObject``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Dictionary 字符串转 Object
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dictionary"><see cref="T:System.Collections.IDictionary"/> 需要序列化的字典</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToObject(System.Collections.Generic.IDictionary{System.String,System.Object},System.Type)">
+            <summary>
+            Dictionary 字符串转 Object
+            </summary>
+            <param name="dictionary"><see cref="T:System.Collections.IDictionary"/> 需要序列化的字典</param>
+            <param name="type"><see cref="T:System.Type"/> 需要序列化成的类型</param>
+            <returns><see cref="T:System.Object"/> 序列化后的对象</returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.DeepCopy``1(``0)">
+            <summary>
+            深度拷贝
+            </summary>
+            <remarks>此方法是通过将对象序列化成 JSON 字符串，再将 JSON 字符串反序列化成对象，所以性能不是很高，如果介意，请慎用</remarks>
+            <typeparam name="T"></typeparam>
+            <param name="source">需要拷贝的对象</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Serialization.DateJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DateJsonConverter"/> Datetime 类型Json返回日期处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DateJsonConverter.Format">
+            <summary>
+            日期格式化
+            默认：yyyy-MM-dd
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DateJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.DateTime,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.DateJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.DateTime,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableDateJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDateJsonConverter.Format">
+            <summary>
+            日期格式化
+            默认：yyyy-MM-dd
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Nullable{System.DateTime},Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Nullable{System.DateTime},System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.DateTimeJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DateTimeJsonConverter"/> DateTime 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DateTimeJsonConverter.Format">
+            <summary>
+            格式化
+            默认：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.DateTime,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.DateTime,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableDateTimeJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDateTimeJsonConverter"/> DateTime? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDateTimeJsonConverter.Format">
+            <summary>
+            格式化
+            默认：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Nullable{System.DateTime},Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Nullable{System.DateTime},System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.DateTimeOffsetJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DateTimeOffsetJsonConverter"/> DateTimeOffset 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DateTimeOffsetJsonConverter.Format">
+            <summary>
+            格式化
+            默认：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DateTimeOffsetJsonConverter.Localized">
+            <summary>
+            是否输出为为当地时间
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeOffsetJsonConverter.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="format"></param>
+            <param name="outputToLocalDateTime"></param>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeOffsetJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.DateTimeOffset,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeOffsetJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.DateTimeOffset,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableDateTimeOffsetJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDateTimeOffsetJsonConverter"/> DateTimeOffset? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDateTimeOffsetJsonConverter.Format">
+            <summary>
+            格式化
+            默认：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDateTimeOffsetJsonConverter.Localized">
+            <summary>
+            是否输出为为当地时间
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeOffsetJsonConverter.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="format"></param>
+            <param name="outputToLocalDateTime"></param>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeOffsetJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Nullable{System.DateTimeOffset},Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeOffsetJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Nullable{System.DateTimeOffset},System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.DecimalJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DecimalJsonConverter"/> decimal 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DecimalJsonConverter.Places">
+            <summary>
+            小数点位数
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DecimalJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Decimal,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.DecimalJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Decimal,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableDecimalJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDecimalJsonConverter"/> decimal? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDecimalJsonConverter.Places">
+            <summary>
+            小数点位数
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDecimalJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Nullable{System.Decimal},Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.NullableDecimalJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Nullable{System.Decimal},System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.DoubleJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DoubleJsonConverter"/> double 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DoubleJsonConverter.Places">
+            <summary>
+            小数点位数
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DoubleJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Double,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.DoubleJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Double,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableDoubleJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDoubleJsonConverter"/> double? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDoubleJsonConverter.Places">
+            <summary>
+            小数点位数
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDoubleJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Nullable{System.Double},Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.NullableDoubleJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Nullable{System.Double},System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.EnumJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.EnumJsonConverter"/> Enum 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.EnumJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.EnumJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.EnumJsonConverter.CanConvert(System.Type)">
+            <summary>
+            Determines whether this instance can convert the specified object type.
+            </summary>
+            <param name="objectType">Type of the object.</param>
+            <returns>
+            	<c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:Fast.Serialization.ExceptionJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.ExceptionJsonConverter"/> Exception 类型Json返回处理
+            </summary>
+            <remarks>解决 <see cref="T:System.Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
+        </member>
+        <member name="M:Fast.Serialization.ExceptionJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Exception,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.ExceptionJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Exception,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.IntJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.IntJsonConverter"/> int 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.IntJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Int32,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.IntJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Int32,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableIntJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableIntJsonConverter"/> int? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableIntJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Nullable{System.Int32},Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.NullableIntJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Nullable{System.Int32},System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.LongJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.LongJsonConverter"/> Long 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.LongJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Int64,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.LongJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Int64,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableLongJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableLongJsonConverter"/> Long? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableLongJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Nullable{System.Int64},Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.NullableLongJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Nullable{System.Int64},System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.TimeJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.TimeJsonConverter"/> Datetime 类型Json返回时间处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.TimeJsonConverter.Format">
+            <summary>
+            日期格式化
+            默认：HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.TimeJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.DateTime,Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.TimeJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.DateTime,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableTimeJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableTimeJsonConverter"/> Datetime? 类型Json返回时间处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableTimeJsonConverter.Format">
+            <summary>
+            日期格式化
+            默认：HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableTimeJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Nullable{System.DateTime},Newtonsoft.Json.JsonSerializer)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+        </member>
+        <member name="M:Fast.Serialization.NullableTimeJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Nullable{System.DateTime},System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>Reads the JSON representation of the object.</summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
+            <param name="hasExistingValue">The existing value has a value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,249 @@
+# You can modify the rules from these initially generated values to suit your own policies
+# You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+[*.cs]
+
+
+#Core editorconfig formatting - indentation
+
+#use soft tabs (spaces) for indentation
+indent_style = space
+
+#Formatting - indentation options
+
+#indent switch case contents.
+csharp_indent_case_contents = true
+#labels are placed at one less indent to the current context
+csharp_indent_labels = one_less_than_current
+#indent switch labels
+
+#Formatting - new line options
+
+#place catch statements on a new line
+#place else statements on a new line
+#require finally statements to be on a new line after the closing brace
+#require members of object intializers to be on separate lines
+#require braces to be on a new line for properties, accessors, methods, control_blocks, types, lambdas, and object_collection_array_initializers (also known as "Allman" style)
+
+#Formatting - organize using options
+
+#do not place System.* using directives before other using directives
+
+#Formatting - spacing options
+
+#require NO space between a cast and the value
+csharp_space_after_cast = true
+#require a space before the colon for bases or interfaces in a type declaration
+#require a space after a keyword in a control flow statement such as a for loop
+#require a space before the colon for bases or interfaces in a type declaration
+#remove space within empty argument list parentheses
+#remove space between method call name and opening parenthesis
+#do not place space characters after the opening parenthesis and before the closing parenthesis of a method call
+#remove space within empty parameter list parentheses for a method declaration
+#place a space character after the opening parenthesis and before the closing parenthesis of a method declaration parameter list.
+
+#Formatting - wrapping options
+
+#leave code block on single line
+#leave statements and member declarations on the same line
+csharp_preserve_single_line_statements = true
+
+#Style - Code block preferences
+
+#prefer no curly braces if allowed
+
+#Style - expression bodied member options
+
+#prefer block bodies for constructors
+#prefer block bodies for methods
+#prefer expression-bodied members for properties
+
+#Style - expression level options
+
+#prefer out variables to be declared inline in the argument list of a method call when possible
+csharp_style_inlined_variable_declaration = true:suggestion
+#prefer tuple names to ItemX properties
+dotnet_style_explicit_tuple_names = true:suggestion
+#prefer the language keyword for member access expressions, instead of the type name, for types that have a keyword to represent them
+dotnet_style_predefined_type_for_member_access = true:suggestion
+
+#Style - Expression-level  preferences
+
+#prefer default over default(T)
+csharp_prefer_simple_default_expression = true:suggestion
+#prefer objects to be initialized using object initializers when possible
+dotnet_style_object_initializer = true:suggestion
+#prefer inferred tuple element names
+dotnet_style_prefer_inferred_tuple_names = true:suggestion
+
+#Style - implicit and explicit types
+
+#prefer var over explicit type in all cases, unless overridden by another code style rule
+csharp_style_var_elsewhere = true:suggestion
+#prefer var is used to declare variables with built-in system types such as int
+csharp_style_var_for_built_in_types = true:suggestion
+#prefer var when the type is already mentioned on the right-hand side of a declaration expression
+csharp_style_var_when_type_is_apparent = true:suggestion
+
+#Style - language keyword and framework type options
+
+#prefer the language keyword for local variables, method parameters, and class members, instead of the type name, for types that have a keyword to represent them
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+
+#Style - Miscellaneous preferences
+
+#prefer anonymous functions over local functions
+csharp_style_pattern_local_over_anonymous_function = false:suggestion
+
+#Style - Modifier preferences
+
+#when this rule is set to a list of modifiers, prefer the specified ordering.
+csharp_preferred_modifier_order = public, private, protected, internal, file, new, static, abstract, virtual, sealed, readonly, override, extern, unsafe, volatile, async, required:suggestion
+
+#Style - Pattern matching
+
+#prefer pattern matching instead of is expression with type casts
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+
+#Style - qualification options
+
+#prefer fields not to be prefaced with this. or Me. in Visual Basic
+dotnet_style_qualification_for_field = false:suggestion
+#prefer methods not to be prefaced with this. or Me. in Visual Basic
+dotnet_style_qualification_for_method = false:suggestion
+#prefer properties not to be prefaced with this. or Me. in Visual Basic
+dotnet_style_qualification_for_property = false:suggestion
+
+# Microsoft .NET properties
+csharp_style_prefer_utf8_string_literals = true:suggestion
+dotnet_naming_rule.constants_rule.import_to_resharper = True
+dotnet_naming_rule.constants_rule.resharper_description = Constant fields (not private)
+dotnet_naming_rule.constants_rule.resharper_guid = 669e5282-fb4b-4e90-91e7-07d269d04b60
+dotnet_naming_rule.constants_rule.severity = none
+dotnet_naming_rule.constants_rule.style = all_upper_style
+dotnet_naming_rule.constants_rule.symbols = constants_symbols
+dotnet_naming_rule.interfaces_rule.import_to_resharper = True
+dotnet_naming_rule.interfaces_rule.resharper_description = Interfaces
+dotnet_naming_rule.interfaces_rule.resharper_guid = a7a3339e-4e89-4319-9735-a9dc4cb74cc7
+dotnet_naming_rule.interfaces_rule.severity = none
+dotnet_naming_rule.interfaces_rule.style = i_upper_camel_case_style
+dotnet_naming_rule.interfaces_rule.symbols = interfaces_symbols
+dotnet_naming_rule.private_constants_rule.import_to_resharper = True
+dotnet_naming_rule.private_constants_rule.resharper_description = Constant fields (private)
+dotnet_naming_rule.private_constants_rule.resharper_guid = 236f7aa5-7b06-43ca-bf2a-9b31bfcff09a
+dotnet_naming_rule.private_constants_rule.severity = none
+dotnet_naming_rule.private_constants_rule.style = all_upper_style
+dotnet_naming_rule.private_constants_rule.symbols = private_constants_symbols
+dotnet_naming_rule.private_instance_fields_rule.import_to_resharper = True
+dotnet_naming_rule.private_instance_fields_rule.resharper_description = Instance fields (private)
+dotnet_naming_rule.private_instance_fields_rule.resharper_guid = 4a98fdf6-7d98-4f5a-afeb-ea44ad98c70c
+dotnet_naming_rule.private_instance_fields_rule.severity = none
+dotnet_naming_rule.private_instance_fields_rule.style = lower_camel_case_style_1
+dotnet_naming_rule.private_instance_fields_rule.symbols = private_instance_fields_symbols
+dotnet_naming_rule.private_static_fields_rule.import_to_resharper = True
+dotnet_naming_rule.private_static_fields_rule.resharper_description = Static fields (private)
+dotnet_naming_rule.private_static_fields_rule.resharper_guid = f9fce829-e6f4-4cb2-80f1-5497c44f51df
+dotnet_naming_rule.private_static_fields_rule.severity = none
+dotnet_naming_rule.private_static_fields_rule.style = lower_camel_case_style
+dotnet_naming_rule.private_static_readonly_rule.import_to_resharper = True
+dotnet_naming_rule.private_static_readonly_rule.resharper_description = Static readonly fields (private)
+dotnet_naming_rule.private_static_readonly_rule.resharper_guid = 15b5b1f1-457c-4ca6-b278-5615aedc07d3
+dotnet_naming_rule.private_static_readonly_rule.severity = none
+dotnet_naming_rule.private_static_readonly_rule.style = lower_camel_case_style
+dotnet_naming_rule.public_fields_rule.import_to_resharper = True
+dotnet_naming_rule.public_fields_rule.resharper_description = Instance fields (not private)
+dotnet_naming_rule.public_fields_rule.resharper_guid = 53eecf85-d821-40e8-ac97-fdb734542b84
+dotnet_naming_rule.public_fields_rule.severity = none
+dotnet_naming_rule.public_fields_rule.style = m_upper_camel_case_style
+dotnet_naming_rule.public_fields_rule.symbols = public_fields_symbols
+dotnet_naming_rule.public_static_fields_rule.import_to_resharper = True
+dotnet_naming_rule.public_static_fields_rule.resharper_description = Static fields (not private)
+dotnet_naming_rule.public_static_fields_rule.resharper_guid = 70345118-4b40-4ece-937c-bbeb7a0b2e70
+dotnet_naming_rule.public_static_fields_rule.severity = none
+dotnet_naming_rule.public_static_fields_rule.style = m_upper_camel_case_style
+dotnet_naming_rule.static_readonly_rule.import_to_resharper = True
+dotnet_naming_rule.static_readonly_rule.resharper_description = Static readonly fields (not private)
+dotnet_naming_rule.static_readonly_rule.resharper_guid = c873eafb-d57f-481d-8c93-77f6863c2f88
+dotnet_naming_rule.static_readonly_rule.severity = none
+dotnet_naming_rule.static_readonly_rule.style = upper_camel_case_style
+dotnet_naming_style.all_upper_style.capitalization = all_upper
+dotnet_naming_style.all_upper_style.word_separator = _
+dotnet_naming_style.i_upper_camel_case_style.capitalization = pascal_case
+dotnet_naming_style.i_upper_camel_case_style.required_prefix = I
+dotnet_naming_style.lower_camel_case_style.capitalization = camel_case
+dotnet_naming_style.lower_camel_case_style_1.capitalization = camel_case
+dotnet_naming_style.lower_camel_case_style_1.required_prefix = _
+dotnet_naming_style.m_upper_camel_case_style.capitalization = pascal_case
+dotnet_naming_style.m_upper_camel_case_style.required_prefix = m
+dotnet_naming_style.upper_camel_case_style.capitalization = pascal_case
+dotnet_naming_symbols.constants_symbols.applicable_accessibilities = public,internal,protected,protected_internal,private_protected
+dotnet_naming_symbols.constants_symbols.applicable_kinds = field
+dotnet_naming_symbols.constants_symbols.required_modifiers = const
+dotnet_naming_symbols.constants_symbols.resharper_applicable_kinds = constant_field
+dotnet_naming_symbols.constants_symbols.resharper_required_modifiers = any
+dotnet_naming_symbols.interfaces_symbols.applicable_accessibilities = *
+dotnet_naming_symbols.interfaces_symbols.applicable_kinds = interface
+dotnet_naming_symbols.interfaces_symbols.resharper_applicable_kinds = interface
+dotnet_naming_symbols.interfaces_symbols.resharper_required_modifiers = any
+dotnet_naming_symbols.private_constants_symbols.applicable_accessibilities = private
+dotnet_naming_symbols.private_constants_symbols.applicable_kinds = field
+dotnet_naming_symbols.private_constants_symbols.required_modifiers = const
+dotnet_naming_symbols.private_constants_symbols.resharper_applicable_kinds = constant_field
+dotnet_naming_symbols.private_constants_symbols.resharper_required_modifiers = any
+dotnet_naming_symbols.private_instance_fields_symbols.applicable_accessibilities = private
+dotnet_naming_symbols.private_instance_fields_symbols.applicable_kinds = field
+dotnet_naming_symbols.private_instance_fields_symbols.resharper_applicable_kinds = field,readonly_field
+dotnet_naming_symbols.private_instance_fields_symbols.resharper_required_modifiers = instance
+dotnet_naming_symbols.public_fields_symbols.applicable_accessibilities = public,internal,protected,protected_internal,private_protected
+dotnet_naming_symbols.public_fields_symbols.applicable_kinds = field
+dotnet_naming_symbols.public_fields_symbols.resharper_applicable_kinds = field,readonly_field
+dotnet_naming_symbols.public_fields_symbols.resharper_required_modifiers = instance
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:none
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:none
+dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:none
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+
+# ReSharper properties
+resharper_csharp_max_line_length = 130
+resharper_csharp_stick_comment = false
+resharper_keep_existing_embedded_arrangement = false
+resharper_keep_existing_expr_member_arrangement = false
+resharper_keep_existing_initializer_arrangement = false
+resharper_keep_existing_linebreaks = false
+resharper_place_accessorholder_attribute_on_same_line = false
+resharper_place_field_attribute_on_same_line = false
+resharper_place_simple_accessor_on_single_line = false
+resharper_place_simple_embedded_statement_on_same_line = false
+resharper_space_within_single_line_array_initializer_braces = false
+
+# ReSharper inspection severities
+resharper_arrange_redundant_parentheses_highlighting = hint
+resharper_arrange_this_qualifier_highlighting = hint
+resharper_arrange_type_member_modifiers_highlighting = hint
+resharper_arrange_type_modifiers_highlighting = hint
+resharper_assign_null_to_not_null_attribute_highlighting = none
+resharper_built_in_type_reference_style_for_member_access_highlighting = hint
+resharper_built_in_type_reference_style_highlighting = hint
+resharper_class_never_instantiated_global_highlighting = none
+resharper_class_with_virtual_members_never_inherited_global_highlighting = none
+resharper_collection_never_updated_global_highlighting = none
+resharper_convert_to_primary_constructor_highlighting = hint
+resharper_inconsistent_naming_highlighting = none
+resharper_member_can_be_protected_global_highlighting = none
+resharper_redundant_base_qualifier_highlighting = warning
+resharper_suggest_var_or_type_built_in_types_highlighting = hint
+resharper_suggest_var_or_type_elsewhere_highlighting = hint
+resharper_suggest_var_or_type_simple_types_highlighting = hint
+
+[*.{appxmanifest,axml,build,config,csproj,dbml,discomap,dtd,jsproj,lsproj,njsproj,nuspec,proj,props,resw,resx,StyleCop,targets,tasks,vbproj,xml,xsd}]
+indent_style = tab
+indent_size = tab
+tab_width = 4
+
+[*.{asax,ascx,aspx,axaml,cs,cshtml,htm,html,master,paml,razor,skin,vb,xaml,xamlx,xoml}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# Add copyright file header
+file_header_template = ------------------------------------------------------------------------\nApache开源许可证\n\n版权所有 © 2018-Now 小方\n\n许可授权：\n本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。\n在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：\n1.所有软件副本或主要部分必须保留本版权声明及本许可协议。\n2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。\n3.修改或衍生作品须明确标注原作者及原软件出处。\n\n特别声明：\n- 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。\n- 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。\n- 包括但不限于数据丢失、业务中断等情况。\n\n免责条款：\n禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。\n对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。\n------------------------------------------------------------------------
