@@ -121,20 +121,21 @@ Update log [Click to view](https://gitee.com/Net-18K/Fast.NET/commits/master)
 
 | Module name | Status | Version | Description | Remarks |
 | ------ | --- | ---- | --- | --- |
-| [Fast.Cache](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Cache) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache) | Fast.NET Framework cache module library | One in the .NET industry A commonly used Redis cache library for `little rookie` who has been in the industry for `N years`, based on [CSRedisCore](https://github.com/2881099/csredis) package |
-| [Fast.DependencyInjection](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/DependencyInjection) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection) | Fast.NET Framework Dependency Injection Module Library | |
-| [Fast.DynamicApplication](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/DynamicApplication) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication) | Fast.NET Framework Dynamic Api Module Library | |
-| [Fast.EventBus](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/EventBus) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus) | Fast.NET Framework Event Bus Module Library | |
-| [Fast.IaaS](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/IaaS) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS) | Fast.NET framework infrastructure module library (default other module libraries All inherit this module library) | A `newbie` who has been working in the `.NET` industry for `N years` uses commonly used expansion tools. I personally recommend them and they are absolutely easy to use! ! ! |
-| [Fast.JwtBearer](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/JwtBearer) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.JwtBearer.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.JwtBearer) | Fast.NET Framework JwtBearer module library | |
-| [Fast.Logging](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET Framework Logging Module Library | |
-| [Fast.Mapster](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET Framework Object Mapping Module Library | Based on [Mapster](https://github.com/MapsterMapper/Mapster) Package |
-| [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Fast.NET Framework Core Module Library | Because Fast.Core already exists in the Nuget package, it was renamed [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET.NET/Core) |
-| [Fast.Serialization](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization) | Fast.NET framework serialization module library | Based on [System. Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) Package |
-| [Fast.SqlSugar](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/SqlSugar) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar) | Fast.NET Framework SqlSugar module library | Based on [SqlSugar]( https://gitee.com/dotnetchina/SqlSugar) Package |
-| [Fast.Swagger](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/Swagger) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger) | Fast.NET Framework Swagger Module Library | |
-| [Fast.UnifyResult](https://gitee.com/Net-18K/Fast.NET/tree/master/backend/Fast.NET/UnifyResult) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult) | Fast.NET framework RESTful style unified return module library | |
-
+| [Fast.Cache](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Cache) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache) | Fast.NET Framework Cache Module Library | A Redis cache library commonly used by a `novice` who has been working in the .NET industry for `N years`, based on [CSRedisCore](https://github.com/2881099/csredis) encapsulation |
+| [Fast.DependencyInjection](https://gitee.com/Net-18K/Fast.NET/tree/master/src/DependencyInjection) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection) | Fast.NET Framework Dependency Injection Module Library | |
+| [Fast.DynamicApplication](https://gitee.com/Net-18K/Fast.NET/tree/master/src/DynamicApplication) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication) | Fast.NET Framework Dynamic Api Module Library | |
+| [Fast.EventBus](https://gitee.com/Net-18K/Fast.NET/tree/master/src/EventBus) | ✅ | Fast.NET Framework Event Bus Module Library | |
+| [Fast.IaaS](https://gitee.com/Net-18K/Fast.NET/tree/master/src/IaaS) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS) | Fast.NET Framework Infrastructure Module Library | A common extension tool class used by a `novice` who has worked in the `.NET` industry for `N years`. I personally recommend it. It is absolutely useful! ! ! |
+| [Fast.JwtBearer](https://gitee.com/Net-18K/Fast.NET/tree/master/src/JwtBearer) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.JwtBearer.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.JwtBearer) | Fast.NET Framework JwtBearer Module Library | |
+| [Fast.Logging](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET framework log module library | |
+| [Fast.Mapster](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET framework object mapping module library | Based on [Mapster](https://github.com/MapsterMapper/Mapster) encapsulation |
+| [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Fast.NET framework core module library | Because Fast.Core already has a Nuget package, it is renamed [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src.NET/Core) |
+| [Fast.Runtime](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Runtime) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime) | Fast.NET Framework Core Runtime | |
+| [Fast.Serialization.Newtonsoft.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.Newtonsoft.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Fast.NET Framework Newtonsoft.Json Serialization Module Library | Based on [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) encapsulation |
+| [Fast.Serialization.System.Text.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.System.Text.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | Fast.NET Framework System.Text.Json serialization module library | Based on [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) encapsulation |
+| [Fast.SqlSugar](https://gitee.com/Net-18K/Fast.NET/tree/master/src/SqlSugar) | ⏳ | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar) | Fast.NET Framework SqlSugar Module Library | Based on [SqlSugar](https://gitee.com/dotnetchina/SqlSugar) encapsulation |
+| [Fast.Swagger](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Swagger) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger) | Fast.NET Framework Swagger Module Library | |
+| [Fast.UnifyResult](https://gitee.com/Net-18K/Fast.NET/tree/master/src/UnifyResult) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult) | Fast.NET Framework RESTful Style Unified Return Module Library | |
 ## Recent plans
 
 - [✅] Infrastructure module
@@ -145,11 +146,11 @@ Update log [Click to view](https://gitee.com/Net-18K/Fast.NET/commits/master)
 - [✅] Serialization module
 - [✅] Dependency injection module
 - [✅] Dynamic API module
-- [✅] Standardized document module
+- [✅] Normalized document module
 - [✅] Normalized return module
 - [✅] Log module
-- [✅] SqlSugar
 - [✅] Event bus
+- [⏳] SqlSugar
 - [⚠️] ...
 
 > Status description
@@ -168,17 +169,23 @@ Update log [Click to view](https://gitee.com/Net-18K/Fast.NET/commits/master)
 ```
 Apache Open Source License
 
-Copyright © 2018-Now XiaoFang
+Copyright © 2018-Now xiaoFang
 
-The right to deal in the Software is hereby granted free of charge to any person obtaining a copy of this software and its related documentation (the "Software"),
-Including but not limited to using, copying, modifying, merging, publishing, distributing, sublicensing, selling copies of the Software,
-and permit individuals in possession of a copy of the software to do so, subject to the following conditions:
+License:
+This Agreement grants any individual or organization that obtains a copy of this software and its related documentation (hereinafter referred to as the "Software").
+Subject to the terms of this Agreement, you have the right to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the Software:
+1.All copies or major parts of the Software must retain this Copyright Notice and this License Agreement.
+2.The use, copying, modification, or distribution of the Software shall not violate applicable laws or infringe upon the legitimate rights and interests of others.
+3.Modified or derivative works must clearly indicate the original author and the source of the original Software.
 
-The above copyright notice and this license notice must be included on all copies or substantial portions of the Software.
+Special Statement:
+- This Software is provided "as is" without any express or implied warranty of any kind, including but not limited to the warranty of merchantability, fitness for purpose, and non-infringement.
+- In no event shall the author or copyright holder be liable for any direct or indirect loss caused by the use or inability to use this Software.
+- Including but not limited to data loss, business interruption, etc.
 
-THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS AND NON-INFRINGEMENT.
-In no event shall the author or copyright holder be liable for any claim, damages or other liability,
-WHETHER ARISING IN CONTRACT, TORT OR OTHERWISE, IN CONNECTION WITH THE SOFTWARE OR ITS USE OR OTHER DEALINGS.
+Disclaimer:
+It is prohibited to use this software to engage in illegal activities such as endangering national security, disrupting social order, or infringing on the legitimate rights and interests of others.
+The author does not assume any responsibility for any legal disputes and liabilities caused by the secondary development of this software.
 ```
 
 `

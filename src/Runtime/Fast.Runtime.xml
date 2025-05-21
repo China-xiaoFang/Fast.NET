@@ -1,0 +1,1059 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Runtime</name>
+    </assembly>
+    <members>
+        <member name="T:System.FastEnumAttribute">
+            <summary>
+            <see cref="T:System.FastEnumAttribute"/> 枚举特性
+            </summary>
+            <remarks>用于区分是否可以写入枚举字典的特性</remarks>
+        </member>
+        <member name="P:System.FastEnumAttribute.ChName">
+            <summary>
+            中文名称
+            </summary>
+        </member>
+        <member name="P:System.FastEnumAttribute.EnName">
+            <summary>
+            英文名称
+            </summary>
+        </member>
+        <member name="P:System.FastEnumAttribute.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute"/> 验证 <see cref="T:System.DateTime"/> 类型属性必填
+            <remarks>默认必须在 1949-10-01 ~ 2099-12-31 之间</remarks>
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute.MinValue">
+            <summary>
+            最小值
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute.MaxValue">
+            <summary>
+            最大值
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.DateTimeRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute"/> 验证 <see cref="T:System.Decimal"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.DecimalRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute"/> 验证 <see cref="T:System.Double"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.DoubleRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.EnumRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.EnumRequiredAttribute"/> 验证 <see cref="T:System.Enum"/> 类型属性必填
+            <remarks>默认验证当前值是否在枚举值中，如果需要验证其余的逻辑，请自行验证</remarks>
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.EnumRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            <remarks>常用于默认的枚举值为 None = 0，但是不允许选择的问题</remarks>
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.EnumRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.FloatRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.FloatRequiredAttribute"/> 验证 <see cref="T:System.Single"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.FloatRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.FloatRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.FloatRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.IntRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.IntRequiredAttribute"/> 验证 <see cref="T:System.Int32"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.IntRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.IntRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.IntRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.LongRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.LongRequiredAttribute"/> 验证 <see cref="T:System.Int64"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.LongRequiredAttribute.AllowZero">
+            <summary>
+            允许零
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.LongRequiredAttribute.AllowNegative">
+            <summary>
+            允许负数
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.LongRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.StringRequiredAttribute">
+            <summary>
+            <see cref="T:System.ComponentModel.DataAnnotations.StringRequiredAttribute"/> 验证 <see cref="T:System.String"/> 类型属性必填
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.StringRequiredAttribute.AllowEmptyString">
+            <summary>
+            允许空字符串
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.StringRequiredAttribute.AllowWhitespace">
+            <summary>
+            允许前后空格
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.StringRequiredAttribute.IsValid(System.Object)">
+            <summary>Determines whether the specified value of the object is valid.</summary>
+            <param name="value">The value of the object to validate.</param>
+            <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
+            <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
+            <returns>
+            <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="T:System.SuppressSnifferAttribute">
+            <summary>
+            <see cref="T:System.SuppressSnifferAttribute"/> 不被扫描和发现的特性
+            </summary>
+            <remarks>用于程序集扫描类型或方法时候</remarks>
+        </member>
+        <member name="T:System.MAppContext">
+            <summary>
+            <see cref="T:System.MAppContext"/> Microsoft App 上下文
+            </summary>
+        </member>
+        <member name="F:System.MAppContext.GC_COLLECT_INTERVAL_SECONDS">
+            <summary>
+            GC 回收默认间隔
+            </summary>
+        </member>
+        <member name="P:System.MAppContext.LastGCCollectTime">
+            <summary>
+            记录最近 GC 回收时间
+            </summary>
+        </member>
+        <member name="F:System.MAppContext.AssemblyVersion">
+            <summary>
+            入口程序集版本号
+            </summary>
+        </member>
+        <member name="F:System.MAppContext.Assemblies">
+            <summary>
+            应用有效程序集
+            </summary>
+        </member>
+        <member name="F:System.MAppContext.Types">
+            <summary>
+            有效程序集类型
+            </summary>
+            <remarks>所有公共的类型</remarks>
+        </member>
+        <member name="F:System.MAppContext.EffectiveTypes">
+            <summary>
+            有效程序集类型
+            </summary>
+            <remarks>排除使用了 <see cref="T:System.SuppressSnifferAttribute"/> 特性的类型</remarks>
+        </member>
+        <member name="P:System.MAppContext.UnmanagedObjects">
+            <summary>
+            未托管的对象集合
+            </summary>
+        </member>
+        <member name="M:System.MAppContext.CatchOrDefault``1(System.Func{``0},``0)">
+            <summary>
+            处理获取对象异常问题
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="action">获取对象委托</param>
+            <param name="defaultValue">默认值</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:System.MAppContext.GetOptionName``1">
+            <summary>
+            获取选项名称
+            </summary>
+            <typeparam name="TOptions"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:System.MAppContext.GetServiceProvider(System.Type,System.IServiceProvider,Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            解析服务提供器
+            </summary>
+            <param name="serviceType"></param>
+            <param name="rootServices"></param>
+            <param name="internalServices"></param>
+            <param name="httpContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:System.MAppContext.GetCurrentStartupUri(Microsoft.AspNetCore.Hosting.Server.IServer)">
+            <summary>
+            获取当前程序启动Uri信息
+            </summary>
+            <remarks>默认获取第一个地址，可能为空，请勿在程序启动过程中使用</remarks>
+            <param name="server"><see cref="T:Microsoft.AspNetCore.Hosting.Server.IServer"/></param>
+            <returns><see cref="T:System.Uri"/></returns>
+        </member>
+        <member name="M:System.MAppContext.GetThreadId">
+            <summary>
+            获取当前线程 Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:System.MAppContext.GetTraceId(System.IServiceProvider,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取当前请求 TraceId
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:System.MAppContext.GetExecutionTime(System.Action)">
+            <summary>
+            获取一段代码执行耗时
+            </summary>
+            <param name="action">委托</param>
+            <returns><see cref="T:System.Int64"/></returns>
+        </member>
+        <member name="M:System.MAppContext.AddUnmanagedObjects(System.IDisposable)">
+            <summary>
+            添加未托管的对象
+            </summary>
+            <param name="dsp"></param>
+        </member>
+        <member name="M:System.MAppContext.DisposeUnmanagedObjects">
+            <summary>
+            释放所有未托管的对象
+            </summary>
+        </member>
+        <member name="T:System.Debugging">
+            <summary>
+            <see cref="T:System.Debugging"/> 向事件管理器中输出事件信息
+            </summary>
+        </member>
+        <member name="M:System.Debugging.WriteLine(System.Int32,System.String)">
+            <summary>
+            输出一行事件信息
+            </summary>
+            <param name="level">
+            <para>信息级别</para>
+            <list type="number">
+            <item>
+            <description>跟踪</description>
+            </item>
+            <item>
+            <description>信息</description>
+            </item>
+            <item>
+            <description>警告</description>
+            </item>
+            <item>
+            <description>错误</description>
+            </item>
+            <item>
+            <description>文件</description>
+            </item>
+            <item>
+            <description>提示</description>
+            </item>
+            <item>
+            <description>搜索</description>
+            </item>
+            <item>
+            <description>时钟</description>
+            </item>
+            </list>
+            </param>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.WriteLine(System.Int32,System.String,System.Object[])">
+            <summary>
+            输出一行事件信息
+            </summary>
+            <param name="level">
+            <para>信息级别</para>
+            <list type="number">
+            <item>
+            <description>跟踪</description>
+            </item>
+            <item>
+            <description>信息</description>
+            </item>
+            <item>
+            <description>警告</description>
+            </item>
+            <item>
+            <description>错误</description>
+            </item>
+            <item>
+            <description>文件</description>
+            </item>
+            <item>
+            <description>提示</description>
+            </item>
+            <item>
+            <description>搜索</description>
+            </item>
+            <item>
+            <description>时钟</description>
+            </item>
+            </list>
+            </param>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.Trace(System.String)">
+            <summary>
+            输出跟踪级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.Trace(System.String,System.Object[])">
+            <summary>
+            输出跟踪级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.Info(System.String)">
+            <summary>
+            输出信息级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.Info(System.String,System.Object[])">
+            <summary>
+            输出信息级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.Warn(System.String)">
+            <summary>
+            输出警告级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.Warn(System.String,System.Object[])">
+            <summary>
+            输出警告级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.Error(System.String)">
+            <summary>
+            输出错误级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.Error(System.String,System.Object[])">
+            <summary>
+            输出错误级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.File(System.String)">
+            <summary>
+            输出文件级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.File(System.String,System.Object[])">
+            <summary>
+            输出文件级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.Tip(System.String)">
+            <summary>
+            输出提示级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.Tip(System.String,System.Object[])">
+            <summary>
+            输出提示级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.Search(System.String)">
+            <summary>
+            输出搜索级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.Search(System.String,System.Object[])">
+            <summary>
+            输出搜索级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.Clock(System.String)">
+            <summary>
+            输出时钟级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+        </member>
+        <member name="M:System.Debugging.Clock(System.String,System.Object[])">
+            <summary>
+            输出时钟级别事件信息
+            </summary>
+            <param name="message">事件信息</param>
+            <param name="args">格式化参数</param>
+        </member>
+        <member name="M:System.Debugging.GetLevelEmoji(System.Int32)">
+            <summary>
+            获取信息级别对应的 emoji
+            </summary>
+            <param name="level">
+            <para>信息级别</para>
+            <list type="number">
+            <item>
+            <description>跟踪</description>
+            </item>
+            <item>
+            <description>信息</description>
+            </item>
+            <item>
+            <description>警告</description>
+            </item>
+            <item>
+            <description>错误</description>
+            </item>
+            <item>
+            <description>文件</description>
+            </item>
+            <item>
+            <description>提示</description>
+            </item>
+            <item>
+            <description>搜索</description>
+            </item>
+            <item>
+            <description>时钟</description>
+            </item>
+            </list>
+            </param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="T:System.UserFriendlyException">
+            <summary>
+            <see cref="T:System.UserFriendlyException"/> 用户友好异常
+            </summary>
+        </member>
+        <member name="M:System.UserFriendlyException.#ctor">
+            <summary>
+            <inheritdoc cref="T:System.UserFriendlyException" />
+            </summary>
+        </member>
+        <member name="M:System.UserFriendlyException.#ctor(System.String)">
+            <summary>
+            <inheritdoc cref="T:System.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+        </member>
+        <member name="M:System.UserFriendlyException.#ctor(System.String,System.Object)">
+            <summary>
+            <inheritdoc cref="T:System.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="errorCode">错误编码</param>
+        </member>
+        <member name="M:System.UserFriendlyException.#ctor(System.String,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:System.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="M:System.UserFriendlyException.#ctor(System.String,System.Object,System.Exception)">
+            <summary>
+            <inheritdoc cref="T:System.UserFriendlyException" />
+            </summary>
+            <param name="message">异常信息</param>
+            <param name="errorCode">错误编码</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="P:System.UserFriendlyException.ErrorCode">
+            <summary>
+            错误码
+            </summary>
+        </member>
+        <member name="P:System.UserFriendlyException.OriginErrorCode">
+            <summary>
+            错误码（没被复写过的 ErrorCode ）
+            </summary>
+        </member>
+        <member name="P:System.UserFriendlyException.ErrorMessage">
+            <summary>
+            错误消息（支持 Object 对象）
+            </summary>
+        </member>
+        <member name="P:System.UserFriendlyException.StatusCode">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:System.UserFriendlyException.ValidationException">
+            <summary>
+            是否是数据验证异常
+            </summary>
+        </member>
+        <member name="P:System.UserFriendlyException.Data">
+            <summary>
+            额外数据
+            </summary>
+        </member>
+        <member name="T:System.Linq.LinqExpression">
+            <summary>
+            <see cref="T:System.Linq.LinqExpression"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:System.Linq.LinqExpression.Create``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            创建 Linq/Lambda 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.Create``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            创建 Linq/Lambda 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.And``1">
+            <summary>
+            创建 And 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.IndexAnd``1">
+            <summary>
+            创建 And 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.Or``1">
+            <summary>
+            创建 Or 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.LinqExpression.IndexOr``1">
+            <summary>
+            创建 Or 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="T:System.Linq.ExpressionExtension">
+            <summary>
+            <see cref="T:System.Linq.ExpressionExtension"/> 表达式拓展类
+            </summary>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.Compose``1(System.Linq.Expressions.Expression{``0},System.Linq.Expressions.Expression{``0},System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression})">
+            <summary>
+            组合两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <param name="mergeWay">组合方式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            与操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            与操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.AndIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            根据条件成立再与操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.AndIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            根据条件成立再与操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            或操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            或操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.OrIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            根据条件成立再或操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.OrIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            根据条件成立再或操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ExpressionExtension.GetExpressionPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            获取Lambda表达式属性名，只限 u=>u.Property 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>属性名</returns>
+        </member>
+        <member name="T:System.Linq.IEnumerableExtension">
+            <summary>
+            <see cref="T:System.Linq.IEnumerableExtension"/> IEnumerable 拓展
+            </summary>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.OrderBy``2(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            根据条件成立再构建 OrderBy 排序
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <typeparam name="TKey">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="keySelector">Key映射</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.OrderByDescending``2(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            根据条件成立再构建 OrderByDescending 排序
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <typeparam name="TKey">泛型类型</typeparam>
+            <param name="sources"></param>
+            <param name="condition"></param>
+            <param name="keySelector">Key映射</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            根据条件成立再构建 Where 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            根据条件成立再构建 Where 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}[])">
+            <summary>
+            与操作合并多个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="expressions">表达式数组</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}[])">
+            <summary>
+            与操作合并多个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="expressions">表达式数组</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}}[])">
+            <summary>
+            根据条件成立再构建 WhereOr 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="conditionExpressions">条件表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}}[])">
+            <summary>
+            根据条件成立再构建 WhereOr 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="conditionExpressions">条件表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Boolean})">
+            <summary>
+            根据条件成立再构建 Where 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:System.Linq.IEnumerableExtension.Where``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Int32,System.Boolean})">
+            <summary>
+            根据条件成立再构建 Where 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="T:System.Linq.ParameterReplaceExpressionVisitor">
+            <summary>
+            处理 Lambda 参数不一致问题
+            </summary>
+        </member>
+        <member name="F:System.Linq.ParameterReplaceExpressionVisitor.parameterExpressionSetter">
+            <summary>
+            参数表达式映射集合
+            </summary>
+        </member>
+        <member name="M:System.Linq.ParameterReplaceExpressionVisitor.#ctor(System.Collections.Generic.Dictionary{System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="parameterExpressionSetter">参数表达式映射集合</param>
+        </member>
+        <member name="M:System.Linq.ParameterReplaceExpressionVisitor.ReplaceParameters(System.Collections.Generic.Dictionary{System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression},System.Linq.Expressions.Expression)">
+            <summary>
+            替换表达式参数
+            </summary>
+            <param name="parameterExpressionSetter">参数表达式映射集合</param>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:System.Linq.ParameterReplaceExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            重写基类参数访问器
+            </summary>
+            <param name="parameterExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Runtime.AssemblyExtension">
+            <summary>
+            <see cref="T:System.Reflection.Assembly"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Runtime.AssemblyExtension.GetEntryReferencedAssembly(System.Reflection.Assembly)">
+            <summary>
+            获取入口引用程序集
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/> 入口程序集</param>
+            <remarks>暂不支持独立/单文件发布</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Runtime.AssemblyExtension.GetAssemblyTypes(System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
+            <summary>
+            获取程序集中所有类型
+            </summary>
+            <remarks>这里默认获取所有 Public 声明的</remarks>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/> 程序集</param>
+            <param name="typeFilter"><see cref="T:System.Func`1"/> 类型过滤条件</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Runtime.IConfigurationExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Runtime.IConfigurationExtension.LoadPostConfigure``1(``0)">
+            <summary>
+            加载后期配置
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Runtime.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Runtime.IServiceCollectionExtension.AddConfigurableOptions``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            添加选项配置
+            </summary>
+            <typeparam name="TOptions"></typeparam>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="path"><see cref="T:System.String"/> 配置中对应的Key</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Runtime.IServiceCollectionExtension.AddMvcFilter``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.AspNetCore.Mvc.MvcOptions})">
+            <summary>
+            注册 Mvc 过滤器
+            </summary>
+            <typeparam name="TFilter"></typeparam>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="configure"></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.IServiceCollectionExtension.AddMvcFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata,System.Action{Microsoft.AspNetCore.Mvc.MvcOptions})">
+            <summary>
+            注册 Mvc 过滤器
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="filter"></param>
+            <param name="configure"></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="T:Fast.Runtime.TypeExtension">
+            <summary>
+            <see cref="T:System.Type"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Runtime.TypeExtension.CreatePropertySetter(System.Type,System.Reflection.PropertyInfo)">
+            <summary>
+            创建属性值设置器
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="propertyInfo"><see cref="T:System.Reflection.PropertyInfo"/></param>
+            <returns><see cref="T:System.Action`2"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.TypeExtension.CreateFieldSetter(System.Type,System.Reflection.FieldInfo)">
+            <summary>
+            创建字段值设置器
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="fieldInfo"><see cref="T:System.Reflection.FieldInfo"/></param>
+            <returns><see cref="T:System.Action`2"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.TypeExtension.CreatePropertyGetter(System.Type,System.Reflection.PropertyInfo)">
+            <summary>
+            创建属性值访问器
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="propertyInfo"><see cref="T:System.Reflection.PropertyInfo"/></param>
+            <returns><see cref="T:System.Func`2"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.TypeExtension.CreateFieldGetter(System.Type,System.Reflection.FieldInfo)">
+            <summary>
+            创建字段值访问器
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="fieldInfo"><see cref="T:System.Reflection.FieldInfo"/></param>
+            <returns><see cref="T:System.Func`2"/></returns>
+        </member>
+        <member name="T:Fast.Runtime.UserFriendlyExceptionExtension">
+            <summary>
+            <see cref="T:System.UserFriendlyException"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Runtime.UserFriendlyExceptionExtension.StatusCode(System.UserFriendlyException,System.Int32)">
+            <summary>
+            设置异常状态码
+            </summary>
+            <param name="exception"><see cref="T:System.UserFriendlyException"/></param>
+            <param name="statusCode"><see cref="T:System.Int32"/></param>
+            <returns><see cref="T:System.UserFriendlyException"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.UserFriendlyExceptionExtension.WithData(System.UserFriendlyException,System.Object)">
+            <summary>
+            设置额外数据
+            </summary>
+            <param name="exception"><see cref="T:System.UserFriendlyException"/></param>
+            <param name="data"><see cref="T:System.Object"/></param>
+            <returns><see cref="T:System.UserFriendlyException"/></returns>
+        </member>
+        <member name="T:Fast.Runtime.IPostConfigure">
+            <summary>
+            <see cref="T:Fast.Runtime.IPostConfigure"/> 后期配置接口
+            <remarks>可在一些不能通过构造函数载入默认配置的地方进行加载默认配置</remarks>
+            </summary>
+        </member>
+        <member name="M:Fast.Runtime.IPostConfigure.PostConfigure">
+            <summary>
+            后期配置
+            </summary>
+        </member>
+        <member name="T:Fast.Runtime.DepsLibrary">
+            <summary>
+            <see cref="T:Fast.Runtime.DepsLibrary"/> .deps.json 文件中 libraries 节点的Model
+            </summary>
+        </member>
+        <member name="M:Fast.Runtime.DepsLibrary.#ctor(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <param name="version"></param>
+            <param name="serviceable"></param>
+        </member>
+        <member name="P:Fast.Runtime.DepsLibrary.Type">
+            <summary>
+            类型
+            <remarks>"package"是引用的包，"project"是本地引用的项目</remarks>
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.DepsLibrary.Name">
+            <summary>
+            程序集名称
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.DepsLibrary.Version">
+            <summary>
+            程序集版本
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.DepsLibrary.Serviceable">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

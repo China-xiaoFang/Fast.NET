@@ -1,0 +1,564 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.Serialization.System.Text.Json</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.Serialization.JsonContext">
+            <summary>
+            <see cref="T:Fast.Serialization.JsonContext"/> System.Text.Json 序列化上下文
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.JsonContext.JsonOptionsAction">
+            <summary>
+            System.Text.Json 选项
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.JsonContext.SerializerOptions">
+            <summary>
+            System.Text.Json 序列化选项
+            </summary>
+        </member>
+        <member name="T:Fast.Serialization.EnumConverterFactory">
+            <summary>
+            <see cref="T:Fast.Serialization.EnumConverterFactory"/> Enum 类型Json转换工厂
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.EnumConverterFactory.CanConvert(System.Type)">
+            <summary>When overridden in a derived class, determines whether the converter instance can convert the specified object type.</summary>
+            <param name="typeToConvert">The type of the object to check whether it can be converted by this converter instance.</param>
+            <returns>
+            <see langword="true" /> if the instance can convert the specified object type; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="M:Fast.Serialization.EnumConverterFactory.CreateConverter(System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Creates a converter for a specified type.</summary>
+            <param name="typeToConvert">The type handled by the converter.</param>
+            <param name="options">The serialization options to use.</param>
+            <returns>A converter for which <see cref="T:System.Enum"/> is compatible with <paramref name="typeToConvert" />.</returns>
+        </member>
+        <member name="T:Fast.Serialization.NullableEnumConverterFactory">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableEnumConverterFactory"/> Enum 类型Json转换工厂
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableEnumConverterFactory.CanConvert(System.Type)">
+            <summary>When overridden in a derived class, determines whether the converter instance can convert the specified object type.</summary>
+            <param name="typeToConvert">The type of the object to check whether it can be converted by this converter instance.</param>
+            <returns>
+            <see langword="true" /> if the instance can convert the specified object type; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableEnumConverterFactory.CreateConverter(System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Creates a converter for a specified type.</summary>
+            <param name="typeToConvert">The type handled by the converter.</param>
+            <param name="options">The serialization options to use.</param>
+            <returns>A converter for which <see cref="T:System.Enum"/> is compatible with <paramref name="typeToConvert" />.</returns>
+        </member>
+        <member name="T:Fast.Serialization.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> System.Text.Json 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.IServiceCollectionExtension.AddSerialization(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.AspNetCore.Mvc.JsonOptions})">
+            <summary>
+            添加 System.Text.Json 序列化服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <param name="configureOptions"><see cref="T:System.Action`1"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="T:Fast.Serialization.SerializationExtension">
+            <summary>
+            <see cref="T:Fast.Serialization.SerializationExtension"/> System.Text.Json 序列化拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToObject``1(System.String)">
+            <summary>
+            JSON 字符串转 Object
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="json"><see cref="T:System.String"/> 需要序列化的 JSON 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToObject(System.String,System.Type)">
+            <summary>
+            JSON 字符串转 Object
+            </summary>
+            <param name="json"><see cref="T:System.String"/> 需要序列化的 JSON 字符串</param>
+            <param name="type"><see cref="T:System.Type"/> 需要序列化成的类型</param>
+            <returns><see cref="T:System.Object"/> 序列化后的对象</returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToJsonString(System.Object)">
+            <summary>
+            Object 转 JSON字符串
+            </summary>
+            <param name="obj"><see cref="T:System.Object"/> 需要反序列化的对象</param>
+            <returns><see cref="T:System.String"/> 反序列化后的 JSON 字符串</returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToObject``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Dictionary 字符串转 Object
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dictionary"><see cref="T:System.Collections.IDictionary"/> 需要序列化的字典</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.ToObject(System.Collections.Generic.IDictionary{System.String,System.Object},System.Type)">
+            <summary>
+            Dictionary 字符串转 Object
+            </summary>
+            <param name="dictionary"><see cref="T:System.Collections.IDictionary"/> 需要序列化的字典</param>
+            <param name="type"><see cref="T:System.Type"/> 需要序列化成的类型</param>
+            <returns><see cref="T:System.Object"/> 序列化后的对象</returns>
+        </member>
+        <member name="M:Fast.Serialization.SerializationExtension.DeepCopy``1(``0)">
+            <summary>
+            深度拷贝
+            </summary>
+            <remarks>此方法是通过将对象序列化成 JSON 字符串，再将 JSON 字符串反序列化成对象，所以性能不是很高，如果介意，请慎用</remarks>
+            <typeparam name="T"></typeparam>
+            <param name="source">需要拷贝的对象</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.Serialization.DateJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DateJsonConverter"/> Datetime 类型Json返回日期处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DateJsonConverter.Format">
+            <summary>
+            日期格式化
+            默认：yyyy-MM-dd
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DateJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.DateTime"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.DateJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableDateJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDateJsonConverter.Format">
+            <summary>
+            日期格式化
+            默认：yyyy-MM-dd
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.DateTime"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTime},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.DateTimeJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DateTimeJsonConverter"/> DateTime 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DateTimeJsonConverter.Format">
+            <summary>
+            格式化
+            默认：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.DateTime"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableDateTimeJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDateTimeJsonConverter"/> DateTime? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDateTimeJsonConverter.Format">
+            <summary>
+            格式化
+            默认：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.DateTime"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTime},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.DateTimeOffsetJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DateTimeOffsetJsonConverter"/> DateTimeOffset 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DateTimeOffsetJsonConverter.Format">
+            <summary>
+            格式化
+            默认：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DateTimeOffsetJsonConverter.Localized">
+            <summary>
+            是否输出为为当地时间
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeOffsetJsonConverter.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="format"></param>
+            <param name="outputToLocalDateTime"></param>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeOffsetJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.DateTimeOffset"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.DateTimeOffsetJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTimeOffset,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableDateTimeOffsetJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDateTimeOffsetJsonConverter"/> DateTimeOffset? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDateTimeOffsetJsonConverter.Format">
+            <summary>
+            格式化
+            默认：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDateTimeOffsetJsonConverter.Localized">
+            <summary>
+            是否输出为为当地时间
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeOffsetJsonConverter.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="format"></param>
+            <param name="outputToLocalDateTime"></param>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeOffsetJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.DateTimeOffset"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableDateTimeOffsetJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTimeOffset},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.DecimalJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DecimalJsonConverter"/> decimal 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DecimalJsonConverter.Places">
+            <summary>
+            小数点位数
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DecimalJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Decimal"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.DecimalJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Decimal,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableDecimalJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDecimalJsonConverter"/> decimal? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDecimalJsonConverter.Places">
+            <summary>
+            小数点位数
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDecimalJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Decimal"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableDecimalJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.Decimal},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.DoubleJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.DoubleJsonConverter"/> double 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.DoubleJsonConverter.Places">
+            <summary>
+            小数点位数
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.DoubleJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Double"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.DoubleJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Double,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableDoubleJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableDoubleJsonConverter"/> double? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableDoubleJsonConverter.Places">
+            <summary>
+            小数点位数
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableDoubleJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Double"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableDoubleJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.Double},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.EnumJsonConverter`1">
+            <summary>
+            <see cref="T:Fast.Serialization.EnumJsonConverter`1"/> Enum 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.EnumJsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Int32"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.EnumJsonConverter`1.Write(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableEnumJsonConverter`1">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableEnumJsonConverter`1"/> Enum? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableEnumJsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Int32"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableEnumJsonConverter`1.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{`0},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.ExceptionJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.ExceptionJsonConverter"/> Exception 类型Json返回处理
+            </summary>
+            <remarks>解决 <see cref="T:System.Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
+        </member>
+        <member name="M:Fast.Serialization.ExceptionJsonConverter.CanConvert(System.Type)">
+            <summary>Determines whether the specified type can be converted.</summary>
+            <param name="typeToConvert">The type to compare against.</param>
+            <returns>
+            <see langword="true" /> if the type can be converted; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="M:Fast.Serialization.ExceptionJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Exception"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.ExceptionJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Exception,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.IntJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.IntJsonConverter"/> int 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.IntJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Int32"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.IntJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Int32,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableIntJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableIntJsonConverter"/> int? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableIntJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Int32"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableIntJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.Int32},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.LongJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.LongJsonConverter"/> Long 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.LongJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Int64"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.LongJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Int64,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableLongJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableLongJsonConverter"/> Long? 类型Json返回处理
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableLongJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.Int64"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableLongJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.Int64},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.TimeJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.TimeJsonConverter"/> Datetime 类型Json返回时间处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.TimeJsonConverter.Format">
+            <summary>
+            日期格式化
+            默认：HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.TimeJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.DateTime"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.TimeJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+        <member name="T:Fast.Serialization.NullableTimeJsonConverter">
+            <summary>
+            <see cref="T:Fast.Serialization.NullableTimeJsonConverter"/> Datetime? 类型Json返回时间处理
+            </summary>
+        </member>
+        <member name="P:Fast.Serialization.NullableTimeJsonConverter.Format">
+            <summary>
+            日期格式化
+            默认：HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Fast.Serialization.NullableTimeJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>Reads and converts the JSON to type <see cref="T:System.DateTime"/>.</summary>
+            <param name="reader">The reader.</param>
+            <param name="typeToConvert">The type to convert.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Fast.Serialization.NullableTimeJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTime},System.Text.Json.JsonSerializerOptions)">
+            <summary>Writes a specified value as JSON.</summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="value">The value to convert to JSON.</param>
+            <param name="options">An object that specifies serialization options to use.</param>
+        </member>
+    </members>
+</doc>

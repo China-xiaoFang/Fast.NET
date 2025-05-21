@@ -1,0 +1,354 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fast.DynamicApplication</name>
+    </assembly>
+    <members>
+        <member name="T:Fast.DynamicApplication.ApiDescriptionSettingsAttribute">
+            <summary>
+            接口描述设置
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor(System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="enabled">是否启用</param>
+        </member>
+        <member name="M:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.#ctor(System.String[])">
+            <summary>
+            构造函数
+            </summary>
+            <param name="groups">分组列表</param>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Name">
+            <summary>
+            自定义名称
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Module">
+            <summary>
+            模块名
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Version">
+            <summary>
+            版本号
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Groups">
+            <summary>
+            分组
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Tag">
+            <summary>
+            标签
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Order">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.Description">
+            <summary>
+            额外描述，支持 HTML
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ApiDescriptionSettingsAttribute.ForceWithRoutePrefix">
+            <summary>
+            强制携带路由前缀，即使使用 [Route] 重写，仅对 Class/Controller 有效
+            </summary>
+        </member>
+        <member name="T:Fast.DynamicApplication.DynamicApplicationAttribute">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.DynamicApplicationAttribute"/> 动态API应用特性
+            </summary>
+        </member>
+        <member name="T:Fast.DynamicApplication.DynamicApplicationContext">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.DynamicApplicationContext"/> Dynamic Application 上下文
+            </summary>
+        </member>
+        <member name="F:Fast.DynamicApplication.DynamicApplicationContext.IsApiControllerCached">
+            <summary>
+            <see cref="M:Fast.DynamicApplication.DynamicApplicationContext.IsApiController(System.Type)"/> 缓存集合
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.DynamicApplicationContext.ControllerOrderCollection">
+            <summary>
+            控制器排序集合
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApplicationContext.IsApiController(System.Type)">
+            <summary>
+            是否是Api控制器
+            </summary>
+            <param name="type">type</param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention"/> 动态接口控制器应用模型转换器
+            </summary>
+        </member>
+        <member name="F:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention._nameVersionRegex">
+            <summary>
+            带版本的名称正则表达式
+            </summary>
+        </member>
+        <member name="F:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention._services">
+            <summary>
+            服务集合
+            </summary>
+        </member>
+        <member name="F:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.commonTemplatePattern">
+            <summary>
+            模板正则表达式
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.ApplicationModel)">
+            <summary>
+            配置应用模型信息
+            </summary>
+            <param name="application">引用模型</param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureController(Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute)">
+            <summary>
+            配置控制器
+            </summary>
+            <param name="controller">控制器模型</param>
+            <param name="controllerApiDescriptionSettings">接口描述配置</param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureControllerName(Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute)">
+            <summary>
+            配置控制器名称
+            </summary>
+            <param name="controller">控制器模型</param>
+            <param name="controllerApiDescriptionSettings">接口描述配置</param>
+        </member>
+        <member name="P:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ForceWithDefaultPrefixRouteControllerTypes">
+            <summary>
+            强制处理了 ForceWithDefaultPrefix 的控制器
+            </summary>
+            <remarks>避免路由无限追加</remarks>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureControllerRouteAttribute(Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute)">
+            <summary>
+            配置控制器路由特性
+            </summary>
+            <param name="controller"></param>
+            <param name="controllerApiDescriptionSettings"></param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureAction(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute,Fast.DynamicApplication.ApiDescriptionSettingsAttribute,System.Boolean)">
+            <summary>
+            配置动作方法
+            </summary>
+            <param name="action">控制器模型</param>
+            <param name="apiDescriptionSettings">接口描述配置</param>
+            <param name="controllerApiDescriptionSettings">控制器接口描述配置</param>
+            <param name="hasApiControllerAttribute">是否贴有 ApiController 特性</param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureActionApiExplorer(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
+            <summary>
+            配置动作方法接口可见性
+            </summary>
+            <param name="action">动作方法模型</param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureActionName(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute)">
+            <summary>
+            配置动作方法名称
+            </summary>
+            <param name="action">动作方法模型</param>
+            <param name="apiDescriptionSettings">接口描述配置</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureClassTypeParameter(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
+            <summary>
+            处理类类型参数（添加[FromBody] 特性）
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureActionRouteAttribute(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute,Fast.DynamicApplication.ApiDescriptionSettingsAttribute,System.Boolean)">
+            <summary>
+            配置动作方法路由特性
+            </summary>
+            <param name="action">动作方法模型</param>
+            <param name="apiDescriptionSettings">接口描述配置</param>
+            <param name="controllerApiDescriptionSettings">控制器接口描述配置</param>
+            <param name="hasApiControllerAttribute"></param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.GenerateControllerRouteTemplate(Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel,Fast.DynamicApplication.ApiDescriptionSettingsAttribute)">
+            <summary>
+            生成控制器路由模板
+            </summary>
+            <param name="controller"></param>
+            <param name="apiDescriptionSettings"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.GenerateParameterRouteTemplates(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel,System.Boolean)">
+            <summary>
+            生成参数路由模板（非引用类型）
+            </summary>
+            <param name="action">动作方法模型</param>
+            <param name="hasApiControllerAttribute"></param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureControllerAndActionName(Fast.DynamicApplication.ApiDescriptionSettingsAttribute,System.String,System.String)">
+            <summary>
+            配置控制器和动作方法名称
+            </summary>
+            <param name="apiDescriptionSettings"></param>
+            <param name="originalName"></param>
+            <param name="actionName">针对 [ActionName] 特性和 [HttpMethod] 特性处理</param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.CheckIsForceWithDefaultRoute(Fast.DynamicApplication.ApiDescriptionSettingsAttribute)">
+            <summary>
+            检查是否设置了 ForceWithRoutePrefix  参数
+            </summary>
+            <param name="controllerApiDescriptionSettings"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ConfigureActionUnifyResultAttribute(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
+            <summary>
+            配置规范化结果类型
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.ResolveNameVersion(System.String)">
+            <summary>
+            解析名称中的版本号
+            </summary>
+            <param name="name">名称</param>
+            <returns>名称和版本号</returns>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApiControllerApplicationModelConvention.HandleRouteTemplateRepeat(System.String)">
+            <summary>
+            处理路由模板重复参数
+            </summary>
+            <param name="template"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.DynamicApplication.IServiceCollectionExtension">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 动态Api 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.IServiceCollectionExtension.AddDynamicApplication(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加动态Api服务
+            </summary>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
+        </member>
+        <member name="T:Fast.DynamicApplication.MethodInfoExtension">
+            <summary>
+            <see cref="T:System.Reflection.MethodInfo"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.MethodInfoExtension.IsAsync(System.Reflection.MethodInfo)">
+            <summary>
+            判断方法是否是异步
+            </summary>
+            <param name="methodInfo"><see cref="T:System.Reflection.MemberInfo"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.DynamicApplication.MethodInfoExtension.GetRealReturnType(System.Reflection.MethodInfo)">
+            <summary>
+            获取方法真实返回类型
+            </summary>
+            <param name="methodInfo"><see cref="T:System.Reflection.MethodInfo"/></param>
+            <returns><see cref="T:System.Type"/></returns>
+        </member>
+        <member name="T:Fast.DynamicApplication.TypeExtension">
+            <summary>
+            <see cref="T:System.Type"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.TypeExtension.IsRichPrimitive(System.Type)">
+            <summary>
+            判断是否是富基元类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.DynamicApplication.TypeExtension.IsValueTuple(System.Type)">
+            <summary>
+            判断是否是元组类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="T:Fast.DynamicApplication.TextPlainMediaTypeFormatter">
+            <summary>
+            text/plain 请求 Body 参数支持
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.TextPlainMediaTypeFormatter.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.TextPlainMediaTypeFormatter.ReadRequestBodyAsync(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext,System.Text.Encoding)">
+            <summary>
+            重写 <see cref="M:Fast.DynamicApplication.TextPlainMediaTypeFormatter.ReadRequestBodyAsync(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext,System.Text.Encoding)"/>
+            </summary>
+            <param name="context"></param>
+            <param name="effectiveEncoding"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fast.DynamicApplication.IDynamicApplication">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.IDynamicApplication"/> 动态API应用依赖接口
+            </summary>
+        </member>
+        <member name="T:Fast.DynamicApplication.ParameterRouteTemplate">
+            <summary>
+            <see cref="T:Fast.DynamicApplication.ParameterRouteTemplate"/> 参数路由模板
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.ParameterRouteTemplate.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ParameterRouteTemplate.ControllerStartTemplates">
+            <summary>
+            控制器之前的参数
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ParameterRouteTemplate.ControllerEndTemplates">
+            <summary>
+            控制器之后的参数
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ParameterRouteTemplate.ActionStartTemplates">
+            <summary>
+            行为之前的参数
+            </summary>
+        </member>
+        <member name="P:Fast.DynamicApplication.ParameterRouteTemplate.ActionEndTemplates">
+            <summary>
+            行为之后的参数
+            </summary>
+        </member>
+        <member name="T:Fast.DynamicApplication.DynamicApplicationFeatureProvider">
+            <summary>
+            动态API引用特性提供器
+            </summary>
+        </member>
+        <member name="M:Fast.DynamicApplication.DynamicApplicationFeatureProvider.IsController(System.Reflection.TypeInfo)">
+            <summary>
+            扫描控制器
+            </summary>
+            <param name="typeInfo">类型</param>
+            <returns>bool</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,57 @@
+<Project>
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<PackageVersion>$(Version)</PackageVersion>
+
+		<Authors>小方</Authors>
+		<Product>Fast.NET</Product>
+		<Description>一个快速构建项目的 .NET 框架。</Description>
+		<PackageTags>Fast.NET;ASP.NET;dotNET China;Cross Platform;1.8K仔;小方</PackageTags>
+		<Copyright>版权所有 © 2018-Now 小方</Copyright>
+		<PackageProjectUrl>https://fastdotnet.com</PackageProjectUrl>
+		<RepositoryUrl>https://gitee.com/China-xiaoFang/Fast.NET</RepositoryUrl>
+		<RepositoryType>Gitee</RepositoryType>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageIcon>Fast.png</PackageIcon>
+		<PackageReadmeFile>README.zh.md</PackageReadmeFile>
+
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageOutputPath>$(SolutionDir)nupkgs</PackageOutputPath>
+
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>$(MSBuildProjectName).xml</DocumentationFile>
+
+		<SatelliteResourceLanguages>en-US;zh-CN</SatelliteResourceLanguages>
+		<GenerateResxSourceIncludeDefaultValues>True</GenerateResxSourceIncludeDefaultValues>
+
+		<DefineConstants>$(DefineConstants);HAS_GEJIA_USER</DefineConstants>
+
+		<!-- 解决多个SDK版本生成报错的问题 -->
+		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
+	</PropertyGroup>
+
+	<!-- NU1803 是为了解决使用 Http 源的Nuget包导致的警告 -->
+	<!-- IDE0017 是为了解决可以简化对象初始化导致的警告 -->
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;1591;NU1803;IDE0017</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<NoWarn>1701;1702;1591;NU1803;IDE0017</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="$(SolutionDir)README.md" Pack="true" PackagePath="\" />
+		<None Include="$(SolutionDir)README.zh.md" Pack="true" PackagePath="\" />
+		<None Include="$(SolutionDir)LICENSE" Pack="true" PackagePath="\" />
+		<None Include="$(SolutionDir)Fast.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+</Project>
