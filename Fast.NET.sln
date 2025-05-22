@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.UnifyResult", "src\Uni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Swagger", "src\Swagger\Fast.Swagger.csproj", "{8E44844B-266A-4000-ABDF-19715C1A3FE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.SqlSugar", "src\SqlSugar\Fast.SqlSugar.csproj", "{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{8E44844B-266A-4000-ABDF-19715C1A3FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E44844B-266A-4000-ABDF-19715C1A3FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E44844B-266A-4000-ABDF-19715C1A3FE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +126,7 @@ Global
 		{06DD5E6A-B8E1-4330-907B-8BA83B5297EE} = {DC257ACE-1569-4E43-87DC-3CA0D9E5590A}
 		{AB1D93CE-77BE-4715-B078-816734881D57} = {DC257ACE-1569-4E43-87DC-3CA0D9E5590A}
 		{8E44844B-266A-4000-ABDF-19715C1A3FE8} = {DC257ACE-1569-4E43-87DC-3CA0D9E5590A}
+		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55} = {DC257ACE-1569-4E43-87DC-3CA0D9E5590A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4261BB-E228-45EE-8B97-B915C19C8A4F}

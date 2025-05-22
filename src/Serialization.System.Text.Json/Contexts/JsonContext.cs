@@ -88,5 +88,5 @@ public static class JsonContext
     /// <summary>
     /// System.Text.Json 序列化选项
     /// </summary>
-    public static JsonSerializerOptions SerializerOptions { get; set; }
+    public static JsonSerializerOptions SerializerOptions { get; internal set; }
 }

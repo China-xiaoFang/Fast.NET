@@ -884,6 +884,265 @@
             <param name="parameterExpression"></param>
             <returns></returns>
         </member>
+        <member name="T:Fast.Runtime.UserAgentInfo">
+            <summary>
+            <see cref="T:Fast.Runtime.UserAgentInfo"/> 用户代理信息
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.UserAgentInfo.Device">
+            <summary>
+            设备
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.UserAgentInfo.OS">
+            <summary>
+            操作系统（版本）
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.UserAgentInfo.Browser">
+            <summary>
+            浏览器（版本）
+            </summary>
+        </member>
+        <member name="T:Fast.Runtime.WanNetIPInfo">
+            <summary>
+            <see cref="T:Fast.Runtime.WanNetIPInfo"/> 公网IP信息
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.WanNetIPInfo.Ip">
+            <summary>
+            Ip地址
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.WanNetIPInfo.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.WanNetIPInfo.ProvinceZipCode">
+            <summary>
+            省份邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.WanNetIPInfo.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.WanNetIPInfo.CityZipCode">
+            <summary>
+            城市邮政编码
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.WanNetIPInfo.Address">
+            <summary>
+            地理信息
+            </summary>
+        </member>
+        <member name="P:Fast.Runtime.WanNetIPInfo.Operator">
+            <summary>
+            运营商
+            </summary>
+        </member>
+        <member name="T:Fast.Runtime.HttpContextExtension">
+            <summary>
+            <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.UnifyResponseTimestamp(Microsoft.AspNetCore.Http.HttpContext,System.Int64)">
+            <summary>
+            设置规范化响应时间戳
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="timestamp"><see cref="T:System.Int64"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.UnifyResponseTimestamp(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取规范化响应时间戳
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.IsWebSocketRequest(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            判断是否是 WebSocket 请求
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.GetMetadata``1(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取 Action 特性
+            </summary>
+            <typeparam name="TAttribute"></typeparam>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.GetMetadata(Microsoft.AspNetCore.Http.EndpointMetadataCollection,System.Type)">
+            <summary>
+            获取 Action 特性
+            </summary>
+            <param name="metadata"><see cref="T:Microsoft.AspNetCore.Http.EndpointMetadataCollection"/></param>
+            <param name="attributeType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Object"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.GetMetadata(Microsoft.AspNetCore.Http.HttpContext,System.Type)">
+            <summary>
+            获取 Action 特性
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="attributeType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Object"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.SignInToSwagger(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            设置规范化文档自动登录
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="accessToken"></param>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.SignOutToSwagger(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            设置规范化文档退出登录
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.LanIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            局域网 IPv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.LanIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            局域网 IPv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.LocalIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            本机 IPv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.LocalIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            本机 IPv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RemoteIpv4(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            远程 Ipv4 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RemoteIpv6(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            远程 Ipv6 地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RequestUserAgent(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            请求用户代理字符串（User-Agent）
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="userAgentHeaderKey">默认从 “User-Agent” 获取</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RequestUserAgentInfo(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            请求用户代理信息（User-Agent）
+            </summary>
+            <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 null</remarks>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:Fast.Runtime.UserAgentInfo"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RemoteIpv4Info(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            远程 Ipv4 地址信息
+            </summary>
+            <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="ip"><see cref="T:System.String"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
+            <returns><see cref="T:Fast.Runtime.WanNetIPInfo"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RemoteIpv4InfoAsync(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            远程 Ipv4 地址信息
+            </summary>
+            <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="ip"><see cref="T:System.String"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
+            <returns><see cref="T:Fast.Runtime.WanNetIPInfo"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.GetControllerActionDescriptor(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取 控制器/Action 描述器
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.ReadBodyContentAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            读取 Body 内容
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.ReadBodyContentAsync(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            读取 Body 内容
+            </summary>
+            <param name="httpRequest"><see cref="T:Microsoft.AspNetCore.Http.HttpRequest"/></param>
+            <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RequestUrlAddress(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            完整请求地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RequestUrlAddress(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            完整请求地址
+            </summary>
+            <param name="httpRequest"><see cref="T:Microsoft.AspNetCore.Http.HttpRequest"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.RefererUrlAddress(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            来源地址
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="refererHeaderKey">默认从 “Referer” 获取</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.Runtime.HttpContextExtension.SetResponseStatusCodes(Microsoft.AspNetCore.Http.HttpContext,System.Int32,System.Int32[],System.Int32[][])">
+            <summary>
+            设置响应状态码
+            </summary>
+            <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
+            <param name="statusCode"><see cref="T:System.Int32"/></param>
+            <param name="return200StatusCodes"><see cref="T:System.Array"/> 设置返回 200 状态码列表。只支持 400+(404除外) 状态码</param>
+            <param name="adaptStatusCodes"><see cref="T:System.Array"/> 适配（篡改）状态码。只支持 400+(404除外) 状态码</param>
+            <remarks>
+            示例：
+                return200StatusCodes = [401, 403]
+                adaptStatusCodes = [[401, 200], [403, 200]]
+            </remarks>
+        </member>
         <member name="T:Fast.Runtime.AssemblyExtension">
             <summary>
             <see cref="T:System.Reflection.Assembly"/> 拓展类

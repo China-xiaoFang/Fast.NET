@@ -5,7 +5,7 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 
-		<Version>3.5.1</Version>
+		<Version>3.5.2</Version>
 		<PackageId>Fast.IaaS</PackageId>
 		<Description>Fast.NET 框架基础设施模块库。</Description>
 	</PropertyGroup>

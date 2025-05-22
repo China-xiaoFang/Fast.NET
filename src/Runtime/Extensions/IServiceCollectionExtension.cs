@@ -79,8 +79,8 @@ public static class IServiceCollectionExtension
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <param name="configure"></param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddMvcFilter<TFilter>(this IServiceCollection services,
-        Action<MvcOptions> configure = null) where TFilter : IFilterMetadata
+    public static IServiceCollection AddMvcFilter<TFilter>(this IServiceCollection services, Action<MvcOptions> configure = null)
+        where TFilter : IFilterMetadata
     {
         services.Configure<MvcOptions>(options =>
         {

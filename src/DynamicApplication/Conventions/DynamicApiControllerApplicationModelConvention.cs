@@ -427,7 +427,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             // 判断当前参数没有任何 [FromXXX] 特性，则添加 [FromQuery] 特性
             if (!hasFormAttribute)
             {
-                parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromQueryAttribute() });
+                parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromQueryAttribute()});
                 continue;
             }
 
@@ -439,7 +439,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             // 处理基元数组数组类型，还有全局配置参数问题
             if (parameterType.IsArray)
             {
-                parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromQueryAttribute() });
+                parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromQueryAttribute()});
                 continue;
             }
 

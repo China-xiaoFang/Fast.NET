@@ -79,5 +79,5 @@ public static class JsonContext
     /// <summary>
     /// Newtonsoft.Json 序列化选项
     /// </summary>
-    public static JsonSerializerSettings SerializerOptions { get; set; }
+    public static JsonSerializerSettings SerializerOptions { get; internal set; }
 }

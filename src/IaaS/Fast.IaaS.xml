@@ -60,6 +60,48 @@
             特殊标记符号
             </summary>
         </member>
+        <member name="T:Fast.IaaS.AssemblyExtension">
+            <summary>
+            <see cref="T:System.Reflection.Assembly"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetTypes(System.Reflection.Assembly,System.Boolean)">
+            <summary>
+            获取所有类型
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
+            <param name="exported">类型导出设置</param>
+            <returns><see cref="T:System.Type"/>[]</returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetDescription(System.Reflection.Assembly)">
+            <summary>
+            获取程序集描述
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetVersion(System.Reflection.Assembly)">
+            <summary>
+            获取程序集版本
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetAssemblyName(System.Reflection.Assembly)">
+            <summary>
+            获取程序集名称
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.AssemblyExtension.GetType(System.Reflection.Assembly,System.String)">
+            <summary>
+            根据程序集和类型完整限定名获取运行时类型
+            </summary>
+            <param name="assembly"><see cref="T:System.Reflection.Assembly"/> 程序集</param>
+            <param name="typeFullName"><see cref="T:System.String"/> 类型完整限定名称</param>
+            <returns><see cref="T:System.Type"/></returns>
+        </member>
         <member name="T:Fast.IaaS.Base64Extension">
             <summary>
             <see cref="T:Fast.IaaS.Base64Extension"/> Base64 拓展类
@@ -874,6 +916,157 @@
             <param name="timeSpan"><see cref="T:System.TimeSpan"/></param>
             <returns></returns>
         </member>
+        <member name="T:Fast.IaaS.TypeExtension">
+            <summary>
+            <see cref="T:System.Type"/> 拓展类
+            </summary>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.HasImplementedRawGeneric(System.Type,System.Type)">
+            <summary>
+            判断类型是否实现某个泛型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/> 类型</param>
+            <param name="generic"><see cref="T:System.Type"/>泛型类型</param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.GetAssemblyName(System.Type)">
+            <summary>
+            获取类型所在程序集名称
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.GetAssemblyName(System.Reflection.TypeInfo)">
+            <summary>
+            获取类型所在程序集名称
+            </summary>
+            <param name="typeInfo"><see cref="T:System.Reflection.TypeInfo"/></param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsRichPrimitive(System.Type)">
+            <summary>
+            判断是否是富基元类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsValueTuple(System.Type)">
+            <summary>
+            判断是否是元组类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsStatic(System.Type)">
+            <summary>
+            检查类型是否是静态类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsAnonymous(System.Type)">
+            <summary>
+            检查类型是否是匿名类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsInstantiable(System.Type)">
+            <summary>
+            检查类型是否可实例化
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsAlienAssignableTo(System.Type,System.Type)">
+            <summary>
+            检查类型是否派生自指定类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="fromType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.GetDefinedCustomAttribute``1(System.Type,System.Boolean)">
+            <summary>
+            获取指定特性实例
+            </summary>
+            <remarks>若特性不存在则返回 null</remarks>
+            <typeparam name="TAttribute">特性类型</typeparam>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="inherit">是否查找基类型特性</param>
+            <returns><typeparamref name="TAttribute"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.HasDefinePublicParameterlessConstructor(System.Type)">
+            <summary>
+            检查类型是否定义了公开无参构造函数
+            </summary>
+            <remarks>用于 <see cref="M:System.Activator.CreateInstance(System.Type)"/> 实例化</remarks>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsDefinitionEqual(System.Type,System.Type)">
+            <summary>
+            检查类型和指定类型定义是否相等
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="compareType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsCompatibilityTo(System.Type,System.Type)">
+            <summary>
+            检查类型和指定继承类型是否兼容
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="inheritType"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsDeclarationMethod(System.Type,System.String,System.Reflection.BindingFlags,System.Reflection.MethodInfo@)">
+            <summary>
+            检查类型是否定义了指定方法
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <param name="name">方法名称</param>
+            <param name="accessibilityBindingFlags">可访问性成员绑定标记</param>
+            <param name="methodInfo"><see cref="T:System.Reflection.MethodInfo"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsInteger(System.Type)">
+            <summary>
+            检查类型是否是整数类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsDecimal(System.Type)">
+            <summary>
+            检查类型是否是小数类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsNumeric(System.Type)">
+            <summary>
+            检查类型是否是数值类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.IsDictionary(System.Type)">
+            <summary>
+            检查类型是否是字典类型
+            </summary>
+            <param name="type"><see cref="T:System.Type"/></param>
+            <returns><see cref="T:System.Boolean"/></returns>
+        </member>
+        <member name="M:Fast.IaaS.TypeExtension.GetTypeAttribute``1(System.Type,System.Boolean)">
+            <summary>
+            获取类型自定义特性
+            </summary>
+            <typeparam name="TAttribute">特性类型</typeparam>
+            <param name="type">类类型</param>
+            <param name="inherit">是否继承查找</param>
+            <returns>特性对象</returns>
+        </member>
         <member name="T:Fast.IaaS.ValidateExtension">
             <summary>
             <see cref="T:Fast.IaaS.ValidateExtension"/> 验证拓展类
@@ -1407,199 +1600,6 @@
             <param name="maxVal">最大值（默认不包含）</param>
             <param name="isInclude">是否包含最大值</param>
             <returns></returns>
-        </member>
-        <member name="T:Fast.Runtime.AssemblyExtension">
-            <summary>
-            <see cref="T:System.Reflection.Assembly"/> 拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.Runtime.AssemblyExtension.GetTypes(System.Reflection.Assembly,System.Boolean)">
-            <summary>
-            获取所有类型
-            </summary>
-            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
-            <param name="exported">类型导出设置</param>
-            <returns><see cref="T:System.Type"/>[]</returns>
-        </member>
-        <member name="M:Fast.Runtime.AssemblyExtension.GetDescription(System.Reflection.Assembly)">
-            <summary>
-            获取程序集描述
-            </summary>
-            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
-            <returns><see cref="T:System.String"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.AssemblyExtension.GetVersion(System.Reflection.Assembly)">
-            <summary>
-            获取程序集版本
-            </summary>
-            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
-            <returns><see cref="T:System.String"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.AssemblyExtension.GetAssemblyName(System.Reflection.Assembly)">
-            <summary>
-            获取程序集名称
-            </summary>
-            <param name="assembly"><see cref="T:System.Reflection.Assembly"/></param>
-            <returns><see cref="T:System.String"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.AssemblyExtension.GetType(System.Reflection.Assembly,System.String)">
-            <summary>
-            根据程序集和类型完整限定名获取运行时类型
-            </summary>
-            <param name="assembly"><see cref="T:System.Reflection.Assembly"/> 程序集</param>
-            <param name="typeFullName"><see cref="T:System.String"/> 类型完整限定名称</param>
-            <returns><see cref="T:System.Type"/></returns>
-        </member>
-        <member name="T:Fast.Runtime.TypeExtension">
-            <summary>
-            <see cref="T:System.Type"/> 拓展类
-            </summary>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.HasImplementedRawGeneric(System.Type,System.Type)">
-            <summary>
-            判断类型是否实现某个泛型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> 类型</param>
-            <param name="generic"><see cref="T:System.Type"/>泛型类型</param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.GetAssemblyName(System.Type)">
-            <summary>
-            获取类型所在程序集名称
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.String"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.GetAssemblyName(System.Reflection.TypeInfo)">
-            <summary>
-            获取类型所在程序集名称
-            </summary>
-            <param name="typeInfo"><see cref="T:System.Reflection.TypeInfo"/></param>
-            <returns><see cref="T:System.String"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsRichPrimitive(System.Type)">
-            <summary>
-            判断是否是富基元类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsValueTuple(System.Type)">
-            <summary>
-            判断是否是元组类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsStatic(System.Type)">
-            <summary>
-            检查类型是否是静态类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsAnonymous(System.Type)">
-            <summary>
-            检查类型是否是匿名类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsInstantiable(System.Type)">
-            <summary>
-            检查类型是否可实例化
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsAlienAssignableTo(System.Type,System.Type)">
-            <summary>
-            检查类型是否派生自指定类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <param name="fromType"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.GetDefinedCustomAttribute``1(System.Type,System.Boolean)">
-            <summary>
-            获取指定特性实例
-            </summary>
-            <remarks>若特性不存在则返回 null</remarks>
-            <typeparam name="TAttribute">特性类型</typeparam>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <param name="inherit">是否查找基类型特性</param>
-            <returns><typeparamref name="TAttribute"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.HasDefinePublicParameterlessConstructor(System.Type)">
-            <summary>
-            检查类型是否定义了公开无参构造函数
-            </summary>
-            <remarks>用于 <see cref="M:System.Activator.CreateInstance(System.Type)"/> 实例化</remarks>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsDefinitionEqual(System.Type,System.Type)">
-            <summary>
-            检查类型和指定类型定义是否相等
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <param name="compareType"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsCompatibilityTo(System.Type,System.Type)">
-            <summary>
-            检查类型和指定继承类型是否兼容
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <param name="inheritType"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsDeclarationMethod(System.Type,System.String,System.Reflection.BindingFlags,System.Reflection.MethodInfo@)">
-            <summary>
-            检查类型是否定义了指定方法
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <param name="name">方法名称</param>
-            <param name="accessibilityBindingFlags">可访问性成员绑定标记</param>
-            <param name="methodInfo"><see cref="T:System.Reflection.MethodInfo"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsInteger(System.Type)">
-            <summary>
-            检查类型是否是整数类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsDecimal(System.Type)">
-            <summary>
-            检查类型是否是小数类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsNumeric(System.Type)">
-            <summary>
-            检查类型是否是数值类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.IsDictionary(System.Type)">
-            <summary>
-            检查类型是否是字典类型
-            </summary>
-            <param name="type"><see cref="T:System.Type"/></param>
-            <returns><see cref="T:System.Boolean"/></returns>
-        </member>
-        <member name="M:Fast.Runtime.TypeExtension.GetTypeAttribute``1(System.Type,System.Boolean)">
-            <summary>
-            获取类型自定义特性
-            </summary>
-            <typeparam name="TAttribute">特性类型</typeparam>
-            <param name="type">类类型</param>
-            <param name="inherit">是否继承查找</param>
-            <returns>特性对象</returns>
         </member>
     </members>
 </doc>
