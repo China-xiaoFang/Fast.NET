@@ -22,6 +22,7 @@
 
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Text;
 using System.Text.Json;
 
 // ReSharper disable once CheckNamespace
@@ -129,7 +130,18 @@ public static class AssemblyExtension
         }
         catch
         {
-            Console.WriteLine($"Error load `{assembly.FullName}` assembly.");
+            var logSb = new StringBuilder();
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("fail");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            logSb.Append(": ");
+            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+            logSb.Append(Environment.NewLine);
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("      ");
+            logSb.Append($"Error load `{assembly.FullName}` assembly.");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            Console.WriteLine(logSb.ToString());
         }
 
         return types.Where(wh => wh.IsPublic && (typeFilter == null || typeFilter(wh)));

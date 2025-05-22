@@ -457,7 +457,10 @@ public static class SwaggerDocumentBuilder
                         else if (memberName.Contains('('))
                         {
                             var noParamsClassName = regex.Match(memberName).Value;
-                            var className = noParamsClassName[noParamsClassName.IndexOf(":", StringComparison.Ordinal)..noParamsClassName.LastIndexOf(".", StringComparison.Ordinal)];
+                            var className =
+                                noParamsClassName[
+                                    noParamsClassName.IndexOf(":", StringComparison.Ordinal)..noParamsClassName.LastIndexOf(".",
+                                        StringComparison.Ordinal)];
                             value = GenerateInheritdocCref(xmlDoc, memberName, className);
                         }
                         // 处理不带参数的注释
@@ -466,7 +469,10 @@ public static class SwaggerDocumentBuilder
                         // 处理逻辑：获取类型命名空间，最后调用 GenerateInheritdocCref 进行生成
                         else
                         {
-                            var className = memberName[memberName.IndexOf(":", StringComparison.Ordinal)..memberName.LastIndexOf(".", StringComparison.Ordinal)];
+                            var className =
+                                memberName[
+                                    memberName.IndexOf(":", StringComparison.Ordinal)..memberName.LastIndexOf(".",
+                                        StringComparison.Ordinal)];
                             value = GenerateInheritdocCref(xmlDoc, memberName, className);
                         }
                     }

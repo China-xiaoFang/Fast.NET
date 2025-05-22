@@ -138,9 +138,8 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     /// <param name="resultContext"></param>
     /// <param name="userFriendlyException"></param>
     /// <returns>返回 false 表示结果没有处理</returns>
-    private async Task<bool> HandleValidation(ActionExecutingContext context,
-        ControllerActionDescriptor actionDescriptor, object errors, ActionExecutedContext resultContext = null,
-        UserFriendlyException userFriendlyException = null)
+    private async Task<bool> HandleValidation(ActionExecutingContext context, ControllerActionDescriptor actionDescriptor,
+        object errors, ActionExecutedContext resultContext = null, UserFriendlyException userFriendlyException = null)
     {
         dynamic finalContext = resultContext != null ? resultContext : context;
 

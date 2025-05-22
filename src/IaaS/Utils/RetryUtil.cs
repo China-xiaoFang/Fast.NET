@@ -82,8 +82,7 @@ namespace Fast.IaaS
         /// <param name="retryAction">重试时调用方法</param>
         /// <returns><see cref="Task"/></returns>
         public static async Task InvokeAsync(Func<Task> action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
-            Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null,
-            Action<int, int> retryAction = null)
+            Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Action<int, int> retryAction = null)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));

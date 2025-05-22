@@ -196,8 +196,7 @@ internal sealed class EventBusHostedService : BackgroundService
         var properties = new Dictionary<object, object>();
 
         async Task InvokeAsync(Func<Task> action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
-            Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null,
-            Action<int, int> retryAction = null)
+            Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Action<int, int> retryAction = null)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -314,8 +313,7 @@ internal sealed class EventBusHostedService : BackgroundService
                     Log(LogLevel.Error, "Error occurred executing {EventId}.", new object[] {eventSource.EventId}, ex);
 
                     // 标记异常
-                    executionException =
-                        new InvalidOperationException($"Error occurred executing {eventSource.EventId}.", ex);
+                    executionException = new InvalidOperationException($"Error occurred executing {eventSource.EventId}.", ex);
 
                     // 捕获 Task 任务异常信息并统计所有异常
                     if (UnobservedTaskException != null)
@@ -384,7 +382,8 @@ internal sealed class EventBusHostedService : BackgroundService
             // 输出日志
             if (succeeded)
             {
-                Log(LogLevel.Information, "Subscriber with event ID <{EventId}> was appended successfully.", new object[] {eventId});
+                Log(LogLevel.Information, "Subscriber with event ID <{EventId}> was appended successfully.",
+                    new object[] {eventId});
             }
         }
         // 处理动态删除

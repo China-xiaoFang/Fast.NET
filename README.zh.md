@@ -130,11 +130,11 @@ app.Run();
 | [Fast.Logging](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET 框架日志模块库 |  |
 | [Fast.Mapster](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET 框架对象映射模块库 | 基于 [Mapster](https://github.com/MapsterMapper/Mapster) 封装 |
 | [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Fast.NET 框架核心模块库 | 因 Fast.Core 已存在 Nuget 包，故改名 [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src.NET/Core) |
-| [Fast.Runtime](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Runtime) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime) | Fast.NET 框架 核心运行库 |  |
+| [Fast.Runtime](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Runtime) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime) | Fast.NET 框架核心运行库 |  |
 | [Fast.Serialization.Newtonsoft.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.Newtonsoft.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Fast.NET 框架 Newtonsoft.Json 序列化模块库 | 基于 [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) 封装 |
 | [Fast.Serialization.System.Text.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.System.Text.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | Fast.NET 框架 System.Text.Json 序列化模块库 | 基于 [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) 封装 |
-| [Fast.SqlSugar](https://gitee.com/Net-18K/Fast.NET/tree/master/src/SqlSugar) | ⏳ | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar) | Fast.NET 框架SqlSugar模块库 | 基于 [SqlSugar](https://gitee.com/dotnetchina/SqlSugar) 封装 |
-| [Fast.Swagger](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Swagger) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger) | Fast.NET 框架Swagger模块库 |  |
+| [Fast.SqlSugar](https://gitee.com/Net-18K/Fast.NET/tree/master/src/SqlSugar) | ⏳ | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar) | Fast.NET 框架 SqlSugar 模块库 | 基于 [SqlSugar](https://gitee.com/dotnetchina/SqlSugar) 封装 |
+| [Fast.Swagger](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Swagger) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger) | Fast.NET 框架 Swagger 模块库 |  |
 | [Fast.UnifyResult](https://gitee.com/Net-18K/Fast.NET/tree/master/src/UnifyResult) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult) | Fast.NET 框架RESTful风格统一返回模块库 |  |
 
 ## 近期计划
@@ -151,7 +151,7 @@ app.Run();
 - [✅] 规范化返回模块
 - [✅] 日志模块
 - [✅] 事件总线
-- [⏳] SqlSugar
+- [✅] SqlSugar
 - [⚠️] ...
 
 > 状态说明

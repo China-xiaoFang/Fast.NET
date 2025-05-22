@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>3.5.1</Version>
+		<Version>3.5.2</Version>
 		<PackageId>Fast.Serialization.System.Text.Json</PackageId>
 		<Description>Fast.NET 框架 System.Text.Json 序列化模块库。</Description>
 	</PropertyGroup>

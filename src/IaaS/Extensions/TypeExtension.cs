@@ -28,7 +28,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.Runtime
+namespace Fast.IaaS
 {
     /// <summary>
     /// <see cref="Type"/> 拓展类

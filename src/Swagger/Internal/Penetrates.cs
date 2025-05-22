@@ -20,9 +20,8 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-
-
 // ReSharper disable once CheckNamespace
+
 namespace Fast.Swagger;
 
 /// <summary>
