@@ -33,6 +33,7 @@ namespace Fast.IaaS
     {
         /// <summary>
         /// 生成一个Guid
+        /// </summary>
         /// <remarks>
         /// <para>只支持 N D B P</para>
         /// <para>N ece4f4a60b764339b94a07c84e338a27</para>
@@ -40,7 +41,6 @@ namespace Fast.IaaS
         /// <para>B 2280f8d7-fd18-4c72-a9ab-405de3fcfbc9</para>
         /// <para>P 25e6e09f-fb66-4cab-b4cd-bfb429566549</para>
         /// </remarks>
-        /// </summary>
         /// <param name="format"><see cref="string"/>格式化方式</param>
         /// <returns><see cref="string"/></returns>
         public static string GetGuid(string format = "N")

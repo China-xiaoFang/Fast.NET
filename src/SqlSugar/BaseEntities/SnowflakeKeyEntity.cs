@@ -27,15 +27,15 @@ namespace Fast.SqlSugar;
 
 /// <summary>
 /// <see cref="SnowflakeKeyEntity"/> 雪花Id主键实体
-/// <remarks>主键Id为 Long 类型</remarks>
 /// </summary>
+/// <remarks>主键Id为 Long 类型</remarks>
 [SuppressSniffer]
 public class SnowflakeKeyEntity : IPrimaryKeyEntity<long>
 {
     /// <summary>
     /// 主键Id
-    /// <remarks>雪花Id</remarks>
     /// </summary>
+    /// <remarks>雪花Id</remarks>
     [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true)]
     public long Id { get; set; }
 }

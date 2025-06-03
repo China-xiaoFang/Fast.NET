@@ -1284,12 +1284,12 @@
             <summary>
             判断用户输入是否为日期
             </summary>
-            <param name="str">输入字符</param>
-            <returns>返回一个bool类型的值</returns>
             <remarks>
             可判断格式如下（其中-可替换为/，不影响验证):
             YYYY | YYYY-MM | YYYYMM | YYYY-MM-DD | YYYYMMDD | YYYY-MM-DD HH:MM:SS | YYYY-MM-DD HH:MM:SS.FFF
             </remarks>
+            <param name="str">输入字符</param>
+            <returns>返回一个bool类型的值</returns>
         </member>
         <member name="T:Fast.IaaS.ITreeNode`1">
             <summary>
@@ -1331,8 +1331,8 @@
             使用AES算法对给定字符串进行加密。
             </summary>
             <param name="dataStr">要加密的字符串。</param>
-            <param name="key">用于加密的密钥。<remarks>必须32位</remarks></param>
-            <param name="vector">用于加密的向量（IV）。<remarks>必须16位</remarks></param>
+            <param name="key">用于加密的密钥。必须32位</param>
+            <param name="vector">用于加密的向量（IV）。必须16位</param>
             <param name="cipherMode">加密模式，默认为CBC模式。</param>
             <param name="paddingMode">填充模式，默认为PKCS7。</param>
             <returns>加密后的Base64编码字符串。</returns>
@@ -1342,8 +1342,8 @@
             使用AES算法对给定的Base64编码字符串进行解密。
             </summary>
             <param name="dataStr">要解密的Base64编码字符串。</param>
-            <param name="key">用于解密的密钥。<remarks>必须32位</remarks></param>
-            <param name="vector">用于解密的向量（IV）。<remarks>必须16位</remarks></param>
+            <param name="key">用于解密的密钥。必须32位</param>
+            <param name="vector">用于解密的向量（IV）。必须16位</param>
             <param name="cipherMode">解密模式，默认为CBC模式。</param>
             <param name="paddingMode">填充模式，默认为PKCS7。</param>
             <returns>解密后的原始字符串。</returns>
@@ -1440,6 +1440,7 @@
         <member name="M:Fast.IaaS.GuidUtil.GetGuid(System.String)">
             <summary>
             生成一个Guid
+            </summary>
             <remarks>
             <para>只支持 N D B P</para>
             <para>N ece4f4a60b764339b94a07c84e338a27</para>
@@ -1447,7 +1448,6 @@
             <para>B 2280f8d7-fd18-4c72-a9ab-405de3fcfbc9</para>
             <para>P 25e6e09f-fb66-4cab-b4cd-bfb429566549</para>
             </remarks>
-            </summary>
             <param name="format"><see cref="T:System.String"/>格式化方式</param>
             <returns><see cref="T:System.String"/></returns>
         </member>

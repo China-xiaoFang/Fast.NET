@@ -63,15 +63,15 @@ public class ConnectionSettingsOptions : DbConnectionInfo
 
     /// <summary>
     /// 禁用 SqlSugar 的 Aop
-    /// <remarks>如果是通过 <see cref="ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
     /// </summary>
+    /// <remarks>如果是通过 <see cref="ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
     [SugarColumn(ColumnDescription = "差异日志", IsNullable = false)]
     public bool DisableAop { get; set; }
 
     /// <summary>
     /// 从库信息
-    /// <remarks>一般默认库或者主库不建议设置从库</remarks>
     /// </summary>
+    /// <remarks>一般默认库或者主库不建议设置从库</remarks>
     [SugarColumn(IsIgnore = true)]
     public virtual List<SlaveConnectionInfo> SlaveConnectionList { get; set; }
 }

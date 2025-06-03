@@ -28,11 +28,11 @@ namespace Fast.SqlSugar;
 
 /// <summary>
 /// <see cref="ISqlSugarEntityHandler"/> Sugar实体处理
+/// </summary>
 /// <remarks>
 /// <para>不能在构造函数中注入 <see cref="ISqlSugarClient"/> 否则会出现循环引用的问题</para>
 /// <para>不能在构造函数中注入 <see cref="IHttpContextAccessor"/> 或 <see cref="HttpContext"/> 否则会出现并发线程释放的问题</para>
 /// </remarks>
-/// </summary>
 public interface ISqlSugarEntityHandler
 {
     /// <summary>

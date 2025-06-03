@@ -30,8 +30,6 @@
 		<SatelliteResourceLanguages>en-US;zh-CN</SatelliteResourceLanguages>
 		<GenerateResxSourceIncludeDefaultValues>True</GenerateResxSourceIncludeDefaultValues>
 
-		<DefineConstants>$(DefineConstants);HAS_GEJIA_USER</DefineConstants>
-
 		<!-- 解决多个SDK版本生成报错的问题 -->
 		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
 	</PropertyGroup>

@@ -27,16 +27,16 @@ namespace Fast.SqlSugar;
 
 /// <summary>
 /// <see cref="IdentityKeyEntity"/> 自增Id主键实体
-/// <remarks>主键Id为 Long 类型</remarks>
 /// </summary>
+/// <remarks>主键Id为 Long 类型</remarks>
 [SuppressSniffer]
 public class IdentityKeyEntity : IPrimaryKeyEntity<long>
 {
     /// <summary>
     /// 主键Id
     /// 通过特性设置主键和自增列
-    /// <remarks>自增Id</remarks>
     /// </summary>
+    /// <remarks>自增Id</remarks>
     [SugarColumn(IsIdentity = true, ColumnDescription = "Id主键", IsPrimaryKey = true)]
     public long Id { get; set; }
 }

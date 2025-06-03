@@ -45,14 +45,14 @@ public sealed class SqlSugarContext
 
     /// <summary>
     /// 默认连接配置
-    /// <remarks>带 AOP 处理的</remarks>
     /// </summary>
+    /// <remarks>带 AOP 处理的</remarks>
     public static ConnectionConfig DefaultConnectionConfig { get; internal set; }
 
     /// <summary>
     /// 默认连接配置
-    /// <remarks>不带 AOP 处理的</remarks>
     /// </summary>
+    /// <remarks>不带 AOP 处理的</remarks>
     public static ConnectionConfig DefaultConnectionConfigNoAop { get; internal set; }
 
     /// <summary>

@@ -516,8 +516,8 @@ public static class HttpContextExtension
     /// <summary>
     /// 读取 Body 内容
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
     /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
+    /// <param name="httpContext"><see cref="HttpContext"/></param>
     /// <returns><see cref="string"/></returns>
     public static async Task<string> ReadBodyContentAsync(this HttpContext httpContext)
     {
@@ -529,8 +529,8 @@ public static class HttpContextExtension
     /// <summary>
     /// 读取 Body 内容
     /// </summary>
-    /// <param name="httpRequest"><see cref="HttpRequest"/></param>
     /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
+    /// <param name="httpRequest"><see cref="HttpRequest"/></param>
     /// <returns><see cref="string"/></returns>
     public static async Task<string> ReadBodyContentAsync(this HttpRequest httpRequest)
     {

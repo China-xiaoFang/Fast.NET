@@ -36,8 +36,8 @@ public static class AssemblyExtension
     /// <summary>
     /// 获取入口引用程序集
     /// </summary>
-    /// <param name="assembly"><see cref="Assembly"/> 入口程序集</param>
     /// <remarks>暂不支持独立/单文件发布</remarks>
+    /// <param name="assembly"><see cref="Assembly"/> 入口程序集</param>
     /// <returns></returns>
     public static IEnumerable<Assembly> GetEntryReferencedAssembly(this Assembly assembly)
     {
@@ -95,8 +95,8 @@ public static class AssemblyExtension
 
             // 读取项目程序集 或 第三方引用的包，或手动添加引用的dll，或配置特定的包前缀
             return depsLibraryList.Where(wh =>
-                (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) || wh.Type == "package").Select(
-                sl =>
+                    (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) || wh.Type == "package")
+                .Select(sl =>
                 {
                     // 这里由于一些dll文件是运行时文件，但是却也包含了在 .deps.json 文件的 "libraries" 节点中，所以采用极限1换100操作，报错的不处理
                     try

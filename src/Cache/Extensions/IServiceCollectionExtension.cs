@@ -36,7 +36,8 @@ public static class IServiceCollectionExtension
     /// 添加缓存服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="section"><see cref="string"/>
+    /// <param name="section">
+    /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
     /// <remarks>默认值：RedisSettings</remarks>
     /// </param>

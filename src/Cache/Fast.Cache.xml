@@ -34,7 +34,8 @@
             添加缓存服务
             </summary>
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-            <param name="section"><see cref="T:System.String"/>
+            <param name="section">
+            <see cref="T:System.String"/>
             <para>Json配置文件节点的Key</para>
             <remarks>默认值：RedisSettings</remarks>
             </param>

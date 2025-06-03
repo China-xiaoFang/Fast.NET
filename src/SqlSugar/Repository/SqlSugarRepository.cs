@@ -633,8 +633,8 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
 
     /// <summary>
     /// 自定义条件逻辑删除记录
-    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
     /// </summary>
+    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"></exception>
@@ -664,8 +664,8 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
     /// <summary>
     /// 自定义条件逻辑删除记录
     /// </summary>
-    /// <param name="whereExpression"></param>
     /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// <param name="whereExpression"></param>
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"></exception>
     public async Task<int> LogicDeleteAsync(Expression<Func<TEntity, bool>> whereExpression)

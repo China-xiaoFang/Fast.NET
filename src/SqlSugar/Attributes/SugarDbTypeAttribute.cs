@@ -26,22 +26,22 @@ namespace Fast.SqlSugar;
 
 /// <summary>
 /// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-/// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
 /// </summary>
+/// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class)]
 public class SugarDbTypeAttribute : Attribute
 {
     /// <summary>
     /// <see cref="object"/> Entity 的DB类型
-    /// <remarks>如果为Null，则代表的默认库</remarks>
     /// </summary>
+    /// <remarks>如果为Null，则代表的默认库</remarks>
     public object Type { get; set; }
 
     /// <summary>
     /// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-    /// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
     /// </summary>
+    /// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
     public SugarDbTypeAttribute()
     {
         Type = null;
@@ -49,8 +49,8 @@ public class SugarDbTypeAttribute : Attribute
 
     /// <summary>
     /// <see cref="SugarDbTypeAttribute"/> SqlSugar DB类型
-    /// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
     /// </summary>
+    /// <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="ISqlSugarEntityHandler"/> 自行解析</remarks>
     /// <param name="type"><see cref="object"/> Entity 的DB类型</param>
     public SugarDbTypeAttribute(object type)
     {
