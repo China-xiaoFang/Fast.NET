@@ -46,8 +46,8 @@ internal class DepsLibrary
 
     /// <summary>
     /// 类型
-    /// <remarks>"package"是引用的包，"project"是本地引用的项目</remarks>
     /// </summary>
+    /// <remarks>"package"是引用的包，"project"是本地引用的项目</remarks>
     public string Type { get; }
 
     /// <summary>

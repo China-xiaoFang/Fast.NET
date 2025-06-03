@@ -26,8 +26,8 @@ namespace Fast.SqlSugar;
 
 /// <summary>
 /// <see cref="SugarSearchTimeAttribute"/> SqlSugar 分页搜索时间列
-/// <remarks>仅支持 <see cref="DateTime"/> 类型</remarks>
 /// </summary>
+/// <remarks>仅支持 <see cref="DateTime"/> 类型</remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property)]
 public class SugarSearchTimeAttribute : Attribute

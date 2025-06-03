@@ -52,8 +52,8 @@ public interface IUnifyResponseProvider
 
     /// <summary>
     /// 响应数据处理
-    /// <remarks>只有响应成功且为正常返回才会调用</remarks>
     /// </summary>
+    /// <remarks>只有响应成功且为正常返回才会调用</remarks>
     /// <param name="timestamp"><see cref="long"/> 响应时间戳</param>
     /// <param name="data"><see cref="object"/> 数据</param>
     /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>

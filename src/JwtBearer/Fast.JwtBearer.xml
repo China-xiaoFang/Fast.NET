@@ -86,7 +86,8 @@
             <remarks>适用于只使用工具类</remarks>
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
-            <param name="section"><see cref="T:System.String"/>
+            <param name="section">
+            <see cref="T:System.String"/>
             <para>Json配置文件节点的Key</para>
             <remarks>默认值：JWTSettings</remarks>
             </param>
@@ -95,8 +96,8 @@
         <member name="M:Fast.JwtBearer.IServiceCollectionExtension.AddJwtBearerSetting(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Fast.JwtBearer.JWTSettingsOptions})">
             <summary>
             添加JwtBearer设置
-            <remarks>适用于只使用工具类</remarks>
             </summary>
+            <remarks>适用于只使用工具类</remarks>
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <param name="optionAction"><see cref="T:System.Action`1"/></param>
             <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></returns>
@@ -108,7 +109,8 @@
             <remarks>适用于自定义验证</remarks>
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
-            <param name="section"><see cref="T:System.String"/>
+            <param name="section">
+            <see cref="T:System.String"/>
             <para>Json配置文件节点的Key</para>
             <remarks>默认值：JWTSettings</remarks>
             </param>
@@ -129,7 +131,8 @@
             </summary>
             <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
             <param name="configuration"><see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
-            <param name="section"><see cref="T:System.String"/>
+            <param name="section">
+            <see cref="T:System.String"/>
             <para>Json配置文件节点的Key</para>
             <remarks>默认值：JWTSettings</remarks>
             </param>
@@ -161,8 +164,8 @@
         <member name="M:Fast.JwtBearer.IJwtBearerHandle.AuthorizeHandle(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             授权处理
-            <remarks>这里已经判断了 Token 是否有效，并且已经处理了自动刷新 Token。只需要处理其余的逻辑即可。如果返回 false或抛出异常，搭配 AuthorizeFailHandle 则抛出 HttpStatusCode = 401 状态码，否则走默认处理 AuthorizationHandlerContext.Fail() 会返回 HttpStatusCode = 403 状态码</remarks>
             </summary>
+            <remarks>这里已经判断了 Token 是否有效，并且已经处理了自动刷新 Token。只需要处理其余的逻辑即可。如果返回 false或抛出异常，搭配 AuthorizeFailHandle 则抛出 HttpStatusCode = 401 状态码，否则走默认处理 AuthorizationHandlerContext.Fail() 会返回 HttpStatusCode = 403 状态码</remarks>
             <param name="context"><see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext"/></param>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
             <returns><see cref="T:System.Boolean"/></returns>
@@ -170,8 +173,8 @@
         <member name="M:Fast.JwtBearer.IJwtBearerHandle.AuthorizeFailHandle(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
             <summary>
             授权失败处理
-            <remarks>如果返回 null，则走默认处理 AuthorizationHandlerContext.Fail()</remarks>
             </summary>
+            <remarks>如果返回 null，则走默认处理 AuthorizationHandlerContext.Fail()</remarks>
             <param name="context"><see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext"/></param>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
             <param name="exception"><see cref="T:System.Exception"/></param>
@@ -180,8 +183,8 @@
         <member name="M:Fast.JwtBearer.IJwtBearerHandle.PermissionHandle(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Authorization.IAuthorizationRequirement,Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             权限判断处理
-            <remarks>这里只需要判断你的权限逻辑即可，如果返回 false或抛出异常 则抛出 HttpStatusCode = 403 状态码</remarks>
             </summary>
+            <remarks>这里只需要判断你的权限逻辑即可，如果返回 false或抛出异常 则抛出 HttpStatusCode = 403 状态码</remarks>
             <param name="context"><see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext"/></param>
             <param name="requirement"><see cref="T:Microsoft.AspNetCore.Authorization.IAuthorizationRequirement"/></param>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
@@ -190,8 +193,8 @@
         <member name="M:Fast.JwtBearer.IJwtBearerHandle.PermissionFailHandle(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Authorization.IAuthorizationRequirement,Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
             <summary>
             权限判断失败处理
-            <remarks>如果返回 null，则走默认处理 AuthorizationHandlerContext.Fail()</remarks>
             </summary>
+            <remarks>如果返回 null，则走默认处理 AuthorizationHandlerContext.Fail()</remarks>
             <param name="context"><see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext"/></param>
             <param name="requirement"><see cref="T:Microsoft.AspNetCore.Authorization.IAuthorizationRequirement"/></param>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/></param>
@@ -216,8 +219,8 @@
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.ValidateIssuerSigningKey">
             <summary>
             验证签发方密钥
-            <remarks>默认false</remarks>
             </summary>
+            <remarks>默认false</remarks>
         </member>
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.IssuerSigningKey">
             <summary>
@@ -227,8 +230,8 @@
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.ValidateIssuer">
             <summary>
             验证签发方
-            <remarks>默认false</remarks>
             </summary>
+            <remarks>默认false</remarks>
         </member>
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.ValidIssuer">
             <summary>
@@ -238,8 +241,8 @@
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.ValidateAudience">
             <summary>
             验证签收方
-            <remarks>默认false</remarks>
             </summary>
+            <remarks>默认false</remarks>
         </member>
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.ValidAudience">
             <summary>
@@ -249,38 +252,38 @@
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.ValidateLifetime">
             <summary>
             验证生存期
-            <remarks>默认false</remarks>
             </summary>
+            <remarks>默认false</remarks>
         </member>
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.ClockSkew">
             <summary>
             过期时间容错值，解决服务器端时间不同步问题（秒）
-            <remarks>默认5秒</remarks>
             </summary>
+            <remarks>默认5秒</remarks>
         </member>
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.TokenExpiredTime">
             <summary>
             Token 过期时间（分钟）
-            <remarks>默认20分钟</remarks>
             </summary>
+            <remarks>默认20分钟</remarks>
         </member>
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.RefreshTokenExpireTime">
             <summary>
             刷新Token 过期时间（分钟）
-            <remarks>默认1440分钟(24小时)</remarks>
             </summary>
+            <remarks>默认1440分钟(24小时)</remarks>
         </member>
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.Algorithm">
             <summary>
             加密算法
-            <remarks>默认HS256</remarks>
             </summary>
+            <remarks>默认HS256</remarks>
         </member>
         <member name="P:Fast.JwtBearer.JWTSettingsOptions.Enable">
             <summary>
             启用
-            <remarks>默认true</remarks>
             </summary>
+            <remarks>默认true</remarks>
         </member>
         <member name="M:Fast.JwtBearer.JWTSettingsOptions.PostConfigure">
             <summary>

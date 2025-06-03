@@ -40,6 +40,7 @@ public class DbConnectionInfo
 
     /// <summary>
     /// 端口号
+    /// </summary>
     /// <remarks>
     /// <para>MySql：3306</para>
     /// <para>SqlServer：1433</para>
@@ -47,7 +48,6 @@ public class DbConnectionInfo
     /// <para>PostgreSQL：5432</para>
     /// <para>MongoDb：27017</para>
     /// </remarks>
-    /// </summary>
     [SugarColumn(ColumnDescription = "端口号", IsNullable = true)]
     public int? Port { get; set; }
 

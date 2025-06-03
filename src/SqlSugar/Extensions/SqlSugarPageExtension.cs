@@ -190,8 +190,8 @@ public static class SqlSugarPageExtension
 
     /// <summary>
     /// 分页搜索
-    /// <remarks>支持多库</remarks>
     /// </summary>
+    /// <remarks>支持多库</remarks>
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="input"><see cref="PagedInput"/> 统一分页输入</param>
@@ -346,8 +346,8 @@ public static class SqlSugarPageExtension
 
     /// <summary>
     /// 分页排序
-    /// <remarks>支持多库</remarks>
     /// </summary>
+    /// <remarks>支持多库</remarks>
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="pagedSortList"><see cref="List{PagedSortInput}"/> 排序输入</param>

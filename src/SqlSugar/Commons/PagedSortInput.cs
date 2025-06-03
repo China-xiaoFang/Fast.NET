@@ -33,22 +33,24 @@ public class PagedSortInput
 {
     /// <summary>
     /// 排序字段英文
-    /// <remarks>主要字段，用于生成排序语句</remarks>
     /// </summary>
+    /// <remarks>主要字段，用于生成排序语句</remarks>
     [StringRequired(ErrorMessage = "排序字段不能为空")]
     public virtual string EnField { get; set; }
 
     /// <summary>
     /// 排序字段中文
-    /// <remarks>次要字段，用于提示</remarks>
     /// </summary>
+    /// <remarks>次要字段，用于提示</remarks>
     public virtual string ChField { get; set; }
 
     /// <summary>
     /// 排序方式
-    /// <remarks>ElementPlus 的 Table 排序方式</remarks>
-    /// <remarks>ascending 正序；descending：倒序；为空默认正序</remarks>
     /// </summary>
+    /// <remarks>
+    /// <para>ElementPlus 的 Table 排序方式</para>
+    /// <para>ascending 正序；descending：倒序；为空默认正序</para>
+    /// </remarks>
     public virtual string Mode { get; set; }
 
     /// <summary>

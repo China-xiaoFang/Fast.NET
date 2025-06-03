@@ -44,7 +44,8 @@ public static class IServiceCollectionExtension
     /// <remarks>适用于只使用工具类</remarks>
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section"><see cref="string"/>
+    /// <param name="section">
+    /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
     /// <remarks>默认值：JWTSettings</remarks>
     /// </param>
@@ -62,8 +63,8 @@ public static class IServiceCollectionExtension
 
     /// <summary>
     /// 添加JwtBearer设置
-    /// <remarks>适用于只使用工具类</remarks>
     /// </summary>
+    /// <remarks>适用于只使用工具类</remarks>
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <param name="optionAction"><see cref="Action{T}"/></param>
     /// <returns><see cref="IServiceCollection"/></returns>
@@ -87,7 +88,8 @@ public static class IServiceCollectionExtension
     /// <remarks>适用于自定义验证</remarks>
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section"><see cref="string"/>
+    /// <param name="section">
+    /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
     /// <remarks>默认值：JWTSettings</remarks>
     /// </param>
@@ -144,7 +146,8 @@ public static class IServiceCollectionExtension
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section"><see cref="string"/>
+    /// <param name="section">
+    /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
     /// <remarks>默认值：JWTSettings</remarks>
     /// </param>

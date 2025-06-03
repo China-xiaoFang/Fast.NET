@@ -7,33 +7,33 @@
         <member name="T:Fast.SqlSugar.SugarDbTypeAttribute">
             <summary>
             <see cref="T:Fast.SqlSugar.SugarDbTypeAttribute"/> SqlSugar DB类型
-            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> 自行解析</remarks>
             </summary>
+            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> 自行解析</remarks>
         </member>
         <member name="P:Fast.SqlSugar.SugarDbTypeAttribute.Type">
             <summary>
             <see cref="T:System.Object"/> Entity 的DB类型
-            <remarks>如果为Null，则代表的默认库</remarks>
             </summary>
+            <remarks>如果为Null，则代表的默认库</remarks>
         </member>
         <member name="M:Fast.SqlSugar.SugarDbTypeAttribute.#ctor">
             <summary>
             <see cref="T:Fast.SqlSugar.SugarDbTypeAttribute"/> SqlSugar DB类型
-            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> 自行解析</remarks>
             </summary>
+            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> 自行解析</remarks>
         </member>
         <member name="M:Fast.SqlSugar.SugarDbTypeAttribute.#ctor(System.Object)">
             <summary>
             <see cref="T:Fast.SqlSugar.SugarDbTypeAttribute"/> SqlSugar DB类型
-            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> 自行解析</remarks>
             </summary>
+            <remarks>放入 Class 头部，支持传入 Object，然后在 <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> 自行解析</remarks>
             <param name="type"><see cref="T:System.Object"/> Entity 的DB类型</param>
         </member>
         <member name="T:Fast.SqlSugar.SugarSearchTimeAttribute">
             <summary>
             <see cref="T:Fast.SqlSugar.SugarSearchTimeAttribute"/> SqlSugar 分页搜索时间列
-            <remarks>仅支持 <see cref="T:System.DateTime"/> 类型</remarks>
             </summary>
+            <remarks>仅支持 <see cref="T:System.DateTime"/> 类型</remarks>
         </member>
         <member name="T:Fast.SqlSugar.SugarSearchValueAttribute">
             <summary>
@@ -240,27 +240,27 @@
         <member name="T:Fast.SqlSugar.IdentityKeyEntity">
             <summary>
             <see cref="T:Fast.SqlSugar.IdentityKeyEntity"/> 自增Id主键实体
-            <remarks>主键Id为 Long 类型</remarks>
             </summary>
+            <remarks>主键Id为 Long 类型</remarks>
         </member>
         <member name="P:Fast.SqlSugar.IdentityKeyEntity.Id">
             <summary>
             主键Id
             通过特性设置主键和自增列
-            <remarks>自增Id</remarks>
             </summary>
+            <remarks>自增Id</remarks>
         </member>
         <member name="T:Fast.SqlSugar.SnowflakeKeyEntity">
             <summary>
             <see cref="T:Fast.SqlSugar.SnowflakeKeyEntity"/> 雪花Id主键实体
-            <remarks>主键Id为 Long 类型</remarks>
             </summary>
+            <remarks>主键Id为 Long 类型</remarks>
         </member>
         <member name="P:Fast.SqlSugar.SnowflakeKeyEntity.Id">
             <summary>
             主键Id
-            <remarks>雪花Id</remarks>
             </summary>
+            <remarks>雪花Id</remarks>
         </member>
         <member name="T:Fast.SqlSugar.DbConnectionInfo">
             <summary>
@@ -275,6 +275,7 @@
         <member name="P:Fast.SqlSugar.DbConnectionInfo.Port">
             <summary>
             端口号
+            </summary>
             <remarks>
             <para>MySql：3306</para>
             <para>SqlServer：1433</para>
@@ -282,7 +283,6 @@
             <para>PostgreSQL：5432</para>
             <para>MongoDb：27017</para>
             </remarks>
-            </summary>
         </member>
         <member name="P:Fast.SqlSugar.DbConnectionInfo.DbName">
             <summary>
@@ -337,8 +337,8 @@
         <member name="P:Fast.SqlSugar.PagedInput.EnablePaged">
             <summary>
             启用分页
-            <remarks>默认启用</remarks>
             </summary>
+            <remarks>默认启用</remarks>
         </member>
         <member name="T:Fast.SqlSugar.PagedOutput">
             <summary>
@@ -429,21 +429,23 @@
         <member name="P:Fast.SqlSugar.PagedSortInput.EnField">
             <summary>
             排序字段英文
-            <remarks>主要字段，用于生成排序语句</remarks>
             </summary>
+            <remarks>主要字段，用于生成排序语句</remarks>
         </member>
         <member name="P:Fast.SqlSugar.PagedSortInput.ChField">
             <summary>
             排序字段中文
-            <remarks>次要字段，用于提示</remarks>
             </summary>
+            <remarks>次要字段，用于提示</remarks>
         </member>
         <member name="P:Fast.SqlSugar.PagedSortInput.Mode">
             <summary>
             排序方式
-            <remarks>ElementPlus 的 Table 排序方式</remarks>
-            <remarks>ascending 正序；descending：倒序；为空默认正序</remarks>
             </summary>
+            <remarks>
+            <para>ElementPlus 的 Table 排序方式</para>
+            <para>ascending 正序；descending：倒序；为空默认正序</para>
+            </remarks>
         </member>
         <member name="P:Fast.SqlSugar.PagedSortInput.IsDescending">
             <summary>
@@ -458,11 +460,11 @@
         <member name="P:Fast.SqlSugar.SlaveConnectionInfo.HitRate">
             <summary>
             从库命中率
+            </summary>
             <remarks>
             <para>为 0 则不命中</para>
             <para>建议相加不超过10</para>
             </remarks>
-            </summary>
         </member>
         <member name="T:Fast.SqlSugar.SqlSugarEntityInfo">
             <summary>
@@ -512,14 +514,14 @@
         <member name="P:Fast.SqlSugar.SqlSugarContext.DefaultConnectionConfig">
             <summary>
             默认连接配置
-            <remarks>带 AOP 处理的</remarks>
             </summary>
+            <remarks>带 AOP 处理的</remarks>
         </member>
         <member name="P:Fast.SqlSugar.SqlSugarContext.DefaultConnectionConfigNoAop">
             <summary>
             默认连接配置
-            <remarks>不带 AOP 处理的</remarks>
             </summary>
+            <remarks>不带 AOP 处理的</remarks>
         </member>
         <member name="F:Fast.SqlSugar.SqlSugarContext.SqlSugarEntityList">
             <summary>
@@ -746,8 +748,8 @@
         <member name="M:Fast.SqlSugar.SqlSugarPageExtension.PagedWhere``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedInput)">
             <summary>
             分页搜索
-            <remarks>支持多库</remarks>
             </summary>
+            <remarks>支持多库</remarks>
             <typeparam name="TEntity"></typeparam>
             <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
             <param name="input"><see cref="T:Fast.SqlSugar.PagedInput"/> 统一分页输入</param>
@@ -756,8 +758,8 @@
         <member name="M:Fast.SqlSugar.SqlSugarPageExtension.PagedOrderBy``1(SqlSugar.ISugarQueryable{``0},Fast.SqlSugar.PagedSortInput[])">
             <summary>
             分页排序
-            <remarks>支持多库</remarks>
             </summary>
+            <remarks>支持多库</remarks>
             <typeparam name="TEntity"></typeparam>
             <param name="queryable"><see cref="T:SqlSugar.ISugarQueryable`1"/></param>
             <param name="pagedSortList"><see cref="T:System.Collections.Generic.List`1"/> 排序输入</param>
@@ -788,11 +790,11 @@
         <member name="T:Fast.SqlSugar.ISqlSugarEntityHandler">
             <summary>
             <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> Sugar实体处理
+            </summary>
             <remarks>
             <para>不能在构造函数中注入 <see cref="T:SqlSugar.ISqlSugarClient"/> 否则会出现循环引用的问题</para>
             <para>不能在构造函数中注入 <see cref="T:Microsoft.AspNetCore.Http.IHttpContextAccessor"/> 或 <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 否则会出现并发线程释放的问题</para>
             </remarks>
-            </summary>
         </member>
         <member name="M:Fast.SqlSugar.ISqlSugarEntityHandler.GetConnectionSettings``1(SqlSugar.ISqlSugarClient,Fast.SqlSugar.SugarDbTypeAttribute,System.Type)">
             <summary>
@@ -1149,14 +1151,14 @@
         <member name="P:Fast.SqlSugar.ConnectionSettingsOptions.DisableAop">
             <summary>
             禁用 SqlSugar 的 Aop
-            <remarks>如果是通过 <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
             </summary>
+            <remarks>如果是通过 <see cref="T:Fast.SqlSugar.ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
         </member>
         <member name="P:Fast.SqlSugar.ConnectionSettingsOptions.SlaveConnectionList">
             <summary>
             从库信息
-            <remarks>一般默认库或者主库不建议设置从库</remarks>
             </summary>
+            <remarks>一般默认库或者主库不建议设置从库</remarks>
         </member>
         <member name="T:Fast.SqlSugar.SnowflakeSettingsOptions">
             <summary>
@@ -1550,8 +1552,8 @@
         <member name="M:Fast.SqlSugar.ISqlSugarRepository`1.LogicDelete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
             自定义条件逻辑删除记录
-            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseDeletedEntity"/></remarks>
             </summary>
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseDeletedEntity"/></remarks>
             <param name="whereExpression"></param>
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
@@ -1559,8 +1561,8 @@
         <member name="M:Fast.SqlSugar.ISqlSugarRepository`1.LogicDeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
             自定义条件逻辑删除记录
-            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseDeletedEntity"/></remarks>
             </summary>
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseDeletedEntity"/></remarks>
             <param name="whereExpression"></param>
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
@@ -1954,8 +1956,8 @@
         <member name="M:Fast.SqlSugar.SqlSugarRepository`1.LogicDelete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
             自定义条件逻辑删除记录
-            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseDeletedEntity"/></remarks>
             </summary>
+            <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseDeletedEntity"/></remarks>
             <param name="whereExpression"></param>
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
@@ -1964,8 +1966,8 @@
             <summary>
             自定义条件逻辑删除记录
             </summary>
-            <param name="whereExpression"></param>
             <remarks>注意，实体必须继承 <see cref="T:Fast.SqlSugar.IBaseDeletedEntity"/></remarks>
+            <param name="whereExpression"></param>
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>

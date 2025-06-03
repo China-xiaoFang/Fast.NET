@@ -458,8 +458,8 @@
         <member name="M:Fast.UnifyResult.IUnifyResponseProvider.ResponseDataAsync(System.Int64,System.Object,Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             响应数据处理
-            <remarks>只有响应成功且为正常返回才会调用</remarks>
             </summary>
+            <remarks>只有响应成功且为正常返回才会调用</remarks>
             <param name="timestamp"><see cref="T:System.Int64"/> 响应时间戳</param>
             <param name="data"><see cref="T:System.Object"/> 数据</param>
             <param name="httpContext"><see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> 请求上下文</param>

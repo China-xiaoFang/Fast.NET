@@ -516,12 +516,12 @@ namespace Fast.IaaS
         /// <summary>
         /// 判断用户输入是否为日期
         /// </summary>
-        /// <param name="str">输入字符</param>
-        /// <returns>返回一个bool类型的值</returns>
         /// <remarks>
         /// 可判断格式如下（其中-可替换为/，不影响验证):
         /// YYYY | YYYY-MM | YYYYMM | YYYY-MM-DD | YYYYMMDD | YYYY-MM-DD HH:MM:SS | YYYY-MM-DD HH:MM:SS.FFF
         /// </remarks>
+        /// <param name="str">输入字符</param>
+        /// <returns>返回一个bool类型的值</returns>
         public static bool IsDateTime(this string str)
         {
             // 检查输入是否为空

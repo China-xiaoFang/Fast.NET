@@ -33,8 +33,8 @@ public sealed class JWTSettingsOptions : IPostConfigure
 {
     /// <summary>
     /// 验证签发方密钥
-    /// <remarks>默认false</remarks>
     /// </summary>
+    /// <remarks>默认false</remarks>
     public bool? ValidateIssuerSigningKey { get; set; }
 
     /// <summary>
@@ -44,8 +44,8 @@ public sealed class JWTSettingsOptions : IPostConfigure
 
     /// <summary>
     /// 验证签发方
-    /// <remarks>默认false</remarks>
     /// </summary>
+    /// <remarks>默认false</remarks>
     public bool? ValidateIssuer { get; set; }
 
     /// <summary>
@@ -55,8 +55,8 @@ public sealed class JWTSettingsOptions : IPostConfigure
 
     /// <summary>
     /// 验证签收方
-    /// <remarks>默认false</remarks>
     /// </summary>
+    /// <remarks>默认false</remarks>
     public bool? ValidateAudience { get; set; }
 
     /// <summary>
@@ -66,38 +66,38 @@ public sealed class JWTSettingsOptions : IPostConfigure
 
     /// <summary>
     /// 验证生存期
-    /// <remarks>默认false</remarks>
     /// </summary>
+    /// <remarks>默认false</remarks>
     public bool? ValidateLifetime { get; set; }
 
     /// <summary>
     /// 过期时间容错值，解决服务器端时间不同步问题（秒）
-    /// <remarks>默认5秒</remarks>
     /// </summary>
+    /// <remarks>默认5秒</remarks>
     public long? ClockSkew { get; set; }
 
     /// <summary>
     /// Token 过期时间（分钟）
-    /// <remarks>默认20分钟</remarks>
     /// </summary>
+    /// <remarks>默认20分钟</remarks>
     public long? TokenExpiredTime { get; set; }
 
     /// <summary>
     /// 刷新Token 过期时间（分钟）
-    /// <remarks>默认1440分钟(24小时)</remarks>
     /// </summary>
+    /// <remarks>默认1440分钟(24小时)</remarks>
     public long? RefreshTokenExpireTime { get; set; }
 
     /// <summary>
     /// 加密算法
-    /// <remarks>默认HS256</remarks>
     /// </summary>
+    /// <remarks>默认HS256</remarks>
     public JwtBearerAlgorithmEnum? Algorithm { get; set; }
 
     /// <summary>
     /// 启用
-    /// <remarks>默认true</remarks>
     /// </summary>
+    /// <remarks>默认true</remarks>
     public bool? Enable { get; set; }
 
     /// <summary>
