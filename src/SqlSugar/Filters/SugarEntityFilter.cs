@@ -37,10 +37,10 @@ internal static class SugarEntityFilter
     /// </summary>
     /// <param name="isDevelopment"><see cref="bool"/> 是否为开发环境</param>
     /// <param name="_db"><see cref="ISqlSugarClient"/></param>
-    /// <param name="sugarSqlExecMaxSeconds"><see cref="double"/> Sql最大执行秒数</param>
+    /// <param name="sugarSqlExecMaxSeconds"><see cref="int"/> Sql最大执行秒数</param>
     /// <param name="diffLog"><see cref="bool"/> 是否启用差异日志</param>
     /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
-    internal static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, double sugarSqlExecMaxSeconds, bool diffLog,
+    internal static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int sugarSqlExecMaxSeconds, bool diffLog,
         ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
         _db.Aop.OnLogExecuted = (rawSql, pars) =>
@@ -315,7 +315,7 @@ internal static class SugarEntityFilter
                         ref entityInfo);
 
                     // 更新版本控制字段
-                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedVersion), new List<dynamic> {null, 0}, 1,
+                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.RowVersion), new List<dynamic> {null, 0}, 1,
                         ref entityInfo);
 
                     // 其余字段判断

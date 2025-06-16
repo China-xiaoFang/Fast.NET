@@ -73,5 +73,5 @@ public interface IBaseEntity : IDatabaseEntity
     /// <summary>
     /// 更新版本控制字段
     /// </summary>
-    long UpdatedVersion { get; set; }
+    long RowVersion { get; set; }
 }

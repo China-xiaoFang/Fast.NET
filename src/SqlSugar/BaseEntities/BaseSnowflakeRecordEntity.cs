@@ -36,74 +36,67 @@ public class BaseSnowflakeRecordEntity : SnowflakeKeyEntity, IBaseIdentityRecord
     /// <summary>
     /// 设备
     /// </summary>
-    [SugarSearchValue,
-     SugarColumn(ColumnDescription = "设备", ColumnDataType = "Nvarchar(100)", IsNullable = true, CreateTableFieldSort = 983)]
+    [SugarSearchValue, SugarColumn(ColumnDescription = "设备", Length = 100, IsNullable = true, CreateTableFieldSort = 983)]
     public virtual string Device { get; set; }
 
     /// <summary>
     /// 操作系统（版本）
     /// </summary>
-    [SugarSearchValue,
-     SugarColumn(ColumnDescription = "操作系统（版本）", ColumnDataType = "Nvarchar(100)", IsNullable = true, CreateTableFieldSort = 984)]
+    [SugarSearchValue, SugarColumn(ColumnDescription = "操作系统（版本）", Length = 100, IsNullable = true, CreateTableFieldSort = 984)]
     public virtual string OS { get; set; }
 
     /// <summary>
     /// 浏览器（版本）
     /// </summary>
-    [SugarSearchValue,
-     SugarColumn(ColumnDescription = "浏览器（版本）", ColumnDataType = "Nvarchar(100)", IsNullable = true, CreateTableFieldSort = 985)]
+    [SugarSearchValue, SugarColumn(ColumnDescription = "浏览器（版本）", Length = 100, IsNullable = true, CreateTableFieldSort = 985)]
     public virtual string Browser { get; set; }
 
     /// <summary>
     /// 省份
     /// </summary>
-    [SugarSearchValue,
-     SugarColumn(ColumnDescription = "省份", ColumnDataType = "Nvarchar(20)", IsNullable = true, CreateTableFieldSort = 986)]
+    [SugarSearchValue, SugarColumn(ColumnDescription = "省份", Length = 20, IsNullable = true, CreateTableFieldSort = 986)]
     public virtual string Province { get; set; }
 
     /// <summary>
     /// 城市
     /// </summary>
-    [SugarSearchValue,
-     SugarColumn(ColumnDescription = "城市", ColumnDataType = "Nvarchar(20)", IsNullable = true, CreateTableFieldSort = 987)]
+    [SugarSearchValue, SugarColumn(ColumnDescription = "城市", Length = 20, IsNullable = true, CreateTableFieldSort = 987)]
     public virtual string City { get; set; }
 
     /// <summary>
     /// Ip
     /// </summary>
-    [SugarSearchValue,
-     SugarColumn(ColumnDescription = "Ip", ColumnDataType = "Nvarchar(15)", IsNullable = true, CreateTableFieldSort = 988)]
+    [SugarSearchValue, SugarColumn(ColumnDescription = "Ip", Length = 15, IsNullable = true, CreateTableFieldSort = 988)]
     public virtual string Ip { get; set; }
 
     /// <summary>
     /// 部门Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "部门Id", IsNullable = true, CreateTableFieldSort = 989)]
+    [SugarColumn(ColumnDescription = "部门Id", CreateTableFieldSort = 989)]
     public virtual long? DepartmentId { get; set; }
 
     /// <summary>
     /// 部门名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "部门名称", ColumnDataType = "Nvarchar(20)", IsNullable = true, CreateTableFieldSort = 990)]
+    [SugarColumn(ColumnDescription = "部门名称", Length = 20, IsNullable = true, CreateTableFieldSort = 990)]
     public string DepartmentName { get; set; }
 
     /// <summary>
     /// 创建者用户Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建者用户Id", IsNullable = true, CreateTableFieldSort = 991)]
+    [SugarColumn(ColumnDescription = "创建者用户Id", CreateTableFieldSort = 991)]
     public long? CreatedUserId { get; set; }
 
     /// <summary>
     /// 创建者用户名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建者用户名称", ColumnDataType = "Nvarchar(20)", IsNullable = true, CreateTableFieldSort = 992)]
+    [SugarColumn(ColumnDescription = "创建者用户名称", Length = 20, IsNullable = true, CreateTableFieldSort = 992)]
     public string CreatedUserName { get; set; }
 
     /// <summary>
     /// 创建时间
     /// </summary>
-    [SugarSearchTime,
-     SugarColumn(ColumnDescription = "创建时间", ColumnDataType = "datetimeoffset", IsNullable = true, CreateTableFieldSort = 993)]
+    [SugarSearchTime, SugarColumn(ColumnDescription = "创建时间", ColumnDataType = "datetimeoffset", CreateTableFieldSort = 993)]
     public DateTime? CreatedTime { get; set; }
 
     /// <summary>
