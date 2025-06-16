@@ -35,7 +35,7 @@ public class DbConnectionInfo
     /// <summary>
     /// 服务器Ip地址
     /// </summary>
-    [SugarColumn(ColumnDescription = "服务器Ip地址", ColumnDataType = "NVARCHAR(15)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "服务器Ip地址", Length = 15, IsNullable = true)]
     public string ServiceIp { get; set; }
 
     /// <summary>
@@ -54,24 +54,24 @@ public class DbConnectionInfo
     /// <summary>
     /// 数据库名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "数据库名称", ColumnDataType = "NVARCHAR(50)", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "数据库名称", Length = 50, IsNullable = false)]
     public string DbName { get; set; }
 
     /// <summary>
     /// 数据库用户
     /// </summary>
-    [SugarColumn(ColumnDescription = "数据库用户", ColumnDataType = "NVARCHAR(10)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "数据库用户", Length = 10, IsNullable = true)]
     public string DbUser { get; set; }
 
     /// <summary>
     /// 数据库密码
     /// </summary>
-    [SugarColumn(ColumnDescription = "数据库密码", ColumnDataType = "NVARCHAR(20)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "数据库密码", Length = 20, IsNullable = true)]
     public string DbPwd { get; set; }
 
     /// <summary>
     /// 自定义连接字符串
     /// </summary>
-    [SugarColumn(ColumnDescription = "自定义连接字符串", ColumnDataType = "NVARCHAR(100)", IsNullable = true)]
+    [SugarColumn(ColumnDescription = "自定义连接字符串", Length = 100, IsNullable = true)]
     public string CustomConnectionStr { get; set; }
 }

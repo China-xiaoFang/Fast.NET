@@ -39,6 +39,6 @@ public class SlaveConnectionInfo : DbConnectionInfo
     /// <para>为 0 则不命中</para>
     /// <para>建议相加不超过10</para>
     /// </remarks>
-    [SugarColumn(ColumnDescription = "从库命中率", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "从库命中率")]
     public int HitRate { get; set; }
 }

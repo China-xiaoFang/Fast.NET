@@ -40,32 +40,32 @@ public class ConnectionSettingsOptions : DbConnectionInfo
     /// <summary>
     /// 数据库类型，用于区分使用的是那个类型的数据库
     /// </summary>
-    [SugarColumn(ColumnDescription = "数据库类型", ColumnDataType = "tinyint", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "数据库类型")]
     public DbType DbType { get; set; }
 
     /// <summary>
     /// 超时时间，单位秒
     /// </summary>
-    [SugarColumn(ColumnDescription = "超时时间，单位秒", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "超时时间，单位秒")]
     public int CommandTimeOut { get; set; }
 
     /// <summary>
     /// SqlSugar Sql执行最大秒数，如果超过记录警告日志
     /// </summary>
-    [SugarColumn(ColumnDescription = "SqlSugar Sql执行最大秒数，如果超过记录警告日志", IsNullable = false)]
-    public double SugarSqlExecMaxSeconds { get; set; }
+    [SugarColumn(ColumnDescription = "SqlSugar Sql执行最大秒数，如果超过记录警告日志")]
+    public int SugarSqlExecMaxSeconds { get; set; }
 
     /// <summary>
     /// 差异日志
     /// </summary>
-    [SugarColumn(ColumnDescription = "差异日志", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "差异日志")]
     public bool DiffLog { get; set; }
 
     /// <summary>
     /// 禁用 SqlSugar 的 Aop
     /// </summary>
     /// <remarks>如果是通过 <see cref="ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
-    [SugarColumn(ColumnDescription = "差异日志", IsNullable = false)]
+    [SugarColumn(ColumnDescription = "差异日志")]
     public bool DisableAop { get; set; }
 
     /// <summary>

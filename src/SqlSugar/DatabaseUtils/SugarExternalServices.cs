@@ -81,13 +81,6 @@ internal partial class DatabaseUtil
                 var columnDbType = columnInfo.DataType?.ToUpper();
                 if (columnDbType == null)
                     return;
-                // String
-                if (columnDbType.ToUpper().StartsWith("NVARCHAR"))
-                {
-                    var length = columnDbType.ToUpper()
-                        .Substring("NVARCHAR(".Length, columnDbType.Length - "NVARCHAR(".Length - 1);
-                    SetDbTypeNvarchar(dbType, length, ref columnInfo);
-                }
 
                 // DateTime
                 if (columnDbType == "DATETIMEOFFSET")
