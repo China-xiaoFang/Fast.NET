@@ -77,6 +77,18 @@ internal partial class DatabaseUtil
                     columnInfo.IsNullable = true;
                 }
 
+                if (string.IsNullOrEmpty(columnInfo.DataType))
+                {
+                    var propertyType = propertyInfo.PropertyType.IsGenericType
+                        ? Nullable.GetUnderlyingType(propertyInfo.PropertyType)
+                        : propertyInfo.PropertyType;
+
+                    if (propertyType == typeof(DateTime))
+                    {
+                        columnInfo.DataType = "datetimeoffset";
+                    }
+                }
+
                 // 这里的所有数据库类型，默认是根据SqlServer配置的
                 var columnDbType = columnInfo.DataType?.ToUpper();
                 if (columnDbType == null)
