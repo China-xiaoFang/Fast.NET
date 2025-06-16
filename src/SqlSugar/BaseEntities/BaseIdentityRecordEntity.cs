@@ -96,7 +96,7 @@ public class BaseIdentityRecordEntity : IdentityKeyEntity, IBaseIdentityRecordEn
     /// <summary>
     /// 创建时间
     /// </summary>
-    [SugarSearchTime, SugarColumn(ColumnDescription = "创建时间", ColumnDataType = "datetimeoffset", CreateTableFieldSort = 993)]
+    [SugarSearchTime, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
     public DateTime? CreatedTime { get; set; }
 
     /// <summary>
