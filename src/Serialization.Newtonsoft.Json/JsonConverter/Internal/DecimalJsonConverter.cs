@@ -128,7 +128,7 @@ internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
 
         var jToken = JToken.ReadFrom(reader);
         var value = jToken.Value<string>();
-        if (string.IsNullOrEmpty(value))
+        if (string.IsNullOrWhiteSpace(value))
             return null;
 
         return decimal.Parse(value);

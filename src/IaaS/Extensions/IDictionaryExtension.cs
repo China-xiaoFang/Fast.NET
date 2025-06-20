@@ -200,7 +200,7 @@ namespace Fast.IaaS
         /// <returns><see cref="IDictionary{TKey,TValue}"/></returns>
         public static IDictionary<string, object> XmlStrToDic(this string xml)
         {
-            if (string.IsNullOrEmpty(xml))
+            if (string.IsNullOrWhiteSpace(xml))
             {
                 throw new Exception("不能转换空字符串！");
             }
@@ -249,7 +249,7 @@ namespace Fast.IaaS
         /// <returns><see cref="SortedDictionary{TKey,TValue}"/></returns>
         public static SortedDictionary<string, object> XmlStrToSortDic(this string xml)
         {
-            if (string.IsNullOrEmpty(xml))
+            if (string.IsNullOrWhiteSpace(xml))
             {
                 throw new Exception("不能转换空字符串！");
             }

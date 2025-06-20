@@ -38,5 +38,5 @@ public class IdentityKeyEntity : IPrimaryKeyEntity<long>
     /// </summary>
     /// <remarks>自增Id</remarks>
     [SugarColumn(IsIdentity = true, ColumnDescription = "Id主键", IsPrimaryKey = true)]
-    public long Id { get; set; }
+    public virtual long Id { get; set; }
 }

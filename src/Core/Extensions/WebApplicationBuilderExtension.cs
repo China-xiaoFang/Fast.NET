@@ -102,7 +102,7 @@ public static class WebApplicationBuilderExtension
                 // 处理命令行启动参数 公共JSON 文件地址
                 var publicJsonPath = hostContext.Configuration["publicJsonPath"];
 
-                if (!string.IsNullOrEmpty(publicJsonPath))
+                if (!string.IsNullOrWhiteSpace(publicJsonPath))
                 {
                     // 根据,分割
                     var publicJsonPathArr = publicJsonPath.Split(",");
@@ -110,7 +110,7 @@ public static class WebApplicationBuilderExtension
                     {
                         foreach (var jsonPath in publicJsonPathArr)
                         {
-                            if (!string.IsNullOrEmpty(jsonPath) && Path.IsPathRooted(jsonPath))
+                            if (!string.IsNullOrWhiteSpace(jsonPath) && Path.IsPathRooted(jsonPath))
                             {
                                 configurationBuilder.AddJsonFile(jsonPath, optional: true, reloadOnChange: true);
                             }
@@ -132,7 +132,7 @@ public static class WebApplicationBuilderExtension
                 // 处理命令行启动参数 公共JSON 文件地址
                 var publicJsonPath = hostContext.Configuration["publicJsonPath"];
 
-                if (!string.IsNullOrEmpty(publicJsonPath))
+                if (!string.IsNullOrWhiteSpace(publicJsonPath))
                 {
                     // 根据,分割
                     var publicJsonPathArr = publicJsonPath.Split(",");
@@ -140,7 +140,7 @@ public static class WebApplicationBuilderExtension
                     {
                         foreach (var jsonPath in publicJsonPathArr)
                         {
-                            if (!string.IsNullOrEmpty(jsonPath) && Path.IsPathRooted(jsonPath))
+                            if (!string.IsNullOrWhiteSpace(jsonPath) && Path.IsPathRooted(jsonPath))
                             {
                                 configurationBuilder.AddJsonFile(jsonPath, optional: true, reloadOnChange: true);
                             }

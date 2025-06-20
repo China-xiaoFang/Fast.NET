@@ -50,12 +50,6 @@ public sealed class SqlSugarContext
     public static ConnectionConfig DefaultConnectionConfig { get; internal set; }
 
     /// <summary>
-    /// 默认连接配置
-    /// </summary>
-    /// <remarks>不带 AOP 处理的</remarks>
-    public static ConnectionConfig DefaultConnectionConfigNoAop { get; internal set; }
-
-    /// <summary>
     /// SqlSugar实体集合
     /// </summary>
     public static readonly List<SqlSugarEntityInfo> SqlSugarEntityList;
@@ -112,12 +106,18 @@ public sealed class SqlSugarContext
 
         return new ConnectionConfig
         {
-            ConfigId = connectionSettings.ConnectionId, // 此链接标志，用以后面切库使用
-            ConnectionString = connectionStr, // 核心库连接字符串
+            // 此链接标志，用以后面切库使用
+            ConfigId = connectionSettings.ConnectionId,
+            // 连接字符串
+            ConnectionString = connectionStr,
             DbType = connectionSettings.DbType,
-            IsAutoCloseConnection = true, // 开启自动释放模式和EF原理一样我就不多解释了
-            InitKeyType = InitKeyType.Attribute, // 从特性读取主键和自增列信息
-            //InitKeyType = InitKeyType.SystemTable // 从数据库读取主键和自增列信息
+            // 开启自动释放模式和EF原理一样我就不多解释了
+            IsAutoCloseConnection = true,
+            // 从特性读取主键和自增列信息
+            InitKeyType = InitKeyType.Attribute,
+            // 从数据库读取主键和自增列信息
+            //InitKeyType = InitKeyType.SystemTable 
+            MoreSettings = DatabaseUtil.GetSugarMoreSettings(),
             ConfigureExternalServices = DatabaseUtil.GetSugarExternalServices(connectionSettings.DbType),
             SlaveConnectionConfigs = slaveConnectionList
         };

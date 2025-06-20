@@ -59,5 +59,5 @@ public class PagedInput
     /// 启用分页
     /// </summary>
     /// <remarks>默认启用</remarks>
-    public bool EnablePaged { get; set; } = true;
+    public virtual bool EnablePaged { get; set; } = true;
 }

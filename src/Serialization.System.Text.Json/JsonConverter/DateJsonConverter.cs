@@ -130,7 +130,7 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
     {
         var value = reader.GetString();
 
-        if (string.IsNullOrEmpty(value))
+        if (string.IsNullOrWhiteSpace(value))
         {
             return null;
         }

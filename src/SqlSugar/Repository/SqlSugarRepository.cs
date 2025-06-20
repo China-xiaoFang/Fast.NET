@@ -658,7 +658,7 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
         isDeletedProperty!.SetValue(deletedEntity, true);
 
         // 执行逻辑删除
-        return Updateable<TEntity>().SetColumns(_ => deletedEntity, true).Where(whereExpression).ExecuteCommand();
+        return Updateable<TEntity>().Where(whereExpression).SetColumns(_ => deletedEntity, true).ExecuteCommand();
     }
 
     /// <summary>
@@ -688,7 +688,7 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
         isDeletedProperty!.SetValue(deletedEntity, true);
 
         // 执行逻辑删除
-        return await Updateable<TEntity>().SetColumns(_ => deletedEntity, true).Where(whereExpression).ExecuteCommandAsync();
+        return await Updateable<TEntity>().Where(whereExpression).SetColumns(_ => deletedEntity, true).ExecuteCommandAsync();
     }
 
     #endregion

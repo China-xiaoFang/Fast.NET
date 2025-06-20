@@ -71,7 +71,7 @@ public class StringRequiredAttribute : ValidationAttribute
         // 不允许空字符串
         if (!AllowEmptyString)
         {
-            if (string.IsNullOrEmpty(valueParse))
+            if (string.IsNullOrWhiteSpace(valueParse))
             {
                 return false;
             }

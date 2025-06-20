@@ -99,7 +99,7 @@ internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
             return reader.GetDecimal();
 
         var decimalString = reader.GetString();
-        if (string.IsNullOrEmpty(decimalString))
+        if (string.IsNullOrWhiteSpace(decimalString))
         {
             return null;
         }

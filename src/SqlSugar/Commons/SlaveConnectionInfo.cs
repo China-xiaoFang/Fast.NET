@@ -40,5 +40,5 @@ public class SlaveConnectionInfo : DbConnectionInfo
     /// <para>建议相加不超过10</para>
     /// </remarks>
     [SugarColumn(ColumnDescription = "从库命中率")]
-    public int HitRate { get; set; }
+    public virtual int HitRate { get; set; }
 }

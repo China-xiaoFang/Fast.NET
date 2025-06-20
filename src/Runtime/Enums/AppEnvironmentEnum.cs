@@ -114,7 +114,7 @@ public enum AppEnvironmentEnum
     /// 飞书小程序
     /// </summary>
     [Description("飞书小程序")]
-    FeishuMiniProgram = 16374,
+    FeishuMiniProgram = 16384,
 
     /// <summary>
     /// 钉钉小程序
@@ -147,16 +147,22 @@ public enum AppEnvironmentEnum
     Other = 1073741824,
 
     /// <summary>
-    /// 客户端
+    /// 桌面端
     /// </summary>
-    [Description("客户端")]
-    Client = Web | Windows,
+    [Description("桌面端")]
+    Desktop = Web | Windows | Mac | Linux,
 
     /// <summary>
     /// 移动端
     /// </summary>
     [Description("移动端")]
-    Mobile = Android | IOS | MiniProgram,
+    Mobile = Android | IOS,
+
+    /// <summary>
+    /// 移动端（三端）
+    /// </summary>
+    [Description("移动端（三端）")]
+    MobileThree = Android | IOS | MiniProgram,
 
     /// <summary>
     /// 小程序

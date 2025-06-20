@@ -71,7 +71,7 @@ public class PagedResult<TResult>
     /// <summary>
     /// 程序集名称
     /// </summary>
-    public string AssemblyName
+    public virtual string AssemblyName
     {
         get
         {
@@ -90,7 +90,7 @@ public class PagedResult<TResult>
     /// <summary>
     /// 类型完全限定名称
     /// </summary>
-    public string TypeFullName
+    public virtual string TypeFullName
     {
         get
         {

@@ -509,7 +509,7 @@ public static class RemoteRequestUtil
         }
         catch (HttpRequestException ex)
         {
-            if (string.IsNullOrWhiteSpace(responseContent))
+            if (string.IsNullOrEmpty(responseContent))
             {
                 throw;
             }
