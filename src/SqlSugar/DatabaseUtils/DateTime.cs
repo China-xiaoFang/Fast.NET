@@ -26,7 +26,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DatabaseUtil"/> Database Nvarchar 类型工具类
+/// <see cref="DatabaseUtil"/> Database DateTime 类型工具类
 /// </summary>
 internal partial class DatabaseUtil
 {

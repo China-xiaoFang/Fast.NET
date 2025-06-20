@@ -71,6 +71,15 @@ public sealed class JWTSettingsOptions : IPostConfigure
     public bool? ValidateLifetime { get; set; }
 
     /// <summary>
+    /// 验证 AccessToken
+    /// </summary>
+    /// <remarks>
+    /// <para>默认false</para>
+    /// <para>需调用 <see cref="JwtBearerUtil.SetExpiredToken"/> 才会验证</para>
+    /// </remarks>
+    public bool? ValidateAccessToken { get; set; }
+
+    /// <summary>
     /// 过期时间容错值，解决服务器端时间不同步问题（秒）
     /// </summary>
     /// <remarks>默认5秒</remarks>
@@ -112,6 +121,7 @@ public sealed class JWTSettingsOptions : IPostConfigure
         ValidateAudience ??= false;
         ValidAudience ??= "Fast.NET.Client";
         ValidateLifetime ??= false;
+        ValidateAccessToken ??= false;
         ClockSkew ??= 5;
         TokenExpiredTime ??= 20;
         RefreshTokenExpireTime ??= 1440;

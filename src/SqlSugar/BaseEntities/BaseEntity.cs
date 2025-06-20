@@ -35,59 +35,59 @@ public class BaseEntity : SnowflakeKeyEntity, IBaseEntity, IBaseDeletedEntity
     /// 部门Id
     /// </summary>
     [SugarColumn(ColumnDescription = "部门Id", CreateTableFieldSort = 989)]
-    public long? DepartmentId { get; set; }
+    public virtual long? DepartmentId { get; set; }
 
     /// <summary>
     /// 部门名称
     /// </summary>
     [SugarColumn(ColumnDescription = "部门名称", Length = 20, IsNullable = true, CreateTableFieldSort = 990)]
-    public string DepartmentName { get; set; }
+    public virtual string DepartmentName { get; set; }
 
     /// <summary>
     /// 创建者用户Id
     /// </summary>
     [SugarColumn(ColumnDescription = "创建者用户Id", CreateTableFieldSort = 991)]
-    public long? CreatedUserId { get; set; }
+    public virtual long? CreatedUserId { get; set; }
 
     /// <summary>
     /// 创建者用户名称
     /// </summary>
     [SugarColumn(ColumnDescription = "创建者用户名称", Length = 20, IsNullable = true, CreateTableFieldSort = 992)]
-    public string CreatedUserName { get; set; }
+    public virtual string CreatedUserName { get; set; }
 
     /// <summary>
     /// 创建时间
     /// </summary>
     [SugarSearchTime, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
-    public DateTime? CreatedTime { get; set; }
+    public virtual DateTime? CreatedTime { get; set; }
 
     /// <summary>
     /// 更新者用户Id
     /// </summary>
     [SugarColumn(ColumnDescription = "更新者用户Id", CreateTableFieldSort = 994)]
-    public long? UpdatedUserId { get; set; }
+    public virtual long? UpdatedUserId { get; set; }
 
     /// <summary>
     /// 更新者用户名称
     /// </summary>
     [SugarColumn(ColumnDescription = "更新者用户名称", Length = 20, IsNullable = true, CreateTableFieldSort = 995)]
-    public string UpdatedUserName { get; set; }
+    public virtual string UpdatedUserName { get; set; }
 
     /// <summary>
     /// 更新时间
     /// </summary>
     [SugarColumn(ColumnDescription = "更新时间", CreateTableFieldSort = 996)]
-    public DateTime? UpdatedTime { get; set; }
+    public virtual DateTime? UpdatedTime { get; set; }
 
     /// <summary>
     /// 更新版本控制字段
     /// </summary>
     [SugarColumn(ColumnDescription = "更新版本控制字段", IsEnableUpdateVersionValidation = true, CreateTableFieldSort = 998)]
-    public long RowVersion { get; set; }
+    public virtual long RowVersion { get; set; }
 
     /// <summary>
     /// 软删除标识
     /// </summary>
     [SugarColumn(ColumnDescription = "软删除标识", CreateTableFieldSort = 999)]
-    public bool IsDeleted { get; set; }
+    public virtual bool IsDeleted { get; set; }
 }

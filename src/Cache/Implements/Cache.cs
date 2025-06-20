@@ -123,7 +123,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public long DelByPattern(string pattern)
     {
-        if (string.IsNullOrEmpty(pattern))
+        if (string.IsNullOrWhiteSpace(pattern))
             return 0;
 
         // 判断是否已 * 结尾
@@ -162,7 +162,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<long> DelByPatternAsync(string pattern)
     {
-        if (string.IsNullOrEmpty(pattern))
+        if (string.IsNullOrWhiteSpace(pattern))
             return 0;
 
         // 判断是否已 * 结尾
@@ -616,7 +616,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         try
         {
-            if (string.IsNullOrEmpty(value.ToString()))
+            if (string.IsNullOrWhiteSpace(value.ToString()))
             {
                 return true;
             }

@@ -69,7 +69,7 @@ internal class NullableLongJsonConverter : JsonConverter<long?>
             return reader.GetInt64();
 
         var longString = reader.GetString();
-        if (string.IsNullOrEmpty(longString))
+        if (string.IsNullOrWhiteSpace(longString))
         {
             return null;
         }

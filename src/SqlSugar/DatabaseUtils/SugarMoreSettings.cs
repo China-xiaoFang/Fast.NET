@@ -26,16 +26,21 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SnowflakeKeyEntity"/> 雪花Id主键实体
+/// <see cref="DatabaseUtil"/> SugarMoreSettings工具类
 /// </summary>
-/// <remarks>主键Id为 Long 类型</remarks>
-[SuppressSniffer]
-public class SnowflakeKeyEntity : IPrimaryKeyEntity<long>
+internal partial class DatabaseUtil
 {
     /// <summary>
-    /// 主键Id
+    /// 获取配置
     /// </summary>
-    /// <remarks>雪花Id</remarks>
-    [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true)]
-    public virtual long Id { get; set; }
+    /// <returns></returns>
+    internal static ConnMoreSettings GetSugarMoreSettings()
+    {
+        var moreSettings = new ConnMoreSettings
+        {
+            // SQL Server Code First 默认使用 NVARCHAR
+            SqlServerCodeFirstNvarchar = true
+        };
+        return moreSettings;
+    }
 }

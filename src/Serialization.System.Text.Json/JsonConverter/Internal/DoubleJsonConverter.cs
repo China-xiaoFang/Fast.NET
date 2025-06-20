@@ -99,7 +99,7 @@ internal class NullableDoubleJsonConverter : JsonConverter<double?>
             return reader.GetDouble();
 
         var doubleString = reader.GetString();
-        if (string.IsNullOrEmpty(doubleString))
+        if (string.IsNullOrWhiteSpace(doubleString))
         {
             return null;
         }

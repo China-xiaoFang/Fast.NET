@@ -35,5 +35,5 @@ public class BaseTEntity : BaseEntity, IBaseTEntity
     /// 租户Id
     /// </summary>
     [SugarColumn(ColumnDescription = "租户Id", CreateTableFieldSort = 997)]
-    public long TenantId { get; set; }
+    public virtual long TenantId { get; set; }
 }

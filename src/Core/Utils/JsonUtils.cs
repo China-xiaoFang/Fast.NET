@@ -39,7 +39,7 @@ public static class JsonUtils
     /// <returns></returns>
     public static IDictionary<string, string> ReadJsonFile(string path)
     {
-        if (string.IsNullOrEmpty(path))
+        if (string.IsNullOrWhiteSpace(path))
         {
             throw new ArgumentNullException(path);
         }
@@ -100,7 +100,7 @@ public static class JsonUtils
             {
                 foreach (var property in root.EnumerateObject())
                 {
-                    var newPath = string.IsNullOrEmpty(currentPath) ? property.Name : $"{currentPath}:{property.Name}";
+                    var newPath = string.IsNullOrWhiteSpace(currentPath) ? property.Name : $"{currentPath}:{property.Name}";
                     VisitJsonElement(property.Value, dictionary, newPath);
                 }
             }
@@ -110,7 +110,7 @@ public static class JsonUtils
             {
                 for (var index = 0; index < root.GetArrayLength(); index++)
                 {
-                    var newPath = string.IsNullOrEmpty(currentPath) ? $"{index}" : $"{currentPath}:{index}";
+                    var newPath = string.IsNullOrWhiteSpace(currentPath) ? $"{index}" : $"{currentPath}:{index}";
                     VisitJsonElement(root[index], dictionary, newPath);
                 }
             }

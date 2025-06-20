@@ -69,7 +69,7 @@ internal class NullableIntJsonConverter : JsonConverter<int?>
             return reader.GetInt32();
 
         var intString = reader.GetString();
-        if (string.IsNullOrEmpty(intString))
+        if (string.IsNullOrWhiteSpace(intString))
         {
             return null;
         }

@@ -73,7 +73,6 @@ public static class IServiceCollectionExtension
         YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings.WorkerId!.Value});
 
         SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings);
-        SqlSugarContext.DefaultConnectionConfigNoAop = SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings);
 
         // 查找Sugar实体处理程序提供者
         var iSqlSugarEntityHandlerType =

@@ -364,6 +364,34 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
+    /// 标记过期 Token
+    /// </summary>
+    /// <param name="httpContext"></param>
+    /// <param name="expiredToken"></param>
+    public static void SetExpiredToken(HttpContext httpContext, string expiredToken)
+    {
+        if (string.IsNullOrEmpty(expiredToken))
+            return;
+
+        // 标记过期 必须原Token 是有效的
+        var (_isValid, accessTokenObj, _) = Validate(expiredToken);
+        if (!_isValid)
+            return;
+
+        var nowTime = DateTimeOffset.UtcNow;
+        var blacklistAccessKey = "BLACKLIST_ACCESS_TOKEN:" + expiredToken;
+        var distributedCache = httpContext?.RequestServices.GetService<IDistributedCache>();
+
+        // 标记失效
+        distributedCache?.SetString(blacklistAccessKey, nowTime.Ticks.ToString(),
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration =
+                    DateTimeOffset.FromUnixTimeSeconds(accessTokenObj.GetPayloadValue<long>(JwtRegisteredClaimNames.Exp))
+            });
+    }
+
+    /// <summary>
     /// 自动刷新 Token 信息
     /// </summary>
     /// <param name="context"></param>
@@ -384,6 +412,27 @@ public static class JwtBearerUtil
                 return false;
             }
 
+            // 判断是否含有匿名特性
+            if (httpContext.GetEndpoint()?.Metadata.GetMetadata<AllowAnonymousAttribute>() != null)
+                return true;
+
+            // 判断是否开启验证 AccessToken
+            if (Penetrates.JWTSettings?.ValidateAccessToken == true)
+            {
+                // 读取Token
+                var accessToken = GetJwtBearerToken(httpContext, tokenPrefix: tokenPrefix);
+                if (string.IsNullOrWhiteSpace(accessToken))
+                    return false;
+
+                // 判断这个Token 是否已标记过期
+                var blacklistAccessKey = "BLACKLIST_ACCESS_TOKEN:" + accessToken;
+                var distributedCache = httpContext?.RequestServices.GetService<IDistributedCache>();
+
+                var cachedValue = distributedCache?.GetString(blacklistAccessKey);
+                if (!string.IsNullOrWhiteSpace(cachedValue))
+                    return false;
+            }
+
             return true;
         }
 
@@ -398,13 +447,13 @@ public static class JwtBearerUtil
             return false;
 
         // 交换新的 Token
-        var accessToken = Exchange((context.Resource as AuthorizationFilterContext)?.HttpContext, expiredToken, refreshToken,
+        var newAccessToken = Exchange((context.Resource as AuthorizationFilterContext)?.HttpContext, expiredToken, refreshToken,
             expiredTime, clockSkew);
-        if (string.IsNullOrWhiteSpace(accessToken))
+        if (string.IsNullOrWhiteSpace(newAccessToken))
             return false;
 
         // 读取新的 Token Clamis
-        var claims = ReadJwtToken(accessToken)?.Claims;
+        var claims = ReadJwtToken(newAccessToken)?.Claims;
         if (claims == null)
             return false;
 
@@ -422,9 +471,9 @@ public static class JwtBearerUtil
             accessControlExposeKey = "Access-Control-Expose-Headers";
 
         // 返回新的 Token
-        httpContext.Response.Headers[accessTokenKey] = accessToken;
+        httpContext.Response.Headers[accessTokenKey] = newAccessToken;
         // 返回新的 刷新Token
-        httpContext.Response.Headers[xAccessTokenKey] = GenerateRefreshToken(accessToken);
+        httpContext.Response.Headers[xAccessTokenKey] = GenerateRefreshToken(newAccessToken);
 
         // 处理 axios 问题
         httpContext.Response.Headers.TryGetValue(accessControlExposeKey, out var aches);
