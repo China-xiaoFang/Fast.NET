@@ -46,7 +46,8 @@ internal static class ObjectExtension
             return Guid.Parse(obj.ToString());
         if (type == typeof(bool) && obj != null && obj is not bool)
         {
-            var objStr = obj.ToString()?.ToLower();
+            var objStr = obj.ToString()
+                ?.ToLower();
             if (objStr == "1" || objStr == "true" || objStr == "yes" || objStr == "on")
                 return true;
             return false;

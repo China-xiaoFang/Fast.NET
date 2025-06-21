@@ -93,7 +93,9 @@ namespace Fast.IaaS
             if (str.Length == 1)
                 return new[] {str};
 
-            return Regex.Split(str, @"(?=\p{Lu}\p{Ll})|(?<=\p{Ll})(?=\p{Lu})").Where(u => u.Length > 0).ToArray();
+            return Regex.Split(str, @"(?=\p{Lu}\p{Ll})|(?<=\p{Ll})(?=\p{Lu})")
+                .Where(u => u.Length > 0)
+                .ToArray();
         }
 
         /// <summary>
@@ -182,7 +184,8 @@ namespace Fast.IaaS
         /// <returns><see cref="int"/></returns>
         public static int GetCharLength(this string str)
         {
-            return Encoding.GetEncoding("GB18030").GetByteCount(str);
+            return Encoding.GetEncoding("GB18030")
+                .GetByteCount(str);
         }
 
         /// <summary>
@@ -299,7 +302,8 @@ namespace Fast.IaaS
         {
             // NVARCHAR 每个字符占用2个字节
             var maxByteLen = maxLen * 2;
-            var byteLen = Encoding.Unicode.GetBytes(str).Length;
+            var byteLen = Encoding.Unicode.GetBytes(str)
+                .Length;
 
             if (byteLen <= maxLen)
             {

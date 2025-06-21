@@ -111,7 +111,8 @@ internal class RestfulResultProvider : IUnifyResultProvider
     /// <returns></returns>
     public async Task OnResponseStatusCodes(HttpContext httpContext, int statusCode)
     {
-        var jsonSerializerOptions = httpContext.RequestServices.GetService<IOptions<JsonOptions>>().Value.JsonSerializerOptions;
+        var jsonSerializerOptions = httpContext.RequestServices.GetService<IOptions<JsonOptions>>()
+            .Value.JsonSerializerOptions;
 
         // 设置响应状态码
         httpContext.Response.StatusCode = statusCode;

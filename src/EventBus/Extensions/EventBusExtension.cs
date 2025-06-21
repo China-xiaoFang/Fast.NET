@@ -53,6 +53,7 @@ public static class EventBusExtension
         var fullName = str[(str.IndexOf(';') + 1)..str.LastIndexOf('.')];
         var name = str[(str.LastIndexOf('.') + 1)..];
 
-        return Enum.Parse(Assembly.Load(assemblyName).GetType(fullName), name) as Enum;
+        return Enum.Parse(Assembly.Load(assemblyName)
+            .GetType(fullName), name) as Enum;
     }
 }

@@ -127,8 +127,10 @@ internal class FileLoggingWriter
             if (logFiles.Length > 0)
             {
                 // 根据文件名和最后更新时间获取最近操作的文件
-                var lastFileInfo = logFiles.Select(fName => new FileInfo(fName)).OrderByDescending(fInfo => fInfo.Name)
-                    .ThenByDescending(fInfo => fInfo.LastWriteTime).First();
+                var lastFileInfo = logFiles.Select(fName => new FileInfo(fName))
+                    .OrderByDescending(fInfo => fInfo.Name)
+                    .ThenByDescending(fInfo => fInfo.LastWriteTime)
+                    .First();
 
                 _fileName = lastFileInfo.FullName;
             }
@@ -151,8 +153,9 @@ internal class FileLoggingWriter
         var baseFileName = GetBaseFileName();
 
         // 如果文件不存在或没有达到 FileSizeLimitBytes 限制大小，则返回基础文件名
-        if (!File.Exists(baseFileName) || _options.FileSizeLimitBytes <= 0 ||
-            new FileInfo(baseFileName).Length < _options.FileSizeLimitBytes)
+        if (!File.Exists(baseFileName)
+            || _options.FileSizeLimitBytes <= 0
+            || new FileInfo(baseFileName).Length < _options.FileSizeLimitBytes)
             return baseFileName;
 
         // 获取日志基础文件名和当前日志文件名
@@ -177,8 +180,8 @@ internal class FileLoggingWriter
         }
 
         // 返回下一个匹配的日志文件名（完整路径）
-        var nextFileName = baseFileNameOnly + (nextFileIndex > 0 ? nextFileIndex.ToString() : "") +
-                           Path.GetExtension(baseFileName);
+        var nextFileName =
+            baseFileNameOnly + (nextFileIndex > 0 ? nextFileIndex.ToString() : "") + Path.GetExtension(baseFileName);
         return Path.Combine(Path.GetDirectoryName(baseFileName), nextFileName);
     }
 

@@ -63,9 +63,9 @@ internal class UnifyResultStatusCodesMiddleware
         if (!UnifyContext.CheckStatusCodeNonUnify(httpContext, out var unifyResult))
         {
             // 解决刷新 Token 和 Token 时间相近问题
-            if (httpContext.Response.StatusCode == StatusCodes.Status401Unauthorized &&
-                httpContext.Response.Headers.ContainsKey("access-token") &&
-                httpContext.Response.Headers.ContainsKey("x-access-token"))
+            if (httpContext.Response.StatusCode == StatusCodes.Status401Unauthorized
+                && httpContext.Response.Headers.ContainsKey("access-token")
+                && httpContext.Response.Headers.ContainsKey("x-access-token"))
             {
                 httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
             }

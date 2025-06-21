@@ -84,10 +84,14 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
         var modelState = context.ModelState;
 
         // 如果参数数量为 0 或贴了 [NonValidation] 特性 或所在类型贴了 [NonValidation] 特性或验证成功或已经设置了结果，则跳过验证
-        if (actionDescriptor?.Parameters.Count == 0 || method?.IsDefined(nonValidationAttributeType, true) == true ||
-            method?.DeclaringType?.IsDefined(nonValidationAttributeType, true) == true || modelState.IsValid ||
-            method?.DeclaringType?.Assembly.GetName().Name?.StartsWith("Microsoft.AspNetCore.OData") == true ||
-            context.Result != null)
+        if (actionDescriptor?.Parameters.Count == 0
+            || method?.IsDefined(nonValidationAttributeType, true) == true
+            || method?.DeclaringType?.IsDefined(nonValidationAttributeType, true) == true
+            || modelState.IsValid
+            || method?.DeclaringType?.Assembly.GetName()
+                .Name?.StartsWith("Microsoft.AspNetCore.OData")
+            == true
+            || context.Result != null)
         {
             await CallUnHandleResult(context, next, actionDescriptor);
             return;
@@ -117,8 +121,9 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
         var resultContext = await next();
 
         // 如果异常不为空且属于友好验证异常
-        if (resultContext.Exception != null && resultContext.Exception is UserFriendlyException userFriendlyException &&
-            userFriendlyException.ValidationException)
+        if (resultContext.Exception != null
+            && resultContext.Exception is UserFriendlyException userFriendlyException
+            && userFriendlyException.ValidationException)
         {
             // 存储验证执行结果
             context.HttpContext.Items[nameof(DataValidationFilter) + nameof(UserFriendlyException)] = resultContext;

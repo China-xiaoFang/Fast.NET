@@ -43,7 +43,8 @@ internal class CorsAccessorStartupFilter : IStartupFilter
         return app =>
         {
             // 获取选项
-            var corsAccessorSettings = app.ApplicationServices.GetService<IOptions<CorsAccessorSettingsOptions>>().Value;
+            var corsAccessorSettings = app.ApplicationServices.GetService<IOptions<CorsAccessorSettingsOptions>>()
+                .Value;
 
             // 判断是否启用 SignalR 跨域支持
             if (corsAccessorSettings.SignalRSupport == false)

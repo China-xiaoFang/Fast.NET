@@ -47,17 +47,20 @@ public static class IServiceCollectionExtension
         path ??= MAppContext.GetOptionName<TOptions>();
 
         // 配置验证
-        var optionsConfigure = services.AddOptions<TOptions>().BindConfiguration(path, options =>
-        {
-            // 绑定私有变量
-            options.BindNonPublicProperties = true;
-        }).ValidateDataAnnotations();
+        var optionsConfigure = services.AddOptions<TOptions>()
+            .BindConfiguration(path, options =>
+            {
+                // 绑定私有变量
+                options.BindNonPublicProperties = true;
+            })
+            .ValidateDataAnnotations();
 
         // 获取类型
         var optionsType = typeof(TOptions);
 
         // 复杂后期配置
-        var postConfigureInterface = optionsType.GetInterfaces().FirstOrDefault(f => typeof(IPostConfigure).IsAssignableFrom(f));
+        var postConfigureInterface = optionsType.GetInterfaces()
+            .FirstOrDefault(f => typeof(IPostConfigure).IsAssignableFrom(f));
 
         if (postConfigureInterface != null)
         {

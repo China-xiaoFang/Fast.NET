@@ -49,19 +49,25 @@ internal static class TP
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
         var stringBuilder = new StringBuilder();
-        stringBuilder.Append($"┏━━━━━━━━━━━  {title} ━━━━━━━━━━━").AppendLine();
+        stringBuilder.Append($"┏━━━━━━━━━━━  {title} ━━━━━━━━━━━")
+            .AppendLine();
 
         // 添加描述
         if (!string.IsNullOrWhiteSpace(description))
         {
-            stringBuilder.Append($"┣ {description}").AppendLine().Append("┣ ").AppendLine();
+            stringBuilder.Append($"┣ {description}")
+                .AppendLine()
+                .Append("┣ ")
+                .AppendLine();
         }
 
         // 添加项
         if (items != null && items.Length > 0)
         {
-            var propMaxLength = items.Where(u => _lazyRegex.Value.IsMatch(u)).DefaultIfEmpty(string.Empty)
-                .Max(u => _lazyRegex.Value.Match(u).Groups["prop"].Value.Length);
+            var propMaxLength = items.Where(u => _lazyRegex.Value.IsMatch(u))
+                .DefaultIfEmpty(string.Empty)
+                .Max(u => _lazyRegex.Value.Match(u)
+                    .Groups["prop"].Value.Length);
 
             // 控制项名称对齐空白占位数
             propMaxLength += propMaxLength >= 5 ? 10 : 5;
@@ -79,16 +85,19 @@ internal static class TP
                     var content = match.Groups["content"].Value;
 
                     var propTitle = $"{prop}：";
-                    stringBuilder.Append($"┣ {PadRight(propTitle, propMaxLength)}{content}").AppendLine();
+                    stringBuilder.Append($"┣ {PadRight(propTitle, propMaxLength)}{content}")
+                        .AppendLine();
                 }
                 else
                 {
-                    stringBuilder.Append($"┣ {item}").AppendLine();
+                    stringBuilder.Append($"┣ {item}")
+                        .AppendLine();
                 }
             }
         }
 
-        stringBuilder.Append($"┗━━━━━━━━━━━  {title} ━━━━━━━━━━━").AppendLine();
+        stringBuilder.Append($"┗━━━━━━━━━━━  {title} ━━━━━━━━━━━")
+            .AppendLine();
         return stringBuilder.ToString();
     }
 

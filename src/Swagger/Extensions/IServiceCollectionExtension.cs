@@ -51,7 +51,9 @@ public static class IServiceCollectionExtension
         services.AddConfigurableOptions<SwaggerSettingsOptions>(section);
 
         // 获取Swagger文档配置选项
-        Penetrates.SwaggerSettings = configuration.GetSection(section).Get<SwaggerSettingsOptions>().LoadPostConfigure();
+        Penetrates.SwaggerSettings = configuration.GetSection(section)
+            .Get<SwaggerSettingsOptions>()
+            .LoadPostConfigure();
 
 #if !NET5_0
         services.AddEndpointsApiExplorer();

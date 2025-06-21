@@ -119,7 +119,8 @@ public static class JsonUtils
             case JsonValueKind.String:
             {
                 // 去除转义字符
-                var unescapedValue = root.GetString()?.Replace("\\", "");
+                var unescapedValue = root.GetString()
+                    ?.Replace("\\", "");
                 dictionary.TryAdd(currentPath, unescapedValue);
             }
                 break;

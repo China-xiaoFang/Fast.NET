@@ -42,7 +42,9 @@ public static class SqlSugarPageExtension
     /// <returns></returns>
     public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
     {
-        return queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).ToPagedList(input.PageIndex, input.PageSize);
+        return queryable.PagedWhere(input)
+            .PagedOrderBy(input.PagedSortList)
+            .ToPagedList(input.PageIndex, input.PageSize);
     }
 
     /// <summary>
@@ -55,7 +57,8 @@ public static class SqlSugarPageExtension
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         PagedInput input)
     {
-        return await queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList)
+        return await queryable.PagedWhere(input)
+            .PagedOrderBy(input.PagedSortList)
             .ToPagedListAsync(input.PageIndex, input.PageSize);
     }
 
@@ -71,13 +74,17 @@ public static class SqlSugarPageExtension
     public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, PagedInput input,
         string select = null)
     {
-        queryable = queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList);
+        queryable = queryable.PagedWhere(input)
+            .PagedOrderBy(input.PagedSortList);
         if (string.IsNullOrEmpty(select))
         {
-            return queryable.Select<TResult>().ToPagedList(input.PageIndex, input.PageSize);
+            return queryable.Select<TResult>()
+                .ToPagedList(input.PageIndex, input.PageSize);
         }
 
-        return queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select<TResult>(select)
+        return queryable.PagedWhere(input)
+            .PagedOrderBy(input.PagedSortList)
+            .Select<TResult>(select)
             .ToPagedList(input.PageIndex, input.PageSize);
     }
 
@@ -93,13 +100,17 @@ public static class SqlSugarPageExtension
     public static async Task<PagedResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
         PagedInput input, string select = null)
     {
-        queryable = queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList);
+        queryable = queryable.PagedWhere(input)
+            .PagedOrderBy(input.PagedSortList);
         if (string.IsNullOrEmpty(select))
         {
-            return await queryable.Select<TResult>().ToPagedListAsync(input.PageIndex, input.PageSize);
+            return await queryable.Select<TResult>()
+                .ToPagedListAsync(input.PageIndex, input.PageSize);
         }
 
-        return await queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select<TResult>(select)
+        return await queryable.PagedWhere(input)
+            .PagedOrderBy(input.PagedSortList)
+            .Select<TResult>(select)
             .ToPagedListAsync(input.PageIndex, input.PageSize);
     }
 
@@ -116,7 +127,9 @@ public static class SqlSugarPageExtension
     public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, PagedInput input,
         Expression<Func<TEntity, TResult>> selectExpression, bool isAutoFill = false)
     {
-        return queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select(selectExpression, isAutoFill)
+        return queryable.PagedWhere(input)
+            .PagedOrderBy(input.PagedSortList)
+            .Select(selectExpression, isAutoFill)
             .ToPagedList(input.PageIndex, input.PageSize);
     }
 
@@ -133,7 +146,9 @@ public static class SqlSugarPageExtension
     public static async Task<PagedResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
         PagedInput input, Expression<Func<TEntity, TResult>> selectExpression, bool isAutoFill = false)
     {
-        return await queryable.PagedWhere(input).PagedOrderBy(input.PagedSortList).Select(selectExpression, isAutoFill)
+        return await queryable.PagedWhere(input)
+            .PagedOrderBy(input.PagedSortList)
+            .Select(selectExpression, isAutoFill)
             .ToPagedListAsync(input.PageIndex, input.PageSize);
     }
 
@@ -214,12 +229,13 @@ public static class SqlSugarPageExtension
 
         // 获取所有存在 SugarSearchValueAttribute 和 SugarSearchTimeAttribute 特性的属性
         var needProperties = properties.Select(sl => new
-        {
-            propertyInfo = sl,
-            sugarColumn = sl.GetCustomAttribute<SugarColumn>(),
-            sugarSearchValueAttribute = sl.GetCustomAttribute<SugarSearchValueAttribute>(),
-            sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>()
-        }).ToList();
+            {
+                propertyInfo = sl,
+                sugarColumn = sl.GetCustomAttribute<SugarColumn>(),
+                sugarSearchValueAttribute = sl.GetCustomAttribute<SugarSearchValueAttribute>(),
+                sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>()
+            })
+            .ToList();
 
         var conditionals = new List<IConditionalModel>();
 

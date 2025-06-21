@@ -90,7 +90,8 @@ public static class HttpContextExtension
     /// <returns></returns>
     public static TAttribute GetMetadata<TAttribute>(this HttpContext httpContext) where TAttribute : class
     {
-        return httpContext.GetEndpoint()?.Metadata.GetMetadata<TAttribute>();
+        return httpContext.GetEndpoint()
+            ?.Metadata.GetMetadata<TAttribute>();
     }
 
     /// <summary>
@@ -101,7 +102,9 @@ public static class HttpContextExtension
     /// <returns><see cref="object"/></returns>
     public static object GetMetadata(this EndpointMetadataCollection metadata, Type attributeType)
     {
-        return metadata?.GetType().GetMethod(nameof(EndpointMetadataCollection.GetMetadata))?.MakeGenericMethod(attributeType)
+        return metadata?.GetType()
+            .GetMethod(nameof(EndpointMetadataCollection.GetMetadata))
+            ?.MakeGenericMethod(attributeType)
             .Invoke(metadata, null);
     }
 
@@ -113,7 +116,8 @@ public static class HttpContextExtension
     /// <returns><see cref="object"/></returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)
     {
-        return httpContext.GetEndpoint()?.Metadata.GetMetadata(attributeType);
+        return httpContext.GetEndpoint()
+            ?.Metadata.GetMetadata(attributeType);
     }
 
     /// <summary>
@@ -194,7 +198,8 @@ public static class HttpContextExtension
             return "127.0.0.1";
         }
 
-        return httpContext.Connection.LocalIpAddress?.MapToIPv4().ToString();
+        return httpContext.Connection.LocalIpAddress?.MapToIPv4()
+            .ToString();
     }
 
     /// <summary>
@@ -204,7 +209,8 @@ public static class HttpContextExtension
     /// <returns><see cref="string"/></returns>
     public static string LocalIpv6(this HttpContext httpContext)
     {
-        return httpContext.Connection.LocalIpAddress?.MapToIPv6().ToString();
+        return httpContext.Connection.LocalIpAddress?.MapToIPv6()
+            .ToString();
     }
 
     /// <summary>
@@ -247,7 +253,8 @@ public static class HttpContextExtension
             }
             else
             {
-                remoteIpv4 = remoteIpAddress?.MapToIPv4().ToString();
+                remoteIpv4 = remoteIpAddress?.MapToIPv4()
+                    .ToString();
             }
         }
 
@@ -264,7 +271,8 @@ public static class HttpContextExtension
         if (httpContext == null)
             return string.Empty;
 
-        var remoteIpv4 = httpContext.Connection.RemoteIpAddress?.MapToIPv6().ToString();
+        var remoteIpv4 = httpContext.Connection.RemoteIpAddress?.MapToIPv6()
+            .ToString();
 
         // 判断是否为 Nginx 反向代理
         if (httpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
@@ -322,7 +330,9 @@ public static class HttpContextExtension
         try
         {
             // 判断是否安装了 UAParser 程序集
-            var uaParserAssembly = MAppContext.Assemblies.SingleOrDefault(s => s.GetName().Name?.Equals("UAParser") == true);
+            var uaParserAssembly = MAppContext.Assemblies.SingleOrDefault(s => s.GetName()
+                                                                                   .Name?.Equals("UAParser")
+                                                                               == true);
 
             if (uaParserAssembly == null)
             {
@@ -385,7 +395,8 @@ public static class HttpContextExtension
     /// <returns><see cref="WanNetIPInfo"/></returns>
     public static WanNetIPInfo RemoteIpv4Info(this HttpContext httpContext, string ip = null)
     {
-        return httpContext.RemoteIpv4InfoAsync(ip).Result;
+        return httpContext.RemoteIpv4InfoAsync(ip)
+            .Result;
     }
 
     /// <summary>
@@ -448,10 +459,13 @@ public static class HttpContextExtension
                 using var response = await httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
                 // 这里默认使用 GBK 编码解析
-                var responseContent = Encoding.GetEncoding("GBK").GetString(response.Content.ReadAsByteArrayAsync().Result);
+                var responseContent = Encoding.GetEncoding("GBK")
+                    .GetString(response.Content.ReadAsByteArrayAsync()
+                        .Result);
 
                 var ipInfo = responseContent[
-                    (responseContent.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..].TrimEnd();
+                        (responseContent.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
+                    .TrimEnd();
                 ipInfo = ipInfo[..^3];
 
                 var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, string>>(ipInfo);
@@ -509,8 +523,8 @@ public static class HttpContextExtension
     /// <returns><see cref="ControllerActionDescriptor"/></returns>
     public static ControllerActionDescriptor GetControllerActionDescriptor(this HttpContext httpContext)
     {
-        return httpContext.GetEndpoint()?.Metadata.FirstOrDefault(u => u is ControllerActionDescriptor) as
-            ControllerActionDescriptor;
+        return httpContext.GetEndpoint()
+            ?.Metadata.FirstOrDefault(u => u is ControllerActionDescriptor) as ControllerActionDescriptor;
     }
 
     /// <summary>
@@ -553,8 +567,13 @@ public static class HttpContextExtension
         var request = httpContext?.Request;
         if (request != null)
         {
-            return new StringBuilder().Append(request.Scheme).Append("://").Append(request.Host).Append(request.PathBase)
-                .Append(request.Path).Append(request.QueryString).ToString();
+            return new StringBuilder().Append(request.Scheme)
+                .Append("://")
+                .Append(request.Host)
+                .Append(request.PathBase)
+                .Append(request.Path)
+                .Append(request.QueryString)
+                .ToString();
         }
 
         return string.Empty;
@@ -569,8 +588,13 @@ public static class HttpContextExtension
     {
         if (httpRequest != null)
         {
-            return new StringBuilder().Append(httpRequest.Scheme).Append("://").Append(httpRequest.Host)
-                .Append(httpRequest.PathBase).Append(httpRequest.Path).Append(httpRequest.QueryString).ToString();
+            return new StringBuilder().Append(httpRequest.Scheme)
+                .Append("://")
+                .Append(httpRequest.Host)
+                .Append(httpRequest.PathBase)
+                .Append(httpRequest.Path)
+                .Append(httpRequest.QueryString)
+                .ToString();
         }
 
         return string.Empty;
@@ -587,7 +611,8 @@ public static class HttpContextExtension
         var request = httpContext?.Request;
         if (request != null)
         {
-            return request.Headers[refererHeaderKey].ToString();
+            return request.Headers[refererHeaderKey]
+                .ToString();
         }
 
         return string.Empty;

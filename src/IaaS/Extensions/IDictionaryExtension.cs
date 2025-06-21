@@ -53,10 +53,10 @@ namespace Fast.IaaS
         /// <param name="dict"><see cref="IDictionary{TKey,TValue}"/></param>
         public static void RemoveEmptyValueItems(this IDictionary<string, string> dict)
         {
-            dict.Where(item => string.IsNullOrEmpty(item.Value)).Select(item => item.Key).ToList().ForEach(key =>
-            {
-                dict.Remove(key);
-            });
+            dict.Where(item => string.IsNullOrEmpty(item.Value))
+                .Select(item => item.Key)
+                .ToList()
+                .ForEach(key => { dict.Remove(key); });
         }
 
         /// <summary>

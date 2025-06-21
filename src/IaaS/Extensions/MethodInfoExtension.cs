@@ -41,8 +41,9 @@ namespace Fast.IaaS
         /// <returns><see cref="bool"/></returns>
         public static bool IsAsync(this MethodInfo methodInfo)
         {
-            return methodInfo.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null ||
-                   methodInfo.ReturnType.ToString().StartsWith(typeof(Task).FullName);
+            return methodInfo.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null
+                   || methodInfo.ReturnType.ToString()
+                       .StartsWith(typeof(Task).FullName);
         }
 
         /// <summary>
@@ -136,7 +137,8 @@ namespace Fast.IaaS
         /// <returns><see cref="int"/></returns>
         public static int GetMethodParameterCount(this MethodInfo methodInfo)
         {
-            return methodInfo.GetParameters().Length;
+            return methodInfo.GetParameters()
+                .Length;
         }
     }
 }

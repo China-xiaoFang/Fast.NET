@@ -38,8 +38,9 @@ internal static class MethodInfoExtension
     /// <returns><see cref="bool"/></returns>
     public static bool IsAsync(this MethodInfo methodInfo)
     {
-        return methodInfo.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null ||
-               methodInfo.ReturnType.ToString().StartsWith(typeof(Task).FullName);
+        return methodInfo.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null
+               || methodInfo.ReturnType.ToString()
+                   .StartsWith(typeof(Task).FullName);
     }
 
     /// <summary>

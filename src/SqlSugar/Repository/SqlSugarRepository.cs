@@ -58,7 +58,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
 
         // 获取新的连接字符串
         var connectionSettings = sqlSugarEntityHandler
-            ?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute, typeof(TEntity)).Result;
+            ?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute, typeof(TEntity))
+            .Result;
         if (connectionSettings != null)
         {
             DatabaseInfo = connectionSettings;
@@ -116,7 +117,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Count(Expression<Func<TEntity, bool>> whereExpression = null)
     {
-        return Entities.WhereIF(whereExpression != null, whereExpression).Count();
+        return Entities.WhereIF(whereExpression != null, whereExpression)
+            .Count();
     }
 
     /// <summary>
@@ -126,7 +128,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression = null)
     {
-        return Entities.WhereIF(whereExpression != null, whereExpression).CountAsync();
+        return Entities.WhereIF(whereExpression != null, whereExpression)
+            .CountAsync();
     }
 
     /// <summary>
@@ -225,7 +228,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression)
     {
-        return Entities.Where(whereExpression).ToList();
+        return Entities.Where(whereExpression)
+            .ToList();
     }
 
     /// <summary>
@@ -235,7 +239,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
-        return Entities.Where(whereExpression).ToListAsync();
+        return Entities.Where(whereExpression)
+            .ToListAsync();
     }
 
     /// <summary>
@@ -248,7 +253,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression,
         Expression<Func<TEntity, object>> orderByExpression, OrderByType orderByType = OrderByType.Asc)
     {
-        return Entities.Where(whereExpression).OrderBy(orderByExpression, orderByType).ToList();
+        return Entities.Where(whereExpression)
+            .OrderBy(orderByExpression, orderByType)
+            .ToList();
     }
 
     /// <summary>
@@ -261,7 +268,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     public Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression,
         Expression<Func<TEntity, object>> orderByExpression, OrderByType orderByType = OrderByType.Asc)
     {
-        return Entities.Where(whereExpression).OrderBy(orderByExpression, orderByType).ToListAsync();
+        return Entities.Where(whereExpression)
+            .OrderBy(orderByExpression, orderByType)
+            .ToListAsync();
     }
 
     /// <summary>
@@ -316,7 +325,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Insert(TEntity entity)
     {
-        return Insertable(entity).ExecuteCommand();
+        return Insertable(entity)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -326,7 +336,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> InsertAsync(TEntity entity)
     {
-        return Insertable(entity).ExecuteCommandAsync();
+        return Insertable(entity)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -336,7 +347,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Insert(params TEntity[] entities)
     {
-        return Insertable(entities).ExecuteCommand();
+        return Insertable(entities)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -346,7 +358,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> InsertAsync(params TEntity[] entities)
     {
-        return Insertable(entities).ExecuteCommandAsync();
+        return Insertable(entities)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -356,7 +369,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Insert(IEnumerable<TEntity> entities)
     {
-        return Insertable(entities.ToArray()).ExecuteCommand();
+        return Insertable(entities.ToArray())
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -369,7 +383,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
         var _entities = entities?.ToArray();
         if (_entities != null && _entities.Any())
         {
-            return Insertable(_entities.ToArray()).ExecuteCommandAsync();
+            return Insertable(_entities.ToArray())
+                .ExecuteCommandAsync();
         }
 
         return Task.FromResult(0);
@@ -382,7 +397,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int InsertReturnIdentity(TEntity insertObj)
     {
-        return Insertable(insertObj).ExecuteReturnIdentity();
+        return Insertable(insertObj)
+            .ExecuteReturnIdentity();
     }
 
     /// <summary>
@@ -392,7 +408,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> InsertReturnIdentityAsync(TEntity insertObj)
     {
-        return Insertable(insertObj).ExecuteReturnIdentityAsync();
+        return Insertable(insertObj)
+            .ExecuteReturnIdentityAsync();
     }
 
     /// <summary>
@@ -402,7 +419,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public long ExecuteReturnBigIdentity(TEntity entity)
     {
-        return Insertable(entity).ExecuteReturnBigIdentity();
+        return Insertable(entity)
+            .ExecuteReturnBigIdentity();
     }
 
     /// <summary>
@@ -412,7 +430,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public async Task<long> ExecuteReturnBigIdentityAsync(TEntity entity)
     {
-        return await Insertable(entity).ExecuteReturnBigIdentityAsync();
+        return await Insertable(entity)
+            .ExecuteReturnBigIdentityAsync();
     }
 
     /// <summary>
@@ -422,7 +441,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public TEntity InsertReturnEntity(TEntity insertObj)
     {
-        return Insertable(insertObj).ExecuteReturnEntity();
+        return Insertable(insertObj)
+            .ExecuteReturnEntity();
     }
 
     /// <summary>
@@ -432,7 +452,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<TEntity> InsertReturnEntityAsync(TEntity insertObj)
     {
-        return Insertable(insertObj).ExecuteReturnEntityAsync();
+        return Insertable(insertObj)
+            .ExecuteReturnEntityAsync();
     }
 
     #endregion
@@ -447,7 +468,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Update(TEntity entity, bool isNoUpdateNull = false)
     {
-        return Updateable(entity).IgnoreColumns(isNoUpdateNull).ExecuteCommand();
+        return Updateable(entity)
+            .IgnoreColumns(isNoUpdateNull)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -457,7 +480,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> UpdateAsync(TEntity entity)
     {
-        return Updateable(entity).ExecuteCommandAsync();
+        return Updateable(entity)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -467,7 +491,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Update(params TEntity[] entities)
     {
-        return Updateable(entities).ExecuteCommand();
+        return Updateable(entities)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -477,7 +502,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> UpdateAsync(params TEntity[] entities)
     {
-        return Updateable(entities).ExecuteCommandAsync();
+        return Updateable(entities)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -487,7 +513,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Update(IEnumerable<TEntity> entities)
     {
-        return Updateable(entities.ToArray()).ExecuteCommand();
+        return Updateable(entities.ToArray())
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -497,7 +524,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> UpdateAsync(IEnumerable<TEntity> entities)
     {
-        return Updateable(entities.ToArray()).ExecuteCommandAsync();
+        return Updateable(entities.ToArray())
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -508,7 +536,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> UpdateNoPrimaryKey(TEntity entity, Expression<Func<TEntity, object>> columns)
     {
-        return Updateable(entity).WhereColumns(columns).ExecuteCommandAsync();
+        return Updateable(entity)
+            .WhereColumns(columns)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -519,7 +549,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> UpdateNoPrimaryKeyAsync(TEntity entity, Expression<Func<TEntity, object>> columns)
     {
-        return Updateable(entity).WhereColumns(columns).ExecuteCommandAsync();
+        return Updateable(entity)
+            .WhereColumns(columns)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -530,7 +562,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> UpdateNoPrimaryKey(List<TEntity> entity, Expression<Func<TEntity, object>> columns)
     {
-        return Updateable(entity).WhereColumns(columns).ExecuteCommandAsync();
+        return Updateable(entity)
+            .WhereColumns(columns)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -541,7 +575,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> UpdateNoPrimaryKeyAsync(List<TEntity> entity, Expression<Func<TEntity, object>> columns)
     {
-        return Updateable(entity).WhereColumns(columns).ExecuteCommandAsync();
+        return Updateable(entity)
+            .WhereColumns(columns)
+            .ExecuteCommandAsync();
     }
 
     #endregion
@@ -555,7 +591,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Delete(TEntity entity)
     {
-        return Deleteable(entity).ExecuteCommand();
+        return Deleteable(entity)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -565,7 +602,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Delete(object key)
     {
-        return Deleteable<TEntity>().In(key).ExecuteCommand();
+        return Deleteable<TEntity>()
+            .In(key)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -575,7 +614,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Delete(params object[] keys)
     {
-        return Deleteable<TEntity>().In(keys).ExecuteCommand();
+        return Deleteable<TEntity>()
+            .In(keys)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -585,7 +626,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Delete(Expression<Func<TEntity, bool>> whereExpression)
     {
-        return Deleteable<TEntity>().Where(whereExpression).ExecuteCommand();
+        return Deleteable<TEntity>()
+            .Where(whereExpression)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -595,7 +638,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> DeleteAsync(TEntity entity)
     {
-        return Deleteable(entity).ExecuteCommandAsync();
+        return Deleteable(entity)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -605,7 +649,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> DeleteAsync(object key)
     {
-        return Deleteable<TEntity>().In(key).ExecuteCommandAsync();
+        return Deleteable<TEntity>()
+            .In(key)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -615,7 +661,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public Task<int> DeleteAsync(params object[] keys)
     {
-        return Deleteable<TEntity>().In(keys).ExecuteCommandAsync();
+        return Deleteable<TEntity>()
+            .In(keys)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -625,7 +673,9 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public async Task<int> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
-        return await Deleteable<TEntity>().Where(whereExpression).ExecuteCommandAsync();
+        return await Deleteable<TEntity>()
+            .Where(whereExpression)
+            .ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -641,7 +691,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
         var entityType = typeof(TEntity);
 
         // 判断是否继承了 IBaseDeletedEntity
-        if (!entityType.GetInterfaces().Contains(typeof(IBaseDeletedEntity)))
+        if (!entityType.GetInterfaces()
+                .Contains(typeof(IBaseDeletedEntity)))
             throw new InvalidOperationException(
                 $"{nameof(TEntity)} does not inherit {nameof(IBaseDeletedEntity)} interface, Logical deletion cannot be used.");
 
@@ -655,7 +706,10 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
         isDeletedProperty!.SetValue(deletedEntity, true);
 
         // 执行逻辑删除
-        return Updateable<TEntity>().Where(whereExpression).SetColumns(_ => deletedEntity, true).ExecuteCommand();
+        return Updateable<TEntity>()
+            .Where(whereExpression)
+            .SetColumns(_ => deletedEntity, true)
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -671,7 +725,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
         var entityType = typeof(TEntity);
 
         // 判断是否继承了 IBaseDeletedEntity
-        if (!entityType.GetInterfaces().Contains(typeof(IBaseDeletedEntity)))
+        if (!entityType.GetInterfaces()
+                .Contains(typeof(IBaseDeletedEntity)))
             throw new InvalidOperationException(
                 $"{nameof(TEntity)} does not inherit {nameof(IBaseDeletedEntity)} interface, Logical deletion cannot be used.");
 
@@ -685,7 +740,10 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
         isDeletedProperty!.SetValue(deletedEntity, true);
 
         // 执行逻辑删除
-        return await Updateable<TEntity>().Where(whereExpression).SetColumns(_ => deletedEntity, true).ExecuteCommandAsync();
+        return await Updateable<TEntity>()
+            .Where(whereExpression)
+            .SetColumns(_ => deletedEntity, true)
+            .ExecuteCommandAsync();
     }
 
     #endregion

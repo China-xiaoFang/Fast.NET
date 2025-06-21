@@ -90,7 +90,9 @@ namespace Fast.IaaS
             }
 
             // 获取 [Description] 特性描述
-            return enumField.GetCustomAttribute<DescriptionAttribute>(false)?.Description ?? enumName;
+            return enumField.GetCustomAttribute<DescriptionAttribute>(false)
+                       ?.Description
+                   ?? enumName;
         }
 
         /// <summary>
@@ -119,12 +121,15 @@ namespace Fast.IaaS
 
             var propertyType = typeof(TProperty);
 
-            return Enum.GetValues(enumType).Cast<Enum>().Select(enumValue => new EnumItem<TProperty>
-            {
-                Name = enumValue.ToString(),
-                Describe = enumValue.GetDescription(enumType),
-                Value = (TProperty) Convert.ChangeType(enumValue, propertyType)
-            }).ToList();
+            return Enum.GetValues(enumType)
+                .Cast<Enum>()
+                .Select(enumValue => new EnumItem<TProperty>
+                {
+                    Name = enumValue.ToString(),
+                    Describe = enumValue.GetDescription(enumType),
+                    Value = (TProperty) Convert.ChangeType(enumValue, propertyType)
+                })
+                .ToList();
         }
     }
 }

@@ -61,8 +61,10 @@ public static class AssemblyExtension
             var depsJsonContent = File.ReadAllText(depsJsonFilePath);
 
             // 解析 JSON字符串，并获取 "libraries" 节点的值
-            var depsJsonRoot = JsonDocument.Parse(depsJsonContent).RootElement;
-            var librariesContent = depsJsonRoot.GetProperty("libraries").EnumerateObject();
+            var depsJsonRoot = JsonDocument.Parse(depsJsonContent)
+                .RootElement;
+            var librariesContent = depsJsonRoot.GetProperty("libraries")
+                .EnumerateObject();
 
             var depsLibraryList = new List<DepsLibrary>();
 
@@ -107,7 +109,9 @@ public static class AssemblyExtension
                     {
                         return null;
                     }
-                }).Where(wh => wh != null).ToList();
+                })
+                .Where(wh => wh != null)
+                .ToList();
         }
 
         return new[] {assembly};

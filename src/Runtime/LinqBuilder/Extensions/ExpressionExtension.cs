@@ -43,7 +43,8 @@ public static class ExpressionExtension
         Func<Expression, Expression, Expression> mergeWay)
     {
         var parameterExpressionSetter = expression.Parameters
-            .Select((u, i) => new {u, Parameter = extendExpression.Parameters[i]}).ToDictionary(d => d.Parameter, d => d.u);
+            .Select((u, i) => new {u, Parameter = extendExpression.Parameters[i]})
+            .ToDictionary(d => d.Parameter, d => d.u);
 
         var extendExpressionBody =
             ParameterReplaceExpressionVisitor.ReplaceParameters(parameterExpressionSetter, extendExpression.Body);

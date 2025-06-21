@@ -287,7 +287,8 @@ namespace Fast.IaaS
         {
             if (!str.StartsWith("1"))
             {
-                str = str.TrimStart('8', '6').TrimStart('0');
+                str = str.TrimStart('8', '6')
+                    .TrimStart('0');
             }
 
             return Regex.IsMatch(str, @"^(13|14|15|16|17|18|19)\d{9}$");
@@ -319,8 +320,11 @@ namespace Fast.IaaS
         /// <returns>返回一个bool类型的值</returns>
         public static bool IsIdCard18(this string str)
         {
-            if (long.TryParse(str.Remove(17), out var n) == false || n < Math.Pow(10, 16) ||
-                long.TryParse(str.Replace('x', '0').Replace('X', '0'), out _) == false)
+            if (long.TryParse(str.Remove(17), out var n) == false
+                || n < Math.Pow(10, 16)
+                || long.TryParse(str.Replace('x', '0')
+                    .Replace('X', '0'), out _)
+                == false)
             {
                 return false; //数字验证
             }
@@ -332,7 +336,9 @@ namespace Fast.IaaS
                 return false; //省份验证
             }
 
-            var birth = str.Substring(6, 8).Insert(6, "-").Insert(4, "-");
+            var birth = str.Substring(6, 8)
+                .Insert(6, "-")
+                .Insert(4, "-");
             if (DateTime.TryParse(birth, out _) == false)
             {
                 return false; //生日验证
@@ -340,15 +346,20 @@ namespace Fast.IaaS
 
             var arrVarIfyCode = "1,0,x,9,8,7,6,5,4,3,2".Split(',');
             var wi = "7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2".Split(',');
-            var ai = str.Remove(17).ToCharArray();
+            var ai = str.Remove(17)
+                .ToCharArray();
             var sum = 0;
             for (var i = 0; i < 17; i++)
             {
-                sum += int.Parse(wi[i]) * int.Parse(ai[i].ToString());
+                sum += int.Parse(wi[i])
+                       * int.Parse(ai[i]
+                           .ToString());
             }
 
             Math.DivRem(sum, 11, out var y);
-            return arrVarIfyCode[y] == str.Substring(17, 1).ToLower();
+            return arrVarIfyCode[y]
+                   == str.Substring(17, 1)
+                       .ToLower();
         }
 
         /// <summary>
@@ -370,7 +381,9 @@ namespace Fast.IaaS
                 return false; //省份验证
             }
 
-            var birth = str.Substring(6, 6).Insert(4, "-").Insert(2, "-");
+            var birth = str.Substring(6, 6)
+                .Insert(4, "-")
+                .Insert(2, "-");
             return DateTime.TryParse(birth, out _);
         }
 
@@ -444,7 +457,8 @@ namespace Fast.IaaS
         /// <returns></returns>
         public static bool IsNzx(this string str)
         {
-            return Regex.Match(str, "^[0-9a-zA-Z_]+$").Success;
+            return Regex.Match(str, "^[0-9a-zA-Z_]+$")
+                .Success;
         }
 
         #endregion
@@ -458,7 +472,8 @@ namespace Fast.IaaS
         /// <returns></returns>
         public static bool IsAlphaNumericChinese(this string str)
         {
-            return Regex.Match(str, @"^[0-9a-zA-Z\u4e00-\u9fa5]+$").Success;
+            return Regex.Match(str, @"^[0-9a-zA-Z\u4e00-\u9fa5]+$")
+                .Success;
         }
 
         #endregion
@@ -472,7 +487,8 @@ namespace Fast.IaaS
         /// <returns></returns>
         public static bool IsAlphaNumeric(this string str)
         {
-            return Regex.Match(str, @"^[0-9a-zA-Z]+$").Success;
+            return Regex.Match(str, @"^[0-9a-zA-Z]+$")
+                .Success;
         }
 
         #endregion
@@ -539,7 +555,8 @@ namespace Fast.IaaS
                 return false;
 
             // 移除所有非数字字符，只保留数字部分
-            var cleanStr = new string(str.Where(char.IsDigit).ToArray());
+            var cleanStr = new string(str.Where(char.IsDigit)
+                .ToArray());
 
             // 检查日期长度
             if (cleanStr.Length == 4 || cleanStr.Length == 6 || cleanStr.Length == 8)

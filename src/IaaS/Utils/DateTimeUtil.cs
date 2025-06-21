@@ -66,7 +66,8 @@ namespace Fast.IaaS
         {
             // 组装当前指定月份，默认为：yyyy-MM-01 23:59:59
             var internalDate = Convert.ToDateTime($"{year}-{month}-01 23:59:59");
-            return internalDate.AddMonths(+1).AddDays(-1);
+            return internalDate.AddMonths(+1)
+                .AddDays(-1);
         }
 
         /// <summary>
@@ -79,7 +80,8 @@ namespace Fast.IaaS
         {
             // 组装当前指定月份，默认为：yyyy-MM-01 23:59:59
             var internalDate = new DateTime(year, month, 01, 23, 59, 59);
-            return internalDate.AddMonths(+1).AddDays(-1);
+            return internalDate.AddMonths(+1)
+                .AddDays(-1);
         }
 
         /// <summary>

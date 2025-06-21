@@ -68,7 +68,8 @@ public static class CorsAccessorExtension
                 builder.AllowAnyOrigin();
         }
         else
-            builder.WithOrigins(corsAccessorSettings.WithOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
+            builder.WithOrigins(corsAccessorSettings.WithOrigins)
+                .SetIsOriginAllowedToAllowWildcardSubdomains();
 
         // 如果没有配置请求标头，则允许所有表头，包含处理 SignalR 情况
         if (corsAccessorSettings.WithHeaders == null || corsAccessorSettings.WithHeaders.Length == 0 || isSupportSignalR)
@@ -85,7 +86,8 @@ public static class CorsAccessorExtension
             if (isSupportSignalR)
             {
                 builder.WithMethods(corsAccessorSettings.WithMethods.Concat(new[] {"GET", "POST"})
-                    .Distinct(StringComparer.OrdinalIgnoreCase).ToArray());
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToArray());
             }
             else
                 builder.WithMethods(corsAccessorSettings.WithMethods);
@@ -100,7 +102,8 @@ public static class CorsAccessorExtension
         if (corsAccessorSettings.WithExposedHeaders != null && corsAccessorSettings.WithExposedHeaders.Length > 0)
         {
             exposedHeaders.AddRange(corsAccessorSettings.WithExposedHeaders);
-            exposedHeaders = exposedHeaders.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            exposedHeaders = exposedHeaders.Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
         }
 
         if (exposedHeaders.Any())
@@ -141,7 +144,9 @@ public static class CorsAccessorExtension
         services.AddConfigurableOptions<CorsAccessorSettingsOptions>(section);
 
         // 获取跨域配置选项
-        var corsAccessorSettings = configuration.GetSection(section).Get<CorsAccessorSettingsOptions>().LoadPostConfigure();
+        var corsAccessorSettings = configuration.GetSection(section)
+            .Get<CorsAccessorSettingsOptions>()
+            .LoadPostConfigure();
 
         // 添加跨域服务
         services.AddCors(options =>

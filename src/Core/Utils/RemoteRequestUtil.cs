@@ -91,7 +91,8 @@ public static class RemoteRequestUtil
     public static (T result, HttpResponseHeaders headers) Get<T>(string url, object param = null,
         IDictionary<string, string> headers = null, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Get, url, param, null, headers, timeout).Result;
+        return SendAsync<T>(HttpMethod.Get, url, param, null, headers, timeout)
+            .Result;
     }
 
     /// <summary>
@@ -120,7 +121,8 @@ public static class RemoteRequestUtil
     public static (string result, HttpResponseHeaders headers) Get(string url, object param = null,
         IDictionary<string, string> headers = null, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Get, url, param, null, headers, timeout).Result;
+        return SendAsync(HttpMethod.Get, url, param, null, headers, timeout)
+            .Result;
     }
 
     /// <summary>
@@ -149,7 +151,8 @@ public static class RemoteRequestUtil
     public static (T result, HttpResponseHeaders headers) Post<T>(string url, object data,
         IDictionary<string, string> headers = null, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Post, url, null, data, headers, timeout).Result;
+        return SendAsync<T>(HttpMethod.Post, url, null, data, headers, timeout)
+            .Result;
     }
 
     /// <summary>
@@ -178,7 +181,8 @@ public static class RemoteRequestUtil
     public static (string result, HttpResponseHeaders headers) Post(string url, object data,
         IDictionary<string, string> headers = null, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Post, url, null, data, headers, timeout).Result;
+        return SendAsync(HttpMethod.Post, url, null, data, headers, timeout)
+            .Result;
     }
 
     /// <summary>
@@ -207,7 +211,8 @@ public static class RemoteRequestUtil
     public static (T result, HttpResponseHeaders headers) Put<T>(string url, object data,
         IDictionary<string, string> headers = null, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Put, url, null, data, headers, timeout).Result;
+        return SendAsync<T>(HttpMethod.Put, url, null, data, headers, timeout)
+            .Result;
     }
 
     /// <summary>
@@ -236,7 +241,8 @@ public static class RemoteRequestUtil
     public static (string result, HttpResponseHeaders headers) Put(string url, object data,
         IDictionary<string, string> headers = null, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Put, url, null, data, headers, timeout).Result;
+        return SendAsync(HttpMethod.Put, url, null, data, headers, timeout)
+            .Result;
     }
 
     /// <summary>
@@ -264,7 +270,8 @@ public static class RemoteRequestUtil
     public static (T result, HttpResponseHeaders headers) Delete<T>(string url, IDictionary<string, string> headers = null,
         int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Delete, url, null, null, headers, timeout).Result;
+        return SendAsync<T>(HttpMethod.Delete, url, null, null, headers, timeout)
+            .Result;
     }
 
     /// <summary>
@@ -291,7 +298,8 @@ public static class RemoteRequestUtil
     public static (string result, HttpResponseHeaders headers) Delete(string url, IDictionary<string, string> headers = null,
         int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Delete, url, null, null, headers, timeout).Result;
+        return SendAsync(HttpMethod.Delete, url, null, null, headers, timeout)
+            .Result;
     }
 
     /// <summary>
@@ -368,7 +376,8 @@ public static class RemoteRequestUtil
                     if (param.Value != null)
                     {
                         // 转义
-                        query[param.Key.UrlEncode()] = param.Value.ToString().UrlEncode();
+                        query[param.Key.UrlEncode()] = param.Value.ToString()
+                            .UrlEncode();
                         //query[param.Key] = param.Value.ToString();
                     }
                 }
@@ -392,7 +401,8 @@ public static class RemoteRequestUtil
                     if (param.Value != null)
                     {
                         // 转义
-                        query[param.Key.UrlEncode()] = param.Value?.ToString().UrlEncode();
+                        query[param.Key.UrlEncode()] = param.Value?.ToString()
+                            .UrlEncode();
                         //query[param.Key] = param.Value.ToString();
                     }
                 }
@@ -528,8 +538,8 @@ public static class RemoteRequestUtil
 
             if (responseData is IDictionary<string, object> responseDataDictionary)
             {
-                if (responseDataDictionary.TryGetValue("Message", out var responseMessage) &&
-                    responseDataDictionary.TryGetValue("StackTrace", out _))
+                if (responseDataDictionary.TryGetValue("Message", out var responseMessage)
+                    && responseDataDictionary.TryGetValue("StackTrace", out _))
                 {
                     throw new HttpRequestException(responseMessage.ToString(), ex);
                 }
@@ -622,15 +632,19 @@ public static class RemoteRequestUtil
         var withContentType = response.Content.Headers.TryGetValues("Content-Type", out var contentTypes);
         if (withContentType)
         {
-            charset = contentTypes.First().Split(';', StringSplitOptions.RemoveEmptyEntries)
-                .FirstOrDefault(u => u.Contains("charset", StringComparison.OrdinalIgnoreCase)) ?? "charset=UTF-8";
+            charset = contentTypes.First()
+                          .Split(';', StringSplitOptions.RemoveEmptyEntries)
+                          .FirstOrDefault(u => u.Contains("charset", StringComparison.OrdinalIgnoreCase))
+                      ?? "charset=UTF-8";
         }
         else
         {
             charset = "charset=UTF-8";
         }
 
-        var encoding = charset.Split('=', StringSplitOptions.RemoveEmptyEntries).LastOrDefault() ?? "UTF-8";
+        var encoding = charset.Split('=', StringSplitOptions.RemoveEmptyEntries)
+                           .LastOrDefault()
+                       ?? "UTF-8";
         return Encoding.GetEncoding(encoding);
     }
 }

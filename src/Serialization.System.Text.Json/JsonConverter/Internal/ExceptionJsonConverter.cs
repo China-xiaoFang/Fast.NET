@@ -65,7 +65,9 @@ internal class ExceptionJsonConverter : JsonConverter<Exception>
             nameof(Exception.InnerException)
         };
         // 获取可序列化的属性，排除 TargetSite 属性
-        var serializableProperties = value.GetType().GetProperties().Select(sl => new {sl.Name, Value = sl.GetValue(value)})
+        var serializableProperties = value.GetType()
+            .GetProperties()
+            .Select(sl => new {sl.Name, Value = sl.GetValue(value)})
             .Where(wh => writeNameArr.Contains(wh.Name));
 
         // 如果设置了 DefaultIgnoreCondition 为 JsonIgnoreCondition.WhenWritingNull，则过滤掉值为 Null 的属性

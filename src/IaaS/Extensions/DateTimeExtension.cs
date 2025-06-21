@@ -198,8 +198,8 @@ namespace Fast.IaaS
 
             for (var i = 0; i < atomBound.Length - 1; i++)
             {
-                if (string.Compare(atomBound[i], monthDay, StringComparison.Ordinal) > 1 ||
-                    string.Compare(atomBound[i + 1], monthDay, StringComparison.Ordinal) <= 0)
+                if (string.Compare(atomBound[i], monthDay, StringComparison.Ordinal) > 1
+                    || string.Compare(atomBound[i + 1], monthDay, StringComparison.Ordinal) <= 0)
                     continue;
                 result = atoms[i];
                 break;
@@ -232,7 +232,8 @@ namespace Fast.IaaS
 
         private static int GetSum(int num)
         {
-            var b = num.ToString().ToCharArray();
+            var b = num.ToString()
+                .ToCharArray();
             return b.Sum(t => Convert.ToInt32(t.ToString()));
         }
     }

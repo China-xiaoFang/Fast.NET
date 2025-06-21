@@ -148,9 +148,12 @@ public class BadPageResult : StatusCodeResult
 
             // 读取内容并替换
             var content = Encoding.UTF8.GetString(buffer);
-            content = content.Replace($"@{{{nameof(Title)}}}", Title).Replace($"@{{{nameof(Description)}}}", Description)
-                .Replace($"@{{{nameof(StatusCode)}}}", StatusCode.ToString()).Replace($"@{{{nameof(Code)}}}", Code)
-                .Replace($"@{{{nameof(CodeLang)}}}", CodeLang).Replace($"@{{{nameof(Base64Icon)}}}", Base64Icon);
+            content = content.Replace($"@{{{nameof(Title)}}}", Title)
+                .Replace($"@{{{nameof(Description)}}}", Description)
+                .Replace($"@{{{nameof(StatusCode)}}}", StatusCode.ToString())
+                .Replace($"@{{{nameof(Code)}}}", Code)
+                .Replace($"@{{{nameof(CodeLang)}}}", CodeLang)
+                .Replace($"@{{{nameof(Base64Icon)}}}", Base64Icon);
 
             return content;
         }

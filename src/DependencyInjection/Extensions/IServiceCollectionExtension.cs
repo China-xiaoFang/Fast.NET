@@ -60,12 +60,18 @@ public static class IServiceCollectionExtension
             var interfaces = type.GetInterfaces();
 
             // 获取所有能注册的接口
-            var canInjectInterfaces = interfaces.Where(u =>
-                u != typeof(IDisposable) && u != typeof(IAsyncDisposable) && u != typeof(IDependency) &&
-                !lifetimeInterfaces.Contains(u) && MAppContext.Assemblies.Contains(u.Assembly) &&
-                ((!type.IsGenericType && !u.IsGenericType) || (type.IsGenericType && u.IsGenericType &&
-                                                               type.GetGenericArguments().Length ==
-                                                               u.GetGenericArguments().Length)));
+            var canInjectInterfaces = interfaces.Where(u => u != typeof(IDisposable)
+                                                            && u != typeof(IAsyncDisposable)
+                                                            && u != typeof(IDependency)
+                                                            && !lifetimeInterfaces.Contains(u)
+                                                            && MAppContext.Assemblies.Contains(u.Assembly)
+                                                            && ((!type.IsGenericType && !u.IsGenericType)
+                                                                || (type.IsGenericType
+                                                                    && u.IsGenericType
+                                                                    && type.GetGenericArguments()
+                                                                        .Length
+                                                                    == u.GetGenericArguments()
+                                                                        .Length)));
 
             // 获取生存周期类型
             var dependencyType = interfaces.Last(u => lifetimeInterfaces.Contains(u));

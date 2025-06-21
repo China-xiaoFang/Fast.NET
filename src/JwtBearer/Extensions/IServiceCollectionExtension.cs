@@ -56,7 +56,9 @@ public static class IServiceCollectionExtension
         // 配置验证
         services.AddConfigurableOptions<JWTSettingsOptions>(section);
 
-        Penetrates.JWTSettings = configuration.GetSection(section).Get<JWTSettingsOptions>().LoadPostConfigure();
+        Penetrates.JWTSettings = configuration.GetSection(section)
+            .Get<JWTSettingsOptions>()
+            .LoadPostConfigure();
 
         return services;
     }
@@ -103,13 +105,14 @@ public static class IServiceCollectionExtension
 
         // 添加默认授权
         services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
-        });
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
+            });
 
         return services;
     }
@@ -130,13 +133,14 @@ public static class IServiceCollectionExtension
 
         // 添加默认授权
         services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
-        });
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
+            });
 
         return services;
     }
@@ -160,7 +164,9 @@ public static class IServiceCollectionExtension
         // 配置验证
         services.AddConfigurableOptions<JWTSettingsOptions>(section);
 
-        Penetrates.JWTSettings = configuration.GetSection(section).Get<JWTSettingsOptions>().LoadPostConfigure();
+        Penetrates.JWTSettings = configuration.GetSection(section)
+            .Get<JWTSettingsOptions>()
+            .LoadPostConfigure();
 
         // 查找Jwt验证提供器实现类
         var jwtBearerHandle =
@@ -197,13 +203,14 @@ public static class IServiceCollectionExtension
 
         // 添加默认授权
         services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
-        });
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
+            });
 
         return services;
     }
@@ -259,13 +266,14 @@ public static class IServiceCollectionExtension
 
         // 添加默认授权
         services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
-        });
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
+            });
 
         return services;
     }

@@ -51,7 +51,8 @@ internal static class Penetrates
     /// 请求上下文
     /// </summary>
     internal static HttpContext HttpContext =>
-        MAppContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
+        MAppContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()
+            ?.HttpContext);
 
     /// <summary>
     /// 控制台默认格式化程序名称

@@ -62,7 +62,8 @@ namespace Fast.IaaS
         /// <returns><see cref="string"/></returns>
         public static Version GetVersion(this Assembly assembly)
         {
-            return assembly.GetName().Version;
+            return assembly.GetName()
+                .Version;
         }
 
         /// <summary>
@@ -72,7 +73,8 @@ namespace Fast.IaaS
         /// <returns><see cref="string"/></returns>
         public static string GetAssemblyName(this Assembly assembly)
         {
-            return assembly.GetName().Name;
+            return assembly.GetName()
+                .Name;
         }
 
         /// <summary>

@@ -60,21 +60,27 @@ public static class DynamicApplicationContext
             }
 
             // 排除 OData 控制器
-            if (type.Assembly.GetName().Name?.StartsWith("Microsoft.AspNetCore.OData") == true)
+            if (type.Assembly.GetName()
+                    .Name?.StartsWith("Microsoft.AspNetCore.OData")
+                == true)
             {
                 return false;
             }
 
             // 不能是非公开，基元类型，值类型，抽象类，接口，泛型类
-            if (!type.IsPublic || type.IsPrimitive || type.IsValueType || type.IsAbstract || type.IsInterface ||
-                type.IsGenericType)
+            if (!type.IsPublic
+                || type.IsPrimitive
+                || type.IsValueType
+                || type.IsAbstract
+                || type.IsInterface
+                || type.IsGenericType)
             {
                 return false;
             }
 
             // 继承 ControllerBase 或 实现 IApplication 的类型
-            if ((!typeof(Controller).IsAssignableFrom(type) && typeof(ControllerBase).IsAssignableFrom(type)) ||
-                typeof(IDynamicApplication).IsAssignableFrom(type))
+            if ((!typeof(Controller).IsAssignableFrom(type) && typeof(ControllerBase).IsAssignableFrom(type))
+                || typeof(IDynamicApplication).IsAssignableFrom(type))
             {
                 return true;
             }

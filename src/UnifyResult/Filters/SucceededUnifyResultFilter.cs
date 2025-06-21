@@ -60,8 +60,8 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
             return;
 
         // 处理已经含有状态码结果的 Result
-        if (actionExecutedContext.Result is IStatusCodeActionResult statusCodeActionResult &&
-            statusCodeActionResult.StatusCode != null)
+        if (actionExecutedContext.Result is IStatusCodeActionResult statusCodeActionResult
+            && statusCodeActionResult.StatusCode != null)
         {
             // 小于 200 或者 大于 299 都不是成功值，直接跳过
             if (statusCodeActionResult.StatusCode.Value < 200 || statusCodeActionResult.StatusCode.Value > 299)
@@ -73,9 +73,9 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
                     var statusCode = statusCodeActionResult.StatusCode.Value;
 
                     // 解决刷新 Token 时间和 Token 时间相近问题
-                    if (statusCodeActionResult.StatusCode.Value == StatusCodes.Status401Unauthorized &&
-                        httpContext.Request.Headers.ContainsKey("access-token") &&
-                        httpContext.Request.Headers.ContainsKey("x-access-token"))
+                    if (statusCodeActionResult.StatusCode.Value == StatusCodes.Status401Unauthorized
+                        && httpContext.Request.Headers.ContainsKey("access-token")
+                        && httpContext.Request.Headers.ContainsKey("x-access-token"))
                     {
                         httpContext.Response.StatusCode = statusCode = StatusCodes.Status403Forbidden;
                     }

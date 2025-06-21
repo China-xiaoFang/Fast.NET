@@ -64,7 +64,9 @@ internal class NullableEnumConverterFactory : JsonConverterFactory
     {
         if (typeToConvert.IsGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            return Nullable.GetUnderlyingType(typeToConvert)?.IsEnum == true;
+            return Nullable.GetUnderlyingType(typeToConvert)
+                       ?.IsEnum
+                   == true;
         }
 
         return false;
