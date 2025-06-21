@@ -37,6 +37,60 @@ namespace Fast.SqlSugar;
 public static class IServiceCollectionExtension
 {
     /// <summary>
+    /// 添加雪花Id
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <param name="section">
+    /// <see cref="string"/>
+    /// <para>Json配置文件节点的Key</para>
+    /// <remarks>默认值：SnowflakeSettings</remarks>
+    /// </param>
+    /// <returns></returns>
+    public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
+        string section = "SnowflakeSettings")
+    {
+        Debugging.Info("Registering snowflake......");
+
+        // 配置验证
+        services.AddConfigurableOptions<SnowflakeSettingsOptions>(section);
+
+        // 获取配置选项
+        SqlSugarContext.SnowflakeSettings = configuration.GetSection(section)
+            .Get<SnowflakeSettingsOptions>()
+            .LoadPostConfigure();
+
+        // 设置雪花Id的workerId，确保每个实例workerId都应不同
+        YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings.WorkerId ?? 1});
+
+        return services;
+    }
+
+    /// <summary>
+    /// 添加雪花Id
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <param name="optionAction"><see cref="Action{SnowflakeSettingsOptions}"/></param>
+    /// <returns></returns>
+    public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
+        Action<SnowflakeSettingsOptions> optionAction)
+    {
+        Debugging.Info("Registering snowflake......");
+
+        // 配置验证
+        services.Configure(optionAction);
+
+        var snowflakeSettings = new SnowflakeSettingsOptions();
+        optionAction.Invoke(snowflakeSettings);
+
+        // 设置雪花Id的workerId，确保每个实例workerId都应不同
+        YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings.WorkerId ?? 1});
+
+        return services;
+    }
+
+    /// <summary>
     /// 注册SqlSugar服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
@@ -47,33 +101,63 @@ public static class IServiceCollectionExtension
     /// <para>Json配置文件节点的Key</para>
     /// <remarks>默认值：ConnectionSettings</remarks>
     /// </param>
-    /// <param name="snowflakeSection">
-    /// <see cref="string"/>
-    /// <para>Json配置文件节点的Key</para>
-    /// <remarks>默认值：SnowflakeSettings</remarks>
-    /// </param>
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration,
-        IHostEnvironment hostEnvironment, string connectionSection = "ConnectionSettings",
-        string snowflakeSection = "SnowflakeSettings")
+        IHostEnvironment hostEnvironment, string connectionSection = "ConnectionSettings")
     {
         Debugging.Info("Registering sql sugar......");
 
         // 配置验证
         services.AddConfigurableOptions<ConnectionSettingsOptions>(connectionSection);
-        services.AddConfigurableOptions<SnowflakeSettingsOptions>(snowflakeSection);
 
         // 获取配置选项
-        SqlSugarContext.ConnectionSettings = configuration.GetSection(connectionSection).Get<ConnectionSettingsOptions>();
-        SqlSugarContext.SnowflakeSettings = configuration.GetSection(snowflakeSection)
-            .Get<SnowflakeSettingsOptions>().LoadPostConfigure();
+        var connectionSettings = configuration.GetSection(connectionSection)
+            .Get<ConnectionSettingsOptions>();
 
-        // Add Snowflakes Id.
-        // 设置雪花Id的workerId，确保每个实例workerId都应不同
-        YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings.WorkerId!.Value});
+        SqlSugarContext.ConnectionSettings = connectionSettings;
 
-        SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings);
+        SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(connectionSettings);
 
+        services.AddSqlSugar(hostEnvironment);
+
+        return services;
+    }
+
+    /// <summary>
+    /// 注册SqlSugar服务
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <param name="hostEnvironment"><see cref="IHostEnvironment"/></param>
+    /// <param name="optionAction"><see cref="Action{ConnectionSettingsOptions}"/></param>
+    /// <returns><see cref="IServiceCollection"/></returns>
+    public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration,
+        IHostEnvironment hostEnvironment, Action<ConnectionSettingsOptions> optionAction)
+    {
+        Debugging.Info("Registering sql sugar......");
+
+        // 配置验证
+        services.Configure(optionAction);
+
+        var connectionSettings = new ConnectionSettingsOptions();
+        optionAction.Invoke(connectionSettings);
+
+        SqlSugarContext.ConnectionSettings = connectionSettings;
+
+        SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(connectionSettings);
+
+        services.AddSqlSugar(hostEnvironment);
+
+        return services;
+    }
+
+    /// <summary>
+    /// 注册SqlSugar服务
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="hostEnvironment"><see cref="IHostEnvironment"/></param>
+    private static void AddSqlSugar(this IServiceCollection services, IHostEnvironment hostEnvironment)
+    {
         // 查找Sugar实体处理程序提供者
         var iSqlSugarEntityHandlerType =
             MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(ISqlSugarEntityHandler).IsAssignableFrom(f) && !f.IsInterface);
@@ -94,14 +178,10 @@ public static class IServiceCollectionExtension
             // 执行超时时间
             sqlSugarClient.Ado.CommandTimeOut = SqlSugarContext.ConnectionSettings.CommandTimeOut;
 
-            // 判断是否禁用 Aop
-            if (!SqlSugarContext.ConnectionSettings.DisableAop)
-            {
-                // Aop
-                SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), sqlSugarClient,
-                    SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog,
-                    sqlSugarEntityHandler);
-            }
+            // Aop
+            SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), sqlSugarClient,
+                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog,
+                SqlSugarContext.ConnectionSettings.DisableAop, sqlSugarEntityHandler);
 
             // 过滤器
             SugarEntityFilter.LoadSugarFilter(sqlSugarClient, sqlSugarEntityHandler);
@@ -111,7 +191,5 @@ public static class IServiceCollectionExtension
 
         // 注册泛型仓储
         services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
-
-        return services;
     }
 }

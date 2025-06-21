@@ -32,53 +32,33 @@ namespace System;
 public class ApiInfoAttribute : Attribute
 {
     /// <summary>
-    /// Api名称
+    /// 接口名称
     /// </summary>
-    public string ApiName { get; set; }
+    public string Name { get; set; }
 
     /// <summary>
-    /// 接口操作方式
+    /// 操作方式
     /// </summary>
-    public HttpRequestActionEnum ApiAction { get; set; }
+    public HttpRequestActionEnum Action { get; set; }
 
     /// <summary>
-    /// 接口权限标识集合
+    /// <see cref="ApiInfoAttribute"/> 接口信息
     /// </summary>
-    public List<string> TagList { get; set; }
-
-    /// <summary>
-    /// <see cref="ApiInfoAttribute"/> 接口名称
-    /// </summary>
-    /// <param name="apiName"><see cref="string"/> Api名称</param>
-    public ApiInfoAttribute(string apiName)
+    /// <param name="name"><see cref="string"/> 接口名称</param>
+    public ApiInfoAttribute(string name)
     {
-        ApiName = apiName ?? throw new ArgumentNullException(nameof(apiName));
-        ApiAction = HttpRequestActionEnum.None;
-        TagList = null;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Action = HttpRequestActionEnum.None;
     }
 
     /// <summary>
-    /// <see cref="ApiInfoAttribute"/> 接口名称
+    /// <see cref="ApiInfoAttribute"/> 接口信息
     /// </summary>
-    /// <param name="apiName"><see cref="string"/> Api名称</param>
-    /// <param name="apiAction"><see cref="HttpRequestActionEnum"/> 接口操作方式</param>
-    public ApiInfoAttribute(string apiName, HttpRequestActionEnum apiAction)
+    /// <param name="name"><see cref="string"/> 接口名称</param>
+    /// <param name="action"><see cref="HttpRequestActionEnum"/> 操作方式</param>
+    public ApiInfoAttribute(string name, HttpRequestActionEnum action)
     {
-        ApiName = apiName ?? throw new ArgumentNullException(nameof(apiName));
-        ApiAction = apiAction;
-        TagList = null;
-    }
-
-    /// <summary>
-    /// <see cref="ApiInfoAttribute"/> 接口名称
-    /// </summary>
-    /// <param name="apiName"><see cref="string"/> Api名称</param>
-    /// <param name="apiAction"><see cref="HttpRequestActionEnum"/> 接口操作方式</param>
-    /// <param name="tagArray"><see cref="Array"/> 接口权限标识</param>
-    public ApiInfoAttribute(string apiName, HttpRequestActionEnum apiAction, params string[] tagArray)
-    {
-        ApiName = apiName ?? throw new ArgumentNullException(nameof(apiName));
-        ApiAction = apiAction;
-        TagList = tagArray.ToList();
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Action = action;
     }
 }

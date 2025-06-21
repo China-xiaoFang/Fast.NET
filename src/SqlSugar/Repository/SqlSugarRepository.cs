@@ -33,7 +33,7 @@ namespace Fast.SqlSugar;
 /// <summary>
 /// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar仓储实现
 /// </summary>
-public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepository<TEntity> where TEntity : class, new()
+internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepository<TEntity> where TEntity : class, new()
 {
     /// <summary>
     /// 服务提供器
@@ -72,13 +72,10 @@ public sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepos
                 // 执行超时时间
                 Context.Ado.CommandTimeOut = connectionSettings.CommandTimeOut;
 
-                // 判断是否禁用 Aop
-                if (!connectionSettings.DisableAop)
-                {
-                    // Aop
-                    SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), Context,
-                        connectionSettings.SugarSqlExecMaxSeconds, connectionSettings.DiffLog, sqlSugarEntityHandler);
-                }
+                // Aop
+                SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), Context,
+                    connectionSettings.SugarSqlExecMaxSeconds, connectionSettings.DiffLog, connectionSettings.DisableAop,
+                    sqlSugarEntityHandler);
 
                 // 过滤器
                 SugarEntityFilter.LoadSugarFilter(Context, sqlSugarEntityHandler);

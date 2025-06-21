@@ -39,9 +39,10 @@ internal static class SugarEntityFilter
     /// <param name="_db"><see cref="ISqlSugarClient"/></param>
     /// <param name="sugarSqlExecMaxSeconds"><see cref="int"/> Sql最大执行秒数</param>
     /// <param name="diffLog"><see cref="bool"/> 是否启用差异日志</param>
+    /// <param name="disableAop"><see cref="bool"/> 是否禁用Aop</param>
     /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
     internal static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int sugarSqlExecMaxSeconds, bool diffLog,
-        ISqlSugarEntityHandler sqlSugarEntityHandler)
+        bool disableAop, ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
         _db.Aop.OnLogExecuted = (rawSql, pars) =>
         {
@@ -83,7 +84,7 @@ internal static class SugarEntityFilter
                 Console.WriteLine(logSb.ToString());
             }
 
-            if (sqlSugarEntityHandler != null)
+            if (!disableAop && sqlSugarEntityHandler != null)
             {
                 // 执行Sql处理
                 Task.Run(async () =>
@@ -139,7 +140,7 @@ internal static class SugarEntityFilter
                 logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 Console.WriteLine(logSb.ToString());
 
-                if (sqlSugarEntityHandler != null)
+                if (!disableAop && sqlSugarEntityHandler != null)
                 {
                     // 执行Sql超时处理
                     Task.Run(async () =>
@@ -176,7 +177,7 @@ internal static class SugarEntityFilter
         {
             _db.Aop.OnDiffLogEvent = diff =>
             {
-                if (sqlSugarEntityHandler != null)
+                if (!disableAop && sqlSugarEntityHandler != null)
                 {
                     // 差异日志
                     if ((diff.AfterData != null && diff.AfterData.Any()) || (diff.BeforeData != null && diff.BeforeData.Any()))
@@ -261,7 +262,7 @@ internal static class SugarEntityFilter
                 Console.WriteLine(logSb.ToString());
             }
 
-            if (sqlSugarEntityHandler != null)
+            if (!disableAop && sqlSugarEntityHandler != null)
             {
                 // 执行Sql错误处理
                 Task.Run(async () =>
