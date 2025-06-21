@@ -57,7 +57,7 @@ namespace Fast.IaaS
         /// <returns></returns>
         public List<TEntity> Build(List<TEntity> nodes)
         {
-            var result = nodes.Where(i => i.GetPid().Equals(_rootParentId)).OrderBy(ob => ob.Sort()).ToList();
+            var result = nodes.Where(i => i.GetPid().Equals(_rootParentId)).OrderBy(ob => ob.GetSort()).ToList();
             result.ForEach(u => BuildChildNodes(nodes, u));
             return result;
         }
@@ -69,7 +69,7 @@ namespace Fast.IaaS
         /// <param name="node"></param>
         private void BuildChildNodes(List<TEntity> totalNodes, TEntity node)
         {
-            var nodeSubList = totalNodes.Where(i => i.GetPid().Equals(node.GetId())).OrderBy(ob => ob.Sort()).ToList();
+            var nodeSubList = totalNodes.Where(i => i.GetPid().Equals(node.GetId())).OrderBy(ob => ob.GetSort()).ToList();
             nodeSubList.ForEach(u => BuildChildNodes(totalNodes, u));
             node.SetChildren(nodeSubList);
         }
