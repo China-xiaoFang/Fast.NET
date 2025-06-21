@@ -64,7 +64,11 @@ public class ConnectionSettingsOptions : DbConnectionInfo
     /// <summary>
     /// 禁用 SqlSugar 的 Aop
     /// </summary>
-    /// <remarks>如果是通过 <see cref="ISqlSugarEntityHandler"/> 进行保存日志到数据库中，必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP，不然会导致死循环的问题。</remarks>
+    /// <remarks>
+    /// 如果是通过 <see cref="ISqlSugarEntityHandler"/> 进行保存日志到数据库中
+    /// <para>必须要将相关 AOP 中涉及到的日志表，单独进行分库设置，并且禁用 AOP</para>
+    /// <para>或通过 new <see cref="SqlSugarClient"/>() 的方式进行保存。不然会导致死循环的问题</para>
+    /// </remarks>
     [SugarColumn(ColumnDescription = "差异日志")]
     public bool DisableAop { get; set; }
 

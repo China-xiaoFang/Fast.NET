@@ -150,7 +150,7 @@ public enum AppEnvironmentEnum
     /// 桌面端
     /// </summary>
     [Description("桌面端")]
-    Desktop = Web | Windows | Mac | Linux,
+    Desktop = Windows | Mac | Linux,
 
     /// <summary>
     /// 移动端
@@ -168,6 +168,15 @@ public enum AppEnvironmentEnum
     /// 小程序
     /// </summary>
     [Description("小程序")]
-    MiniProgram = QuickApp | WeChatMiniProgram | QQMiniProgram | TiktokMiniProgram | BaiduMiniProgram | AlipayMiniProgram |
-                  KuaishouMiniProgram | FeishuMiniProgram | DingTalkMiniProgram | JDMiniProgram | XiaohongshuMiniProgram
+    MiniProgram = QuickApp
+                  | WeChatMiniProgram
+                  | QQMiniProgram
+                  | TiktokMiniProgram
+                  | BaiduMiniProgram
+                  | AlipayMiniProgram
+                  | KuaishouMiniProgram
+                  | FeishuMiniProgram
+                  | DingTalkMiniProgram
+                  | JDMiniProgram
+                  | XiaohongshuMiniProgram
 }
