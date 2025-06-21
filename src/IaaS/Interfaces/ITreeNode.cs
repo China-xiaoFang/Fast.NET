@@ -48,7 +48,7 @@ namespace Fast.IaaS
         /// 获取排序字段
         /// </summary>
         /// <returns></returns>
-        TProperty Sort();
+        TProperty GetSort();
 
         /// <summary>
         /// 设置Children
