@@ -39,7 +39,8 @@ internal static class TypeExtension
     {
         var localType = type;
         // 检查接口类型
-        var isTheRawGenericType = type.GetInterfaces().Any(IsTheRawGenericType);
+        var isTheRawGenericType = type.GetInterfaces()
+            .Any(IsTheRawGenericType);
         if (isTheRawGenericType)
             return true;
 

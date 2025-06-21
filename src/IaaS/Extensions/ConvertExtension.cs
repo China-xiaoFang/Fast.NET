@@ -623,7 +623,8 @@ namespace Fast.IaaS
 
             if (dateTime.Offset.Equals(TimeZoneInfo.Local.GetUtcOffset(dateTime.DateTime)))
             {
-                return dateTime.ToLocalTime().DateTime;
+                return dateTime.ToLocalTime()
+                    .DateTime;
             }
 
             return dateTime.DateTime;
@@ -762,7 +763,8 @@ namespace Fast.IaaS
         /// <returns></returns>
         public static IEnumerable<TResult> CastSuper<TResult>(this IEnumerable source)
         {
-            return from object item in source select (TResult) Convert.ChangeType(item, typeof(TResult));
+            return from object item in source
+                select (TResult) Convert.ChangeType(item, typeof(TResult));
         }
 
         #endregion

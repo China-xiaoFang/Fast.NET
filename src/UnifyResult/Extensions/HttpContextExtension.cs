@@ -81,7 +81,9 @@ internal static class HttpContextExtension
     /// <returns><see cref="object"/></returns>
     public static object GetMetadata(this EndpointMetadataCollection metadata, Type attributeType)
     {
-        return metadata?.GetType().GetMethod(nameof(EndpointMetadataCollection.GetMetadata))?.MakeGenericMethod(attributeType)
+        return metadata?.GetType()
+            .GetMethod(nameof(EndpointMetadataCollection.GetMetadata))
+            ?.MakeGenericMethod(attributeType)
             .Invoke(metadata, null);
     }
 
@@ -93,6 +95,7 @@ internal static class HttpContextExtension
     /// <returns><see cref="object"/></returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)
     {
-        return httpContext.GetEndpoint()?.Metadata.GetMetadata(attributeType);
+        return httpContext.GetEndpoint()
+            ?.Metadata.GetMetadata(attributeType);
     }
 }

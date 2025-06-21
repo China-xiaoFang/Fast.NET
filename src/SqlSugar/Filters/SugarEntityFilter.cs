@@ -58,8 +58,8 @@ internal static class SugarEntityFilter
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                 }
 
-                if (rawSql.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase) ||
-                    rawSql.StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
+                if (rawSql.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase)
+                    || rawSql.StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
                 {
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                 }
@@ -203,9 +203,9 @@ internal static class SugarEntityFilter
                             try
                             {
                                 await sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, tableName, tableDescription,
-                                    diff.BusinessData.ToString(), diff.BeforeData?.Select(sl => sl.Columns).ToList(),
-                                    diff.AfterData?.Select(sl => sl.Columns).ToList(), diff.Sql, diff.Parameters, diff.Time,
-                                    handleSql);
+                                    diff.BusinessData.ToString(), diff.BeforeData?.Select(sl => sl.Columns)
+                                        .ToList(), diff.AfterData?.Select(sl => sl.Columns)
+                                        .ToList(), diff.Sql, diff.Parameters, diff.Time, handleSql);
                             }
                             catch (Exception ex)
                             {
@@ -301,8 +301,8 @@ internal static class SugarEntityFilter
                 // 新增操作
                 case DataFilterType.InsertByObject:
                     // 主键（long）赋值雪花Id，这里一条记录只会匹配一次
-                    if (entityInfo.EntityColumnInfo.IsPrimarykey &&
-                        entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
+                    if (entityInfo.EntityColumnInfo.IsPrimarykey
+                        && entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
                     {
                         if (SqlSugarContext.EntityValueCheck(nameof(IPrimaryKeyEntity<long>.Id), new List<dynamic> {null, 0},
                                 entityInfo))

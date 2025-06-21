@@ -223,13 +223,15 @@ public static class WebApplicationBuilderExtension
         var executeDirectory = AppContext.BaseDirectory;
 
         // 获取自定义配置扫描目录
-        var configurationScanDirectories =
-            (configuration.GetSection("ConfigurationScanDirectories").Get<string[]>() ?? Array.Empty<string>()).Select(u =>
-                Path.Combine(executeDirectory, u));
+        var configurationScanDirectories = (configuration.GetSection("ConfigurationScanDirectories")
+                                                .Get<string[]>()
+                                            ?? Array.Empty<string>()).Select(u => Path.Combine(executeDirectory, u));
 
         // 扫描执行目录及自定义配置目录下的 *.json 文件
-        var jsonFiles = new[] {executeDirectory}.Concat(configurationScanDirectories).Concat(InternalConfigurationScanDirectories)
-            .SelectMany(u => Directory.GetFiles(u, "*.json", SearchOption.TopDirectoryOnly)).ToList();
+        var jsonFiles = new[] {executeDirectory}.Concat(configurationScanDirectories)
+            .Concat(InternalConfigurationScanDirectories)
+            .SelectMany(u => Directory.GetFiles(u, "*.json", SearchOption.TopDirectoryOnly))
+            .ToList();
 
         // 如果没有配置文件，中止执行
         if (!jsonFiles.Any())
@@ -244,9 +246,9 @@ public static class WebApplicationBuilderExtension
             : excludeJsonPrefixArr;
 
         // 将所有文件进行分组
-        var jsonFilesGroups = SplitConfigFileNameToGroups(jsonFiles).Where(u =>
-            !_excludeJsonPrefixArr.Contains(u.Key, StringComparer.OrdinalIgnoreCase) && !u.Any(c =>
-                runtimeJsonSuffixArr.Any(z => c.EndsWith(z, StringComparison.OrdinalIgnoreCase))));
+        var jsonFilesGroups = SplitConfigFileNameToGroups(jsonFiles)
+            .Where(u => !_excludeJsonPrefixArr.Contains(u.Key, StringComparer.OrdinalIgnoreCase)
+                        && !u.Any(c => runtimeJsonSuffixArr.Any(z => c.EndsWith(z, StringComparison.OrdinalIgnoreCase))));
 
         // 遍历所有配置分组
         foreach (var group in jsonFilesGroups)
@@ -256,7 +258,8 @@ public static class WebApplicationBuilderExtension
 
             // 查找默认配置和环境配置
             var files = group.Where(u => limitFileNames.Contains(Path.GetFileName(u), StringComparer.OrdinalIgnoreCase))
-                .OrderBy(u => Path.GetFileName(u).Length);
+                .OrderBy(u => Path.GetFileName(u)
+                    .Length);
 
             // 循环加载
             foreach (var jsonFile in files)
@@ -280,7 +283,8 @@ public static class WebApplicationBuilderExtension
         static string Function(string file)
         {
             // 根据 . 分隔
-            var fileNameParts = Path.GetFileName(file).Split('.', StringSplitOptions.RemoveEmptyEntries);
+            var fileNameParts = Path.GetFileName(file)
+                .Split('.', StringSplitOptions.RemoveEmptyEntries);
             if (fileNameParts.Length == 2)
                 return fileNameParts[0];
 

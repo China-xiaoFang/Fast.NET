@@ -236,7 +236,8 @@ namespace Fast.IaaS
             var inputStrBytes = Encoding.UTF8.GetBytes(str);
             var outputBytes = sha1.ComputeHash(inputStrBytes);
             sha1.Clear();
-            return BitConverter.ToString(outputBytes).Replace("-", "");
+            return BitConverter.ToString(outputBytes)
+                .Replace("-", "");
         }
 
         #endregion

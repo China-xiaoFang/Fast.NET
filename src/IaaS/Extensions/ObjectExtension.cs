@@ -51,7 +51,8 @@ namespace Fast.IaaS
                 return Guid.Parse(obj.ToString());
             if (type == typeof(bool) && obj != null && !(obj is bool))
             {
-                var objStr = obj.ToString()?.ToLower();
+                var objStr = obj.ToString()
+                    ?.ToLower();
                 if (objStr == "1" || objStr == "true" || objStr == "yes" || objStr == "on")
                     return true;
                 return false;
@@ -214,13 +215,15 @@ namespace Fast.IaaS
                             dictionary.Add($"{(isToLower ? p.Name.FirstCharToLower() : p.Name)}[]", intListVal); // 向字典添加元素
                             break;
                         default:
-                            dictionary.Add(p.Name, m.Invoke(obj, new object[] { })?.ToString()); // 向字典添加元素
+                            dictionary.Add(p.Name, m.Invoke(obj, new object[] { })
+                                ?.ToString()); // 向字典添加元素
                             break;
                     }
                 }
                 else
                 {
-                    dictionary.Add(p.Name, m.Invoke(obj, new object[] { })?.ToString()); // 向字典添加元素
+                    dictionary.Add(p.Name, m.Invoke(obj, new object[] { })
+                        ?.ToString()); // 向字典添加元素
                 }
             }
 
@@ -259,7 +262,8 @@ namespace Fast.IaaS
             }
 
             // 反射查找是否存在 Count 属性
-            var runtimeProperty = obj.GetType().GetRuntimeProperty("Count");
+            var runtimeProperty = obj.GetType()
+                .GetRuntimeProperty("Count");
 
             // 反射获取 Count 属性值
             if (!(runtimeProperty is null) && runtimeProperty.CanRead && runtimeProperty.PropertyType == typeof(int))

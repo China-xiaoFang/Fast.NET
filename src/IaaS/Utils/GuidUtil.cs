@@ -45,7 +45,8 @@ namespace Fast.IaaS
         /// <returns><see cref="string"/></returns>
         public static string GetGuid(string format = "N")
         {
-            return Guid.NewGuid().ToString(format);
+            return Guid.NewGuid()
+                .ToString(format);
         }
 
         /// <summary>
@@ -54,7 +55,9 @@ namespace Fast.IaaS
         /// <returns><see cref="string"/></returns>
         public static string GetShortGuid()
         {
-            var i = Guid.NewGuid().ToByteArray().Aggregate<byte, long>(1, (current, b) => current * (b + 1));
+            var i = Guid.NewGuid()
+                .ToByteArray()
+                .Aggregate<byte, long>(1, (current, b) => current * (b + 1));
 
             return $"{i - DateTime.Now.Ticks:x}";
         }

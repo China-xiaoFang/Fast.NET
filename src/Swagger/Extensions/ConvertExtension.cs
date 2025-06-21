@@ -43,7 +43,8 @@ internal static class ConvertExtension
 
         if (dateTime.Offset.Equals(TimeZoneInfo.Local.GetUtcOffset(dateTime.DateTime)))
         {
-            return dateTime.ToLocalTime().DateTime;
+            return dateTime.ToLocalTime()
+                .DateTime;
         }
 
         return dateTime.DateTime;

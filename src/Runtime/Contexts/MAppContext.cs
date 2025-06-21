@@ -89,7 +89,8 @@ public static class MAppContext
         var entryAssembly = Assembly.GetEntryAssembly();
 
         // 获取入口程序集版本号
-        AssemblyVersion = entryAssembly?.GetName().Version?.ToString();
+        AssemblyVersion = entryAssembly?.GetName()
+            .Version?.ToString();
 
         // 获取所有程序集
         Assemblies = entryAssembly.GetEntryReferencedAssembly();
@@ -152,8 +153,9 @@ public static class MAppContext
         IServiceCollection internalServices, HttpContext httpContext)
     {
         // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
-        if (rootServices != null && internalServices
-                .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
+        if (rootServices != null
+            && internalServices.Where(u =>
+                    u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
                 .Any(u => u.Lifetime == ServiceLifetime.Singleton))
             return rootServices;
 
@@ -183,7 +185,8 @@ public static class MAppContext
     /// <returns><see cref="Uri"/></returns>
     public static Uri GetCurrentStartupUri(IServer server)
     {
-        var addresses = server?.Features.Get<IServerAddressesFeature>()?.Addresses.FirstOrDefault();
+        var addresses = server?.Features.Get<IServerAddressesFeature>()
+            ?.Addresses.FirstOrDefault();
 
         if (string.IsNullOrEmpty(addresses))
         {

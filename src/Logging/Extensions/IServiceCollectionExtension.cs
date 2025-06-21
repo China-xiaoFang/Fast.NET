@@ -218,8 +218,9 @@ public static class IServiceCollectionExtension
             },
             HandleWriteError = err =>
             {
-                err.UseRollbackFileName(Path.GetFileNameWithoutExtension(err.CurrentFileName) + "_alt" +
-                                        Path.GetExtension(err.CurrentFileName));
+                err.UseRollbackFileName(Path.GetFileNameWithoutExtension(err.CurrentFileName)
+                                        + "_alt"
+                                        + Path.GetExtension(err.CurrentFileName));
             }
         };
     }

@@ -71,8 +71,8 @@ internal partial class DatabaseUtil
                 }
 
                 // 可空类型配置
-                if (propertyInfo.PropertyType.IsGenericType &&
-                    propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                if (propertyInfo.PropertyType.IsGenericType
+                    && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
                     columnInfo.IsNullable = true;
                 }

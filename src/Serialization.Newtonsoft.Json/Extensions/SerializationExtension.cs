@@ -73,7 +73,8 @@ public static class SerializationExtension
     /// <returns></returns>
     public static T ToObject<T>(this IDictionary<string, object> dictionary)
     {
-        return dictionary.ToJsonString().ToObject<T>();
+        return dictionary.ToJsonString()
+            .ToObject<T>();
     }
 
     /// <summary>
@@ -84,7 +85,8 @@ public static class SerializationExtension
     /// <returns><see cref="object"/> 序列化后的对象</returns>
     public static object ToObject(this IDictionary<string, object> dictionary, Type type)
     {
-        return dictionary.ToJsonString().ToObject(type);
+        return dictionary.ToJsonString()
+            .ToObject(type);
     }
 
     /// <summary>
@@ -96,6 +98,9 @@ public static class SerializationExtension
     /// <returns></returns>
     public static T DeepCopy<T>(this T source)
     {
-        return source is null ? default : source.ToJsonString().ToObject<T>();
+        return source is null
+            ? default
+            : source.ToJsonString()
+                .ToObject<T>();
     }
 }

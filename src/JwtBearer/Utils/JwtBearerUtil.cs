@@ -109,7 +109,8 @@ public static class JwtBearerUtil
         if (!payload.ContainsKey(JwtRegisteredClaimNames.Exp))
         {
             var minute = expiredTime ?? Penetrates.JWTSettings?.TokenExpiredTime ?? 20;
-            payload.Add(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(minute).ToUnixTimeSeconds());
+            payload.Add(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(minute)
+                .ToUnixTimeSeconds());
         }
 
         if (!payload.ContainsKey(JwtRegisteredClaimNames.Iss))
@@ -162,7 +163,10 @@ public static class JwtBearerUtil
             {"e", tokenParagraphs[2]},
             {"s", s},
             {"l", l},
-            {"k", tokenParagraphs[1].Substring(s, l)}
+            {
+                "k", tokenParagraphs[1]
+                    .Substring(s, l)
+            }
         };
 
         return GenerateToken(payload, Penetrates.JWTSettings?.RefreshTokenExpireTime ?? 43200);
@@ -179,7 +183,8 @@ public static class JwtBearerUtil
         string tokenPrefix = "Bearer ")
     {
         // 判断请求报文头中是否有 "Authorization" 报文头
-        var bearerToken = httpContext.Request.Headers[headerKey].ToString();
+        var bearerToken = httpContext.Request.Headers[headerKey]
+            .ToString();
         if (string.IsNullOrWhiteSpace(bearerToken))
             return null;
 
@@ -328,11 +333,14 @@ public static class JwtBearerUtil
             return null;
 
         // 判断各个部分是否匹配
-        if (!refreshTokenObj.GetPayloadValue<string>("f").Equals(tokenParagraphs[0]))
+        if (!refreshTokenObj.GetPayloadValue<string>("f")
+                .Equals(tokenParagraphs[0]))
             return null;
-        if (!refreshTokenObj.GetPayloadValue<string>("e").Equals(tokenParagraphs[2]))
+        if (!refreshTokenObj.GetPayloadValue<string>("e")
+                .Equals(tokenParagraphs[2]))
             return null;
-        if (!tokenParagraphs[1].Substring(refreshTokenObj.GetPayloadValue<int>("s"), refreshTokenObj.GetPayloadValue<int>("l"))
+        if (!tokenParagraphs[1]
+                .Substring(refreshTokenObj.GetPayloadValue<int>("s"), refreshTokenObj.GetPayloadValue<int>("l"))
                 .Equals(refreshTokenObj.GetPayloadValue<string>("k")))
             return null;
 
@@ -413,7 +421,9 @@ public static class JwtBearerUtil
             }
 
             // 判断是否含有匿名特性
-            if (httpContext.GetEndpoint()?.Metadata.GetMetadata<AllowAnonymousAttribute>() != null)
+            if (httpContext.GetEndpoint()
+                    ?.Metadata.GetMetadata<AllowAnonymousAttribute>()
+                != null)
                 return true;
 
             // 判断是否开启验证 AccessToken
@@ -437,7 +447,9 @@ public static class JwtBearerUtil
         }
 
         // 判断是否含有匿名特性
-        if (httpContext.GetEndpoint()?.Metadata.GetMetadata<AllowAnonymousAttribute>() != null)
+        if (httpContext.GetEndpoint()
+                ?.Metadata.GetMetadata<AllowAnonymousAttribute>()
+            != null)
             return true;
 
         // 获取过期Token 和 刷新Token
@@ -453,7 +465,8 @@ public static class JwtBearerUtil
             return false;
 
         // 读取新的 Token Clamis
-        var claims = ReadJwtToken(newAccessToken)?.Claims;
+        var claims = ReadJwtToken(newAccessToken)
+            ?.Claims;
         if (claims == null)
             return false;
 
@@ -478,7 +491,8 @@ public static class JwtBearerUtil
         // 处理 axios 问题
         httpContext.Response.Headers.TryGetValue(accessControlExposeKey, out var aches);
         httpContext.Response.Headers[accessControlExposeKey] = string.Join(',',
-            StringValues.Concat(aches, new StringValues(new[] {accessTokenKey, xAccessTokenKey})).Distinct());
+            StringValues.Concat(aches, new StringValues(new[] {accessTokenKey, xAccessTokenKey}))
+                .Distinct());
 
         return true;
     }

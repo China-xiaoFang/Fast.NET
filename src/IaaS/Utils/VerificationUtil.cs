@@ -235,7 +235,11 @@ namespace Fast.IaaS
                     LowerCase.Append(item);
             }
 
-            var allStr = UpperCase.Append(",").Append(LowerCase).Append(",").Append(Number).ToString();
+            var allStr = UpperCase.Append(",")
+                .Append(LowerCase)
+                .Append(",")
+                .Append(Number)
+                .ToString();
             return $"Count({allStr.Length - 2}):{allStr}";
         }
 

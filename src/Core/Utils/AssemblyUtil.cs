@@ -73,7 +73,8 @@ public static class AssemblyUtil
     /// <returns><see cref="Type"/></returns>
     public static Type GetType(string assemblyName, string typeFullName)
     {
-        return GetAssembly(assemblyName).GetType(typeFullName);
+        return GetAssembly(assemblyName)
+            .GetType(typeFullName);
     }
 
     /// <summary>
@@ -84,6 +85,7 @@ public static class AssemblyUtil
     /// <returns><see cref="Type"/></returns>
     public static Type GetType(MemoryStream assembly, string typeFullName)
     {
-        return LoadAssembly(assembly).GetType(typeFullName);
+        return LoadAssembly(assembly)
+            .GetType(typeFullName);
     }
 }

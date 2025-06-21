@@ -78,7 +78,8 @@ public static class FastContext
     /// 请求上下文
     /// </summary>
     public static HttpContext HttpContext =>
-        MAppContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext);
+        MAppContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()
+            ?.HttpContext);
 
     /// <summary>
     /// 获取请求生存周期的服务
@@ -161,7 +162,8 @@ public static class FastContext
         // 获取配置选项名称
         path ??= MAppContext.GetOptionName<TOptions>();
 
-        var options = Configuration.GetSection(path).Get<TOptions>();
+        var options = Configuration.GetSection(path)
+            .Get<TOptions>();
 
         // 判断是否继承了 IPostConfigure
         if (typeof(IPostConfigure).IsAssignableFrom(typeof(TOptions)))
@@ -185,7 +187,8 @@ public static class FastContext
     /// <returns></returns>
     public static TOptions GetOptions<TOptions>() where TOptions : class, new()
     {
-        return GetService<IOptions<TOptions>>()?.Value;
+        return GetService<IOptions<TOptions>>()
+            ?.Value;
     }
 
     /// <summary>

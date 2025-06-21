@@ -94,11 +94,13 @@ internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
                 var result = (resultHttpContext as ActionExecutedContext)?.Result;
 
                 // 直接将验证结果设置为异常结果
-                context.Result = result ?? new BadPageResult(StatusCodes.Status400BadRequest)
-                {
-                    Code = UnifyContext.GetValidationMetadata((context.Exception as UserFriendlyException)?.ErrorMessage)
-                        .Message
-                };
+                context.Result = result
+                                 ?? new BadPageResult(StatusCodes.Status400BadRequest)
+                                 {
+                                     Code = UnifyContext
+                                         .GetValidationMetadata((context.Exception as UserFriendlyException)?.ErrorMessage)
+                                         .Message
+                                 };
 
                 // 标记验证异常已被处理
                 context.ExceptionHandled = true;

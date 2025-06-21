@@ -152,7 +152,8 @@ namespace Fast.IaaS
         /// <returns></returns>
         private static string RemoveBase64StrRandomStr(string input)
         {
-            var items = dic.Item.OrderBy(x => x.Index).ToList();
+            var items = dic.Item.OrderBy(x => x.Index)
+                .ToList();
 
             var strResult = $"{input}";
 

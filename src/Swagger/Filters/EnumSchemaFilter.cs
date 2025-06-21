@@ -60,13 +60,15 @@ internal class EnumSchemaFilter : ISchemaFilter
             var convertToNumber = Penetrates.SwaggerSettings.EnumToNumber!.Value;
 
             // 包含中文情况
-            if (Enum.GetNames(type).Any(v => Regex.IsMatch(v, CHINESE_PATTERN)))
+            if (Enum.GetNames(type)
+                .Any(v => Regex.IsMatch(v, CHINESE_PATTERN)))
             {
                 convertToNumber = true;
             }
 
             // 获取枚举实际值类型
-            var enumValueType = type.GetField("value__")?.FieldType;
+            var enumValueType = type.GetField("value__")
+                ?.FieldType;
 
             foreach (var value in enumValues)
             {

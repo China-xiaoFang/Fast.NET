@@ -330,7 +330,9 @@ internal class EnumJsonConverter : JsonConverter
     public override bool CanConvert(Type objectType)
     {
         if (objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(Nullable<>))
-            return Nullable.GetUnderlyingType(objectType)?.IsEnum == true;
+            return Nullable.GetUnderlyingType(objectType)
+                       ?.IsEnum
+                   == true;
         return objectType.IsEnum;
     }
 }

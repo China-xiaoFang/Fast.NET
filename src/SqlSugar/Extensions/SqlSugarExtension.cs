@@ -77,7 +77,8 @@ public static class SqlSugarExtension
         var type = typeof(T);
         if (type.Name == "Object")
         {
-            type = list[0].GetType();
+            type = list[0]
+                .GetType();
         }
 
         // 获取所有属性

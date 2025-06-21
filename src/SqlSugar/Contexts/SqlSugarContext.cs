@@ -75,7 +75,8 @@ public sealed class SqlSugarContext
                     IsSplitTable = splitTableAttribute != null,
                     SugarDbType = sugarDbTypeAttribute?.Type
                 };
-            }).ToList();
+            })
+            .ToList();
     }
 
     /// <summary>
@@ -136,14 +137,22 @@ public sealed class SqlSugarContext
         {
             sql = pars[i].DbType switch
             {
-                SystemDbType.String or SystemDbType.DateTime or SystemDbType.Date or SystemDbType.Time or SystemDbType.DateTime2
-                    or SystemDbType.DateTimeOffset or SystemDbType.Guid or SystemDbType.VarNumeric
-                    or SystemDbType.AnsiStringFixedLength or SystemDbType.AnsiString
+                SystemDbType.String
+                    or SystemDbType.DateTime
+                    or SystemDbType.Date
+                    or SystemDbType.Time
+                    or SystemDbType.DateTime2
+                    or SystemDbType.DateTimeOffset
+                    or SystemDbType.Guid
+                    or SystemDbType.VarNumeric
+                    or SystemDbType.AnsiStringFixedLength
+                    or SystemDbType.AnsiString
                     or SystemDbType.StringFixedLength => sql.Replace(pars[i].ParameterName, "'" + pars[i].Value + "'"),
-                SystemDbType.Boolean when string.IsNullOrEmpty(pars[i].Value?.ToString()) => sql.Replace(pars[i].ParameterName,
-                    "NULL"),
+                SystemDbType.Boolean when string.IsNullOrEmpty(pars[i]
+                    .Value?.ToString()) => sql.Replace(pars[i].ParameterName, "NULL"),
                 SystemDbType.Boolean => sql.Replace(pars[i].ParameterName, Convert.ToBoolean(pars[i].Value) ? "1" : "0"),
-                _ => sql.Replace(pars[i].ParameterName, pars[i].Value?.ToString())
+                _ => sql.Replace(pars[i].ParameterName, pars[i]
+                    .Value?.ToString())
             };
         }
 

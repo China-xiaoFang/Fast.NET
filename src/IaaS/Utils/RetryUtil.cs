@@ -51,22 +51,26 @@ namespace Fast.IaaS
             if (fallbackPolicy == null)
             {
                 InvokeAsync(async () =>
-                {
-                    action();
-                    await Task.CompletedTask;
-                }, numRetries, retryTimeout, finalThrow, exceptionTypes, null, retryAction).GetAwaiter().GetResult();
+                    {
+                        action();
+                        await Task.CompletedTask;
+                    }, numRetries, retryTimeout, finalThrow, exceptionTypes, null, retryAction)
+                    .GetAwaiter()
+                    .GetResult();
             }
             else
             {
                 InvokeAsync(async () =>
-                {
-                    action();
-                    await Task.CompletedTask;
-                }, numRetries, retryTimeout, finalThrow, exceptionTypes, async ex =>
-                {
-                    fallbackPolicy.Invoke(ex);
-                    await Task.CompletedTask;
-                }, retryAction).GetAwaiter().GetResult();
+                    {
+                        action();
+                        await Task.CompletedTask;
+                    }, numRetries, retryTimeout, finalThrow, exceptionTypes, async ex =>
+                    {
+                        fallbackPolicy.Invoke(ex);
+                        await Task.CompletedTask;
+                    }, retryAction)
+                    .GetAwaiter()
+                    .GetResult();
             }
         }
 
@@ -121,8 +125,9 @@ namespace Fast.IaaS
                     }
 
                     // 如果填写了 exceptionTypes 且异常类型不在 exceptionTypes 之内，则终止重试
-                    if (exceptionTypes != null && exceptionTypes.Length > 0 &&
-                        !exceptionTypes.Any(u => u.IsAssignableFrom(ex.GetType())))
+                    if (exceptionTypes != null
+                        && exceptionTypes.Length > 0
+                        && !exceptionTypes.Any(u => u.IsAssignableFrom(ex.GetType())))
                     {
                         if (finalThrow)
                         {

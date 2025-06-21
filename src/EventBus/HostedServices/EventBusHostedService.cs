@@ -179,7 +179,9 @@ internal sealed class EventBusHostedService : BackgroundService
 
         // 查找事件 Id 匹配的事件处理程序
         var eventHandlersThatShouldRun = _eventHandlers.Where(t => t.Key.ShouldRun(eventSource.EventId))
-            .OrderByDescending(u => u.Value.Order).Select(u => u.Key).ToList();
+            .OrderByDescending(u => u.Value.Order)
+            .Select(u => u.Key)
+            .ToList();
 
         // 空订阅
         if (!eventHandlersThatShouldRun.Any())
@@ -235,8 +237,9 @@ internal sealed class EventBusHostedService : BackgroundService
                     }
 
                     // 如果填写了 exceptionTypes 且异常类型不在 exceptionTypes 之内，则终止重试
-                    if (exceptionTypes != null && exceptionTypes.Length > 0 &&
-                        !exceptionTypes.Any(u => u.IsAssignableFrom(ex.GetType())))
+                    if (exceptionTypes != null
+                        && exceptionTypes.Length > 0
+                        && !exceptionTypes.Any(u => u.IsAssignableFrom(ex.GetType())))
                     {
                         if (finalThrow)
                         {
@@ -338,9 +341,9 @@ internal sealed class EventBusHostedService : BackgroundService
 
                     // 判断是否执行完成后调用 GC 回收
                     var nowTime = DateTime.UtcNow;
-                    if (eventHandlerThatShouldRun.GCCollect && (LastGCCollectTime == null ||
-                                                                (nowTime - LastGCCollectTime.Value).TotalSeconds >
-                                                                GC_COLLECT_INTERVAL_SECONDS))
+                    if (eventHandlerThatShouldRun.GCCollect
+                        && (LastGCCollectTime == null
+                            || (nowTime - LastGCCollectTime.Value).TotalSeconds > GC_COLLECT_INTERVAL_SECONDS))
                     {
                         LastGCCollectTime = nowTime;
                         GC.Collect();

@@ -136,18 +136,22 @@ public static class UnifyContext
         bool isWebRequest = true)
     {
         // 判断返回类型是否包含了规范化处理的返回类型
-        var isSkip = method.GetRealReturnType().HasImplementedRawGeneric(UnifyResultType);
+        var isSkip = method.GetRealReturnType()
+            .HasImplementedRawGeneric(UnifyResultType);
 
         var nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
         // 这是不使用 method.GetCustomAttribute<NonUnifyAttribute>() != null 的原因是，避免直接继承了 NonUnifyAttribute 使用自定义的特性
         var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
         var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
-        if (!isSkip && method.CustomAttributes.Any(a =>
+        if (!isSkip
+            && method.CustomAttributes.Any(a =>
                 // 判断方法头部是否贴有 NonUnifyAttribute 特性
-                nonUnifyAttributeType.IsAssignableFrom(a.AttributeType) ||
+                nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
+                ||
                 // 判断方法头部是否贴有 原生的 HTTP 响应类型的特性 ProducesResponseTypeAttribute
-                producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType) ||
+                producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
+                ||
                 // 判断方法头部是否贴有 IApiResponseMetadataProvider 特性
                 iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType)))
         {
@@ -161,7 +165,10 @@ public static class UnifyContext
         }
 
         // 判断方法所属类型的程序集的名称以 "Microsoft.AspNetCore.OData" 
-        if (!isSkip && method.ReflectedType?.Assembly.GetName().Name?.StartsWith("Microsoft.AspNetCore.OData") == true)
+        if (!isSkip
+            && method.ReflectedType?.Assembly.GetName()
+                .Name?.StartsWith("Microsoft.AspNetCore.OData")
+            == true)
         {
             isSkip = true;
         }
@@ -203,16 +210,22 @@ public static class UnifyContext
 
         var isSkip = !method.CustomAttributes.Any(a =>
                          // 判断方法头部是否贴有 NonUnifyAttribute 特性
-                         nonUnifyAttributeType.IsAssignableFrom(a.AttributeType) ||
+                         nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
+                         ||
                          // 判断方法头部是否贴有 原生的 HTTP 响应类型的特性 ProducesResponseTypeAttribute
-                         producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType) ||
+                         producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
+                         ||
                          // 判断方法头部是否贴有 IApiResponseMetadataProvider 特性
-                         iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType)) &&
+                         iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
+                     &&
                      // 判断方法所在的类是否贴有 NonUnifyAttribute 特性
                      method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
 
         // 判断方法所属类型的程序集的名称以 "Microsoft.AspNetCore.OData" 
-        if (!isSkip && method.ReflectedType?.Assembly.GetName().Name?.StartsWith("Microsoft.AspNetCore.OData") == true)
+        if (!isSkip
+            && method.ReflectedType?.Assembly.GetName()
+                .Name?.StartsWith("Microsoft.AspNetCore.OData")
+            == true)
         {
             isSkip = true;
         }
@@ -248,16 +261,22 @@ public static class UnifyContext
 
         var isSkip = !method.CustomAttributes.Any(a =>
                          // 判断方法头部是否贴有 NonUnifyAttribute 特性
-                         nonUnifyAttributeType.IsAssignableFrom(a.AttributeType) ||
+                         nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
+                         ||
                          // 判断方法头部是否贴有 原生的 HTTP 响应类型的特性 ProducesResponseTypeAttribute
-                         producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType) ||
+                         producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
+                         ||
                          // 判断方法头部是否贴有 IApiResponseMetadataProvider 特性
-                         iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType)) &&
+                         iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
+                     &&
                      // 判断方法所在的类是否贴有 NonUnifyAttribute 特性
                      method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
 
         // 判断方法所属类型的程序集的名称以 "Microsoft.AspNetCore.OData" 
-        if (!isSkip && method.ReflectedType?.Assembly.GetName().Name?.StartsWith("Microsoft.AspNetCore.OData") == true)
+        if (!isSkip
+            && method.ReflectedType?.Assembly.GetName()
+                .Name?.StartsWith("Microsoft.AspNetCore.OData")
+            == true)
         {
             isSkip = true;
         }
@@ -302,14 +321,18 @@ public static class UnifyContext
         }
 
         // 判断请求头部是否包含 odata.metadata=
-        if (!isSkip && httpContext.Request.Headers["accept"].ToString()
+        if (!isSkip
+            && httpContext.Request.Headers["accept"]
+                .ToString()
                 .Contains("odata.metadata=", StringComparison.OrdinalIgnoreCase))
         {
             isSkip = true;
         }
 
         // 判断请求头部是否包含 odata.streaming=
-        if (!isSkip && httpContext.Request.Headers["accept"].ToString()
+        if (!isSkip
+            && httpContext.Request.Headers["accept"]
+                .ToString()
                 .Contains("odata.streaming=", StringComparison.OrdinalIgnoreCase))
         {
             isSkip = true;
@@ -395,7 +418,9 @@ public static class UnifyContext
                 _modelState = modelState;
                 // 将验证错误信息转换成字典并序列化成 Json
                 validationResults = modelState.Where(u => modelState[u.Key]!.ValidationState == ModelValidationState.Invalid)
-                    .ToDictionary(u => u.Key, u => modelState[u.Key]?.Errors.Select(c => c.ErrorMessage).ToArray());
+                    .ToDictionary(u => u.Key, u => modelState[u.Key]
+                        ?.Errors.Select(c => c.ErrorMessage)
+                        .ToArray());
             }
             // 如果是 ValidationProblemDetails 特殊类型
             else if (errors is ValidationProblemDetails validation)
@@ -410,8 +435,10 @@ public static class UnifyContext
 
             message = JsonSerializer.Serialize(validationResults,
                 new JsonSerializerOptions {Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, WriteIndented = true});
-            firstErrorMessage = ((Dictionary<string, string[]>) validationResults).First().Value[0];
-            firstErrorProperty = ((Dictionary<string, string[]>) validationResults).First().Key;
+            firstErrorMessage = ((Dictionary<string, string[]>) validationResults).First()
+                .Value[0];
+            firstErrorProperty = ((Dictionary<string, string[]>) validationResults).First()
+                .Key;
         }
         // 其他类型
         else

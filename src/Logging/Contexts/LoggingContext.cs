@@ -98,7 +98,9 @@ public static class LoggingContext
             var pos = isConsole ? 6 : 5;
             if (stackFrames.Length > pos)
             {
-                var targetMethod = stackFrames.Where((_, i) => i == pos).First().GetMethod();
+                var targetMethod = stackFrames.Where((_, i) => i == pos)
+                    .First()
+                    .GetMethod();
                 var declaringType = targetMethod?.DeclaringType;
                 var targetAssembly = declaringType?.Assembly;
 
@@ -115,7 +117,8 @@ public static class LoggingContext
         // 如果包含异常信息，则创建新一行写入
         if (logMsg.Exception != null)
         {
-            var EXCEPTION_SEPARATOR_WITH_COLOR = AppendWithColor(null, EXCEPTION_SEPARATOR, logLevelMessageColors).ToString();
+            var EXCEPTION_SEPARATOR_WITH_COLOR = AppendWithColor(null, EXCEPTION_SEPARATOR, logLevelMessageColors)
+                .ToString();
             //var exceptionMessage =
             //    $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}{Environment.NewLine}{logMsg.Exception}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}";
             var exceptionMessage =
@@ -135,9 +138,9 @@ public static class LoggingContext
     /// <returns></returns>
     private static string PadLeftAlign(string message)
     {
-        var newMessage = string.Join(Environment.NewLine,
-            message.Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None)
-                .Select(line => string.Empty.PadLeft(6, ' ') + line));
+        var newMessage = string.Join(Environment.NewLine, message
+            .Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None)
+            .Select(line => string.Empty.PadLeft(6, ' ') + line));
 
         return newMessage;
     }

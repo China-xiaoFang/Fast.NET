@@ -29,8 +29,11 @@ namespace System;
 /// </summary>
 /// <remarks>用于程序集扫描类型或方法时候</remarks>
 [SuppressSniffer]
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Method | AttributeTargets.Enum |
-                AttributeTargets.Struct)]
+[AttributeUsage(AttributeTargets.Class
+                | AttributeTargets.Interface
+                | AttributeTargets.Method
+                | AttributeTargets.Enum
+                | AttributeTargets.Struct)]
 public class SuppressSnifferAttribute : Attribute
 {
 }

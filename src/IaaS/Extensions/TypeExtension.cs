@@ -45,7 +45,8 @@ namespace Fast.IaaS
         {
             var localType = type;
             // 检查接口类型
-            var isTheRawGenericType = type.GetInterfaces().Any(IsTheRawGenericType);
+            var isTheRawGenericType = type.GetInterfaces()
+                .Any(IsTheRawGenericType);
             if (isTheRawGenericType)
                 return true;
 
@@ -71,7 +72,8 @@ namespace Fast.IaaS
         /// <returns><see cref="string"/></returns>
         public static string GetAssemblyName(this Type type)
         {
-            return type.GetTypeInfo().GetAssemblyName();
+            return type.GetTypeInfo()
+                .GetAssemblyName();
         }
 
         /// <summary>
@@ -97,14 +99,17 @@ namespace Fast.IaaS
 
             // 处理数组类型，基元数组类型也可以是基元类型
             if (type.IsArray)
-                return type.GetElementType()?.IsRichPrimitive() == true;
+                return type.GetElementType()
+                           ?.IsRichPrimitive()
+                       == true;
 
             // 基元类型或值类型或字符串类型
             if (type.IsPrimitive || type.IsValueType || type == typeof(string))
                 return true;
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return type.GenericTypeArguments[0].IsRichPrimitive();
+                return type.GenericTypeArguments[0]
+                    .IsRichPrimitive();
 
             return false;
         }
@@ -196,8 +201,8 @@ namespace Fast.IaaS
         /// <returns><see cref="bool"/></returns>
         public static bool HasDefinePublicParameterlessConstructor(this Type type)
         {
-            return type.IsInstantiable() &&
-                   type.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, Type.EmptyTypes, null) != null;
+            return type.IsInstantiable()
+                   && type.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, Type.EmptyTypes, null) != null;
         }
 
         /// <summary>
@@ -214,8 +219,11 @@ namespace Fast.IaaS
                 throw new ArgumentNullException(nameof(compareType));
             }
 
-            return type == compareType || (type.IsGenericType && compareType.IsGenericType && type.IsGenericTypeDefinition // 💡
-                                           && type == compareType.GetGenericTypeDefinition());
+            return type == compareType
+                   || (type.IsGenericType
+                       && compareType.IsGenericType
+                       && type.IsGenericTypeDefinition // 💡
+                       && type == compareType.GetGenericTypeDefinition());
         }
 
         /// <summary>
@@ -232,9 +240,13 @@ namespace Fast.IaaS
                 throw new ArgumentNullException(nameof(inheritType));
             }
 
-            return inheritType != typeof(object) && inheritType.IsAssignableFrom(type) && (!type.IsGenericType ||
-                (type.IsGenericType && inheritType.IsGenericType && type.GetTypeInfo().GenericTypeParameters
-                    .SequenceEqual(inheritType.GenericTypeArguments)));
+            return inheritType != typeof(object)
+                   && inheritType.IsAssignableFrom(type)
+                   && (!type.IsGenericType
+                       || (type.IsGenericType
+                           && inheritType.IsGenericType
+                           && type.GetTypeInfo()
+                               .GenericTypeParameters.SequenceEqual(inheritType.GenericTypeArguments)));
         }
 
         /// <summary>
@@ -276,9 +288,14 @@ namespace Fast.IaaS
 
             // 检查 TypeCode
             var typeCode = Type.GetTypeCode(type);
-            return typeCode == TypeCode.Byte || typeCode == TypeCode.SByte || typeCode == TypeCode.Int16 ||
-                   typeCode == TypeCode.Int32 || typeCode == TypeCode.Int64 || typeCode == TypeCode.UInt16 ||
-                   typeCode == TypeCode.UInt32 || typeCode == TypeCode.UInt64;
+            return typeCode == TypeCode.Byte
+                   || typeCode == TypeCode.SByte
+                   || typeCode == TypeCode.Int16
+                   || typeCode == TypeCode.Int32
+                   || typeCode == TypeCode.Int64
+                   || typeCode == TypeCode.UInt16
+                   || typeCode == TypeCode.UInt32
+                   || typeCode == TypeCode.UInt64;
         }
 
         /// <summary>
@@ -317,7 +334,8 @@ namespace Fast.IaaS
         public static bool IsDictionary(this Type type)
         {
             // 如果是 IDictionary<,> 类型则直接返回
-            if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)) || type.GetInterfaces()
+            if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>))
+                || type.GetInterfaces()
                     .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
             {
                 return true;
@@ -333,8 +351,9 @@ namespace Fast.IaaS
                     var elementType = type.GetElementType();
 
                     // 检查元素类型是否是 KeyValuePair<,> 类型
-                    if (elementType != null && elementType.IsGenericType &&
-                        elementType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+                    if (elementType != null
+                        && elementType.IsGenericType
+                        && elementType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
                     {
                         return true;
                     }
@@ -343,9 +362,12 @@ namespace Fast.IaaS
                 else
                 {
                     // 检查集合项类型是否是 KeyValuePair<,> 类型
-                    if (type.IsGenericType && type.GenericTypeArguments.Length == 1 &&
-                        type.GenericTypeArguments[0].IsGenericType && type.GenericTypeArguments[0].GetGenericTypeDefinition() ==
-                        typeof(KeyValuePair<,>))
+                    if (type.IsGenericType
+                        && type.GenericTypeArguments.Length == 1
+                        && type.GenericTypeArguments[0].IsGenericType
+                        && type.GenericTypeArguments[0]
+                            .GetGenericTypeDefinition()
+                        == typeof(KeyValuePair<,>))
                     {
                         return true;
                     }

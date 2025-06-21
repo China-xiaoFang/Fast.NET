@@ -39,11 +39,17 @@ internal class TagsOrderDocumentFilter : IDocumentFilter
     /// <param name="context"></param>
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
-        swaggerDoc.Tags = DynamicApplicationContext.ControllerOrderCollection
-            .Where(u => SwaggerDocumentBuilder.GetControllerGroups(u.Value.Item3).Any(c => c.Group == context.DocumentName))
-            .OrderByDescending(u => u.Value.Item2).ThenBy(u => u.Key).Select(c => new OpenApiTag
+        swaggerDoc.Tags = DynamicApplicationContext.ControllerOrderCollection.Where(u => SwaggerDocumentBuilder
+                .GetControllerGroups(u.Value.Item3)
+                .Any(c => c.Group == context.DocumentName))
+            .OrderByDescending(u => u.Value.Item2)
+            .ThenBy(u => u.Key)
+            .Select(c => new OpenApiTag
             {
-                Name = c.Value.Item1, Description = swaggerDoc.Tags.FirstOrDefault(m => m.Name == c.Key)?.Description
-            }).ToList();
+                Name = c.Value.Item1,
+                Description = swaggerDoc.Tags.FirstOrDefault(m => m.Name == c.Key)
+                    ?.Description
+            })
+            .ToList();
     }
 }

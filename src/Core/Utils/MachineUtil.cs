@@ -98,7 +98,8 @@ public static class MachineUtil
             // MacOS 获取系统启动时间：sysctl -n kern.boottime | awk '{print $4}' | tr -d ','
             // 返回：1705379131
             var output = ShellUtil
-                .Bash("date -r $(sysctl -n kern.boottime | awk '{print $4}' | tr -d ',') +\"%Y-%m-%d %H:%M:%S\"").Trim();
+                .Bash("date -r $(sysctl -n kern.boottime | awk '{print $4}' | tr -d ',') +\"%Y-%m-%d %H:%M:%S\"")
+                .Trim();
             return DateTime.Parse(output);
         }
 
@@ -115,7 +116,8 @@ public static class MachineUtil
         {
             // 使用 wmic 获取系统启动时间
             var output = ShellUtil.Cmd("wmic", "OS get LastBootUpTime/Value");
-            var timeValue = output.Replace("LastBootUpTime=", string.Empty).Trim()
+            var timeValue = output.Replace("LastBootUpTime=", string.Empty)
+                .Trim()
                 .Split('.', StringSplitOptions.RemoveEmptyEntries)[0];
 
             return DateTime.ParseExact(timeValue, "yyyyMMddHHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None);
@@ -147,7 +149,8 @@ public static class MachineUtil
     /// <returns></returns>
     public static DateTime GetProgramStartTime()
     {
-        return Process.GetCurrentProcess().StartTime;
+        return Process.GetCurrentProcess()
+            .StartTime;
     }
 
     /// <summary>
@@ -198,8 +201,10 @@ public static class MachineUtil
         {
             // 使用 wmic 获取 CPU 使用率
             var output = ShellUtil.Cmd("wmic", "cpu get LoadPercentage");
-            rates.AddRange(output.Replace("LoadPercentage", string.Empty).Trim()
-                .Split("\r\r\n", StringSplitOptions.RemoveEmptyEntries).Select(sl =>
+            rates.AddRange(output.Replace("LoadPercentage", string.Empty)
+                .Trim()
+                .Split("\r\r\n", StringSplitOptions.RemoveEmptyEntries)
+                .Select(sl =>
                 {
                     if (string.IsNullOrWhiteSpace(sl.Trim()))
                     {
@@ -308,11 +313,14 @@ public static class MachineUtil
         {
             // 使用 `wmic` 命令获取内存信息
             var output = ShellUtil.Cmd("wmic", "OS get FreePhysicalMemory,TotalVisibleMemorySize /Value");
-            var lines = output.Trim().Split("\n", StringSplitOptions.RemoveEmptyEntries);
+            var lines = output.Trim()
+                .Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             // 提取并解析内存信息：总内存和可用内存（单位：KB）
-            var freeMemoryParts = lines[0].Split("=", StringSplitOptions.RemoveEmptyEntries);
-            var totalMemoryParts = lines[1].Split("=", StringSplitOptions.RemoveEmptyEntries);
+            var freeMemoryParts = lines[0]
+                .Split("=", StringSplitOptions.RemoveEmptyEntries);
+            var totalMemoryParts = lines[1]
+                .Split("=", StringSplitOptions.RemoveEmptyEntries);
 
             // 将内存值转换为 MB
             total = decimal.Parse(totalMemoryParts[1]) / 1024;
@@ -371,7 +379,8 @@ public static class MachineUtil
                 }
 
                 var value = Convert.ToDecimal(parts[1]);
-                var unit = parts[2].ToLower();
+                var unit = parts[2]
+                    .ToLower();
 
                 // 将内存值转换为 MB
                 return unit switch
@@ -460,13 +469,13 @@ public static class MachineUtil
                     var diskInfo = new DiskInfo
                     {
                         DiskName = disk[0],
-                        TypeName =
-                            ShellUtil.Bash("diskutil info " + disk[0] + " | awk '/File System Personality/ {print $4}'")
-                                .Replace("\n", string.Empty),
+                        TypeName = ShellUtil.Bash("diskutil info " + disk[0] + " | awk '/File System Personality/ {print $4}'")
+                            .Replace("\n", string.Empty),
                         TotalSize = Math.Round(long.Parse(disk[1]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         Used = Math.Round(long.Parse(disk[2]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailableFreeSpace = Math.Round(long.Parse(disk[3]) / 1024M, 2, MidpointRounding.AwayFromZero),
-                        AvailablePercent = decimal.Parse(disk[4].Replace("%", ""))
+                        AvailablePercent = decimal.Parse(disk[4]
+                            .Replace("%", ""))
                     };
                     diskInfos.Add(diskInfo);
                 }
@@ -493,7 +502,8 @@ public static class MachineUtil
                         TotalSize = Math.Round(long.Parse(disk[2]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         Used = Math.Round(long.Parse(disk[3]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailableFreeSpace = Math.Round(long.Parse(disk[4]) / 1024M, 2, MidpointRounding.AwayFromZero),
-                        AvailablePercent = decimal.Parse(disk[5].Replace("%", ""))
+                        AvailablePercent = decimal.Parse(disk[5]
+                            .Replace("%", ""))
                     };
                     diskInfos.Add(diskInfo);
                 }
@@ -502,7 +512,8 @@ public static class MachineUtil
         // Windows
         else
         {
-            var driveList = DriveInfo.GetDrives().Where(u => u.IsReady);
+            var driveList = DriveInfo.GetDrives()
+                .Where(u => u.IsReady);
 
             const decimal relation = 1024 * 1024 * 1024;
 
@@ -561,7 +572,8 @@ public static class MachineUtil
             // 发送请求
             using var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            var responseContent = Encoding.UTF8.GetString(response.Content.ReadAsByteArrayAsync().Result);
+            var responseContent = Encoding.UTF8.GetString(response.Content.ReadAsByteArrayAsync()
+                .Result);
 
             var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, object>>(responseContent);
 

@@ -64,7 +64,8 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
 
         // 判断是否跳过权限检查
         if ((filterContext?.ActionDescriptor as ControllerActionDescriptor)?.MethodInfo
-            .GetCustomAttribute<AllowForbiddenAttribute>(inherit: true) != null)
+            .GetCustomAttribute<AllowForbiddenAttribute>(inherit: true)
+            != null)
         {
             foreach (var requirement in pendingRequirements)
             {

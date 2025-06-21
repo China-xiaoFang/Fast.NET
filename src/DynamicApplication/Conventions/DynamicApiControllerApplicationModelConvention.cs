@@ -122,7 +122,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         // 查找所有重复的方法签名
         var repeats = actions.GroupBy(u => new {u.ActionMethod.ReflectedType?.Name, Signature = u.ActionMethod.ToString()})
             .Where(u => u.Count() > 1)
-            .SelectMany(u => u.Where(i => i.ActionMethod.ReflectedType?.Name != i.ActionMethod.DeclaringType?.Name)).ToList();
+            .SelectMany(u => u.Where(i => i.ActionMethod.ReflectedType?.Name != i.ActionMethod.DeclaringType?.Name))
+            .ToList();
 
         // 2021年04月01日 https://docs.microsoft.com/en-US/aspnet/core/web-api/?view=aspnetcore-5.0#binding-source-parameter-inference
         // 判断是否贴有 [ApiController] 特性
@@ -171,9 +172,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     private void ConfigureControllerRouteAttribute(ControllerModel controller,
         ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
     {
-        if (CheckIsForceWithDefaultRoute(controllerApiDescriptionSettings) &&
-            controller.Selectors[0].AttributeRouteModel != null &&
-            !ForceWithDefaultPrefixRouteControllerTypes.Contains(controller.ControllerType))
+        if (CheckIsForceWithDefaultRoute(controllerApiDescriptionSettings)
+            && controller.Selectors[0].AttributeRouteModel != null
+            && !ForceWithDefaultPrefixRouteControllerTypes.Contains(controller.ControllerType))
         {
             controller.Selectors[0].AttributeRouteModel = AttributeRouteModel.CombineAttributeRouteModel(
                 new AttributeRouteModel(new RouteAttribute(string.Empty)), controller.Selectors[0].AttributeRouteModel);
@@ -269,8 +270,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 continue;
 
             // 处理 .NET7 接口问题，同时支持 .NET5/6 无需贴 [FromServices] 操作
-            if (parameterType.IsInterface && !parameterModel.Attributes.Any(u => u is IBindingSourceMetadata) &&
-                _services.Any(s => s.ServiceType.Name == parameterType.Name))
+            if (parameterType.IsInterface
+                && !parameterModel.Attributes.Any(u => u is IBindingSourceMetadata)
+                && _services.Any(s => s.ServiceType.Name == parameterType.Name))
             {
                 parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromServicesAttribute()});
                 continue;
@@ -296,11 +298,11 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             if (selectorModel.AttributeRouteModel != null)
             {
                 // 1. 如果控制器自定义了 [Route] 特性，则跳过
-                if (action.ActionMethod.DeclaringType.IsDefined(typeof(RouteAttribute), true) ||
-                    action.Controller.ControllerType.IsDefined(typeof(RouteAttribute), true))
+                if (action.ActionMethod.DeclaringType.IsDefined(typeof(RouteAttribute), true)
+                    || action.Controller.ControllerType.IsDefined(typeof(RouteAttribute), true))
                 {
-                    if (string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Template) &&
-                        !string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Name))
+                    if (string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Template)
+                        && !string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Name))
                     {
                         selectorModel.AttributeRouteModel.Template = selectorModel.AttributeRouteModel.Name;
                     }
@@ -309,8 +311,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 }
 
                 // 2. 如果方法自定义路由模板且以 `/` 开头，则跳过
-                if (!string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Template) &&
-                    selectorModel.AttributeRouteModel.Template.StartsWith("/"))
+                if (!string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Template)
+                    && selectorModel.AttributeRouteModel.Template.StartsWith("/"))
                     continue;
             }
 
@@ -342,11 +344,12 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                     : null;
 
                 // 判断是否定义了控制器路由，如果定义，则不拼接控制器路由
-                var actionRouteTemplate =
-                    string.IsNullOrWhiteSpace(action.ActionName) ||
-                    (action.Controller.Selectors[0].AttributeRouteModel?.Template?.Contains("[action]") ?? false)
-                        ? null
-                        : selectorModel?.AttributeRouteModel?.Template ?? selectorModel?.AttributeRouteModel?.Name ?? "[action]";
+                var actionRouteTemplate = string.IsNullOrWhiteSpace(action.ActionName)
+                                          || (action.Controller.Selectors[0]
+                                                  .AttributeRouteModel?.Template?.Contains("[action]")
+                                              ?? false)
+                    ? null
+                    : selectorModel?.AttributeRouteModel?.Template ?? selectorModel?.AttributeRouteModel?.Name ?? "[action]";
 
                 if (actionRouteTemplate == null && !string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel?.Template))
                 {
@@ -545,7 +548,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         if (!_nameVersionRegex.IsMatch(name))
             return (name, null);
 
-        var version = _nameVersionRegex.Match(name).Groups["version"].Value.Replace("_", ".");
+        var version = _nameVersionRegex.Match(name)
+            .Groups["version"]
+            .Value.Replace("_", ".");
         return (_nameVersionRegex.Replace(name, ""), version);
     }
 
@@ -571,7 +576,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 continue;
             }
 
-            var templates = Regex.Matches(part, commonTemplatePattern).Select(t => t.Value);
+            var templates = Regex.Matches(part, commonTemplatePattern)
+                .Select(t => t.Value);
             foreach (var temp in templates)
             {
                 // 处理带路由约束的路由参数模板 https://gitee.com/zuohuaijun/Admin.NET/issues/I736XJ

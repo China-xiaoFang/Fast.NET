@@ -57,8 +57,8 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     {
         (_formatOptionsReloadToken, _formatterOptions) =
             (formatterOptions.OnChange(ReloadFormatterOptions), formatterOptions.CurrentValue);
-        _disableColors = _formatterOptions.ColorBehavior == LoggerColorBehavior.Disabled ||
-                         (_formatterOptions.ColorBehavior == LoggerColorBehavior.Default && Console.IsOutputRedirected);
+        _disableColors = _formatterOptions.ColorBehavior == LoggerColorBehavior.Disabled
+                         || (_formatterOptions.ColorBehavior == LoggerColorBehavior.Default && Console.IsOutputRedirected);
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     private void ReloadFormatterOptions(ConsoleFormatterExtendOptions options)
     {
         _formatterOptions = options;
-        _disableColors = options.ColorBehavior == LoggerColorBehavior.Disabled ||
-                         (options.ColorBehavior == LoggerColorBehavior.Default && Console.IsOutputRedirected);
+        _disableColors = options.ColorBehavior == LoggerColorBehavior.Disabled
+                         || (options.ColorBehavior == LoggerColorBehavior.Default && Console.IsOutputRedirected);
     }
 }

@@ -44,8 +44,12 @@ internal class ExceptionJsonConverter : JsonConverter<Exception>
             nameof(Exception.InnerException)
         };
         // 获取可序列化的属性，排除 TargetSite 属性
-        var serializableProperties = value.GetType().GetProperties().Select(sl => new {sl.Name, Value = sl.GetValue(value)})
-            .Where(wh => writeNameArr.Contains(wh.Name)).Where(wh => wh.Value != null).ToList();
+        var serializableProperties = value.GetType()
+            .GetProperties()
+            .Select(sl => new {sl.Name, Value = sl.GetValue(value)})
+            .Where(wh => writeNameArr.Contains(wh.Name))
+            .Where(wh => wh.Value != null)
+            .ToList();
 
         // 判断是否还存在可以序列化的属性
         if (serializableProperties.Count == 0)
