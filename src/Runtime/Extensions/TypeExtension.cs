@@ -43,8 +43,10 @@ public static class TypeExtension
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_设置_属性名
-        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{propertyInfo.Name}", null,
-            new[] {typeof(object), typeof(object)}, typeof(TypeExtensions).Module);
+        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{propertyInfo.Name}",
+            null,
+            new[] {typeof(object), typeof(object)},
+            typeof(TypeExtensions).Module);
 
         // 获取动态方法的 IL 生成器
         var ilGenerator = setterMethod.GetILGenerator();
@@ -96,8 +98,10 @@ public static class TypeExtension
         ArgumentNullException.ThrowIfNull(fieldInfo);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_设置_字段名
-        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{fieldInfo.Name}", null,
-            new[] {typeof(object), typeof(object)}, typeof(TypeExtensions).Module);
+        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{fieldInfo.Name}",
+            null,
+            new[] {typeof(object), typeof(object)},
+            typeof(TypeExtensions).Module);
 
         // 获取动态方法的 IL 生成器
         var ilGenerator = setterMethod.GetILGenerator();
@@ -144,8 +148,11 @@ public static class TypeExtension
         ArgumentNullException.ThrowIfNull(propertyInfo.DeclaringType);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_获取_属性名
-        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{propertyInfo.Name}", typeof(object), new[] {typeof(object)},
-            typeof(TypeExtensions).Module, true);
+        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{propertyInfo.Name}",
+            typeof(object),
+            new[] {typeof(object)},
+            typeof(TypeExtensions).Module,
+            true);
 
         // 获取动态方法的 IL 生成器
         var ilGenerator = dynamicMethod.GetILGenerator();
@@ -189,8 +196,11 @@ public static class TypeExtension
         ArgumentNullException.ThrowIfNull(fieldInfo.DeclaringType);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_获取_字段名
-        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{fieldInfo.Name}", typeof(object), new[] {typeof(object)},
-            typeof(TypeExtensions).Module, true);
+        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{fieldInfo.Name}",
+            typeof(object),
+            new[] {typeof(object)},
+            typeof(TypeExtensions).Module,
+            true);
 
         // 获取动态方法的 IL 生成器
         var ilGenerator = dynamicMethod.GetILGenerator();

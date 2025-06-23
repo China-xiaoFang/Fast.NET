@@ -169,8 +169,8 @@ public static class IServiceCollectionExtension
             .LoadPostConfigure();
 
         // 查找Jwt验证提供器实现类
-        var jwtBearerHandle =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
+        var jwtBearerHandle
+            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
 
         if (jwtBearerHandle != null)
         {
@@ -182,8 +182,8 @@ public static class IServiceCollectionExtension
         services.TryAddSingleton<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();
 
         // 尝试查找继承了 IAuthorizationHandler 的类
-        var authorizationHandler =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IAuthorizationHandler).IsAssignableFrom(f) && !f.IsInterface);
+        var authorizationHandler
+            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IAuthorizationHandler).IsAssignableFrom(f) && !f.IsInterface);
         if (authorizationHandler != null)
         {
             // 注册策略授权处理程序
@@ -232,8 +232,8 @@ public static class IServiceCollectionExtension
         Penetrates.JWTSettings = jwtSettings;
 
         // 查找Jwt验证提供器实现类
-        var jwtBearerHandle =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
+        var jwtBearerHandle
+            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
 
         if (jwtBearerHandle != null)
         {
@@ -245,8 +245,8 @@ public static class IServiceCollectionExtension
         services.TryAddSingleton<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();
 
         // 尝试查找继承了 IAuthorizationHandler 的类
-        var authorizationHandler =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IAuthorizationHandler).IsAssignableFrom(f) && !f.IsInterface);
+        var authorizationHandler
+            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IAuthorizationHandler).IsAssignableFrom(f) && !f.IsInterface);
         if (authorizationHandler != null)
         {
             // 注册策略授权处理程序

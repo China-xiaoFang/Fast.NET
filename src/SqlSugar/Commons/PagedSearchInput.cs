@@ -20,64 +20,38 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 // ReSharper disable once CheckNamespace
-namespace System;
+namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="EnvironmentTypeEnum"/> 环境类型枚举
+/// <see cref="PagedSearchInput"/> SqlSugar 统一分页搜索输入
 /// </summary>
-[Flags]
-[FastEnum("环境类型枚举")]
-public enum EnvironmentTypeEnum : byte
+[SuppressSniffer]
+public class PagedSearchInput
 {
     /// <summary>
-    /// Production 生产环境
+    /// 搜索字段英文
     /// </summary>
-    /// <remarks>生产，正式环境</remarks>
-    [Description("生产环境")]
-    Production = 1,
+    /// <remarks>主要字段，用于生成查询语句</remarks>
+    [StringRequired(ErrorMessage = "搜索字段不能为空")]
+    public virtual string EnField { get; set; }
 
     /// <summary>
-    /// Development 开发环境
+    /// 搜索字段中文
     /// </summary>
-    /// <remarks>本地，开发环境</remarks>
-    [Description("开发环境")]
-    Development = 2,
+    /// <remarks>次要字段，用于提示</remarks>
+    public virtual string ChField { get; set; }
 
     /// <summary>
-    /// Test 测试环境
+    /// 搜索值
     /// </summary>
-    /// <remarks>测试环境，功能测试，验证新功能或修复问题</remarks>
-    [Description("测试环境")]
-    Test = 4,
+    public virtual string Value { get; set; }
 
     /// <summary>
-    /// UAT 测试验收环境
+    /// 搜索类型
     /// </summary>
-    /// <remarks>测试验收环境，用于测试是否符合需求和预期</remarks>
-    [Description("测试验收环境")]
-    UAT = 8,
-
-    /// <summary>
-    /// PreProduction 预生产环境
-    /// </summary>
-    /// <remarks>预生产环境，用于最后的测试和验证</remarks>
-    [Description("预生产环境")]
-    PreProduction = 16,
-
-    /// <summary>
-    /// GrayDeployment 灰度环境
-    /// </summary>
-    /// <remarks>灰度环境，用于部署新版本到生产环境之前进行有限范围的测试和验收的环境</remarks>
-    [Description("灰度环境")]
-    GrayDeployment = 32,
-
-    /// <summary>
-    /// StressTest 压测环境
-    /// </summary>
-    /// <remarks>压测环境，用于压力测试的环境</remarks>
-    [Description("压测环境")]
-    StressTest = 64
+    /// <remarks>默认模糊匹配</remarks>
+    public virtual PagedSearchTypeEnum Type { get; set; } = PagedSearchTypeEnum.Like;
 }

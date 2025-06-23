@@ -104,8 +104,16 @@ internal class FileLogger : ILogger
         var message = formatter(state, exception);
 
         var logDateTime = _options.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now;
-        var logMsg = new LogMessage(_logName, logLevel, eventId, message, exception, null, state, logDateTime,
-            Environment.CurrentManagedThreadId, _options.UseUtcTimestamp,
+        var logMsg = new LogMessage(_logName,
+            logLevel,
+            eventId,
+            message,
+            exception,
+            null,
+            state,
+            logDateTime,
+            Environment.CurrentManagedThreadId,
+            _options.UseUtcTimestamp,
             MAppContext.GetTraceId(Penetrates.RootServices, Penetrates.HttpContext));
 
         // 设置日志上下文
@@ -118,7 +126,9 @@ internal class FileLogger : ILogger
         // 设置日志消息模板
         logMsg.Message = _options.MessageFormat != null
             ? _options.MessageFormat(logMsg)
-            : LoggingContext.OutputStandardMessage(logMsg, _options.DateFormat, withTraceId: _options.WithTraceId,
+            : LoggingContext.OutputStandardMessage(logMsg,
+                _options.DateFormat,
+                withTraceId: _options.WithTraceId,
                 withStackFrame: _options.WithStackFrame);
 
         // 空检查

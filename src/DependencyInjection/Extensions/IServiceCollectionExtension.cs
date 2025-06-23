@@ -155,16 +155,18 @@ public static class IServiceCollectionExtension
         var lifetime = TryGetServiceLifetime(typeof(TDependency));
 
         // 注册命名服务
-        services.Add(ServiceDescriptor.Describe(typeof(Func<string, TDependency, object>), provider =>
-        {
-            object ResolveService(string named, TDependency _)
+        services.Add(ServiceDescriptor.Describe(typeof(Func<string, TDependency, object>),
+            provider =>
             {
-                var isRegister = TypeNamedCollection.TryGetValue(named, out var serviceType);
-                return isRegister ? provider.GetService(serviceType) : null;
-            }
+                object ResolveService(string named, TDependency _)
+                {
+                    var isRegister = TypeNamedCollection.TryGetValue(named, out var serviceType);
+                    return isRegister ? provider.GetService(serviceType) : null;
+                }
 
-            return (Func<string, TDependency, object>) ResolveService;
-        }, lifetime));
+                return (Func<string, TDependency, object>) ResolveService;
+            },
+            lifetime));
     }
 
     /// <summary>

@@ -112,8 +112,8 @@ internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
         if (isPageDescriptor)
         {
             // 返回自定义错误页面
-            context.Result =
-                new BadPageResult(isValidationException ? StatusCodes.Status400BadRequest : exceptionMetadata.StatusCode)
+            context.Result
+                = new BadPageResult(isValidationException ? StatusCodes.Status400BadRequest : exceptionMetadata.StatusCode)
                 {
                     Title = isValidationException ? "ModelState Invalid" : "Internal Server: " + exceptionMetadata.Errors,
                     Code = isValidationException
@@ -142,12 +142,13 @@ internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
                 int? statusCode = null;
                 string message = null;
                 // 判断是否跳过规范化响应数据处理
-                if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, controllerActionDescriptor!.MethodInfo,
+                if (!UnifyContext.CheckResponseNonUnify(context.HttpContext,
+                        controllerActionDescriptor!.MethodInfo,
                         out var unifyResponse))
                 {
                     // 处理规范化响应数据
-                    (statusCode, message) =
-                        await unifyResponse.ResponseExceptionAsync(context, exceptionMetadata, context.HttpContext);
+                    (statusCode, message)
+                        = await unifyResponse.ResponseExceptionAsync(context, exceptionMetadata, context.HttpContext);
                 }
 
                 // 执行规范化异常处理

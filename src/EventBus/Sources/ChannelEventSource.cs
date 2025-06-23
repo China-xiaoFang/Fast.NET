@@ -92,7 +92,9 @@ public sealed class ChannelEventSource : IEventSource
     /// <param name="payload">事件承载（携带）数据</param>
     /// <param name="cancellationToken">取消任务 Token</param>
     public ChannelEventSource(Enum eventId, object payload, CancellationToken cancellationToken) : this(
-        eventId.EventBusToString(), payload, cancellationToken)
+        eventId.EventBusToString(),
+        payload,
+        cancellationToken)
     {
     }
 

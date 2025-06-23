@@ -131,7 +131,8 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
                 var timestamp = context.HttpContext.UnifyResponseTimestamp();
 
                 // 判断是否跳过规范化响应数据处理
-                if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, controllerActionDescriptor!.MethodInfo,
+                if (!UnifyContext.CheckResponseNonUnify(context.HttpContext,
+                        controllerActionDescriptor!.MethodInfo,
                         out var unifyResponse))
                 {
                     // 处理规范化响应数据

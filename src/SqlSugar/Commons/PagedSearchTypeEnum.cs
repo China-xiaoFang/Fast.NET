@@ -20,15 +20,68 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
+using System.ComponentModel;
 
-namespace Fast.DynamicApplication;
+// ReSharper disable once CheckNamespace
+namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DynamicApplicationAttribute"/> 动态API应用特性
+/// <see cref="PagedSearchTypeEnum"/> 分页搜索类型枚举
 /// </summary>
-[SuppressSniffer]
-[AttributeUsage(AttributeTargets.Class)]
-public sealed class DynamicApplicationAttribute : Attribute
+[FastEnum("分页搜索类型枚举")]
+public enum PagedSearchTypeEnum : byte
 {
+    /// <summary>
+    /// 模糊匹配
+    /// </summary>
+    [Description("模糊匹配")]
+    Like = 1,
+
+    /// <summary>
+    /// 等于
+    /// </summary>
+    [Description("等于")]
+    Equal = 2,
+
+    /// <summary>
+    /// 不等于
+    /// </summary>
+    [Description("不等于")]
+    NotEqual = 3,
+
+    /// <summary>
+    /// 大于
+    /// </summary>
+    [Description("大于")]
+    GreaterThan = 4,
+
+    /// <summary>
+    /// 大于等于
+    /// </summary>
+    [Description("大于等于")]
+    GreaterThanOrEqual = 5,
+
+    /// <summary>
+    /// 小于
+    /// </summary>
+    [Description("小于")]
+    LessThan = 6,
+
+    /// <summary>
+    /// 小于等于
+    /// </summary>
+    [Description("小于等于")]
+    LessThanOrEqual = 7,
+
+    /// <summary>
+    /// 包含
+    /// </summary>
+    [Description("包含")]
+    Include = 8,
+
+    /// <summary>
+    /// 排除
+    /// </summary>
+    [Description("排除")]
+    NotInclude = 9
 }

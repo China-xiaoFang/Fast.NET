@@ -57,31 +57,31 @@ public static class WebApplicationBuilderExtension
 
     static void UseDefault()
     {
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine(@$"
-        Fast.NET 程序启动时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}
-        ");
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine(@"
-          ______                _         _   _   ______   _______ 
-         |  ____|              | |       | \ | | |  ____| |__   __|
-         | |__     __ _   ___  | |_      |  \| | | |__       | |   
-         |  __|   / _` | / __| | __|     | . ` | |  __|      | |   
-         | |     | (_| | \__ \ | |_   _  | |\  | | |____     | |   
-         |_|      \__,_| |___/  \__| (_) |_| \_| |______|    |_|   
-                                                                   
-        ");
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(@"
-        Gitee：https://gitee.com/China-xiaoFang/Fast.NET
-        ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine(@"
-        持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！
+        var sb = new StringBuilder();
+        sb.Append("\u001b[1m\u001b[34m");
+        sb.Append(Environment.NewLine);
+        sb.Append($"Fast.NET 程序启动时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        sb.Append(Environment.NewLine);
+        sb.Append("\u001b[39m\u001b[22m\u001b[49m");
+        sb.Append("\u001b[1m\u001b[32m");
+        sb.Append(@"
+  ______                _         _   _   ______   _______ 
+ |  ____|              | |       | \ | | |  ____| |__   __|
+ | |__     __ _   ___  | |_      |  \| | | |__       | |   
+ |  __|   / _` | / __| | __|     | . ` | |  __|      | |   
+ | |     | (_| | \__ \ | |_   _  | |\  | | |____     | |   
+ |_|      \__,_| |___/  \__| (_) |_| \_| |______|    |_|   
 
-        期待您的PR，让.NET更好！
-        ");
-        Console.ResetColor();
+");
+        sb.Append("\u001b[39m\u001b[22m\u001b[49m");
+        sb.Append("\u001b[1m\u001b[31m");
+        sb.Append(Environment.NewLine);
+        sb.Append("Gitee：https://gitee.com/China-xiaoFang/Fast.NET");
+        sb.Append(Environment.NewLine);
+        sb.Append("持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
+        sb.Append("期待您的PR，让.NET更好！");
+        sb.Append(Environment.NewLine);
+        Console.WriteLine(sb.ToString());
     }
 
     /// <summary>

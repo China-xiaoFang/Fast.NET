@@ -114,7 +114,9 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
                         }
                         else
                         {
-                            var result = await jwtBearerHandle.PermissionFailHandle(context, requirement, httpContext,
+                            var result = await jwtBearerHandle.PermissionFailHandle(context,
+                                requirement,
+                                httpContext,
                                 permissionException);
 
                             if (result != null)

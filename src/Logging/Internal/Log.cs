@@ -47,7 +47,9 @@ public static class Log
     /// <returns></returns>
     public static ILogger CreateLogger<T>()
     {
-        return MAppContext.GetServiceProvider(typeof(ILogger<T>), Penetrates.RootServices, Penetrates.InternalServices,
+        return MAppContext.GetServiceProvider(typeof(ILogger<T>),
+                Penetrates.RootServices,
+                Penetrates.InternalServices,
                 Penetrates.HttpContext)
             .GetRequiredService<ILogger<T>>();
     }

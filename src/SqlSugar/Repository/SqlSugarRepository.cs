@@ -74,8 +74,11 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
                 Context.Ado.CommandTimeOut = connectionSettings.CommandTimeOut;
 
                 // Aop
-                SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), Context,
-                    connectionSettings.SugarSqlExecMaxSeconds, connectionSettings.DiffLog, connectionSettings.DisableAop,
+                SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(),
+                    Context,
+                    connectionSettings.SugarSqlExecMaxSeconds,
+                    connectionSettings.DiffLog,
+                    connectionSettings.DisableAop,
                     sqlSugarEntityHandler);
 
                 // 过滤器

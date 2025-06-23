@@ -22,7 +22,6 @@
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -75,8 +74,9 @@ public static class IServiceCollectionExtension
         Debugging.Info("Registering friendly exception......");
 
         // 查找全局异常处理实现类
-        var globalExceptionHandler =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
+        var globalExceptionHandler
+            = MAppContext.EffectiveTypes.FirstOrDefault(f =>
+                typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
 
         if (globalExceptionHandler != null)
         {
@@ -93,9 +93,8 @@ public static class IServiceCollectionExtension
     /// 添加统一返回服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddUnifyResult(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddUnifyResult(this IServiceCollection services)
     {
         Debugging.Info("Registering unify result......");
 
@@ -109,8 +108,9 @@ public static class IServiceCollectionExtension
         services.AddFriendlyException();
 
         // 查找规范化响应数据提供器实现类
-        var unifyResponseProvider =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IUnifyResponseProvider).IsAssignableFrom(f) && !f.IsInterface);
+        var unifyResponseProvider
+            = MAppContext.EffectiveTypes.FirstOrDefault(f =>
+                typeof(IUnifyResponseProvider).IsAssignableFrom(f) && !f.IsInterface);
 
         if (unifyResponseProvider != null)
         {
@@ -118,8 +118,8 @@ public static class IServiceCollectionExtension
             services.AddSingleton(typeof(IUnifyResponseProvider), unifyResponseProvider);
         }
 
-        var unifyResultProvider =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IUnifyResultProvider).IsAssignableFrom(f) && !f.IsInterface);
+        var unifyResultProvider
+            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IUnifyResultProvider).IsAssignableFrom(f) && !f.IsInterface);
 
         if (unifyResultProvider != null)
         {

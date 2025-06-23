@@ -50,47 +50,47 @@ public enum HttpRequestMethodEnum
     /// <remarks>用于向服务器更新指定资源。PUT 请求将请求体中的数据保存到指定的 URL 上。</remarks>
     /// </summary>
     [Description("Put请求")]
-    Put = 3,
+    Put = 4,
 
     /// <summary>
     /// Delete请求
     /// <remarks>用于从服务器删除指定资源。DELETE 请求通过指定的 URL 删除服务器上的资源。</remarks>
     /// </summary>
     [Description("Delete请求")]
-    Delete = 4,
+    Delete = 8,
 
     /// <summary>
     /// Patch请求
     /// <remarks>用于对服务器上的资源进行部分更新。PATCH 请求将请求体中的数据应用到指定的 URL 上，只更新部分字段。</remarks>
     /// </summary>
     [Description("Patch请求")]
-    Patch = 5,
+    Patch = 16,
 
     /// <summary>
     /// Head请求
     /// <remarks>与 GET 请求类似，只是服务器返回的响应中不包含实体内容，主要用于获取资源的元数据（例如，响应头信息）。</remarks>
     /// </summary>
     [Description("Head请求")]
-    Head = 6,
+    Head = 32,
 
     /// <summary>
     /// Options请求
     /// <remarks>用于获取指定资源所支持的通信选项，也就是说，当客户端想知道服务器支持的请求方式、响应头等信息时，可以发送 OPTIONS 请求。</remarks>
     /// </summary>
     [Description("Options请求")]
-    Options = 7,
+    Options = 64,
 
     /// <summary>
     /// Connect请求
     /// <remarks>用于建立与目标资源的网络链接，通常用于 HTTPS 中的隧道ing，将流量转发给真正的 HTTPS 服务器。</remarks>
     /// </summary>
     [Description("Connect请求")]
-    Connect = 8,
+    Connect = 128,
 
     /// <summary>
     /// Trace请求
     /// <remarks>用于追踪请求-响应的传输路径，主要用于故障诊断。</remarks>
     /// </summary>
     [Description("Trace请求")]
-    Trace = 9
+    Trace = 256
 }

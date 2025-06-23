@@ -528,8 +528,8 @@ public static class RemoteRequestUtil
             object responseData = null;
             try
             {
-                responseData =
-                    JsonSerializer.Deserialize<IDictionary<string, object>>(responseContent, _defaultJsonSerializerOptions);
+                responseData = JsonSerializer.Deserialize<IDictionary<string, object>>(responseContent,
+                    _defaultJsonSerializerOptions);
             }
             catch
             {

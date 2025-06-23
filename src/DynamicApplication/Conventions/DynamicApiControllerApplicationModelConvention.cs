@@ -154,8 +154,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     private void ConfigureControllerName(ControllerModel controller,
         ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
     {
-        controller.ControllerName =
-            ConfigureControllerAndActionName(controllerApiDescriptionSettings, controller.ControllerType.Name);
+        controller.ControllerName
+            = ConfigureControllerAndActionName(controllerApiDescriptionSettings, controller.ControllerType.Name);
     }
 
     /// <summary>
@@ -177,7 +177,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             && !ForceWithDefaultPrefixRouteControllerTypes.Contains(controller.ControllerType))
         {
             controller.Selectors[0].AttributeRouteModel = AttributeRouteModel.CombineAttributeRouteModel(
-                new AttributeRouteModel(new RouteAttribute(string.Empty)), controller.Selectors[0].AttributeRouteModel);
+                new AttributeRouteModel(new RouteAttribute(string.Empty)),
+                controller.Selectors[0].AttributeRouteModel);
             ForceWithDefaultPrefixRouteControllerTypes.Add(controller.ControllerType);
         }
     }
@@ -202,7 +203,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         ConfigureClassTypeParameter(action);
 
         // 配置动作方法路由特性
-        ConfigureActionRouteAttribute(action, apiDescriptionSettings, controllerApiDescriptionSettings,
+        ConfigureActionRouteAttribute(action,
+            apiDescriptionSettings,
+            controllerApiDescriptionSettings,
             hasApiControllerAttribute);
 
         // 配置动作方法规范化特性

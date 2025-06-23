@@ -151,8 +151,9 @@ public sealed class SqlSugarContext
                 SystemDbType.Boolean when string.IsNullOrEmpty(pars[i]
                     .Value?.ToString()) => sql.Replace(pars[i].ParameterName, "NULL"),
                 SystemDbType.Boolean => sql.Replace(pars[i].ParameterName, Convert.ToBoolean(pars[i].Value) ? "1" : "0"),
-                _ => sql.Replace(pars[i].ParameterName, pars[i]
-                    .Value?.ToString())
+                _ => sql.Replace(pars[i].ParameterName,
+                    pars[i]
+                        .Value?.ToString())
             };
         }
 

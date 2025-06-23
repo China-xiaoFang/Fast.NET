@@ -68,32 +68,59 @@ public static class UnifyContext
         return code switch
         {
             // 处理 400 状态码
-            StatusCodes.Status400BadRequest => GetRestfulResult(StatusCodes.Status400BadRequest, false, data,
-                message ?? "400 请求无效", httpContext),
+            StatusCodes.Status400BadRequest => GetRestfulResult(StatusCodes.Status400BadRequest,
+                false,
+                data,
+                message ?? "400 请求无效",
+                httpContext),
             // 处理 401 状态码
-            StatusCodes.Status401Unauthorized => GetRestfulResult(StatusCodes.Status401Unauthorized, false, data,
-                message ?? "401 未经授权", httpContext),
+            StatusCodes.Status401Unauthorized => GetRestfulResult(StatusCodes.Status401Unauthorized,
+                false,
+                data,
+                message ?? "401 未经授权",
+                httpContext),
             // 处理 403 状态码
-            StatusCodes.Status403Forbidden => GetRestfulResult(StatusCodes.Status403Forbidden, false, data,
-                message ?? "403 无操作权限", httpContext),
+            StatusCodes.Status403Forbidden => GetRestfulResult(StatusCodes.Status403Forbidden,
+                false,
+                data,
+                message ?? "403 无操作权限",
+                httpContext),
             // 处理 404 状态码
-            StatusCodes.Status404NotFound => GetRestfulResult(StatusCodes.Status404NotFound, false, data, message ?? "404 无效的地址",
+            StatusCodes.Status404NotFound => GetRestfulResult(StatusCodes.Status404NotFound,
+                false,
+                data,
+                message ?? "404 无效的地址",
                 httpContext),
             // 处理 405 状态码
-            StatusCodes.Status405MethodNotAllowed => GetRestfulResult(StatusCodes.Status405MethodNotAllowed, false, data,
-                message ?? "405 方法不被允许", httpContext),
+            StatusCodes.Status405MethodNotAllowed => GetRestfulResult(StatusCodes.Status405MethodNotAllowed,
+                false,
+                data,
+                message ?? "405 方法不被允许",
+                httpContext),
             // 处理 429 状态码
-            StatusCodes.Status429TooManyRequests => GetRestfulResult(StatusCodes.Status429TooManyRequests, false, data,
-                message ?? "429 频繁请求", httpContext),
+            StatusCodes.Status429TooManyRequests => GetRestfulResult(StatusCodes.Status429TooManyRequests,
+                false,
+                data,
+                message ?? "429 频繁请求",
+                httpContext),
             // 处理 500 状态码
-            StatusCodes.Status500InternalServerError => GetRestfulResult(StatusCodes.Status500InternalServerError, false, data,
-                message ?? "500 服务器内部错误", httpContext),
+            StatusCodes.Status500InternalServerError => GetRestfulResult(StatusCodes.Status500InternalServerError,
+                false,
+                data,
+                message ?? "500 服务器内部错误",
+                httpContext),
             // 处理 502 状态码
-            StatusCodes.Status502BadGateway => GetRestfulResult(StatusCodes.Status502BadGateway, false, data,
-                message ?? "502 网关错误", httpContext),
+            StatusCodes.Status502BadGateway => GetRestfulResult(StatusCodes.Status502BadGateway,
+                false,
+                data,
+                message ?? "502 网关错误",
+                httpContext),
             // 处理 503 状态码
-            StatusCodes.Status503ServiceUnavailable => GetRestfulResult(StatusCodes.Status503ServiceUnavailable, false, data,
-                message ?? "503 服务不可用", httpContext),
+            StatusCodes.Status503ServiceUnavailable => GetRestfulResult(StatusCodes.Status503ServiceUnavailable,
+                false,
+                data,
+                message ?? "503 服务不可用",
+                httpContext),
             _ => GetRestfulResult(StatusCodes.Status500InternalServerError, false, data, message, httpContext)
         };
     }
@@ -418,9 +445,10 @@ public static class UnifyContext
                 _modelState = modelState;
                 // 将验证错误信息转换成字典并序列化成 Json
                 validationResults = modelState.Where(u => modelState[u.Key]!.ValidationState == ModelValidationState.Invalid)
-                    .ToDictionary(u => u.Key, u => modelState[u.Key]
-                        ?.Errors.Select(c => c.ErrorMessage)
-                        .ToArray());
+                    .ToDictionary(u => u.Key,
+                        u => modelState[u.Key]
+                            ?.Errors.Select(c => c.ErrorMessage)
+                            .ToArray());
             }
             // 如果是 ValidationProblemDetails 特殊类型
             else if (errors is ValidationProblemDetails validation)

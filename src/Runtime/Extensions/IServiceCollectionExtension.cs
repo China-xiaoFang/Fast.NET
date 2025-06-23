@@ -48,11 +48,12 @@ public static class IServiceCollectionExtension
 
         // 配置验证
         var optionsConfigure = services.AddOptions<TOptions>()
-            .BindConfiguration(path, options =>
-            {
-                // 绑定私有变量
-                options.BindNonPublicProperties = true;
-            })
+            .BindConfiguration(path,
+                options =>
+                {
+                    // 绑定私有变量
+                    options.BindNonPublicProperties = true;
+                })
             .ValidateDataAnnotations();
 
         // 获取类型
