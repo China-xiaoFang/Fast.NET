@@ -44,9 +44,9 @@ public enum HttpRequestActionEnum
     Auth = 1,
 
     /// <summary>
-    /// 分页查询
+    /// 分页
     /// </summary>
-    [Description("分页查询")]
+    [Description("分页")]
     Paged = 11,
 
     /// <summary>
@@ -68,16 +68,16 @@ public enum HttpRequestActionEnum
     BatchAdd = 22,
 
     /// <summary>
-    /// 更新
+    /// 编辑
     /// </summary>
-    [Description("更新")]
-    Update = 31,
+    [Description("编辑")]
+    Edit = 31,
 
     /// <summary>
-    /// 批量更新
+    /// 批量编辑
     /// </summary>
-    [Description("批量更新")]
-    BatchUpdate = 32,
+    [Description("批量编辑")]
+    BatchEdit = 32,
 
     /// <summary>
     /// 删除

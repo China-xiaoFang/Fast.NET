@@ -230,7 +230,7 @@ namespace Fast.IaaS
         /// </summary>
         /// <param name="str"><see cref="string"/></param>
         /// <returns><see cref="string"/></returns>
-        public static string SHAEncrypt(string str)
+        public static string SHA1Encrypt(string str)
         {
             var sha1 = SHA1.Create();
             var inputStrBytes = Encoding.UTF8.GetBytes(str);

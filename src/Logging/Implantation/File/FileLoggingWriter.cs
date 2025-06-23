@@ -180,8 +180,9 @@ internal class FileLoggingWriter
         }
 
         // 返回下一个匹配的日志文件名（完整路径）
-        var nextFileName =
-            baseFileNameOnly + (nextFileIndex > 0 ? nextFileIndex.ToString() : "") + Path.GetExtension(baseFileName);
+        var nextFileName = baseFileNameOnly
+                           + (nextFileIndex > 0 ? nextFileIndex.ToString() : "")
+                           + Path.GetExtension(baseFileName);
         return Path.Combine(Path.GetDirectoryName(baseFileName), nextFileName);
     }
 
@@ -230,7 +231,11 @@ internal class FileLoggingWriter
             fileInfo.Directory?.Create();
 
             // 创建文件流，采用共享锁方式
-            _fileStream = new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, 4096,
+            _fileStream = new FileStream(_fileName,
+                FileMode.OpenOrCreate,
+                FileAccess.ReadWrite,
+                FileShare.ReadWrite,
+                4096,
                 FileOptions.WriteThrough);
 
             // 删除超出滚动日志限制的文件

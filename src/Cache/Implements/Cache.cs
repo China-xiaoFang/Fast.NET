@@ -82,8 +82,8 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         }
 
         // 组装连接字符串
-        var connectionStr =
-            $"{redisSetting.ServiceIp}:{redisSetting.Port ?? 6379},password={redisSetting.DbPwd},defaultDatabase={redisSetting.DbName ?? 0},prefix={redisSetting.Prefix},poolsize=50,ssl=false";
+        var connectionStr
+            = $"{redisSetting.ServiceIp}:{redisSetting.Port ?? 6379},password={redisSetting.DbPwd},defaultDatabase={redisSetting.DbName ?? 0},prefix={redisSetting.Prefix},poolsize=50,ssl=false";
 
         _client?.Dispose();
         _client = new CSRedisClient(connectionStr);

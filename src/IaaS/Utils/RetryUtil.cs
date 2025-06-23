@@ -51,24 +51,36 @@ namespace Fast.IaaS
             if (fallbackPolicy == null)
             {
                 InvokeAsync(async () =>
-                    {
-                        action();
-                        await Task.CompletedTask;
-                    }, numRetries, retryTimeout, finalThrow, exceptionTypes, null, retryAction)
+                        {
+                            action();
+                            await Task.CompletedTask;
+                        },
+                        numRetries,
+                        retryTimeout,
+                        finalThrow,
+                        exceptionTypes,
+                        null,
+                        retryAction)
                     .GetAwaiter()
                     .GetResult();
             }
             else
             {
                 InvokeAsync(async () =>
-                    {
-                        action();
-                        await Task.CompletedTask;
-                    }, numRetries, retryTimeout, finalThrow, exceptionTypes, async ex =>
-                    {
-                        fallbackPolicy.Invoke(ex);
-                        await Task.CompletedTask;
-                    }, retryAction)
+                        {
+                            action();
+                            await Task.CompletedTask;
+                        },
+                        numRetries,
+                        retryTimeout,
+                        finalThrow,
+                        exceptionTypes,
+                        async ex =>
+                        {
+                            fallbackPolicy.Invoke(ex);
+                            await Task.CompletedTask;
+                        },
+                        retryAction)
                     .GetAwaiter()
                     .GetResult();
             }

@@ -152,7 +152,9 @@ public sealed partial class StringLoggingPart
         {
             try
             {
-                logger = MAppContext.GetServiceProvider(typeof(ILogger<>), Penetrates.RootServices, Penetrates.InternalServices,
+                logger = MAppContext.GetServiceProvider(typeof(ILogger<>),
+                        Penetrates.RootServices,
+                        Penetrates.InternalServices,
                         Penetrates.HttpContext)
                     .GetRequiredService(typeof(ILogger<>).MakeGenericType(categoryType)) as ILogger;
             }

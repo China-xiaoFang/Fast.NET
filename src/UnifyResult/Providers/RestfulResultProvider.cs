@@ -52,12 +52,18 @@ internal class RestfulResultProvider : IUnifyResultProvider
         // 如果获取到的为空，或者非开发环境，则不返回错误对象
         if (hostEnvironment == null || !hostEnvironment.IsDevelopment())
         {
-            return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode, false, null,
-                message ?? context.Exception.Message, context.HttpContext));
+            return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode,
+                false,
+                null,
+                message ?? context.Exception.Message,
+                context.HttpContext));
         }
 
-        return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode, false, context.Exception,
-            message ?? context.Exception.Message, context.HttpContext));
+        return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode,
+            false,
+            context.Exception,
+            message ?? context.Exception.Message,
+            context.HttpContext));
     }
 
     /// <summary>
@@ -70,7 +76,10 @@ internal class RestfulResultProvider : IUnifyResultProvider
     {
         return new JsonResult(UnifyContext.GetRestfulResult(
             // 处理没有返回值情况 204
-            context.Result is EmptyResult ? StatusCodes.Status204NoContent : StatusCodes.Status200OK, true, data, "请求成功",
+            context.Result is EmptyResult ? StatusCodes.Status204NoContent : StatusCodes.Status200OK,
+            true,
+            data,
+            "请求成功",
             context.HttpContext));
     }
 
@@ -99,7 +108,10 @@ internal class RestfulResultProvider : IUnifyResultProvider
             message = metadata.ValidationResult.ToString();
         }
 
-        return new JsonResult(UnifyContext.GetRestfulResult(StatusCodes.Status400BadRequest, false, null, message,
+        return new JsonResult(UnifyContext.GetRestfulResult(StatusCodes.Status400BadRequest,
+            false,
+            null,
+            message,
             context.HttpContext));
     }
 

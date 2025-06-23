@@ -335,7 +335,8 @@ public static class SwaggerDocumentBuilder
 
             return (int.MaxValue - apiDescriptionSettings.Order).ToString()
                 .PadLeft(int.MaxValue.ToString()
-                    .Length, '0');
+                        .Length,
+                    '0');
         });
     }
 
@@ -434,8 +435,8 @@ public static class SwaggerDocumentBuilder
                 var xmlDoc = XDocument.Load(assemblyXmlPath);
 
                 // 查找所有 member[name] 节点，且不包含 <inheritdoc /> 和 <exclude /> 节点的注释
-                var memberNotInheritdocElementList =
-                    xmlDoc.XPathSelectElements("/doc/members/member[@name and not(inheritdoc) and not(exclude)]");
+                var memberNotInheritdocElementList
+                    = xmlDoc.XPathSelectElements("/doc/members/member[@name and not(inheritdoc) and not(exclude)]");
 
                 foreach (var memberElement in memberNotInheritdocElementList)
                 {
@@ -471,8 +472,8 @@ public static class SwaggerDocumentBuilder
                         {
                             var noParamsClassName = regex.Match(memberName)
                                 .Value;
-                            var className =
-                                noParamsClassName[
+                            var className
+                                = noParamsClassName[
                                     noParamsClassName.IndexOf(":", StringComparison.Ordinal)..noParamsClassName.LastIndexOf(".",
                                         StringComparison.Ordinal)];
                             value = GenerateInheritdocCref(xmlDoc, memberName, className);
@@ -483,8 +484,8 @@ public static class SwaggerDocumentBuilder
                         // 处理逻辑：获取类型命名空间，最后调用 GenerateInheritdocCref 进行生成
                         else
                         {
-                            var className =
-                                memberName[
+                            var className
+                                = memberName[
                                     memberName.IndexOf(":", StringComparison.Ordinal)..memberName.LastIndexOf(".",
                                         StringComparison.Ordinal)];
                             value = GenerateInheritdocCref(xmlDoc, memberName, className);

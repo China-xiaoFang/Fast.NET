@@ -60,15 +60,15 @@ internal class EventBusFactory : IEventBusFactory
         if (handler == null)
             throw new ArgumentNullException(nameof(handler));
 
-        await _eventSourceStorer.WriteAsync(
-            new EventSubscribeOperateSource
+        await _eventSourceStorer.WriteAsync(new EventSubscribeOperateSource
             {
                 SubscribeEventId = eventId,
                 Attribute = attribute,
                 Handler = handler,
                 HandlerMethod = handlerMethod,
                 Operate = EventSubscribeOperates.Append
-            }, cancellationToken);
+            },
+            cancellationToken);
     }
 
     /// <summary>

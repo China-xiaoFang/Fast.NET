@@ -323,14 +323,15 @@ namespace Fast.IaaS
             if (long.TryParse(str.Remove(17), out var n) == false
                 || n < Math.Pow(10, 16)
                 || long.TryParse(str.Replace('x', '0')
-                    .Replace('X', '0'), out _)
+                        .Replace('X', '0'),
+                    out _)
                 == false)
             {
                 return false; //数字验证
             }
 
-            const string address =
-                "11x22x35x44x53x12x23x36x45x54x13x31x37x46x61x14x32x41x50x62x15x33x42x51x63x21x34x43x52x64x65x71x81x82x91";
+            const string address
+                = "11x22x35x44x53x12x23x36x45x54x13x31x37x46x61x14x32x41x50x62x15x33x42x51x63x21x34x43x52x64x65x71x81x82x91";
             if (!address.Contains(str.Remove(2)))
             {
                 return false; //省份验证
@@ -374,8 +375,8 @@ namespace Fast.IaaS
                 return false; //数字验证
             }
 
-            const string address =
-                "11x22x35x44x53x12x23x36x45x54x13x31x37x46x61x14x32x41x50x62x15x33x42x51x63x21x34x43x52x64x65x71x81x82x91";
+            const string address
+                = "11x22x35x44x53x12x23x36x45x54x13x31x37x46x61x14x32x41x50x62x15x33x42x51x63x21x34x43x52x64x65x71x81x82x91";
             if (!address.Contains(str.Remove(2)))
             {
                 return false; //省份验证
@@ -440,8 +441,8 @@ namespace Fast.IaaS
             if (string.IsNullOrEmpty(str))
                 return false;
             //列举一些特殊字符串
-            const string badChars =
-                "@,*,#,$,!,+,',=,--,%,^,&,?,(,), <,>,[,],{,},/,\\,;,:,\",\"\",delete,update,drop,alert,select";
+            const string badChars
+                = "@,*,#,$,!,+,',=,--,%,^,&,?,(,), <,>,[,],{,},/,\\,;,:,\",\"\",delete,update,drop,alert,select";
             var arrBadChar = badChars.Split(',');
             return arrBadChar.Any(t => !str.Contains(t));
         }
@@ -547,8 +548,8 @@ namespace Fast.IaaS
             }
 
             // 定义一个正则表达式，用于验证日期格式
-            const string regexDate =
-                @"[1-2]{1}[0-9]{3}((-|\/|\.){1}(([0]?[1-9]{1})|(1[0-2]{1}))((-|\/|\.){1}((([0]?[1-9]{1})|([1-2]{1}[0-9]{1})|(3[0-1]{1}))(( ([0-1]{1}[0-9]{1})|2[0-3]{1}):([0-5]{1}[0-9]{1}):([0-5]{1}[0-9]{1})(\.[0-9]{3})?)?)?)?)?$";
+            const string regexDate
+                = @"[1-2]{1}[0-9]{3}((-|\/|\.){1}(([0]?[1-9]{1})|(1[0-2]{1}))((-|\/|\.){1}((([0]?[1-9]{1})|([1-2]{1}[0-9]{1})|(3[0-1]{1}))(( ([0-1]{1}[0-9]{1})|2[0-3]{1}):([0-5]{1}[0-9]{1}):([0-5]{1}[0-9]{1})(\.[0-9]{3})?)?)?)?)?$";
 
             // 使用正则表达式来验证输入字符串是否符合日期格式
             if (!Regex.IsMatch(str, regexDate))

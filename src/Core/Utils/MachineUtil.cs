@@ -529,8 +529,8 @@ public static class MachineUtil
                     AvailableFreeSpace = Math.Round(item.AvailableFreeSpace / relation, 2, MidpointRounding.AwayFromZero)
                 };
                 diskInfo.Used = diskInfo.TotalSize - diskInfo.AvailableFreeSpace;
-                diskInfo.AvailablePercent =
-                    Math.Round(diskInfo.Used / diskInfo.TotalSize * 100, 2, MidpointRounding.AwayFromZero);
+                diskInfo.AvailablePercent
+                    = Math.Round(diskInfo.Used / diskInfo.TotalSize * 100, 2, MidpointRounding.AwayFromZero);
                 diskInfos.Add(diskInfo);
             }
         }

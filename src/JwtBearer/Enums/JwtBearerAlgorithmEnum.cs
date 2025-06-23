@@ -29,7 +29,7 @@ namespace Fast.JwtBearer;
 /// <see cref="JwtBearerAlgorithmEnum"/> JwtBearer 加密算法
 /// </summary>
 [FastEnum("JwtBearer 加密算法")]
-public enum JwtBearerAlgorithmEnum
+public enum JwtBearerAlgorithmEnum : byte
 {
     /// <summary>
     /// HS256

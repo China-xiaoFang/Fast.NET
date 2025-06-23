@@ -57,8 +57,8 @@ public static class IServiceCollectionExtension
         var entryAssemblyType = MAppContext.EffectiveTypes.ToList();
 
         // 查找所有继承了 IEventSubscriber 的类
-        var iEventSubscriberTypes =
-            entryAssemblyType.Where(wh => typeof(IEventSubscriber).IsAssignableFrom(wh) && !wh.IsInterface);
+        var iEventSubscriberTypes
+            = entryAssemblyType.Where(wh => typeof(IEventSubscriber).IsAssignableFrom(wh) && !wh.IsInterface);
 
         // 注册事件订阅者
         foreach (var iEventSubscriberType in iEventSubscriberTypes)
@@ -67,8 +67,8 @@ public static class IServiceCollectionExtension
         }
 
         // 查找继承了 IEventHandlerMonitor 的类
-        var iEventHandlerMonitorType =
-            entryAssemblyType.FirstOrDefault(f => typeof(IEventHandlerMonitor).IsAssignableFrom(f) && !f.IsInterface);
+        var iEventHandlerMonitorType
+            = entryAssemblyType.FirstOrDefault(f => typeof(IEventHandlerMonitor).IsAssignableFrom(f) && !f.IsInterface);
 
         // 注册事件监视器
         if (iEventHandlerMonitorType != null)
@@ -77,8 +77,8 @@ public static class IServiceCollectionExtension
         }
 
         // 查找继承了 IEventFallbackPolicy 的类
-        var iEventFallbackPolicyType =
-            entryAssemblyType.FirstOrDefault(f => typeof(IEventFallbackPolicy).IsAssignableFrom(f) && !f.IsInterface);
+        var iEventFallbackPolicyType
+            = entryAssemblyType.FirstOrDefault(f => typeof(IEventFallbackPolicy).IsAssignableFrom(f) && !f.IsInterface);
 
         // 注册事件重试策略
         if (iEventFallbackPolicyType != null)

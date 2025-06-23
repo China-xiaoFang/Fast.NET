@@ -51,9 +51,14 @@ public class PagedInput
     public virtual IList<DateTime?> SearchTimeList { get; set; }
 
     /// <summary>
-    /// 分页排序集合
+    /// 搜索集合
     /// </summary>
-    public virtual PagedSortInput[] PagedSortList { get; set; }
+    public virtual PagedSearchInput[] SearchList { get; set; }
+
+    /// <summary>
+    /// 排序集合
+    /// </summary>
+    public virtual PagedSortInput[] SortList { get; set; }
 
     /// <summary>
     /// 启用分页

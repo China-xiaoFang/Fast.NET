@@ -519,7 +519,9 @@ namespace Fast.IaaS
                     }
                     default:
                     {
-                        var result = DateTime.ParseExact(value, "yyyyMMddHHmmss", CultureInfo.CurrentCulture,
+                        var result = DateTime.ParseExact(value,
+                            "yyyyMMddHHmmss",
+                            CultureInfo.CurrentCulture,
                             DateTimeStyles.None);
 
                         return result;
@@ -564,7 +566,10 @@ namespace Fast.IaaS
                     break;
                 case 8:
                 {
-                    if (DateTime.TryParseExact(value, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None,
+                    if (DateTime.TryParseExact(value,
+                            "yyyyMMdd",
+                            CultureInfo.CurrentCulture,
+                            DateTimeStyles.None,
                             out var result))
                     {
                         result = new DateTime(result.Year, result.Month, result.Day, 0, 0, 0);
@@ -575,7 +580,10 @@ namespace Fast.IaaS
                     break;
                 case 10:
                 {
-                    if (DateTime.TryParseExact(value, "yyyyMMddHH", CultureInfo.CurrentCulture, DateTimeStyles.None,
+                    if (DateTime.TryParseExact(value,
+                            "yyyyMMddHH",
+                            CultureInfo.CurrentCulture,
+                            DateTimeStyles.None,
                             out var result))
                     {
                         result = new DateTime(result.Year, result.Month, result.Day, result.Hour, 0, 0);
@@ -586,7 +594,10 @@ namespace Fast.IaaS
                     break;
                 case 12:
                 {
-                    if (DateTime.TryParseExact(value, "yyyyMMddHHmm", CultureInfo.CurrentCulture, DateTimeStyles.None,
+                    if (DateTime.TryParseExact(value,
+                            "yyyyMMddHHmm",
+                            CultureInfo.CurrentCulture,
+                            DateTimeStyles.None,
                             out var result))
                     {
                         result = new DateTime(result.Year, result.Month, result.Day, result.Hour, result.Minute, 0);
@@ -597,7 +608,10 @@ namespace Fast.IaaS
                     break;
                 default:
                 {
-                    if (DateTime.TryParseExact(value, "yyyyMMddHHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None,
+                    if (DateTime.TryParseExact(value,
+                            "yyyyMMddHHmmss",
+                            CultureInfo.CurrentCulture,
+                            DateTimeStyles.None,
                             out var result))
                     {
                         return result;
@@ -763,7 +777,8 @@ namespace Fast.IaaS
         /// <returns></returns>
         public static IEnumerable<TResult> CastSuper<TResult>(this IEnumerable source)
         {
-            return from object item in source
+            return
+                from object item in source
                 select (TResult) Convert.ChangeType(item, typeof(TResult));
         }
 

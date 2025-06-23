@@ -159,8 +159,9 @@ public static class IServiceCollectionExtension
     private static void AddSqlSugar(this IServiceCollection services, IHostEnvironment hostEnvironment)
     {
         // 查找Sugar实体处理程序提供者
-        var iSqlSugarEntityHandlerType =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(ISqlSugarEntityHandler).IsAssignableFrom(f) && !f.IsInterface);
+        var iSqlSugarEntityHandlerType
+            = MAppContext.EffectiveTypes.FirstOrDefault(f =>
+                typeof(ISqlSugarEntityHandler).IsAssignableFrom(f) && !f.IsInterface);
         if (iSqlSugarEntityHandlerType != null)
         {
             // 注册Sugar实体处理程序
@@ -179,9 +180,12 @@ public static class IServiceCollectionExtension
             sqlSugarClient.Ado.CommandTimeOut = SqlSugarContext.ConnectionSettings.CommandTimeOut;
 
             // Aop
-            SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), sqlSugarClient,
-                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog,
-                SqlSugarContext.ConnectionSettings.DisableAop, sqlSugarEntityHandler);
+            SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(),
+                sqlSugarClient,
+                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds,
+                SqlSugarContext.ConnectionSettings.DiffLog,
+                SqlSugarContext.ConnectionSettings.DisableAop,
+                sqlSugarEntityHandler);
 
             // 过滤器
             SugarEntityFilter.LoadSugarFilter(sqlSugarClient, sqlSugarEntityHandler);

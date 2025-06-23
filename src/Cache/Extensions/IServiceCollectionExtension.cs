@@ -52,8 +52,8 @@ public static class IServiceCollectionExtension
 
         // 查找所有集成了 ICacheContextLocator 类的缓存上下文定位器
         var cacheContextLocatorType = typeof(ICacheContextLocator);
-        var cacheContextLocatorTypes =
-            MAppContext.EffectiveTypes.Where(wh => cacheContextLocatorType.IsAssignableFrom(wh) && !wh.IsInterface);
+        var cacheContextLocatorTypes
+            = MAppContext.EffectiveTypes.Where(wh => cacheContextLocatorType.IsAssignableFrom(wh) && !wh.IsInterface);
 
         // 循环所有上下文，注册单例服务
         foreach (var contextLocatorType in cacheContextLocatorTypes)
@@ -81,8 +81,8 @@ public static class IServiceCollectionExtension
 
         // 查找所有集成了 ICacheContextLocator 类的缓存上下文定位器
         var cacheContextLocatorType = typeof(ICacheContextLocator);
-        var cacheContextLocatorTypes =
-            MAppContext.EffectiveTypes.Where(wh => cacheContextLocatorType.IsAssignableFrom(wh) && !wh.IsInterface);
+        var cacheContextLocatorTypes
+            = MAppContext.EffectiveTypes.Where(wh => cacheContextLocatorType.IsAssignableFrom(wh) && !wh.IsInterface);
 
         // 循环所有上下文，注册单例服务
         foreach (var contextLocatorType in cacheContextLocatorTypes)

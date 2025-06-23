@@ -215,15 +215,17 @@ namespace Fast.IaaS
                             dictionary.Add($"{(isToLower ? p.Name.FirstCharToLower() : p.Name)}[]", intListVal); // 向字典添加元素
                             break;
                         default:
-                            dictionary.Add(p.Name, m.Invoke(obj, new object[] { })
-                                ?.ToString()); // 向字典添加元素
+                            dictionary.Add(p.Name,
+                                m.Invoke(obj, new object[] { })
+                                    ?.ToString()); // 向字典添加元素
                             break;
                     }
                 }
                 else
                 {
-                    dictionary.Add(p.Name, m.Invoke(obj, new object[] { })
-                        ?.ToString()); // 向字典添加元素
+                    dictionary.Add(p.Name,
+                        m.Invoke(obj, new object[] { })
+                            ?.ToString()); // 向字典添加元素
                 }
             }
 

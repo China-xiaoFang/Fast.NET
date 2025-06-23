@@ -63,12 +63,13 @@ internal sealed class ChannelEventPublisher : IEventPublisher
     {
         // 创建新线程
         Task.Factory.StartNew(async () =>
-        {
-            // 延迟 delay 毫秒
-            await Task.Delay(TimeSpan.FromMilliseconds(delay), eventSource.CancellationToken);
+            {
+                // 延迟 delay 毫秒
+                await Task.Delay(TimeSpan.FromMilliseconds(delay), eventSource.CancellationToken);
 
-            await _eventSourceStorer.WriteAsync(eventSource, eventSource.CancellationToken);
-        }, eventSource.CancellationToken);
+                await _eventSourceStorer.WriteAsync(eventSource, eventSource.CancellationToken);
+            },
+            eventSource.CancellationToken);
 
         return Task.CompletedTask;
     }
