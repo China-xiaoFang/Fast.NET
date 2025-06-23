@@ -39,7 +39,9 @@ internal partial class DatabaseUtil
         var moreSettings = new ConnMoreSettings
         {
             // SQL Server Code First 默认使用 NVARCHAR
-            SqlServerCodeFirstNvarchar = true
+            SqlServerCodeFirstNvarchar = true,
+            // 最小时间
+            DbMinDate = new DateTime(1970, 01, 01)
         };
         return moreSettings;
     }
