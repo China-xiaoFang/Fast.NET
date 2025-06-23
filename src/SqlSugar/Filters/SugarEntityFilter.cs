@@ -28,9 +28,10 @@ using Yitter.IdGenerator;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SugarEntityFilter"/> Sugar实体过滤器
+/// <see cref="SugarEntityFilter"/> Sugar 实体过滤器
 /// </summary>
-internal static class SugarEntityFilter
+[SuppressSniffer]
+public static class SugarEntityFilter
 {
     /// <summary>
     /// 加载 Sugar Aop
@@ -41,7 +42,7 @@ internal static class SugarEntityFilter
     /// <param name="diffLog"><see cref="bool"/> 是否启用差异日志</param>
     /// <param name="disableAop"><see cref="bool"/> 是否禁用Aop</param>
     /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
-    internal static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int sugarSqlExecMaxSeconds, bool diffLog,
+    public static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int sugarSqlExecMaxSeconds, bool diffLog,
         bool disableAop, ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
         _db.Aop.OnLogExecuted = (rawSql, pars) =>
@@ -411,7 +412,7 @@ internal static class SugarEntityFilter
     /// </summary>
     /// <param name="_db"><see cref="ISqlSugarClient"/></param>
     /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
-    internal static void LoadSugarFilter(ISqlSugarClient _db, ISqlSugarEntityHandler sqlSugarEntityHandler)
+    public static void LoadSugarFilter(ISqlSugarClient _db, ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
         if (sqlSugarEntityHandler != null)
         {
