@@ -60,25 +60,27 @@ public static class WebApplicationBuilderExtension
         var sb = new StringBuilder();
         sb.Append("\u001b[1m\u001b[34m");
         sb.Append(Environment.NewLine);
-        sb.Append($"Fast.NET 程序启动时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        sb.Append($"    Fast.NET 程序启动时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         sb.Append(Environment.NewLine);
         sb.Append("\u001b[39m\u001b[22m\u001b[49m");
         sb.Append("\u001b[1m\u001b[32m");
         sb.Append(@"
-  ______                _         _   _   ______   _______ 
- |  ____|              | |       | \ | | |  ____| |__   __|
- | |__     __ _   ___  | |_      |  \| | | |__       | |   
- |  __|   / _` | / __| | __|     | . ` | |  __|      | |   
- | |     | (_| | \__ \ | |_   _  | |\  | | |____     | |   
- |_|      \__,_| |___/  \__| (_) |_| \_| |______|    |_|   
+      ______                _         _   _   ______   _______ 
+     |  ____|              | |       | \ | | |  ____| |__   __|
+     | |__     __ _   ___  | |_      |  \| | | |__       | |   
+     |  __|   / _` | / __| | __|     | . ` | |  __|      | |   
+     | |     | (_| | \__ \ | |_   _  | |\  | | |____     | |   
+     |_|      \__,_| |___/  \__| (_) |_| \_| |______|    |_|   
 
 ");
         sb.Append("\u001b[39m\u001b[22m\u001b[49m");
         sb.Append("\u001b[1m\u001b[31m");
         sb.Append(Environment.NewLine);
-        sb.Append("Gitee：https://gitee.com/China-xiaoFang/Fast.NET");
+        sb.Append("    Gitee：https://gitee.com/China-xiaoFang/Fast.NET");
         sb.Append(Environment.NewLine);
-        sb.Append("持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
+        sb.Append("    持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
+        sb.Append(Environment.NewLine);
+        sb.Append(Environment.NewLine);
         sb.Append("期待您的PR，让.NET更好！");
         sb.Append(Environment.NewLine);
         Console.WriteLine(sb.ToString());
@@ -215,9 +217,7 @@ public static class WebApplicationBuilderExtension
     private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
     {
         // 获取根配置
-        var configuration = configurationBuilder is ConfigurationManager
-            ? configurationBuilder as ConfigurationManager
-            : configurationBuilder.Build();
+        var configuration = configurationBuilder as ConfigurationManager ?? configurationBuilder.Build();
 
         // 获取程序执行目录
         var executeDirectory = AppContext.BaseDirectory;
@@ -229,7 +229,7 @@ public static class WebApplicationBuilderExtension
 
         // 扫描执行目录及自定义配置目录下的 *.json 文件
         var jsonFiles = new[] {executeDirectory}.Concat(configurationScanDirectories)
-            .Concat(InternalConfigurationScanDirectories)
+            .Concat(InternalConfigurationScanDirectories.Where(Directory.Exists))
             .SelectMany(u => Directory.GetFiles(u, "*.json", SearchOption.TopDirectoryOnly))
             .ToList();
 
