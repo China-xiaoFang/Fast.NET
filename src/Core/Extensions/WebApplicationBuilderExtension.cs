@@ -78,8 +78,8 @@ public static class WebApplicationBuilderExtension
         sb.Append(Environment.NewLine);
         sb.Append("    Gitee：https://gitee.com/China-xiaoFang/Fast.NET");
         sb.Append(Environment.NewLine);
-        sb.Append("    持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
         sb.Append(Environment.NewLine);
+        sb.Append("    持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
         sb.Append(Environment.NewLine);
         sb.Append("期待您的PR，让.NET更好！");
         sb.Append(Environment.NewLine);
