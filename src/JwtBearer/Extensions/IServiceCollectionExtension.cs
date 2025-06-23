@@ -181,19 +181,8 @@ public static class IServiceCollectionExtension
         // 注册授权策略提供器
         services.TryAddSingleton<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();
 
-        // 尝试查找继承了 IAuthorizationHandler 的类
-        var authorizationHandler
-            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IAuthorizationHandler).IsAssignableFrom(f) && !f.IsInterface);
-        if (authorizationHandler != null)
-        {
-            // 注册策略授权处理程序
-            services.TryAddSingleton(typeof(IAuthorizationHandler), authorizationHandler);
-        }
-        else
-        {
-            // 注册策略授权处理程序
-            services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
-        }
+        // 注册策略授权处理程序
+        services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
 
         //启用全局授权
         if (Penetrates.JWTSettings.Enable.HasValue && Penetrates.JWTSettings.Enable.Value)
@@ -244,19 +233,8 @@ public static class IServiceCollectionExtension
         // 注册授权策略提供器
         services.TryAddSingleton<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();
 
-        // 尝试查找继承了 IAuthorizationHandler 的类
-        var authorizationHandler
-            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IAuthorizationHandler).IsAssignableFrom(f) && !f.IsInterface);
-        if (authorizationHandler != null)
-        {
-            // 注册策略授权处理程序
-            services.TryAddSingleton(typeof(IAuthorizationHandler), authorizationHandler);
-        }
-        else
-        {
-            // 注册策略授权处理程序
-            services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
-        }
+        // 注册策略授权处理程序
+        services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
 
         //启用全局授权
         if (Penetrates.JWTSettings.Enable.HasValue && Penetrates.JWTSettings.Enable.Value)
