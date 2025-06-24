@@ -23,7 +23,6 @@
 using System.Linq.Expressions;
 using SqlSugar;
 
-
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
@@ -35,13 +34,13 @@ public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : 
     /// <summary>
     /// 是否支持逻辑删除
     /// </summary>
-    /// <remarks><see cref="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用</remarks>
+    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用</remarks>
     bool SupportsLogicDelete { get; }
 
     /// <summary>
     /// 是否支持行版本控制（乐观锁）
     /// </summary>
-    /// <remarks><see cref="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用</remarks>
+    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用</remarks>
     bool SupportsRowVersion { get; }
 
     /// <summary>
