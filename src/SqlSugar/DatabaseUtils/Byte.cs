@@ -31,11 +31,11 @@ namespace Fast.SqlSugar;
 internal partial class DatabaseUtil
 {
     /// <summary>
-    /// 设置 <see cref="DateTime"/> 类型
+    /// 设置 <see cref="byte"/> 类型
     /// </summary>
     /// <param name="dbType"></param>
     /// <param name="columnInfo"></param>
-    internal static void SetDbTypeDateTime(DbType dbType, ref EntityColumnInfo columnInfo)
+    internal static void SetDbTypeByte(DbType dbType, ref EntityColumnInfo columnInfo)
     {
         switch (dbType)
         {
@@ -46,64 +46,80 @@ internal partial class DatabaseUtil
             case DbType.PolarDB:
             case DbType.GBase:
             case DbType.HG:
-            case DbType.Oscar:
-            case DbType.Odbc:
-            case DbType.Access:
-            case DbType.MongoDb:
-            case DbType.ClickHouse:
-                columnInfo.DataType = "datetime";
+                columnInfo.DataType = "tinyint unsigned";
                 break;
 
-            // SQL Server 系列
+            // SQL Server
             case DbType.SqlServer:
-                columnInfo.DataType = "datetimeoffset";
-                break;
-
-            // SQLite
-            case DbType.Sqlite:
-                columnInfo.DataType = "text";
-                break;
-
-            // Oracle 系列
-            case DbType.Oracle:
-            case DbType.OceanBaseForOracle:
-                columnInfo.DataType = "timestamp with time zone";
+                columnInfo.DataType = "tinyint";
                 break;
 
             // PostgreSQL 系列
             case DbType.PostgreSQL:
             case DbType.OpenGauss:
             case DbType.TDSQLForPGODBC:
-                columnInfo.DataType = "timestamp with time zone";
-                break;
-
-            // 类 Oracle/PostgreSQL 兼容库
+            case DbType.TDSQL:
             case DbType.GaussDB:
             case DbType.GaussDBNative:
             case DbType.Vastbase:
             case DbType.Xugu:
             case DbType.Doris:
-            case DbType.TDSQL:
             case DbType.GoldenDB:
             case DbType.DuckDB:
-            case DbType.QuestDB:
-            case DbType.Dm:
-            case DbType.Kdbndp:
-            case DbType.HANA:
-            case DbType.DB2:
-                columnInfo.DataType = "timestamp";
+                columnInfo.DataType = "smallint";
                 break;
 
-            // TDengine 支持 timestamp 类型
+            // Oracle 系列
+            case DbType.Oracle:
+            case DbType.OceanBaseForOracle:
+                columnInfo.DataType = "number(3,0)";
+                break;
+
+            // SQLite
+            case DbType.Sqlite:
+                columnInfo.DataType = "integer";
+                break;
+
+            // ClickHouse
+            case DbType.ClickHouse:
+                columnInfo.DataType = "uint8";
+                break;
+
+            // Access
+            case DbType.Access:
+                columnInfo.DataType = "byte";
+                break;
+
+            // MongoDB
+            case DbType.MongoDb:
+                columnInfo.DataType = "int32";
+                break;
+
+            // 其他类关系型数据库统一 smallint
+            case DbType.Dm:
+            case DbType.Oscar:
+            case DbType.Kdbndp:
+            case DbType.DB2:
+            case DbType.HANA:
+            case DbType.Odbc:
+                columnInfo.DataType = "smallint";
+                break;
+
+            // QuestDB：建议用 short 避免溢出
+            case DbType.QuestDB:
+                columnInfo.DataType = "smallint";
+                break;
+
+            // TDengine 支持 tinyint，不支持 byte 类型的特殊含义
             case DbType.TDengine:
-                columnInfo.DataType = "timestamp";
+                columnInfo.DataType = "tinyint";
                 break;
 
             // 默认
-            case DbType.Custom:
             case DbType.OceanBase:
+            case DbType.Custom:
             default:
-                columnInfo.DataType = "datetime";
+                columnInfo.DataType = "tinyint";
                 break;
         }
     }

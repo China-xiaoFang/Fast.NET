@@ -56,13 +56,6 @@ internal partial class DatabaseUtil
             },
             EntityService = (propertyInfo, columnInfo) =>
             {
-                // 主键配置，如果使用SqlSugar的规范，其实这里是不会走的
-                var keyAttribute = propertyInfo.GetCustomAttribute<KeyAttribute>();
-                if (keyAttribute != null)
-                {
-                    columnInfo.IsPrimarykey = true;
-                }
-
                 // 列名配置，如果使用SqlSugar的规范，其实这里是不会走的
                 var columnAttribute = propertyInfo.GetCustomAttribute<ColumnAttribute>();
                 if (columnAttribute != null)
@@ -70,34 +63,91 @@ internal partial class DatabaseUtil
                     columnInfo.DbColumnName = columnAttribute.Name;
                 }
 
-                // 可空类型配置
-                if (propertyInfo.PropertyType.IsGenericType
-                    && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                // 主键配置，如果使用SqlSugar的规范，其实这里是不会走的
+                var keyAttribute = propertyInfo.GetCustomAttribute<KeyAttribute>();
+                if (keyAttribute != null)
                 {
-                    columnInfo.IsNullable = true;
+                    columnInfo.IsPrimarykey = true;
                 }
 
+                if (!columnInfo.IsPrimarykey)
+                {
+                    // 可空类型配置
+                    if (propertyInfo.PropertyType.IsValueType)
+                    {
+                        // 值类型，int? 等等
+                        if (propertyInfo.PropertyType.IsGenericType
+                            && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            columnInfo.IsNullable = true;
+                        }
+                    }
+                    else
+                    {
+                        // 引用类型，string 等等
+                        if (new NullabilityInfoContext().Create(propertyInfo)
+                                .WriteState is NullabilityState.Unknown or NullabilityState.Nullable)
+                        {
+                            columnInfo.IsNullable = true;
+                        }
+                    }
+
+                    // 非空类型配置，主要针对 string 类型的必填验证
+                    var requiredAttribute = propertyInfo.GetCustomAttribute<RequiredAttribute>();
+                    if (requiredAttribute != null)
+                    {
+                        columnInfo.IsNullable = false;
+                    }
+                }
+
+                // 这里默认都是 Sql Server 的配置
                 if (string.IsNullOrEmpty(columnInfo.DataType))
                 {
                     var propertyType = propertyInfo.PropertyType.IsGenericType
                         ? Nullable.GetUnderlyingType(propertyInfo.PropertyType)
                         : propertyInfo.PropertyType;
 
-                    if (propertyType == typeof(DateTime))
+                    // 枚举处理
+                    if (propertyType!.IsEnum)
+                    {
+                        var enumType = Enum.GetUnderlyingType(propertyType);
+
+                        columnInfo.DataType = enumType switch
+                        {
+                            not null when enumType == typeof(byte) => "tinyint",
+                            not null when enumType == typeof(short) => "smallint",
+                            not null when enumType == typeof(long) => "bigint",
+                            _ => "int"
+                        };
+                    }
+                    else if (propertyType == typeof(DateTime) || propertyType == typeof(DateTimeOffset))
                     {
                         columnInfo.DataType = "datetimeoffset";
                     }
                 }
 
                 // 这里的所有数据库类型，默认是根据SqlServer配置的
-                var columnDbType = columnInfo.DataType?.ToUpper();
+                var columnDbType = columnInfo.DataType?.ToLower();
                 if (columnDbType == null)
                     return;
 
-                // DateTime
-                if (columnDbType == "DATETIMEOFFSET")
+                switch (columnDbType)
                 {
-                    SetDbTypeDateTime(dbType, ref columnInfo);
+                    case "tinyint":
+                        SetDbTypeByte(dbType, ref columnInfo);
+                        break;
+                    case "smallint":
+                        SetDbTypeShort(dbType, ref columnInfo);
+                        break;
+                    case "bigint":
+                        SetDbTypeLong(dbType, ref columnInfo);
+                        break;
+                    case "int":
+                        SetDbTypeInt(dbType, ref columnInfo);
+                        break;
+                    case "datetimeoffset":
+                        SetDbTypeDateTime(dbType, ref columnInfo);
+                        break;
                 }
             }
         };
