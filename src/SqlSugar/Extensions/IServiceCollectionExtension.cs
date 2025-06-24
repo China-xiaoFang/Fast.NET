@@ -116,8 +116,6 @@ public static class IServiceCollectionExtension
 
         SqlSugarContext.ConnectionSettings = connectionSettings;
 
-        SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(connectionSettings);
-
         services.AddSqlSugar(hostEnvironment);
 
         return services;
@@ -143,8 +141,6 @@ public static class IServiceCollectionExtension
         optionAction.Invoke(connectionSettings);
 
         SqlSugarContext.ConnectionSettings = connectionSettings;
-
-        SqlSugarContext.DefaultConnectionConfig = SqlSugarContext.GetConnectionConfig(connectionSettings);
 
         services.AddSqlSugar(hostEnvironment);
 
@@ -174,7 +170,7 @@ public static class IServiceCollectionExtension
             // 获取 Sugar实体处理 接口的实现类
             var sqlSugarEntityHandler = serviceProvider.GetRequiredService<ISqlSugarEntityHandler>();
 
-            var sqlSugarClient = new SqlSugarClient(SqlSugarContext.DefaultConnectionConfig);
+            var sqlSugarClient = new SqlSugarClient(SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings));
 
             // 执行超时时间
             sqlSugarClient.Ado.CommandTimeOut = SqlSugarContext.ConnectionSettings.CommandTimeOut;
