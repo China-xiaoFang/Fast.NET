@@ -54,7 +54,7 @@ public static class SugarEntityFilter
                 if (rawSql.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase))
                 {
                     // 如果是系统表则不输出，避免安全起见
-                    if (rawSql.Contains("information_schema.TABLES", StringComparison.OrdinalIgnoreCase))
+                    if (rawSql.Contains("information_schema", StringComparison.OrdinalIgnoreCase))
                         return;
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                 }
