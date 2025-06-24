@@ -77,35 +77,35 @@ public static class IServiceCollectionExtension
             if (LogLevel.Debug >= loggingSettings.MiniLogLevel)
             {
                 loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                    new FileLoggerProvider($"logs/debug{loggingSettings}.log",
+                    new FileLoggerProvider($"logs/debug{loggingSettings.FileFormat}.log",
                         GetLogOptions(LogLevel.Debug, loggingSettings.FileSizeLimit!.Value))));
             }
 
             if (LogLevel.Information >= loggingSettings.MiniLogLevel)
             {
                 loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                    new FileLoggerProvider($"logs/information{loggingSettings}.log",
+                    new FileLoggerProvider($"logs/information{loggingSettings.FileFormat}.log",
                         GetLogOptions(LogLevel.Information, loggingSettings.FileSizeLimit!.Value))));
             }
 
             if (LogLevel.Warning >= loggingSettings.MiniLogLevel)
             {
                 loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                    new FileLoggerProvider($"logs/warning{loggingSettings}.log",
+                    new FileLoggerProvider($"logs/warning{loggingSettings.FileFormat}.log",
                         GetLogOptions(LogLevel.Warning, loggingSettings.FileSizeLimit!.Value))));
             }
 
             if (LogLevel.Error >= loggingSettings.MiniLogLevel)
             {
                 loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                    new FileLoggerProvider($"logs/error{loggingSettings}.log",
+                    new FileLoggerProvider($"logs/error{loggingSettings.FileFormat}.log",
                         GetLogOptions(LogLevel.Error, loggingSettings.FileSizeLimit!.Value))));
             }
 
             if (LogLevel.Critical >= loggingSettings.MiniLogLevel && loggingSettings.EnableCritical!.Value)
             {
                 loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                    new FileLoggerProvider($"logs/critical{loggingSettings}.log",
+                    new FileLoggerProvider($"logs/critical{loggingSettings.FileFormat}.log",
                         GetLogOptions(LogLevel.Critical, loggingSettings.FileSizeLimit!.Value))));
             }
         });
