@@ -33,6 +33,18 @@ namespace Fast.SqlSugar;
 public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : class, new()
 {
     /// <summary>
+    /// 是否支持逻辑删除
+    /// </summary>
+    /// <remarks><see cref="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用</remarks>
+    bool SupportsLogicDelete { get; }
+
+    /// <summary>
+    /// 是否支持行版本控制（乐观锁）
+    /// </summary>
+    /// <remarks><see cref="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用</remarks>
+    bool SupportsRowVersion { get; }
+
+    /// <summary>
     /// 实体集合
     /// </summary>
     ISugarQueryable<TEntity> Entities { get; }
@@ -298,8 +310,9 @@ public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : 
     /// 更新一条记录
     /// </summary>
     /// <param name="entity"></param>
+    /// <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
     /// <returns></returns>
-    Task<int> UpdateAsync(TEntity entity);
+    Task<int> UpdateAsync(TEntity entity, bool isNoUpdateNull = false);
 
     /// <summary>
     /// 更新多条记录
@@ -406,18 +419,16 @@ public interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : 
     /// <summary>
     /// 自定义条件逻辑删除记录
     /// </summary>
-    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// <remarks>注意，实体必须继承 <see cref="IDeletedEntity"/></remarks>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
     int LogicDelete(Expression<Func<TEntity, bool>> whereExpression);
 
     /// <summary>
     /// 自定义条件逻辑删除记录
     /// </summary>
-    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// <remarks>注意，实体必须继承 <see cref="IDeletedEntity"/></remarks>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
     Task<int> LogicDeleteAsync(Expression<Func<TEntity, bool>> whereExpression);
 }

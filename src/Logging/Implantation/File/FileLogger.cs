@@ -88,7 +88,6 @@ internal class FileLogger : ILogger
     /// <param name="state">要写入的项/对象</param>
     /// <param name="exception">异常对象</param>
     /// <param name="formatter">日志格式化器</param>
-    /// <exception cref="ArgumentNullException"></exception>
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
         Func<TState, Exception, string> formatter)
     {

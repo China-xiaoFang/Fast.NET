@@ -26,10 +26,10 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IBaseSnowflakeRecordEntity"/> 雪花主键记录Entity基类接口
+/// <see cref="ISnowflakeRecordEntity"/> 雪花主键记录Entity基类接口
 /// </summary>
 [SuppressSniffer]
-public interface IBaseSnowflakeRecordEntity : IDatabaseEntity
+public interface ISnowflakeRecordEntity : IDatabaseEntity
 {
     /// <summary>
     /// 设备

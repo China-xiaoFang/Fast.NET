@@ -31,7 +31,7 @@ namespace Fast.SqlSugar;
 /// <see cref="BaseSnowflakeRecordEntity"/> 雪花主键记录Entity基类
 /// </summary>
 [SuppressSniffer]
-public class BaseSnowflakeRecordEntity : SnowflakeKeyEntity, IBaseIdentityRecordEntity
+public class BaseSnowflakeRecordEntity : SnowflakeKeyEntity, IIdentityRecordEntity
 {
     /// <summary>
     /// 设备

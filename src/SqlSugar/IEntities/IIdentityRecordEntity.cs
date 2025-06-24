@@ -20,68 +20,75 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using SqlSugar;
+using Microsoft.AspNetCore.Http;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="BaseEntity"/> Entity基类
+/// <see cref="IIdentityRecordEntity"/> 自增主键记录Entity基类接口
 /// </summary>
 [SuppressSniffer]
-public class BaseEntity : SnowflakeKeyEntity, IBaseEntity, IDeletedEntity
+public interface IIdentityRecordEntity : IDatabaseEntity
 {
+    /// <summary>
+    /// 设备
+    /// </summary>
+    string Device { get; set; }
+
+    /// <summary>
+    /// 操作系统（版本）
+    /// </summary>
+    string OS { get; set; }
+
+    /// <summary>
+    /// 浏览器（版本）
+    /// </summary>
+    string Browser { get; set; }
+
+    /// <summary>
+    /// 省份
+    /// </summary>
+    string Province { get; set; }
+
+    /// <summary>
+    /// 城市
+    /// </summary>
+    string City { get; set; }
+
+    /// <summary>
+    /// Ip
+    /// </summary>
+    string Ip { get; set; }
+
     /// <summary>
     /// 部门Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "部门Id", CreateTableFieldSort = 989)]
-    public virtual long? DepartmentId { get; set; }
+    long? DepartmentId { get; set; }
 
     /// <summary>
     /// 部门名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "部门名称", Length = 20, IsNullable = true, CreateTableFieldSort = 990)]
-    public virtual string DepartmentName { get; set; }
+    string DepartmentName { get; set; }
 
     /// <summary>
     /// 创建者用户Id
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建者用户Id", CreateTableFieldSort = 991)]
-    public virtual long? CreatedUserId { get; set; }
+    long? CreatedUserId { get; set; }
 
     /// <summary>
     /// 创建者用户名称
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建者用户名称", Length = 20, IsNullable = true, CreateTableFieldSort = 992)]
-    public virtual string CreatedUserName { get; set; }
+    string CreatedUserName { get; set; }
 
     /// <summary>
     /// 创建时间
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
-    public virtual DateTime? CreatedTime { get; set; }
+    DateTime? CreatedTime { get; set; }
 
     /// <summary>
-    /// 更新者用户Id
+    /// 记录表创建
     /// </summary>
-    [SugarColumn(ColumnDescription = "更新者用户Id", CreateTableFieldSort = 994)]
-    public virtual long? UpdatedUserId { get; set; }
-
-    /// <summary>
-    /// 更新者用户名称
-    /// </summary>
-    [SugarColumn(ColumnDescription = "更新者用户名称", Length = 20, IsNullable = true, CreateTableFieldSort = 995)]
-    public virtual string UpdatedUserName { get; set; }
-
-    /// <summary>
-    /// 更新时间
-    /// </summary>
-    [SugarColumn(ColumnDescription = "更新时间", CreateTableFieldSort = 996)]
-    public virtual DateTime? UpdatedTime { get; set; }
-
-    /// <summary>
-    /// 软删除标识
-    /// </summary>
-    [SugarColumn(ColumnDescription = "软删除标识", CreateTableFieldSort = 999)]
-    public virtual bool IsDeleted { get; set; }
+    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
+    void RecordCreate(HttpContext httpContext);
 }

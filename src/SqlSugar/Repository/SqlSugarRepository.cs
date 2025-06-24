@@ -50,6 +50,11 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     {
         _serviceProvider = serviceProvider;
 
+        // 是否支持逻辑删除
+        SupportsLogicDelete = typeof(IDeletedEntity).IsAssignableFrom(typeof(TEntity));
+        // 是否支持行版本控制
+        SupportsRowVersion = typeof(IUpdateVersion).IsAssignableFrom(typeof(TEntity));
+
         // 获取当前实体类头部的 SugarDbTypeAttribute 特性
         var sugarDbTypeAttribute = typeof(TEntity).GetCustomAttribute<SugarDbTypeAttribute>();
 
@@ -90,6 +95,18 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
             DatabaseInfo = SqlSugarContext.ConnectionSettings;
         }
     }
+
+    /// <summary>
+    /// 是否支持逻辑删除
+    /// </summary>
+    /// <remarks><see cref="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用</remarks>
+    public bool SupportsLogicDelete { get; }
+
+    /// <summary>
+    /// 是否支持行版本控制（乐观锁）
+    /// </summary>
+    /// <remarks><see cref="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用</remarks>
+    public bool SupportsRowVersion { get; }
 
     /// <summary>
     /// 实体集合
@@ -471,20 +488,24 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <returns></returns>
     public int Update(TEntity entity, bool isNoUpdateNull = false)
     {
-        return Updateable(entity)
-            .IgnoreColumns(isNoUpdateNull)
-            .ExecuteCommand();
+        var updateable = Updateable(entity)
+            .IgnoreColumns(isNoUpdateNull);
+
+        return SupportsRowVersion ? updateable.ExecuteCommandWithOptLock(true) : updateable.ExecuteCommand();
     }
 
     /// <summary>
     /// 更新一条记录
     /// </summary>
     /// <param name="entity"></param>
+    /// <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
     /// <returns></returns>
-    public Task<int> UpdateAsync(TEntity entity)
+    public Task<int> UpdateAsync(TEntity entity, bool isNoUpdateNull = false)
     {
-        return Updateable(entity)
-            .ExecuteCommandAsync();
+        var updateable = Updateable(entity)
+            .IgnoreColumns(isNoUpdateNull);
+
+        return SupportsRowVersion ? updateable.ExecuteCommandWithOptLockAsync(true) : updateable.ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -684,26 +705,21 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <summary>
     /// 自定义条件逻辑删除记录
     /// </summary>
-    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// <remarks>注意，实体必须继承 <see cref="IDeletedEntity"/></remarks>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
     public int LogicDelete(Expression<Func<TEntity, bool>> whereExpression)
     {
-        // 获取 TEntity 的类型
-        var entityType = typeof(TEntity);
-
-        // 判断是否继承了 IBaseDeletedEntity
-        if (!entityType.GetInterfaces()
-                .Contains(typeof(IBaseDeletedEntity)))
+        // 判断是否支持逻辑删除
+        if (!SupportsLogicDelete)
             throw new InvalidOperationException(
-                $"{nameof(TEntity)} does not inherit {nameof(IBaseDeletedEntity)} interface, Logical deletion cannot be used.");
+                $"{nameof(TEntity)} does not inherit {nameof(IDeletedEntity)} interface, Logical deletion cannot be used.");
 
         // 反射创建实体
         var deletedEntity = Activator.CreateInstance<TEntity>();
 
         // 获取 IsDeleted 字段属性
-        var isDeletedProperty = entityType.GetProperty(nameof(IBaseDeletedEntity.IsDeleted));
+        var isDeletedProperty = typeof(TEntity).GetProperty(nameof(IDeletedEntity.IsDeleted));
 
         // 设置 IsDeleted 字段属性值
         isDeletedProperty!.SetValue(deletedEntity, true);
@@ -718,26 +734,21 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <summary>
     /// 自定义条件逻辑删除记录
     /// </summary>
-    /// <remarks>注意，实体必须继承 <see cref="IBaseDeletedEntity"/></remarks>
+    /// <remarks>注意，实体必须继承 <see cref="IDeletedEntity"/></remarks>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
     public async Task<int> LogicDeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
-        // 获取 TEntity 的类型
-        var entityType = typeof(TEntity);
-
-        // 判断是否继承了 IBaseDeletedEntity
-        if (!entityType.GetInterfaces()
-                .Contains(typeof(IBaseDeletedEntity)))
+        // 判断是否支持逻辑删除
+        if (!SupportsLogicDelete)
             throw new InvalidOperationException(
-                $"{nameof(TEntity)} does not inherit {nameof(IBaseDeletedEntity)} interface, Logical deletion cannot be used.");
+                $"{nameof(TEntity)} does not inherit {nameof(IDeletedEntity)} interface, Logical deletion cannot be used.");
 
         // 反射创建实体
         var deletedEntity = Activator.CreateInstance<TEntity>();
 
         // 获取 IsDeleted 字段属性
-        var isDeletedProperty = entityType.GetProperty(nameof(IBaseDeletedEntity.IsDeleted));
+        var isDeletedProperty = typeof(TEntity).GetProperty(nameof(IDeletedEntity.IsDeleted));
 
         // 设置 IsDeleted 字段属性值
         isDeletedProperty!.SetValue(deletedEntity, true);
