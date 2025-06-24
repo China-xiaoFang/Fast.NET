@@ -121,7 +121,7 @@ internal class FileLoggingWriter
             // 在当前目录下根据文件通配符查找所有匹配的文件
             var logFiles = Directory.Exists(logDirName)
                 ? Directory.GetFiles(logDirName, logFileMask, SearchOption.TopDirectoryOnly)
-                : Array.Empty<string>();
+                : [];
 
             // 处理已有日志文件存在情况
             if (logFiles.Length > 0)
@@ -258,9 +258,7 @@ internal class FileLoggingWriter
     /// </summary>
     private void CheckForNewLogFile()
     {
-        var openNewFile = false;
-        if (isMaxFileSizeThresholdReached() || isBaseFileNameChanged())
-            openNewFile = true;
+        var openNewFile = isMaxFileSizeThresholdReached() || isBaseFileNameChanged();
 
         // 重新创建新文件并写入
         if (openNewFile)
@@ -290,8 +288,6 @@ internal class FileLoggingWriter
                     __LastBaseFileName = baseFileName;
                     return true;
                 }
-
-                return false;
             }
 
             return false;

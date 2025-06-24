@@ -49,14 +49,14 @@ public static class JwtBearerUtil
     /// 日期类型的 Claim 类型
     /// </summary>
     public static readonly string[] DateTypeClaimTypes =
-    {
+    [
         JwtRegisteredClaimNames.Iat, JwtRegisteredClaimNames.Nbf, JwtRegisteredClaimNames.Exp
-    };
+    ];
 
     /// <summary>
     /// 刷新 Token 身份标识
     /// </summary>
-    public static readonly string[] RefreshTokenClaims = {"f", "e", "s", "l", "k"};
+    public static readonly string[] RefreshTokenClaims = ["f", "e", "s", "l", "k"];
 
     /// <summary>
     /// 生成Token验证参数
@@ -128,7 +128,7 @@ public static class JwtBearerUtil
         var stringPayload = payload is JwtPayload jwtPayload
             ? jwtPayload.SerializeToJson()
             : JsonSerializer.Serialize(payload,
-                new JsonSerializerOptions {Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping});
+                new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
 
         SigningCredentials credentials = null;
 
@@ -440,7 +440,7 @@ public static class JwtBearerUtil
 
                 // 判断这个Token 是否已标记过期
                 var blacklistAccessKey = "BLACKLIST_ACCESS_TOKEN:" + accessToken;
-                var distributedCache = httpContext?.RequestServices.GetService<IDistributedCache>();
+                var distributedCache = httpContext.RequestServices.GetService<IDistributedCache>();
 
                 var cachedValue = distributedCache?.GetString(blacklistAccessKey);
                 if (!string.IsNullOrWhiteSpace(cachedValue))
@@ -498,7 +498,7 @@ public static class JwtBearerUtil
         // 处理 axios 问题
         httpContext.Response.Headers.TryGetValue(accessControlExposeKey, out var aches);
         httpContext.Response.Headers[accessControlExposeKey] = string.Join(',',
-            StringValues.Concat(aches, new StringValues(new[] {accessTokenKey, xAccessTokenKey}))
+            StringValues.Concat(aches, new StringValues([accessTokenKey, xAccessTokenKey]))
                 .Distinct());
 
         return true;
