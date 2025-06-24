@@ -99,13 +99,13 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// <summary>
     /// 是否支持逻辑删除
     /// </summary>
-    /// <remarks><see cref="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用</remarks>
+    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用</remarks>
     public bool SupportsLogicDelete { get; }
 
     /// <summary>
     /// 是否支持行版本控制（乐观锁）
     /// </summary>
-    /// <remarks><see cref="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用</remarks>
+    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用</remarks>
     public bool SupportsRowVersion { get; }
 
     /// <summary>
@@ -401,7 +401,7 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     public Task<int> InsertAsync(IEnumerable<TEntity> entities)
     {
         var _entities = entities?.ToArray();
-        if (_entities != null && _entities.Any())
+        if (_entities?.Length > 0)
         {
             return Insertable(_entities.ToArray())
                 .ExecuteCommandAsync();
