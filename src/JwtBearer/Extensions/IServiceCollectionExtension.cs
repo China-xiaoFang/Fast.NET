@@ -47,7 +47,7 @@ public static class IServiceCollectionExtension
     /// <param name="section">
     /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
-    /// <remarks>默认值：JWTSettings</remarks>
+    /// <para>默认值：JWTSettings</para>
     /// </param>
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services, IConfiguration configuration,
@@ -93,7 +93,7 @@ public static class IServiceCollectionExtension
     /// <param name="section">
     /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
-    /// <remarks>默认值：JWTSettings</remarks>
+    /// <para>默认值：JWTSettings</para>
     /// </param>
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services, IConfiguration configuration,
@@ -153,7 +153,7 @@ public static class IServiceCollectionExtension
     /// <param name="section">
     /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
-    /// <remarks>默认值：JWTSettings</remarks>
+    /// <para>默认值：JWTSettings</para>
     /// </param>
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddJwtBearer(this IServiceCollection services, IConfiguration configuration,

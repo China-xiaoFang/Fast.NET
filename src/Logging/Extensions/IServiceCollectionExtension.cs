@@ -20,9 +20,10 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using Fast.Runtime;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable once CheckNamespace
@@ -38,145 +39,75 @@ public static class IServiceCollectionExtension
     /// 注册日志服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="hostEnvironment"><see cref="IHostEnvironment"/></param>
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <param name="section"><see cref="string"/>
+    /// <para>Json配置文件节点的Key</para>
+    /// <para>默认值：Logging:Fast</para>
+    /// </param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddLoggingService(this IServiceCollection services, IHostEnvironment hostEnvironment)
+    public static IServiceCollection AddLoggingService(this IServiceCollection services, IConfiguration configuration,
+        string section = "Logging:Fast")
     {
         Debugging.Info("Registering logging......");
 
+        // 配置验证
+        services.AddConfigurableOptions<LoggingSettingsOptions>(section);
+
+        // 获取配置选项
+        var loggingSettings = configuration.GetSection(section)
+            .Get<LoggingSettingsOptions>()
+            .LoadPostConfigure();
+
         // 存储服务提供器
         Penetrates.InternalServices = services;
-
-        // 获取默认日志级别
-        Penetrates.DefaultLogLevel = LogLevel.Error;
-
-        if (hostEnvironment.IsDevelopment())
-        {
-            Penetrates.DefaultLogLevel = LogLevel.Information;
-        }
-
-        // 默认设置为 10MB / 10485760B
-        var fileSizeLimitBytes = 1024 * 1024 * 10;
-
-        // 默认根据年月日时分类
-        const string logFileFormat = "{0:yyyy}/{0:MM}/{0:dd}/{0:HH}";
 
         services.AddLogging(loggingBuilder =>
         {
             // 添加控制台默认格式化器
             loggingBuilder.AddConsoleFormatter();
 
-            if (hostEnvironment.IsDevelopment())
-            {
-                // 根据默认日志级别创建对应的文件日志
-                if (LogLevel.Trace >= Penetrates.DefaultLogLevel)
-                {
-                    loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                        new FileLoggerProvider($"logs/trace/{logFileFormat}.log",
-                            GetLogOptions(LogLevel.Trace, fileSizeLimitBytes))));
-                }
-
-                if (LogLevel.Debug >= Penetrates.DefaultLogLevel)
-                {
-                    loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                        new FileLoggerProvider($"logs/debug/{logFileFormat}.log",
-                            GetLogOptions(LogLevel.Debug, fileSizeLimitBytes))));
-                }
-
-                if (LogLevel.Information >= Penetrates.DefaultLogLevel)
-                {
-                    loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                        new FileLoggerProvider($"logs/information/{logFileFormat}.log",
-                            GetLogOptions(LogLevel.Information, fileSizeLimitBytes))));
-                }
-
-                if (LogLevel.Warning >= Penetrates.DefaultLogLevel)
-                {
-                    loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                        new FileLoggerProvider($"logs/warning/{logFileFormat}.log",
-                            GetLogOptions(LogLevel.Warning, fileSizeLimitBytes))));
-                }
-
-                if (LogLevel.Error >= Penetrates.DefaultLogLevel)
-                {
-                    loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                        new FileLoggerProvider($"logs/error/{logFileFormat}.log",
-                            GetLogOptions(LogLevel.Error, fileSizeLimitBytes))));
-                }
-
-                if (LogLevel.Critical >= Penetrates.DefaultLogLevel)
-                {
-                    loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                        new FileLoggerProvider($"logs/critical/{logFileFormat}.log",
-                            GetLogOptions(LogLevel.Critical, fileSizeLimitBytes))));
-                }
-            }
-            else
+            // 根据默认日志级别创建对应的文件日志
+            if (LogLevel.Trace >= loggingSettings.MiniLogLevel)
             {
                 loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                    new FileLoggerProvider("logs/{0:yyyy}/{0:MM}/{0:dd}/error_{0:HH}.log",
-                        GetLogOptions(LogLevel.Error, fileSizeLimitBytes))));
+                    new FileLoggerProvider($"logs/trace{loggingSettings.FileFormat}.log",
+                        GetLogOptions(LogLevel.Trace, loggingSettings.FileSizeLimit!.Value))));
             }
-        });
 
-        // 注册 Logging Startup 过滤器
-        services.AddTransient(typeof(IStartupFilter), typeof(LoggingStartupFilter));
+            if (LogLevel.Debug >= loggingSettings.MiniLogLevel)
+            {
+                loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
+                    new FileLoggerProvider($"logs/debug{loggingSettings}.log",
+                        GetLogOptions(LogLevel.Debug, loggingSettings.FileSizeLimit!.Value))));
+            }
 
-        return services;
-    }
+            if (LogLevel.Information >= loggingSettings.MiniLogLevel)
+            {
+                loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
+                    new FileLoggerProvider($"logs/information{loggingSettings}.log",
+                        GetLogOptions(LogLevel.Information, loggingSettings.FileSizeLimit!.Value))));
+            }
 
-    /// <summary>
-    /// 注册日志服务
-    /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configure"><see cref="Action{T}"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddLoggingService(this IServiceCollection services, Action<ILoggingBuilder, int> configure)
-    {
-        Debugging.Info("Registering logging......");
+            if (LogLevel.Warning >= loggingSettings.MiniLogLevel)
+            {
+                loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
+                    new FileLoggerProvider($"logs/warning{loggingSettings}.log",
+                        GetLogOptions(LogLevel.Warning, loggingSettings.FileSizeLimit!.Value))));
+            }
 
-        // 存储服务提供器
-        Penetrates.InternalServices = services;
+            if (LogLevel.Error >= loggingSettings.MiniLogLevel)
+            {
+                loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
+                    new FileLoggerProvider($"logs/error{loggingSettings}.log",
+                        GetLogOptions(LogLevel.Error, loggingSettings.FileSizeLimit!.Value))));
+            }
 
-        // 默认设置为 10MB / 10485760B
-        var fileSizeLimitBytes = 1024 * 1024 * 10;
-
-        services.AddLogging(loggingBuilder =>
-        {
-            // 添加控制台默认格式化器
-            loggingBuilder.AddConsoleFormatter();
-
-            configure.Invoke(loggingBuilder, fileSizeLimitBytes);
-        });
-
-        // 注册 Logging Startup 过滤器
-        services.AddTransient(typeof(IStartupFilter), typeof(LoggingStartupFilter));
-
-        return services;
-    }
-
-    /// <summary>
-    /// 注册错误日志服务
-    /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddErrorLoggingService(this IServiceCollection services)
-    {
-        Debugging.Info("Registering logging......");
-
-        // 存储服务提供器
-        Penetrates.InternalServices = services;
-
-        // 默认设置为 10MB / 10485760B
-        var fileSizeLimitBytes = 1024 * 1024 * 10;
-
-        services.AddLogging(loggingBuilder =>
-        {
-            // 添加控制台默认格式化器
-            loggingBuilder.AddConsoleFormatter();
-
-            loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
-                new FileLoggerProvider("logs/error_{0:yyyy}-{0:MM}.log", GetLogOptions(LogLevel.Error, fileSizeLimitBytes))));
+            if (LogLevel.Critical >= loggingSettings.MiniLogLevel && loggingSettings.EnableCritical!.Value)
+            {
+                loggingBuilder.Services.Add(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>(_ =>
+                    new FileLoggerProvider($"logs/critical{loggingSettings}.log",
+                        GetLogOptions(LogLevel.Critical, loggingSettings.FileSizeLimit!.Value))));
+            }
         });
 
         // 注册 Logging Startup 过滤器

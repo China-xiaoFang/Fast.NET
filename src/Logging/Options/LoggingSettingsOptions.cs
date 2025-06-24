@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,66 +20,46 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+using Fast.Runtime;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.Logging;
 
 /// <summary>
-/// 常量、公共方法配置类
+/// <see cref="LoggingSettingsOptions"/> 日志配置选项
 /// </summary>
-internal static class Penetrates
+[SuppressSniffer]
+public class LoggingSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 应用服务
+    /// 文件格式字符串
     /// </summary>
-    internal static IServiceCollection InternalServices;
+    public string FileFormat { get; set; }
 
     /// <summary>
-    /// 根服务
+    /// 文件大小限制（字节）
     /// </summary>
-    internal static IServiceProvider RootServices;
+    public int? FileSizeLimit { get; set; }
 
     /// <summary>
-    /// 请求上下文
+    /// 最小日志级别
     /// </summary>
-    internal static HttpContext HttpContext =>
-        MAppContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()
-            ?.HttpContext);
+    public LogLevel? MiniLogLevel { get; set; }
 
     /// <summary>
-    /// 控制台默认格式化程序名称
+    /// 启用 <see cref="LogLevel.Critical"/> 级别日志
     /// </summary>
-    internal const string ConsoleFormatterName = "console-format";
+    public bool? EnableCritical { get; set; }
 
     /// <summary>
-    /// 设置日志上下文
+    /// 后期配置
     /// </summary>
-    /// <param name="scopeProvider"></param>
-    /// <param name="logMsg"></param>
-    /// <param name="includeScopes"></param>
-    /// <returns></returns>
-    internal static LogMessage SetLogContext(IExternalScopeProvider scopeProvider, LogMessage logMsg, bool includeScopes)
+    public void PostConfigure()
     {
-        // 设置日志上下文
-        if (includeScopes && scopeProvider != null)
-        {
-            // 解析日志上下文数据
-            scopeProvider.ForEachScope<object>((scope, _) =>
-                {
-                    if (scope != null && scope is LogContext context)
-                    {
-                        if (logMsg.Context == null)
-                            logMsg.Context = context;
-                        else
-                            logMsg.Context = logMsg.Context.SetRange(context.Properties);
-                    }
-                },
-                null);
-        }
-
-        return logMsg;
+        FileFormat ??= "/{0:yyyy}/{0:MM}/{0:dd}/{0:HH}";
+        FileSizeLimit ??= 1024 * 1024 * 10;
+        MiniLogLevel ??= LogLevel.Information;
+        EnableCritical ??= false;
     }
 }

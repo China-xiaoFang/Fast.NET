@@ -39,7 +39,7 @@ public static class IServiceCollectionExtension
     /// <param name="section">
     /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
-    /// <remarks>默认值：RedisSettings</remarks>
+    /// <para>默认值：RedisSettings</para>
     /// </param>
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddCache(this IServiceCollection services, string section = "RedisSettings")
