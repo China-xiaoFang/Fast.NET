@@ -24,26 +24,25 @@ using System;
 using System.Reflection;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="FieldInfo"/> 拓展类
+/// </summary>
+public static class FieldInfoExtension
 {
     /// <summary>
-    /// <see cref="FieldInfo"/> 拓展类
+    /// 获取字段特性
     /// </summary>
-    public static class FieldInfoExtension
+    /// <param name="field"><see cref="FieldInfo"/></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetDescriptionValue<T>(this FieldInfo field) where T : Attribute
     {
-        /// <summary>
-        /// 获取字段特性
-        /// </summary>
-        /// <param name="field"><see cref="FieldInfo"/></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static T GetDescriptionValue<T>(this FieldInfo field) where T : Attribute
-        {
-            // 获取字段的指定特性，不包含继承中的特性
-            var customAttributes = field.GetCustomAttributes(typeof(T), false);
+        // 获取字段的指定特性，不包含继承中的特性
+        var customAttributes = field.GetCustomAttributes(typeof(T), false);
 
-            // 如果没有数据返回null
-            return customAttributes.Length > 0 ? (T) customAttributes[0] : null;
-        }
+        // 如果没有数据返回null
+        return customAttributes.Length > 0 ? (T) customAttributes[0] : null;
     }
 }

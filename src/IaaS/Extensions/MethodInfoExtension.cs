@@ -27,118 +27,116 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="MethodInfo"/> 拓展类
+/// </summary>
+public static class MethodInfoExtension
 {
     /// <summary>
-    /// <see cref="MethodInfo"/> 拓展类
+    /// 判断方法是否是异步
     /// </summary>
-    public static class MethodInfoExtension
+    /// <param name="methodInfo"><see cref="MemberInfo"/></param>
+    /// <returns><see cref="bool"/></returns>
+    public static bool IsAsync(this MethodInfo methodInfo)
     {
-        /// <summary>
-        /// 判断方法是否是异步
-        /// </summary>
-        /// <param name="methodInfo"><see cref="MemberInfo"/></param>
-        /// <returns><see cref="bool"/></returns>
-        public static bool IsAsync(this MethodInfo methodInfo)
+        return methodInfo.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null
+               || methodInfo.ReturnType.ToString()
+                   .StartsWith(typeof(Task).FullName);
+    }
+
+    /// <summary>
+    /// 获取方法真实返回类型
+    /// </summary>
+    /// <param name="methodInfo"><see cref="MethodInfo"/></param>
+    /// <returns><see cref="Type"/></returns>
+    public static Type GetRealReturnType(this MethodInfo methodInfo)
+    {
+        // 判断是否是异步方法
+        var isAsyncMethod = methodInfo.IsAsync();
+
+        // 获取类型返回值并处理 Task 和 Task<T> 类型返回值
+        var returnType = methodInfo.ReturnType;
+        return isAsyncMethod ? returnType.GenericTypeArguments.FirstOrDefault() ?? typeof(void) : returnType;
+    }
+
+    /// <summary>
+    /// 查找方法指定特性，如果没找到则继续查找声明类
+    /// </summary>
+    /// <typeparam name="TAttribute"></typeparam>
+    /// <param name="methodInfo"></param>
+    /// <param name="inherit"></param>
+    /// <returns></returns>
+    public static TAttribute GetFoundAttribute<TAttribute>(this MethodInfo methodInfo, bool inherit) where TAttribute : Attribute
+    {
+        // 获取方法所在类型
+        var declaringType = methodInfo.DeclaringType;
+
+        var attributeType = typeof(TAttribute);
+
+        // 判断方法是否定义了指定特性
+        if (methodInfo.IsDefined(attributeType, inherit))
         {
-            return methodInfo.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null
-                   || methodInfo.ReturnType.ToString()
-                       .StartsWith(typeof(Task).FullName);
+            // 直接返回
+            return methodInfo.GetCustomAttribute<TAttribute>(inherit);
         }
 
-        /// <summary>
-        /// 获取方法真实返回类型
-        /// </summary>
-        /// <param name="methodInfo"><see cref="MethodInfo"/></param>
-        /// <returns><see cref="Type"/></returns>
-        public static Type GetRealReturnType(this MethodInfo methodInfo)
+        // 没有找到，查找方法所在的类型，是否定义了特性
+        if (declaringType == null)
         {
-            // 判断是否是异步方法
-            var isAsyncMethod = methodInfo.IsAsync();
-
-            // 获取类型返回值并处理 Task 和 Task<T> 类型返回值
-            var returnType = methodInfo.ReturnType;
-            return isAsyncMethod ? returnType.GenericTypeArguments.FirstOrDefault() ?? typeof(void) : returnType;
-        }
-
-        /// <summary>
-        /// 查找方法指定特性，如果没找到则继续查找声明类
-        /// </summary>
-        /// <typeparam name="TAttribute"></typeparam>
-        /// <param name="methodInfo"></param>
-        /// <param name="inherit"></param>
-        /// <returns></returns>
-        public static TAttribute GetFoundAttribute<TAttribute>(this MethodInfo methodInfo, bool inherit)
-            where TAttribute : Attribute
-        {
-            // 获取方法所在类型
-            var declaringType = methodInfo.DeclaringType;
-
-            var attributeType = typeof(TAttribute);
-
-            // 判断方法是否定义了指定特性
-            if (methodInfo.IsDefined(attributeType, inherit))
-            {
-                // 直接返回
-                return methodInfo.GetCustomAttribute<TAttribute>(inherit);
-            }
-
-            // 没有找到，查找方法所在的类型，是否定义了特性
-            if (declaringType == null)
-            {
-                return null;
-            }
-
-            if (declaringType.IsDefined(attributeType, inherit))
-            {
-                return declaringType.GetCustomAttribute<TAttribute>(inherit);
-            }
-
             return null;
         }
 
-        /// <summary>
-        /// 查找方法指定特性，如果没找到则继续查找声明类
-        /// </summary>
-        /// <param name="methodInfo"></param>
-        /// <param name="attributeType"></param>
-        /// <param name="inherit"></param>
-        /// <returns></returns>
-        public static Attribute GetFoundAttribute(this MethodInfo methodInfo, Type attributeType, bool inherit)
+        if (declaringType.IsDefined(attributeType, inherit))
         {
-            // 获取方法所在类型
-            var declaringType = methodInfo.DeclaringType;
+            return declaringType.GetCustomAttribute<TAttribute>(inherit);
+        }
 
-            // 判断方法是否定义了指定特性
-            if (methodInfo.IsDefined(attributeType, inherit))
-            {
-                // 直接返回
-                return methodInfo.GetCustomAttribute(attributeType, inherit);
-            }
+        return null;
+    }
 
-            // 没有找到，查找方法所在的类型，是否定义了特性
-            if (declaringType == null)
-            {
-                return null;
-            }
+    /// <summary>
+    /// 查找方法指定特性，如果没找到则继续查找声明类
+    /// </summary>
+    /// <param name="methodInfo"></param>
+    /// <param name="attributeType"></param>
+    /// <param name="inherit"></param>
+    /// <returns></returns>
+    public static Attribute GetFoundAttribute(this MethodInfo methodInfo, Type attributeType, bool inherit)
+    {
+        // 获取方法所在类型
+        var declaringType = methodInfo.DeclaringType;
 
-            if (declaringType.IsDefined(attributeType, inherit))
-            {
-                return declaringType.GetCustomAttribute(attributeType, inherit);
-            }
+        // 判断方法是否定义了指定特性
+        if (methodInfo.IsDefined(attributeType, inherit))
+        {
+            // 直接返回
+            return methodInfo.GetCustomAttribute(attributeType, inherit);
+        }
 
+        // 没有找到，查找方法所在的类型，是否定义了特性
+        if (declaringType == null)
+        {
             return null;
         }
 
-        /// <summary>
-        /// 获取方法参数数量
-        /// </summary>
-        /// <param name="methodInfo"><see cref="MemberInfo"/></param>
-        /// <returns><see cref="int"/></returns>
-        public static int GetMethodParameterCount(this MethodInfo methodInfo)
+        if (declaringType.IsDefined(attributeType, inherit))
         {
-            return methodInfo.GetParameters()
-                .Length;
+            return declaringType.GetCustomAttribute(attributeType, inherit);
         }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 获取方法参数数量
+    /// </summary>
+    /// <param name="methodInfo"><see cref="MemberInfo"/></param>
+    /// <returns><see cref="int"/></returns>
+    public static int GetMethodParameterCount(this MethodInfo methodInfo)
+    {
+        return methodInfo.GetParameters()
+            .Length;
     }
 }

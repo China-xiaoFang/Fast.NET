@@ -25,59 +25,58 @@ using System.Collections.Generic;
 using System.Linq;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="TreeBuildUtil{TEntity, TProperty}"/> 递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等
+/// </summary>
+/// <typeparam name="TEntity">模型</typeparam>
+/// <typeparam name="TProperty">Id属性类型</typeparam>
+public class TreeBuildUtil<TEntity, TProperty> where TEntity : ITreeNode<TProperty>
+    where TProperty : struct, IComparable, IConvertible, IFormattable
 {
     /// <summary>
-    /// <see cref="TreeBuildUtil{TEntity, TProperty}"/> 递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等
+    /// 顶级节点的父节点Id(默认0)
     /// </summary>
-    /// <typeparam name="TEntity">模型</typeparam>
-    /// <typeparam name="TProperty">Id属性类型</typeparam>
-    public class TreeBuildUtil<TEntity, TProperty> where TEntity : ITreeNode<TProperty>
-        where TProperty : struct, IComparable, IConvertible, IFormattable
+    // ReSharper disable once RedundantDefaultMemberInitializer
+    private TProperty _rootParentId = default;
+
+    /// <summary>
+    /// 设置根节点方法
+    /// 查询数据可以设置其他节点为根节点，避免父节点永远是0，查询不到数据的问题
+    /// </summary>
+    public void SetRootParentId(TProperty rootParentId)
     {
-        /// <summary>
-        /// 顶级节点的父节点Id(默认0)
-        /// </summary>
-        // ReSharper disable once RedundantDefaultMemberInitializer
-        private TProperty _rootParentId = default;
+        _rootParentId = rootParentId;
+    }
 
-        /// <summary>
-        /// 设置根节点方法
-        /// 查询数据可以设置其他节点为根节点，避免父节点永远是0，查询不到数据的问题
-        /// </summary>
-        public void SetRootParentId(TProperty rootParentId)
-        {
-            _rootParentId = rootParentId;
-        }
+    /// <summary>
+    /// 构造树节点
+    /// </summary>
+    /// <param name="nodes"></param>
+    /// <returns></returns>
+    public List<TEntity> Build(List<TEntity> nodes)
+    {
+        var result = nodes.Where(i => i.GetPid()
+                .Equals(_rootParentId))
+            .OrderBy(ob => ob.GetSort())
+            .ToList();
+        result.ForEach(u => BuildChildNodes(nodes, u));
+        return result;
+    }
 
-        /// <summary>
-        /// 构造树节点
-        /// </summary>
-        /// <param name="nodes"></param>
-        /// <returns></returns>
-        public List<TEntity> Build(List<TEntity> nodes)
-        {
-            var result = nodes.Where(i => i.GetPid()
-                    .Equals(_rootParentId))
-                .OrderBy(ob => ob.GetSort())
-                .ToList();
-            result.ForEach(u => BuildChildNodes(nodes, u));
-            return result;
-        }
-
-        /// <summary>
-        /// 构造子节点集合
-        /// </summary>
-        /// <param name="totalNodes"></param>
-        /// <param name="node"></param>
-        private void BuildChildNodes(List<TEntity> totalNodes, TEntity node)
-        {
-            var nodeSubList = totalNodes.Where(i => i.GetPid()
-                    .Equals(node.GetId()))
-                .OrderBy(ob => ob.GetSort())
-                .ToList();
-            nodeSubList.ForEach(u => BuildChildNodes(totalNodes, u));
-            node.SetChildren(nodeSubList);
-        }
+    /// <summary>
+    /// 构造子节点集合
+    /// </summary>
+    /// <param name="totalNodes"></param>
+    /// <param name="node"></param>
+    private void BuildChildNodes(List<TEntity> totalNodes, TEntity node)
+    {
+        var nodeSubList = totalNodes.Where(i => i.GetPid()
+                .Equals(node.GetId()))
+            .OrderBy(ob => ob.GetSort())
+            .ToList();
+        nodeSubList.ForEach(u => BuildChildNodes(totalNodes, u));
+        node.SetChildren(nodeSubList);
     }
 }

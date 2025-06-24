@@ -23,50 +23,49 @@
 using System;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="decimal"/> 拓展类
+/// </summary>
+public static class DecimalExtension
 {
     /// <summary>
-    /// <see cref="decimal"/> 拓展类
+    /// 得到百分比
     /// </summary>
-    public static class DecimalExtension
+    /// <param name="data"><see cref="decimal"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static string GetPercentage(this decimal data)
     {
-        /// <summary>
-        /// 得到百分比
-        /// </summary>
-        /// <param name="data"><see cref="decimal"/></param>
-        /// <returns><see cref="string"/></returns>
-        public static string GetPercentage(this decimal data)
+        var result = data * 100;
+        return result == 100 ? "100%" : $"{Math.Round(result, 2)}%";
+    }
+
+    /// <summary>
+    /// 得到百分比
+    /// </summary>
+    /// <param name="num1"><see cref="decimal"/></param>
+    /// <param name="num2"><see cref="decimal"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static string GetPercentage(this decimal num1, decimal num2)
+    {
+        var result = num2 == 0 ? 0 : Math.Round(num1 / num2, 4);
+        return result.GetPercentage();
+    }
+
+    /// <summary>
+    /// 获取 decimal，小数点后面有几位就保留几位
+    /// </summary>
+    /// <param name="data"><see cref="decimal"/></param>
+    /// <param name="places"><see cref="int"/>要保留的小数据，不传默认有几位就保留几位</param>
+    /// <returns><see cref="decimal"/></returns>
+    public static decimal GetDecimal(this decimal data, int? places = null)
+    {
+        if (places == null)
         {
-            var result = data * 100;
-            return result == 100 ? "100%" : $"{Math.Round(result, 2)}%";
+            return (decimal) (double) data;
         }
 
-        /// <summary>
-        /// 得到百分比
-        /// </summary>
-        /// <param name="num1"><see cref="decimal"/></param>
-        /// <param name="num2"><see cref="decimal"/></param>
-        /// <returns><see cref="string"/></returns>
-        public static string GetPercentage(this decimal num1, decimal num2)
-        {
-            var result = num2 == 0 ? 0 : Math.Round(num1 / num2, 4);
-            return result.GetPercentage();
-        }
-
-        /// <summary>
-        /// 获取 decimal，小数点后面有几位就保留几位
-        /// </summary>
-        /// <param name="data"><see cref="decimal"/></param>
-        /// <param name="places"><see cref="int"/>要保留的小数据，不传默认有几位就保留几位</param>
-        /// <returns><see cref="decimal"/></returns>
-        public static decimal GetDecimal(this decimal data, int? places = null)
-        {
-            if (places == null)
-            {
-                return (decimal) (double) data;
-            }
-
-            return decimal.Round(data, places.Value);
-        }
+        return decimal.Round(data, places.Value);
     }
 }

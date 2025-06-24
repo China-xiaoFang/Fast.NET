@@ -26,207 +26,206 @@ using System.Linq;
 using System.Text;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="Base64Extension"/> Base64 拓展类
+/// </summary>
+public static class Base64Extension
 {
     /// <summary>
-    /// <see cref="Base64Extension"/> Base64 拓展类
+    /// 随机字符长度
     /// </summary>
-    public static class Base64Extension
+    public const int RandomPrefixStrLength = 6;
+
+    private static readonly Encoding encoding = Encoding.UTF8;
+
+    /// <summary>
+    /// 普通 字符串 转换为 Base64 字符串
+    /// </summary>
+    /// <param name="str"><see cref="string"/> 字符串</param>
+    /// <param name="randomPrefixStrLength"><see cref="int"/> 随机字符长度，默认6位</param>
+    /// <returns><see cref="string"/> 转换后的 Base64 字符串</returns>
+    public static string ToBase64(this string str, int randomPrefixStrLength = RandomPrefixStrLength)
     {
-        /// <summary>
-        /// 随机字符长度
-        /// </summary>
-        public const int RandomPrefixStrLength = 6;
-
-        private static readonly Encoding encoding = Encoding.UTF8;
-
-        /// <summary>
-        /// 普通 字符串 转换为 Base64 字符串
-        /// </summary>
-        /// <param name="str"><see cref="string"/> 字符串</param>
-        /// <param name="randomPrefixStrLength"><see cref="int"/> 随机字符长度，默认6位</param>
-        /// <returns><see cref="string"/> 转换后的 Base64 字符串</returns>
-        public static string ToBase64(this string str, int randomPrefixStrLength = RandomPrefixStrLength)
+        if (string.IsNullOrWhiteSpace(str))
         {
-            if (string.IsNullOrWhiteSpace(str))
+            return "";
+        }
+
+        try
+        {
+            var randomPrefixStr = VerificationUtil.GenStrVerCode(randomPrefixStrLength);
+            var buffer = encoding.GetBytes(str);
+            var base64Str = Convert.ToBase64String(buffer);
+
+            base64Str = randomPrefixStrLength == 0 ? base64Str : InsertRandomStrToBase64Str(base64Str);
+
+            return $"{randomPrefixStr}{base64Str}";
+        }
+        catch (Exception ex)
+        {
+            var logSb = new StringBuilder();
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("fail");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            logSb.Append(": ");
+            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+            logSb.Append(Environment.NewLine);
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("      ");
+            logSb.Append($"Base64Util.ToBase64: {ex}");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            Console.WriteLine(logSb.ToString());
+        }
+
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Base64 字符串 转换为 普通 字符串
+    /// </summary>
+    /// <param name="base64Str"><see cref="string"/> Base64 字符串</param>
+    /// <param name="randomPrefixStrLength"><see cref="int"/> 随机字符长度，默认6位</param>
+    /// <returns><see cref="string"/> 转换后的 字符串</returns>
+    public static string Base64ToString(this string base64Str, int randomPrefixStrLength = RandomPrefixStrLength)
+    {
+        var result = base64Str.Trim();
+        try
+        {
+            if (string.IsNullOrWhiteSpace(base64Str.Trim()))
             {
                 return "";
             }
 
-            try
-            {
-                var randomPrefixStr = VerificationUtil.GenStrVerCode(randomPrefixStrLength);
-                var buffer = encoding.GetBytes(str);
-                var base64Str = Convert.ToBase64String(buffer);
+            base64Str = base64Str.Trim();
+            var input = base64Str[randomPrefixStrLength..];
 
-                base64Str = randomPrefixStrLength == 0 ? base64Str : InsertRandomStrToBase64Str(base64Str);
-
-                return $"{randomPrefixStr}{base64Str}";
-            }
-            catch (Exception ex)
-            {
-                var logSb = new StringBuilder();
-                logSb.Append("\u001b[41m\u001b[30m");
-                logSb.Append("fail");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                logSb.Append(": ");
-                logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                logSb.Append(Environment.NewLine);
-                logSb.Append("\u001b[41m\u001b[30m");
-                logSb.Append("      ");
-                logSb.Append($"Base64Util.ToBase64: {ex}");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                Console.WriteLine(logSb.ToString());
-            }
-
-            return string.Empty;
+            input = randomPrefixStrLength == 0 ? input : RemoveBase64StrRandomStr(input);
+            var buffer = Convert.FromBase64String(input);
+            result = encoding.GetString(buffer);
+        }
+        catch (Exception ex)
+        {
+            var logSb = new StringBuilder();
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("fail");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            logSb.Append(": ");
+            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+            logSb.Append(Environment.NewLine);
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("      ");
+            logSb.Append($"Base64Util.Base64ToString: {ex}");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            Console.WriteLine(logSb.ToString());
         }
 
-        /// <summary>
-        /// Base64 字符串 转换为 普通 字符串
-        /// </summary>
-        /// <param name="base64Str"><see cref="string"/> Base64 字符串</param>
-        /// <param name="randomPrefixStrLength"><see cref="int"/> 随机字符长度，默认6位</param>
-        /// <returns><see cref="string"/> 转换后的 字符串</returns>
-        public static string Base64ToString(this string base64Str, int randomPrefixStrLength = RandomPrefixStrLength)
-        {
-            var result = base64Str.Trim();
-            try
-            {
-                if (string.IsNullOrWhiteSpace(base64Str.Trim()))
-                {
-                    return "";
-                }
-
-                base64Str = base64Str.Trim();
-                var input = base64Str[randomPrefixStrLength..];
-
-                input = randomPrefixStrLength == 0 ? input : RemoveBase64StrRandomStr(input);
-                var buffer = Convert.FromBase64String(input);
-                result = encoding.GetString(buffer);
-            }
-            catch (Exception ex)
-            {
-                var logSb = new StringBuilder();
-                logSb.Append("\u001b[41m\u001b[30m");
-                logSb.Append("fail");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                logSb.Append(": ");
-                logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                logSb.Append(Environment.NewLine);
-                logSb.Append("\u001b[41m\u001b[30m");
-                logSb.Append("      ");
-                logSb.Append($"Base64Util.Base64ToString: {ex}");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                Console.WriteLine(logSb.ToString());
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 添加随机字符串到 Base64 字符串
-        /// </summary>
-        /// <param name="base64Str"><see cref="string"/> Base64 字符串</param>
-        /// <returns></returns>
-        private static string InsertRandomStrToBase64Str(string base64Str)
-        {
-            var strResult = $"{base64Str}";
-
-            dic.Item.ForEach(item =>
-            {
-                if (item.Index < base64Str.Length)
-                {
-                    var randomChar = base64Str[item.RandomIndex];
-                    strResult = strResult.Insert(item.Index, $"{randomChar}");
-                }
-            });
-
-            return strResult;
-        }
-
-        /// <summary>
-        /// 删除 Base64 字符串中的随机数
-        /// </summary>
-        /// <param name="input"><see cref="string"/> Base64 字符串</param>
-        /// <returns></returns>
-        private static string RemoveBase64StrRandomStr(string input)
-        {
-            var items = dic.Item.OrderBy(x => x.Index)
-                .ToList();
-
-            var strResult = $"{input}";
-
-            items.ForEach(item =>
-            {
-                if (item.Index < strResult.Length)
-                {
-                    //var randomChar = input[item.RandomIndex];
-                    strResult = strResult.Remove(item.Index, 1);
-                }
-            });
-
-            return strResult;
-        }
-
-        private struct PwdDic
-        {
-            public List<PwdDicItem> Item { get; }
-
-            public PwdDic(List<PwdDicItem> item)
-            {
-                Item = item;
-            }
-        }
-
-        private readonly struct PwdDicItem
-        {
-            public int Index { get; }
-
-            public int RandomIndex { get; }
-
-            public PwdDicItem(int index, int randomIndex)
-            {
-                Index = index;
-                RandomIndex = randomIndex;
-            }
-        }
-
-        private static readonly PwdDic dic = new PwdDic(new List<PwdDicItem>
-        {
-            new PwdDicItem(950, 188),
-            new PwdDicItem(900, 201),
-            new PwdDicItem(800, 225),
-            new PwdDicItem(700, 255),
-            new PwdDicItem(600, 268),
-            new PwdDicItem(500, 277),
-            new PwdDicItem(400, 288),
-            new PwdDicItem(330, 327),
-            new PwdDicItem(300, 180),
-            new PwdDicItem(200, 178),
-            new PwdDicItem(100, 124),
-            // 100 以内字典
-            new PwdDicItem(98, 95),
-            new PwdDicItem(92, 90),
-            new PwdDicItem(91, 87),
-            new PwdDicItem(88, 84),
-            new PwdDicItem(82, 79),
-            new PwdDicItem(78, 71),
-            new PwdDicItem(72, 69),
-            new PwdDicItem(68, 66),
-            new PwdDicItem(59, 55),
-            new PwdDicItem(48, 43),
-            new PwdDicItem(42, 37),
-            new PwdDicItem(36, 30),
-            new PwdDicItem(33, 27),
-            new PwdDicItem(24, 20),
-            new PwdDicItem(23, 18),
-            new PwdDicItem(21, 16),
-            new PwdDicItem(17, 14),
-            new PwdDicItem(13, 9),
-            new PwdDicItem(7, 4),
-            new PwdDicItem(5, 3),
-            new PwdDicItem(2, 1)
-        });
+        return result;
     }
+
+    /// <summary>
+    /// 添加随机字符串到 Base64 字符串
+    /// </summary>
+    /// <param name="base64Str"><see cref="string"/> Base64 字符串</param>
+    /// <returns></returns>
+    private static string InsertRandomStrToBase64Str(string base64Str)
+    {
+        var strResult = $"{base64Str}";
+
+        dic.Item.ForEach(item =>
+        {
+            if (item.Index < base64Str.Length)
+            {
+                var randomChar = base64Str[item.RandomIndex];
+                strResult = strResult.Insert(item.Index, $"{randomChar}");
+            }
+        });
+
+        return strResult;
+    }
+
+    /// <summary>
+    /// 删除 Base64 字符串中的随机数
+    /// </summary>
+    /// <param name="input"><see cref="string"/> Base64 字符串</param>
+    /// <returns></returns>
+    private static string RemoveBase64StrRandomStr(string input)
+    {
+        var items = dic.Item.OrderBy(x => x.Index)
+            .ToList();
+
+        var strResult = $"{input}";
+
+        items.ForEach(item =>
+        {
+            if (item.Index < strResult.Length)
+            {
+                //var randomChar = input[item.RandomIndex];
+                strResult = strResult.Remove(item.Index, 1);
+            }
+        });
+
+        return strResult;
+    }
+
+    private struct PwdDic
+    {
+        public List<PwdDicItem> Item { get; }
+
+        public PwdDic(List<PwdDicItem> item)
+        {
+            Item = item;
+        }
+    }
+
+    private readonly struct PwdDicItem
+    {
+        public int Index { get; }
+
+        public int RandomIndex { get; }
+
+        public PwdDicItem(int index, int randomIndex)
+        {
+            Index = index;
+            RandomIndex = randomIndex;
+        }
+    }
+
+    private static readonly PwdDic dic = new(new List<PwdDicItem>
+    {
+        new(950, 188),
+        new(900, 201),
+        new(800, 225),
+        new(700, 255),
+        new(600, 268),
+        new(500, 277),
+        new(400, 288),
+        new(330, 327),
+        new(300, 180),
+        new(200, 178),
+        new(100, 124),
+        // 100 以内字典
+        new(98, 95),
+        new(92, 90),
+        new(91, 87),
+        new(88, 84),
+        new(82, 79),
+        new(78, 71),
+        new(72, 69),
+        new(68, 66),
+        new(59, 55),
+        new(48, 43),
+        new(42, 37),
+        new(36, 30),
+        new(33, 27),
+        new(24, 20),
+        new(23, 18),
+        new(21, 16),
+        new(17, 14),
+        new(13, 9),
+        new(7, 4),
+        new(5, 3),
+        new(2, 1)
+    });
 }

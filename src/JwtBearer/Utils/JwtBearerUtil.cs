@@ -128,7 +128,7 @@ public static class JwtBearerUtil
         var stringPayload = payload is JwtPayload jwtPayload
             ? jwtPayload.SerializeToJson()
             : JsonSerializer.Serialize(payload,
-                new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+                new JsonSerializerOptions {Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping});
 
         SigningCredentials credentials = null;
 

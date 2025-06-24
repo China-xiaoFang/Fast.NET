@@ -23,42 +23,41 @@
 using System;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="GlobalConstant"/> 常用常量
+/// </summary>
+public static class GlobalConstant
 {
     /// <summary>
-    /// <see cref="GlobalConstant"/> 常用常量
+    /// 默认DateTime
     /// </summary>
-    public static class GlobalConstant
-    {
-        /// <summary>
-        /// 默认DateTime
-        /// </summary>
-        public static DateTime DefaultTime => TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+    public static DateTime DefaultTime => TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
 
-        /// <summary>
-        /// 时间戳
-        /// </summary>
-        //public static long TimeStamp => Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-        public static long TimeStamp => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    /// <summary>
+    /// 时间戳
+    /// </summary>
+    //public static long TimeStamp => Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
+    public static long TimeStamp => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        /// <summary>
-        /// Sql Server 最小时间
-        /// </summary>
-        public static DateTime SqlServerMinTime => new DateTime(1753, 01, 01, 00, 00, 00);
+    /// <summary>
+    /// Sql Server 最小时间
+    /// </summary>
+    public static DateTime SqlServerMinTime => new(1753, 01, 01, 00, 00, 00);
 
-        /// <summary>
-        /// Sql Server 最大时间
-        /// </summary>
-        public static DateTime SqlServerMaxTime => new DateTime(9999, 12, 31, 23, 59, 59);
+    /// <summary>
+    /// Sql Server 最大时间
+    /// </summary>
+    public static DateTime SqlServerMaxTime => new(9999, 12, 31, 23, 59, 59);
 
-        /// <summary>
-        /// 特殊分割符号
-        /// </summary>
-        public static char SpecialSplitSymbol => '│';
+    /// <summary>
+    /// 特殊分割符号
+    /// </summary>
+    public static char SpecialSplitSymbol => '│';
 
-        /// <summary>
-        /// 特殊标记符号
-        /// </summary>
-        public static char SpecialMarkSymbol => '×';
-    }
+    /// <summary>
+    /// 特殊标记符号
+    /// </summary>
+    public static char SpecialMarkSymbol => '×';
 }

@@ -24,36 +24,35 @@ using System;
 using System.Collections;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="ITreeNode{TProperty}"/> 树基类
+/// </summary>
+/// <typeparam name="TProperty">Id属性类型</typeparam>
+public interface ITreeNode<out TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable
 {
     /// <summary>
-    /// <see cref="ITreeNode{TProperty}"/> 树基类
+    /// 获取节点id
     /// </summary>
-    /// <typeparam name="TProperty">Id属性类型</typeparam>
-    public interface ITreeNode<out TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable
-    {
-        /// <summary>
-        /// 获取节点id
-        /// </summary>
-        /// <returns></returns>
-        TProperty GetId();
+    /// <returns></returns>
+    TProperty GetId();
 
-        /// <summary>
-        /// 获取节点父id
-        /// </summary>
-        /// <returns></returns>
-        TProperty GetPid();
+    /// <summary>
+    /// 获取节点父id
+    /// </summary>
+    /// <returns></returns>
+    TProperty GetPid();
 
-        /// <summary>
-        /// 获取排序字段
-        /// </summary>
-        /// <returns></returns>
-        TProperty GetSort();
+    /// <summary>
+    /// 获取排序字段
+    /// </summary>
+    /// <returns></returns>
+    TProperty GetSort();
 
-        /// <summary>
-        /// 设置Children
-        /// </summary>
-        /// <param name="children"></param>
-        void SetChildren(IList children);
-    }
+    /// <summary>
+    /// 设置Children
+    /// </summary>
+    /// <param name="children"></param>
+    void SetChildren(IList children);
 }

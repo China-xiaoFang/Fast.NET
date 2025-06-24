@@ -25,75 +25,74 @@ using System.Collections.Generic;
 using System.Data;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="DataTable"/> 拓展类
+/// </summary>
+public static class DataTableExtension
 {
     /// <summary>
-    /// <see cref="DataTable"/> 拓展类
+    /// 转换为DataTable
     /// </summary>
-    public static class DataTableExtension
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"><see cref="IEnumerable{T}"/></param>
+    /// <returns><see cref="DataTable"/></returns>
+    public static DataTable ToDataTable<T>(this IEnumerable<T> data)
     {
-        /// <summary>
-        /// 转换为DataTable
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="data"><see cref="IEnumerable{T}"/></param>
-        /// <returns><see cref="DataTable"/></returns>
-        public static DataTable ToDataTable<T>(this IEnumerable<T> data)
+        var dataTable = new DataTable();
+
+        // 获取模型类型的属性列表
+        var properties = typeof(T).GetProperties();
+
+        // 创建 DataTable 的列
+        foreach (var prop in properties)
         {
-            var dataTable = new DataTable();
-
-            // 获取模型类型的属性列表
-            var properties = typeof(T).GetProperties();
-
-            // 创建 DataTable 的列
-            foreach (var prop in properties)
-            {
-                dataTable.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
-            }
-
-            // 将数据添加到 DataTable
-            foreach (var item in data)
-            {
-                var values = new object[properties.Length];
-                for (var i = 0; i < properties.Length; i++)
-                {
-                    values[i] = properties[i]
-                        .GetValue(item, null);
-                }
-
-                dataTable.Rows.Add(values);
-            }
-
-            return dataTable;
+            dataTable.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
         }
 
-        /// <summary>
-        /// DataTable To List
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dataTable"><see cref="DataTable"/></param>
-        /// <returns><see cref="List{T}"/></returns>
-        public static List<T> ToList<T>(this DataTable dataTable) where T : new()
+        // 将数据添加到 DataTable
+        foreach (var item in data)
         {
-            var list = new List<T>();
-
-            foreach (DataRow row in dataTable.Rows)
+            var values = new object[properties.Length];
+            for (var i = 0; i < properties.Length; i++)
             {
-                var item = new T();
-
-                foreach (DataColumn column in dataTable.Columns)
-                {
-                    var property = typeof(T).GetProperty(column.ColumnName);
-                    if (property != null && row[column] != DBNull.Value)
-                    {
-                        property.SetValue(item, row[column]);
-                    }
-                }
-
-                list.Add(item);
+                values[i] = properties[i]
+                    .GetValue(item, null);
             }
 
-            return list;
+            dataTable.Rows.Add(values);
         }
+
+        return dataTable;
+    }
+
+    /// <summary>
+    /// DataTable To List
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="dataTable"><see cref="DataTable"/></param>
+    /// <returns><see cref="List{T}"/></returns>
+    public static List<T> ToList<T>(this DataTable dataTable) where T : new()
+    {
+        var list = new List<T>();
+
+        foreach (DataRow row in dataTable.Rows)
+        {
+            var item = new T();
+
+            foreach (DataColumn column in dataTable.Columns)
+            {
+                var property = typeof(T).GetProperty(column.ColumnName);
+                if (property != null && row[column] != DBNull.Value)
+                {
+                    property.SetValue(item, row[column]);
+                }
+            }
+
+            list.Add(item);
+        }
+
+        return list;
     }
 }

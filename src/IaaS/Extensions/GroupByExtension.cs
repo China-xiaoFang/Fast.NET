@@ -26,56 +26,55 @@ using System.Linq;
 using System.Linq.Expressions;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="EnumExtension"/> GroupBy 拓展类
+/// </summary>
+public static class GroupByExtension
 {
     /// <summary>
-    /// <see cref="EnumExtension"/> GroupBy 拓展类
+    /// 多个GroupBy
     /// </summary>
-    public static class GroupByExtension
+    /// <typeparam name="TKey"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="groupByProperties"></param>
+    /// <returns></returns>
+    public static IEnumerable<IGrouping<string, TKey>> GroupByMultiple<TKey>(this IEnumerable<TKey> source,
+        params Expression<Func<TKey, object>>[] groupByProperties)
     {
-        /// <summary>
-        /// 多个GroupBy
-        /// </summary>
-        /// <typeparam name="TKey"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="groupByProperties"></param>
-        /// <returns></returns>
-        public static IEnumerable<IGrouping<string, TKey>> GroupByMultiple<TKey>(this IEnumerable<TKey> source,
-            params Expression<Func<TKey, object>>[] groupByProperties)
+        var query = source.AsQueryable();
+        var parameter = Expression.Parameter(typeof(TKey), "gb");
+        Expression keySelector = null;
+
+        foreach (var property in groupByProperties)
         {
-            var query = source.AsQueryable();
-            var parameter = Expression.Parameter(typeof(TKey), "gb");
-            Expression keySelector = null;
+            var memberExpression = Expression.Invoke(property, parameter);
+            var conversionExpression = Expression.Convert(memberExpression, typeof(object));
+            var nullCheckExpression = Expression.Condition(Expression.Equal(memberExpression, Expression.Constant(null)),
+                Expression.Constant(""),
+                Expression.Call(conversionExpression, "ToString", null));
 
-            foreach (var property in groupByProperties)
+            if (keySelector == null)
             {
-                var memberExpression = Expression.Invoke(property, parameter);
-                var conversionExpression = Expression.Convert(memberExpression, typeof(object));
-                var nullCheckExpression = Expression.Condition(Expression.Equal(memberExpression, Expression.Constant(null)),
-                    Expression.Constant(""),
-                    Expression.Call(conversionExpression, "ToString", null));
-
-                if (keySelector == null)
-                {
-                    keySelector = nullCheckExpression;
-                }
-                else
-                {
-                    keySelector = Expression.Call(typeof(string).GetMethod("Concat", new[] {typeof(string), typeof(string)}),
-                        keySelector,
-                        nullCheckExpression);
-                }
+                keySelector = nullCheckExpression;
             }
-
-            var lambda = Expression.Lambda<Func<TKey, string>>(keySelector, parameter);
-            var groupByExpression = Expression.Call(typeof(Queryable),
-                "GroupBy",
-                new[] {typeof(TKey), typeof(string)},
-                query.Expression,
-                lambda);
-            var result = query.Provider.CreateQuery<IGrouping<string, TKey>>(groupByExpression);
-
-            return result;
+            else
+            {
+                keySelector = Expression.Call(typeof(string).GetMethod("Concat", new[] {typeof(string), typeof(string)}),
+                    keySelector,
+                    nullCheckExpression);
+            }
         }
+
+        var lambda = Expression.Lambda<Func<TKey, string>>(keySelector, parameter);
+        var groupByExpression = Expression.Call(typeof(Queryable),
+            "GroupBy",
+            new[] {typeof(TKey), typeof(string)},
+            query.Expression,
+            lambda);
+        var result = query.Provider.CreateQuery<IGrouping<string, TKey>>(groupByExpression);
+
+        return result;
     }
 }

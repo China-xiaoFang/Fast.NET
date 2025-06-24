@@ -23,79 +23,78 @@
 using System;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="DateTimeUtil"/> DateTime工具类
+/// </summary>
+public static class DateTimeUtil
 {
     /// <summary>
-    /// <see cref="DateTimeUtil"/> DateTime工具类
+    /// 获取指定年月的第一天
     /// </summary>
-    public static class DateTimeUtil
+    /// <param name="year"><see cref="string"/> 年份</param>
+    /// <param name="month"><see cref="string"/> 月份</param>
+    /// <returns><see cref="DateTime"/> 第一天的 DateTime</returns>
+    public static DateTime GetYearMonthFirstDay(string year, string month)
     {
-        /// <summary>
-        /// 获取指定年月的第一天
-        /// </summary>
-        /// <param name="year"><see cref="string"/> 年份</param>
-        /// <param name="month"><see cref="string"/> 月份</param>
-        /// <returns><see cref="DateTime"/> 第一天的 DateTime</returns>
-        public static DateTime GetYearMonthFirstDay(string year, string month)
-        {
-            // 组装当前指定月份，默认为：yyyy-MM-01 00:00:00
-            var internalDate = Convert.ToDateTime($"{year}-{month}-01 00:00:00");
-            return internalDate;
-        }
+        // 组装当前指定月份，默认为：yyyy-MM-01 00:00:00
+        var internalDate = Convert.ToDateTime($"{year}-{month}-01 00:00:00");
+        return internalDate;
+    }
 
-        /// <summary>
-        /// 获取指定年月的第一天
-        /// </summary>
-        /// <param name="year"><see cref="int"/> 年份</param>
-        /// <param name="month"><see cref="int"/> 月份</param>
-        /// <returns><see cref="DateTime"/> 第一天的 DateTime</returns>
-        public static DateTime GetYearMonthFirstDay(int year, int month)
-        {
-            // 组装当前指定月份，默认为：yyyy-MM-01 00:00:00
-            var internalDate = new DateTime(year, month, 01, 00, 00, 00);
-            return internalDate;
-        }
+    /// <summary>
+    /// 获取指定年月的第一天
+    /// </summary>
+    /// <param name="year"><see cref="int"/> 年份</param>
+    /// <param name="month"><see cref="int"/> 月份</param>
+    /// <returns><see cref="DateTime"/> 第一天的 DateTime</returns>
+    public static DateTime GetYearMonthFirstDay(int year, int month)
+    {
+        // 组装当前指定月份，默认为：yyyy-MM-01 00:00:00
+        var internalDate = new DateTime(year, month, 01, 00, 00, 00);
+        return internalDate;
+    }
 
-        /// <summary>
-        /// 获取指定年月的最后一天
-        /// </summary>
-        /// <param name="year"><see cref="string"/> 年份</param>
-        /// <param name="month"><see cref="string"/> 月份</param>
-        /// <returns><see cref="DateTime"/> 最后一天的 DateTime</returns>
-        public static DateTime GetYearMonthLastDay(string year, string month)
-        {
-            // 组装当前指定月份，默认为：yyyy-MM-01 23:59:59
-            var internalDate = Convert.ToDateTime($"{year}-{month}-01 23:59:59");
-            return internalDate.AddMonths(+1)
-                .AddDays(-1);
-        }
+    /// <summary>
+    /// 获取指定年月的最后一天
+    /// </summary>
+    /// <param name="year"><see cref="string"/> 年份</param>
+    /// <param name="month"><see cref="string"/> 月份</param>
+    /// <returns><see cref="DateTime"/> 最后一天的 DateTime</returns>
+    public static DateTime GetYearMonthLastDay(string year, string month)
+    {
+        // 组装当前指定月份，默认为：yyyy-MM-01 23:59:59
+        var internalDate = Convert.ToDateTime($"{year}-{month}-01 23:59:59");
+        return internalDate.AddMonths(+1)
+            .AddDays(-1);
+    }
 
-        /// <summary>
-        /// 获取指定年月的最后一天
-        /// </summary>
-        /// <param name="year"><see cref="int"/> 年份</param>
-        /// <param name="month"><see cref="int"/> 月份</param>
-        /// <returns><see cref="DateTime"/> 最后一天的 DateTime</returns>
-        public static DateTime GetYearMonthLastDay(int year, int month)
-        {
-            // 组装当前指定月份，默认为：yyyy-MM-01 23:59:59
-            var internalDate = new DateTime(year, month, 01, 23, 59, 59);
-            return internalDate.AddMonths(+1)
-                .AddDays(-1);
-        }
+    /// <summary>
+    /// 获取指定年月的最后一天
+    /// </summary>
+    /// <param name="year"><see cref="int"/> 年份</param>
+    /// <param name="month"><see cref="int"/> 月份</param>
+    /// <returns><see cref="DateTime"/> 最后一天的 DateTime</returns>
+    public static DateTime GetYearMonthLastDay(int year, int month)
+    {
+        // 组装当前指定月份，默认为：yyyy-MM-01 23:59:59
+        var internalDate = new DateTime(year, month, 01, 23, 59, 59);
+        return internalDate.AddMonths(+1)
+            .AddDays(-1);
+    }
 
-        /// <summary>
-        /// 计算两个时间的差，返回天数
-        /// </summary>
-        /// <param name="startTime"><see cref="DateTime"/> 开始时间</param>
-        /// <param name="lastTime"><see cref="DateTime"/> 结束时间</param>
-        /// <returns><see cref="int"/><see cref="int"/> 天数</returns>
-        public static int DateDiffDay(DateTime startTime, DateTime lastTime)
-        {
-            var start = Convert.ToDateTime(startTime.ToShortDateString());
-            var end = Convert.ToDateTime(lastTime.ToShortDateString());
-            var sp = end.Subtract(start);
-            return sp.Days;
-        }
+    /// <summary>
+    /// 计算两个时间的差，返回天数
+    /// </summary>
+    /// <param name="startTime"><see cref="DateTime"/> 开始时间</param>
+    /// <param name="lastTime"><see cref="DateTime"/> 结束时间</param>
+    /// <returns><see cref="int"/><see cref="int"/> 天数</returns>
+    public static int DateDiffDay(DateTime startTime, DateTime lastTime)
+    {
+        var start = Convert.ToDateTime(startTime.ToShortDateString());
+        var end = Convert.ToDateTime(lastTime.ToShortDateString());
+        var sp = end.Subtract(start);
+        return sp.Days;
     }
 }

@@ -24,68 +24,67 @@ using System;
 using System.Reflection;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="Assembly"/> 拓展类
+/// </summary>
+public static class AssemblyExtension
 {
     /// <summary>
-    /// <see cref="Assembly"/> 拓展类
+    /// 获取所有类型
     /// </summary>
-    public static class AssemblyExtension
+    /// <param name="assembly"><see cref="Assembly"/></param>
+    /// <param name="exported">类型导出设置</param>
+    /// <returns><see cref="Type"/>[]</returns>
+    public static Type[] GetTypes(this Assembly assembly, bool exported)
     {
-        /// <summary>
-        /// 获取所有类型
-        /// </summary>
-        /// <param name="assembly"><see cref="Assembly"/></param>
-        /// <param name="exported">类型导出设置</param>
-        /// <returns><see cref="Type"/>[]</returns>
-        public static Type[] GetTypes(this Assembly assembly, bool exported)
-        {
-            return exported ? assembly.GetExportedTypes() : assembly.GetTypes();
-        }
+        return exported ? assembly.GetExportedTypes() : assembly.GetTypes();
+    }
 
-        /// <summary>
-        /// 获取程序集描述
-        /// </summary>
-        /// <param name="assembly"><see cref="Assembly"/></param>
-        /// <returns><see cref="string"/></returns>
-        public static string GetDescription(this Assembly assembly)
-        {
-            var descriptionAttribute
-                = Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
+    /// <summary>
+    /// 获取程序集描述
+    /// </summary>
+    /// <param name="assembly"><see cref="Assembly"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static string GetDescription(this Assembly assembly)
+    {
+        var descriptionAttribute
+            = Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
 
-            return descriptionAttribute?.Description;
-        }
+        return descriptionAttribute?.Description;
+    }
 
-        /// <summary>
-        /// 获取程序集版本
-        /// </summary>
-        /// <param name="assembly"><see cref="Assembly"/></param>
-        /// <returns><see cref="string"/></returns>
-        public static Version GetVersion(this Assembly assembly)
-        {
-            return assembly.GetName()
-                .Version;
-        }
+    /// <summary>
+    /// 获取程序集版本
+    /// </summary>
+    /// <param name="assembly"><see cref="Assembly"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static Version GetVersion(this Assembly assembly)
+    {
+        return assembly.GetName()
+            .Version;
+    }
 
-        /// <summary>
-        /// 获取程序集名称
-        /// </summary>
-        /// <param name="assembly"><see cref="Assembly"/></param>
-        /// <returns><see cref="string"/></returns>
-        public static string GetAssemblyName(this Assembly assembly)
-        {
-            return assembly.GetName()
-                .Name;
-        }
+    /// <summary>
+    /// 获取程序集名称
+    /// </summary>
+    /// <param name="assembly"><see cref="Assembly"/></param>
+    /// <returns><see cref="string"/></returns>
+    public static string GetAssemblyName(this Assembly assembly)
+    {
+        return assembly.GetName()
+            .Name;
+    }
 
-        /// <summary>
-        /// 根据程序集和类型完整限定名获取运行时类型
-        /// </summary>
-        /// <param name="assembly"><see cref="Assembly"/> 程序集</param>
-        /// <param name="typeFullName"><see cref="string"/> 类型完整限定名称</param>
-        /// <returns><see cref="Type"/></returns>
-        public static Type GetType(Assembly assembly, string typeFullName)
-        {
-            return assembly.GetType(typeFullName);
-        }
+    /// <summary>
+    /// 根据程序集和类型完整限定名获取运行时类型
+    /// </summary>
+    /// <param name="assembly"><see cref="Assembly"/> 程序集</param>
+    /// <param name="typeFullName"><see cref="string"/> 类型完整限定名称</param>
+    /// <returns><see cref="Type"/></returns>
+    public static Type GetType(Assembly assembly, string typeFullName)
+    {
+        return assembly.GetType(typeFullName);
     }
 }
