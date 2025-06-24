@@ -44,12 +44,6 @@ public sealed class SqlSugarContext
     public static SnowflakeSettingsOptions SnowflakeSettings { get; internal set; }
 
     /// <summary>
-    /// 默认连接配置
-    /// </summary>
-    /// <remarks>带 AOP 处理的</remarks>
-    public static ConnectionConfig DefaultConnectionConfig { get; internal set; }
-
-    /// <summary>
     /// SqlSugar实体集合
     /// </summary>
     public static readonly List<SqlSugarEntityInfo> SqlSugarEntityList;

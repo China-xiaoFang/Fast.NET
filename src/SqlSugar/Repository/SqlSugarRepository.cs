@@ -45,8 +45,8 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
     /// </summary>
     /// <param name="hostEnvironment"></param>
     /// <param name="serviceProvider"></param>
-    public SqlSugarRepository(IHostEnvironment hostEnvironment, IServiceProvider serviceProvider) : base(SqlSugarContext
-        .DefaultConnectionConfig)
+    public SqlSugarRepository(IHostEnvironment hostEnvironment, IServiceProvider serviceProvider) : base(
+        SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings))
     {
         _serviceProvider = serviceProvider;
 
@@ -65,35 +65,26 @@ internal sealed class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRep
         var connectionSettings = sqlSugarEntityHandler
             ?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute, typeof(TEntity))
             .Result;
-        if (connectionSettings != null)
-        {
-            DatabaseInfo = connectionSettings;
-            if (connectionSettings.ConnectionId != (string) SqlSugarContext.DefaultConnectionConfig.ConfigId)
-            {
-                var newConnectionConfig = SqlSugarContext.GetConnectionConfig(connectionSettings);
 
-                // 重新初始化Context
-                InitContext(newConnectionConfig);
+        // 数据库信息
+        DatabaseInfo = connectionSettings ?? SqlSugarContext.ConnectionSettings;
 
-                // 执行超时时间
-                Context.Ado.CommandTimeOut = connectionSettings.CommandTimeOut;
+        // 重新初始化Context
+        InitContext(SqlSugarContext.GetConnectionConfig(DatabaseInfo));
 
-                // Aop
-                SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(),
-                    Context,
-                    connectionSettings.SugarSqlExecMaxSeconds,
-                    connectionSettings.DiffLog,
-                    connectionSettings.DisableAop,
-                    sqlSugarEntityHandler);
+        // 执行超时时间
+        Context.Ado.CommandTimeOut = DatabaseInfo.CommandTimeOut;
 
-                // 过滤器
-                SugarEntityFilter.LoadSugarFilter(Context, sqlSugarEntityHandler);
-            }
-        }
-        else
-        {
-            DatabaseInfo = SqlSugarContext.ConnectionSettings;
-        }
+        // Aop
+        SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(),
+            Context,
+            DatabaseInfo.SugarSqlExecMaxSeconds,
+            DatabaseInfo.DiffLog,
+            DatabaseInfo.DisableAop,
+            sqlSugarEntityHandler);
+
+        // 过滤器
+        SugarEntityFilter.LoadSugarFilter(Context, sqlSugarEntityHandler);
     }
 
     /// <summary>
