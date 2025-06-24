@@ -335,16 +335,16 @@ public static class SugarEntityFilter
                         }
                     }
 
+                    // 更新版本控制字段
+                    SqlSugarContext.SetEntityValue(nameof(IUpdateVersion.RowVersion),
+                        new List<dynamic> {null, 0},
+                        1,
+                        ref entityInfo);
+
                     // 创建时间
                     SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedTime),
                         new List<dynamic> {null},
                         DateTime.Now,
-                        ref entityInfo);
-
-                    // 更新版本控制字段
-                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.RowVersion),
-                        new List<dynamic> {null, 0},
-                        1,
                         ref entityInfo);
 
                     // 其余字段判断
@@ -427,6 +427,6 @@ public static class SugarEntityFilter
         }
 
         // 配置软删除全局过滤器
-        _db.QueryFilter.AddTableFilter<IBaseDeletedEntity>(it => it.IsDeleted == false);
+        _db.QueryFilter.AddTableFilter<IDeletedEntity>(it => it.IsDeleted == false);
     }
 }

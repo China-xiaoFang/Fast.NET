@@ -31,7 +31,7 @@ namespace Fast.SqlSugar;
 /// <see cref="BaseIdentityRecordEntity"/> 自增主键记录Entity基类
 /// </summary>
 [SuppressSniffer]
-public class BaseIdentityRecordEntity : IdentityKeyEntity, IBaseIdentityRecordEntity
+public class BaseIdentityRecordEntity : IdentityKeyEntity, IIdentityRecordEntity
 {
     /// <summary>
     /// 设备

@@ -20,56 +20,18 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
+using SqlSugar;
 
+// ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IBaseEntity"/> Entity基类接口
+/// <see cref="IUpdateVersion"/> 行版本实体接口
 /// </summary>
+/// <remarks>只支持单条实体更新才会处罚，错误类型 <see cref="VersionExceptions"/></remarks>
 [SuppressSniffer]
-public interface IBaseEntity : IDatabaseEntity
+public interface IUpdateVersion : IDatabaseEntity
 {
-    /// <summary>
-    /// 部门Id
-    /// </summary>
-    long? DepartmentId { get; set; }
-
-    /// <summary>
-    /// 部门名称
-    /// </summary>
-    string DepartmentName { get; set; }
-
-    /// <summary>
-    /// 创建者用户Id
-    /// </summary>
-    long? CreatedUserId { get; set; }
-
-    /// <summary>
-    /// 创建者用户名称
-    /// </summary>
-    string CreatedUserName { get; set; }
-
-    /// <summary>
-    /// 创建时间
-    /// </summary>
-    DateTime? CreatedTime { get; set; }
-
-    /// <summary>
-    /// 更新者用户Id
-    /// </summary>
-    long? UpdatedUserId { get; set; }
-
-    /// <summary>
-    /// 更新者用户名称
-    /// </summary>
-    string UpdatedUserName { get; set; }
-
-    /// <summary>
-    /// 更新时间
-    /// </summary>
-    DateTime? UpdatedTime { get; set; }
-
     /// <summary>
     /// 更新版本控制字段
     /// </summary>

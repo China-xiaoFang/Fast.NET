@@ -877,8 +877,6 @@ public static class Log
     /// </summary>
     /// <param name="loggingPart"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="InvalidOperationException"></exception>
     private static (ILogger, IDisposable) GetLogger(StringLoggingPart loggingPart)
     {
         // 获取日志实例

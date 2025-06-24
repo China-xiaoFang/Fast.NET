@@ -20,75 +20,18 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Http;
-
 // ReSharper disable once CheckNamespace
+
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IBaseIdentityRecordEntity"/> 自增主键记录Entity基类接口
+/// <see cref="IDeletedEntity"/> 软删除实体接口
 /// </summary>
 [SuppressSniffer]
-public interface IBaseIdentityRecordEntity : IDatabaseEntity
+public interface IDeletedEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 设备
+    /// 软删除标识
     /// </summary>
-    string Device { get; set; }
-
-    /// <summary>
-    /// 操作系统（版本）
-    /// </summary>
-    string OS { get; set; }
-
-    /// <summary>
-    /// 浏览器（版本）
-    /// </summary>
-    string Browser { get; set; }
-
-    /// <summary>
-    /// 省份
-    /// </summary>
-    string Province { get; set; }
-
-    /// <summary>
-    /// 城市
-    /// </summary>
-    string City { get; set; }
-
-    /// <summary>
-    /// Ip
-    /// </summary>
-    string Ip { get; set; }
-
-    /// <summary>
-    /// 部门Id
-    /// </summary>
-    long? DepartmentId { get; set; }
-
-    /// <summary>
-    /// 部门名称
-    /// </summary>
-    string DepartmentName { get; set; }
-
-    /// <summary>
-    /// 创建者用户Id
-    /// </summary>
-    long? CreatedUserId { get; set; }
-
-    /// <summary>
-    /// 创建者用户名称
-    /// </summary>
-    string CreatedUserName { get; set; }
-
-    /// <summary>
-    /// 创建时间
-    /// </summary>
-    DateTime? CreatedTime { get; set; }
-
-    /// <summary>
-    /// 记录表创建
-    /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
-    void RecordCreate(HttpContext httpContext);
+    bool IsDeleted { get; set; }
 }
