@@ -108,7 +108,7 @@ internal partial class DatabaseUtil
                         : propertyInfo.PropertyType;
 
                     // 枚举处理
-                    if (propertyType!.IsEnum)
+                    if (propertyType?.IsEnum == true)
                     {
                         var enumType = Enum.GetUnderlyingType(propertyType);
 
