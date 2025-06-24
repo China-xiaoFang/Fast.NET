@@ -314,7 +314,8 @@ public static class SugarEntityFilter
         };
 
         // Model基类处理
-        _db.Aop.DataExecuting = (oldValue, entityInfo) =>
+        //_db.Aop.DataExecuting = (oldValue, entityInfo) =>
+        _db.Aop.DataExecuting = (_, entityInfo) =>
         {
             switch (entityInfo.OperationType)
             {
