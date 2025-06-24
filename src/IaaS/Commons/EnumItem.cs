@@ -23,27 +23,26 @@
 using System;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="EnumItem{TProperty}"/> 枚举项
+/// </summary>
+/// <typeparam name="TProperty">Value属性类型</typeparam>
+public class EnumItem<TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable
 {
-    /// <summary>
-    /// <see cref="EnumItem{TProperty}"/> 枚举项
-    /// </summary>
-    /// <typeparam name="TProperty">Value属性类型</typeparam>
-    public class EnumItem<TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable
-    {
-        /// <summary>  
-        /// 枚举的描述  
-        /// </summary>  
-        public string Describe { set; get; }
+    /// <summary>  
+    /// 枚举的描述  
+    /// </summary>  
+    public string Describe { set; get; }
 
-        /// <summary>  
-        /// 枚举名称  
-        /// </summary>  
-        public string Name { set; get; }
+    /// <summary>  
+    /// 枚举名称  
+    /// </summary>  
+    public string Name { set; get; }
 
-        /// <summary>  
-        /// 枚举对象的值  
-        /// </summary>  
-        public TProperty Value { set; get; }
-    }
+    /// <summary>  
+    /// 枚举对象的值  
+    /// </summary>  
+    public TProperty Value { set; get; }
 }

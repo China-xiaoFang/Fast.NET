@@ -24,61 +24,60 @@ using System;
 using System.Linq.Expressions;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="Expression"/> 拓展类
+/// </summary>
+public static class LinqExpressionExtension
 {
     /// <summary>
-    /// <see cref="Expression"/> 拓展类
+    /// 解析表达式属性名称
     /// </summary>
-    public static class LinqExpressionExtension
+    /// <typeparam name="T">对象类型</typeparam>
+    /// <typeparam name="TProperty">属性类型</typeparam>
+    /// <param name="propertySelector"><see cref="Expression{TDelegate}"/></param>
+    /// <returns><see cref="string"/></returns>
+    /// <exception cref="ArgumentException">Expression is not valid for property selection.</exception>
+    public static string GetPropertyName<T, TProperty>(this Expression<Func<T, TProperty>> propertySelector)
     {
-        /// <summary>
-        /// 解析表达式属性名称
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <typeparam name="TProperty">属性类型</typeparam>
-        /// <param name="propertySelector"><see cref="Expression{TDelegate}"/></param>
-        /// <returns><see cref="string"/></returns>
-        /// <exception cref="ArgumentException">Expression is not valid for property selection.</exception>
-        public static string GetPropertyName<T, TProperty>(this Expression<Func<T, TProperty>> propertySelector)
+        return propertySelector.Body switch
         {
-            return propertySelector.Body switch
-            {
-                // 检查 Lambda 表达式的主体是否是 MemberExpression 类型
-                MemberExpression memberExpression => GetPropertyName<T>(memberExpression),
+            // 检查 Lambda 表达式的主体是否是 MemberExpression 类型
+            MemberExpression memberExpression => GetPropertyName<T>(memberExpression),
 
-                // 如果主体是 UnaryExpression 类型，则继续解析
-                UnaryExpression {Operand: MemberExpression nestedMemberExpression} => GetPropertyName<T>(nestedMemberExpression),
+            // 如果主体是 UnaryExpression 类型，则继续解析
+            UnaryExpression {Operand: MemberExpression nestedMemberExpression} => GetPropertyName<T>(nestedMemberExpression),
 
-                _ => throw new ArgumentException("Expression is not valid for property selection.")
-            };
+            _ => throw new ArgumentException("Expression is not valid for property selection.")
+        };
+    }
+
+    /// <summary>
+    /// 解析表达式属性名称
+    /// </summary>
+    /// <typeparam name="T">对象类型</typeparam>
+    /// <param name="memberExpression"><see cref="MemberExpression"/></param>
+    /// <returns><see cref="string"/></returns>
+    /// <exception cref="ArgumentException">Invalid property selection.</exception>
+    public static string GetPropertyName<T>(MemberExpression memberExpression)
+    {
+        // 空检查
+        if (memberExpression is null)
+        {
+            throw new ArgumentNullException(nameof(memberExpression));
         }
 
-        /// <summary>
-        /// 解析表达式属性名称
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="memberExpression"><see cref="MemberExpression"/></param>
-        /// <returns><see cref="string"/></returns>
-        /// <exception cref="ArgumentException">Invalid property selection.</exception>
-        public static string GetPropertyName<T>(MemberExpression memberExpression)
+        // 获取属性声明类型
+        var propertyType = memberExpression.Member.DeclaringType;
+
+        // 检查是否越界访问属性
+        if (propertyType != typeof(T))
         {
-            // 空检查
-            if (memberExpression is null)
-            {
-                throw new ArgumentNullException(nameof(memberExpression));
-            }
-
-            // 获取属性声明类型
-            var propertyType = memberExpression.Member.DeclaringType;
-
-            // 检查是否越界访问属性
-            if (propertyType != typeof(T))
-            {
-                throw new ArgumentException("Invalid property selection.");
-            }
-
-            // 返回属性名称
-            return memberExpression.Member.Name;
+            throw new ArgumentException("Invalid property selection.");
         }
+
+        // 返回属性名称
+        return memberExpression.Member.Name;
     }
 }

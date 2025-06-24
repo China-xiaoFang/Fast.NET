@@ -23,41 +23,40 @@
 using System;
 
 // ReSharper disable once CheckNamespace
-namespace Fast.IaaS
+namespace Fast.IaaS;
+
+/// <summary>
+/// <see cref="TimeSpan"/> 拓展类
+/// </summary>
+public static class TimeSpanExtension
 {
     /// <summary>
-    /// <see cref="TimeSpan"/> 拓展类
+    /// 获取描述
     /// </summary>
-    public static class TimeSpanExtension
+    /// <param name="timeSpan"><see cref="TimeSpan"/></param>
+    /// <returns></returns>
+    public static string ToDescription(this TimeSpan timeSpan)
     {
-        /// <summary>
-        /// 获取描述
-        /// </summary>
-        /// <param name="timeSpan"><see cref="TimeSpan"/></param>
-        /// <returns></returns>
-        public static string ToDescription(this TimeSpan timeSpan)
+        var formatStr = "ss\\秒";
+        if (timeSpan.TotalDays > 1)
         {
-            var formatStr = "ss\\秒";
-            if (timeSpan.TotalDays > 1)
-            {
-                formatStr = "dd\\天hh\\时mm\\分" + formatStr;
-            }
-            else if (timeSpan.TotalHours > 1)
-            {
-                formatStr = "hh\\时mm\\分" + formatStr;
-            }
-            else if (timeSpan.TotalMinutes > 1)
-            {
-                formatStr = "mm\\分" + formatStr;
-            }
-
-            if (timeSpan < TimeSpan.Zero)
-            {
-                // 负数
-                return $"-{timeSpan.ToString(formatStr)}";
-            }
-
-            return timeSpan.ToString(formatStr);
+            formatStr = "dd\\天hh\\时mm\\分" + formatStr;
         }
+        else if (timeSpan.TotalHours > 1)
+        {
+            formatStr = "hh\\时mm\\分" + formatStr;
+        }
+        else if (timeSpan.TotalMinutes > 1)
+        {
+            formatStr = "mm\\分" + formatStr;
+        }
+
+        if (timeSpan < TimeSpan.Zero)
+        {
+            // 负数
+            return $"-{timeSpan.ToString(formatStr)}";
+        }
+
+        return timeSpan.ToString(formatStr);
     }
 }
