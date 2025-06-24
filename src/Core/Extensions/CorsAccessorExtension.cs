@@ -132,7 +132,7 @@ public static class CorsAccessorExtension
     /// <param name="configuration"><see cref="IConfiguration"/></param>
     /// <param name="section"><see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
-    /// <remarks>默认值：CorsAccessorSettings</remarks>
+    /// <para>默认值：CorsAccessorSettings</para>
     /// </param>
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddCorsAccessor(this IServiceCollection services, IConfiguration configuration,

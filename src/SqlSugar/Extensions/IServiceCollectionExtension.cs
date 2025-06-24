@@ -44,9 +44,9 @@ public static class IServiceCollectionExtension
     /// <param name="section">
     /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
-    /// <remarks>默认值：SnowflakeSettings</remarks>
+    /// <para>默认值：SnowflakeSettings</para>
     /// </param>
-    /// <returns></returns>
+    /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
         string section = "SnowflakeSettings")
     {
@@ -72,7 +72,7 @@ public static class IServiceCollectionExtension
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <param name="configuration"><see cref="IConfiguration"/></param>
     /// <param name="optionAction"><see cref="Action{SnowflakeSettingsOptions}"/></param>
-    /// <returns></returns>
+    /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
         Action<SnowflakeSettingsOptions> optionAction)
     {
@@ -99,7 +99,7 @@ public static class IServiceCollectionExtension
     /// <param name="connectionSection">
     /// <see cref="string"/>
     /// <para>Json配置文件节点的Key</para>
-    /// <remarks>默认值：ConnectionSettings</remarks>
+    /// <para>默认值：ConnectionSettings</para>
     /// </param>
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration,
