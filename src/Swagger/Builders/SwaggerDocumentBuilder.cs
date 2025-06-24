@@ -32,11 +32,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
+#if NET8_0
+using Microsoft.OpenApi;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Fast.Swagger;
@@ -183,9 +185,13 @@ public static class SwaggerDocumentBuilder
     internal static void Build(SwaggerOptions swaggerOptions, Action<SwaggerOptions> configure = null)
     {
         // 生成V2版本
+#if NET6_0 || NET7_0
+        swaggerOptions.SerializeAsV2 = Penetrates.SwaggerSettings.FormatAsV2 == true;
+#elif NET8_0
         swaggerOptions.OpenApiVersion = Penetrates.SwaggerSettings.FormatAsV2 == true
             ? OpenApiSpecVersion.OpenApi2_0
             : OpenApiSpecVersion.OpenApi3_0;
+#endif
 
         // 判断是否启用 Server
         if (Penetrates.SwaggerSettings.HideServers != true)
