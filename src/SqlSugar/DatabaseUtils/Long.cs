@@ -31,11 +31,11 @@ namespace Fast.SqlSugar;
 internal partial class DatabaseUtil
 {
     /// <summary>
-    /// 设置 <see cref="DateTime"/> 类型
+    /// 设置 <see cref="long"/> 类型
     /// </summary>
     /// <param name="dbType"></param>
     /// <param name="columnInfo"></param>
-    internal static void SetDbTypeDateTime(DbType dbType, ref EntityColumnInfo columnInfo)
+    internal static void SetDbTypeLong(DbType dbType, ref EntityColumnInfo columnInfo)
     {
         switch (dbType)
         {
@@ -46,64 +46,83 @@ internal partial class DatabaseUtil
             case DbType.PolarDB:
             case DbType.GBase:
             case DbType.HG:
-            case DbType.Oscar:
-            case DbType.Odbc:
-            case DbType.Access:
-            case DbType.MongoDb:
-            case DbType.ClickHouse:
-                columnInfo.DataType = "datetime";
+                columnInfo.DataType = "bigint";
                 break;
 
-            // SQL Server 系列
+            // SQL Server
             case DbType.SqlServer:
-                columnInfo.DataType = "datetimeoffset";
-                break;
-
-            // SQLite
-            case DbType.Sqlite:
-                columnInfo.DataType = "text";
-                break;
-
-            // Oracle 系列
-            case DbType.Oracle:
-            case DbType.OceanBaseForOracle:
-                columnInfo.DataType = "timestamp with time zone";
+                columnInfo.DataType = "bigint";
                 break;
 
             // PostgreSQL 系列
             case DbType.PostgreSQL:
             case DbType.OpenGauss:
-            case DbType.TDSQLForPGODBC:
-                columnInfo.DataType = "timestamp with time zone";
-                break;
-
-            // 类 Oracle/PostgreSQL 兼容库
             case DbType.GaussDB:
             case DbType.GaussDBNative:
+            case DbType.TDSQL:
+            case DbType.TDSQLForPGODBC:
             case DbType.Vastbase:
             case DbType.Xugu:
-            case DbType.Doris:
-            case DbType.TDSQL:
             case DbType.GoldenDB:
+            case DbType.Doris:
             case DbType.DuckDB:
-            case DbType.QuestDB:
-            case DbType.Dm:
-            case DbType.Kdbndp:
-            case DbType.HANA:
-            case DbType.DB2:
-                columnInfo.DataType = "timestamp";
+                columnInfo.DataType = "bigint";
                 break;
 
-            // TDengine 支持 timestamp 类型
+            // Oracle 系列
+            case DbType.Oracle:
+            case DbType.OceanBaseForOracle:
+                columnInfo.DataType = "number(19,0)";
+                break;
+
+            // SQLite
+            case DbType.Sqlite:
+                columnInfo.DataType = "integer";
+                break;
+
+            // ClickHouse
+            case DbType.ClickHouse:
+                columnInfo.DataType = "int64";
+                break;
+
+            // QuestDB
+            case DbType.QuestDB:
+                columnInfo.DataType = "long";
+                break;
+
+            // MongoDB
+            case DbType.MongoDb:
+                columnInfo.DataType = "int64";
+                break;
+
+            // Access
+            case DbType.Access:
+                columnInfo.DataType = "long";
+                break;
+
+            // 其他类关系型数据库统一用 bigint
+            case DbType.Dm:
+            case DbType.Oscar:
+            case DbType.Kdbndp:
+            case DbType.DB2:
+            case DbType.HANA:
+            case DbType.Odbc:
+                columnInfo.DataType = "bigint";
+                break;
+
+            // TDengine 明确不支持 long/int64，需避免使用
             case DbType.TDengine:
-                columnInfo.DataType = "timestamp";
+                throw new SqlSugarException("TDengine 不支持 long 类型，请使用 bigint 或 double 替代。");
+
+            // OceanBase（MySQL 模式）
+            case DbType.OceanBase:
+                columnInfo.DataType = "bigint";
                 break;
 
             // 默认
             case DbType.Custom:
-            case DbType.OceanBase:
             default:
-                columnInfo.DataType = "datetime";
+                columnInfo.DataType = "bigint";
                 break;
         }
     }
