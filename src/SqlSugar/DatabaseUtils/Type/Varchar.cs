@@ -20,23 +20,28 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using System.Text.RegularExpressions;
 using SqlSugar;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DatabaseUtil"/> Database DateTime 类型工具类
+/// <see cref="DatabaseUtil"/> Database Varchar 类型工具类
 /// </summary>
 internal partial class DatabaseUtil
 {
     /// <summary>
-    /// 设置 <see cref="DateTime"/> 类型
+    /// 设置 Varchar 类型
     /// </summary>
     /// <param name="dbType"></param>
     /// <param name="columnInfo"></param>
-    internal static void SetDbTypeDateTime(DbType dbType, EntityColumnInfo columnInfo)
+    internal static void SetDbTypeVarchar(DbType dbType, EntityColumnInfo columnInfo)
     {
+        // 读取长度
+        var match = Regex.Match(columnInfo.DataType, @"varchar\(\s*(\d+)\s*\)", RegexOptions.IgnoreCase);
+        var length = match.Success ? int.Parse(match?.Groups[1].Value) : 50;
+
         switch (dbType)
         {
             // MySQL 系列
@@ -46,17 +51,33 @@ internal partial class DatabaseUtil
             case DbType.PolarDB:
             case DbType.GBase:
             case DbType.HG:
-            case DbType.Oscar:
-            case DbType.Odbc:
-            case DbType.Access:
-            case DbType.MongoDb:
-            case DbType.ClickHouse:
-                columnInfo.DataType = "datetime";
+                columnInfo.DataType = $"varchar({length})";
                 break;
 
-            // SQL Server 系列
+            // SQL Server
             case DbType.SqlServer:
-                columnInfo.DataType = "datetimeoffset";
+                columnInfo.DataType = $"varchar({length})";
+                break;
+
+            // PostgreSQL 系列
+            case DbType.PostgreSQL:
+            case DbType.OpenGauss:
+            case DbType.TDSQLForPGODBC:
+            case DbType.TDSQL:
+            case DbType.GaussDB:
+            case DbType.GaussDBNative:
+            case DbType.Vastbase:
+            case DbType.Xugu:
+            case DbType.Doris:
+            case DbType.GoldenDB:
+            case DbType.DuckDB:
+                columnInfo.DataType = $"varchar({length})";
+                break;
+
+            // Oracle 系列
+            case DbType.Oracle:
+            case DbType.OceanBaseForOracle:
+                columnInfo.DataType = $"varchar2({length})";
                 break;
 
             // SQLite
@@ -64,46 +85,34 @@ internal partial class DatabaseUtil
                 columnInfo.DataType = "text";
                 break;
 
-            // Oracle 系列
-            case DbType.Oracle:
-            case DbType.OceanBaseForOracle:
-                columnInfo.DataType = "timestamp with time zone";
+            // ClickHouse
+            case DbType.ClickHouse:
+                columnInfo.DataType = "string";
                 break;
 
-            // PostgreSQL 系列
-            case DbType.PostgreSQL:
-            case DbType.OpenGauss:
-            case DbType.TDSQLForPGODBC:
-                columnInfo.DataType = "timestamp with time zone";
+            // Access
+            case DbType.Access:
+                columnInfo.DataType = "text";
                 break;
 
-            // 类 Oracle/PostgreSQL 兼容库
-            case DbType.GaussDB:
-            case DbType.GaussDBNative:
-            case DbType.Vastbase:
-            case DbType.Xugu:
-            case DbType.Doris:
-            case DbType.TDSQL:
-            case DbType.GoldenDB:
-            case DbType.DuckDB:
-            case DbType.QuestDB:
-            case DbType.Dm:
-            case DbType.Kdbndp:
-            case DbType.HANA:
-            case DbType.DB2:
-                columnInfo.DataType = "timestamp";
-                break;
-
-            // TDengine 支持 timestamp 类型
-            case DbType.TDengine:
-                columnInfo.DataType = "timestamp";
+            // MongoDB
+            case DbType.MongoDb:
+                columnInfo.DataType = "string";
                 break;
 
             // 默认
-            case DbType.Custom:
+            case DbType.Dm:
+            case DbType.Oscar:
+            case DbType.Kdbndp:
+            case DbType.DB2:
+            case DbType.HANA:
+            case DbType.Odbc:
+            case DbType.QuestDB:
+            case DbType.TDengine:
             case DbType.OceanBase:
+            case DbType.Custom:
             default:
-                columnInfo.DataType = "datetime";
+                columnInfo.DataType = $"varchar({length})";
                 break;
         }
     }

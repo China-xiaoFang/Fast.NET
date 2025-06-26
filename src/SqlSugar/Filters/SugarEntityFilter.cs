@@ -72,7 +72,7 @@ public static class SugarEntityFilter
 
                 var logSb = new StringBuilder();
                 logSb.Append("\u001b[40m\u001b[90m");
-                logSb.Append(" sql");
+                logSb.Append("fsql");
                 logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
@@ -100,7 +100,7 @@ public static class SugarEntityFilter
                     {
                         var logSb = new StringBuilder();
                         logSb.Append("\u001b[41m\u001b[30m");
-                        logSb.Append(" sql");
+                        logSb.Append("fsql");
                         logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                         logSb.Append(": ");
                         logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
@@ -132,7 +132,7 @@ public static class SugarEntityFilter
                 // 控制台输出
                 var logSb = new StringBuilder();
                 logSb.Append("\u001b[40m\u001b[1m\u001b[33m");
-                logSb.Append(" sql");
+                logSb.Append("fsql");
                 logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
@@ -163,7 +163,7 @@ public static class SugarEntityFilter
                         {
                             var _logSb = new StringBuilder();
                             _logSb.Append("\u001b[41m\u001b[30m");
-                            _logSb.Append(" sql");
+                            _logSb.Append("fsql");
                             _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                             _logSb.Append(": ");
                             _logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
@@ -228,7 +228,7 @@ public static class SugarEntityFilter
                             {
                                 var logSb = new StringBuilder();
                                 logSb.Append("\u001b[41m\u001b[30m");
-                                logSb.Append(" sql");
+                                logSb.Append("fsql");
                                 logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                                 logSb.Append(": ");
                                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
@@ -267,7 +267,7 @@ public static class SugarEntityFilter
             {
                 var logSb = new StringBuilder();
                 logSb.Append("\u001b[41m\u001b[30m");
-                logSb.Append(" sql");
+                logSb.Append("fsql");
                 logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
@@ -298,7 +298,7 @@ public static class SugarEntityFilter
                     {
                         var logSb = new StringBuilder();
                         logSb.Append("\u001b[41m\u001b[30m");
-                        logSb.Append(" sql");
+                        logSb.Append("fsql");
                         logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                         logSb.Append(": ");
                         logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");

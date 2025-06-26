@@ -35,7 +35,7 @@ internal partial class DatabaseUtil
     /// </summary>
     /// <param name="dbType"></param>
     /// <param name="columnInfo"></param>
-    internal static void SetDbTypeShort(DbType dbType, ref EntityColumnInfo columnInfo)
+    internal static void SetDbTypeShort(DbType dbType, EntityColumnInfo columnInfo)
     {
         switch (dbType)
         {
