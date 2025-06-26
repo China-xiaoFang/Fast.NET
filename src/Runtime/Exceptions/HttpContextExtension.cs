@@ -375,10 +375,15 @@ public static class HttpContextExtension
                 return null;
             }
 
-            return new UserAgentInfo
+            var result = new UserAgentInfo
             {
                 Device = clientInfo.Device.ToString(), OS = clientInfo.OS.ToString(), Browser = clientInfo.UA.ToString()
             };
+
+            // 放入 HttpContext.Items 中
+            httpContext.Items[nameof(Fast) + nameof(UserAgentInfo)] = result;
+
+            return result;
         }
         catch
         {
@@ -421,97 +426,149 @@ public static class HttpContextExtension
         // 判断是否传入IP地址
         ip ??= httpContext.RemoteIpv4();
 
+        WanNetIPInfo result;
+
         // 获取内存缓存服务
         var _memoryCache = httpContext.RequestServices.GetService<IMemoryCache>();
 
-        // 优先从内存缓存中获取
-        var result = _memoryCache?.Get<WanNetIPInfo>($"{nameof(Fast)}.NET:Http:RemoteIpv4Info:{ip}");
-
-        if (result == null)
+        if (_memoryCache == null)
         {
-            // .NET5+ 后，默认没有注册 GBK 编码，所以这里进行注册
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            result = new WanNetIPInfo {Ip = ip};
-
-            // 发送 Http 请求
-            using var httpClient = new HttpClient();
-
-            // 设置请求超时时间
-            httpClient.Timeout = TimeSpan.FromSeconds(10);
-
-            using var request = new HttpRequestMessage();
-
-            // 设置请求 Url
-            request.RequestUri = new Uri($"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}");
-            // 设置请求方式
-            request.Method = HttpMethod.Get;
-            // 设置请求头部
-            request.Headers.Add("Accept", "application/json, text/plain, */*");
-
-            // 添加默认 User-Agent
-            request.Headers.TryAddWithoutValidation("User-Agent",
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.81 Safari/537.36 Edg/104.0.1293.47");
-
-            try
-            {
-                // 发送请求
-                using var response = await httpClient.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-                // 这里默认使用 GBK 编码解析
-                var responseContent = Encoding.GetEncoding("GBK")
-                    .GetString(response.Content.ReadAsByteArrayAsync()
-                        .Result);
-
-                var ipInfo = responseContent[(responseContent.IndexOf("IPCallBack(", StringComparison.Ordinal)
-                                              + "IPCallBack(".Length)..]
-                    .TrimEnd();
-                ipInfo = ipInfo[..^3];
-
-                var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, string>>(ipInfo);
-
-                if (ipInfoDictionary.TryGetValue("ip", out var resIp))
+            result = await GetWanNetInfoAsync(ip);
+        }
+        else
+        {
+            // GetOrCreateAsync 可以保证同一个 Key 同时只有一个委托
+            result = await _memoryCache.GetOrCreateAsync($"{nameof(Fast)}.NET:Http:RemoteIpv4Info:{ip}",
+                async options =>
                 {
-                    result.Ip = resIp;
-                }
+                    // 设置过期时间为24个小时
+                    options.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
 
-                if (ipInfoDictionary.TryGetValue("pro", out var resPro))
-                {
-                    result.Province = resPro;
-                }
-
-                if (ipInfoDictionary.TryGetValue("pro", out var resProCode))
-                {
-                    result.ProvinceZipCode = resProCode;
-                }
-
-                if (ipInfoDictionary.TryGetValue("city", out var resCity))
-                {
-                    result.City = resCity;
-                }
-
-                if (ipInfoDictionary.TryGetValue("cityCode", out var resCityCode))
-                {
-                    result.CityZipCode = resCityCode;
-                }
-
-                if (ipInfoDictionary.TryGetValue("addr", out var resAddress))
-                {
-                    result.Address = resAddress;
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                throw new Exception("远程请求错误：" + ex.Message, ex);
-            }
-            catch (TaskCanceledException ex)
-            {
-                throw new Exception("远程请求超时：" + ex.Message, ex);
-            }
+                    return await GetWanNetInfoAsync(ip);
+                });
         }
 
-        // 放入内存缓存中，设置过期时间为24个小时
-        _memoryCache?.Set($"{nameof(Fast)}.NET:Http:RemoteIpv4Info:{ip}", result, TimeSpan.FromHours(24));
+        // 放入 HttpContext.Items 中
+        httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)] = result;
+
+        return result;
+    }
+
+    /// <summary>
+    /// 获取远程 Ipv4 地址信息
+    /// </summary>
+    /// <param name="ip"><see cref="string"/> 要的IP地址信息</param>
+    /// <remarks>无内存缓存，请谨慎调用</remarks>
+    /// <returns></returns>
+    private static async Task<WanNetIPInfo> GetWanNetInfoAsync(string ip)
+    {
+        // .NET5+ 后，默认没有注册 GBK 编码，所以这里进行注册
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        var result = new WanNetIPInfo {Ip = ip};
+
+        // 发送 Http 请求
+        using var httpClient = new HttpClient();
+
+        // 设置请求超时时间
+        httpClient.Timeout = TimeSpan.FromSeconds(10);
+
+        using var request = new HttpRequestMessage();
+
+        // 设置请求 Url
+        request.RequestUri = new Uri($"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}");
+        // 设置请求方式
+        request.Method = HttpMethod.Get;
+        // 设置请求头部
+        request.Headers.Add("Accept", "application/json, text/plain, */*");
+
+        // 添加默认 User-Agent
+        request.Headers.TryAddWithoutValidation("User-Agent",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.81 Safari/537.36 Edg/104.0.1293.47");
+
+        try
+        {
+            // 发送请求
+            using var response = await httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            // 这里默认使用 GBK 编码解析
+            var responseContent = Encoding.GetEncoding("GBK")
+                .GetString(response.Content.ReadAsByteArrayAsync()
+                    .Result);
+
+            var ipInfo = responseContent[
+                    (responseContent.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
+                .TrimEnd();
+            ipInfo = ipInfo[..^3];
+
+            var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, string>>(ipInfo);
+
+            if (ipInfoDictionary.TryGetValue("ip", out var resIp))
+            {
+                result.Ip = resIp;
+            }
+
+            if (ipInfoDictionary.TryGetValue("pro", out var resPro))
+            {
+                result.Province = resPro;
+            }
+
+            if (ipInfoDictionary.TryGetValue("pro", out var resProCode))
+            {
+                result.ProvinceZipCode = resProCode;
+            }
+
+            if (ipInfoDictionary.TryGetValue("city", out var resCity))
+            {
+                result.City = resCity;
+            }
+
+            if (ipInfoDictionary.TryGetValue("cityCode", out var resCityCode))
+            {
+                result.CityZipCode = resCityCode;
+            }
+
+            if (ipInfoDictionary.TryGetValue("addr", out var resAddress))
+            {
+                result.Address = resAddress;
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            var logSb = new StringBuilder();
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("fail");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            logSb.Append(": ");
+            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+            logSb.Append(Environment.NewLine);
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("      ");
+            logSb.Append("远程请求错误");
+            logSb.Append(Environment.NewLine);
+            logSb.Append("      ");
+            logSb.Append($"HttpContextExtension.GetWanNetInfoAsync: {ex}");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            Console.WriteLine(logSb.ToString());
+        }
+        catch (TaskCanceledException ex)
+        {
+            var logSb = new StringBuilder();
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("fail");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            logSb.Append(": ");
+            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+            logSb.Append(Environment.NewLine);
+            logSb.Append("\u001b[41m\u001b[30m");
+            logSb.Append("      ");
+            logSb.Append("远程请求超时");
+            logSb.Append(Environment.NewLine);
+            logSb.Append("      ");
+            logSb.Append($"HttpContextExtension.GetWanNetInfoAsync: {ex}");
+            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            Console.WriteLine(logSb.ToString());
+        }
 
         return result;
     }
