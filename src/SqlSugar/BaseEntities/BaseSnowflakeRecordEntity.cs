@@ -97,7 +97,7 @@ public class BaseSnowflakeRecordEntity : SnowflakeKeyEntity, IIdentityRecordEnti
     /// 创建时间
     /// </summary>
     [SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
-    public virtual DateTime? CreatedTime { get; set; }
+    public virtual DateTime CreatedTime { get; set; }
 
     /// <summary>
     /// 记录表创建

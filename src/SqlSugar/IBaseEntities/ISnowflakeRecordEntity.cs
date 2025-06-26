@@ -20,16 +20,47 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
+using Microsoft.AspNetCore.Http;
 
+// ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IBaseEntity"/> Entity基类接口
+/// <see cref="ISnowflakeRecordEntity"/> 雪花主键记录Entity基类接口
 /// </summary>
 [SuppressSniffer]
-public interface IBaseEntity : IDatabaseEntity
+public interface ISnowflakeRecordEntity : IDatabaseEntity
 {
+    /// <summary>
+    /// 设备
+    /// </summary>
+    string Device { get; set; }
+
+    /// <summary>
+    /// 操作系统（版本）
+    /// </summary>
+    string OS { get; set; }
+
+    /// <summary>
+    /// 浏览器（版本）
+    /// </summary>
+    string Browser { get; set; }
+
+    /// <summary>
+    /// 省份
+    /// </summary>
+    string Province { get; set; }
+
+    /// <summary>
+    /// 城市
+    /// </summary>
+    string City { get; set; }
+
+    /// <summary>
+    /// Ip
+    /// </summary>
+    string Ip { get; set; }
+
     /// <summary>
     /// 部门Id
     /// </summary>
@@ -53,20 +84,11 @@ public interface IBaseEntity : IDatabaseEntity
     /// <summary>
     /// 创建时间
     /// </summary>
-    DateTime? CreatedTime { get; set; }
+    DateTime CreatedTime { get; set; }
 
     /// <summary>
-    /// 更新者用户Id
+    /// 记录表创建
     /// </summary>
-    long? UpdatedUserId { get; set; }
-
-    /// <summary>
-    /// 更新者用户名称
-    /// </summary>
-    string UpdatedUserName { get; set; }
-
-    /// <summary>
-    /// 更新时间
-    /// </summary>
-    DateTime? UpdatedTime { get; set; }
+    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
+    void RecordCreate(HttpContext httpContext);
 }
