@@ -134,20 +134,25 @@ internal partial class DatabaseUtil
                 switch (columnDbType)
                 {
                     case "tinyint":
-                        SetDbTypeByte(dbType, ref columnInfo);
+                        SetDbTypeByte(dbType, columnInfo);
                         break;
                     case "smallint":
-                        SetDbTypeShort(dbType, ref columnInfo);
+                        SetDbTypeShort(dbType, columnInfo);
                         break;
                     case "bigint":
-                        SetDbTypeLong(dbType, ref columnInfo);
+                        SetDbTypeLong(dbType, columnInfo);
                         break;
                     case "int":
-                        SetDbTypeInt(dbType, ref columnInfo);
+                        SetDbTypeInt(dbType, columnInfo);
                         break;
                     case "datetimeoffset":
-                        SetDbTypeDateTime(dbType, ref columnInfo);
+                        SetDbTypeDateTime(dbType, columnInfo);
                         break;
+                }
+
+                if (columnDbType.StartsWith("varchar("))
+                {
+                    SetDbTypeVarchar(dbType, columnInfo);
                 }
             }
         };
