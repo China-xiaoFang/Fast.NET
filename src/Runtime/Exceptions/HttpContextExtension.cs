@@ -20,6 +20,7 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
@@ -405,6 +406,11 @@ public static class HttpContextExtension
     }
 
     /// <summary>
+    /// Ip地址获取并发锁
+    /// </summary>
+    private static readonly ConcurrentDictionary<string, SemaphoreSlim> ipLockSemaphoreSlims = new();
+
+    /// <summary>
     /// 远程 Ipv4 地址信息
     /// </summary>
     /// <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
@@ -437,15 +443,27 @@ public static class HttpContextExtension
         }
         else
         {
-            // GetOrCreateAsync 可以保证同一个 Key 同时只有一个委托
-            result = await _memoryCache.GetOrCreateAsync($"{nameof(Fast)}.NET:Http:RemoteIpv4Info:{ip}",
-                async options =>
-                {
-                    // 设置过期时间为24个小时
-                    options.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
+            var cacheKey = $"{nameof(Fast)}.NET:Http:RemoteIpv4Info:{ip}";
 
-                    return await GetWanNetInfoAsync(ip);
-                });
+            // 避免并发请求
+            var semaphoreSlim = ipLockSemaphoreSlims.GetOrAdd(cacheKey, _ => new SemaphoreSlim(1, 1));
+
+            await semaphoreSlim.WaitAsync();
+            try
+            {
+                // 从缓存中读取
+                if (!_memoryCache.TryGetValue(cacheKey, out result))
+                {
+                    result = await GetWanNetInfoAsync(ip);
+                    // 放入内存缓存，设置过期时间为24个小时
+                    _memoryCache.Set(cacheKey, result, TimeSpan.FromHours(24));
+                }
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+                ipLockSemaphoreSlims.TryRemove(cacheKey, out _);
+            }
         }
 
         // 放入 HttpContext.Items 中
