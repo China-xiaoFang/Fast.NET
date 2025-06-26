@@ -22,7 +22,6 @@
 
 using System.Reflection;
 using SqlSugar;
-using SystemDbType = System.Data.DbType;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
