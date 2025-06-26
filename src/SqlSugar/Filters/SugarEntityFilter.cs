@@ -47,10 +47,10 @@ public static class SugarEntityFilter
     {
         _db.Aop.OnLogExecuted = (rawSql, pars) =>
         {
-            var handleSql = SqlSugarContext.ParameterFormat(rawSql, pars);
-
             if (isDevelopment)
             {
+                var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
+
                 if (rawSql.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase))
                 {
                     // 如果是系统表则不输出，避免安全起见
@@ -89,6 +89,8 @@ public static class SugarEntityFilter
 
             if (!disableAop && sqlSugarEntityHandler != null)
             {
+                var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
+
                 // 执行Sql处理
                 Task.Run(async () =>
                 {
@@ -119,6 +121,8 @@ public static class SugarEntityFilter
             // 执行时间判断
             if (_db.Ado.SqlExecutionTime.TotalSeconds > sugarSqlExecMaxSeconds)
             {
+                var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
+
                 // 代码CS文件名称
                 var fileName = _db.Ado.SqlStackTrace.FirstFileName;
                 // 代码行数
@@ -191,7 +195,7 @@ public static class SugarEntityFilter
                     // 差异日志
                     if ((diff.AfterData != null && diff.AfterData.Any()) || (diff.BeforeData != null && diff.BeforeData.Any()))
                     {
-                        var handleSql = SqlSugarContext.ParameterFormat(diff.Sql, diff.Parameters);
+                        var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, diff.Sql, diff.Parameters);
 
                         DiffLogTableInfo firstData = null;
                         if (diff.AfterData != null && diff.AfterData.Any())
@@ -251,7 +255,7 @@ public static class SugarEntityFilter
         {
             var param = (SugarParameter[]) exp.Parametres;
 
-            var handleSql = SqlSugarContext.ParameterFormat(exp.Sql, param);
+            var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, exp.Sql, param);
 
             // 代码CS文件名称
             var fileName = _db.Ado.SqlStackTrace.FirstFileName;

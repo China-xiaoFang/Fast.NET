@@ -119,42 +119,6 @@ public sealed class SqlSugarContext
     }
 
     /// <summary>
-    /// 格式化参数拼接成完整的SQL语句
-    /// </summary>
-    /// <param name="sql"></param>
-    /// <param name="pars"></param>
-    /// <returns></returns>
-    public static string ParameterFormat(string sql, IReadOnlyList<SugarParameter> pars)
-    {
-        //应逆向替换，否则由于 SqlSugar 多个表的过滤器问题导致替换不完整  如 @TenantId1  @TenantId10
-        for (var i = pars.Count - 1; i >= 0; i--)
-        {
-            sql = pars[i].DbType switch
-            {
-                SystemDbType.String
-                    or SystemDbType.DateTime
-                    or SystemDbType.Date
-                    or SystemDbType.Time
-                    or SystemDbType.DateTime2
-                    or SystemDbType.DateTimeOffset
-                    or SystemDbType.Guid
-                    or SystemDbType.VarNumeric
-                    or SystemDbType.AnsiStringFixedLength
-                    or SystemDbType.AnsiString
-                    or SystemDbType.StringFixedLength => sql.Replace(pars[i].ParameterName, "'" + pars[i].Value + "'"),
-                SystemDbType.Boolean when string.IsNullOrEmpty(pars[i]
-                    .Value?.ToString()) => sql.Replace(pars[i].ParameterName, "NULL"),
-                SystemDbType.Boolean => sql.Replace(pars[i].ParameterName, Convert.ToBoolean(pars[i].Value) ? "1" : "0"),
-                _ => sql.Replace(pars[i].ParameterName,
-                    pars[i]
-                        .Value?.ToString())
-            };
-        }
-
-        return sql;
-    }
-
-    /// <summary>
     /// Entity Value 检测
     /// </summary>
     /// <param name="propertyName"><see cref="string"/> 属性名称</param>
