@@ -45,7 +45,7 @@ public static class IServiceCollectionExtension
     public static IServiceCollection AddCache(this IServiceCollection services, string section = "RedisSettings")
     {
         // 配置验证
-        services.AddConfigurableOptions<List<RedisSettingsOptions>>(section);
+        services.AddConfigurableOptions<RedisSettingsOptions>(section);
 
         // 添加默认缓存服务
         services.AddSingleton<ICache, Cache>();

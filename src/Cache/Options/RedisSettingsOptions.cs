@@ -20,21 +20,17 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
+using Fast.Runtime;
 
+// ReSharper disable once CheckNamespace
 namespace Fast.Cache;
 
 /// <summary>
 /// <see cref="RedisSettingsOptions"/> Redis连接字符串配置
 /// </summary>
 [SuppressSniffer]
-public class RedisSettingsOptions
+public class RedisSettingsOptions : IPostConfigure
 {
-    /// <summary>
-    /// 服务名称
-    /// </summary>
-    public string ServiceName { get; set; }
-
     /// <summary>
     /// 服务器Ip地址
     /// </summary>
@@ -59,4 +55,44 @@ public class RedisSettingsOptions
     /// 前缀
     /// </summary>
     public string Prefix { get; set; }
+
+    /// <summary>
+    /// 连接池大小
+    /// </summary>
+    public int? Poolsize { get; set; }
+
+    /// <summary>
+    /// SSL加密连接
+    /// </summary>
+    public bool? SSL { get; set; }
+
+    /// <summary>
+    /// 服务
+    /// </summary>
+    public List<RedisServiceSettingsOptions> Services { get; set; }
+
+    /// <summary>
+    /// 后期配置
+    /// </summary>
+    public void PostConfigure()
+    {
+        ServiceIp ??= "127.0.0.1";
+        Port ??= 6379;
+        DbName ??= 0;
+        Poolsize ??= 100;
+        SSL ??= false;
+        Services ??= [];
+    }
+}
+
+/// <summary>
+/// <see cref="RedisServiceSettingsOptions"/> Redis连接字符串服务配置
+/// </summary>
+[SuppressSniffer]
+public class RedisServiceSettingsOptions : RedisSettingsOptions
+{
+    /// <summary>
+    /// 服务名称
+    /// </summary>
+    public string ServiceName { get; set; }
 }

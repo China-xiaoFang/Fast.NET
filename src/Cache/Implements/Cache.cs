@@ -32,7 +32,7 @@ namespace Fast.Cache;
 /// </summary>
 internal class Cache : Cache<DefaultCacheContextLocator>, ICache
 {
-    public Cache(IOptionsMonitor<List<RedisSettingsOptions>> redisSettings) : base(redisSettings)
+    public Cache(IOptionsMonitor<RedisSettingsOptions> redisSettings) : base(redisSettings)
     {
     }
 }
@@ -43,19 +43,19 @@ internal class Cache : Cache<DefaultCacheContextLocator>, ICache
 internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDisposable
     where CacheContextLocator : ICacheContextLocator, new()
 {
-    private readonly IDisposable _optionsReloadToken;
+    internal readonly IDisposable _optionsReloadToken;
 
     /// <summary>
     /// CSRedis 缓存客户端
     /// </summary>
-    private CSRedisClient _client;
+    internal CSRedisClient _client;
 
     /// <summary>
     /// 缓存上下文定位器
     /// </summary>
     public CacheContextLocator ContextLocator { get; }
 
-    public Cache(IOptionsMonitor<List<RedisSettingsOptions>> redisSettings)
+    public Cache(IOptionsMonitor<RedisSettingsOptions> redisSettings)
     {
         ContextLocator = new CacheContextLocator();
 
@@ -69,21 +69,33 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <summary>
     /// 创建/初始化服务
     /// </summary>
-    private void Create(List<RedisSettingsOptions> redisSettings)
+    private void Create(RedisSettingsOptions redisSettings)
     {
-        Debugging.Info("Creating cache......");
+        Debugging.Info($"Creating cache, Service = {ContextLocator.ServiceName}......");
 
-        // 根据缓存上下文定位器，获取到服务名称
-        var redisSetting = redisSettings.FirstOrDefault(f => f.ServiceName == ContextLocator.ServiceName);
+        // 连接字符串
+        string connectionStr;
 
-        if (redisSetting == null)
+        if (ContextLocator.ServiceName == "Default")
         {
-            throw new InvalidOperationException($"服务名称“{ContextLocator.ServiceName}”不存在于“RedisSetting”配置节点中！");
+            // 组装连接字符串
+            connectionStr
+                = $"{redisSettings.ServiceIp}:{redisSettings.Port ?? 6379},password={redisSettings.DbPwd},defaultDatabase={redisSettings.DbName},prefix={redisSettings.Prefix},poolsize={redisSettings.Poolsize},ssl={(redisSettings.SSL == true ? "true" : "false")}";
         }
+        else
+        {
+            // 根据缓存上下文定位器，获取到服务名称
+            var redisServiceSettings = redisSettings.Services.FirstOrDefault(f => f.ServiceName == ContextLocator.ServiceName);
 
-        // 组装连接字符串
-        var connectionStr
-            = $"{redisSetting.ServiceIp}:{redisSetting.Port ?? 6379},password={redisSetting.DbPwd},defaultDatabase={redisSetting.DbName ?? 0},prefix={redisSetting.Prefix},poolsize=50,ssl=false";
+            if (redisServiceSettings == null)
+            {
+                throw new InvalidOperationException($"服务名称“{ContextLocator.ServiceName}”不存在于“RedisSetting”配置节点中！");
+            }
+
+            // 组装连接字符串
+            connectionStr
+                = $"{redisServiceSettings.ServiceIp ?? redisSettings.ServiceIp}:{redisServiceSettings.Port ?? redisSettings.Port ?? 6379},password={redisServiceSettings.DbPwd ?? redisSettings.DbPwd},defaultDatabase={redisServiceSettings.DbName ?? redisSettings.DbName},prefix={redisServiceSettings.Prefix ?? redisSettings.Prefix},poolsize={redisServiceSettings.Poolsize ?? redisSettings.Poolsize},ssl={((redisServiceSettings.SSL ?? redisSettings.SSL) == true ? "true" : "false")}";
+        }
 
         _client?.Dispose();
         _client = new CSRedisClient(connectionStr);
