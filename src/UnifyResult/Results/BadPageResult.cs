@@ -48,8 +48,8 @@ public class BadPageResult : StatusCodeResult
     /// 图标
     /// </summary>
     /// <remarks>必须是 base64 类型</remarks>
-    public string Base64Icon { get; set; }
-        = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE0LjIxIDEzLjVsMS43NjcgMS43NzMtLjcwNC43MDRMMTMuNSAxNC4yMWwtMS43NzMgMS43NzMtLjcwNC0uNzEgMS43NzQtMS43NzQtMS43NzQtMS43NzMuNzA0LS43MDQgMS43NzMgMS43NzQgMS43NzMtMS43NzQuNzA0LjcxMUwxNC4yMSAxMy41ek0yIDE1aDh2MUgxVjBoOC43MUwxNCA0LjI5VjEwaC0xVjVIOVYxSDJ2MTR6bTgtMTFoMi4yOUwxMCAxLjcxVjR6IiBmaWxsPSIjMTAxMDEwIi8+PC9zdmc+";
+    public string Base64Icon { get; set; } =
+        "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE0LjIxIDEzLjVsMS43NjcgMS43NzMtLjcwNC43MDRMMTMuNSAxNC4yMWwtMS43NzMgMS43NzMtLjcwNC0uNzEgMS43NzQtMS43NzQtMS43NzQtMS43NzMuNzA0LS43MDQgMS43NzMgMS43NzQgMS43NzMtMS43NzQuNzA0LjcxMUwxNC4yMSAxMy41ek0yIDE1aDh2MUgxVjBoOC43MUwxNCA0LjI5VjEwaC0xVjVIOVYxSDJ2MTR6bTgtMTFoMi4yOUwxMCAxLjcxVjR6IiBmaWxsPSIjMTAxMDEwIi8+PC9zdmc+";
 
     /// <summary>
     /// 错误代码
@@ -135,8 +135,8 @@ public class BadPageResult : StatusCodeResult
         var thisAssembly = thisType.Assembly;
 
         // 读取嵌入式页面路径
-        var errorHtml
-            = $"{thisAssembly.GetName().Name}{thisType.Namespace?.Replace(nameof(Fast), string.Empty)}.Assets.error.html";
+        var errorHtml =
+            $"{thisAssembly.GetName().Name}{thisType.Namespace?.Replace(nameof(Fast), string.Empty)}.Assets.error.html";
 
         // 解析嵌入式文件流
         using var readStream = thisAssembly.GetManifestResourceStream(errorHtml);

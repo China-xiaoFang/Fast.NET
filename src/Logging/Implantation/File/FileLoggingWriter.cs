@@ -231,11 +231,7 @@ internal class FileLoggingWriter
             fileInfo.Directory?.Create();
 
             // 创建文件流，采用共享锁方式
-            _fileStream = new FileStream(_fileName,
-                FileMode.OpenOrCreate,
-                FileAccess.ReadWrite,
-                FileShare.ReadWrite,
-                4096,
+            _fileStream = new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, 4096,
                 FileOptions.WriteThrough);
 
             // 删除超出滚动日志限制的文件
@@ -273,8 +269,10 @@ internal class FileLoggingWriter
         }
 
         // 是否超出限制的最大大小
-        bool isMaxFileSizeThresholdReached() =>
-            _options.FileSizeLimitBytes > 0 && _fileStream.Length > _options.FileSizeLimitBytes;
+        bool isMaxFileSizeThresholdReached()
+        {
+            return _options.FileSizeLimitBytes > 0 && _fileStream.Length > _options.FileSizeLimitBytes;
+        }
 
         // 是否重新自定义了文件名
         bool isBaseFileNameChanged()

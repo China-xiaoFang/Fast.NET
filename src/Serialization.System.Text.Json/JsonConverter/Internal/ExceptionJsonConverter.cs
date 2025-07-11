@@ -61,9 +61,7 @@ internal class ExceptionJsonConverter : JsonConverter<Exception>
         // 默认只写入 Message，Source，StackTrace，InnerException
         var writeNameArr = new[]
         {
-            nameof(Exception.Message),
-            nameof(Exception.Source),
-            nameof(Exception.StackTrace),
+            nameof(Exception.Message), nameof(Exception.Source), nameof(Exception.StackTrace),
             nameof(Exception.InnerException)
         };
         // 获取可序列化的属性，排除 TargetSite 属性

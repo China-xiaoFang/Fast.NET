@@ -581,10 +581,7 @@ public static class ConvertExtension
                 break;
             case 12:
             {
-                if (DateTime.TryParseExact(value,
-                        "yyyyMMddHHmm",
-                        CultureInfo.CurrentCulture,
-                        DateTimeStyles.None,
+                if (DateTime.TryParseExact(value, "yyyyMMddHHmm", CultureInfo.CurrentCulture, DateTimeStyles.None,
                         out var result))
                 {
                     result = new DateTime(result.Year, result.Month, result.Day, result.Hour, result.Minute, 0);
@@ -595,10 +592,7 @@ public static class ConvertExtension
                 break;
             default:
             {
-                if (DateTime.TryParseExact(value,
-                        "yyyyMMddHHmmss",
-                        CultureInfo.CurrentCulture,
-                        DateTimeStyles.None,
+                if (DateTime.TryParseExact(value, "yyyyMMddHHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None,
                         out var result))
                 {
                     return result;

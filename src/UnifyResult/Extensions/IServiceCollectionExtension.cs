@@ -21,6 +21,7 @@
 // ------------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -38,10 +39,15 @@ public static class IServiceCollectionExtension
     /// 数据验证服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="validateFailedStatusCode"><see cref="int"/> 验证失败返回状态码</param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddDataValidation(this IServiceCollection services)
+    public static IServiceCollection AddDataValidation(this IServiceCollection services,
+        int validateFailedStatusCode = StatusCodes.Status400BadRequest)
     {
         Debugging.Info("Registering data validation......");
+
+        // 验证失败返回状态码
+        UnifyContext.ValidateFailedStatusCode = validateFailedStatusCode;
 
         // 启用了全局验证，则默认关闭原生 ModelStateInvalidFilter 验证
         services.Configure<ApiBehaviorOptions>(options =>
@@ -74,9 +80,8 @@ public static class IServiceCollectionExtension
         Debugging.Info("Registering friendly exception......");
 
         // 查找全局异常处理实现类
-        var globalExceptionHandler
-            = MAppContext.EffectiveTypes.FirstOrDefault(f =>
-                typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
+        var globalExceptionHandler =
+            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IGlobalExceptionHandler).IsAssignableFrom(f) && !f.IsInterface);
 
         if (globalExceptionHandler != null)
         {
@@ -93,24 +98,28 @@ public static class IServiceCollectionExtension
     /// 添加统一返回服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="validateFailedStatusCode"><see cref="int"/> 验证失败返回状态码</param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddUnifyResult(this IServiceCollection services)
+    public static IServiceCollection AddUnifyResult(this IServiceCollection services,
+        int validateFailedStatusCode = StatusCodes.Status400BadRequest)
     {
         Debugging.Info("Registering unify result......");
 
         // 是否启用规范化结果
         UnifyContext.EnabledUnifyHandler = true;
 
+        // 验证失败返回状态码
+        UnifyContext.ValidateFailedStatusCode = validateFailedStatusCode;
+
         // 数据验证
-        services.AddDataValidation();
+        services.AddDataValidation(validateFailedStatusCode);
 
         // 友好异常
         services.AddFriendlyException();
 
         // 查找规范化响应数据提供器实现类
-        var unifyResponseProvider
-            = MAppContext.EffectiveTypes.FirstOrDefault(f =>
-                typeof(IUnifyResponseProvider).IsAssignableFrom(f) && !f.IsInterface);
+        var unifyResponseProvider =
+            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IUnifyResponseProvider).IsAssignableFrom(f) && !f.IsInterface);
 
         if (unifyResponseProvider != null)
         {
@@ -118,8 +127,8 @@ public static class IServiceCollectionExtension
             services.AddSingleton(typeof(IUnifyResponseProvider), unifyResponseProvider);
         }
 
-        var unifyResultProvider
-            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IUnifyResultProvider).IsAssignableFrom(f) && !f.IsInterface);
+        var unifyResultProvider =
+            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IUnifyResultProvider).IsAssignableFrom(f) && !f.IsInterface);
 
         if (unifyResultProvider != null)
         {

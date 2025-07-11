@@ -152,12 +152,11 @@ public static class CorsAccessorExtension
         services.AddCors(options =>
         {
             // 添加策略跨域
-            options.AddPolicy(corsAccessorSettings.PolicyName,
-                configurePolicy =>
-                {
-                    // 设置跨域策略
-                    SetCorsPolicy(configurePolicy, corsAccessorSettings);
-                });
+            options.AddPolicy(corsAccessorSettings.PolicyName, configurePolicy =>
+            {
+                // 设置跨域策略
+                SetCorsPolicy(configurePolicy, corsAccessorSettings);
+            });
         });
 
         // 注册 CorsAccessor Startup 过滤器
@@ -187,12 +186,11 @@ public static class CorsAccessorExtension
         services.AddCors(options =>
         {
             // 添加策略跨域
-            options.AddPolicy(corsAccessorSettings.PolicyName,
-                configurePolicy =>
-                {
-                    // 设置跨域策略
-                    SetCorsPolicy(configurePolicy, corsAccessorSettings);
-                });
+            options.AddPolicy(corsAccessorSettings.PolicyName, configurePolicy =>
+            {
+                // 设置跨域策略
+                SetCorsPolicy(configurePolicy, corsAccessorSettings);
+            });
         });
 
         // 注册 CorsAccessor Startup 过滤器

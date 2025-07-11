@@ -46,8 +46,8 @@ public static class ExpressionExtension
             .Select((u, i) => new {u, Parameter = extendExpression.Parameters[i]})
             .ToDictionary(d => d.Parameter, d => d.u);
 
-        var extendExpressionBody
-            = ParameterReplaceExpressionVisitor.ReplaceParameters(parameterExpressionSetter, extendExpression.Body);
+        var extendExpressionBody =
+            ParameterReplaceExpressionVisitor.ReplaceParameters(parameterExpressionSetter, extendExpression.Body);
         return Expression.Lambda<TSource>(mergeWay(expression.Body, extendExpressionBody), expression.Parameters);
     }
 

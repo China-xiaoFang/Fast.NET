@@ -129,10 +129,7 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
             context.HttpContext.Items[nameof(DataValidationFilter) + nameof(UserFriendlyException)] = resultContext;
 
             // 处理验证信息
-            _ = await HandleValidation(context,
-                actionDescriptor,
-                userFriendlyException.ErrorMessage,
-                resultContext,
+            _ = await HandleValidation(context, actionDescriptor, userFriendlyException.ErrorMessage, resultContext,
                 userFriendlyException);
         }
     }

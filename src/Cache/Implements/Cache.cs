@@ -79,8 +79,8 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         if (ContextLocator.ServiceName == "Default")
         {
             // 组装连接字符串
-            connectionStr
-                = $"{redisSettings.ServiceIp}:{redisSettings.Port ?? 6379},password={redisSettings.DbPwd},defaultDatabase={redisSettings.DbName},prefix={redisSettings.Prefix},poolsize={redisSettings.Poolsize},ssl={(redisSettings.SSL == true ? "true" : "false")}";
+            connectionStr =
+                $"{redisSettings.ServiceIp}:{redisSettings.Port ?? 6379},password={redisSettings.DbPwd},defaultDatabase={redisSettings.DbName},prefix={redisSettings.Prefix},poolsize={redisSettings.Poolsize},ssl={(redisSettings.SSL == true ? "true" : "false")}";
         }
         else
         {
@@ -93,8 +93,8 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             }
 
             // 组装连接字符串
-            connectionStr
-                = $"{redisServiceSettings.ServiceIp ?? redisSettings.ServiceIp}:{redisServiceSettings.Port ?? redisSettings.Port ?? 6379},password={redisServiceSettings.DbPwd ?? redisSettings.DbPwd},defaultDatabase={redisServiceSettings.DbName ?? redisSettings.DbName},prefix={redisServiceSettings.Prefix ?? redisSettings.Prefix},poolsize={redisServiceSettings.Poolsize ?? redisSettings.Poolsize},ssl={((redisServiceSettings.SSL ?? redisSettings.SSL) == true ? "true" : "false")}";
+            connectionStr =
+                $"{redisServiceSettings.ServiceIp ?? redisSettings.ServiceIp}:{redisServiceSettings.Port ?? redisSettings.Port ?? 6379},password={redisServiceSettings.DbPwd ?? redisSettings.DbPwd},defaultDatabase={redisServiceSettings.DbName ?? redisSettings.DbName},prefix={redisServiceSettings.Prefix ?? redisSettings.Prefix},poolsize={redisServiceSettings.Poolsize ?? redisSettings.Poolsize},ssl={((redisServiceSettings.SSL ?? redisSettings.SSL) == true ? "true" : "false")}";
         }
 
         _client?.Dispose();
