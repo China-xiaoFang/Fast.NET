@@ -56,11 +56,7 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
         // 获取所有未成功验证的需求
         var pendingRequirements = context.PendingRequirements;
 
-        // 判断是否跳过权限检查
-        if (httpContext.GetEndpoint()
-                ?.Metadata.GetMetadata<AllowForbiddenAttribute>()
-            != null
-            || jwtBearerHandle == null)
+        if (jwtBearerHandle == null)
         {
             foreach (var requirement in pendingRequirements)
             {
@@ -87,6 +83,19 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
         if (!isAuthorizeSuccess)
         {
             await AuthorizeFailHandle(authorizeException);
+            return;
+        }
+
+        // 判断是否跳过权限检查
+        if (httpContext.GetEndpoint()
+                ?.Metadata.GetMetadata<AllowForbiddenAttribute>()
+            != null)
+        {
+            foreach (var requirement in pendingRequirements)
+            {
+                context.Succeed(requirement);
+            }
+
             return;
         }
 
