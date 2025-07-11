@@ -95,8 +95,7 @@ internal sealed class EventBusHostedService : BackgroundService
             {
                 // 将方法转换成 Func<EventHandlerExecutingContext, Task> 委托
                 var handler = (Func<EventHandlerExecutingContext, Task>) eventHandlerMethod.CreateDelegate(
-                    typeof(Func<EventHandlerExecutingContext, Task>),
-                    eventSubscriber);
+                    typeof(Func<EventHandlerExecutingContext, Task>), eventSubscriber);
 
                 // 处理同一个事件处理程序支持多个事件 Id 情况
                 var eventSubscribeAttributes = eventHandlerMethod.GetCustomAttributes<EventSubscribeAttribute>(false);
@@ -262,110 +261,95 @@ internal sealed class EventBusHostedService : BackgroundService
         }
 
         // 通过并行方式提高吞吐量并解决 Thread.Sleep 问题
-        Parallel.ForEach(eventHandlersThatShouldRun,
-            eventHandlerThatShouldRun =>
+        Parallel.ForEach(eventHandlersThatShouldRun, eventHandlerThatShouldRun =>
+        {
+            // 创建新的线程执行
+            taskFactory.StartNew(async () =>
             {
-                // 创建新的线程执行
-                taskFactory.StartNew(async () =>
+                // 获取特性信息，可能为 null
+                var eventSubscribeAttribute = eventHandlerThatShouldRun.Attribute;
+
+                // 创建执行前上下文
+                var eventHandlerExecutingContext =
+                    new EventHandlerExecutingContext(eventSource, properties, eventHandlerThatShouldRun.HandlerMethod,
+                        eventSubscribeAttribute) {ExecutingTime = DateTime.Now};
+
+                // 执行异常对象
+                InvalidOperationException executionException = null;
+
+                try
+                {
+                    // 处理任务取消
+                    if (eventSource.CancellationToken.IsCancellationRequested)
                     {
-                        // 获取特性信息，可能为 null
-                        var eventSubscribeAttribute = eventHandlerThatShouldRun.Attribute;
+                        throw new OperationCanceledException();
+                    }
 
-                        // 创建执行前上下文
-                        var eventHandlerExecutingContext
-                            = new EventHandlerExecutingContext(eventSource,
-                                properties,
-                                eventHandlerThatShouldRun.HandlerMethod,
-                                eventSubscribeAttribute) {ExecutingTime = DateTime.Now};
+                    // 调用执行前监视器
+                    if (Monitor != null)
+                    {
+                        await Monitor.OnExecutingAsync(eventHandlerExecutingContext);
+                    }
 
-                        // 执行异常对象
-                        InvalidOperationException executionException = null;
+                    // 判断是否自定义了重试失败回调服务
+                    var fallbackPolicyService = eventSubscribeAttribute?.FallbackPolicy == null
+                        ? null
+                        : _serviceProvider.GetService(eventSubscribeAttribute.FallbackPolicy) as IEventFallbackPolicy;
 
-                        try
+                    // 调用事件处理程序并配置出错执行重试
+                    await InvokeAsync(async () => { await eventHandlerThatShouldRun.Handler!(eventHandlerExecutingContext); },
+                        eventSubscribeAttribute?.NumRetries ?? 0, eventSubscribeAttribute?.RetryTimeout ?? 1000,
+                        exceptionTypes: eventSubscribeAttribute?.ExceptionTypes,
+                        fallbackPolicy: fallbackPolicyService == null
+                            ? null
+                            : async ex => await fallbackPolicyService.CallbackAsync(eventHandlerExecutingContext, ex),
+                        retryAction: (total, times) =>
                         {
-                            // 处理任务取消
-                            if (eventSource.CancellationToken.IsCancellationRequested)
-                            {
-                                throw new OperationCanceledException();
-                            }
+                            // 输出重试日志
+                            _logger.LogWarning("Retrying {times}/{total} times for {EventId}", times, total, eventSource.EventId);
+                        });
+                }
+                catch (Exception ex)
+                {
+                    // 输出异常日志
+                    Log(LogLevel.Error, "Error occurred executing {EventId}.", new object[] {eventSource.EventId}, ex);
 
-                            // 调用执行前监视器
-                            if (Monitor != null)
-                            {
-                                await Monitor.OnExecutingAsync(eventHandlerExecutingContext);
-                            }
+                    // 标记异常
+                    executionException = new InvalidOperationException($"Error occurred executing {eventSource.EventId}.", ex);
 
-                            // 判断是否自定义了重试失败回调服务
-                            var fallbackPolicyService = eventSubscribeAttribute?.FallbackPolicy == null
-                                ? null
-                                : _serviceProvider.GetService(eventSubscribeAttribute.FallbackPolicy) as IEventFallbackPolicy;
+                    // 捕获 Task 任务异常信息并统计所有异常
+                    if (UnobservedTaskException != null)
+                    {
+                        var args = new UnobservedTaskExceptionEventArgs(ex as AggregateException ?? new AggregateException(ex));
 
-                            // 调用事件处理程序并配置出错执行重试
-                            await InvokeAsync(async () =>
-                                {
-                                    await eventHandlerThatShouldRun.Handler!(eventHandlerExecutingContext);
-                                },
-                                eventSubscribeAttribute?.NumRetries ?? 0,
-                                eventSubscribeAttribute?.RetryTimeout ?? 1000,
-                                exceptionTypes: eventSubscribeAttribute?.ExceptionTypes,
-                                fallbackPolicy: fallbackPolicyService == null
-                                    ? null
-                                    : async ex => await fallbackPolicyService.CallbackAsync(eventHandlerExecutingContext, ex),
-                                retryAction: (total, times) =>
-                                {
-                                    // 输出重试日志
-                                    _logger.LogWarning("Retrying {times}/{total} times for {EventId}",
-                                        times,
-                                        total,
-                                        eventSource.EventId);
-                                });
-                        }
-                        catch (Exception ex)
-                        {
-                            // 输出异常日志
-                            Log(LogLevel.Error, "Error occurred executing {EventId}.", new object[] {eventSource.EventId}, ex);
+                        UnobservedTaskException.Invoke(this, args);
+                    }
+                }
+                finally
+                {
+                    // 调用执行后监视器
+                    if (Monitor != null)
+                    {
+                        // 创建执行后上下文
+                        var eventHandlerExecutedContext =
+                            new EventHandlerExecutedContext(eventSource, properties, eventHandlerThatShouldRun.HandlerMethod,
+                                eventSubscribeAttribute) {ExecutedTime = DateTime.Now, Exception = executionException};
 
-                            // 标记异常
-                            executionException
-                                = new InvalidOperationException($"Error occurred executing {eventSource.EventId}.", ex);
+                        await Monitor.OnExecutedAsync(eventHandlerExecutedContext);
+                    }
 
-                            // 捕获 Task 任务异常信息并统计所有异常
-                            if (UnobservedTaskException != null)
-                            {
-                                var args = new UnobservedTaskExceptionEventArgs(ex as AggregateException
-                                                                                ?? new AggregateException(ex));
-
-                                UnobservedTaskException.Invoke(this, args);
-                            }
-                        }
-                        finally
-                        {
-                            // 调用执行后监视器
-                            if (Monitor != null)
-                            {
-                                // 创建执行后上下文
-                                var eventHandlerExecutedContext
-                                    = new EventHandlerExecutedContext(eventSource,
-                                        properties,
-                                        eventHandlerThatShouldRun.HandlerMethod,
-                                        eventSubscribeAttribute) {ExecutedTime = DateTime.Now, Exception = executionException};
-
-                                await Monitor.OnExecutedAsync(eventHandlerExecutedContext);
-                            }
-
-                            // 判断是否执行完成后调用 GC 回收
-                            var nowTime = DateTime.UtcNow;
-                            if (eventHandlerThatShouldRun.GCCollect
-                                && (LastGCCollectTime == null
-                                    || (nowTime - LastGCCollectTime.Value).TotalSeconds > GC_COLLECT_INTERVAL_SECONDS))
-                            {
-                                LastGCCollectTime = nowTime;
-                                GC.Collect();
-                            }
-                        }
-                    },
-                    stoppingToken);
-            });
+                    // 判断是否执行完成后调用 GC 回收
+                    var nowTime = DateTime.UtcNow;
+                    if (eventHandlerThatShouldRun.GCCollect
+                        && (LastGCCollectTime == null
+                            || (nowTime - LastGCCollectTime.Value).TotalSeconds > GC_COLLECT_INTERVAL_SECONDS))
+                    {
+                        LastGCCollectTime = nowTime;
+                        GC.Collect();
+                    }
+                }
+            }, stoppingToken);
+        });
     }
 
     /// <summary>
@@ -400,8 +384,7 @@ internal sealed class EventBusHostedService : BackgroundService
             // 输出日志
             if (succeeded)
             {
-                Log(LogLevel.Information,
-                    "Subscriber with event ID <{EventId}> was appended successfully.",
+                Log(LogLevel.Information, "Subscriber with event ID <{EventId}> was appended successfully.",
                     new object[] {eventId});
             }
         }
@@ -419,8 +402,7 @@ internal sealed class EventBusHostedService : BackgroundService
                     continue;
 
                 // 输出日志
-                Log(LogLevel.Warning,
-                    "Subscriber<{Name}> with event ID <{EventId}> was remove.",
+                Log(LogLevel.Warning, "Subscriber<{Name}> with event ID <{EventId}> was remove.",
                     new object[] {wrapper.HandlerMethod?.Name, eventId});
             }
         }

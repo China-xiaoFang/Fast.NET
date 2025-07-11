@@ -20,11 +20,9 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -42,118 +40,111 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
         var filterContext = context.Resource as AuthorizationFilterContext;
-
         var httpContext = filterContext?.HttpContext;
+        // 获取 JWT 处理类
+        var jwtBearerHandle = httpContext?.RequestServices.GetService<IJwtBearerHandle>();
 
         // 自动刷新 Token 逻辑
         if (!JwtBearerUtil.AutoRefreshToken(context, httpContext))
         {
             // 退出 Swagger 登录
-            if (httpContext != null)
-                httpContext.Response.Headers["access-token"] = "invalid_token";
-            context.Fail();
-
+            httpContext?.Response.Headers.TryAdd("access-token", "invalid_token");
+            await AuthorizeFailHandle(null);
             return;
         }
 
         // 获取所有未成功验证的需求
         var pendingRequirements = context.PendingRequirements;
 
-        // 获取 JWT 处理类
-        var jwtBearerHandle = httpContext?.RequestServices.GetService<IJwtBearerHandle>();
-
         // 判断是否跳过权限检查
-        if ((filterContext?.ActionDescriptor as ControllerActionDescriptor)?.MethodInfo
-            .GetCustomAttribute<AllowForbiddenAttribute>(inherit: true)
-            != null)
+        if (httpContext.GetEndpoint()
+                ?.Metadata.GetMetadata<AllowForbiddenAttribute>()
+            != null
+            || jwtBearerHandle == null)
         {
             foreach (var requirement in pendingRequirements)
             {
                 context.Succeed(requirement);
             }
+
+            return;
         }
-        else
+
+        Exception authorizeException = null;
+
+        bool isAuthorizeSuccess;
+        try
         {
-            if (jwtBearerHandle != null)
+            isAuthorizeSuccess = await jwtBearerHandle.AuthorizeHandle(context, httpContext);
+        }
+        catch (Exception ex)
+        {
+            isAuthorizeSuccess = false;
+            authorizeException = ex;
+        }
+
+        // 授权检测
+        if (!isAuthorizeSuccess)
+        {
+            await AuthorizeFailHandle(authorizeException);
+            return;
+        }
+
+        foreach (var requirement in pendingRequirements)
+        {
+            bool isPermissionSuccess;
+            Exception permissionException = null;
+
+            try
             {
-                Exception authorizeException = null;
+                isPermissionSuccess = await jwtBearerHandle.PermissionHandle(context, requirement, httpContext);
+            }
+            catch (Exception ex)
+            {
+                isPermissionSuccess = false;
+                permissionException = ex;
+            }
 
-                bool isAuthorizeSuccess;
-                try
-                {
-                    isAuthorizeSuccess = await jwtBearerHandle.AuthorizeHandle(context, httpContext);
-                }
-                catch (Exception ex)
-                {
-                    isAuthorizeSuccess = false;
-                    authorizeException = ex;
-                }
+            // 权限检测
+            if (isPermissionSuccess)
+            {
+                context.Succeed(requirement);
+                continue;
+            }
 
-                // 授权检测
-                if (isAuthorizeSuccess)
-                {
-                    foreach (var requirement in pendingRequirements)
-                    {
-                        bool isPermissionSuccess;
-                        Exception permissionException = null;
+            var result = await jwtBearerHandle.PermissionFailHandle(context, requirement, httpContext, permissionException);
 
-                        try
-                        {
-                            isPermissionSuccess = await jwtBearerHandle.PermissionHandle(context, requirement, httpContext);
-                        }
-                        catch (Exception ex)
-                        {
-                            isPermissionSuccess = false;
-                            permissionException = ex;
-                        }
-
-                        // 权限检测
-                        if (isPermissionSuccess)
-                        {
-                            context.Succeed(requirement);
-                        }
-                        else
-                        {
-                            var result = await jwtBearerHandle.PermissionFailHandle(context,
-                                requirement,
-                                httpContext,
-                                permissionException);
-
-                            if (result != null)
-                            {
-                                // 存在自定义处理结果，则返回 403 状态码
-                                filterContext.Result = new JsonResult(result) {StatusCode = StatusCodes.Status403Forbidden};
-                            }
-                            else
-                            {
-                                // 权限判断失败，返回 403 状态码
-                                context.Fail();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    var result = await jwtBearerHandle.AuthorizeFailHandle(context, httpContext, authorizeException);
-
-                    if (result != null)
-                    {
-                        // 存在自定义处理结果，则返回 401 状态码
-                        filterContext.Result = new JsonResult(result) {StatusCode = StatusCodes.Status401Unauthorized};
-                    }
-                    else
-                    {
-                        // 授权失败，返回 401 状态码
-                        context.Fail();
-                    }
-                }
+            if (result != null)
+            {
+                // 存在自定义处理结果，则返回 403 状态码
+                filterContext.Result = new JsonResult(result) {StatusCode = StatusCodes.Status403Forbidden};
             }
             else
             {
-                foreach (var requirement in pendingRequirements)
-                {
-                    context.Succeed(requirement);
-                }
+                context.Fail();
+            }
+        }
+
+        return;
+
+        async Task AuthorizeFailHandle(Exception exception)
+        {
+            if (jwtBearerHandle == null)
+            {
+                context.Fail();
+                return;
+            }
+
+            var result = await jwtBearerHandle.AuthorizeFailHandle(context, httpContext, exception);
+
+            if (filterContext != null && result != null)
+            {
+                // 存在自定义处理结果，则返回 401 状态码
+                filterContext.Result = new JsonResult(result) {StatusCode = StatusCodes.Status401Unauthorized};
+            }
+            else
+            {
+                context.Fail();
             }
         }
     }

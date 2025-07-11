@@ -117,7 +117,7 @@ public static class WebApplicationBuilderExtension
                         {
                             if (!string.IsNullOrWhiteSpace(jsonPath) && Path.IsPathRooted(jsonPath))
                             {
-                                configurationBuilder.AddJsonFile(jsonPath, optional: true, reloadOnChange: true);
+                                configurationBuilder.AddJsonFile(jsonPath, true, true);
                             }
                         }
                     }
@@ -147,7 +147,7 @@ public static class WebApplicationBuilderExtension
                         {
                             if (!string.IsNullOrWhiteSpace(jsonPath) && Path.IsPathRooted(jsonPath))
                             {
-                                configurationBuilder.AddJsonFile(jsonPath, optional: true, reloadOnChange: true);
+                                configurationBuilder.AddJsonFile(jsonPath, true, true);
                             }
                         }
                     }
@@ -267,7 +267,7 @@ public static class WebApplicationBuilderExtension
             // 循环加载
             foreach (var jsonFile in files)
             {
-                configurationBuilder.AddJsonFile(jsonFile, optional: true, reloadOnChange: true);
+                configurationBuilder.AddJsonFile(jsonFile, true, true);
             }
         }
     }

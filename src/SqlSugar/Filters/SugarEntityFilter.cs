@@ -130,8 +130,8 @@ public static class SugarEntityFilter
                 // 方法名称
                 var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
                 // 消息
-                var message
-                    = $"Sql执行时间超过 {sugarSqlExecMaxSeconds} 秒，建议优化。{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}{Environment.NewLine}SqlExecutionTime：{_db.Ado.SqlExecutionTime}";
+                var message =
+                    $"Sql执行时间超过 {sugarSqlExecMaxSeconds} 秒，建议优化。{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}{Environment.NewLine}SqlExecutionTime：{_db.Ado.SqlExecutionTime}";
 
                 // 控制台输出
                 var logSb = new StringBuilder();
@@ -154,14 +154,8 @@ public static class SugarEntityFilter
                     {
                         try
                         {
-                            await sqlSugarEntityHandler.ExecuteTimeoutAsync(fileName,
-                                fileLine,
-                                firstMethodName,
-                                rawSql,
-                                pars,
-                                _db.Ado.SqlExecutionTime,
-                                handleSql,
-                                message);
+                            await sqlSugarEntityHandler.ExecuteTimeoutAsync(fileName, fileLine, firstMethodName, rawSql, pars,
+                                _db.Ado.SqlExecutionTime, handleSql, message);
                         }
                         catch (Exception ex)
                         {
@@ -215,18 +209,10 @@ public static class SugarEntityFilter
                         {
                             try
                             {
-                                await sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType,
-                                    tableName,
-                                    tableDescription,
-                                    diff.BusinessData.ToString(),
-                                    diff.BeforeData?.Select(sl => sl.Columns)
-                                        .ToList(),
-                                    diff.AfterData?.Select(sl => sl.Columns)
-                                        .ToList(),
-                                    diff.Sql,
-                                    diff.Parameters,
-                                    diff.Time,
-                                    handleSql);
+                                await sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, tableName, tableDescription,
+                                    diff.BusinessData.ToString(), diff.BeforeData?.Select(sl => sl.Columns)
+                                        .ToList(), diff.AfterData?.Select(sl => sl.Columns)
+                                        .ToList(), diff.Sql, diff.Parameters, diff.Time, handleSql);
                             }
                             catch (Exception ex)
                             {
@@ -264,8 +250,8 @@ public static class SugarEntityFilter
             // 方法名称
             var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
             // 消息
-            var message
-                = $"Sql 执行异常{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}";
+            var message =
+                $"Sql 执行异常{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}";
 
             if (isDevelopment)
             {
@@ -290,13 +276,8 @@ public static class SugarEntityFilter
                 {
                     try
                     {
-                        await sqlSugarEntityHandler.ExecuteErrorAsync(fileName,
-                            fileLine,
-                            firstMethodName,
-                            exp.Sql,
-                            param,
-                            handleSql,
-                            message);
+                        await sqlSugarEntityHandler.ExecuteErrorAsync(fileName, fileLine, firstMethodName, exp.Sql, param,
+                            handleSql, message);
                     }
                     catch (Exception ex)
                     {
@@ -331,8 +312,7 @@ public static class SugarEntityFilter
                     if (entityInfo.EntityColumnInfo.IsPrimarykey
                         && entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
                     {
-                        if (SqlSugarContext.EntityValueCheck(nameof(IPrimaryKeyEntity<long>.Id),
-                                new List<dynamic> {null, 0},
+                        if (SqlSugarContext.EntityValueCheck(nameof(IPrimaryKeyEntity<long>.Id), new List<dynamic> {null, 0},
                                 entityInfo))
                         {
                             entityInfo.SetValue(YitIdHelper.NextId());
@@ -340,49 +320,35 @@ public static class SugarEntityFilter
                     }
 
                     // 更新版本控制字段
-                    SqlSugarContext.SetEntityValue(nameof(IUpdateVersion.RowVersion),
-                        new List<dynamic> {null, 0},
-                        1,
+                    SqlSugarContext.SetEntityValue(nameof(IUpdateVersion.RowVersion), new List<dynamic> {null, 0}, 1,
                         ref entityInfo);
 
                     // 创建时间
-                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedTime),
-                        new List<dynamic> {null},
-                        DateTime.Now,
+                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedTime), new List<dynamic> {null}, DateTime.Now,
                         ref entityInfo);
 
                     // 其余字段判断
                     if (sqlSugarEntityHandler != null)
                     {
                         // 部门Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentId),
-                            new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignDepartmentId(),
-                            ref entityInfo);
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentId), new List<dynamic> {null, 0},
+                            sqlSugarEntityHandler.AssignDepartmentId(), ref entityInfo);
 
                         // 部门名称
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentName),
-                            new List<dynamic> {null, ""},
-                            sqlSugarEntityHandler.AssignDepartmentName(),
-                            ref entityInfo);
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentName), new List<dynamic> {null, ""},
+                            sqlSugarEntityHandler.AssignDepartmentName(), ref entityInfo);
 
                         // 创建者Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserId),
-                            new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignUserId(),
-                            ref entityInfo);
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserId), new List<dynamic> {null, 0},
+                            sqlSugarEntityHandler.AssignUserId(), ref entityInfo);
 
                         // 创建者名称
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserName),
-                            new List<dynamic> {null, ""},
-                            sqlSugarEntityHandler.AssignUserName(),
-                            ref entityInfo);
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserName), new List<dynamic> {null, ""},
+                            sqlSugarEntityHandler.AssignUserName(), ref entityInfo);
 
                         // 租户Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseTEntity.TenantId),
-                            new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignTenantId() ?? 0,
-                            ref entityInfo);
+                        SqlSugarContext.SetEntityValue(nameof(IBaseTEntity.TenantId), new List<dynamic> {null, 0},
+                            sqlSugarEntityHandler.AssignTenantId() ?? 0, ref entityInfo);
                     }
 
                     break;
@@ -395,16 +361,12 @@ public static class SugarEntityFilter
                     if (sqlSugarEntityHandler != null)
                     {
                         // 更新者Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId),
-                            new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignUserId(),
-                            ref entityInfo);
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), new List<dynamic> {null, 0},
+                            sqlSugarEntityHandler.AssignUserId(), ref entityInfo);
 
                         // 更新者名称
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserName),
-                            new List<dynamic> {null, ""},
-                            sqlSugarEntityHandler.AssignUserName(),
-                            ref entityInfo);
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserName), new List<dynamic> {null, ""},
+                            sqlSugarEntityHandler.AssignUserName(), ref entityInfo);
                     }
 
                     break;

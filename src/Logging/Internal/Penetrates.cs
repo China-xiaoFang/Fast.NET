@@ -68,16 +68,15 @@ internal static class Penetrates
         {
             // 解析日志上下文数据
             scopeProvider.ForEachScope<object>((scope, _) =>
+            {
+                if (scope != null && scope is LogContext context)
                 {
-                    if (scope != null && scope is LogContext context)
-                    {
-                        if (logMsg.Context == null)
-                            logMsg.Context = context;
-                        else
-                            logMsg.Context = logMsg.Context.SetRange(context.Properties);
-                    }
-                },
-                null);
+                    if (logMsg.Context == null)
+                        logMsg.Context = context;
+                    else
+                        logMsg.Context = logMsg.Context.SetRange(context.Properties);
+                }
+            }, null);
         }
 
         return logMsg;

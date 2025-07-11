@@ -49,8 +49,8 @@ public static class AssemblyExtension
     /// <returns><see cref="string"/></returns>
     public static string GetDescription(this Assembly assembly)
     {
-        var descriptionAttribute
-            = Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
+        var descriptionAttribute =
+            Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
 
         return descriptionAttribute?.Description;
     }

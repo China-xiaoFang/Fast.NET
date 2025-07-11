@@ -69,8 +69,7 @@ public static class LoggingContext
         formatString.Append(' ');
         formatString.Append(logMsg.UseUtcTimestamp ? "U" : "L");
         formatString.Append(' ');
-        _ = AppendWithColor(formatString,
-            logMsg.LogName,
+        _ = AppendWithColor(formatString, logMsg.LogName,
             disableConsoleColor ? new ConsoleColors(null, null) : new ConsoleColors(ConsoleColor.Cyan, ConsoleColor.DarkCyan));
 
         if (logMsg.EventId != null)
@@ -85,8 +84,7 @@ public static class LoggingContext
         if (withTraceId && !string.IsNullOrWhiteSpace(logMsg.TraceId))
         {
             formatString.Append(' ');
-            _ = AppendWithColor(formatString,
-                $"'{logMsg.TraceId}'",
+            _ = AppendWithColor(formatString, $"'{logMsg.TraceId}'",
                 disableConsoleColor ? new ConsoleColors(null, null) : new ConsoleColors(ConsoleColor.Gray, ConsoleColor.Black));
         }
 
@@ -113,8 +111,7 @@ public static class LoggingContext
 
         // 对日志内容进行缩进对齐处理
         //formatString.Append(PadLeftAlign(logMsg.Message));
-        _ = AppendWithColor(formatString,
-            PadLeftAlign(logMsg.Message),
+        _ = AppendWithColor(formatString, PadLeftAlign(logMsg.Message),
             disableConsoleColor ? new ConsoleColors(null, null) : logLevelMessageColors);
 
         // 如果包含异常信息，则创建新一行写入
@@ -124,8 +121,8 @@ public static class LoggingContext
                 .ToString();
             //var exceptionMessage =
             //    $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}{Environment.NewLine}{logMsg.Exception}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}";
-            var exceptionMessage
-                = $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}{Environment.NewLine}{AppendWithColor(null, logMsg.Exception.ToString(), logLevelMessageColors)}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}";
+            var exceptionMessage =
+                $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}{Environment.NewLine}{AppendWithColor(null, logMsg.Exception.ToString(), logLevelMessageColors)}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}";
 
             formatString.Append(PadLeftAlign(exceptionMessage));
         }
@@ -141,9 +138,9 @@ public static class LoggingContext
     /// <returns></returns>
     private static string PadLeftAlign(string message)
     {
-        var newMessage = string.Join(Environment.NewLine,
-            message.Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None)
-                .Select(line => string.Empty.PadLeft(6, ' ') + line));
+        var newMessage = string.Join(Environment.NewLine, message
+            .Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None)
+            .Select(line => string.Empty.PadLeft(6, ' ') + line));
 
         return newMessage;
     }
@@ -266,7 +263,7 @@ public static class LoggingContext
             LogLevel.Information => new ConsoleColors(ConsoleColor.DarkGreen, ConsoleColor.Black),
             LogLevel.Debug => new ConsoleColors(ConsoleColor.DarkGray, ConsoleColor.Black),
             LogLevel.Trace => new ConsoleColors(ConsoleColor.DarkGray, ConsoleColor.Black),
-            _ => new ConsoleColors(null, background: null)
+            _ => new ConsoleColors(null, null)
         };
     }
 
@@ -291,7 +288,7 @@ public static class LoggingContext
             LogLevel.Information => new ConsoleColors(ConsoleColor.Gray, ConsoleColor.Black),
             LogLevel.Debug => new ConsoleColors(ConsoleColor.DarkGray, ConsoleColor.Black),
             LogLevel.Trace => new ConsoleColors(ConsoleColor.DarkGray, ConsoleColor.Black),
-            _ => new ConsoleColors(null, background: null)
+            _ => new ConsoleColors(null, null)
         };
     }
 }

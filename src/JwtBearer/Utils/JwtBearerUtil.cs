@@ -109,9 +109,8 @@ public static class JwtBearerUtil
         if (!payload.ContainsKey(JwtRegisteredClaimNames.Exp))
         {
             var minute = expiredTime ?? Penetrates.JWTSettings?.TokenExpiredTime ?? 20;
-            payload.Add(JwtRegisteredClaimNames.Exp,
-                DateTimeOffset.UtcNow.AddMinutes(minute)
-                    .ToUnixTimeSeconds());
+            payload.Add(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(minute)
+                .ToUnixTimeSeconds());
         }
 
         if (!payload.ContainsKey(JwtRegisteredClaimNames.Iss))
@@ -219,7 +218,8 @@ public static class JwtBearerUtil
         {
 #if NET8_0
             // 处理 .NET8 中 ValidateToken 方法已过时的警告
-            var tokenValidationResult = tokenHandler.ValidateTokenAsync(accessToken, tokenValidationParameters).Result;
+            var tokenValidationResult = tokenHandler.ValidateTokenAsync(accessToken, tokenValidationParameters)
+                .Result;
 #else
             var tokenValidationResult = tokenHandler.ValidateToken(accessToken, tokenValidationParameters);
 #endif
@@ -361,13 +361,11 @@ public static class JwtBearerUtil
         // 交换成功后登记刷新Token，标记失效
         if (!isRefresh)
         {
-            distributedCache?.SetString(blacklistRefreshKey,
-                nowTime.Ticks.ToString(),
+            distributedCache?.SetString(blacklistRefreshKey, nowTime.Ticks.ToString(),
                 new DistributedCacheEntryOptions
                 {
-                    AbsoluteExpiration
-                        = DateTimeOffset.FromUnixTimeSeconds(
-                            refreshTokenObj.GetPayloadValue<long>(JwtRegisteredClaimNames.Exp))
+                    AbsoluteExpiration =
+                        DateTimeOffset.FromUnixTimeSeconds(refreshTokenObj.GetPayloadValue<long>(JwtRegisteredClaimNames.Exp))
                 });
         }
 
@@ -394,12 +392,11 @@ public static class JwtBearerUtil
         var distributedCache = httpContext?.RequestServices.GetService<IDistributedCache>();
 
         // 标记失效
-        distributedCache?.SetString(blacklistAccessKey,
-            nowTime.Ticks.ToString(),
+        distributedCache?.SetString(blacklistAccessKey, nowTime.Ticks.ToString(),
             new DistributedCacheEntryOptions
             {
-                AbsoluteExpiration
-                    = DateTimeOffset.FromUnixTimeSeconds(accessTokenObj.GetPayloadValue<long>(JwtRegisteredClaimNames.Exp))
+                AbsoluteExpiration =
+                    DateTimeOffset.FromUnixTimeSeconds(accessTokenObj.GetPayloadValue<long>(JwtRegisteredClaimNames.Exp))
             });
     }
 
@@ -458,16 +455,13 @@ public static class JwtBearerUtil
 
         // 获取过期Token 和 刷新Token
         var expiredToken = GetJwtBearerToken(httpContext, tokenPrefix: tokenPrefix);
-        var refreshToken = GetJwtBearerToken(httpContext, "X-Authorization", tokenPrefix: tokenPrefix);
+        var refreshToken = GetJwtBearerToken(httpContext, "X-Authorization", tokenPrefix);
         if (string.IsNullOrWhiteSpace(expiredToken) || string.IsNullOrWhiteSpace(refreshToken))
             return false;
 
         // 交换新的 Token
-        var newAccessToken = Exchange((context.Resource as AuthorizationFilterContext)?.HttpContext,
-            expiredToken,
-            refreshToken,
-            expiredTime,
-            clockSkew);
+        var newAccessToken = Exchange((context.Resource as AuthorizationFilterContext)?.HttpContext, expiredToken, refreshToken,
+            expiredTime, clockSkew);
         if (string.IsNullOrWhiteSpace(newAccessToken))
             return false;
 

@@ -604,7 +604,7 @@ public static class RemoteRequestUtil
                 continue;
 
             // 进行判NULL处理
-            var value = m.Invoke(obj, parameters: Array.Empty<object>());
+            var value = m.Invoke(obj, Array.Empty<object>());
             if (value != null || includeNull)
             {
                 dictionary.Add(p.Name, value); // 向字典添加元素

@@ -62,7 +62,10 @@ public static class TypeExtension
         return false;
 
         // 判断逻辑
-        bool IsTheRawGenericType(Type t) => generic == (t.IsGenericType ? t.GetGenericTypeDefinition() : t);
+        bool IsTheRawGenericType(Type t)
+        {
+            return generic == (t.IsGenericType ? t.GetGenericTypeDefinition() : t);
+        }
     }
 
     /// <summary>

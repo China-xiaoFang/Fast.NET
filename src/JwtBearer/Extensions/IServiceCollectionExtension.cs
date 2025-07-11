@@ -169,8 +169,8 @@ public static class IServiceCollectionExtension
             .LoadPostConfigure();
 
         // 查找Jwt验证提供器实现类
-        var jwtBearerHandle
-            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
+        var jwtBearerHandle =
+            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
 
         if (jwtBearerHandle != null)
         {
@@ -221,8 +221,8 @@ public static class IServiceCollectionExtension
         Penetrates.JWTSettings = jwtSettings;
 
         // 查找Jwt验证提供器实现类
-        var jwtBearerHandle
-            = MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
+        var jwtBearerHandle =
+            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
 
         if (jwtBearerHandle != null)
         {

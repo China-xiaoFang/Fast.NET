@@ -141,9 +141,9 @@ public static class ObjectExtension
             if (m == null || !m.IsPublic)
                 continue;
             // 进行判NULL处理
-            if (m.Invoke(obj, parameters: Array.Empty<object>()) != null)
+            if (m.Invoke(obj, Array.Empty<object>()) != null)
             {
-                dictionary.Add(p.Name, m.Invoke(obj, parameters: Array.Empty<object>())); // 向字典添加元素
+                dictionary.Add(p.Name, m.Invoke(obj, Array.Empty<object>())); // 向字典添加元素
             }
         }
 
@@ -215,17 +215,15 @@ public static class ObjectExtension
                         dictionary.Add($"{(isToLower ? p.Name.FirstCharToLower() : p.Name)}[]", intListVal); // 向字典添加元素
                         break;
                     default:
-                        dictionary.Add(p.Name,
-                            m.Invoke(obj, new object[] { })
-                                ?.ToString()); // 向字典添加元素
+                        dictionary.Add(p.Name, m.Invoke(obj, new object[] { })
+                            ?.ToString()); // 向字典添加元素
                         break;
                 }
             }
             else
             {
-                dictionary.Add(p.Name,
-                    m.Invoke(obj, new object[] { })
-                        ?.ToString()); // 向字典添加元素
+                dictionary.Add(p.Name, m.Invoke(obj, new object[] { })
+                    ?.ToString()); // 向字典添加元素
             }
         }
 

@@ -349,8 +349,8 @@ public static class HttpContextExtension
             }
 
             // 加载 Parser 类型 的 GetDefault() 方法
-            var uaParserParserGetDefaultMethod
-                = uaParserParserType.GetMethod("GetDefault", BindingFlags.Public | BindingFlags.Static);
+            var uaParserParserGetDefaultMethod =
+                uaParserParserType.GetMethod("GetDefault", BindingFlags.Public | BindingFlags.Static);
 
             if (uaParserParserGetDefaultMethod == null)
             {
