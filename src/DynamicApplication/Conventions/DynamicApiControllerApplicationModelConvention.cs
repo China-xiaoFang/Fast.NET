@@ -409,13 +409,20 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             // 判断是否贴有任何 [FromXXX] 特性了
             var hasFromAttribute = parameterAttributes.Any(u => u is IBindingSourceMetadata);
 
+            // 判断方法贴有 [QueryParameters] 特性且当前参数没有任何 [FromXXX] 特性，则添加 [FromQuery] 特性
+            if (!hasFromAttribute)
+            {
+                parameterModel.BindingInfo = BindingInfo.GetBindingInfo([new FromQueryAttribute()]);
+                continue;
+            }
+
             // 如果没有贴 [FromRoute] 特性且不是基元类型，则跳过
             // 如果没有贴 [FromRoute] 特性且有任何绑定特性，则跳过
             if (!parameterAttributes.Any(u => u is FromRouteAttribute) && !parameterType.IsRichPrimitive())
                 continue;
 
             // 处理基元数组数组类型，还有全局配置参数问题
-            if (!hasFromAttribute && parameterType.IsArray)
+            if (parameterType.IsArray)
             {
                 parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromQueryAttribute()});
                 continue;
@@ -423,7 +430,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
 
             // 处理 [ApiController] 特性情况
             // https://docs.microsoft.com/en-US/aspnet/core/web-api/?view=aspnetcore-5.0#binding-source-parameter-inference
-            if (!hasFromAttribute && hasApiControllerAttribute)
+            if (hasApiControllerAttribute)
                 continue;
 
             // 判断是否可以为null
