@@ -39,7 +39,7 @@ public static class IServiceCollectionExtension
     /// <param name="services"><see cref="IServiceCollection"/></param>
     /// <param name="routePrefix"><see cref="string"/> 路由前缀</param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddDynamicApplication(this IServiceCollection services,string routePrefix = null)
+    public static IServiceCollection AddDynamicApplication(this IServiceCollection services, string routePrefix = null)
     {
         Debugging.Info("Registering dynamic application......");
 
