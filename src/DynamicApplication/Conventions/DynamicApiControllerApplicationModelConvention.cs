@@ -398,18 +398,22 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             return null;
 
         var result = new List<string>();
-        var parameters = action.Parameters;
+        var parameters = action.Parameters.Where(u =>
+            !(u.BindingInfo is {BindingSource.DisplayName: "Special"} || u.Attributes.Any(c => c is BindNeverAttribute)));
 
         // 遍历所有参数
         foreach (var parameterModel in parameters)
         {
             var parameterType = parameterModel.ParameterType;
+            // 如果非基元类型，则跳过
+            if (!parameterType.IsRichPrimitive())
+                continue;
             var parameterAttributes = parameterModel.Attributes;
 
             // 判断是否贴有任何 [FromXXX] 特性了
             var hasFromAttribute = parameterAttributes.Any(u => u is IBindingSourceMetadata);
 
-            // 判断方法贴有 [QueryParameters] 特性且当前参数没有任何 [FromXXX] 特性，则添加 [FromQuery] 特性
+            // 判断当前参数没有任何 [FromXXX] 特性，则添加 [FromQuery] 特性
             if (!hasFromAttribute)
             {
                 parameterModel.BindingInfo = BindingInfo.GetBindingInfo([new FromQueryAttribute()]);
@@ -467,6 +471,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             tempName = name;
             apiVersion ??= version;
         }
+
+        // 默认小驼峰命名
+        tempName = tempName.FirstCharToLower();
 
         // 拼接名称和版本号
         var newName = $"{tempName}{(string.IsNullOrWhiteSpace(apiVersion) ? null : $"@{apiVersion}")}";
