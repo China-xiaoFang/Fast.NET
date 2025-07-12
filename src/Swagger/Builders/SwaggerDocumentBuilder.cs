@@ -781,10 +781,7 @@ public static class SwaggerDocumentBuilder
                 return controllerActionDescriptor.ControllerName;
 
             // 读取标签
-            var apiDescriptionSettings = type.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true);
-            return string.IsNullOrWhiteSpace(apiDescriptionSettings?.Tag)
-                ? controllerActionDescriptor.ControllerName
-                : apiDescriptionSettings.Tag;
+            return controllerActionDescriptor.ControllerName;
         }
     }
 
@@ -816,10 +813,7 @@ public static class SwaggerDocumentBuilder
                 return GetControllerTag(controllerActionDescriptor);
 
             // 读取标签
-            var apiDescriptionSettings = method.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true);
-            return string.IsNullOrWhiteSpace(apiDescriptionSettings?.Tag)
-                ? GetControllerTag(controllerActionDescriptor)
-                : apiDescriptionSettings.Tag;
+            return GetControllerTag(controllerActionDescriptor);
         }
     }
 
