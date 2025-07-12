@@ -37,8 +37,9 @@ public static class IServiceCollectionExtension
     /// 添加动态Api服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="routePrefix"><see cref="string"/> 路由前缀</param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddDynamicApplication(this IServiceCollection services)
+    public static IServiceCollection AddDynamicApplication(this IServiceCollection services,string routePrefix = null)
     {
         Debugging.Info("Registering dynamic application......");
 
@@ -46,6 +47,8 @@ public static class IServiceCollectionExtension
                               ?.ImplementationInstance as ApplicationPartManager
                           ?? throw new InvalidOperationException(
                               "`AddDynamicApplication` must be invoked after `AddControllers` or `AddControllersWithViews`.");
+
+        DynamicApplicationContext.RoutePrefix = routePrefix;
 
         // 解决项目类型为 <Project Sdk="Microsoft.NET.Sdk"> 不能加载 API 问题，默认支持 <Project Sdk="Microsoft.NET.Sdk.Web">
         foreach (var assembly in MAppContext.Assemblies)

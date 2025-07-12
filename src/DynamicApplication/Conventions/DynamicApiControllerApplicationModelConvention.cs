@@ -20,7 +20,6 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Fast.UnifyResult;
@@ -65,6 +64,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     public void Apply(ApplicationModel application)
     {
         var controllers = application.Controllers.Where(u => DynamicApplicationContext.IsApiController(u.ControllerType));
+
         foreach (var controller in controllers)
         {
             var controllerType = controller.ControllerType;
@@ -81,8 +81,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 {
                     // 存储排序给 Swagger 使用
                     DynamicApplicationContext.ControllerOrderCollection.TryAdd(controller.ControllerName,
-                        (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName,
-                            controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
+                        (controller.ControllerName, controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
 
                     // 控制器默认处理规范化结果
                     foreach (var action in controller.Actions)
@@ -109,13 +108,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         // 配置控制器名称
         ConfigureControllerName(controller, controllerApiDescriptionSettings);
 
-        // 配置控制器路由特性
-        ConfigureControllerRouteAttribute(controller, controllerApiDescriptionSettings);
-
         // 存储排序给 Swagger 使用
         DynamicApplicationContext.ControllerOrderCollection.TryAdd(controller.ControllerName,
-            (controllerApiDescriptionSettings?.Tag ?? controller.ControllerName, controllerApiDescriptionSettings?.Order ?? 0,
-                controller.ControllerType));
+            (controller.ControllerName, controllerApiDescriptionSettings?.Order ?? 0, controller.ControllerType));
 
         var actions = controller.Actions;
 
@@ -142,6 +137,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             var actionApiDescriptionSettings = actionMethod.IsDefined(typeof(ApiDescriptionSettingsAttribute), true)
                 ? actionMethod.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true)
                 : null;
+
             ConfigureAction(action, actionApiDescriptionSettings, controllerApiDescriptionSettings, hasApiControllerAttribute);
         }
     }
@@ -156,30 +152,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     {
         controller.ControllerName =
             ConfigureControllerAndActionName(controllerApiDescriptionSettings, controller.ControllerType.Name);
-    }
-
-    /// <summary>
-    /// 强制处理了 ForceWithDefaultPrefix 的控制器
-    /// </summary>
-    /// <remarks>避免路由无限追加</remarks>
-    private ConcurrentBag<Type> ForceWithDefaultPrefixRouteControllerTypes { get; } = new();
-
-    /// <summary>
-    /// 配置控制器路由特性
-    /// </summary>
-    /// <param name="controller"></param>
-    /// <param name="controllerApiDescriptionSettings"></param>
-    private void ConfigureControllerRouteAttribute(ControllerModel controller,
-        ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
-    {
-        if (CheckIsForceWithDefaultRoute(controllerApiDescriptionSettings)
-            && controller.Selectors[0].AttributeRouteModel != null
-            && !ForceWithDefaultPrefixRouteControllerTypes.Contains(controller.ControllerType))
-        {
-            controller.Selectors[0].AttributeRouteModel = AttributeRouteModel.CombineAttributeRouteModel(
-                new AttributeRouteModel(new RouteAttribute(string.Empty)), controller.Selectors[0].AttributeRouteModel);
-            ForceWithDefaultPrefixRouteControllerTypes.Add(controller.ControllerType);
-        }
     }
 
     /// <summary>
@@ -274,11 +246,11 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 && !parameterModel.Attributes.Any(u => u is IBindingSourceMetadata)
                 && _services.Any(s => s.ServiceType.Name == parameterType.Name))
             {
-                parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromServicesAttribute()});
+                parameterModel.BindingInfo = BindingInfo.GetBindingInfo([new FromServicesAttribute()]);
                 continue;
             }
 
-            parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromBodyAttribute()});
+            parameterModel.BindingInfo = BindingInfo.GetBindingInfo([new FromBodyAttribute()]);
         }
     }
 
@@ -294,6 +266,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     {
         foreach (var selectorModel in action.Selectors)
         {
+            // 读取模块
+            var module = apiDescriptionSettings?.Module;
+
             // 跳过已配置路由特性的配置
             if (selectorModel.AttributeRouteModel != null)
             {
@@ -307,6 +282,12 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                         selectorModel.AttributeRouteModel.Template = selectorModel.AttributeRouteModel.Name;
                     }
 
+                    var newTemplate =
+                        $"{(selectorModel.AttributeRouteModel.Template?.StartsWith("/") == true ? "/" : null)}{(string.IsNullOrWhiteSpace(module) ? null : $"{module}/")}{selectorModel.AttributeRouteModel.Template}";
+                    // 处理可能存在多斜杠问题
+                    newTemplate = Regex.Replace(newTemplate, @"\/{2,}", "/");
+                    selectorModel.AttributeRouteModel.Template = newTemplate;
+
                     continue;
                 }
 
@@ -315,9 +296,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                     && selectorModel.AttributeRouteModel.Template.StartsWith("/"))
                     continue;
             }
-
-            // 读取模块
-            var module = apiDescriptionSettings?.Module;
 
             string template;
             string controllerRouteTemplate = null;
@@ -357,16 +335,16 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 }
 
                 template = string.IsNullOrWhiteSpace(controllerRouteTemplate)
-                    ? $"{(string.IsNullOrWhiteSpace(module) ? "/" : $"{module}/")}/{actionRouteTemplate}/{ActionEndTemplate}"
-                    : $"{controllerRouteTemplate}/{(string.IsNullOrWhiteSpace(module) ? null : $"{module}/")}/{actionRouteTemplate}/{ActionEndTemplate}";
+                    ? $"{(string.IsNullOrWhiteSpace(module) ? "/" : $"/{module}/")}/{actionRouteTemplate}/{ActionEndTemplate}"
+                    : $"{controllerRouteTemplate}/{(string.IsNullOrWhiteSpace(module) ? null : $"/{module}/")}/{actionRouteTemplate}/{ActionEndTemplate}";
             }
 
             AttributeRouteModel actionAttributeRouteModel = null;
             if (!string.IsNullOrWhiteSpace(template))
             {
                 // 处理多个斜杆问题
-                template = Regex.Replace(template, @"\/{2,}", "/");
                 template = HandleRouteTemplateRepeat(template);
+                template = Regex.Replace(template, @"\/{2,}", "/");
 
                 // 生成路由
                 actionAttributeRouteModel = string.IsNullOrWhiteSpace(template)
@@ -401,7 +379,11 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         // 读取模块
         var module = apiDescriptionSettings?.Module;
 
-        return $"{(string.IsNullOrWhiteSpace(module) ? null : $"{module}/")}[controller]";
+        // 路由默认前缀
+        var routePrefix = DynamicApplicationContext.RoutePrefix;
+
+        return
+            $"{(string.IsNullOrWhiteSpace(routePrefix) ? null : $"{routePrefix}/")}{(string.IsNullOrWhiteSpace(module) ? null : $"/{module}/")}[controller]";
     }
 
     /// <summary>
@@ -425,14 +407,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             var parameterAttributes = parameterModel.Attributes;
 
             // 判断是否贴有任何 [FromXXX] 特性了
-            var hasFormAttribute = parameterAttributes.Any(u => u is IBindingSourceMetadata);
-
-            // 判断当前参数没有任何 [FromXXX] 特性，则添加 [FromQuery] 特性
-            if (!hasFormAttribute)
-            {
-                parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromQueryAttribute()});
-                continue;
-            }
+            var hasFromAttribute = parameterAttributes.Any(u => u is IBindingSourceMetadata);
 
             // 如果没有贴 [FromRoute] 特性且不是基元类型，则跳过
             // 如果没有贴 [FromRoute] 特性且有任何绑定特性，则跳过
@@ -440,7 +415,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 continue;
 
             // 处理基元数组数组类型，还有全局配置参数问题
-            if (parameterType.IsArray)
+            if (!hasFromAttribute && parameterType.IsArray)
             {
                 parameterModel.BindingInfo = BindingInfo.GetBindingInfo(new[] {new FromQueryAttribute()});
                 continue;
@@ -448,7 +423,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
 
             // 处理 [ApiController] 特性情况
             // https://docs.microsoft.com/en-US/aspnet/core/web-api/?view=aspnetcore-5.0#binding-source-parameter-inference
-            if (hasApiControllerAttribute)
+            if (!hasFromAttribute && hasApiControllerAttribute)
                 continue;
 
             // 判断是否可以为null
@@ -490,27 +465,6 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         var newName = $"{tempName}{(string.IsNullOrWhiteSpace(apiVersion) ? null : $"@{apiVersion}")}";
 
         return newName;
-    }
-
-    /// <summary>
-    /// 检查是否设置了 ForceWithRoutePrefix  参数
-    /// </summary>
-    /// <param name="controllerApiDescriptionSettings"></param>
-    /// <returns></returns>
-    private static bool CheckIsForceWithDefaultRoute(ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
-    {
-        bool isForceWithRoutePrefix;
-
-        // 判断 Controller 是否配置了 ForceWithRoutePrefix 属性
-        if (controllerApiDescriptionSettings?.ForceWithRoutePrefix != null)
-        {
-            var canParse = bool.TryParse(controllerApiDescriptionSettings.ForceWithRoutePrefix.ToString(), out var value);
-            isForceWithRoutePrefix = canParse && value;
-        }
-        else
-            isForceWithRoutePrefix = false;
-
-        return isForceWithRoutePrefix;
     }
 
     /// <summary>

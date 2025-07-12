@@ -82,11 +82,6 @@ public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribu
     public string[] Groups { get; set; }
 
     /// <summary>
-    /// 标签
-    /// </summary>
-    public string Tag { get; set; }
-
-    /// <summary>
     /// 排序
     /// </summary>
     public int Order { get; set; }
@@ -95,9 +90,4 @@ public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribu
     /// 额外描述，支持 HTML
     /// </summary>
     public string Description { get; set; }
-
-    /// <summary>
-    /// 强制携带路由前缀，即使使用 [Route] 重写，仅对 Class/Controller 有效
-    /// </summary>
-    public object ForceWithRoutePrefix { get; set; }
 }

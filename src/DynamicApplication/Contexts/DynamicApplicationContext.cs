@@ -38,6 +38,11 @@ public static class DynamicApplicationContext
     private static readonly ConcurrentDictionary<Type, bool> IsApiControllerCached = new();
 
     /// <summary>
+    /// 路由前缀
+    /// </summary>
+    public static string RoutePrefix { get; internal set; } = null;
+
+    /// <summary>
     /// 控制器排序集合
     /// </summary>
     public static ConcurrentDictionary<string, (string, int, Type)> ControllerOrderCollection { get; set; } = new();
