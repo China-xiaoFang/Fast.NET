@@ -92,30 +92,29 @@ public static class SugarEntityFilter
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
                 // 执行Sql处理
-                Task.Run(async () =>
+                try
                 {
-                    try
-                    {
-                        await sqlSugarEntityHandler.ExecuteAsync(rawSql, pars, _db.Ado.SqlExecutionTime, handleSql);
-                    }
-                    catch (Exception ex)
-                    {
-                        var logSb = new StringBuilder();
-                        logSb.Append("\u001b[41m\u001b[30m");
-                        logSb.Append("fsql");
-                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                        logSb.Append(": ");
-                        logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                        logSb.Append(Environment.NewLine);
-                        logSb.Append("\u001b[41m\u001b[30m");
-                        logSb.Append("      ");
-                        logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteAsync] method error.");
-                        logSb.Append(Environment.NewLine);
-                        logSb.Append(ex);
-                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                        Console.WriteLine(logSb.ToString());
-                    }
-                });
+                    sqlSugarEntityHandler.ExecuteAsync(rawSql, pars, _db.Ado.SqlExecutionTime, handleSql)
+                        .GetAwaiter()
+                        .GetResult();
+                }
+                catch (Exception ex)
+                {
+                    var logSb = new StringBuilder();
+                    logSb.Append("\u001b[41m\u001b[30m");
+                    logSb.Append("fsql");
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                    logSb.Append(": ");
+                    logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                    logSb.Append(Environment.NewLine);
+                    logSb.Append("\u001b[41m\u001b[30m");
+                    logSb.Append("      ");
+                    logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteAsync] method error.");
+                    logSb.Append(Environment.NewLine);
+                    logSb.Append(ex);
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                    Console.WriteLine(logSb.ToString());
+                }
             }
 
             // 执行时间判断
@@ -150,31 +149,30 @@ public static class SugarEntityFilter
                 if (!disableAop && sqlSugarEntityHandler != null)
                 {
                     // 执行Sql超时处理
-                    Task.Run(async () =>
+                    try
                     {
-                        try
-                        {
-                            await sqlSugarEntityHandler.ExecuteTimeoutAsync(fileName, fileLine, firstMethodName, rawSql, pars,
-                                _db.Ado.SqlExecutionTime, handleSql, message);
-                        }
-                        catch (Exception ex)
-                        {
-                            var _logSb = new StringBuilder();
-                            _logSb.Append("\u001b[41m\u001b[30m");
-                            _logSb.Append("fsql");
-                            _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                            _logSb.Append(": ");
-                            _logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                            _logSb.Append(Environment.NewLine);
-                            _logSb.Append("\u001b[41m\u001b[30m");
-                            logSb.Append("      ");
-                            _logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteTimeoutAsync] method error.");
-                            _logSb.Append(Environment.NewLine);
-                            _logSb.Append(ex);
-                            _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                            Console.WriteLine(_logSb.ToString());
-                        }
-                    });
+                        sqlSugarEntityHandler.ExecuteTimeoutAsync(fileName, fileLine, firstMethodName, rawSql, pars,
+                                _db.Ado.SqlExecutionTime, handleSql, message)
+                            .GetAwaiter()
+                            .GetResult();
+                    }
+                    catch (Exception ex)
+                    {
+                        var _logSb = new StringBuilder();
+                        _logSb.Append("\u001b[41m\u001b[30m");
+                        _logSb.Append("fsql");
+                        _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                        _logSb.Append(": ");
+                        _logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                        _logSb.Append(Environment.NewLine);
+                        _logSb.Append("\u001b[41m\u001b[30m");
+                        logSb.Append("      ");
+                        _logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteTimeoutAsync] method error.");
+                        _logSb.Append(Environment.NewLine);
+                        _logSb.Append(ex);
+                        _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                        Console.WriteLine(_logSb.ToString());
+                    }
                 }
             }
         };
@@ -205,33 +203,32 @@ public static class SugarEntityFilter
                         var tableDescription = firstData?.TableDescription;
 
                         // 执行Sql差异处理
-                        Task.Run(async () =>
+                        try
                         {
-                            try
-                            {
-                                await sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, tableName, tableDescription,
+                            sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, tableName, tableDescription,
                                     diff.BusinessData.ToString(), diff.BeforeData?.Select(sl => sl.Columns)
                                         .ToList(), diff.AfterData?.Select(sl => sl.Columns)
-                                        .ToList(), diff.Sql, diff.Parameters, diff.Time, handleSql);
-                            }
-                            catch (Exception ex)
-                            {
-                                var logSb = new StringBuilder();
-                                logSb.Append("\u001b[41m\u001b[30m");
-                                logSb.Append("fsql");
-                                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                                logSb.Append(": ");
-                                logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                                logSb.Append(Environment.NewLine);
-                                logSb.Append("\u001b[41m\u001b[30m");
-                                logSb.Append("      ");
-                                logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteDiffLogAsync] method error.");
-                                logSb.Append(Environment.NewLine);
-                                logSb.Append(ex);
-                                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                                Console.WriteLine(logSb.ToString());
-                            }
-                        });
+                                        .ToList(), diff.Sql, diff.Parameters, diff.Time, handleSql)
+                                .GetAwaiter()
+                                .GetResult();
+                        }
+                        catch (Exception ex)
+                        {
+                            var logSb = new StringBuilder();
+                            logSb.Append("\u001b[41m\u001b[30m");
+                            logSb.Append("fsql");
+                            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                            logSb.Append(": ");
+                            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                            logSb.Append(Environment.NewLine);
+                            logSb.Append("\u001b[41m\u001b[30m");
+                            logSb.Append("      ");
+                            logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteDiffLogAsync] method error.");
+                            logSb.Append(Environment.NewLine);
+                            logSb.Append(ex);
+                            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                            Console.WriteLine(logSb.ToString());
+                        }
                     }
                 }
             };
@@ -272,31 +269,30 @@ public static class SugarEntityFilter
             if (!disableAop && sqlSugarEntityHandler != null)
             {
                 // 执行Sql错误处理
-                Task.Run(async () =>
+                try
                 {
-                    try
-                    {
-                        await sqlSugarEntityHandler.ExecuteErrorAsync(fileName, fileLine, firstMethodName, exp.Sql, param,
-                            handleSql, message);
-                    }
-                    catch (Exception ex)
-                    {
-                        var logSb = new StringBuilder();
-                        logSb.Append("\u001b[41m\u001b[30m");
-                        logSb.Append("fsql");
-                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                        logSb.Append(": ");
-                        logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                        logSb.Append(Environment.NewLine);
-                        logSb.Append("\u001b[41m\u001b[30m");
-                        logSb.Append("      ");
-                        logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteErrorAsync] method error.");
-                        logSb.Append(Environment.NewLine);
-                        logSb.Append(ex);
-                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                        Console.WriteLine(logSb.ToString());
-                    }
-                });
+                    sqlSugarEntityHandler.ExecuteErrorAsync(fileName, fileLine, firstMethodName, exp.Sql, param,
+                            handleSql, message)
+                        .GetAwaiter()
+                        .GetResult();
+                }
+                catch (Exception ex)
+                {
+                    var logSb = new StringBuilder();
+                    logSb.Append("\u001b[41m\u001b[30m");
+                    logSb.Append("fsql");
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                    logSb.Append(": ");
+                    logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                    logSb.Append(Environment.NewLine);
+                    logSb.Append("\u001b[41m\u001b[30m");
+                    logSb.Append("      ");
+                    logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteErrorAsync] method error.");
+                    logSb.Append(Environment.NewLine);
+                    logSb.Append(ex);
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                    Console.WriteLine(logSb.ToString());
+                }
             }
         };
 
