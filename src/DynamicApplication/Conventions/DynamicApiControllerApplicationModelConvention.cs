@@ -476,7 +476,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
         tempName = tempName.FirstCharToLower();
 
         // 拼接名称和版本号
-        var newName = $"{tempName}{(string.IsNullOrWhiteSpace(apiVersion) ? null : $"@{apiVersion}")}";
+        var newName = $"{tempName}{(string.IsNullOrWhiteSpace(apiVersion) ? null : $"v{apiVersion}")}";
 
         return newName;
     }
