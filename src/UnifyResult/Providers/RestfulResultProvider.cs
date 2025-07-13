@@ -99,11 +99,8 @@ internal class RestfulResultProvider : IUnifyResultProvider
             message = metadata.ValidationResult.ToString();
         }
 
-        // 设置响应状态码
-        context.HttpContext.Response.StatusCode = UnifyContext.ValidateFailedStatusCode;
-
-        return new JsonResult(UnifyContext.GetRestfulResult(UnifyContext.ValidateFailedStatusCode, false, null, message,
-            context.HttpContext));
+        return new JsonResult(UnifyContext.GetRestfulResult(StatusCodes.Status400BadRequest, false, null, message,
+            context.HttpContext)) {StatusCode = UnifyContext.ValidateFailedStatusCode};
     }
 
     /// <summary>
