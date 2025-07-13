@@ -57,7 +57,7 @@ internal class RestfulResultProvider : IUnifyResultProvider
         }
 
         return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode, false, context.Exception,
-            message ?? context.Exception.Message, context.HttpContext));
+            message ?? context.Exception.Message, context.HttpContext)) {StatusCode = UnifyContext.ValidateFailedStatusCode};
     }
 
     /// <summary>
