@@ -21,7 +21,6 @@
 // ------------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -39,15 +38,10 @@ public static class IServiceCollectionExtension
     /// 数据验证服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="validateFailedStatusCode"><see cref="int"/> 验证失败返回状态码</param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddDataValidation(this IServiceCollection services,
-        int validateFailedStatusCode = StatusCodes.Status400BadRequest)
+    public static IServiceCollection AddDataValidation(this IServiceCollection services)
     {
         Debugging.Info("Registering data validation......");
-
-        // 验证失败返回状态码
-        UnifyContext.ValidateFailedStatusCode = validateFailedStatusCode;
 
         // 启用了全局验证，则默认关闭原生 ModelStateInvalidFilter 验证
         services.Configure<ApiBehaviorOptions>(options =>
@@ -98,21 +92,16 @@ public static class IServiceCollectionExtension
     /// 添加统一返回服务
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="validateFailedStatusCode"><see cref="int"/> 验证失败返回状态码</param>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddUnifyResult(this IServiceCollection services,
-        int validateFailedStatusCode = StatusCodes.Status400BadRequest)
+    public static IServiceCollection AddUnifyResult(this IServiceCollection services)
     {
         Debugging.Info("Registering unify result......");
 
         // 是否启用规范化结果
         UnifyContext.EnabledUnifyHandler = true;
 
-        // 验证失败返回状态码
-        UnifyContext.ValidateFailedStatusCode = validateFailedStatusCode;
-
         // 数据验证
-        services.AddDataValidation(validateFailedStatusCode);
+        services.AddDataValidation();
 
         // 友好异常
         services.AddFriendlyException();
