@@ -51,11 +51,6 @@ public static class UnifyContext
     public static bool EnabledUnifyHandler = false;
 
     /// <summary>
-    /// 验证失败返回状态码
-    /// </summary>
-    public static int ValidateFailedStatusCode = StatusCodes.Status400BadRequest;
-
-    /// <summary>
     /// 统一返回类型
     /// </summary>
     public static Type UnifyResultType => typeof(RestfulResult<>);

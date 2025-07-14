@@ -53,11 +53,11 @@ internal class RestfulResultProvider : IUnifyResultProvider
         if (hostEnvironment == null || !hostEnvironment.IsDevelopment())
         {
             return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode, false, null,
-                message ?? context.Exception.Message, context.HttpContext)) {StatusCode = UnifyContext.ValidateFailedStatusCode};
+                message ?? context.Exception.Message, context.HttpContext)) {StatusCode = statusCode ?? metadata.StatusCode};
         }
 
         return new JsonResult(UnifyContext.GetRestfulResult(statusCode ?? metadata.StatusCode, false, context.Exception,
-            message ?? context.Exception.Message, context.HttpContext)) {StatusCode = UnifyContext.ValidateFailedStatusCode};
+            message ?? context.Exception.Message, context.HttpContext)) {StatusCode = statusCode ?? metadata.StatusCode};
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ internal class RestfulResultProvider : IUnifyResultProvider
         }
 
         return new JsonResult(UnifyContext.GetRestfulResult(StatusCodes.Status400BadRequest, false, null, message,
-            context.HttpContext)) {StatusCode = UnifyContext.ValidateFailedStatusCode};
+            context.HttpContext)) {StatusCode = StatusCodes.Status400BadRequest};
     }
 
     /// <summary>
