@@ -49,26 +49,12 @@ public static class SugarEntityFilter
         {
             if (isDevelopment)
             {
+                //// 如果是系统表则不输出，避免安全起见
+                //if (rawSql.Contains("information_schema", StringComparison.OrdinalIgnoreCase))
+                //    return;
+
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
-                if (rawSql.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase))
-                {
-                    // 如果是系统表则不输出，避免安全起见
-                    if (rawSql.Contains("information_schema", StringComparison.OrdinalIgnoreCase))
-                        return;
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                }
-
-                if (rawSql.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase)
-                    || rawSql.StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                }
-
-                if (rawSql.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                }
 
                 var logSb = new StringBuilder();
                 logSb.Append("\u001b[40m\u001b[90m");
@@ -77,7 +63,21 @@ public static class SugarEntityFilter
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                 logSb.Append(Environment.NewLine);
-                logSb.Append("\u001b[40m\u001b[90m");
+                if (rawSql.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase)
+                    || rawSql.StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
+                {
+                    logSb.Append("\u001b[40m\u001b[32m");
+                }
+                else if (rawSql.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    logSb.Append("\u001b[40m\u001b[35m");
+                }
+                else
+                {
+                    logSb.Append("\u001b[40m\u001b[90m");
+                }
+
                 logSb.Append("      ");
                 logSb.Append($"Time: {_db.Ado.SqlExecutionTime}");
                 logSb.Append(Environment.NewLine);

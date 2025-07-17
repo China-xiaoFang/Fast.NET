@@ -51,7 +51,7 @@ internal partial class DatabaseUtil
                     $"Server={dbInfo.ServiceIp};Port={dbInfo.Port ?? 3306};Database={dbInfo.DbName};User ID={dbInfo.DbUser};Password={dbInfo.DbPwd};CharSet=utf8;SslMode=none;Pooling=true;Convert Zero Datetime=True;Allow Zero Datetime=True;Max Pool Size=100;",
                 DbType.SqlServer =>
                     $"Server={dbInfo.ServiceIp},{dbInfo.Port ?? 1433};Database={dbInfo.DbName};User={dbInfo.DbUser};Password={dbInfo.DbPwd};MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Max Pool Size=100;",
-                DbType.Sqlite => $"Data Source={dbInfo.DbName};Version=3;",
+                DbType.Sqlite => $"Data Source={dbInfo.DbName};",
                 DbType.Oracle =>
                     $"Data Source={dbInfo.ServiceIp}:{dbInfo.Port ?? 1521}/{dbInfo.DbName};User ID={dbInfo.DbUser};Password={dbInfo.DbPwd};",
                 DbType.PostgreSQL =>
