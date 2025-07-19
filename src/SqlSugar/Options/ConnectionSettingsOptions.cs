@@ -41,25 +41,25 @@ public class ConnectionSettingsOptions : DbConnectionInfo
     /// 数据库类型，用于区分使用的是那个类型的数据库
     /// </summary>
     [SugarColumn(ColumnDescription = "数据库类型")]
-    public DbType DbType { get; set; }
+    public DbType? DbType { get; set; }
 
     /// <summary>
     /// 超时时间，单位秒
     /// </summary>
     [SugarColumn(ColumnDescription = "超时时间，单位秒")]
-    public int CommandTimeOut { get; set; }
+    public int? CommandTimeOut { get; set; }
 
     /// <summary>
     /// SqlSugar Sql执行最大秒数，如果超过记录警告日志
     /// </summary>
     [SugarColumn(ColumnDescription = "SqlSugar Sql执行最大秒数，如果超过记录警告日志")]
-    public int SugarSqlExecMaxSeconds { get; set; }
+    public int? SugarSqlExecMaxSeconds { get; set; }
 
     /// <summary>
     /// 差异日志
     /// </summary>
     [SugarColumn(ColumnDescription = "差异日志")]
-    public bool DiffLog { get; set; }
+    public bool? DiffLog { get; set; }
 
     /// <summary>
     /// 禁用 SqlSugar 的 Aop
@@ -70,7 +70,7 @@ public class ConnectionSettingsOptions : DbConnectionInfo
     /// <para>或通过 new <see cref="SqlSugarClient"/>() 的方式进行保存。不然会导致死循环的问题</para>
     /// </remarks>
     [SugarColumn(ColumnDescription = "差异日志")]
-    public bool DisableAop { get; set; }
+    public bool? DisableAop { get; set; }
 
     /// <summary>
     /// 从库信息
@@ -78,4 +78,18 @@ public class ConnectionSettingsOptions : DbConnectionInfo
     /// <remarks>一般默认库或者主库不建议设置从库</remarks>
     [SugarColumn(IsIgnore = true)]
     public virtual List<SlaveConnectionInfo> SlaveConnectionList { get; set; }
+
+    /// <summary>
+    /// 后期配置
+    /// </summary>
+    /// <exception cref="NotImplementedException"></exception>
+    public override void PostConfigure()
+    {
+        base.PostConfigure();
+        DbType ??= global::SqlSugar.DbType.SqlServer;
+        CommandTimeOut ??= 60;
+        SugarSqlExecMaxSeconds ??= 30;
+        DiffLog ??= false;
+        DisableAop ??= true;
+    }
 }

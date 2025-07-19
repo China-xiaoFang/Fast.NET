@@ -20,6 +20,7 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using Fast.Runtime;
 using SqlSugar;
 
 
@@ -30,7 +31,7 @@ namespace Fast.SqlSugar;
 /// <see cref="DbConnectionInfo"/> 数据库连接信息
 /// </summary>
 [SuppressSniffer]
-public class DbConnectionInfo
+public class DbConnectionInfo : IPostConfigure
 {
     /// <summary>
     /// 服务器Ip地址
@@ -74,4 +75,15 @@ public class DbConnectionInfo
     /// </summary>
     [SugarColumn(ColumnDescription = "自定义连接字符串", Length = 100, IsNullable = true)]
     public virtual string CustomConnectionStr { get; set; }
+
+    /// <summary>
+    /// 后期配置
+    /// </summary>
+    /// <exception cref="NotImplementedException"></exception>
+    public virtual void PostConfigure()
+    {
+        ServiceIp ??= "127.0.0.1";
+        Port ??= 1433;
+        DbUser ??= "sa";
+    }
 }
