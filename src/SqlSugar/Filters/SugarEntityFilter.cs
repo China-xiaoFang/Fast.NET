@@ -56,7 +56,6 @@ public static class SugarEntityFilter
 
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
-
                 var logSb = new StringBuilder();
                 logSb.Append("\u001b[40m\u001b[90m");
                 logSb.Append("fsql");
@@ -64,20 +63,7 @@ public static class SugarEntityFilter
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                 logSb.Append(Environment.NewLine);
-                if (rawSql.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase)
-                    || rawSql.StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
-                {
-                    logSb.Append("\u001b[40m\u001b[31m");
-                }
-                else if (rawSql.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
-                {
-                    logSb.Append("\u001b[40m\u001b[35m");
-                }
-                else
-                {
-                    logSb.Append("\u001b[40m\u001b[90m");
-                }
-
+                logSb.Append("\u001b[40m\u001b[90m");
                 logSb.Append("      ");
                 logSb.Append($"Time: {_db.Ado.SqlExecutionTime}");
                 logSb.Append(Environment.NewLine);
