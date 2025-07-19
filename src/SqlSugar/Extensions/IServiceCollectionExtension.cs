@@ -176,8 +176,9 @@ public static class IServiceCollectionExtension
 
             // Aop
             SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), sqlSugarClient,
-                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds!.Value, SqlSugarContext.ConnectionSettings.DiffLog!.Value,
-                SqlSugarContext.ConnectionSettings.DisableAop!.Value, sqlSugarEntityHandler);
+                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds!.Value,
+                SqlSugarContext.ConnectionSettings.DiffLog!.Value, SqlSugarContext.ConnectionSettings.DisableAop!.Value,
+                sqlSugarEntityHandler);
 
             // 过滤器
             SugarEntityFilter.LoadSugarFilter(sqlSugarClient, sqlSugarEntityHandler);
