@@ -42,8 +42,8 @@ public static class SugarEntityFilter
     /// <param name="diffLog"><see cref="bool"/> 是否启用差异日志</param>
     /// <param name="disableAop"><see cref="bool"/> 是否禁用Aop</param>
     /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
-    public static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int? sugarSqlExecMaxSeconds = null, bool diffLog = false,
-        bool disableAop = true, ISqlSugarEntityHandler sqlSugarEntityHandler = null)
+    public static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int? sugarSqlExecMaxSeconds = null,
+        bool diffLog = false, bool disableAop = true, ISqlSugarEntityHandler sqlSugarEntityHandler = null)
     {
         sugarSqlExecMaxSeconds ??= SqlSugarContext.ConnectionSettings?.SugarSqlExecMaxSeconds!.Value;
         _db.Aop.OnLogExecuted = (rawSql, pars) =>
@@ -67,11 +67,10 @@ public static class SugarEntityFilter
                 if (rawSql.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase)
                     || rawSql.StartsWith("INSERT", StringComparison.OrdinalIgnoreCase))
                 {
-                    logSb.Append("\u001b[40m\u001b[32m");
+                    logSb.Append("\u001b[40m\u001b[31m");
                 }
                 else if (rawSql.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
                     logSb.Append("\u001b[40m\u001b[35m");
                 }
                 else
