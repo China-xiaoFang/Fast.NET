@@ -172,12 +172,12 @@ public static class IServiceCollectionExtension
             var sqlSugarClient = new SqlSugarClient(SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings));
 
             // 执行超时时间
-            sqlSugarClient.Ado.CommandTimeOut = SqlSugarContext.ConnectionSettings.CommandTimeOut;
+            sqlSugarClient.Ado.CommandTimeOut = SqlSugarContext.ConnectionSettings.CommandTimeOut!.Value;
 
             // Aop
             SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), sqlSugarClient,
-                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds, SqlSugarContext.ConnectionSettings.DiffLog,
-                SqlSugarContext.ConnectionSettings.DisableAop, sqlSugarEntityHandler);
+                SqlSugarContext.ConnectionSettings.SugarSqlExecMaxSeconds!.Value, SqlSugarContext.ConnectionSettings.DiffLog!.Value,
+                SqlSugarContext.ConnectionSettings.DisableAop!.Value, sqlSugarEntityHandler);
 
             // 过滤器
             SugarEntityFilter.LoadSugarFilter(sqlSugarClient, sqlSugarEntityHandler);

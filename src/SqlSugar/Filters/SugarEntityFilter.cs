@@ -42,9 +42,10 @@ public static class SugarEntityFilter
     /// <param name="diffLog"><see cref="bool"/> 是否启用差异日志</param>
     /// <param name="disableAop"><see cref="bool"/> 是否禁用Aop</param>
     /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
-    public static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int sugarSqlExecMaxSeconds, bool diffLog,
-        bool disableAop, ISqlSugarEntityHandler sqlSugarEntityHandler)
+    public static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int? sugarSqlExecMaxSeconds = null, bool diffLog = false,
+        bool disableAop = true, ISqlSugarEntityHandler sqlSugarEntityHandler = null)
     {
+        sugarSqlExecMaxSeconds ??= SqlSugarContext.ConnectionSettings?.SugarSqlExecMaxSeconds!.Value;
         _db.Aop.OnLogExecuted = (rawSql, pars) =>
         {
             if (isDevelopment)

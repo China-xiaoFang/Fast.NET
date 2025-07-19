@@ -80,7 +80,7 @@ public sealed class SqlSugarContext
     public static ConnectionConfig GetConnectionConfig(ConnectionSettingsOptions connectionSettings)
     {
         // 得到连接字符串
-        var connectionStr = DatabaseUtil.GetConnectionStr(connectionSettings.DbType, connectionSettings);
+        var connectionStr = DatabaseUtil.GetConnectionStr(connectionSettings.DbType!.Value, connectionSettings);
 
         var slaveConnectionList = new List<SlaveConnectionConfig>();
 
@@ -89,7 +89,7 @@ public sealed class SqlSugarContext
         {
             foreach (var slaveConnectionInfo in connectionSettings.SlaveConnectionList)
             {
-                var slaveConnectionStr = DatabaseUtil.GetConnectionStr(connectionSettings.DbType, slaveConnectionInfo);
+                var slaveConnectionStr = DatabaseUtil.GetConnectionStr(connectionSettings.DbType!.Value, slaveConnectionInfo);
 
                 slaveConnectionList.Add(new SlaveConnectionConfig
                 {
@@ -104,7 +104,7 @@ public sealed class SqlSugarContext
             ConfigId = connectionSettings.ConnectionId,
             // 连接字符串
             ConnectionString = connectionStr,
-            DbType = connectionSettings.DbType,
+            DbType = connectionSettings.DbType!.Value,
             // 开启自动释放模式和EF原理一样我就不多解释了
             IsAutoCloseConnection = true,
             // 从特性读取主键和自增列信息
@@ -112,7 +112,7 @@ public sealed class SqlSugarContext
             // 从数据库读取主键和自增列信息
             //InitKeyType = InitKeyType.SystemTable 
             MoreSettings = DatabaseUtil.GetSugarMoreSettings(),
-            ConfigureExternalServices = DatabaseUtil.GetSugarExternalServices(connectionSettings.DbType),
+            ConfigureExternalServices = DatabaseUtil.GetSugarExternalServices(connectionSettings.DbType!.Value),
             SlaveConnectionConfigs = slaveConnectionList
         };
     }

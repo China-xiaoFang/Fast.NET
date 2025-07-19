@@ -76,11 +76,11 @@ internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISql
         InitContext(SqlSugarContext.GetConnectionConfig(DatabaseInfo));
 
         // 执行超时时间
-        Context.Ado.CommandTimeOut = DatabaseInfo.CommandTimeOut;
+        Context.Ado.CommandTimeOut = DatabaseInfo.CommandTimeOut!.Value;
 
         // Aop
-        SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), Context, DatabaseInfo.SugarSqlExecMaxSeconds,
-            DatabaseInfo.DiffLog, DatabaseInfo.DisableAop, sqlSugarEntityHandler);
+        SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), Context, DatabaseInfo.SugarSqlExecMaxSeconds!.Value,
+            DatabaseInfo.DiffLog!.Value, DatabaseInfo.DisableAop!.Value, sqlSugarEntityHandler);
 
         // 过滤器
         SugarEntityFilter.LoadSugarFilter(Context, sqlSugarEntityHandler);
