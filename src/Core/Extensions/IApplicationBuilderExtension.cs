@@ -20,8 +20,10 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
@@ -45,5 +47,47 @@ public static class IApplicationBuilderExtension
             context.Request.EnableBuffering();
             return next(context);
         });
+    }
+
+    /// <summary>
+    /// 启用集线器
+    /// </summary>
+    /// <remarks>须在 app.UseRouting() 之后注册</remarks>
+    /// <param name="app"><see cref="IApplicationBuilder"/></param>
+    /// <returns><see cref="IApplicationBuilder"/></returns>
+    public static IApplicationBuilder UseMapHub(this IApplicationBuilder app)
+    {
+        var hubTypes = typeof(Hub);
+
+        var hubsTypes = MAppContext.EffectiveTypes.Where(wh => hubTypes.IsAssignableFrom(wh))
+            .Select(sl => new
+            {
+                Type = sl,
+                HubRoutes = sl.GetCustomAttributes<MapHubAttribute>()
+                    .Select(p => p.Pattern)
+                    .ToList()
+            })
+            .ToList();
+
+        var mapHub = typeof(HubEndpointRouteBuilderExtensions).GetMethods()
+            .Where(wh => wh.Name == nameof(HubEndpointRouteBuilderExtensions.MapHub))
+            .Where(wh => wh.IsGenericMethodDefinition)
+            .First(wh => wh.GetParameters()
+                             .Length
+                         == 2);
+
+        app.UseEndpoints(endpoints =>
+        {
+            foreach (var hubsType in hubsTypes)
+            {
+                foreach (var hubRoute in hubsType.HubRoutes)
+                {
+                    mapHub.MakeGenericMethod(hubsType.Type)
+                        .Invoke(null, [endpoints, hubRoute]);
+                }
+            }
+        });
+
+        return app;
     }
 }

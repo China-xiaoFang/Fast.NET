@@ -28,7 +28,7 @@ namespace System;
 /// <see cref="MapHubAttribute"/> 集线器配置特征
 /// </summary>
 [SuppressSniffer]
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class MapHubAttribute : Attribute
 {
     /// <summary>
