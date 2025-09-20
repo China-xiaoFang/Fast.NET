@@ -41,6 +41,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast.Swagger", "src\Swagger
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.SqlSugar", "src\SqlSugar\Fast.SqlSugar.csproj", "{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast.OpenApi", "src\OpenApi\Fast.OpenApi.csproj", "{44F30847-C2A6-495F-A698-3CDF101F7CDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44F30847-C2A6-495F-A698-3CDF101F7CDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F30847-C2A6-495F-A698-3CDF101F7CDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F30847-C2A6-495F-A698-3CDF101F7CDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44F30847-C2A6-495F-A698-3CDF101F7CDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{AB1D93CE-77BE-4715-B078-816734881D57} = {DC257ACE-1569-4E43-87DC-3CA0D9E5590A}
 		{8E44844B-266A-4000-ABDF-19715C1A3FE8} = {DC257ACE-1569-4E43-87DC-3CA0D9E5590A}
 		{2E9E5EEE-2F44-C8D7-6D0F-E0393C538F55} = {DC257ACE-1569-4E43-87DC-3CA0D9E5590A}
+		{44F30847-C2A6-495F-A698-3CDF101F7CDB} = {DC257ACE-1569-4E43-87DC-3CA0D9E5590A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4261BB-E228-45EE-8B97-B915C19C8A4F}
