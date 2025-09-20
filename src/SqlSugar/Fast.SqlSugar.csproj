@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>3.5.27</Version>
+		<Version>3.5.28</Version>
 		<PackageId>Fast.SqlSugar</PackageId>
 		<Description>Fast.NET 框架 SqlSugar 模块库。</Description>
 	</PropertyGroup>
@@ -11,7 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SqlSugarCore" Version="5.1.4.199" />
+		<PackageReference Include="SqlSugarCore" Version="5.1.4.202" />
 		<PackageReference Include="UAParser" Version="3.1.47" />
 		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 	</ItemGroup>
