@@ -48,7 +48,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <summary>
     /// CSRedis 缓存客户端
     /// </summary>
-    internal CSRedisClient _client;
+    public CSRedisClient Client { get; private set; }
 
     /// <summary>
     /// 缓存上下文定位器
@@ -97,8 +97,8 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 $"{redisServiceSettings.ServiceIp ?? redisSettings.ServiceIp}:{redisServiceSettings.Port ?? redisSettings.Port ?? 6379},password={redisServiceSettings.DbPwd ?? redisSettings.DbPwd},defaultDatabase={redisServiceSettings.DbName ?? redisSettings.DbName},prefix={redisServiceSettings.Prefix ?? redisSettings.Prefix},poolsize={redisServiceSettings.Poolsize ?? redisSettings.Poolsize},ssl={((redisServiceSettings.SSL ?? redisSettings.SSL) == true ? "true" : "false")}";
         }
 
-        _client?.Dispose();
-        _client = new CSRedisClient(connectionStr);
+        Client?.Dispose();
+        Client = new CSRedisClient(connectionStr);
     }
 
     /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -114,7 +114,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public long Del(params string[] key)
     {
-        return _client.Del(key);
+        return Client.Del(key);
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<long> DelAsync(params string[] key)
     {
-        return await _client.DelAsync(key);
+        return await Client.DelAsync(key);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         do
         {
             // 每次返回最多 100 个
-            var keys = _client.Scan(cursor, pattern, 100);
+            var keys = Client.Scan(cursor, pattern, 100);
             if (keys == null)
             {
                 cursor = 0;
@@ -159,7 +159,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             cursor = keys.Cursor;
             if (keys.Items.Length > 0)
             {
-                _client.Del(keys.Items);
+                Client.Del(keys.Items);
             }
         } while (cursor != 0);
 
@@ -188,7 +188,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         do
         {
             // 每次返回最多 100 个
-            var keys = _client.Scan(cursor, pattern, 100);
+            var keys = await Client.ScanAsync(cursor, pattern, 100);
             if (keys == null)
             {
                 cursor = 0;
@@ -198,7 +198,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             cursor = keys.Cursor;
             if (keys.Items.Length > 0)
             {
-                return await _client.DelAsync(keys.Items);
+                return await Client.DelAsync(keys.Items);
             }
         } while (cursor != 0);
 
@@ -212,7 +212,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public bool Exists(string key)
     {
-        return _client.Exists(key);
+        return Client.Exists(key);
     }
 
     /// <summary>
@@ -222,7 +222,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<bool> ExistsAsync(string key)
     {
-        return await _client.ExistsAsync(key);
+        return await Client.ExistsAsync(key);
     }
 
     /// <summary>
@@ -232,7 +232,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public string Get(string key)
     {
-        return _client.Get(key);
+        return Client.Get(key);
     }
 
     /// <summary>
@@ -242,7 +242,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<string> GetAsync(string key)
     {
-        return await _client.GetAsync(key);
+        return await Client.GetAsync(key);
     }
 
     /// <summary>
@@ -253,7 +253,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public T Get<T>(string key)
     {
-        return _client.Get<T>(key);
+        return Client.Get<T>(key);
     }
 
     /// <summary>
@@ -264,7 +264,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<T> GetAsync<T>(string key)
     {
-        return await _client.GetAsync<T>(key);
+        return await Client.GetAsync<T>(key);
     }
 
     /// <summary>
@@ -275,7 +275,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public bool Set(string key, object value)
     {
-        return _client.Set(key, value);
+        return Client.Set(key, value);
     }
 
     /// <summary>
@@ -286,7 +286,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<bool> SetAsync(string key, object value)
     {
-        return await _client.SetAsync(key, value);
+        return await Client.SetAsync(key, value);
     }
 
     /// <summary>
@@ -298,7 +298,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public bool Set(string key, object value, int expireSeconds)
     {
-        return _client.Set(key, value, expireSeconds);
+        return Client.Set(key, value, expireSeconds);
     }
 
     /// <summary>
@@ -310,7 +310,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<bool> SetAsync(string key, object value, int expireSeconds)
     {
-        return await _client.SetAsync(key, value, expireSeconds);
+        return await Client.SetAsync(key, value, expireSeconds);
     }
 
     /// <summary>
@@ -322,7 +322,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public bool Set(string key, object value, TimeSpan expireTimeSpan)
     {
-        return _client.Set(key, value, expireTimeSpan);
+        return Client.Set(key, value, expireTimeSpan);
     }
 
     /// <summary>
@@ -334,7 +334,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<bool> SetAsync(string key, object value, TimeSpan expireTimeSpan)
     {
-        return await _client.SetAsync(key, value, expireTimeSpan);
+        return await Client.SetAsync(key, value, expireTimeSpan);
     }
 
     /// <summary>
@@ -344,7 +344,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public List<string> GetAllKeys()
     {
-        var result = _client.Keys("*");
+        var result = Client.Keys("*");
         return result.ToList();
     }
 
@@ -355,7 +355,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<List<string>> GetAllKeysAsync()
     {
-        var result = await _client.KeysAsync("*");
+        var result = await Client.KeysAsync("*");
         return result.ToList();
     }
 
@@ -367,13 +367,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public string GetAndSet(string key, Func<string> func)
     {
-        var result = _client.Get(key);
+        var result = Client.Get(key);
 
         if (IsEmpty(result))
         {
             result = func.Invoke();
 
-            _client.Set(key, result);
+            Client.Set(key, result);
         }
 
         return result;
@@ -387,13 +387,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<string> GetAndSetAsync(string key, Func<Task<string>> func)
     {
-        var result = await _client.GetAsync(key);
+        var result = await Client.GetAsync(key);
 
         if (IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await _client.SetAsync(key, result);
+            await Client.SetAsync(key, result);
         }
 
         return result;
@@ -408,13 +408,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public T GetAndSet<T>(string key, Func<T> func)
     {
-        var result = _client.Get<T>(key);
+        var result = Client.Get<T>(key);
 
         if (IsEmpty(result))
         {
             result = func.Invoke();
 
-            _client.Set(key, result);
+            Client.Set(key, result);
         }
 
         return result;
@@ -429,13 +429,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, Func<Task<T>> func)
     {
-        var result = await _client.GetAsync<T>(key);
+        var result = await Client.GetAsync<T>(key);
 
         if (IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await _client.SetAsync(key, result);
+            await Client.SetAsync(key, result);
         }
 
         return result;
@@ -450,13 +450,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public string GetAndSet(string key, int expireSeconds, Func<string> func)
     {
-        var result = _client.Get(key);
+        var result = Client.Get(key);
 
         if (IsEmpty(result))
         {
             result = func.Invoke();
 
-            _client.Set(key, result, expireSeconds);
+            Client.Set(key, result, expireSeconds);
         }
 
         return result;
@@ -471,13 +471,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<string> GetAndSetAsync(string key, int expireSeconds, Func<Task<string>> func)
     {
-        var result = await _client.GetAsync(key);
+        var result = await Client.GetAsync(key);
 
         if (IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await _client.SetAsync(key, result, expireSeconds);
+            await Client.SetAsync(key, result, expireSeconds);
         }
 
         return result;
@@ -493,13 +493,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public T GetAndSet<T>(string key, int expireSeconds, Func<T> func)
     {
-        var result = _client.Get<T>(key);
+        var result = Client.Get<T>(key);
 
         if (IsEmpty(result))
         {
             result = func.Invoke();
 
-            _client.Set(key, result, expireSeconds);
+            Client.Set(key, result, expireSeconds);
         }
 
         return result;
@@ -515,13 +515,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, int expireSeconds, Func<Task<T>> func)
     {
-        var result = await _client.GetAsync<T>(key);
+        var result = await Client.GetAsync<T>(key);
 
         if (IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await _client.SetAsync(key, result, expireSeconds);
+            await Client.SetAsync(key, result, expireSeconds);
         }
 
         return result;
@@ -536,13 +536,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public string GetAndSet(string key, TimeSpan expireTimeSpan, Func<string> func)
     {
-        var result = _client.Get(key);
+        var result = Client.Get(key);
 
         if (IsEmpty(result))
         {
             result = func.Invoke();
 
-            _client.Set(key, result, expireTimeSpan);
+            Client.Set(key, result, expireTimeSpan);
         }
 
         return result;
@@ -557,13 +557,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<string> GetAndSetAsync(string key, TimeSpan expireTimeSpan, Func<Task<string>> func)
     {
-        var result = await _client.GetAsync(key);
+        var result = await Client.GetAsync(key);
 
         if (IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await _client.SetAsync(key, result, expireTimeSpan);
+            await Client.SetAsync(key, result, expireTimeSpan);
         }
 
         return result;
@@ -579,13 +579,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public T GetAndSet<T>(string key, TimeSpan expireTimeSpan, Func<T> func)
     {
-        var result = _client.Get<T>(key);
+        var result = Client.Get<T>(key);
 
         if (IsEmpty(result))
         {
             result = func.Invoke();
 
-            _client.Set(key, result, expireTimeSpan);
+            Client.Set(key, result, expireTimeSpan);
         }
 
         return result;
@@ -601,13 +601,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, TimeSpan expireTimeSpan, Func<Task<T>> func)
     {
-        var result = await _client.GetAsync<T>(key);
+        var result = await Client.GetAsync<T>(key);
 
         if (IsEmpty(result))
         {
             result = await func.Invoke();
 
-            await _client.SetAsync(key, result, expireTimeSpan);
+            await Client.SetAsync(key, result, expireTimeSpan);
         }
 
         return result;
