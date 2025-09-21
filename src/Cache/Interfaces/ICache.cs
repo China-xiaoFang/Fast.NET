@@ -20,8 +20,9 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-// ReSharper disable once CheckNamespace
+using CSRedis;
 
+// ReSharper disable once CheckNamespace
 namespace Fast.Cache;
 
 /// <summary>
@@ -36,6 +37,11 @@ public interface ICache : ICache<DefaultCacheContextLocator>
 /// </summary>
 public interface ICache<out CacheContextLocator> where CacheContextLocator : ICacheContextLocator, new()
 {
+    /// <summary>
+    /// CSRedis 缓存客户端
+    /// </summary>
+    CSRedisClient Client { get; }
+
     /// <summary>
     /// 缓存上下文定位器
     /// </summary>
