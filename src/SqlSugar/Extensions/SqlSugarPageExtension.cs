@@ -248,7 +248,8 @@ public static class SqlSugarPageExtension
 
             var index = 0;
 
-            foreach (var valItem in needProperties.Where(wh => wh.sugarSearchValueAttribute != null))
+            foreach (var valItem in needProperties.Where(wh => wh.sugarSearchValueAttribute != null)
+                         .ToList())
             {
                 var whereType = WhereType.Or;
                 if (index == 0)
@@ -292,7 +293,8 @@ public static class SqlSugarPageExtension
                     break;
             }
 
-            foreach (var valItem in needProperties.Where(wh => wh.sugarSearchTimeAttribute != null))
+            foreach (var valItem in needProperties.Where(wh => wh.sugarSearchTimeAttribute != null)
+                         .ToList())
             {
                 // 如果两个时间都存在，则使用范围搜索，如果只存在一个，则使用 >= 或者 <=
                 var timeConditionals = new List<KeyValuePair<WhereType, ConditionalModel>>();
