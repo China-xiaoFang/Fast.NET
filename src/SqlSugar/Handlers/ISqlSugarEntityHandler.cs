@@ -98,10 +98,10 @@ public interface ISqlSugarEntityHandler
     /// <param name="rawSql"><see cref="string"/> 原始Sql语句</param>
     /// <param name="parameters"><see cref="SugarParameter"/> Sql参数</param>
     /// <param name="handlerSql"><see cref="string"/> 参数化处理后的Sql语句</param>
-    /// <param name="message"><see cref="string"/></param>
+    /// <param name="exception"><see cref="SqlSugarException"/> 异常信息</param>
     /// <returns></returns>
     Task ExecuteErrorAsync(string fileName, int fileLine, string methodName, string rawSql, SugarParameter[] parameters,
-        string handlerSql, string message);
+        string handlerSql, SqlSugarException exception);
 
     /// <summary>
     /// 指派租户Id

@@ -37,6 +37,7 @@ using Fast.JwtBearer;
 using Fast.Logging;
 using Fast.Mapster;
 using Fast.NET.Core;
+using Fast.OpenApi;
 using Fast.Serialization;
 using Fast.SqlSugar;
 using Fast.Swagger;
@@ -89,6 +90,9 @@ builder.Services.AddUnifyResult(builder.Configuration);
 // Add standardized document service
 builder.Services.AddSwaggerDocuments(builder.Configuration);
 
+// Add open api service
+builder.Services.AddOpenApi(builder.Configuration);
+
 var app = builder.Build();
 
 // Mandatory HTTPS.
@@ -130,6 +134,7 @@ Update log [Click to view](https://gitee.com/Net-18K/Fast.NET/commits/master)
 | [Fast.Logging](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET Framework log module library | |
 | [Fast.Mapster](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET Framework object mapping module library | Based on [Mapster](https://github.com/MapsterMapper/Mapster) encapsulation |
 | [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Fast.NET Framework core module library | Because Fast.Core already has a Nuget package, it is renamed [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src.NET/Core) |
+| [Fast.OpenApi](https://gitee.com/Net-18K/Fast.NET/tree/master/src/OpenApi) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.OpenApi.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.OpenApi) | Fast.NET Framework OpenApi module library | |
 | [Fast.Runtime](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Runtime) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime) | Fast.NET Framework Core Runtime Library | |
 | [Fast.Serialization.Newtonsoft.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.Newtonsoft.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Fast.NET Framework Newtonsoft.Json Serialization Module Library | Based on [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) encapsulation |
 | [Fast.Serialization.System.Text.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.System.Text.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | Fast.NET Framework System.Text.Json serialization module library | Based on [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) encapsulation |

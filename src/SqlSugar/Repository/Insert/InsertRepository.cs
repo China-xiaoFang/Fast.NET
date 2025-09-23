@@ -36,7 +36,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public int Insert(TEntity entity)
     {
-        var insertable = Insertable(entity);
+        var insertable = Insertable(entity)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -54,7 +55,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> InsertAsync(TEntity entity)
     {
-        var insertable = Insertable(entity);
+        var insertable = Insertable(entity)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -72,7 +74,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public int Insert(params TEntity[] entities)
     {
-        var insertable = Insertable(entities);
+        var insertable = Insertable(entities)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -90,7 +93,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> InsertAsync(params TEntity[] entities)
     {
-        var insertable = Insertable(entities);
+        var insertable = Insertable(entities)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -111,7 +115,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
         var _entities = entities?.ToArray();
         if (_entities?.Length > 0)
         {
-            var insertable = Insertable(_entities.ToArray());
+            var insertable = Insertable(_entities.ToArray())
+                .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
             if (IsSplitTable)
             {
@@ -135,7 +140,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
         var _entities = entities?.ToArray();
         if (_entities?.Length > 0)
         {
-            var insertable = Insertable(_entities.ToArray());
+            var insertable = Insertable(_entities.ToArray())
+                .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
             if (IsSplitTable)
             {
@@ -157,6 +163,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
     public int InsertReturnIdentity(TEntity insertObj)
     {
         return Insertable(insertObj)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnIdentity();
     }
 
@@ -168,28 +175,31 @@ internal sealed partial class SqlSugarRepository<TEntity>
     public Task<int> InsertReturnIdentityAsync(TEntity insertObj)
     {
         return Insertable(insertObj)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnIdentityAsync();
     }
 
     /// <summary>
-    /// 新增一条记录返回Long类型的Id
+    /// 新增一条记录返回Long类型的自增Id
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
     public long ExecuteReturnBigIdentity(TEntity entity)
     {
         return Insertable(entity)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnBigIdentity();
     }
 
     /// <summary>
-    /// 新增一条记录返回Long类型的Id
+    /// 新增一条记录返回Long类型的自增Id
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public async Task<long> ExecuteReturnBigIdentityAsync(TEntity entity)
+    public Task<long> ExecuteReturnBigIdentityAsync(TEntity entity)
     {
-        return await Insertable(entity)
+        return Insertable(entity)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnBigIdentityAsync();
     }
 
@@ -201,6 +211,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
     public TEntity InsertReturnEntity(TEntity insertObj)
     {
         return Insertable(insertObj)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnEntity();
     }
 
@@ -212,6 +223,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
     public Task<TEntity> InsertReturnEntityAsync(TEntity insertObj)
     {
         return Insertable(insertObj)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnEntityAsync();
     }
 }

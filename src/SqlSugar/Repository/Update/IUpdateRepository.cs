@@ -40,20 +40,6 @@ public partial interface ISqlSugarRepository<TEntity>
     int Update(TEntity entity, bool isNoUpdateNull = false);
 
     /// <summary>
-    /// 更新多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
-    int Update(params TEntity[] entities);
-
-    /// <summary>
-    /// 更新多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
-    int Update(IEnumerable<TEntity> entities);
-
-    /// <summary>
     /// 更新一条记录
     /// </summary>
     /// <param name="entity"></param>
@@ -66,7 +52,21 @@ public partial interface ISqlSugarRepository<TEntity>
     /// </summary>
     /// <param name="entities"></param>
     /// <returns></returns>
+    int Update(params TEntity[] entities);
+
+    /// <summary>
+    /// 更新多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
     Task<int> UpdateAsync(params TEntity[] entities);
+
+    /// <summary>
+    /// 更新多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    int Update(IEnumerable<TEntity> entities);
 
     /// <summary>
     /// 更新多条记录
@@ -81,15 +81,7 @@ public partial interface ISqlSugarRepository<TEntity>
     /// <param name="entity">更新的实体</param>
     /// <param name="columns">根据那些字段更新</param>
     /// <returns></returns>
-    Task<int> UpdateNoPrimaryKey(TEntity entity, Expression<Func<TEntity, object>> columns);
-
-    /// <summary>
-    /// 无主键更新多条记录
-    /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
-    Task<int> UpdateNoPrimaryKey(List<TEntity> entity, Expression<Func<TEntity, object>> columns);
+    int UpdateNoPrimaryKey(TEntity entity, Expression<Func<TEntity, object>> columns);
 
     /// <summary>
     /// 无主键更新一条记录
@@ -98,6 +90,14 @@ public partial interface ISqlSugarRepository<TEntity>
     /// <param name="columns">根据那些字段更新</param>
     /// <returns></returns>
     Task<int> UpdateNoPrimaryKeyAsync(TEntity entity, Expression<Func<TEntity, object>> columns);
+
+    /// <summary>
+    /// 无主键更新多条记录
+    /// </summary>
+    /// <param name="entity">更新的实体</param>
+    /// <param name="columns">根据那些字段更新</param>
+    /// <returns></returns>
+    int UpdateNoPrimaryKey(List<TEntity> entity, Expression<Func<TEntity, object>> columns);
 
     /// <summary>
     /// 无主键更新多条记录

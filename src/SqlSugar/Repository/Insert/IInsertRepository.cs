@@ -37,20 +37,6 @@ public partial interface ISqlSugarRepository<TEntity>
     int Insert(TEntity entity);
 
     /// <summary>
-    /// 新增多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
-    int Insert(params TEntity[] entities);
-
-    /// <summary>
-    /// 新增多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
-    int Insert(IEnumerable<TEntity> entities);
-
-    /// <summary>
     /// 新增一条记录
     /// </summary>
     /// <param name="entity"></param>
@@ -62,7 +48,21 @@ public partial interface ISqlSugarRepository<TEntity>
     /// </summary>
     /// <param name="entities"></param>
     /// <returns></returns>
+    int Insert(params TEntity[] entities);
+
+    /// <summary>
+    /// 新增多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
     Task<int> InsertAsync(params TEntity[] entities);
+
+    /// <summary>
+    /// 新增多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    int Insert(IEnumerable<TEntity> entities);
 
     /// <summary>
     /// 新增多条记录
@@ -86,14 +86,14 @@ public partial interface ISqlSugarRepository<TEntity>
     Task<int> InsertReturnIdentityAsync(TEntity insertObj);
 
     /// <summary>
-    /// 新增一条记录返回Long类型的Id
+    /// 新增一条记录返回Long类型的自增Id
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
     long ExecuteReturnBigIdentity(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回Long类型的Id
+    /// 新增一条记录返回Long类型的自增Id
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>

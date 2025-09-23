@@ -37,6 +37,7 @@ using Fast.JwtBearer;
 using Fast.Logging;
 using Fast.Mapster;
 using Fast.NET.Core;
+using Fast.OpenApi;
 using Fast.Serialization;
 using Fast.SqlSugar;
 using Fast.Swagger;
@@ -89,6 +90,9 @@ builder.Services.AddUnifyResult(builder.Configuration);
 // 添加规范化文档服务
 builder.Services.AddSwaggerDocuments(builder.Configuration);
 
+// 添加 OpenApi 服务
+builder.Services.AddOpenApi(builder.Configuration);
+
 var app = builder.Build();
 
 // Mandatory Https.
@@ -130,6 +134,7 @@ app.Run();
 | [Fast.Logging](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET 框架日志模块库 |  |
 | [Fast.Mapster](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET 框架对象映射模块库 | 基于 [Mapster](https://github.com/MapsterMapper/Mapster) 封装 |
 | [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Fast.NET 框架核心模块库 | 因 Fast.Core 已存在 Nuget 包，故改名 [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src.NET/Core) |
+| [Fast.OpenApi](https://gitee.com/Net-18K/Fast.NET/tree/master/src/OpenApi) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.OpenApi.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.OpenApi) | Fast.NET 框架OpenApi模块库 |  |
 | [Fast.Runtime](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Runtime) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime) | Fast.NET 框架核心运行库 |  |
 | [Fast.Serialization.Newtonsoft.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.Newtonsoft.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Fast.NET 框架 Newtonsoft.Json 序列化模块库 | 基于 [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) 封装 |
 | [Fast.Serialization.System.Text.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.System.Text.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | Fast.NET 框架 System.Text.Json 序列化模块库 | 基于 [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) 封装 |
