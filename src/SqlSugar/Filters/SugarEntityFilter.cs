@@ -192,7 +192,7 @@ public static class SugarEntityFilter
                         try
                         {
                             sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, tableName, tableDescription,
-                                    diff.BusinessData.ToString(), diff.BeforeData?.Select(sl => sl.Columns)
+                                    diff.BusinessData, diff.BeforeData?.Select(sl => sl.Columns)
                                         .ToList(), diff.AfterData?.Select(sl => sl.Columns)
                                         .ToList(), diff.Sql, diff.Parameters, diff.Time, handleSql)
                                 .GetAwaiter()

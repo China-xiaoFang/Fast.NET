@@ -77,7 +77,7 @@ public interface ISqlSugarEntityHandler
     /// <param name="diffType"><see cref="DiffType"/> 差异类型</param>
     /// <param name="tableName"><see cref="string"/> 表名称</param>
     /// <param name="tableDescription"><see cref="string"/> 表描述</param>
-    /// <param name="diffDescription"><see cref="string"/> 差异描述</param>
+    /// <param name="businessData"><see cref="object"/> 业务数据</param>
     /// <param name="beforeColumnList"><see cref="string"/> 执行前列信息</param>
     /// <param name="afterColumnList"><see cref="string"/> 执行后列信息</param>
     /// <param name="rawSql"><see cref="string"/> 原始Sql语句</param>
@@ -85,7 +85,7 @@ public interface ISqlSugarEntityHandler
     /// <param name="executeTime"><see cref="TimeSpan"/> 执行时间</param>
     /// <param name="handlerSql"><see cref="string"/> 参数化处理后的Sql语句</param>
     /// <returns></returns>
-    Task ExecuteDiffLogAsync(DiffType diffType, string tableName, string tableDescription, string diffDescription,
+    Task ExecuteDiffLogAsync(DiffType diffType, string tableName, string tableDescription, object businessData,
         List<List<DiffLogColumnInfo>> beforeColumnList, List<List<DiffLogColumnInfo>> afterColumnList, string rawSql,
         SugarParameter[] parameters, TimeSpan? executeTime, string handlerSql);
 
