@@ -39,7 +39,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     public int Update(TEntity entity, bool isNoUpdateNull = false)
     {
         var updateable = Updateable(entity)
-            .IgnoreColumns(isNoUpdateNull);
+            .IgnoreColumns(isNoUpdateNull)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -62,7 +63,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     public Task<int> UpdateAsync(TEntity entity, bool isNoUpdateNull = false)
     {
         var updateable = Updateable(entity)
-            .IgnoreColumns(isNoUpdateNull);
+            .IgnoreColumns(isNoUpdateNull)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -83,7 +85,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public int Update(params TEntity[] entities)
     {
-        var updateable = Updateable(entities);
+        var updateable = Updateable(entities)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -101,7 +104,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> UpdateAsync(params TEntity[] entities)
     {
-        var updateable = Updateable(entities);
+        var updateable = Updateable(entities)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -119,7 +123,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public int Update(IEnumerable<TEntity> entities)
     {
-        var updateable = Updateable(entities.ToArray());
+        var updateable = Updateable(entities.ToArray())
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -137,7 +142,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> UpdateAsync(IEnumerable<TEntity> entities)
     {
-        var updateable = Updateable(entities.ToArray());
+        var updateable = Updateable(entities.ToArray())
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -154,11 +160,19 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <param name="entity">更新的实体</param>
     /// <param name="columns">根据那些字段更新</param>
     /// <returns></returns>
-    public Task<int> UpdateNoPrimaryKey(TEntity entity, Expression<Func<TEntity, object>> columns)
+    public int UpdateNoPrimaryKey(TEntity entity, Expression<Func<TEntity, object>> columns)
     {
-        return Updateable(entity)
+        var updateable = Updateable(entity)
             .WhereColumns(columns)
-            .ExecuteCommandAsync();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return updateable.SplitTable()
+                .ExecuteCommand();
+        }
+
+        return updateable.ExecuteCommand();
     }
 
     /// <summary>
@@ -169,9 +183,17 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> UpdateNoPrimaryKeyAsync(TEntity entity, Expression<Func<TEntity, object>> columns)
     {
-        return Updateable(entity)
+        var updateable = Updateable(entity)
             .WhereColumns(columns)
-            .ExecuteCommandAsync();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return updateable.SplitTable()
+                .ExecuteCommandAsync();
+        }
+
+        return updateable.ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -180,11 +202,19 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <param name="entity">更新的实体</param>
     /// <param name="columns">根据那些字段更新</param>
     /// <returns></returns>
-    public Task<int> UpdateNoPrimaryKey(List<TEntity> entity, Expression<Func<TEntity, object>> columns)
+    public int UpdateNoPrimaryKey(List<TEntity> entity, Expression<Func<TEntity, object>> columns)
     {
-        return Updateable(entity)
+        var updateable = Updateable(entity)
             .WhereColumns(columns)
-            .ExecuteCommandAsync();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return updateable.SplitTable()
+                .ExecuteCommand();
+        }
+
+        return updateable.ExecuteCommand();
     }
 
     /// <summary>
@@ -195,8 +225,16 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> UpdateNoPrimaryKeyAsync(List<TEntity> entity, Expression<Func<TEntity, object>> columns)
     {
-        return Updateable(entity)
+        var updateable = Updateable(entity)
             .WhereColumns(columns)
-            .ExecuteCommandAsync();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return updateable.SplitTable()
+                .ExecuteCommandAsync();
+        }
+
+        return updateable.ExecuteCommandAsync();
     }
 }

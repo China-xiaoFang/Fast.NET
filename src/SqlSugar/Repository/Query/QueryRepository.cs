@@ -78,7 +78,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// </summary>
     /// <param name="Id"></param>
     /// <returns></returns>
-    public TEntity Single(object Id)
+    public TEntity SingleOrDefault(object Id)
     {
         return Entities.InSingle(Id);
     }
@@ -88,7 +88,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// </summary>
     /// <param name="Id"></param>
     /// <returns></returns>
-    public Task<TEntity> SingleAsync(object Id)
+    public Task<TEntity> SingleOrDefaultAsync(object Id)
     {
         return Entities.InSingleAsync(Id);
     }
@@ -98,7 +98,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// </summary>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    public TEntity Single(Expression<Func<TEntity, bool>> whereExpression)
+    public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.Single(whereExpression);
     }
@@ -108,7 +108,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// </summary>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    public Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> whereExpression)
+    public Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.SingleAsync(whereExpression);
     }
@@ -131,6 +131,15 @@ internal sealed partial class SqlSugarRepository<TEntity>
     public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         return await Entities.FirstAsync(whereExpression);
+    }
+
+    /// <summary>
+    /// 获取列表
+    /// </summary>
+    /// <returns></returns>
+    public List<TEntity> ToList()
+    {
+        return Entities.ToList();
     }
 
     /// <summary>

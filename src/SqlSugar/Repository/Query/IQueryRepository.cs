@@ -64,28 +64,28 @@ public partial interface ISqlSugarRepository<TEntity>
     /// </summary>
     /// <param name="Id"></param>
     /// <returns></returns>
-    TEntity Single(object Id);
-
-    /// <summary>
-    /// 根据条件获取实体
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
-    TEntity Single(Expression<Func<TEntity, bool>> whereExpression);
+    TEntity SingleOrDefault(object Id);
 
     /// <summary>
     /// 根据主键获取实体
     /// </summary>
     /// <param name="Id"></param>
     /// <returns></returns>
-    Task<TEntity> SingleAsync(object Id);
+    Task<TEntity> SingleOrDefaultAsync(object Id);
 
     /// <summary>
     /// 根据条件获取实体
     /// </summary>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> whereExpression);
+    TEntity SingleOrDefault(Expression<Func<TEntity, bool>> whereExpression);
+
+    /// <summary>
+    /// 根据条件获取实体
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <returns></returns>
+    Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> whereExpression);
 
     /// <summary>
     /// 获取一个实体
@@ -105,7 +105,20 @@ public partial interface ISqlSugarRepository<TEntity>
     /// 获取列表
     /// </summary>
     /// <returns></returns>
+    List<TEntity> ToList();
+
+    /// <summary>
+    /// 获取列表
+    /// </summary>
+    /// <returns></returns>
     Task<List<TEntity>> ToListAsync();
+
+    /// <summary>
+    /// 获取列表
+    /// </summary>
+    /// <param name="whereExpression"></param>
+    /// <returns></returns>
+    List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression);
 
     /// <summary>
     /// 获取列表
@@ -121,15 +134,8 @@ public partial interface ISqlSugarRepository<TEntity>
     /// <param name="orderByExpression"></param>
     /// <param name="orderByType"></param>
     /// <returns></returns>
-    Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression,
-        Expression<Func<TEntity, object>> orderByExpression, OrderByType orderByType = OrderByType.Asc);
-
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
-    List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression);
+    List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression,
+        OrderByType orderByType = OrderByType.Asc);
 
     /// <summary>
     /// 获取列表
@@ -138,6 +144,6 @@ public partial interface ISqlSugarRepository<TEntity>
     /// <param name="orderByExpression"></param>
     /// <param name="orderByType"></param>
     /// <returns></returns>
-    List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression,
-        OrderByType orderByType = OrderByType.Asc);
+    Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression,
+        Expression<Func<TEntity, object>> orderByExpression, OrderByType orderByType = OrderByType.Asc);
 }

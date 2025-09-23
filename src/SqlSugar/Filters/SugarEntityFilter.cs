@@ -232,9 +232,6 @@ public static class SugarEntityFilter
             var fileLine = _db.Ado.SqlStackTrace.FirstLine;
             // 方法名称
             var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
-            // 消息
-            var message =
-                $"Sql 执行异常{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}";
 
             if (isDevelopment)
             {
@@ -247,7 +244,8 @@ public static class SugarEntityFilter
                 logSb.Append(Environment.NewLine);
                 logSb.Append("\u001b[41m\u001b[30m");
                 logSb.Append("      ");
-                logSb.Append(message);
+                logSb.Append(
+                    $"Sql 执行异常{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}");
                 logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 Console.WriteLine(logSb.ToString());
             }
@@ -257,8 +255,7 @@ public static class SugarEntityFilter
                 // 执行Sql错误处理
                 try
                 {
-                    sqlSugarEntityHandler.ExecuteErrorAsync(fileName, fileLine, firstMethodName, exp.Sql, param,
-                            handleSql, message)
+                    sqlSugarEntityHandler.ExecuteErrorAsync(fileName, fileLine, firstMethodName, exp.Sql, param, handleSql, exp)
                         .GetAwaiter()
                         .GetResult();
                 }

@@ -37,7 +37,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public int Delete(TEntity entity)
     {
-        var deleteable = Deleteable(entity);
+        var deleteable = Deleteable(entity)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -55,7 +56,8 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> DeleteAsync(TEntity entity)
     {
-        var deleteable = Deleteable(entity);
+        var deleteable = Deleteable(entity)
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
 
         if (IsSplitTable)
         {
@@ -73,9 +75,17 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public int Delete(object key)
     {
-        return Deleteable<TEntity>()
+        var deleteable = Deleteable<TEntity>()
             .In(key)
-            .ExecuteCommand();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommand();
+        }
+
+        return deleteable.ExecuteCommand();
     }
 
     /// <summary>
@@ -85,9 +95,17 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> DeleteAsync(object key)
     {
-        return Deleteable<TEntity>()
+        var deleteable = Deleteable<TEntity>()
             .In(key)
-            .ExecuteCommandAsync();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommandAsync();
+        }
+
+        return deleteable.ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -97,9 +115,17 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public int Delete(params object[] keys)
     {
-        return Deleteable<TEntity>()
+        var deleteable = Deleteable<TEntity>()
             .In(keys)
-            .ExecuteCommand();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommand();
+        }
+
+        return deleteable.ExecuteCommand();
     }
 
     /// <summary>
@@ -109,9 +135,17 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public Task<int> DeleteAsync(params object[] keys)
     {
-        return Deleteable<TEntity>()
+        var deleteable = Deleteable<TEntity>()
             .In(keys)
-            .ExecuteCommandAsync();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommandAsync();
+        }
+
+        return deleteable.ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -121,9 +155,17 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <returns></returns>
     public int Delete(Expression<Func<TEntity, bool>> whereExpression)
     {
-        return Deleteable<TEntity>()
+        var deleteable = Deleteable<TEntity>()
             .Where(whereExpression)
-            .ExecuteCommand();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommand();
+        }
+
+        return deleteable.ExecuteCommand();
     }
 
     /// <summary>
@@ -131,11 +173,19 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// </summary>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    public async Task<int> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
+    public Task<int> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
-        return await Deleteable<TEntity>()
+        var deleteable = Deleteable<TEntity>()
             .Where(whereExpression)
-            .ExecuteCommandAsync();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommandAsync();
+        }
+
+        return deleteable.ExecuteCommandAsync();
     }
 
     /// <summary>
@@ -161,10 +211,18 @@ internal sealed partial class SqlSugarRepository<TEntity>
         isDeletedProperty!.SetValue(deletedEntity, true);
 
         // 执行逻辑删除
-        return Updateable<TEntity>()
+        var updateable = Updateable<TEntity>()
             .Where(whereExpression)
             .SetColumns(_ => deletedEntity, true)
-            .ExecuteCommand();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return updateable.SplitTable()
+                .ExecuteCommand();
+        }
+
+        return updateable.ExecuteCommand();
     }
 
     /// <summary>
@@ -173,7 +231,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <remarks>注意，实体必须继承 <see cref="IDeletedEntity"/></remarks>
     /// <param name="whereExpression"></param>
     /// <returns></returns>
-    public async Task<int> LogicDeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
+    public Task<int> LogicDeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         // 判断是否支持逻辑删除
         if (!SupportsLogicDelete)
@@ -190,9 +248,17 @@ internal sealed partial class SqlSugarRepository<TEntity>
         isDeletedProperty!.SetValue(deletedEntity, true);
 
         // 执行逻辑删除
-        return await Updateable<TEntity>()
+        var updateable = Updateable<TEntity>()
             .Where(whereExpression)
             .SetColumns(_ => deletedEntity, true)
-            .ExecuteCommandAsync();
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return updateable.SplitTable()
+                .ExecuteCommandAsync();
+        }
+
+        return updateable.ExecuteCommandAsync();
     }
 }
