@@ -36,37 +36,37 @@ public class BaseIdentityRecordEntity : IdentityKeyEntity, IIdentityRecordEntity
     /// <summary>
     /// 设备
     /// </summary>
-    [SugarSearchValue, SugarColumn(ColumnDescription = "设备", Length = 100, IsNullable = true, CreateTableFieldSort = 983)]
+    [SugarColumn(ColumnDescription = "设备", Length = 100, IsNullable = true, CreateTableFieldSort = 983)]
     public virtual string Device { get; set; }
 
     /// <summary>
     /// 操作系统（版本）
     /// </summary>
-    [SugarSearchValue, SugarColumn(ColumnDescription = "操作系统（版本）", Length = 100, IsNullable = true, CreateTableFieldSort = 984)]
+    [SugarColumn(ColumnDescription = "操作系统（版本）", Length = 100, IsNullable = true, CreateTableFieldSort = 984)]
     public virtual string OS { get; set; }
 
     /// <summary>
     /// 浏览器（版本）
     /// </summary>
-    [SugarSearchValue, SugarColumn(ColumnDescription = "浏览器（版本）", Length = 100, IsNullable = true, CreateTableFieldSort = 985)]
+    [SugarColumn(ColumnDescription = "浏览器（版本）", Length = 100, IsNullable = true, CreateTableFieldSort = 985)]
     public virtual string Browser { get; set; }
 
     /// <summary>
     /// 省份
     /// </summary>
-    [SugarSearchValue, SugarColumn(ColumnDescription = "省份", Length = 20, IsNullable = true, CreateTableFieldSort = 986)]
+    [SugarColumn(ColumnDescription = "省份", Length = 20, IsNullable = true, CreateTableFieldSort = 986)]
     public virtual string Province { get; set; }
 
     /// <summary>
     /// 城市
     /// </summary>
-    [SugarSearchValue, SugarColumn(ColumnDescription = "城市", Length = 20, IsNullable = true, CreateTableFieldSort = 987)]
+    [SugarColumn(ColumnDescription = "城市", Length = 20, IsNullable = true, CreateTableFieldSort = 987)]
     public virtual string City { get; set; }
 
     /// <summary>
     /// Ip
     /// </summary>
-    [SugarSearchValue, SugarColumn(ColumnDescription = "Ip", Length = 15, IsNullable = true, CreateTableFieldSort = 988)]
+    [SugarColumn(ColumnDescription = "Ip", Length = 15, IsNullable = true, CreateTableFieldSort = 988)]
     public virtual string Ip { get; set; }
 
     /// <summary>
@@ -96,7 +96,7 @@ public class BaseIdentityRecordEntity : IdentityKeyEntity, IIdentityRecordEntity
     /// <summary>
     /// 创建时间
     /// </summary>
-    [SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
+    [SugarSearchTime, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
     public virtual DateTime CreatedTime { get; set; }
 
     /// <summary>
