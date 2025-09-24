@@ -86,12 +86,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="param"><see cref="object"/> Url拼接的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static (T result, HttpResponseHeaders headers) Get<T>(string url, object param = null,
-        IDictionary<string, string> headers = null, int? timeout = 60) where T : class
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Get, url, param, null, headers, timeout)
+        return SendAsync<T>(HttpMethod.Get, url, param, null, headers, paramEncode, timeout)
             .Result;
     }
 
@@ -102,12 +103,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="param"><see cref="object"/> Url拼接的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static Task<(T result, HttpResponseHeaders headers)> GetAsync<T>(string url, object param = null,
-        IDictionary<string, string> headers = null, int? timeout = 60) where T : class
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Get, url, param, null, headers, timeout);
+        return SendAsync<T>(HttpMethod.Get, url, param, null, headers, paramEncode, timeout);
     }
 
     /// <summary>
@@ -116,12 +118,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="param"><see cref="object"/> Url拼接的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static (string result, HttpResponseHeaders headers) Get(string url, object param = null,
-        IDictionary<string, string> headers = null, int? timeout = 60)
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Get, url, param, null, headers, timeout)
+        return SendAsync(HttpMethod.Get, url, param, null, headers, paramEncode, timeout)
             .Result;
     }
 
@@ -131,12 +134,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="param"><see cref="object"/> Url拼接的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static Task<(string result, HttpResponseHeaders headers)> GetAsync(string url, object param = null,
-        IDictionary<string, string> headers = null, int? timeout = 60)
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Get, url, param, null, headers, timeout);
+        return SendAsync(HttpMethod.Get, url, param, null, headers, paramEncode, timeout);
     }
 
     /// <summary>
@@ -146,12 +150,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="data"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static (T result, HttpResponseHeaders headers) Post<T>(string url, object data,
-        IDictionary<string, string> headers = null, int? timeout = 60) where T : class
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Post, url, null, data, headers, timeout)
+        return SendAsync<T>(HttpMethod.Post, url, null, data, headers, paramEncode, timeout)
             .Result;
     }
 
@@ -162,12 +167,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="data"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static Task<(T result, HttpResponseHeaders headers)> PostAsync<T>(string url, object data,
-        IDictionary<string, string> headers = null, int? timeout = 60) where T : class
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Post, url, null, data, headers, timeout);
+        return SendAsync<T>(HttpMethod.Post, url, null, data, headers, paramEncode, timeout);
     }
 
     /// <summary>
@@ -176,12 +182,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="data"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static (string result, HttpResponseHeaders headers) Post(string url, object data,
-        IDictionary<string, string> headers = null, int? timeout = 60)
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Post, url, null, data, headers, timeout)
+        return SendAsync(HttpMethod.Post, url, null, data, headers, paramEncode, timeout)
             .Result;
     }
 
@@ -191,12 +198,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="data"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static Task<(string result, HttpResponseHeaders headers)> PostAsync(string url, object data,
-        IDictionary<string, string> headers = null, int? timeout = 60)
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Post, url, null, data, headers, timeout);
+        return SendAsync(HttpMethod.Post, url, null, data, headers, paramEncode, timeout);
     }
 
     /// <summary>
@@ -206,12 +214,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="data"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static (T result, HttpResponseHeaders headers) Put<T>(string url, object data,
-        IDictionary<string, string> headers = null, int? timeout = 60) where T : class
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Put, url, null, data, headers, timeout)
+        return SendAsync<T>(HttpMethod.Put, url, null, data, headers, paramEncode, timeout)
             .Result;
     }
 
@@ -222,12 +231,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="data"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static Task<(T result, HttpResponseHeaders headers)> PutAsync<T>(string url, object data,
-        IDictionary<string, string> headers = null, int? timeout = 60) where T : class
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Put, url, null, data, headers, timeout);
+        return SendAsync<T>(HttpMethod.Put, url, null, data, headers, paramEncode, timeout);
     }
 
     /// <summary>
@@ -236,12 +246,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="data"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static (string result, HttpResponseHeaders headers) Put(string url, object data,
-        IDictionary<string, string> headers = null, int? timeout = 60)
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Put, url, null, data, headers, timeout)
+        return SendAsync(HttpMethod.Put, url, null, data, headers, paramEncode, timeout)
             .Result;
     }
 
@@ -251,12 +262,13 @@ public static class RemoteRequestUtil
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="data"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static Task<(string result, HttpResponseHeaders headers)> PutAsync(string url, object data,
-        IDictionary<string, string> headers = null, int? timeout = 60)
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Put, url, null, data, headers, timeout);
+        return SendAsync(HttpMethod.Put, url, null, data, headers, paramEncode, timeout);
     }
 
     /// <summary>
@@ -265,12 +277,13 @@ public static class RemoteRequestUtil
     /// <typeparam name="T"></typeparam>
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static (T result, HttpResponseHeaders headers) Delete<T>(string url, IDictionary<string, string> headers = null,
-        int? timeout = 60) where T : class
+        bool paramEncode = false, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Delete, url, null, null, headers, timeout)
+        return SendAsync<T>(HttpMethod.Delete, url, null, null, headers, paramEncode, timeout)
             .Result;
     }
 
@@ -280,12 +293,13 @@ public static class RemoteRequestUtil
     /// <typeparam name="T"></typeparam>
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static Task<(T result, HttpResponseHeaders headers)> DeleteAsync<T>(string url,
-        IDictionary<string, string> headers = null, int? timeout = 60) where T : class
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
-        return SendAsync<T>(HttpMethod.Delete, url, null, null, headers, timeout);
+        return SendAsync<T>(HttpMethod.Delete, url, null, null, headers, paramEncode, timeout);
     }
 
     /// <summary>
@@ -293,12 +307,13 @@ public static class RemoteRequestUtil
     /// </summary>
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static (string result, HttpResponseHeaders headers) Delete(string url, IDictionary<string, string> headers = null,
-        int? timeout = 60)
+        bool paramEncode = false, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Delete, url, null, null, headers, timeout)
+        return SendAsync(HttpMethod.Delete, url, null, null, headers, paramEncode, timeout)
             .Result;
     }
 
@@ -307,12 +322,13 @@ public static class RemoteRequestUtil
     /// </summary>
     /// <param name="url"><see cref="string"/> 请求的Url</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static Task<(string result, HttpResponseHeaders headers)> DeleteAsync(string url,
-        IDictionary<string, string> headers = null, int? timeout = 60)
+        IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
-        return SendAsync(HttpMethod.Delete, url, null, null, headers, timeout);
+        return SendAsync(HttpMethod.Delete, url, null, null, headers, paramEncode, timeout);
     }
 
     /// <summary>
@@ -324,12 +340,15 @@ public static class RemoteRequestUtil
     /// <param name="urlParam"><see cref="object"/> Url拼接的参数</param>
     /// <param name="bodyData"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static async Task<(T result, HttpResponseHeaders headers)> SendAsync<T>(HttpMethod httpMethod, string url,
-        object urlParam = null, object bodyData = null, IDictionary<string, string> headers = null, int? timeout = 60)
+        object urlParam = null, object bodyData = null, IDictionary<string, string> headers = null, bool paramEncode = false,
+        int? timeout = 60)
     {
-        var (responseContent, responseHeaders) = await SendAsync(httpMethod, url, urlParam, bodyData, headers, timeout);
+        var (responseContent, responseHeaders) =
+            await SendAsync(httpMethod, url, urlParam, bodyData, headers, paramEncode, timeout);
 
         return (JsonSerializer.Deserialize<T>(responseContent, _defaultJsonSerializerOptions), responseHeaders);
     }
@@ -342,10 +361,12 @@ public static class RemoteRequestUtil
     /// <param name="urlParam"><see cref="object"/> Url拼接的参数</param>
     /// <param name="bodyData"><see cref="object"/> 写入请求Body中的参数</param>
     /// <param name="headers"><see cref="IDictionary{TKey,TValue}"/> 请求头部信息</param>
+    /// <param name="paramEncode"><see cref="bool"/> Url参数是否进行URL编码，默认 false，null则不超时</param>
     /// <param name="timeout"><see cref="int"/> 请求超时时间，默认60秒，null则不超时</param>
     /// <returns></returns>
     public static async Task<(string result, HttpResponseHeaders headers)> SendAsync(HttpMethod httpMethod, string url,
-        object urlParam = null, object bodyData = null, IDictionary<string, string> headers = null, int? timeout = 60)
+        object urlParam = null, object bodyData = null, IDictionary<string, string> headers = null, bool paramEncode = false,
+        int? timeout = 60)
     {
         headers ??= new Dictionary<string, string>();
 
@@ -378,9 +399,11 @@ public static class RemoteRequestUtil
                         // 转义
                         //query[param.Key.UrlEncode()] = param.Value.ToString()
                         //    .UrlEncode();
-                        query[param.Key] = param.Value.ToString()
-                            .UrlEncode();
-                        //query[param.Key] = param.Value.ToString();
+                        if (paramEncode)
+                            query[param.Key] = param.Value.ToString()
+                                .UrlEncode();
+                        else
+                            query[param.Key] = param.Value.ToString();
                     }
                 }
             }
@@ -392,8 +415,10 @@ public static class RemoteRequestUtil
                     {
                         // 转义
                         //query[param.Key.UrlEncode()] = param.Value.UrlEncode();
-                        query[param.Key] = param.Value.UrlEncode();
-                        //query[param.Key] = param.Value
+                        if (paramEncode)
+                            query[param.Key] = param.Value.UrlEncode();
+                        else
+                            query[param.Key] = param.Value;
                     }
                 }
             }
@@ -406,9 +431,11 @@ public static class RemoteRequestUtil
                         // 转义
                         //query[param.Key.UrlEncode()] = param.Value?.ToString()
                         //    .UrlEncode();
-                        query[param.Key] = param.Value?.ToString()
-                            .UrlEncode();
-                        //query[param.Key] = param.Value.ToString();
+                        if (paramEncode)
+                            query[param.Key] = param.Value.ToString()
+                                .UrlEncode();
+                        else
+                            query[param.Key] = param.Value.ToString();
                     }
                 }
             }
