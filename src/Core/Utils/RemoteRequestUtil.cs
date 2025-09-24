@@ -376,7 +376,9 @@ public static class RemoteRequestUtil
                     if (param.Value != null)
                     {
                         // 转义
-                        query[param.Key.UrlEncode()] = param.Value.ToString()
+                        //query[param.Key.UrlEncode()] = param.Value.ToString()
+                        //    .UrlEncode();
+                        query[param.Key] = param.Value.ToString()
                             .UrlEncode();
                         //query[param.Key] = param.Value.ToString();
                     }
@@ -389,7 +391,8 @@ public static class RemoteRequestUtil
                     if (!string.IsNullOrEmpty(param.Value))
                     {
                         // 转义
-                        query[param.Key.UrlEncode()] = param.Value.UrlEncode();
+                        //query[param.Key.UrlEncode()] = param.Value.UrlEncode();
+                        query[param.Key] = param.Value.UrlEncode();
                         //query[param.Key] = param.Value
                     }
                 }
@@ -401,7 +404,9 @@ public static class RemoteRequestUtil
                     if (param.Value != null)
                     {
                         // 转义
-                        query[param.Key.UrlEncode()] = param.Value?.ToString()
+                        //query[param.Key.UrlEncode()] = param.Value?.ToString()
+                        //    .UrlEncode();
+                        query[param.Key] = param.Value?.ToString()
                             .UrlEncode();
                         //query[param.Key] = param.Value.ToString();
                     }
@@ -431,8 +436,8 @@ public static class RemoteRequestUtil
         foreach (var header in headers)
         {
             // 转义
-            request.Headers.TryAddWithoutValidation(header.Key.UrlEncode(), header.Value.UrlEncode());
-            //request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+            //request.Headers.TryAddWithoutValidation(header.Key.UrlEncode(), header.Value.UrlEncode());
+            request.Headers.TryAddWithoutValidation(header.Key, header.Value);
         }
 
         // Body 参数处理
