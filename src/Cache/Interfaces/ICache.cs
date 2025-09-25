@@ -38,6 +38,11 @@ public interface ICache : ICache<DefaultCacheContextLocator>
 public interface ICache<out CacheContextLocator> where CacheContextLocator : ICacheContextLocator, new()
 {
     /// <summary>
+    /// 前缀
+    /// </summary>
+    public string Prefix { get; }
+
+    /// <summary>
     /// CSRedis 缓存客户端
     /// </summary>
     CSRedisClient Client { get; }

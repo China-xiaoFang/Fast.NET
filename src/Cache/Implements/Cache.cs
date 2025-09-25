@@ -46,6 +46,11 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     internal readonly IDisposable _optionsReloadToken;
 
     /// <summary>
+    /// 前缀
+    /// </summary>
+    public string Prefix { get; private set; }
+
+    /// <summary>
     /// CSRedis 缓存客户端
     /// </summary>
     public CSRedisClient Client { get; private set; }
@@ -81,6 +86,8 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             // 组装连接字符串
             connectionStr =
                 $"{redisSettings.ServiceIp}:{redisSettings.Port ?? 6379},password={redisSettings.DbPwd},defaultDatabase={redisSettings.DbName},prefix={redisSettings.Prefix},poolsize={redisSettings.Poolsize},ssl={(redisSettings.SSL == true ? "true" : "false")}";
+
+            Prefix = redisSettings.Prefix;
         }
         else
         {
@@ -95,6 +102,8 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             // 组装连接字符串
             connectionStr =
                 $"{redisServiceSettings.ServiceIp ?? redisSettings.ServiceIp}:{redisServiceSettings.Port ?? redisSettings.Port ?? 6379},password={redisServiceSettings.DbPwd ?? redisSettings.DbPwd},defaultDatabase={redisServiceSettings.DbName ?? redisSettings.DbName},prefix={redisServiceSettings.Prefix ?? redisSettings.Prefix},poolsize={redisServiceSettings.Poolsize ?? redisSettings.Poolsize},ssl={((redisServiceSettings.SSL ?? redisSettings.SSL) == true ? "true" : "false")}";
+
+            Prefix = redisServiceSettings.Prefix;
         }
 
         Client?.Dispose();
@@ -144,6 +153,12 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             pattern += "*";
         }
 
+        // 处理前缀，这里 Scan 扫描不会默认带前缀
+        if (!string.IsNullOrWhiteSpace(Prefix))
+        {
+            pattern = Prefix + pattern;
+        }
+
         var cursor = 0L;
 
         do
@@ -159,7 +174,15 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             cursor = keys.Cursor;
             if (keys.Items.Length > 0)
             {
-                Client.Del(keys.Items);
+                var keyItems = keys.Items;
+                // 处理前缀，这里 Del 删除又会默认带前缀
+                if (!string.IsNullOrWhiteSpace(Prefix))
+                {
+                    keyItems = keys.Items.Select(sl => sl[Prefix.Length..])
+                        .ToArray();
+                }
+
+                Client.Del(keyItems);
             }
         } while (cursor != 0);
 
@@ -183,6 +206,12 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             pattern += "*";
         }
 
+        // 处理前缀，这里 ScanAsync 扫描不会默认带前缀
+        if (!string.IsNullOrWhiteSpace(Prefix))
+        {
+            pattern = Prefix + pattern;
+        }
+
         var cursor = 0L;
 
         do
@@ -198,7 +227,15 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             cursor = keys.Cursor;
             if (keys.Items.Length > 0)
             {
-                return await Client.DelAsync(keys.Items);
+                var keyItems = keys.Items;
+                // 处理前缀，这里 DelAsync 删除又会默认带前缀
+                if (!string.IsNullOrWhiteSpace(Prefix))
+                {
+                    keyItems = keys.Items.Select(sl => sl[Prefix.Length..])
+                        .ToArray();
+                }
+
+                return await Client.DelAsync(keyItems);
             }
         } while (cursor != 0);
 
