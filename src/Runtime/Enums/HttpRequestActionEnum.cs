@@ -122,6 +122,12 @@ public enum HttpRequestActionEnum
     Import = 91,
 
     /// <summary>
+    /// 回调
+    /// </summary>
+    [Description("回调")]
+    Callback = 101,
+
+    /// <summary>
     /// 其他
     /// </summary>
     [Description("其他")]

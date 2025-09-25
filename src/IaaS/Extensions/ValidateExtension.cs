@@ -320,11 +320,10 @@ public static class ValidateExtension
     /// <returns>返回一个bool类型的值</returns>
     public static bool IsIdCard18(this string str)
     {
-        if (long.TryParse(str.Remove(17), out var n) == false
+        if (!long.TryParse(str.Remove(17), out var n)
             || n < Math.Pow(10, 16)
-            || long.TryParse(str.Replace('x', '0')
-                .Replace('X', '0'), out _)
-            == false)
+            || !long.TryParse(str.Replace('x', '0')
+                .Replace('X', '0'), out _))
         {
             return false; //数字验证
         }
@@ -339,7 +338,7 @@ public static class ValidateExtension
         var birth = str.Substring(6, 8)
             .Insert(6, "-")
             .Insert(4, "-");
-        if (DateTime.TryParse(birth, out _) == false)
+        if (!DateTime.TryParse(birth, out _))
         {
             return false; //生日验证
         }
@@ -369,7 +368,7 @@ public static class ValidateExtension
     /// <returns>返回一个bool类型的值</returns>
     public static bool IsIdCard15(this string str)
     {
-        if (long.TryParse(str, out var n) == false || n < Math.Pow(10, 14))
+        if (!long.TryParse(str, out var n) || n < Math.Pow(10, 14))
         {
             return false; //数字验证
         }
