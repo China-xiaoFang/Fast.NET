@@ -292,9 +292,8 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 }
 
                 // 2. 如果方法自定义路由模板且以 `/` 开头，则跳过
-                //if (!string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Template)
-                //    && selectorModel.AttributeRouteModel.Template.StartsWith("/"))
-                if (!string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Template))
+                if (!string.IsNullOrWhiteSpace(selectorModel.AttributeRouteModel.Template)
+                    && selectorModel.AttributeRouteModel.Template.StartsWith("/"))
                     continue;
             }
 
