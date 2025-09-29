@@ -20,6 +20,7 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
 using Fast.Runtime;
 using Microsoft.AspNetCore.Http;
 using SqlSugar;
@@ -96,8 +97,8 @@ public class BaseSnowflakeRecordEntity : SnowflakeKeyEntity, IIdentityRecordEnti
     /// <summary>
     /// 创建时间
     /// </summary>
-    [SugarSearchTime, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
-    public virtual DateTime CreatedTime { get; set; }
+    [Required, SugarSearchTime, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
+    public virtual DateTime? CreatedTime { get; set; }
 
     /// <summary>
     /// 记录表创建

@@ -57,10 +57,10 @@ internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISql
         SupportsRowVersion = typeof(IUpdateVersion).IsAssignableFrom(entityType);
 
         // 是否分表，判断是否存在 SplitTableAttribute 特性
-        IsSplitTable = entityType.GetCustomAttribute<SplitTableAttribute>() != null;
+        IsSplitTable = entityType.GetCustomAttribute<SplitTableAttribute>(true) != null;
 
         // 获取当前实体类头部的 SugarDbTypeAttribute 特性
-        var sugarDbTypeAttribute = entityType.GetCustomAttribute<SugarDbTypeAttribute>();
+        var sugarDbTypeAttribute = entityType.GetCustomAttribute<SugarDbTypeAttribute>(true);
 
         // 根据 TEntity 加载对应的数据库连接字符串
         var sqlSugarEntityHandler = _serviceProvider.GetService<ISqlSugarEntityHandler>();

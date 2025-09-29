@@ -41,7 +41,7 @@ public static class SqlSugarExtension
     /// <returns></returns>
     public static string GetSugarTableName(this Type type)
     {
-        var sugarTable = type.GetCustomAttribute<SugarTable>();
+        var sugarTable = type.GetCustomAttribute<SugarTable>(true);
         if (sugarTable != null && !string.IsNullOrEmpty(sugarTable.TableName))
         {
             return sugarTable.TableName;
@@ -57,7 +57,7 @@ public static class SqlSugarExtension
     /// <returns></returns>
     public static SugarTable GetSugarTableAttribute(this Type type)
     {
-        return type.GetCustomAttribute<SugarTable>();
+        return type.GetCustomAttribute<SugarTable>(true);
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public static class SqlSugarExtension
                 }
 
                 // 获取Sugar列特性
-                var sugarColumn = property.GetCustomAttribute<SugarColumn>(false);
+                var sugarColumn = property.GetCustomAttribute<SugarColumn>(true);
 
                 // 判断忽略列
                 if (sugarColumn?.IsIgnore == true)

@@ -56,9 +56,9 @@ public sealed class SqlSugarContext
             {
                 var sqlSugarTableAttribute = sl.GetSugarTableAttribute();
 
-                var splitTableAttribute = sl.GetCustomAttribute<SplitTableAttribute>();
+                var splitTableAttribute = sl.GetCustomAttribute<SplitTableAttribute>(true);
 
-                var sugarDbTypeAttribute = sl.GetCustomAttribute<SugarDbTypeAttribute>();
+                var sugarDbTypeAttribute = sl.GetCustomAttribute<SugarDbTypeAttribute>(true);
 
                 return new SqlSugarEntityInfo
                 {

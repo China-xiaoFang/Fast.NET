@@ -233,9 +233,9 @@ public static class SqlSugarPageExtension
         var needProperties = properties.Select(sl => new
             {
                 propertyInfo = sl,
-                sugarColumn = sl.GetCustomAttribute<SugarColumn>(),
-                sugarSearchValueAttribute = sl.GetCustomAttribute<SugarSearchValueAttribute>(),
-                sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>()
+                sugarColumn = sl.GetCustomAttribute<SugarColumn>(true),
+                sugarSearchValueAttribute = sl.GetCustomAttribute<SugarSearchValueAttribute>(true),
+                sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>(true)
             })
             .ToList();
 
@@ -400,7 +400,7 @@ public static class SqlSugarPageExtension
             }
 
             // 获取属性列的 SugarColumn 特性
-            var sugarColumn = propertyInfo.GetCustomAttribute<SugarColumn>();
+            var sugarColumn = propertyInfo.GetCustomAttribute<SugarColumn>(true);
 
             if (sugarColumn?.IsIgnore == true)
             {
@@ -409,7 +409,7 @@ public static class SqlSugarPageExtension
             }
 
             // 获取属性列的 Navigate 特性
-            if (propertyInfo.GetCustomAttribute<Navigate>() != null)
+            if (propertyInfo.GetCustomAttribute<Navigate>(true) != null)
             {
                 // 如果存在特性，则代表是一个导航属性，不能进行搜索
                 throw new SqlSugarException($"类型 [{type.Name}] 中的搜索字段 [{searchInput.ChField}] 是一个导航属性！");
@@ -477,7 +477,7 @@ public static class SqlSugarPageExtension
             }
 
             // 获取属性列的 SugarColumn 特性
-            var sugarColumn = propertyInfo.GetCustomAttribute<SugarColumn>();
+            var sugarColumn = propertyInfo.GetCustomAttribute<SugarColumn>(true);
 
             if (sugarColumn?.IsIgnore == true)
             {
@@ -486,7 +486,7 @@ public static class SqlSugarPageExtension
             }
 
             // 获取属性列的 Navigate 特性
-            if (propertyInfo.GetCustomAttribute<Navigate>() != null)
+            if (propertyInfo.GetCustomAttribute<Navigate>(true) != null)
             {
                 // 如果存在特性，则代表是一个导航属性，不能进行排序
                 throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 是一个导航属性！");

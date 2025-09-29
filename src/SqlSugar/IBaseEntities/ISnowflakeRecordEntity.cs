@@ -84,7 +84,7 @@ public interface ISnowflakeRecordEntity : IDatabaseEntity
     /// <summary>
     /// 创建时间
     /// </summary>
-    DateTime CreatedTime { get; set; }
+    DateTime? CreatedTime { get; set; }
 
     /// <summary>
     /// 记录表创建
