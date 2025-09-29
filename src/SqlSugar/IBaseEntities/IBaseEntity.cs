@@ -53,7 +53,7 @@ public interface IBaseEntity : IDatabaseEntity
     /// <summary>
     /// 创建时间
     /// </summary>
-    DateTime CreatedTime { get; set; }
+    DateTime? CreatedTime { get; set; }
 
     /// <summary>
     /// 更新者用户Id

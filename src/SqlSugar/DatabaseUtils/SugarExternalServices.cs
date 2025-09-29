@@ -48,7 +48,7 @@ internal partial class DatabaseUtil
                 entityInfo.IsCreateTableFiledSort = true;
 
                 // Table Name 配置，如果使用SqlSugar的规范，其实这里是不会走的
-                var tableAttribute = type.GetCustomAttribute<TableAttribute>();
+                var tableAttribute = type.GetCustomAttribute<TableAttribute>(true);
                 if (tableAttribute != null)
                 {
                     entityInfo.DbTableName = tableAttribute.Name;
@@ -57,14 +57,14 @@ internal partial class DatabaseUtil
             EntityService = (propertyInfo, columnInfo) =>
             {
                 // 列名配置，如果使用SqlSugar的规范，其实这里是不会走的
-                var columnAttribute = propertyInfo.GetCustomAttribute<ColumnAttribute>();
+                var columnAttribute = propertyInfo.GetCustomAttribute<ColumnAttribute>(true);
                 if (columnAttribute != null)
                 {
                     columnInfo.DbColumnName = columnAttribute.Name;
                 }
 
                 // 主键配置，如果使用SqlSugar的规范，其实这里是不会走的
-                var keyAttribute = propertyInfo.GetCustomAttribute<KeyAttribute>();
+                var keyAttribute = propertyInfo.GetCustomAttribute<KeyAttribute>(true);
                 if (keyAttribute != null)
                 {
                     columnInfo.IsPrimarykey = true;
@@ -93,7 +93,7 @@ internal partial class DatabaseUtil
                     }
 
                     // 非空类型配置，主要针对 string 类型的必填验证
-                    var requiredAttribute = propertyInfo.GetCustomAttribute<RequiredAttribute>();
+                    var requiredAttribute = propertyInfo.GetCustomAttribute<RequiredAttribute>(true);
                     if (requiredAttribute != null)
                     {
                         columnInfo.IsNullable = false;
