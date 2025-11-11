@@ -37,7 +37,6 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
 {
     /// <summary>Makes a decision if authorization is allowed.</summary>
     /// <param name="context">The authorization information.</param>
-    /// <exception cref="ArgumentException"></exception>
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
         var filterContext = context.Resource as AuthorizationFilterContext;

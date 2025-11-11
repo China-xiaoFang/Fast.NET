@@ -34,15 +34,22 @@ public class TimeJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
     /// 日期格式化
-    /// 默认：HH:mm:ss
+    /// <para>默认：HH:mm:ss</para>
     /// </summary>
     public string Format { get; set; }
 
+    /// <summary>
+    /// <see cref="TimeJsonConverter"/> Datetime 类型Json返回时间处理
+    /// </summary>
     public TimeJsonConverter()
     {
         Format = "HH:mm:ss";
     }
 
+    /// <summary>
+    /// <see cref="TimeJsonConverter"/> Datetime 类型Json返回时间处理
+    /// </summary>
+    /// <param name="format"><see cref="string"/> 日期格式化</param>
     public TimeJsonConverter(string format)
     {
         Format = format;
@@ -57,7 +64,7 @@ public class TimeJsonConverter : JsonConverter<DateTime>
     {
         var value = reader.GetString()!;
 
-        if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
+        if (value.Contains('-') || value.Contains('/') || value.Contains(':'))
         {
             var result = DateTime.Parse(value);
 
@@ -108,15 +115,22 @@ public class NullableTimeJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
     /// 日期格式化
-    /// 默认：HH:mm:ss
+    /// <para>默认：HH:mm:ss</para>
     /// </summary>
     public string Format { get; set; }
 
+    /// <summary>
+    /// <see cref="NullableTimeJsonConverter"/> Datetime? 类型Json返回时间处理
+    /// </summary>
     public NullableTimeJsonConverter()
     {
         Format = "HH:mm:ss";
     }
 
+    /// <summary>
+    /// <see cref="NullableTimeJsonConverter"/> Datetime? 类型Json返回时间处理
+    /// </summary>
+    /// <param name="format"><see cref="string"/> 日期格式化</param>
     public NullableTimeJsonConverter(string format)
     {
         Format = format;
@@ -136,7 +150,7 @@ public class NullableTimeJsonConverter : JsonConverter<DateTime?>
             return null;
         }
 
-        if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
+        if (value.Contains('-') || value.Contains('/') || value.Contains(':'))
         {
             var result = DateTime.Parse(value);
 

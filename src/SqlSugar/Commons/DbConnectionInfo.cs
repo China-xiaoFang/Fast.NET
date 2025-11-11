@@ -79,7 +79,6 @@ public class DbConnectionInfo : IPostConfigure
     /// <summary>
     /// 后期配置
     /// </summary>
-    /// <exception cref="NotImplementedException"></exception>
     public virtual void PostConfigure()
     {
         ServiceIp ??= "127.0.0.1";

@@ -48,30 +48,21 @@ public sealed class RetryUtil
         if (action == null)
             throw new ArgumentNullException(nameof(action));
 
-        if (fallbackPolicy == null)
-        {
-            InvokeAsync(async () =>
-                {
-                    action();
-                    await Task.CompletedTask;
-                }, numRetries, retryTimeout, finalThrow, exceptionTypes, null, retryAction)
-                .GetAwaiter()
-                .GetResult();
-        }
-        else
-        {
-            InvokeAsync(async () =>
-                {
-                    action();
-                    await Task.CompletedTask;
-                }, numRetries, retryTimeout, finalThrow, exceptionTypes, async ex =>
-                {
-                    fallbackPolicy.Invoke(ex);
-                    await Task.CompletedTask;
-                }, retryAction)
-                .GetAwaiter()
-                .GetResult();
-        }
+        InvokeAsync(async () =>
+            {
+                action();
+                await Task.CompletedTask;
+            }, numRetries, retryTimeout, finalThrow, exceptionTypes, async ex =>
+            {
+                fallbackPolicy?.Invoke(ex);
+                await Task.CompletedTask;
+            }, async (total, times) =>
+            {
+                retryAction?.Invoke(total, times);
+                await Task.CompletedTask;
+            })
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -86,7 +77,7 @@ public sealed class RetryUtil
     /// <param name="retryAction">重试时调用方法</param>
     /// <returns><see cref="Task"/></returns>
     public static async Task InvokeAsync(Func<Task> action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
-        Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Action<int, int> retryAction = null)
+        Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Func<int, int, Task> retryAction = null)
     {
         if (action == null)
             throw new ArgumentNullException(nameof(action));

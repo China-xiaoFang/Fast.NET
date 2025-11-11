@@ -26,9 +26,9 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DatabaseUtil"/> 连接字符串工具类
+/// <see cref="SqlSugarDatabaseUtil"/> 连接字符串工具类
 /// </summary>
-internal partial class DatabaseUtil
+public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
     /// 得到数据库连接字符串
@@ -36,7 +36,7 @@ internal partial class DatabaseUtil
     /// <param name="dbType"><see cref="DbType"/> 数据库类型</param>
     /// <param name="dbInfo"><see cref="DbConnectionInfo"/> 数据库连接信息</param>
     /// <returns></returns>
-    internal static string GetConnectionStr(DbType dbType, DbConnectionInfo dbInfo)
+    public static string GetConnectionStr(DbType dbType, DbConnectionInfo dbInfo)
     {
         string connectionStr;
         if (!string.IsNullOrWhiteSpace(dbInfo.CustomConnectionStr))

@@ -30,7 +30,7 @@ namespace Fast.SqlSugar;
 /// <see cref="BaseEntity"/> Entity基类
 /// </summary>
 [SuppressSniffer]
-public class BaseEntity : SnowflakeKeyEntity, IBaseEntity, IDeletedEntity
+public class BaseEntity : SnowflakeKeyEntity
 {
     /// <summary>
     /// 部门Id
@@ -79,10 +79,4 @@ public class BaseEntity : SnowflakeKeyEntity, IBaseEntity, IDeletedEntity
     /// </summary>
     [SugarColumn(ColumnDescription = "更新时间", CreateTableFieldSort = 996)]
     public virtual DateTime? UpdatedTime { get; set; }
-
-    /// <summary>
-    /// 软删除标识
-    /// </summary>
-    [SugarColumn(ColumnDescription = "软删除标识", CreateTableFieldSort = 999)]
-    public virtual bool IsDeleted { get; set; }
 }

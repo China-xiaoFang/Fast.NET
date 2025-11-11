@@ -34,15 +34,22 @@ public class DateJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
     /// 日期格式化
-    /// 默认：yyyy-MM-dd
+    /// <para>默认：yyyy-MM-dd</para>
     /// </summary>
     public string Format { get; set; }
 
+    /// <summary>
+    /// <see cref="DateJsonConverter"/> Datetime 类型Json返回日期处理
+    /// </summary>
     public DateJsonConverter()
     {
         Format = "yyyy-MM-dd";
     }
 
+    /// <summary>
+    /// <see cref="DateJsonConverter"/> Datetime 类型Json返回日期处理
+    /// </summary>
+    /// <param name="format"><see cref="string"/> 日期格式化</param>
     public DateJsonConverter(string format)
     {
         Format = format;
@@ -57,7 +64,7 @@ public class DateJsonConverter : JsonConverter<DateTime>
     {
         var value = reader.GetString()!;
 
-        if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
+        if (value.Contains('-') || value.Contains('/') || value.Contains(':'))
         {
             var result = DateTime.Parse(value);
 
@@ -107,15 +114,22 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
     /// 日期格式化
-    /// 默认：yyyy-MM-dd
+    /// <para>默认：yyyy-MM-dd</para>
     /// </summary>
     public string Format { get; set; }
 
+    /// <summary>
+    /// <see cref="NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+    /// </summary>
     public NullableDateJsonConverter()
     {
         Format = "yyyy-MM-dd";
     }
 
+    /// <summary>
+    /// <see cref="NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+    /// </summary>
+    /// <param name="format"><see cref="string"/> 日期格式化</param>
     public NullableDateJsonConverter(string format)
     {
         Format = format;
@@ -135,7 +149,7 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
             return null;
         }
 
-        if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
+        if (value.Contains('-') || value.Contains('/') || value.Contains(':'))
         {
             var result = DateTime.Parse(value);
 

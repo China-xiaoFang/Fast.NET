@@ -206,6 +206,30 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
+    /// 分页转换类型
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="pagedResult"><see cref="PagedResult{TResult}"/> 源类型</param>
+    /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
+    /// <returns></returns>
+    public static PagedResult<TResult> ToPagedData<TEntity, TResult>(this PagedResult<TEntity> pagedResult,
+        Func<TEntity, TResult> selectExpression)
+    {
+        return new PagedResult<TResult>
+        {
+            PageIndex = pagedResult.PageIndex,
+            PageSize = pagedResult.PageSize,
+            Rows = pagedResult.Rows.Select(selectExpression)
+                .ToList(),
+            TotalRows = pagedResult.TotalRows,
+            TotalPage = pagedResult.TotalPage,
+            HasNextPages = pagedResult.HasNextPages,
+            HasPrevPages = pagedResult.HasPrevPages
+        };
+    }
+
+    /// <summary>
     /// 分页搜索
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>

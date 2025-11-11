@@ -59,8 +59,13 @@ public static partial class OpenApiUtil
                 if (baseTypeMapping.Value != null)
                     refKey = baseTypeMapping.Value;
                 else if (!Penetrates.OpenApiSettings.ImportTypeMappings.Any(a => refKey.StartsWith(a.Name)))
-                    // 最后一个不是基类则添加引用
-                    refSchemas?.Add(refKey);
+                {
+                    if (!string.IsNullOrWhiteSpace(refKey))
+                    {
+                        // 最后一个不是基类则添加引用
+                        refSchemas?.Add(refKey);
+                    }
+                }
 
                 // 填充字符串
                 refKey = string.Format(typeMapping.MappingName, refKey);
@@ -76,7 +81,7 @@ public static partial class OpenApiUtil
             refSchemas?.Add(refKey);
         }
 
-        return refKey;
+        return string.IsNullOrWhiteSpace(refKey) ? null : refKey;
     }
 
     /// <summary>
@@ -116,9 +121,12 @@ public static partial class OpenApiUtil
                 .ToList();
             foreach (var item in schemaMappingGroup)
             {
-                schemaImport.AppendLine($$"""
-                                          import { {{string.Join(", ", item.Select(sl => sl.Name))}} } from "{{item.Key}}";
-                                          """);
+                if (!string.IsNullOrWhiteSpace(item.Key))
+                {
+                    schemaImport.AppendLine($$"""
+                                              import { {{string.Join(", ", item.Select(sl => sl.Name))}} } from "{{item.Key}}";
+                                              """);
+                }
             }
         }
 
@@ -326,9 +334,12 @@ public static partial class OpenApiUtil
                     .ToList();
                 foreach (var item in schemaMappingGroup)
                 {
-                    schemaImport.AppendLine($$"""
-                                              import { {{string.Join(", ", item.Select(sl => sl.Name))}} } from "{{item.Key}}";
-                                              """);
+                    if (!string.IsNullOrWhiteSpace(item.Key))
+                    {
+                        schemaImport.AppendLine($$"""
+                                                  import { {{string.Join(", ", item.Select(sl => sl.Name))}} } from "{{item.Key}}";
+                                                  """);
+                    }
                 }
             }
 

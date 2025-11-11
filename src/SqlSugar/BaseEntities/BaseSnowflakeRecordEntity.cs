@@ -37,19 +37,19 @@ public class BaseSnowflakeRecordEntity : SnowflakeKeyEntity, IIdentityRecordEnti
     /// <summary>
     /// 设备
     /// </summary>
-    [SugarColumn(ColumnDescription = "设备", Length = 100, IsNullable = true, CreateTableFieldSort = 983)]
+    [SugarColumn(ColumnDescription = "设备", Length = 50, IsNullable = true, CreateTableFieldSort = 983)]
     public virtual string Device { get; set; }
 
     /// <summary>
     /// 操作系统（版本）
     /// </summary>
-    [SugarColumn(ColumnDescription = "操作系统（版本）", Length = 100, IsNullable = true, CreateTableFieldSort = 984)]
+    [SugarColumn(ColumnDescription = "操作系统（版本）", Length = 50, IsNullable = true, CreateTableFieldSort = 984)]
     public virtual string OS { get; set; }
 
     /// <summary>
     /// 浏览器（版本）
     /// </summary>
-    [SugarColumn(ColumnDescription = "浏览器（版本）", Length = 100, IsNullable = true, CreateTableFieldSort = 985)]
+    [SugarColumn(ColumnDescription = "浏览器（版本）", Length = 50, IsNullable = true, CreateTableFieldSort = 985)]
     public virtual string Browser { get; set; }
 
     /// <summary>

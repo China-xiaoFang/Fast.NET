@@ -66,19 +66,23 @@ public class OpenApiSettingsOptions : IPostConfigure
         [
             new OpenApiImportSchemaMappingSettingsOptions
             {
-                Name = "ElSelectorOutput", WebImportPath = "fast-element-plus", MobileImportPath = "fast-element-app"
+                Name = "ElSelectorOutput", WebImportPath = "fast-element-plus", MobileImportPath = ""
             },
             new OpenApiImportSchemaMappingSettingsOptions
             {
-                Name = "ElTreeOutput", WebImportPath = "fast-element-plus", MobileImportPath = "fast-element-app"
+                Name = "ElTreeOutput", WebImportPath = "fast-element-plus", MobileImportPath = ""
             },
             new OpenApiImportSchemaMappingSettingsOptions
             {
-                Name = "PagedInput", WebImportPath = "fast-element-plus", MobileImportPath = "fast-element-app"
+                Name = "FaTableEnumColumnCtx", WebImportPath = "fast-element-plus", MobileImportPath = ""
             },
             new OpenApiImportSchemaMappingSettingsOptions
             {
-                Name = "PagedResult", WebImportPath = "fast-element-plus", MobileImportPath = "fast-element-app"
+                Name = "PagedInput", WebImportPath = "fast-element-plus", MobileImportPath = ""
+            },
+            new OpenApiImportSchemaMappingSettingsOptions
+            {
+                Name = "PagedResult", WebImportPath = "fast-element-plus", MobileImportPath = ""
             }
         ];
         ImportTypeMappings ??=
@@ -182,7 +186,12 @@ public class OpenApiSettingsOptions : IPostConfigure
             {
                 Name = "IDictionary_StringString", MappingName = "Record<string, string>"
             },
-            new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_StringString", MappingName = "Record<string, string>"}
+            new OpenApiImportTypeMappingSettingsOptions
+            {
+                Name = "Dictionary_StringString", MappingName = "Record<string, string>"
+            },
+            new OpenApiImportTypeMappingSettingsOptions {Name = "IDictionary_StringList_", MappingName = "Record<string, {0}[]>"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_StringList_", MappingName = "Record<string, {0}[]>"}
         ];
         IgnoreSchemas ??= [];
         PagedSchemaProperties ??=

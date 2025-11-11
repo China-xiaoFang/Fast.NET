@@ -30,7 +30,7 @@ namespace System;
 /// </summary>
 [Flags]
 [FastEnum("App运行环境枚举")]
-public enum AppEnvironmentEnum
+public enum AppEnvironmentEnum : long
 {
     /// <summary>
     /// Web
@@ -81,40 +81,40 @@ public enum AppEnvironmentEnum
     WeChatMiniProgram = 256,
 
     /// <summary>
-    /// QQ小程序
+    /// 微信公众号
     /// </summary>
-    [Description("QQ小程序")]
-    QQMiniProgram = 512,
+    [Description("微信公众号")]
+    WeChatOfficialAccount = 512,
 
     /// <summary>
-    /// 抖音小程序
+    /// 微信服务号
     /// </summary>
-    [Description("抖音小程序")]
-    TiktokMiniProgram = 1024,
+    [Description("微信服务号")]
+    WeChatServiceAccount = 1024,
 
     /// <summary>
-    /// 百度小程序
+    /// 微信开放平台
     /// </summary>
-    [Description("百度小程序")]
-    BaiduMiniProgram = 2048,
+    [Description("微信开放平台")]
+    WeChatOpenPlatform = 2048,
+
+    /// <summary>
+    /// 企业微信
+    /// </summary>
+    [Description("企业微信")]
+    WorkWeChat = 4096,
 
     /// <summary>
     /// 支付宝小程序
     /// </summary>
     [Description("支付宝小程序")]
-    AlipayMiniProgram = 4096,
+    AlipayMiniProgram = 8192,
 
     /// <summary>
-    /// 快手小程序
+    /// 抖音小程序
     /// </summary>
-    [Description("快手小程序")]
-    KuaishouMiniProgram = 8192,
-
-    /// <summary>
-    /// 飞书小程序
-    /// </summary>
-    [Description("飞书小程序")]
-    FeishuMiniProgram = 16384,
+    [Description("抖音小程序")]
+    TiktokMiniProgram = 16384,
 
     /// <summary>
     /// 钉钉小程序
@@ -123,28 +123,52 @@ public enum AppEnvironmentEnum
     DingTalkMiniProgram = 32768,
 
     /// <summary>
-    /// 京东小程序
+    /// 飞书小程序
     /// </summary>
-    [Description("京东小程序")]
-    JDMiniProgram = 65536,
+    [Description("飞书小程序")]
+    FeiShuMiniProgram = 65536,
+
+    /// <summary>
+    /// QQ小程序
+    /// </summary>
+    [Description("QQ小程序")]
+    QQMiniProgram = 131072,
+
+    /// <summary>
+    /// 百度小程序
+    /// </summary>
+    [Description("百度小程序")]
+    BaiduMiniProgram = 262144,
+
+    /// <summary>
+    /// 快手小程序
+    /// </summary>
+    [Description("快手小程序")]
+    KuaiShouMiniProgram = 524288,
 
     /// <summary>
     /// 小红书小程序
     /// </summary>
     [Description("小红书小程序")]
-    XiaohongshuMiniProgram = 131072,
+    XiaoHongShuMiniProgram = 1048576,
+
+    /// <summary>
+    /// 京东小程序
+    /// </summary>
+    [Description("京东小程序")]
+    JDMiniProgram = 2097152,
 
     /// <summary>
     /// Api
     /// </summary>
     [Description("Api")]
-    Api = 16777216,
+    Api = 2147483648,
 
     /// <summary>
     /// 其他
     /// </summary>
     [Description("其他")]
-    Other = 1073741824,
+    Other = 4294967296,
 
     /// <summary>
     /// 桌面端
@@ -170,13 +194,13 @@ public enum AppEnvironmentEnum
     [Description("小程序")]
     MiniProgram = QuickApp
                   | WeChatMiniProgram
-                  | QQMiniProgram
-                  | TiktokMiniProgram
-                  | BaiduMiniProgram
                   | AlipayMiniProgram
-                  | KuaishouMiniProgram
-                  | FeishuMiniProgram
+                  | TiktokMiniProgram
                   | DingTalkMiniProgram
+                  | FeiShuMiniProgram
+                  | QQMiniProgram
+                  | BaiduMiniProgram
+                  | KuaiShouMiniProgram
+                  | XiaoHongShuMiniProgram
                   | JDMiniProgram
-                  | XiaohongshuMiniProgram
 }
