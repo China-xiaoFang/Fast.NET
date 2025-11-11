@@ -26,9 +26,9 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DatabaseUtil"/> Database DateTime 类型工具类
+/// <see cref="SqlSugarDatabaseUtil"/> Database DateTime 类型工具类
 /// </summary>
-internal partial class DatabaseUtil
+public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
     /// 设置 <see cref="byte"/> 类型

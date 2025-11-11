@@ -29,9 +29,9 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DatabaseUtil"/> SugarExternalServices工具类
+/// <see cref="SqlSugarDatabaseUtil"/> SugarExternalServices工具类
 /// </summary>
-internal partial class DatabaseUtil
+public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
     /// 目前只验证了Sql Server 和 MySql
@@ -53,6 +53,9 @@ internal partial class DatabaseUtil
                 {
                     entityInfo.DbTableName = tableAttribute.Name;
                 }
+
+                // 禁用 CodeFirst 列删除功能
+                entityInfo.IsDisabledDelete = true;
             },
             EntityService = (propertyInfo, columnInfo) =>
             {

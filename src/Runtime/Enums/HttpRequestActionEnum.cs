@@ -61,11 +61,11 @@ public enum HttpRequestActionEnum
     [Description("添加")]
     Add = 21,
 
-    /// <summary>
-    /// 批量添加
-    /// </summary>
-    [Description("批量添加")]
-    BatchAdd = 22,
+    ///// <summary>
+    ///// 批量添加
+    ///// </summary>
+    //[Description("批量添加")]
+    //BatchAdd = 22,
 
     /// <summary>
     /// 编辑
@@ -73,11 +73,11 @@ public enum HttpRequestActionEnum
     [Description("编辑")]
     Edit = 31,
 
-    /// <summary>
-    /// 批量编辑
-    /// </summary>
-    [Description("批量编辑")]
-    BatchEdit = 32,
+    ///// <summary>
+    ///// 批量编辑
+    ///// </summary>
+    //[Description("批量编辑")]
+    //BatchEdit = 32,
 
     /// <summary>
     /// 删除
@@ -85,11 +85,11 @@ public enum HttpRequestActionEnum
     [Description("删除")]
     Delete = 41,
 
-    /// <summary>
-    /// 批量删除
-    /// </summary>
-    [Description("批量删除")]
-    BatchDelete = 42,
+    ///// <summary>
+    ///// 批量删除
+    ///// </summary>
+    //[Description("批量删除")]
+    //BatchDelete = 42,
 
     /// <summary>
     /// 提交
@@ -98,38 +98,44 @@ public enum HttpRequestActionEnum
     Submit = 51,
 
     /// <summary>
-    /// 下载
-    /// </summary>
-    [Description("下载")]
-    Download = 61,
-
-    /// <summary>
     /// 上传
     /// </summary>
     [Description("上传")]
-    Upload = 71,
+    Upload = 61,
 
     /// <summary>
-    /// 导出
+    /// 下载
     /// </summary>
-    [Description("导出")]
-    Export = 81,
+    [Description("下载")]
+    Download = 62,
 
     /// <summary>
     /// 导入
     /// </summary>
     [Description("导入")]
-    Import = 91,
+    Import = 71,
+
+    /// <summary>
+    /// 导出
+    /// </summary>
+    [Description("导出")]
+    Export = 72,
+
+    /// <summary>
+    /// 通知
+    /// </summary>
+    [Description("通知")]
+    Notify = 253,
 
     /// <summary>
     /// 回调
     /// </summary>
     [Description("回调")]
-    Callback = 101,
+    Callback = 254,
 
     /// <summary>
     /// 其他
     /// </summary>
     [Description("其他")]
-    Other = 512
+    Other = 255
 }

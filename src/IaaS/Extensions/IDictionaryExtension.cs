@@ -67,7 +67,7 @@ public static class IDictionaryExtension
     /// <param name="dictionary"><see cref="IDictionary{TKey, TValue}"/></param>
     /// <param name="key"><typeparamref name="TKey"/></param>
     /// <param name="value"><typeparamref name="TValue"/></param>
-    public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, List<TValue>> dictionary, TKey key, TValue value)
+    public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, List<TValue>> dictionary, TKey key, TValue value)
         where TKey : notnull
     {
         // 空检查

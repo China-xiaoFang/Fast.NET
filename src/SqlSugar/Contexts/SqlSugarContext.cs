@@ -80,7 +80,7 @@ public sealed class SqlSugarContext
     public static ConnectionConfig GetConnectionConfig(ConnectionSettingsOptions connectionSettings)
     {
         // 得到连接字符串
-        var connectionStr = DatabaseUtil.GetConnectionStr(connectionSettings.DbType!.Value, connectionSettings);
+        var connectionStr = SqlSugarDatabaseUtil.GetConnectionStr(connectionSettings.DbType!.Value, connectionSettings);
 
         var slaveConnectionList = new List<SlaveConnectionConfig>();
 
@@ -89,7 +89,8 @@ public sealed class SqlSugarContext
         {
             foreach (var slaveConnectionInfo in connectionSettings.SlaveConnectionList)
             {
-                var slaveConnectionStr = DatabaseUtil.GetConnectionStr(connectionSettings.DbType!.Value, slaveConnectionInfo);
+                var slaveConnectionStr =
+                    SqlSugarDatabaseUtil.GetConnectionStr(connectionSettings.DbType!.Value, slaveConnectionInfo);
 
                 slaveConnectionList.Add(new SlaveConnectionConfig
                 {
@@ -111,8 +112,8 @@ public sealed class SqlSugarContext
             InitKeyType = InitKeyType.Attribute,
             // 从数据库读取主键和自增列信息
             //InitKeyType = InitKeyType.SystemTable 
-            MoreSettings = DatabaseUtil.GetSugarMoreSettings(),
-            ConfigureExternalServices = DatabaseUtil.GetSugarExternalServices(connectionSettings.DbType!.Value),
+            MoreSettings = SqlSugarDatabaseUtil.GetSugarMoreSettings(),
+            ConfigureExternalServices = SqlSugarDatabaseUtil.GetSugarExternalServices(connectionSettings.DbType!.Value),
             SlaveConnectionConfigs = slaveConnectionList
         };
     }

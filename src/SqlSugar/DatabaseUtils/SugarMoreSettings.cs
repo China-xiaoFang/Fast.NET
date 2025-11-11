@@ -26,9 +26,9 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DatabaseUtil"/> SugarMoreSettings工具类
+/// <see cref="SqlSugarDatabaseUtil"/> SugarMoreSettings工具类
 /// </summary>
-internal partial class DatabaseUtil
+public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
     /// 获取配置
@@ -41,7 +41,11 @@ internal partial class DatabaseUtil
             // SQL Server Code First 默认使用 NVARCHAR
             SqlServerCodeFirstNvarchar = true,
             // 最小时间
-            DbMinDate = new DateTime(1970, 01, 01)
+            DbMinDate = new DateTime(1970, 01, 01),
+            // CodeFirst 启用Sqlite列删除
+            SqliteCodeFirstEnableDropColumn = true,
+            // CodeFirst 启用精度修改
+            EnableCodeFirstUpdatePrecision = true
         };
         return moreSettings;
     }

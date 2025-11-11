@@ -50,10 +50,6 @@ public static class SugarEntityFilter
         {
             if (isDevelopment)
             {
-                //// 如果是系统表则不输出，避免安全起见
-                //if (rawSql.Contains("information_schema", StringComparison.OrdinalIgnoreCase))
-                //    return;
-
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
                 var logSb = new StringBuilder();

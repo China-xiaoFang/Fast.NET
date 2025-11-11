@@ -125,8 +125,9 @@ public static class ObjectExtension
     /// 将一个Object对象转为 字典
     /// </summary>
     /// <param name="obj"><see cref="object"/></param>
+    /// <param name="includeNull"><see cref="bool"/> 包括 null 值的属性</param>
     /// <returns><see cref="IDictionary{TKey,TValue}"/></returns>
-    public static IDictionary<string, object> ToDictionary(this object obj)
+    public static IDictionary<string, object> ToDictionary(this object obj, bool includeNull = false)
     {
         var dictionary = new Dictionary<string, object>();
 
@@ -140,10 +141,12 @@ public static class ObjectExtension
 
             if (m == null || !m.IsPublic)
                 continue;
+
+            var o = m.Invoke(obj, Array.Empty<object>());
             // 进行判NULL处理
-            if (m.Invoke(obj, Array.Empty<object>()) != null)
+            if (o != null || includeNull)
             {
-                dictionary.Add(p.Name, m.Invoke(obj, Array.Empty<object>())); // 向字典添加元素
+                dictionary.Add(p.Name, o); // 向字典添加元素
             }
         }
 

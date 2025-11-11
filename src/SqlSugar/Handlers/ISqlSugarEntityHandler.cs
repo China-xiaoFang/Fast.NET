@@ -104,6 +104,18 @@ public interface ISqlSugarEntityHandler
         string handlerSql, SqlSugarException exception);
 
     /// <summary>
+    /// 是否为超级管理员
+    /// </summary>
+    /// <returns></returns>
+    bool IsSuperAdmin();
+
+    /// <summary>
+    /// 是否为管理员
+    /// </summary>
+    /// <returns></returns>
+    bool IsAdmin();
+
+    /// <summary>
     /// 指派租户Id
     /// </summary>
     /// <returns></returns>
@@ -132,16 +144,4 @@ public interface ISqlSugarEntityHandler
     /// </summary>
     /// <returns></returns>
     string AssignUserName();
-
-    /// <summary>
-    /// 是否为超级管理员
-    /// </summary>
-    /// <returns></returns>
-    bool IsSuperAdmin();
-
-    /// <summary>
-    /// 是否为管理员
-    /// </summary>
-    /// <returns></returns>
-    bool IsAdmin();
 }

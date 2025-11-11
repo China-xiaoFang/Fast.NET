@@ -21,6 +21,7 @@
 // ------------------------------------------------------------------------
 
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 // ReSharper disable once CheckNamespace
@@ -46,13 +47,10 @@ public static partial class OpenApiUtil
             case HttpRequestActionEnum.Query:
                 return "query";
             case HttpRequestActionEnum.Add:
-            case HttpRequestActionEnum.BatchAdd:
                 return "add";
             case HttpRequestActionEnum.Edit:
-            case HttpRequestActionEnum.BatchEdit:
                 return "edit";
             case HttpRequestActionEnum.Delete:
-            case HttpRequestActionEnum.BatchDelete:
                 return "delete";
             case HttpRequestActionEnum.Submit:
                 return "other";
@@ -65,6 +63,8 @@ public static partial class OpenApiUtil
             case HttpRequestActionEnum.Import:
                 return "import";
             case HttpRequestActionEnum.None:
+            case HttpRequestActionEnum.Notify:
+            case HttpRequestActionEnum.Callback:
             case HttpRequestActionEnum.Other:
             default:
                 return "other";
@@ -120,6 +120,12 @@ public static partial class OpenApiUtil
                 {
                     var apiInfo = curPaths[i].Value;
                     var apiName = curPaths[i].Key;
+                    // 判断是否为路由格式的接口，如果是则不生成接口文档
+                    if (Regex.IsMatch(apiName, @"\/\{[a-zA-Z0-9_]+\}"))
+                    {
+                        continue;
+                    }
+
                     var apiFuncName = apiName.Split("/")
                         .LastOrDefault();
 
@@ -153,6 +159,25 @@ public static partial class OpenApiUtil
                     // 请求参数
                     var requestParam = "";
                     var requestParamSb = new StringBuilder();
+
+                    // 请求体类型
+                    var requestDataType = "";
+
+                    // 判断是否为 FormData 文件上传
+                    if (methodInfo?.RequestBody?.Content?.FormData != null)
+                    {
+                        requestDataType = "FormData";
+                    }
+                    // 判断是否为引用类型
+                    else if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Ref != null)
+                    {
+                        requestDataType = DisposeSchemaRefKey(methodInfo.RequestBody.Content.Json.Schema.Ref, refSchemas);
+                    }
+                    // 判断是否为数组引用类型
+                    else if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Items?.Ref != null)
+                    {
+                        requestDataType = DisposeSchemaRefKey(methodInfo.RequestBody.Content.Json.Schema.Items.Ref, refSchemas);
+                    }
 
                     if (methodInfo?.Parameters != null)
                     {
@@ -190,29 +215,14 @@ public static partial class OpenApiUtil
                             }
                         }
 
-                        requestParam = requestParam.TrimEnd(' ')
-                            .TrimEnd(',');
+                        // 处理可能存在Url参数和Body参数的情况
+                        if (string.IsNullOrWhiteSpace(requestDataType))
+                        {
+                            requestParam = requestParam.TrimEnd(' ')
+                                .TrimEnd(',');
+                        }
 
                         contentSb.Append(requestParam);
-                    }
-
-                    // 请求体类型
-                    var requestDataType = "";
-
-                    // 判断是否为 FormData 文件上传
-                    if (methodInfo?.RequestBody?.Content?.FormData != null)
-                    {
-                        requestDataType = "FormData";
-                    }
-                    // 判断是否为引用类型
-                    else if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Ref != null)
-                    {
-                        requestDataType = DisposeSchemaRefKey(methodInfo.RequestBody.Content.Json.Schema.Ref, refSchemas);
-                    }
-                    // 判断是否为数组引用类型
-                    else if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Items?.Ref != null)
-                    {
-                        requestDataType = DisposeSchemaRefKey(methodInfo.RequestBody.Content.Json.Schema.Items.Ref, refSchemas);
                     }
 
                     if (!string.IsNullOrWhiteSpace(requestDataType))
@@ -253,12 +263,6 @@ public static partial class OpenApiUtil
                                        """);
                     contentSb.Append(Environment.NewLine);
 
-                    if (!string.IsNullOrWhiteSpace(requestDataType))
-                    {
-                        contentSb.Append("      data,");
-                        contentSb.Append(Environment.NewLine);
-                    }
-
                     if (requestParamSb.Length > 0)
                     {
                         contentSb.Append($$"""
@@ -266,6 +270,12 @@ public static partial class OpenApiUtil
                                            {{requestParamSb}}
                                                  },
                                            """);
+                        contentSb.Append(Environment.NewLine);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(requestDataType))
+                    {
+                        contentSb.Append("      data,");
                         contentSb.Append(Environment.NewLine);
                     }
 
@@ -326,7 +336,7 @@ public static partial class OpenApiUtil
                             }
                         }
 
-                        if (schemaImport.Length > 0)
+                        if (schemaImport?.Length > 0)
                         {
                             // 写入文件
                             await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.ts"), $$"""

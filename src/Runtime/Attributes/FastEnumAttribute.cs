@@ -47,10 +47,21 @@ public class FastEnumAttribute : Attribute
     /// </summary>
     public string Remark { get; set; }
 
+    /// <summary>
+    /// <see cref="FastEnumAttribute"/> 枚举特性
+    /// </summary>
+    /// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
     public FastEnumAttribute()
     {
     }
 
+    /// <summary>
+    /// <see cref="FastEnumAttribute"/> 枚举特性
+    /// </summary>
+    /// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
+    /// <param name="chName"><see cref="string"/> 中文名称</param>
+    /// <param name="enName"><see cref="string"/> 英文名称</param>
+    /// <param name="remark"><see cref="string"/> 备注</param>
     public FastEnumAttribute(string chName, string enName, string remark)
     {
         ChName = chName;
@@ -58,6 +69,12 @@ public class FastEnumAttribute : Attribute
         Remark = remark;
     }
 
+    /// <summary>
+    /// <see cref="FastEnumAttribute"/> 枚举特性
+    /// </summary>
+    /// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
+    /// <param name="chName"><see cref="string"/> 中文名称</param>
+    /// <param name="enName"><see cref="string"/> 英文名称</param>
     public FastEnumAttribute(string chName, string enName)
     {
         ChName = chName;
@@ -65,6 +82,11 @@ public class FastEnumAttribute : Attribute
         Remark = chName;
     }
 
+    /// <summary>
+    /// <see cref="FastEnumAttribute"/> 枚举特性
+    /// </summary>
+    /// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
+    /// <param name="chName"><see cref="string"/> 中文名称</param>
     public FastEnumAttribute(string chName)
     {
         ChName = chName;

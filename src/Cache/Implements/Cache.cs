@@ -160,6 +160,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         }
 
         var cursor = 0L;
+        var totalDeleted = 0L;
 
         do
         {
@@ -182,11 +183,11 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                         .ToArray();
                 }
 
-                Client.Del(keyItems);
+                totalDeleted += Client.Del(keyItems);
             }
         } while (cursor != 0);
 
-        return 0;
+        return totalDeleted;
     }
 
     /// <summary>
@@ -213,6 +214,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         }
 
         var cursor = 0L;
+        var totalDeleted = 0L;
 
         do
         {
@@ -235,11 +237,11 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                         .ToArray();
                 }
 
-                return await Client.DelAsync(keyItems);
+                totalDeleted += await Client.DelAsync(keyItems);
             }
         } while (cursor != 0);
 
-        return 0;
+        return totalDeleted;
     }
 
     /// <summary>
@@ -406,11 +408,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get(key);
 
+        if (result is "×Null×")
+        {
+            return null;
+        }
+
         if (IsEmpty(result))
         {
-            result = func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = func.Invoke();
 
-            Client.Set(key, result);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        Client.Set(key, result);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    Client.Set(key, result);
+                }
+            }
         }
 
         return result;
@@ -426,11 +466,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync(key);
 
+        if (result is "×Null×")
+        {
+            return null;
+        }
+
         if (IsEmpty(result))
         {
-            result = await func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = await func.Invoke();
 
-            await Client.SetAsync(key, result);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        await Client.SetAsync(key, result);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = await func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    await Client.SetAsync(key, result);
+                }
+            }
         }
 
         return result;
@@ -447,11 +525,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get<T>(key);
 
+        if (result is "×Null×")
+        {
+            return default;
+        }
+
         if (IsEmpty(result))
         {
-            result = func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = func.Invoke();
 
-            Client.Set(key, result);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        Client.Set(key, result);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    Client.Set(key, result);
+                }
+            }
         }
 
         return result;
@@ -468,11 +584,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync<T>(key);
 
+        if (result is "×Null×")
+        {
+            return default;
+        }
+
         if (IsEmpty(result))
         {
-            result = await func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = await func.Invoke();
 
-            await Client.SetAsync(key, result);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        await Client.SetAsync(key, result);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = await func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    await Client.SetAsync(key, result);
+                }
+            }
         }
 
         return result;
@@ -489,11 +643,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get(key);
 
+        if (result is "×Null×")
+        {
+            return null;
+        }
+
         if (IsEmpty(result))
         {
-            result = func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = func.Invoke();
 
-            Client.Set(key, result, expireSeconds);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        Client.Set(key, result, expireSeconds);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    Client.Set(key, result, expireSeconds);
+                }
+            }
         }
 
         return result;
@@ -510,11 +702,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync(key);
 
+        if (result is "×Null×")
+        {
+            return null;
+        }
+
         if (IsEmpty(result))
         {
-            result = await func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = await func.Invoke();
 
-            await Client.SetAsync(key, result, expireSeconds);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        await Client.SetAsync(key, result, expireSeconds);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = await func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    await Client.SetAsync(key, result, expireSeconds);
+                }
+            }
         }
 
         return result;
@@ -532,11 +762,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get<T>(key);
 
+        if (result is "×Null×")
+        {
+            return default;
+        }
+
         if (IsEmpty(result))
         {
-            result = func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = func.Invoke();
 
-            Client.Set(key, result, expireSeconds);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        Client.Set(key, result, expireSeconds);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    Client.Set(key, result, expireSeconds);
+                }
+            }
         }
 
         return result;
@@ -554,11 +822,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync<T>(key);
 
+        if (result is "×Null×")
+        {
+            return default;
+        }
+
         if (IsEmpty(result))
         {
-            result = await func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = await func.Invoke();
 
-            await Client.SetAsync(key, result, expireSeconds);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        await Client.SetAsync(key, result, expireSeconds);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = await func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    await Client.SetAsync(key, result, expireSeconds);
+                }
+            }
         }
 
         return result;
@@ -575,11 +881,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get(key);
 
+        if (result is "×Null×")
+        {
+            return null;
+        }
+
         if (IsEmpty(result))
         {
-            result = func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = func.Invoke();
 
-            Client.Set(key, result, expireTimeSpan);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        Client.Set(key, result, expireTimeSpan);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    Client.Set(key, result, expireTimeSpan);
+                }
+            }
         }
 
         return result;
@@ -596,11 +940,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync(key);
 
+        if (result is "×Null×")
+        {
+            return null;
+        }
+
         if (IsEmpty(result))
         {
-            result = await func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = await func.Invoke();
 
-            await Client.SetAsync(key, result, expireTimeSpan);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        await Client.SetAsync(key, result, expireTimeSpan);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = await func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    await Client.SetAsync(key, result, expireTimeSpan);
+                }
+            }
         }
 
         return result;
@@ -618,11 +1000,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get<T>(key);
 
+        if (result is "×Null×")
+        {
+            return default;
+        }
+
         if (IsEmpty(result))
         {
-            result = func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = func.Invoke();
 
-            Client.Set(key, result, expireTimeSpan);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        Client.Set(key, result, expireTimeSpan);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    Client.Set(key, result, expireTimeSpan);
+                }
+            }
         }
 
         return result;
@@ -640,11 +1060,49 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync<T>(key);
 
+        if (result is "×Null×")
+        {
+            return default;
+        }
+
         if (IsEmpty(result))
         {
-            result = await func.Invoke();
+            var acquired = Client.TryLock($"{key}_lock", 5);
+            if (acquired != null)
+            {
+                try
+                {
+                    result = await func.Invoke();
 
-            await Client.SetAsync(key, result, expireTimeSpan);
+                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    if (IsEmpty(result))
+                    {
+                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    }
+                    else
+                    {
+                        await Client.SetAsync(key, result, expireTimeSpan);
+                    }
+                }
+                finally
+                {
+                    acquired.Unlock();
+                }
+            }
+            else
+            {
+                result = await func.Invoke();
+
+                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                if (IsEmpty(result))
+                {
+                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                }
+                else
+                {
+                    await Client.SetAsync(key, result, expireTimeSpan);
+                }
+            }
         }
 
         return result;

@@ -35,17 +35,6 @@
 		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
 	</PropertyGroup>
 
-	<!-- NU1803 是为了解决使用 Http 源的Nuget包导致的警告 -->
-	<!-- IDE0017 是为了解决可以简化对象初始化导致的警告 -->
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<NoWarn>1701;1702;1591;NU1803;IDE0017</NoWarn>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<NoWarn>1701;1702;1591;NU1803;IDE0017</NoWarn>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<None Include="$(SolutionDir)README.md" Pack="true" PackagePath="\" />
 		<None Include="$(SolutionDir)README.zh.md" Pack="true" PackagePath="\" />

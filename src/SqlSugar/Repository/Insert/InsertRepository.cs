@@ -158,11 +158,11 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <summary>
     /// 新增一条记录返回自增Id
     /// </summary>
-    /// <param name="insertObj"></param>
+    /// <param name="entity"></param>
     /// <returns></returns>
-    public int InsertReturnIdentity(TEntity insertObj)
+    public int InsertReturnIdentity(TEntity entity)
     {
-        return Insertable(insertObj)
+        return Insertable(entity)
             .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnIdentity();
     }
@@ -170,11 +170,11 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <summary>
     /// 新增一条记录返回自增Id
     /// </summary>
-    /// <param name="insertObj"></param>
+    /// <param name="entity"></param>
     /// <returns></returns>
-    public Task<int> InsertReturnIdentityAsync(TEntity insertObj)
+    public Task<int> InsertReturnIdentityAsync(TEntity entity)
     {
-        return Insertable(insertObj)
+        return Insertable(entity)
             .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnIdentityAsync();
     }
@@ -206,11 +206,11 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <summary>
     /// 新增一条记录返回新增的数据
     /// </summary>
-    /// <param name="insertObj"></param>
+    /// <param name="entity"></param>
     /// <returns></returns>
-    public TEntity InsertReturnEntity(TEntity insertObj)
+    public TEntity InsertReturnEntity(TEntity entity)
     {
-        return Insertable(insertObj)
+        return Insertable(entity)
             .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnEntity();
     }
@@ -218,11 +218,11 @@ internal sealed partial class SqlSugarRepository<TEntity>
     /// <summary>
     /// 新增一条记录返回新增的数据
     /// </summary>
-    /// <param name="insertObj"></param>
+    /// <param name="entity"></param>
     /// <returns></returns>
-    public Task<TEntity> InsertReturnEntityAsync(TEntity insertObj)
+    public Task<TEntity> InsertReturnEntityAsync(TEntity entity)
     {
-        return Insertable(insertObj)
+        return Insertable(entity)
             .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value)
             .ExecuteReturnEntityAsync();
     }
