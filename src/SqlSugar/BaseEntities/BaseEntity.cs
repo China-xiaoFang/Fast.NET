@@ -30,7 +30,7 @@ namespace Fast.SqlSugar;
 /// <see cref="BaseEntity"/> Entity基类
 /// </summary>
 [SuppressSniffer]
-public class BaseEntity : SnowflakeKeyEntity
+public class BaseEntity : IBaseEntity
 {
     /// <summary>
     /// 部门Id

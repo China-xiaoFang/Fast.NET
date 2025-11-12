@@ -29,10 +29,10 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="BaseSnowflakeRecordEntity"/> 雪花主键记录Entity基类
+/// <see cref="BaseRecordEntity"/> 记录Entity基类
 /// </summary>
 [SuppressSniffer]
-public class BaseSnowflakeRecordEntity : SnowflakeKeyEntity, IIdentityRecordEntity
+public class BaseRecordEntity : IBaseRecordEntity
 {
     /// <summary>
     /// 设备

@@ -283,65 +283,74 @@ public static class SugarEntityFilter
             {
                 // 新增操作
                 case DataFilterType.InsertByObject:
-                    // 主键（long）赋值雪花Id，这里一条记录只会匹配一次
-                    if (entityInfo.EntityColumnInfo.IsPrimarykey
-                        && entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
+                    // 主键，这里一条记录只会匹配一次
+                    if (entityInfo.EntityColumnInfo.IsPrimarykey)
                     {
-                        if (SqlSugarContext.EntityValueCheck(nameof(IPrimaryKeyEntity<long>.Id), new List<dynamic> {null, 0},
-                                entityInfo))
+                        // 赋值雪花Id（long）
+                        if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
                         {
-                            entityInfo.SetValue(YitIdHelper.NextId());
+                            if (SqlSugarContext.EntityValueCheck([null, 0], entityInfo))
+                            {
+                                entityInfo.SetValue(YitIdHelper.NextId());
+                            }
+                        }
+                        // 赋值Guid
+                        else if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(Guid))
+                        {
+                            if (SqlSugarContext.EntityValueCheck([null, Guid.Empty], entityInfo))
+                            {
+                                entityInfo.SetValue(Guid.NewGuid());
+                            }
                         }
                     }
 
                     // 更新版本控制字段
-                    SqlSugarContext.SetEntityValue(nameof(IUpdateVersion.RowVersion), new List<dynamic> {null, 0}, 1,
-                        ref entityInfo);
+                    SqlSugarContext.SetEntityValue(nameof(IUpdateVersion.RowVersion), new List<dynamic> {null, 0}, 1, entityInfo);
 
                     // 创建时间
                     SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedTime), new List<dynamic> {null}, DateTime.Now,
-                        ref entityInfo);
+                        entityInfo);
 
                     // 其余字段判断
                     if (sqlSugarEntityHandler != null)
                     {
                         // 部门Id
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentId), new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignDepartmentId(), ref entityInfo);
+                            sqlSugarEntityHandler.AssignDepartmentId(), entityInfo);
 
                         // 部门名称
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentName), new List<dynamic> {null, ""},
-                            sqlSugarEntityHandler.AssignDepartmentName(), ref entityInfo);
+                            sqlSugarEntityHandler.AssignDepartmentName(), entityInfo);
 
                         // 创建者Id
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserId), new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignUserId(), ref entityInfo);
+                            sqlSugarEntityHandler.AssignUserId(), entityInfo);
 
                         // 创建者名称
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserName), new List<dynamic> {null, ""},
-                            sqlSugarEntityHandler.AssignUserName(), ref entityInfo);
+                            sqlSugarEntityHandler.AssignUserName(), entityInfo);
 
                         // 租户Id
                         SqlSugarContext.SetEntityValue(nameof(IBaseTEntity.TenantId), new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignTenantId() ?? 0, ref entityInfo);
+                            sqlSugarEntityHandler.AssignTenantId() ?? 0, entityInfo);
                     }
 
                     break;
                 // 更新操作
                 case DataFilterType.UpdateByObject:
                     // 更新时间
-                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedTime), null, DateTime.Now, ref entityInfo);
+                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedTime), null, DateTime.Now, entityInfo);
 
                     // 其余字段判断
                     if (sqlSugarEntityHandler != null)
                     {
                         // 更新者Id
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignUserId(), ref entityInfo);
+                            sqlSugarEntityHandler.AssignUserId(), entityInfo);
 
                         // 更新者名称
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserName), new List<dynamic> {null, ""},
-                            sqlSugarEntityHandler.AssignUserName(), ref entityInfo);
+                            sqlSugarEntityHandler.AssignUserName(), entityInfo);
                     }
 
                     break;

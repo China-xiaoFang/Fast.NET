@@ -20,22 +20,75 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using SqlSugar;
+using Microsoft.AspNetCore.Http;
 
 // ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SnowflakeKeyEntity"/> 雪花Id主键实体
+/// <see cref="IBaseRecordEntity"/> 自增主键记录Entity基类接口
 /// </summary>
-/// <remarks>主键Id为 Long 类型</remarks>
 [SuppressSniffer]
-public class SnowflakeKeyEntity : IPrimaryKeyEntity<long>
+public interface IBaseRecordEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 主键Id
+    /// 设备
     /// </summary>
-    /// <remarks>雪花Id</remarks>
-    [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true)]
-    public virtual long Id { get; set; }
+    string Device { get; set; }
+
+    /// <summary>
+    /// 操作系统（版本）
+    /// </summary>
+    string OS { get; set; }
+
+    /// <summary>
+    /// 浏览器（版本）
+    /// </summary>
+    string Browser { get; set; }
+
+    /// <summary>
+    /// 省份
+    /// </summary>
+    string Province { get; set; }
+
+    /// <summary>
+    /// 城市
+    /// </summary>
+    string City { get; set; }
+
+    /// <summary>
+    /// Ip
+    /// </summary>
+    string Ip { get; set; }
+
+    /// <summary>
+    /// 部门Id
+    /// </summary>
+    long? DepartmentId { get; set; }
+
+    /// <summary>
+    /// 部门名称
+    /// </summary>
+    string DepartmentName { get; set; }
+
+    /// <summary>
+    /// 创建者用户Id
+    /// </summary>
+    long? CreatedUserId { get; set; }
+
+    /// <summary>
+    /// 创建者用户名称
+    /// </summary>
+    string CreatedUserName { get; set; }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    DateTime? CreatedTime { get; set; }
+
+    /// <summary>
+    /// 记录表创建
+    /// </summary>
+    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
+    void RecordCreate(HttpContext httpContext);
 }
