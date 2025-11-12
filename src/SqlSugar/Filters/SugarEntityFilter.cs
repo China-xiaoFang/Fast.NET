@@ -289,7 +289,7 @@ public static class SugarEntityFilter
                         // 赋值雪花Id（long）
                         if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
                         {
-                            if (SqlSugarContext.EntityValueCheck([null, 0], entityInfo))
+                            if (SqlSugarContext.EntityValueCheck([null, 0L], entityInfo))
                             {
                                 entityInfo.SetValue(YitIdHelper.NextId());
                             }
@@ -305,34 +305,33 @@ public static class SugarEntityFilter
                     }
 
                     // 更新版本控制字段
-                    SqlSugarContext.SetEntityValue(nameof(IUpdateVersion.RowVersion), new List<dynamic> {null, 0}, 1, entityInfo);
+                    SqlSugarContext.SetEntityValue(nameof(IUpdateVersion.RowVersion), [null, 0L], 1L, entityInfo);
 
                     // 创建时间
-                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedTime), new List<dynamic> {null}, DateTime.Now,
-                        entityInfo);
+                    SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedTime), [null], DateTime.Now, entityInfo);
 
                     // 其余字段判断
                     if (sqlSugarEntityHandler != null)
                     {
                         // 部门Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentId), new List<dynamic> {null, 0},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentId), [null, 0L],
                             sqlSugarEntityHandler.AssignDepartmentId(), entityInfo);
 
                         // 部门名称
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentName), new List<dynamic> {null, ""},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentName), [null, ""],
                             sqlSugarEntityHandler.AssignDepartmentName(), entityInfo);
 
                         // 创建者Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserId), new List<dynamic> {null, 0},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserId), [null, 0L],
                             sqlSugarEntityHandler.AssignUserId(), entityInfo);
 
                         // 创建者名称
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserName), new List<dynamic> {null, ""},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserName), [null, ""],
                             sqlSugarEntityHandler.AssignUserName(), entityInfo);
 
                         // 租户Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseTEntity.TenantId), new List<dynamic> {null, 0},
-                            sqlSugarEntityHandler.AssignTenantId() ?? 0, entityInfo);
+                        SqlSugarContext.SetEntityValue(nameof(IBaseTEntity.TenantId), [null, 0L],
+                            sqlSugarEntityHandler.AssignTenantId() ?? 0L, entityInfo);
                     }
 
                     break;
@@ -345,11 +344,11 @@ public static class SugarEntityFilter
                     if (sqlSugarEntityHandler != null)
                     {
                         // 更新者Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), new List<dynamic> {null, 0},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), [null, 0L],
                             sqlSugarEntityHandler.AssignUserId(), entityInfo);
 
                         // 更新者名称
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserName), new List<dynamic> {null, ""},
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserName), [null, ""],
                             sqlSugarEntityHandler.AssignUserName(), entityInfo);
                     }
 
