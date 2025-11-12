@@ -284,7 +284,7 @@ public static class SugarEntityFilter
                 // 新增操作
                 case DataFilterType.InsertByObject:
                     // 主键，这里一条记录只会匹配一次
-                    if (entityInfo.EntityColumnInfo.IsPrimarykey)
+                    if (!entityInfo.EntityColumnInfo.IsIdentity && entityInfo.EntityColumnInfo.IsPrimarykey)
                     {
                         // 赋值雪花Id（long）
                         if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
