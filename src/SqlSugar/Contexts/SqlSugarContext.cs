@@ -121,34 +121,17 @@ public sealed class SqlSugarContext
     /// <summary>
     /// Entity Value 检测
     /// </summary>
-    /// <param name="propertyName"><see cref="string"/> 属性名称</param>
     /// <param name="emptyList"><see cref="ICollection{T}"/> 空对象检测集合</param>
     /// <param name="entityInfo"><see cref="DataFilterModel"/> 实体信息</param>
     /// <returns></returns>
-    internal static bool EntityValueCheck(string propertyName, ICollection<dynamic> emptyList, DataFilterModel entityInfo)
+    internal static bool EntityValueCheck(ICollection<object> emptyList, DataFilterModel entityInfo)
     {
         try
         {
-            // 转换为动态类型
-            var dynamicEntityInfo = (dynamic) entityInfo.EntityValue;
-            var value = propertyName switch
-            {
-                nameof(IPrimaryKeyEntity<long>.Id) => dynamicEntityInfo.Id,
-                nameof(IBaseTEntity.TenantId) => dynamicEntityInfo.TenantId,
-                nameof(IBaseEntity.DepartmentId) => dynamicEntityInfo.DepartmentId,
-                nameof(IBaseEntity.DepartmentName) => dynamicEntityInfo.DepartmentName,
-                nameof(IBaseEntity.CreatedUserId) => dynamicEntityInfo.CreatedUserId,
-                nameof(IBaseEntity.CreatedUserName) => dynamicEntityInfo.CreatedUserName,
-                nameof(IBaseEntity.CreatedTime) => dynamicEntityInfo.CreatedTime,
-                nameof(IBaseEntity.UpdatedUserId) => dynamicEntityInfo.UpdatedUserId,
-                nameof(IBaseEntity.UpdatedUserName) => dynamicEntityInfo.UpdatedUserName,
-                nameof(IBaseEntity.UpdatedTime) => dynamicEntityInfo.UpdatedTime,
-                _ => throw new NotImplementedException()
-            };
-
-            return emptyList == null || emptyList.Any(empty => empty == value);
+            var propertyValue = entityInfo.EntityColumnInfo.PropertyInfo.GetValue(entityInfo.EntityValue);
+            return emptyList == null || emptyList.Any(empty => Equals(empty, propertyValue));
         }
-        catch (Exception)
+        catch
         {
             return false;
         }
@@ -157,17 +140,17 @@ public sealed class SqlSugarContext
     /// <summary>
     /// 设置Entity Value
     /// </summary>
-    /// <param name="fieldName"></param>
-    /// <param name="emptyList"></param>
-    /// <param name="setValue"></param>
-    /// <param name="entityInfo"></param>
-    internal static void SetEntityValue(string fieldName, ICollection<dynamic> emptyList, dynamic setValue,
-        ref DataFilterModel entityInfo)
+    /// <param name="fieldName"><see cref="string"/> 字段名称</param>
+    /// <param name="emptyList"><see cref="ICollection{T}"/> 空对象检测集合</param>
+    /// <param name="setValue"><see cref="string"/> 赋值</param>
+    /// <param name="entityInfo"><see cref="DataFilterModel"/> 实体信息</param>
+    internal static void SetEntityValue(string fieldName, ICollection<object> emptyList, object setValue,
+        DataFilterModel entityInfo)
     {
         // 判断属性名称是否等于传入的字段名称
         if (entityInfo.PropertyName == fieldName)
         {
-            if (EntityValueCheck(fieldName, emptyList, entityInfo))
+            if (EntityValueCheck(emptyList, entityInfo))
             {
                 entityInfo.SetValue(setValue);
             }
