@@ -123,7 +123,7 @@ public class OpenApiSettingsOptions : IPostConfigure
             },
             new OpenApiImportTypeMappingSettingsOptions
             {
-                Name = "ElSelectorOutput_", RefSchema = ["ElSelectorOutput"], MappingName = "ElSelectorOutput<{0}>[]"
+                Name = "List_ElSelectorOutput_", RefSchema = ["ElSelectorOutput"], MappingName = "ElSelectorOutput<{0}>[]"
             },
             new OpenApiImportTypeMappingSettingsOptions
             {
