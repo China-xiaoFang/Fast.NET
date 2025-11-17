@@ -191,11 +191,11 @@ public static partial class OpenApiUtil
                     continue;
 
                 // 判断是否为导入声明映射Name
-                if (Penetrates.OpenApiSettings.ImportSchemaMappings.Any(a => a.Name.StartsWith(dtoSchema.Key)))
+                if (Penetrates.OpenApiSettings.ImportSchemaMappings.Any(a => dtoSchema.Key.StartsWith(a.Name)))
                     continue;
 
                 // 判断是否为导入类型映射Name
-                if (Penetrates.OpenApiSettings.ImportTypeMappings.Any(a => a.Name.StartsWith(dtoSchema.Key)))
+                if (Penetrates.OpenApiSettings.ImportTypeMappings.Any(a => dtoSchema.Key.StartsWith(a.Name)))
                     continue;
 
                 // 判断是否为基类
