@@ -22,7 +22,6 @@
 
 using System.Threading.Channels;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.EventBus;
 
 /// <summary>

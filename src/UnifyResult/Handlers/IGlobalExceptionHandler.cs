@@ -22,7 +22,6 @@
 
 using Microsoft.AspNetCore.Mvc.Filters;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.UnifyResult;
 
 /// <summary>

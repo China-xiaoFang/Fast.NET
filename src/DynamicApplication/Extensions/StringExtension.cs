@@ -22,7 +22,6 @@
 
 using System.Text;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.DynamicApplication;
 
 /// <summary>

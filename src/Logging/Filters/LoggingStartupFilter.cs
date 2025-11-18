@@ -23,7 +23,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Logging;
 
 /// <summary>

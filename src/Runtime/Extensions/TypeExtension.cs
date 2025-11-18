@@ -23,7 +23,6 @@
 using System.Reflection;
 using System.Reflection.Emit;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Runtime;
 
 /// <summary>

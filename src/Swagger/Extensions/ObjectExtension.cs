@@ -22,7 +22,6 @@
 
 using System.ComponentModel;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Swagger;
 
 /// <summary>

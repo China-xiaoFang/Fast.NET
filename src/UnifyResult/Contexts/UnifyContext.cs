@@ -36,7 +36,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Fast.DynamicApplication")]
 
-// ReSharper disable once CheckNamespace
+
 namespace Fast.UnifyResult;
 
 /// <summary>

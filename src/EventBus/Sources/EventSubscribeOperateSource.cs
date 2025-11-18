@@ -23,7 +23,6 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.EventBus;
 
 /// <summary>

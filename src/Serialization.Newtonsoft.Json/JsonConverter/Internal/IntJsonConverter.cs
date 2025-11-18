@@ -23,7 +23,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Serialization;
 
 /// <summary>

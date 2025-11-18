@@ -25,7 +25,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Logging;
 
 /// <summary>

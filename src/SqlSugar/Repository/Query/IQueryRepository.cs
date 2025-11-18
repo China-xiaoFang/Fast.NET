@@ -23,7 +23,6 @@
 using System.Linq.Expressions;
 using SqlSugar;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>

@@ -25,7 +25,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using SqlSugar;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>

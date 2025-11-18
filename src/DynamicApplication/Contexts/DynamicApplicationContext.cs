@@ -23,7 +23,6 @@
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.DynamicApplication;
 
 /// <summary>

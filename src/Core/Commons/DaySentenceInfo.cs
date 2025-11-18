@@ -22,7 +22,6 @@
 
 using System.Text.Json.Serialization;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
 
 /// <summary>

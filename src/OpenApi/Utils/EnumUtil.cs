@@ -24,7 +24,6 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.OpenApi;
 
 /// <summary>
@@ -98,7 +97,6 @@ public static partial class OpenApiUtil
                                               ?.Description
                                           ?? enumName;
 
-                    // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                     switch (scriptLanguage)
                     {
                         case ScriptLanguageEnum.JavaScript:
@@ -117,6 +115,8 @@ public static partial class OpenApiUtil
                                                  {enumName} = {enumValue},
                                                """);
                             break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(scriptLanguage), scriptLanguage, null);
                     }
 
                     // 拼接换行符
@@ -129,7 +129,6 @@ public static partial class OpenApiUtil
                                         ?? enumType.GetCustomAttribute<FastEnumAttribute>()
                                             ?.ChName;
 
-                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                 switch (scriptLanguage)
                 {
                     case ScriptLanguageEnum.JavaScript:
@@ -167,6 +166,8 @@ public static partial class OpenApiUtil
                             ImportPath = $$"""import { {{enumType.Name}} } from "@/api/enums/{{enumType.Name}}";"""
                         });
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(scriptLanguage), scriptLanguage, null);
                 }
             }
         }

@@ -40,7 +40,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.OpenApi;
 #endif
 
-// ReSharper disable once CheckNamespace
+
 namespace Fast.Swagger;
 
 /// <summary>

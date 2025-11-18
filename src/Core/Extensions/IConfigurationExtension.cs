@@ -22,7 +22,6 @@
 
 using Microsoft.Extensions.Configuration;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
 
 /// <summary>

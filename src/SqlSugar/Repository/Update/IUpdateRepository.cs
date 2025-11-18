@@ -22,8 +22,6 @@
 
 using System.Linq.Expressions;
 
-
-// ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>

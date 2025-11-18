@@ -23,7 +23,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.JwtBearer;
 
 /// <summary>

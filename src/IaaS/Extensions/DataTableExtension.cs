@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>

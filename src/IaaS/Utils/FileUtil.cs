@@ -24,7 +24,6 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>

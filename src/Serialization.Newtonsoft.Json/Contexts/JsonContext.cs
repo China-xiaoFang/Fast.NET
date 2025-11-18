@@ -23,7 +23,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Serialization;
 
 /// <summary>

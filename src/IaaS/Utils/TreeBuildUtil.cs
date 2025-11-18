@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>
@@ -38,8 +37,7 @@ public class TreeBuildUtil<TEntity, TProperty> where TEntity : ITreeNode<TProper
     /// <summary>
     /// 顶级节点的父节点Id(默认0)
     /// </summary>
-    // ReSharper disable once RedundantDefaultMemberInitializer
-    private TProperty _rootParentId = default;
+    private TProperty _rootParentId;
 
     /// <summary>
     /// 设置根节点方法

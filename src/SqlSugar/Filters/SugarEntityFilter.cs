@@ -24,7 +24,6 @@ using System.Text;
 using SqlSugar;
 using Yitter.IdGenerator;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>

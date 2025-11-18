@@ -24,8 +24,6 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable once CheckNamespace
-
 namespace Fast.UnifyResult;
 
 /// <summary>

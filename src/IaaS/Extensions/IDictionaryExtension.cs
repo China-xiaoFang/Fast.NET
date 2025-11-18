@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>
@@ -135,16 +134,7 @@ public static class IDictionaryExtension
         // 逐条遍历合并更新
         foreach (var (key, value) in concatDictionary)
         {
-            // 检查键是否存在
-            // ReSharper disable once RedundantDictionaryContainsKeyBeforeAdding
-            if (dictionary.ContainsKey(key))
-            {
-                dictionary[key] = value;
-            }
-            else
-            {
-                dictionary.Add(key, value);
-            }
+            dictionary[key] = value;
         }
     }
 

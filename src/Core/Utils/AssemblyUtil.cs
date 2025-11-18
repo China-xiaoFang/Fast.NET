@@ -23,7 +23,6 @@
 using System.Reflection;
 using System.Runtime.Loader;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
 
 /// <summary>

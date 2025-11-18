@@ -22,7 +22,6 @@
 
 using Fast.Runtime;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.JwtBearer;
 
 /// <summary>

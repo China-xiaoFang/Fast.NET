@@ -24,7 +24,6 @@ using System.Collections;
 using CSRedis;
 using Microsoft.Extensions.Options;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Cache;
 
 /// <summary>
