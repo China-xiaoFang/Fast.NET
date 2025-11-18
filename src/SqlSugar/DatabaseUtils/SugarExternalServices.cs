@@ -122,7 +122,7 @@ public partial class SqlSugarDatabaseUtil
                             _ => "int"
                         };
                     }
-                    else if (propertyType == typeof(DateTime) || propertyType == typeof(DateTimeOffset))
+                    else if (propertyType == typeof(DateTimeOffset))
                     {
                         columnInfo.DataType = "datetimeoffset";
                     }
