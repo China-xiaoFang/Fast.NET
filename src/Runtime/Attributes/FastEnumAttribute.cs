@@ -79,7 +79,6 @@ public class FastEnumAttribute : Attribute
     {
         ChName = chName;
         EnName = enName;
-        Remark = chName;
     }
 
     /// <summary>
@@ -90,6 +89,5 @@ public class FastEnumAttribute : Attribute
     public FastEnumAttribute(string chName)
     {
         ChName = chName;
-        Remark = chName;
     }
 }
