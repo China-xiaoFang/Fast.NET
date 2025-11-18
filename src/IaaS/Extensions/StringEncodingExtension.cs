@@ -27,7 +27,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>

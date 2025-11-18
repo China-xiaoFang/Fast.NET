@@ -23,7 +23,6 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.DependencyInjection;
 
 /// <summary>

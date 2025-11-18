@@ -22,7 +22,6 @@
 
 using System.Text.Json;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Logging;
 
 /// <summary>

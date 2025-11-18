@@ -23,7 +23,6 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.DynamicApplication;
 
 /// <summary>

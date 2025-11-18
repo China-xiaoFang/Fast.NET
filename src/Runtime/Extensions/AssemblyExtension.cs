@@ -25,7 +25,6 @@ using System.Runtime.Loader;
 using System.Text;
 using System.Text.Json;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Runtime;
 
 /// <summary>
@@ -39,7 +38,7 @@ public static class AssemblyExtension
     /// <remarks>暂不支持独立/单文件发布</remarks>
     /// <param name="assembly"><see cref="Assembly"/> 入口程序集</param>
     /// <returns></returns>
-    public static IEnumerable<Assembly> GetEntryReferencedAssembly(this Assembly assembly)
+    public static List<Assembly> GetEntryReferencedAssembly(this Assembly assembly)
     {
         // 判断是否为独立/单文件发布
         if (!string.IsNullOrWhiteSpace(assembly?.Location))
@@ -114,7 +113,7 @@ public static class AssemblyExtension
                 .ToList();
         }
 
-        return new[] {assembly};
+        return [assembly];
     }
 
     /// <summary>

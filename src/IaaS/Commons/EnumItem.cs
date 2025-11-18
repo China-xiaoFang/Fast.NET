@@ -22,7 +22,6 @@
 
 using System;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>

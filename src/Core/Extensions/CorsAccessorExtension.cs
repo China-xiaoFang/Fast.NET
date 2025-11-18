@@ -27,7 +27,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
 
 /// <summary>

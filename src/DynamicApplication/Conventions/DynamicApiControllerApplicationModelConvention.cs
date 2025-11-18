@@ -29,7 +29,6 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.DynamicApplication;
 
 /// <summary>

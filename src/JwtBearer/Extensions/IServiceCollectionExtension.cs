@@ -29,7 +29,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.JwtBearer;
 
 /// <summary>

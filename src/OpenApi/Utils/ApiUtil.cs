@@ -24,7 +24,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.OpenApi;
 
 /// <summary>
@@ -185,7 +184,6 @@ public static partial class OpenApiUtil
                         {
                             var parameter = methodInfo.Parameters[j];
 
-                            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                             switch (scriptLanguage)
                             {
                                 case ScriptLanguageEnum.JavaScript:
@@ -205,6 +203,8 @@ public static partial class OpenApiUtil
                                     }
 
                                     break;
+                                default:
+                                    throw new ArgumentOutOfRangeException(nameof(scriptLanguage), scriptLanguage, null);
                             }
 
                             requestParamSb.Append($"        {parameter.Name},");
@@ -227,7 +227,6 @@ public static partial class OpenApiUtil
 
                     if (!string.IsNullOrWhiteSpace(requestDataType))
                     {
-                        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                         switch (scriptLanguage)
                         {
                             case ScriptLanguageEnum.JavaScript:
@@ -243,6 +242,8 @@ public static partial class OpenApiUtil
                                 }
 
                                 break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(scriptLanguage), scriptLanguage, null);
                         }
                     }
 
@@ -301,7 +302,6 @@ public static partial class OpenApiUtil
                     }
                 }
 
-                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                 switch (scriptLanguage)
                 {
                     case ScriptLanguageEnum.JavaScript:
@@ -368,6 +368,8 @@ public static partial class OpenApiUtil
                         }
 
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(scriptLanguage), scriptLanguage, null);
                 }
             }
         }

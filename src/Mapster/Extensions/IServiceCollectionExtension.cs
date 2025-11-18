@@ -24,7 +24,6 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Mapster;
 
 /// <summary>

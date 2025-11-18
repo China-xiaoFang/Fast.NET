@@ -25,7 +25,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Swagger;
 
 /// <summary>

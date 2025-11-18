@@ -29,8 +29,8 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
 
+// ReSharper disable once CheckNamespace
 namespace System;
 
 /// <summary>
@@ -96,14 +96,14 @@ public static class MAppContext
         Assemblies = entryAssembly.GetEntryReferencedAssembly();
 
         // 获取有效的类型集合
-        // ReSharper disable once PossibleMultipleEnumeration
-        Types = Assemblies.SelectMany(assembly => assembly.GetAssemblyTypes());
+        Types = Assemblies.SelectMany(assembly => assembly.GetAssemblyTypes())
+            .ToList();
 
         // 获取排除使用了 SuppressSnifferAttribute 特性的类型
         var suppressSnifferAttributeType = typeof(SuppressSnifferAttribute);
-        // ReSharper disable once PossibleMultipleEnumeration
         EffectiveTypes = Assemblies.SelectMany(assembly =>
-            assembly.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)));
+                assembly.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)))
+            .ToList();
     }
 
     /// <summary>

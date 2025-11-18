@@ -27,7 +27,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>

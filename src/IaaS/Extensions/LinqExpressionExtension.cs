@@ -23,7 +23,6 @@
 using System;
 using System.Linq.Expressions;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.IaaS;
 
 /// <summary>

@@ -24,7 +24,6 @@ using Fast.Runtime;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.OpenApi;
 
 /// <summary>

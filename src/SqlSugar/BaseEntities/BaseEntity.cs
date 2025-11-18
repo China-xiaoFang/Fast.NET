@@ -23,7 +23,6 @@
 using System.ComponentModel.DataAnnotations;
 using SqlSugar;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>

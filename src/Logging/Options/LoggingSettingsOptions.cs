@@ -23,7 +23,6 @@
 using Fast.Runtime;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Logging;
 
 /// <summary>

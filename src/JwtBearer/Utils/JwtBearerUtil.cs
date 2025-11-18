@@ -37,7 +37,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-// ReSharper disable once CheckNamespace
+
 namespace Fast.JwtBearer;
 
 /// <summary>

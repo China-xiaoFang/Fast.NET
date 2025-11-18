@@ -1,4 +1,4 @@
-**中** | [En](https://github.com/Net-18K/Fast.NET)
+**中** | [En](https://github.com/China-xiaoFang/Fast.NET)
 
 # Fast.NET（v3）
 
@@ -48,20 +48,20 @@ var builder = WebApplication.CreateBuilder(args);
 // 初始化 框架
 builder.Initialize();
 
+// 添加序列化服务
+builder.Services.AddSerialization();
+
 // 添加日志服务
 builder.Services.AddLoggingService(builder.Environment);
-
-// 添加 Gzip 压缩
-builder.Services.AddGzipCompression();
 
 // 添加跨域服务
 builder.Services.AddCorsAccessor();
 
+// 添加 Gzip 压缩
+builder.Services.AddGzipCompression();
+
 // 添加 Mapster 服务
 builder.Services.AddMapster();
-
-// 添加序列化服务
-builder.Services.AddSerialization();
 
 // 添加依赖注入服务
 builder.Services.AddDependencyInjection();
@@ -72,11 +72,11 @@ builder.Services.AddEventBus();
 // 添加 Redis 缓存服务
 builder.Services.AddCache();
 
-// 添加 JwtBearer 服务
-builder.Services.AddJwtBearer(builder.Configuration);
-
 // 添加 SqlSugar 服务
 builder.Services.AddSqlSugar(builder.Configuration);
+
+// 添加 JwtBearer 服务
+builder.Services.AddJwtBearer(builder.Configuration);
 
 // Add controller.
 builder.Services.AddControllers();
@@ -105,10 +105,10 @@ app.EnableBuffering();
 
 app.UseRouting();
 
-app.MapControllers();
-
 // 启用规范化文档
 app.UseSwaggerDocuments();
+
+app.MapControllers();
 
 app.Run();
 ```
@@ -119,28 +119,28 @@ app.Run();
 
 ## 更新日志
 
-更新日志 [点击查看](https://gitee.com/Net-18K/Fast.NET/commits/master)
+更新日志 [点击查看](https://gitee.com/FastDotnet/Fast.NET/commits/master)
 
 ## 详细功能（模块说明）
 
-| 模块名称 | 状态 | 版本 | 说明 | 备注 |
-| ------  | --- | ---- | --- | --- |
-| [Fast.Cache](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Cache) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache) | Fast.NET 框架缓存模块库 | 一个在 .NET 行业中从业 `N年` 的 `小菜鸟` 常用的 Redis 缓存库，基于 [CSRedisCore](https://github.com/2881099/csredis) 封装 |
-| [Fast.DependencyInjection](https://gitee.com/Net-18K/Fast.NET/tree/master/src/DependencyInjection) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection) | Fast.NET 框架依赖注入模块库 |  |
-| [Fast.DynamicApplication](https://gitee.com/Net-18K/Fast.NET/tree/master/src/DynamicApplication) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication) | Fast.NET 框架动态Api模块库 |  |
-| [Fast.EventBus](https://gitee.com/Net-18K/Fast.NET/tree/master/src/EventBus) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus) | Fast.NET 框架事件总线模块库 |  |
-| [Fast.IaaS](https://gitee.com/Net-18K/Fast.NET/tree/master/src/IaaS) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS) | Fast.NET 框架基础设施模块库 | 一个在 `.NET` 行业中从业 `N年` 的 `小菜鸟` 常用的拓展工具类，亲自推荐，绝对好用！！！ |
-| [Fast.JwtBearer](https://gitee.com/Net-18K/Fast.NET/tree/master/src/JwtBearer) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.JwtBearer.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.JwtBearer) | Fast.NET 框架 JwtBearer 模块库 |  |
-| [Fast.Logging](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Logging) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | Fast.NET 框架日志模块库 |  |
-| [Fast.Mapster](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Mapster) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Fast.NET 框架对象映射模块库 | 基于 [Mapster](https://github.com/MapsterMapper/Mapster) 封装 |
-| [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Core) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Fast.NET 框架核心模块库 | 因 Fast.Core 已存在 Nuget 包，故改名 [Fast.NET.Core](https://gitee.com/Net-18K/Fast.NET/tree/master/src.NET/Core) |
-| [Fast.OpenApi](https://gitee.com/Net-18K/Fast.NET/tree/master/src/OpenApi) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.OpenApi.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.OpenApi) | Fast.NET 框架OpenApi模块库 |  |
-| [Fast.Runtime](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Runtime) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime) | Fast.NET 框架核心运行库 |  |
-| [Fast.Serialization.Newtonsoft.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.Newtonsoft.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Fast.NET 框架 Newtonsoft.Json 序列化模块库 | 基于 [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) 封装 |
-| [Fast.Serialization.System.Text.Json](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Serialization) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.System.Text.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | Fast.NET 框架 System.Text.Json 序列化模块库 | 基于 [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) 封装 |
-| [Fast.SqlSugar](https://gitee.com/Net-18K/Fast.NET/tree/master/src/SqlSugar) | ⏳ | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar) | Fast.NET 框架 SqlSugar 模块库 | 基于 [SqlSugar](https://gitee.com/dotnetchina/SqlSugar) 封装 |
-| [Fast.Swagger](https://gitee.com/Net-18K/Fast.NET/tree/master/src/Swagger) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger) | Fast.NET 框架 Swagger 模块库 |  |
-| [Fast.UnifyResult](https://gitee.com/Net-18K/Fast.NET/tree/master/src/UnifyResult) | ✅ | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult) | Fast.NET 框架RESTful风格统一返回模块库 |  |
+| 模块名称                                                                                                   | 状态 | 版本                                                                                                                                                                      | 说明                                        | 备注                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| [Fast.Cache](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Cache)                                  | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache)                                                   | Fast.NET 框架缓存模块库                     | 一个在 .NET 行业中从业 `N年` 的 `小菜鸟` 常用的 Redis 缓存库，基于 [CSRedisCore](https://github.com/2881099/csredis) 封装 |
+| [Fast.DependencyInjection](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/DependencyInjection)      | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection)                       | Fast.NET 框架依赖注入模块库                 |                                                                                                                           |
+| [Fast.DynamicApplication](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/DynamicApplication)        | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication)                         | Fast.NET 框架动态 Api 模块库                |                                                                                                                           |
+| [Fast.EventBus](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/EventBus)                            | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus)                                             | Fast.NET 框架事件总线模块库                 |                                                                                                                           |
+| [Fast.IaaS](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/IaaS)                                    | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS)                                                     | Fast.NET 框架基础设施模块库                 | 一个在 `.NET` 行业中从业 `N年` 的 `小菜鸟` 常用的拓展工具类，亲自推荐，绝对好用！！！                                     |
+| [Fast.JwtBearer](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/JwtBearer)                          | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.JwtBearer.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.JwtBearer)                                           | Fast.NET 框架 JwtBearer 模块库              |                                                                                                                           |
+| [Fast.Logging](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Logging)                              | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging)                                               | Fast.NET 框架日志模块库                     |                                                                                                                           |
+| [Fast.Mapster](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Mapster)                              | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster)                                               | Fast.NET 框架对象映射模块库                 | 基于 [Mapster](https://github.com/MapsterMapper/Mapster) 封装                                                             |
+| [Fast.NET.Core](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Core)                                | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core)                                             | Fast.NET 框架核心模块库                     | 因 Fast.Core 已存在 Nuget 包，故改名 [Fast.NET.Core](https://gitee.com/FastDotnet/Fast.NET/tree/master/src.NET/Core)      |
+| [Fast.OpenApi](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/OpenApi)                              | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.OpenApi.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.OpenApi)                                               | Fast.NET 框架 OpenApi 模块库                |                                                                                                                           |
+| [Fast.Runtime](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Runtime)                              | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime)                                               | Fast.NET 框架核心运行库                     |                                                                                                                           |
+| [Fast.Serialization.Newtonsoft.Json](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Serialization)  | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.Newtonsoft.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json)   | Fast.NET 框架 Newtonsoft.Json 序列化模块库  | 基于 [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) 封装                                                   |
+| [Fast.Serialization.System.Text.Json](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Serialization) | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.System.Text.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | Fast.NET 框架 System.Text.Json 序列化模块库 | 基于 [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) 封装                               |
+| [Fast.SqlSugar](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/SqlSugar)                            | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar)                                             | Fast.NET 框架 SqlSugar 模块库               | 基于 [SqlSugar](https://gitee.com/dotnetchina/SqlSugar) 封装                                                              |
+| [Fast.Swagger](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Swagger)                              | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger)                                               | Fast.NET 框架 Swagger 模块库                |                                                                                                                           |
+| [Fast.UnifyResult](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/UnifyResult)                      | ✅   | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult)                                       | Fast.NET 框架 RESTful 风格统一返回模块库    |                                                                                                                           |
 
 ## 近期计划
 
@@ -148,15 +148,16 @@ app.Run();
 - [✅] 核心模块
 - [✅] 跨域处理模块
 - [✅] 对象映射模块
-- [✅] Redis缓存模块
+- [✅] Redis 缓存模块
 - [✅] 序列化模块
 - [✅] 依赖注入模块
-- [✅] 动态API模块
+- [✅] 动态 API 模块
 - [✅] 规范化文档模块
 - [✅] 规范化返回模块
 - [✅] 日志模块
 - [✅] 事件总线
 - [✅] SqlSugar
+- [✅] OpenApi
 - [⚠️] ...
 
 > 状态说明
@@ -170,7 +171,7 @@ app.Run();
 
 ## 协议
 
-[Fast.NET](https://gitee.com/Net-18K/Fast.NET) 遵循 [Apache-2.0](https://gitee.com/Net-18K/Fast.NET/blob/master/LICENSE) 开源协议，欢迎大家提交 `PR` 或 `Issue`。
+[Fast.NET](https://gitee.com/FastDotnet/Fast.NET) 遵循 [Apache-2.0](https://gitee.com/FastDotnet/Fast.NET/blob/master/LICENSE) 开源协议，欢迎大家提交 `PR` 或 `Issue`。
 
 ```
 Apache开源许可证
@@ -194,22 +195,19 @@ Apache开源许可证
 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 ```
 
-`
-由于目前还属于开发阶段，所有功能皆不是很稳定，所以暂且使用 Apache-2.0 开源协议。后续等所有功能都稳定后，会采用 MIT 开源协议。
-`
-
 ## 团队成员
 
-| 成员 | 技术 | 昵称 | 座右铭 |
-| --- | ---- | ---- | ---- | 
-| 小方 | 全栈 | 1.8K仔 | 接受自己的平庸和普通，是成长的必修课 <br> 你羡慕的生活都是你没熬过的苦 <br> 当你的能力还撑不起你的野心时，你就需要静下心来 好好学习 | 
+| 成员 | 技术 | 昵称    | 座右铭                                                                                                                              |
+| ---- | ---- | ------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 小方 | 全栈 | 1.8K 仔 | 接受自己的平庸和普通，是成长的必修课 <br> 你羡慕的生活都是你没熬过的苦 <br> 当你的能力还撑不起你的野心时，你就需要静下心来 好好学习 |
 
 ## 编码环境
-| 名称 | 备注 |
-| --- | ---- |
-| Visual Studio 2022 |  |
-| Visual Studio Code |  |
-| Resharper | 您在代码中所看到的以 `// ReSharper` 开头的注释，就是此应用生成的为了避免一些不必要的警告或提示 |
+
+| 名称               | 备注                                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------------- |
+| Visual Studio 2022 |                                                                                                |
+| Visual Studio Code |                                                                                                |
+| Resharper          | 您在代码中所看到的以 `// ReSharper` 开头的注释，就是此应用生成的为了避免一些不必要的警告或提示 |
 
 ## 免责申明
 

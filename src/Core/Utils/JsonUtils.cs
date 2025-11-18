@@ -23,7 +23,6 @@
 using System.Globalization;
 using System.Text.Json;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
 
 /// <summary>

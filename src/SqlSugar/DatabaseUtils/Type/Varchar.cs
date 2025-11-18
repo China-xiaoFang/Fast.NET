@@ -23,7 +23,6 @@
 using System.Text.RegularExpressions;
 using SqlSugar;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.SqlSugar;
 
 /// <summary>

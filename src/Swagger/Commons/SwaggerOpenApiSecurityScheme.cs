@@ -22,7 +22,6 @@
 
 using Microsoft.OpenApi.Models;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Swagger;
 
 /// <summary>

@@ -24,7 +24,6 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.DynamicApplication;
 
 /// <summary>

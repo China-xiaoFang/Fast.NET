@@ -25,7 +25,6 @@ using Fast.Runtime;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Swagger;
 
 /// <summary>

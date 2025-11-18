@@ -25,7 +25,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Serialization;
 
 /// <summary>

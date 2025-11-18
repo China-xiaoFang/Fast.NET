@@ -23,7 +23,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.OpenApi;
 
 /// <summary>

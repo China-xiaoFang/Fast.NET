@@ -22,7 +22,6 @@
 
 using System.Reflection;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Swagger;
 
 /// <summary>

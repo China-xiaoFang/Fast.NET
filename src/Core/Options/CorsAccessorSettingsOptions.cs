@@ -23,7 +23,6 @@
 using System.ComponentModel.DataAnnotations;
 using Fast.Runtime;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
 
 /// <summary>

@@ -24,7 +24,6 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Serialization;
 
 /// <summary>

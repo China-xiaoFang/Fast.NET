@@ -22,7 +22,6 @@
 
 using CSRedis;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.Cache;
 
 /// <summary>

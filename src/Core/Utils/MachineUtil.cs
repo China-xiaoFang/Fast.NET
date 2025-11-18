@@ -26,7 +26,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 
-// ReSharper disable once CheckNamespace
 namespace Fast.NET.Core;
 
 /// <summary>
