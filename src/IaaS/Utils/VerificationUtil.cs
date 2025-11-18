@@ -50,7 +50,7 @@ public static class VerificationUtil
     /// <summary>
     /// 进制长度
     /// </summary>
-    private static readonly int BIN_LEN = BASE.Length;
+    private static readonly int BASE_LEN = BASE.Length;
 
     /// <summary>
     /// 生成邀请码最小长度
@@ -58,26 +58,26 @@ public static class VerificationUtil
     private const int CODE_LEN = 6;
 
     /// <summary>
-    /// ID转换为邀请码
+    /// Id转换为邀请码
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     public static string IdToCodeByLong(long id)
     {
-        var buf = new char[BIN_LEN];
-        var charPos = BIN_LEN;
+        var buf = new char[BASE_LEN];
+        var charPos = BASE_LEN;
 
         //当id除以数组长度结果大于0，则进行取模操作，并以取模的值作为数组的坐标获得对应的字符
-        while (id / BIN_LEN > 0)
+        while (id / BASE_LEN > 0)
         {
-            var index = (int) (id % BIN_LEN);
+            var index = (int) (id % BASE_LEN);
             buf[--charPos] = BASE[index];
-            id /= BIN_LEN;
+            id /= BASE_LEN;
         }
 
-        buf[--charPos] = BASE[(int) (id % BIN_LEN)];
+        buf[--charPos] = BASE[(int) (id % BASE_LEN)];
         // 将字符数组转化为字符串
-        var result = new string(buf, charPos, BIN_LEN - charPos);
+        var result = new string(buf, charPos, BASE_LEN - charPos);
 
         // 长度不足指定长度则随机补全
         var len = result.Length;
@@ -89,7 +89,7 @@ public static class VerificationUtil
         // 去除SUFFIX_CHAR本身占位之后需要补齐的位数
         for (var i = 0; i < CODE_LEN - len - 1; i++)
         {
-            sb.Append(BASE[random.Next(BIN_LEN)]);
+            sb.Append(BASE[random.Next(BASE_LEN)]);
         }
 
         result += sb.ToString();
@@ -98,7 +98,7 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 邀请码解析出ID,基本操作思路恰好与idToCode反向操作。
+    /// 邀请码解析出Id,基本操作思路恰好与idToCode反向操作。
     /// </summary>
     /// <param name="code"></param>
     /// <returns></returns>
@@ -109,7 +109,7 @@ public static class VerificationUtil
         for (var i = 0; i < charArray.Length; i++)
         {
             var index = 0;
-            for (var j = 0; j < BIN_LEN; j++)
+            for (var j = 0; j < BASE_LEN; j++)
             {
                 if (charArray[i] != BASE[j])
                     continue;
@@ -124,7 +124,7 @@ public static class VerificationUtil
 
             if (i > 0)
             {
-                result = result * BIN_LEN + index;
+                result = result * BASE_LEN + index;
             }
             else
             {
@@ -136,26 +136,26 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// ID转换为邀请码
+    /// Id转换为邀请码
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     public static string IdToCodeByInt(int id)
     {
-        var buf = new char[BIN_LEN];
-        var charPos = BIN_LEN;
+        var buf = new char[BASE_LEN];
+        var charPos = BASE_LEN;
 
         //当id除以数组长度结果大于0，则进行取模操作，并以取模的值作为数组的坐标获得对应的字符
-        while (id / BIN_LEN > 0)
+        while (id / BASE_LEN > 0)
         {
-            var index = id % BIN_LEN;
+            var index = id % BASE_LEN;
             buf[--charPos] = BASE[index];
-            id /= BIN_LEN;
+            id /= BASE_LEN;
         }
 
-        buf[--charPos] = BASE[id % BIN_LEN];
+        buf[--charPos] = BASE[id % BASE_LEN];
         // 将字符数组转化为字符串
-        var result = new string(buf, charPos, BIN_LEN - charPos);
+        var result = new string(buf, charPos, BASE_LEN - charPos);
 
         // 长度不足指定长度则随机补全
         var len = result.Length;
@@ -167,7 +167,7 @@ public static class VerificationUtil
         // 去除SUFFIX_CHAR本身占位之后需要补齐的位数
         for (var i = 0; i < CODE_LEN - len - 1; i++)
         {
-            sb.Append(BASE[random.Next(BIN_LEN)]);
+            sb.Append(BASE[random.Next(BASE_LEN)]);
         }
 
         result += sb.ToString();
@@ -176,7 +176,7 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 邀请码解析出ID,基本操作思路恰好与idToCode反向操作。
+    /// 邀请码解析出Id,基本操作思路恰好与idToCode反向操作。
     /// </summary>
     /// <param name="code"></param>
     /// <returns></returns>
@@ -187,7 +187,7 @@ public static class VerificationUtil
         for (var i = 0; i < charArray.Length; i++)
         {
             var index = 0;
-            for (var j = 0; j < BIN_LEN; j++)
+            for (var j = 0; j < BASE_LEN; j++)
             {
                 if (charArray[i] != BASE[j])
                     continue;
@@ -202,7 +202,7 @@ public static class VerificationUtil
 
             if (i > 0)
             {
-                result = result * BIN_LEN + index;
+                result = result * BASE_LEN + index;
             }
             else
             {
@@ -265,7 +265,7 @@ public static class VerificationUtil
 
         for (var i = 0; i < len; i++)
         {
-            var randomInt = random.Next(0, BIN_LEN);
+            var randomInt = random.Next(0, BASE_LEN);
             var randomChar = BASE[randomInt];
             result += randomChar;
         }

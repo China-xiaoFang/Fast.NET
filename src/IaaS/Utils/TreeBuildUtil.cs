@@ -43,7 +43,7 @@ public class TreeBuildUtil<TEntity, TProperty> where TEntity : ITreeNode<TProper
 
     /// <summary>
     /// 设置根节点方法
-    /// 查询数据可以设置其他节点为根节点，避免父节点永远是0，查询不到数据的问题
+    /// <para>查询数据可以设置其他节点为根节点，避免父节点永远是0，查询不到数据的问题</para>
     /// </summary>
     public void SetRootParentId(TProperty rootParentId)
     {
