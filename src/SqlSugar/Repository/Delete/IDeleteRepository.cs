@@ -72,6 +72,34 @@ public partial interface ISqlSugarRepository<TEntity>
     Task<int> DeleteAsync(params object[] keys);
 
     /// <summary>
+    /// 删除多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    int Delete(params TEntity[] entities);
+
+    /// <summary>
+    /// 删除多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    Task<int> DeleteAsync(params TEntity[] entities);
+
+    /// <summary>
+    /// 删除多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    int Delete(IEnumerable<TEntity> entities);
+
+    /// <summary>
+    /// 删除多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    Task<int> DeleteAsync(IEnumerable<TEntity> entities);
+
+    /// <summary>
     /// 自定义条件删除记录
     /// </summary>
     /// <param name="whereExpression"></param>
