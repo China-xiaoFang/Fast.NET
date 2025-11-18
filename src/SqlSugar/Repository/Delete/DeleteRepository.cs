@@ -148,6 +148,82 @@ internal sealed partial class SqlSugarRepository<TEntity>
     }
 
     /// <summary>
+    /// 删除多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public int Delete(params TEntity[] entities)
+    {
+        var deleteable = Deleteable(entities.ToList())
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommand();
+        }
+
+        return deleteable.ExecuteCommand();
+    }
+
+    /// <summary>
+    /// 删除多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public Task<int> DeleteAsync(params TEntity[] entities)
+    {
+        var deleteable = Deleteable(entities.ToList())
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommandAsync();
+        }
+
+        return deleteable.ExecuteCommandAsync();
+    }
+
+    /// <summary>
+    /// 删除多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public int Delete(IEnumerable<TEntity> entities)
+    {
+        var deleteable = Deleteable(entities.ToList())
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommand();
+        }
+
+        return deleteable.ExecuteCommand();
+    }
+
+    /// <summary>
+    /// 删除多条记录
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public Task<int> DeleteAsync(IEnumerable<TEntity> entities)
+    {
+        var deleteable = Deleteable(entities.ToList())
+            .EnableDiffLogEventIF(DatabaseInfo.DiffLog!.Value);
+
+        if (IsSplitTable)
+        {
+            return deleteable.SplitTable()
+                .ExecuteCommandAsync();
+        }
+
+        return deleteable.ExecuteCommandAsync();
+    }
+
+    /// <summary>
     /// 自定义条件删除记录
     /// </summary>
     /// <param name="whereExpression"></param>
