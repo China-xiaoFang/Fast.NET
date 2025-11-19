@@ -29,11 +29,6 @@ namespace Fast.SqlSugar;
 public class PagedOutput
 {
     /// <summary>
-    /// 部门Id
-    /// </summary>
-    public virtual long? DepartmentId { get; set; }
-
-    /// <summary>
     /// 部门名称
     /// </summary>
     public virtual string DepartmentName { get; set; }
