@@ -109,8 +109,8 @@ public static class CoordinateUtil
         var sqrtMagic = Math.Sqrt(magic);
 
         // 调整偏移量为实际经纬度偏移
-        dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * pi);
-        dLng = (dLng * 180.0) / (a / sqrtMagic * Math.Cos(radLat) * pi);
+        dLat = dLat * 180.0 / (a * (1 - ee) / (magic * sqrtMagic) * pi);
+        dLng = dLng * 180.0 / (a / sqrtMagic * Math.Cos(radLat) * pi);
 
         // 返回加上偏移后的 GCJ-02 坐标
         var mgLat = wgLat + dLat;
