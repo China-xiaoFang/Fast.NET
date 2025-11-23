@@ -151,7 +151,7 @@ internal class FileLoggingWriter
         var baseFileName = GetBaseFileName();
 
         // 如果文件不存在或没有达到 FileSizeLimitBytes 限制大小，则返回基础文件名
-        if (!File.Exists(baseFileName)
+        if (!System.IO.File.Exists(baseFileName)
             || _options.FileSizeLimitBytes <= 0
             || new FileInfo(baseFileName).Length < _options.FileSizeLimitBytes)
             return baseFileName;
@@ -323,8 +323,8 @@ internal class FileLoggingWriter
                 // 执行删除
                 Task.Run(() =>
                 {
-                    if (File.Exists(rollingFile.Key))
-                        File.Delete(rollingFile.Key);
+                    if (System.IO.File.Exists(rollingFile.Key))
+                        System.IO.File.Delete(rollingFile.Key);
                 });
             }
         }
