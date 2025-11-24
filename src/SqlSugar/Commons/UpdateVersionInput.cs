@@ -33,6 +33,6 @@ public class UpdateVersionInput
     /// <summary>
     /// 更新版本控制字段
     /// </summary>
-    [LongRequired(ErrorMessage = "更新版本控制字段不能为空")]
+    [LongRequired(ErrorMessage = "更新版本控制字段不能为空", AllowZero = true)]
     public long RowVersion { get; set; }
 }
