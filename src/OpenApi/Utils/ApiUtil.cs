@@ -51,8 +51,6 @@ public static partial class OpenApiUtil
                 return "edit";
             case HttpRequestActionEnum.Delete:
                 return "delete";
-            case HttpRequestActionEnum.Submit:
-                return "other";
             case HttpRequestActionEnum.Download:
                 return "download";
             case HttpRequestActionEnum.Upload:
@@ -62,6 +60,7 @@ public static partial class OpenApiUtil
             case HttpRequestActionEnum.Import:
                 return "import";
             case HttpRequestActionEnum.None:
+            case HttpRequestActionEnum.Submit:
             case HttpRequestActionEnum.Notify:
             case HttpRequestActionEnum.Callback:
             case HttpRequestActionEnum.Other:
@@ -230,10 +229,36 @@ public static partial class OpenApiUtil
                         switch (scriptLanguage)
                         {
                             case ScriptLanguageEnum.JavaScript:
-                                contentSb.Append("data");
+                                // 判断是否为 FormData 文件上传
+                                if (methodInfo?.RequestBody?.Content?.FormData != null)
+                                {
+                                    // 移动端使用的是 filePath 参数，默认 String 类型
+                                    contentSb.Append(hasWeb ? "data" : "filePath");
+                                }
+                                else
+                                {
+                                    contentSb.Append("data");
+                                }
+
                                 break;
                             case ScriptLanguageEnum.TypeScript:
-                                contentSb.Append($"data: {requestDataType}");
+                                // 判断是否为 FormData 文件上传
+                                if (methodInfo?.RequestBody?.Content?.FormData != null)
+                                {
+                                    if (hasWeb)
+                                    {
+                                        contentSb.Append($"data: {requestDataType}");
+                                    }
+                                    else
+                                    {
+                                        // 移动端使用的是 filePath 参数，默认 String 类型
+                                        contentSb.Append("filePath: string");
+                                    }
+                                }
+                                else
+                                {
+                                    contentSb.Append($"data: {requestDataType}");
+                                }
 
                                 // 判断是否为数组
                                 if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Type == "array")
@@ -276,8 +301,30 @@ public static partial class OpenApiUtil
 
                     if (!string.IsNullOrWhiteSpace(requestDataType))
                     {
-                        contentSb.Append("      data,");
-                        contentSb.Append(Environment.NewLine);
+                        // 判断是否为 FormData 文件上传
+                        if (methodInfo?.RequestBody?.Content?.FormData != null)
+                        {
+                            if (hasWeb)
+                            {
+                                contentSb.Append("      data,");
+                                contentSb.Append(Environment.NewLine);
+                            }
+                            else
+                            {
+                                // 移动端使用的是 filePath 参数，默认 String 类型
+                                contentSb.Append("""
+                                                       name: "file",
+                                                 """);
+                                contentSb.Append(Environment.NewLine);
+                                contentSb.Append("      filePath,");
+                                contentSb.Append(Environment.NewLine);
+                            }
+                        }
+                        else
+                        {
+                            contentSb.Append("      data,");
+                            contentSb.Append(Environment.NewLine);
+                        }
                     }
 
                     // 处理下载和导出
