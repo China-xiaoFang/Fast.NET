@@ -286,14 +286,12 @@ public static partial class OpenApiUtil
                     {
                         // 移动端默认使用 upload
                         contentSb.Append("""
-                                         ({
                                                method: "upload",
                                          """);
                     }
                     else
                     {
                         contentSb.Append($$"""
-                                           ({
                                                  method: "{{apiDescription.HttpMethod.ToLowerInvariant()}}",
                                            """);
                     }
