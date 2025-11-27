@@ -230,10 +230,10 @@ public static partial class OpenApiUtil
                         {
                             case ScriptLanguageEnum.JavaScript:
                                 // 判断是否为 FormData 文件上传
-                                if (methodInfo?.RequestBody?.Content?.FormData != null)
+                                if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
                                 {
                                     // 移动端使用的是 filePath 参数，默认 String 类型
-                                    contentSb.Append(hasWeb ? "data" : "filePath");
+                                    contentSb.Append("filePath");
                                 }
                                 else
                                 {
@@ -243,17 +243,10 @@ public static partial class OpenApiUtil
                                 break;
                             case ScriptLanguageEnum.TypeScript:
                                 // 判断是否为 FormData 文件上传
-                                if (methodInfo?.RequestBody?.Content?.FormData != null)
+                                if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
                                 {
-                                    if (hasWeb)
-                                    {
-                                        contentSb.Append($"data: {requestDataType}");
-                                    }
-                                    else
-                                    {
-                                        // 移动端使用的是 filePath 参数，默认 String 类型
-                                        contentSb.Append("filePath: string");
-                                    }
+                                    // 移动端使用的是 filePath 参数，默认 String 类型
+                                    contentSb.Append("filePath: string");
                                 }
                                 else
                                 {
@@ -285,8 +278,26 @@ public static partial class OpenApiUtil
                     contentSb.Append($$"""
                                        ({
                                              url: "{{apiName}}",
-                                             method: "{{apiDescription.HttpMethod.ToLowerInvariant()}}",
                                        """);
+                    contentSb.Append(Environment.NewLine);
+
+                    // 判断是否为 FormData 文件上传
+                    if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
+                    {
+                        // 移动端默认使用 upload
+                        contentSb.Append("""
+                                         ({
+                                               method: "upload",
+                                         """);
+                    }
+                    else
+                    {
+                        contentSb.Append($$"""
+                                           ({
+                                                 method: "{{apiDescription.HttpMethod.ToLowerInvariant()}}",
+                                           """);
+                    }
+
                     contentSb.Append(Environment.NewLine);
 
                     if (requestParamSb.Length > 0)
@@ -302,23 +313,15 @@ public static partial class OpenApiUtil
                     if (!string.IsNullOrWhiteSpace(requestDataType))
                     {
                         // 判断是否为 FormData 文件上传
-                        if (methodInfo?.RequestBody?.Content?.FormData != null)
+                        if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
                         {
-                            if (hasWeb)
-                            {
-                                contentSb.Append("      data,");
-                                contentSb.Append(Environment.NewLine);
-                            }
-                            else
-                            {
-                                // 移动端使用的是 filePath 参数，默认 String 类型
-                                contentSb.Append("""
-                                                       name: "file",
-                                                 """);
-                                contentSb.Append(Environment.NewLine);
-                                contentSb.Append("      filePath,");
-                                contentSb.Append(Environment.NewLine);
-                            }
+                            // 移动端使用的是 filePath 参数，默认 String 类型
+                            contentSb.Append("""
+                                                   name: "file",
+                                             """);
+                            contentSb.Append(Environment.NewLine);
+                            contentSb.Append("      filePath,");
+                            contentSb.Append(Environment.NewLine);
                         }
                         else
                         {
