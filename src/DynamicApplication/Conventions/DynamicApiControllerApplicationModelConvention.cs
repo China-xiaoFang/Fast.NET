@@ -436,13 +436,13 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             if (hasApiControllerAttribute)
                 continue;
 
-            // 判断是否可以为null
-            var canBeNull = parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Nullable<>);
+            //// 判断是否可以为null
+            //var canBeNull = parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Nullable<>);
 
-            var template = $"{parameterModel.ParameterName}{(canBeNull ? "?" : string.Empty)}";
+            //var template = $"{parameterModel.ParameterName}{(canBeNull ? "?" : string.Empty)}";
 
-            // 动作方法名之后
-            result.Add(template);
+            //// 动作方法名之后
+            //result.Add(template);
         }
 
         return result;
