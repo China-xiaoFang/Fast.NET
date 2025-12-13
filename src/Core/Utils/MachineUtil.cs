@@ -354,8 +354,8 @@ public static class MachineUtil
                 .Split("=", StringSplitOptions.RemoveEmptyEntries);
 
             // 将内存值转换为 MB
-            total = decimal.Parse(totalMemoryParts[1]) / 1024;
-            free = decimal.Parse(freeMemoryParts[1]) / 1024;
+            total = decimal.Parse(totalMemoryParts.Length > 1 ? totalMemoryParts[1] : totalMemoryParts[0]) / 1024;
+            free = decimal.Parse(freeMemoryParts.Length > 1 ? freeMemoryParts[1] : freeMemoryParts[0]) / 1024;
 
             // 计算已用内存
             used = total - free;
