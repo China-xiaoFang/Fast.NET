@@ -59,6 +59,11 @@ public static class MAppContext
     public static readonly string AssemblyVersion;
 
     /// <summary>
+    /// 应用运行库
+    /// </summary>
+    public static readonly IEnumerable<DependencyLibrary> RuntimeLibraries;
+
+    /// <summary>
     /// 应用有效程序集
     /// </summary>
     public static readonly IEnumerable<Assembly> Assemblies;
@@ -91,6 +96,9 @@ public static class MAppContext
         // 获取入口程序集版本号
         AssemblyVersion = entryAssembly?.GetName()
             .Version?.ToString();
+
+        // 获取应用运行库
+        RuntimeLibraries = entryAssembly.GetEntryRuntimeLibraries();
 
         // 获取所有程序集
         Assemblies = entryAssembly.GetEntryReferencedAssembly();

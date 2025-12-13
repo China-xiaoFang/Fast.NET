@@ -23,9 +23,9 @@
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="DepsLibrary"/> .deps.json 文件中 libraries 节点的Model
+/// <see cref="DependencyLibrary"/> .deps.json 文件中 libraries 节点的Model
 /// </summary>
-internal class DepsLibrary
+public class DependencyLibrary
 {
     /// <summary>
     /// 
@@ -34,7 +34,7 @@ internal class DepsLibrary
     /// <param name="name"></param>
     /// <param name="version"></param>
     /// <param name="serviceable"></param>
-    internal DepsLibrary(string type, string name, string version, bool serviceable)
+    internal DependencyLibrary(string type, string name, string version, bool serviceable)
     {
         Type = type;
         Name = name;
