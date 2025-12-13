@@ -122,7 +122,7 @@ public static class MachineUtil
             {
                 // 使用 PowerShell 查询系统启动时间
                 output = ShellUtil.Cmd("powershell",
-                    "-NoProfile -Command (Get-CimInstance Win32_OperatingSystem).LastBootUpTime");
+                    "-NoProfile -Command (Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToString('yyyyMMddHHmmss')");
             }
 
             var timeValue = output.Replace("LastBootUpTime=", string.Empty)
