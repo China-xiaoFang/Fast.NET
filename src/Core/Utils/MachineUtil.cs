@@ -20,11 +20,10 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json;
 
 namespace Fast.NET.Core;
 
@@ -113,8 +112,19 @@ public static class MachineUtil
         // Windows
         else
         {
-            // 使用 wmic 获取系统启动时间
-            var output = ShellUtil.Cmd("wmic", "OS get LastBootUpTime/Value");
+            string output;
+            try
+            {
+                // 使用 wmic 获取系统启动时间
+                output = ShellUtil.Cmd("wmic", "OS get LastBootUpTime/Value");
+            }
+            catch (Win32Exception)
+            {
+                // 使用 PowerShell 查询系统启动时间
+                output = ShellUtil.Cmd("powershell",
+                    "-NoProfile -Command (Get-CimInstance Win32_OperatingSystem).LastBootUpTime");
+            }
+
             var timeValue = output.Replace("LastBootUpTime=", string.Empty)
                 .Trim()
                 .Split('.', StringSplitOptions.RemoveEmptyEntries)[0];
@@ -198,11 +208,22 @@ public static class MachineUtil
         // Windows
         else
         {
-            // 使用 wmic 获取 CPU 使用率
-            var output = ShellUtil.Cmd("wmic", "cpu get LoadPercentage");
+            string output;
+            try
+            {
+                // 使用 wmic 获取 CPU 使用率
+                output = ShellUtil.Cmd("wmic", "cpu get LoadPercentage");
+            }
+            catch (Win32Exception)
+            {
+                // 使用 powershell 获取 CPU 使用率
+                output = ShellUtil.Cmd("powershell",
+                    "-NoProfile -Command Get-CimInstance Win32_Processor | ForEach-Object { $_.LoadPercentage }");
+            }
+
             rates.AddRange(output.Replace("LoadPercentage", string.Empty)
                 .Trim()
-                .Split("\r\r\n", StringSplitOptions.RemoveEmptyEntries)
+                .Split(["\r", "\n"], StringSplitOptions.RemoveEmptyEntries)
                 .Select(sl =>
                 {
                     if (string.IsNullOrWhiteSpace(sl.Trim()))
@@ -310,10 +331,21 @@ public static class MachineUtil
         // Windows
         else
         {
-            // 使用 `wmic` 命令获取内存信息
-            var output = ShellUtil.Cmd("wmic", "OS get FreePhysicalMemory,TotalVisibleMemorySize /Value");
+            string output;
+            try
+            {
+                // 使用 `wmic` 命令获取内存信息
+                output = ShellUtil.Cmd("wmic", "OS get FreePhysicalMemory,TotalVisibleMemorySize /Value");
+            }
+            catch (Win32Exception)
+            {
+                // 使用 powershell 命令获取内存信息
+                output = ShellUtil.Cmd("powershell",
+                    "-NoProfile -Command (Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty FreePhysicalMemory).ToString() + ',' + (Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty TotalVisibleMemorySize).ToString()");
+            }
+
             var lines = output.Trim()
-                .Split("\n", StringSplitOptions.RemoveEmptyEntries);
+                .Split([",", "\r", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
             // 提取并解析内存信息：总内存和可用内存（单位：KB）
             var freeMemoryParts = lines[0]
@@ -535,66 +567,5 @@ public static class MachineUtil
         }
 
         return diskInfos;
-    }
-
-    /// <summary>
-    /// 获取服务器IP地址
-    /// </summary>
-    /// <returns></returns>
-    public static async Task<(string ip, string address)> GetServerIp()
-    {
-        // IP地址
-        var ip = "unknow";
-        var address = "中国";
-
-        // 发送 Http 请求
-        using var httpClient = new HttpClient();
-
-        // 设置请求超时时间
-        httpClient.Timeout = TimeSpan.FromSeconds(10);
-
-        using var request = new HttpRequestMessage();
-
-        // 设置请求 Url
-        request.RequestUri = new Uri("https://www.ip.cn/api/index?ip&type=0");
-        // 设置请求方式
-        request.Method = HttpMethod.Get;
-        // 设置请求头部
-        request.Headers.Add("Accept", "application/json, text/plain, */*");
-
-        // 添加默认 User-Agent
-        request.Headers.TryAddWithoutValidation("User-Agent",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.81 Safari/537.36 Edg/104.0.1293.47");
-
-        try
-        {
-            // 发送请求
-            using var response = await httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            var responseContent = Encoding.UTF8.GetString(response.Content.ReadAsByteArrayAsync()
-                .Result);
-
-            var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, object>>(responseContent);
-
-            if (ipInfoDictionary.TryGetValue("ip", out var resIp))
-            {
-                ip = resIp.ToString();
-            }
-
-            if (ipInfoDictionary.TryGetValue("address", out var resAddress))
-            {
-                address = resAddress.ToString();
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            throw new Exception("远程请求错误：" + ex.Message, ex);
-        }
-        catch (TaskCanceledException ex)
-        {
-            throw new Exception("远程请求超时：" + ex.Message, ex);
-        }
-
-        return (ip, address);
     }
 }
