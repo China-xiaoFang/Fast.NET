@@ -33,20 +33,16 @@ namespace Fast.Runtime;
 public static class AssemblyExtension
 {
     /// <summary>
-    /// 获取入口引用程序集
+    /// 获取入口运行库
     /// </summary>
     /// <remarks>暂不支持独立/单文件发布</remarks>
     /// <param name="assembly"><see cref="Assembly"/> 入口程序集</param>
     /// <returns></returns>
-    public static List<Assembly> GetEntryReferencedAssembly(this Assembly assembly)
+    public static List<DependencyLibrary> GetEntryRuntimeLibraries(this Assembly assembly)
     {
         // 判断是否为独立/单文件发布
         if (!string.IsNullOrWhiteSpace(assembly?.Location))
         {
-            // 需排除的程序集后缀
-            // 这里的 Microsoft.Data.SqlClient 排除是为了解决这个错误 https://github.com/dotnet/SqlClient/issues/1930
-            var excludeAssemblyNames = new[] {"Database.Migrations", "Microsoft.Data.SqlClient"};
-
             // 获取程序入口文件的 .deps.json 文件
             var depsJsonFilePath = $"{assembly.Location[..^".dll".Length]}.deps.json";
 
@@ -65,7 +61,7 @@ public static class AssemblyExtension
             var librariesContent = depsJsonRoot.GetProperty("libraries")
                 .EnumerateObject();
 
-            var depsLibraryList = new List<DepsLibrary>();
+            var dependencyLibraryList = new List<DependencyLibrary>();
 
             // 处理 "libraries" 节点的值
             foreach (var library in librariesContent)
@@ -91,29 +87,51 @@ public static class AssemblyExtension
                 }
 
                 // 放入集合中
-                depsLibraryList.Add(new DepsLibrary(type, name, version, serviceable));
+                dependencyLibraryList.Add(new DependencyLibrary(type, name, version, serviceable));
             }
 
-            // 读取项目程序集 或 第三方引用的包，或手动添加引用的dll，或配置特定的包前缀
-            return depsLibraryList.Where(wh =>
-                    (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) || wh.Type == "package")
-                .Select(sl =>
-                {
-                    // 这里由于一些dll文件是运行时文件，但是却也包含了在 .deps.json 文件的 "libraries" 节点中，所以采用极限1换100操作，报错的不处理
-                    try
-                    {
-                        return AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(sl.Name));
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                })
-                .Where(wh => wh != null)
-                .ToList();
+            return dependencyLibraryList;
         }
 
-        return [assembly];
+        return [];
+    }
+
+    /// <summary>
+    /// 获取入口引用程序集
+    /// </summary>
+    /// <remarks>暂不支持独立/单文件发布</remarks>
+    /// <param name="assembly"><see cref="Assembly"/> 入口程序集</param>
+    /// <returns></returns>
+    public static List<Assembly> GetEntryReferencedAssembly(this Assembly assembly)
+    {
+        var dependencyLibraryList = assembly.GetEntryRuntimeLibraries();
+
+        if (!dependencyLibraryList.Any())
+        {
+            return [assembly];
+        }
+
+        // 需排除的程序集后缀
+        // 这里的 Microsoft.Data.SqlClient 排除是为了解决这个错误 https://github.com/dotnet/SqlClient/issues/1930
+        var excludeAssemblyNames = new[] {"Database.Migrations", "Microsoft.Data.SqlClient"};
+
+        // 读取项目引用程序集
+        return dependencyLibraryList.Where(wh =>
+                (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) || wh.Type == "package")
+            .Select(sl =>
+            {
+                // 这里由于一些dll文件是运行时文件，但是却也包含了在 .deps.json 文件的 "libraries" 节点中，所以采用极限1换100操作，报错的不处理
+                try
+                {
+                    return AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(sl.Name));
+                }
+                catch
+                {
+                    return null;
+                }
+            })
+            .Where(wh => wh != null)
+            .ToList();
     }
 
     /// <summary>
