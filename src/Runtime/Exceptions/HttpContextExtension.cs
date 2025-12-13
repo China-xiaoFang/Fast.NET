@@ -493,7 +493,7 @@ public static class HttpContextExtension
         using var request = new HttpRequestMessage();
 
         // 设置请求 Url
-        request.RequestUri = new Uri($"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}");
+        request.RequestUri = new Uri($"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}&json=true");
         // 设置请求方式
         request.Method = HttpMethod.Get;
         // 设置请求头部
@@ -513,12 +513,12 @@ public static class HttpContextExtension
                 .GetString(response.Content.ReadAsByteArrayAsync()
                     .Result);
 
-            var ipInfo = responseContent[
-                    (responseContent.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
-                .TrimEnd();
-            ipInfo = ipInfo[..^3];
+            //var ipInfo = responseContent[
+            //        (responseContent.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
+            //    .TrimEnd();
+            //ipInfo = ipInfo[..^3];
 
-            var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, string>>(ipInfo);
+            var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, string>>(responseContent);
 
             if (ipInfoDictionary.TryGetValue("ip", out var resIp))
             {
@@ -530,7 +530,7 @@ public static class HttpContextExtension
                 result.Province = resPro;
             }
 
-            if (ipInfoDictionary.TryGetValue("pro", out var resProCode))
+            if (ipInfoDictionary.TryGetValue("proCode", out var resProCode))
             {
                 result.ProvinceZipCode = resProCode;
             }
