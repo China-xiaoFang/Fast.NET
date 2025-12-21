@@ -45,6 +45,11 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     internal readonly IDisposable _optionsReloadToken;
 
     /// <summary>
+    /// 空值
+    /// </summary>
+    internal const string _nullValue = "×Null×";
+
+    /// <summary>
     /// 前缀
     /// </summary>
     public string Prefix { get; private set; }
@@ -407,7 +412,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get(key);
 
-        if (result is "×Null×")
+        if (result is _nullValue)
         {
             return null;
         }
@@ -421,10 +426,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                        Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -440,10 +445,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -465,7 +470,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync(key);
 
-        if (result is "×Null×")
+        if (result is _nullValue)
         {
             return null;
         }
@@ -479,10 +484,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                        await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -498,10 +503,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -522,12 +527,14 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public T GetAndSet<T>(string key, Func<T> func)
     {
-        var result = Client.Get<T>(key);
+        var value = Client.Get(key);
 
-        if (result is "×Null×")
+        if (value is _nullValue)
         {
             return default;
         }
+
+        var result = Client.Get<T>(key);
 
         if (IsEmpty(result))
         {
@@ -538,10 +545,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                        Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -557,10 +564,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -581,9 +588,16 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, Func<Task<T>> func)
     {
+        var value = await Client.GetAsync(key);
+
+        if (value is _nullValue)
+        {
+            return default;
+        }
+
         var result = await Client.GetAsync<T>(key);
 
-        if (result is "×Null×")
+        if (result is _nullValue)
         {
             return default;
         }
@@ -597,10 +611,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                        await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -616,10 +630,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -642,7 +656,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get(key);
 
-        if (result is "×Null×")
+        if (result is _nullValue)
         {
             return null;
         }
@@ -656,10 +670,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                        Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -675,10 +689,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -701,7 +715,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync(key);
 
-        if (result is "×Null×")
+        if (result is _nullValue)
         {
             return null;
         }
@@ -715,10 +729,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                        await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -734,10 +748,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -759,12 +773,14 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public T GetAndSet<T>(string key, int expireSeconds, Func<T> func)
     {
-        var result = Client.Get<T>(key);
+        var value = Client.Get(key);
 
-        if (result is "×Null×")
+        if (value is _nullValue)
         {
             return default;
         }
+
+        var result = Client.Get<T>(key);
 
         if (IsEmpty(result))
         {
@@ -775,10 +791,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                        Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -794,10 +810,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -819,12 +835,14 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, int expireSeconds, Func<Task<T>> func)
     {
-        var result = await Client.GetAsync<T>(key);
+        var value = await Client.GetAsync(key);
 
-        if (result is "×Null×")
+        if (value is _nullValue)
         {
             return default;
         }
+
+        var result = await Client.GetAsync<T>(key);
 
         if (IsEmpty(result))
         {
@@ -835,10 +853,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                        await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -854,10 +872,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -880,7 +898,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = Client.Get(key);
 
-        if (result is "×Null×")
+        if (result is _nullValue)
         {
             return null;
         }
@@ -894,10 +912,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                        Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -913,10 +931,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -939,7 +957,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     {
         var result = await Client.GetAsync(key);
 
-        if (result is "×Null×")
+        if (result is _nullValue)
         {
             return null;
         }
@@ -953,10 +971,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                        await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -972,10 +990,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -997,12 +1015,14 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public T GetAndSet<T>(string key, TimeSpan expireTimeSpan, Func<T> func)
     {
-        var result = Client.Get<T>(key);
+        var value = Client.Get(key);
 
-        if (result is "×Null×")
+        if (value is _nullValue)
         {
             return default;
         }
+
+        var result = Client.Get<T>(key);
 
         if (IsEmpty(result))
         {
@@ -1013,10 +1033,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                        Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -1032,10 +1052,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    Client.Set(key, "×Null×", TimeSpan.FromHours(2));
+                    Client.Set(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {
@@ -1057,12 +1077,14 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <returns></returns>
     public async Task<T> GetAndSetAsync<T>(string key, TimeSpan expireTimeSpan, Func<Task<T>> func)
     {
-        var result = await Client.GetAsync<T>(key);
+        var value = await Client.GetAsync(key);
 
-        if (result is "×Null×")
+        if (value is _nullValue)
         {
             return default;
         }
+
+        var result = await Client.GetAsync<T>(key);
 
         if (IsEmpty(result))
         {
@@ -1073,10 +1095,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 {
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                     if (IsEmpty(result))
                     {
-                        await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                        await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                     }
                     else
                     {
@@ -1092,10 +1114,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入"×Null×"，缓存2小时，防止缓存击穿
+                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
                 if (IsEmpty(result))
                 {
-                    await Client.SetAsync(key, "×Null×", TimeSpan.FromHours(2));
+                    await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
                 }
                 else
                 {

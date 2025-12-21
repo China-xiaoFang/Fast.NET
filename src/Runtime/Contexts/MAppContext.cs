@@ -69,6 +69,11 @@ public static class MAppContext
     public static readonly IEnumerable<Assembly> Assemblies;
 
     /// <summary>
+    /// 应用本地引用项目有效程序集
+    /// </summary>
+    public static readonly IEnumerable<Assembly> ProjectAssemblies;
+
+    /// <summary>
     /// 有效程序集类型
     /// </summary>
     /// <remarks>所有公共的类型</remarks>
@@ -79,6 +84,12 @@ public static class MAppContext
     /// </summary>
     /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型</remarks>
     public static readonly IEnumerable<Type> EffectiveTypes;
+
+    /// <summary>
+    /// 本地引用项目有效程序集类型
+    /// </summary>
+    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型</remarks>
+    public static readonly IEnumerable<Type> ProjectEffectiveTypes;
 
     /// <summary>
     /// 未托管的对象集合
@@ -98,10 +109,16 @@ public static class MAppContext
             .Version?.ToString();
 
         // 获取应用运行库
-        RuntimeLibraries = entryAssembly.GetEntryRuntimeLibraries();
+        var runtimeLibraries = entryAssembly.GetEntryRuntimeLibraries();
+        RuntimeLibraries = runtimeLibraries;
 
         // 获取所有程序集
-        Assemblies = entryAssembly.GetEntryReferencedAssembly();
+        Assemblies = entryAssembly.GetEntryReferencedAssembly(runtimeLibraries);
+
+        // 获取本地引用项目所有程序集
+        ProjectAssemblies = entryAssembly.GetEntryReferencedAssembly(runtimeLibraries
+            .Where(wh => wh.Type.Equals("project", StringComparison.OrdinalIgnoreCase))
+            .ToList());
 
         // 获取有效的类型集合
         Types = Assemblies.SelectMany(assembly => assembly.GetAssemblyTypes())
@@ -110,6 +127,9 @@ public static class MAppContext
         // 获取排除使用了 SuppressSnifferAttribute 特性的类型
         var suppressSnifferAttributeType = typeof(SuppressSnifferAttribute);
         EffectiveTypes = Assemblies.SelectMany(assembly =>
+                assembly.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)))
+            .ToList();
+        ProjectEffectiveTypes = ProjectAssemblies.SelectMany(assembly =>
                 assembly.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)))
             .ToList();
     }

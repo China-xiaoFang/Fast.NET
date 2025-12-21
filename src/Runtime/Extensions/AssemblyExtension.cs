@@ -101,10 +101,12 @@ public static class AssemblyExtension
     /// </summary>
     /// <remarks>暂不支持独立/单文件发布</remarks>
     /// <param name="assembly"><see cref="Assembly"/> 入口程序集</param>
+    /// <param name="dependencyLibraryList"><see cref="List{T}"/> 运行库</param>
     /// <returns></returns>
-    public static List<Assembly> GetEntryReferencedAssembly(this Assembly assembly)
+    public static List<Assembly> GetEntryReferencedAssembly(this Assembly assembly,
+        List<DependencyLibrary> dependencyLibraryList = null)
     {
-        var dependencyLibraryList = assembly.GetEntryRuntimeLibraries();
+        dependencyLibraryList ??= assembly.GetEntryRuntimeLibraries();
 
         if (!dependencyLibraryList.Any())
         {
