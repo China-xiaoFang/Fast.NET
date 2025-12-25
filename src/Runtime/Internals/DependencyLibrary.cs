@@ -33,12 +33,14 @@ public class DependencyLibrary
     /// <param name="type"></param>
     /// <param name="name"></param>
     /// <param name="version"></param>
+    /// <param name="fileName"></param>
     /// <param name="serviceable"></param>
-    internal DependencyLibrary(string type, string name, string version, bool serviceable)
+    internal DependencyLibrary(string type, string name, string version, string fileName, bool serviceable)
     {
         Type = type;
         Name = name;
         Version = version;
+        FileName = fileName;
         Serviceable = serviceable;
     }
 
@@ -54,12 +56,21 @@ public class DependencyLibrary
     public string Name { get; }
 
     /// <summary>
+    /// 程序集dll文件名称（不带后缀）
+    /// </summary>
+    /// <remarks>
+    /// <para>从 "runtime" 节点获取，如果为空，则默认为 Name</para>
+    /// <para>注意：部分时候可能和Name不一致</para>
+    /// </remarks>
+    public string FileName { get; }
+
+    /// <summary>
     /// 程序集版本
     /// </summary>
     public string Version { get; }
 
     /// <summary>
-    /// 
+    /// 是否可服务
     /// </summary>
     public bool Serviceable { get; }
 }
