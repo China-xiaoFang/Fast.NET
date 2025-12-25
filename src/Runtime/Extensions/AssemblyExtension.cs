@@ -55,9 +55,38 @@ public static class AssemblyExtension
             // 读取文件
             var depsJsonContent = File.ReadAllText(depsJsonFilePath);
 
-            // 解析 JSON字符串，并获取 "libraries" 节点的值
+            // 解析 JSON字符串
             var depsJsonRoot = JsonDocument.Parse(depsJsonContent)
                 .RootElement;
+
+            var targetsMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            // 获取 "targets" 节点的值
+            var targetsContent = depsJsonRoot.GetProperty("targets")
+                .EnumerateObject();
+            foreach (var targetsArr in targetsContent)
+            {
+                // "targets" 节点下通常有一个节点：".NETCoreApp,Version=v6.0"
+                foreach (var targets in targetsArr.Value.EnumerateObject())
+                {
+                    if (targets.Value.TryGetProperty("runtime", out var runtimeElement))
+                    {
+                        // 直接默认获取第一个（大多数包只有一个主程序集）
+                        var runtimeObj = runtimeElement.EnumerateObject()
+                            .FirstOrDefault();
+                        if (!string.IsNullOrWhiteSpace(runtimeObj.Name))
+                        {
+                            var fileName = Path.GetFileNameWithoutExtension(runtimeObj.Name);
+                            if (!string.IsNullOrWhiteSpace(fileName))
+                            {
+                                targetsMap.TryAdd(targets.Name, fileName);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 获取 "libraries" 节点的值
             var librariesContent = depsJsonRoot.GetProperty("libraries")
                 .EnumerateObject();
 
@@ -86,8 +115,10 @@ public static class AssemblyExtension
                     serviceable = serviceableObj.GetBoolean();
                 }
 
+                var fileName = targetsMap.GetValueOrDefault(library.Name, name);
+
                 // 放入集合中
-                dependencyLibraryList.Add(new DependencyLibrary(type, name, version, serviceable));
+                dependencyLibraryList.Add(new DependencyLibrary(type, name, version, fileName, serviceable));
             }
 
             return dependencyLibraryList;
@@ -113,6 +144,9 @@ public static class AssemblyExtension
             return [assembly];
         }
 
+        // 已经加载的程序集
+        var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+
         // 需排除的程序集后缀
         // 这里的 Microsoft.Data.SqlClient 排除是为了解决这个错误 https://github.com/dotnet/SqlClient/issues/1930
         var excludeAssemblyNames = new[] {"Database.Migrations", "Microsoft.Data.SqlClient"};
@@ -123,13 +157,31 @@ public static class AssemblyExtension
             .Select(sl =>
             {
                 // 这里由于一些dll文件是运行时文件，但是却也包含了在 .deps.json 文件的 "libraries" 节点中，所以采用极限1换100操作，报错的不处理
+
+                // 检查是否已加载，避免重复加载
+                var loadedAssembly = loadedAssemblies.FirstOrDefault(f => f.GetName()
+                                                                              ?.Name?.Equals(sl.FileName,
+                                                                                  StringComparison.OrdinalIgnoreCase)
+                                                                          == true);
+                if (loadedAssembly != null)
+                {
+                    return loadedAssembly;
+                }
+
                 try
                 {
                     return AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(sl.Name));
                 }
                 catch
                 {
-                    return null;
+                    try
+                    {
+                        return Assembly.Load(sl.FileName);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
             })
             .Where(wh => wh != null)
