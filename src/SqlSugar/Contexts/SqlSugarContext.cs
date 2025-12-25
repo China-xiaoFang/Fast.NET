@@ -42,12 +42,19 @@ public sealed class SqlSugarContext
     public static SnowflakeSettingsOptions SnowflakeSettings { get; internal set; }
 
     /// <summary>
+    /// 最大不分页大小限制
+    /// </summary>
+    public static int MaxNotPageSize { get; set; }
+
+    /// <summary>
     /// SqlSugar实体集合
     /// </summary>
     public static readonly List<SqlSugarEntityInfo> SqlSugarEntityList;
 
     static SqlSugarContext()
     {
+        MaxNotPageSize = 10000;
+
         var dataBaseEntityType = typeof(IDatabaseEntity);
 
         SqlSugarEntityList = MAppContext.EffectiveTypes.Where(wh => dataBaseEntityType.IsAssignableFrom(wh) && !wh.IsInterface)
