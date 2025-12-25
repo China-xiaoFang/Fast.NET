@@ -58,7 +58,15 @@ public static partial class OpenApiUtil
             foreach (var enumSchema in enumSchemas)
             {
                 // 根据名称查找枚举类型
-                var enumType = enumTypeList.FirstOrDefault(f => f.Name == enumSchema.Key);
+                var enumType = enumTypeList.Where(t => t.Name == enumSchema.Key)
+                    .OrderBy(t =>
+                    {
+                        var name = t.Assembly.GetName()
+                            .Name;
+                        return name?.StartsWith(nameof(System), StringComparison.Ordinal) == true
+                               || name?.StartsWith(nameof(Microsoft), StringComparison.Ordinal) == true;
+                    })
+                    .FirstOrDefault();
                 if (enumType == null)
                     continue;
 

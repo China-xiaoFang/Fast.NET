@@ -44,7 +44,7 @@ public static class SqlSugarPageExtension
         return queryable.PagedWhere(input)
             .PagedSearch(input.SearchList)
             .PagedOrderBy(input.SortList)
-            .ToPagedList(input.PageIndex, input.PageSize);
+            .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public static class SqlSugarPageExtension
         return await queryable.PagedWhere(input)
             .PagedSearch(input.SearchList)
             .PagedOrderBy(input.SortList)
-            .ToPagedListAsync(input.PageIndex, input.PageSize);
+            .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
     /// <summary>
@@ -81,11 +81,11 @@ public static class SqlSugarPageExtension
         if (string.IsNullOrEmpty(select))
         {
             return queryable.Select<TResult>()
-                .ToPagedList(input.PageIndex, input.PageSize);
+                .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
         }
 
         return queryable.Select<TResult>(select)
-            .ToPagedList(input.PageIndex, input.PageSize);
+            .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
     /// <summary>
@@ -106,11 +106,11 @@ public static class SqlSugarPageExtension
         if (string.IsNullOrEmpty(select))
         {
             return await queryable.Select<TResult>()
-                .ToPagedListAsync(input.PageIndex, input.PageSize);
+                .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
         }
 
         return await queryable.Select<TResult>(select)
-            .ToPagedListAsync(input.PageIndex, input.PageSize);
+            .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
     /// <summary>
@@ -130,7 +130,7 @@ public static class SqlSugarPageExtension
             .PagedSearch(input.SearchList)
             .PagedOrderBy(input.SortList)
             .Select(selectExpression, isAutoFill)
-            .ToPagedList(input.PageIndex, input.PageSize);
+            .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
     /// <summary>
@@ -150,7 +150,7 @@ public static class SqlSugarPageExtension
             .PagedSearch(input.SearchList)
             .PagedOrderBy(input.SortList)
             .Select(selectExpression, isAutoFill)
-            .ToPagedListAsync(input.PageIndex, input.PageSize);
+            .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
     /// <summary>
@@ -159,23 +159,49 @@ public static class SqlSugarPageExtension
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="pageIndex"><see cref="int"/> 页数</param>
-    /// <param name="pageSize"><see cref="int"/> 页码</param>
+    /// <param name="pageSize"><see cref="int"/> 页码，默认 20</param>
+    /// <param name="enablePaged"><see cref="bool"/> 启用分页，默认 true</param>
     /// <returns></returns>
-    public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, int pageIndex, int pageSize)
+    public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, int pageIndex,
+        int pageSize = 20, bool enablePaged = true)
     {
-        var totalRows = 0;
-        var rows = queryable.ToPageList(pageIndex, pageSize, ref totalRows);
-        var totalPage = (int) Math.Ceiling(totalRows / (double) pageSize);
-        return new PagedResult<TEntity>
+        if (enablePaged)
         {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            Rows = rows,
-            TotalRows = totalRows,
-            TotalPage = totalPage,
-            HasNextPages = pageIndex < totalPage,
-            HasPrevPages = pageIndex - 1 > 0
-        };
+            var totalRows = 0;
+            var rows = queryable.ToPageList(pageIndex, pageSize, ref totalRows);
+            var totalPage = (int) Math.Ceiling(totalRows / (double) pageSize);
+
+            return new PagedResult<TEntity>
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Rows = rows,
+                TotalRows = totalRows,
+                TotalPage = totalPage,
+                HasNextPages = pageIndex < totalPage,
+                HasPrevPages = pageIndex - 1 > 0
+            };
+        }
+        else
+        {
+            var rows = queryable.Take(SqlSugarContext.MaxNotPageSize + 1)
+                .ToList();
+            if (rows.Count > SqlSugarContext.MaxNotPageSize)
+            {
+                throw new SqlSugarException($"当前查询数据量超过 {SqlSugarContext.MaxNotPageSize} 条，请使用分页查询或缩小查询范围。");
+            }
+
+            return new PagedResult<TEntity>
+            {
+                PageIndex = 1,
+                PageSize = rows.Count,
+                Rows = rows,
+                TotalRows = rows.Count,
+                TotalPage = 1,
+                HasNextPages = false,
+                HasPrevPages = false
+            };
+        }
     }
 
     /// <summary>
@@ -184,24 +210,49 @@ public static class SqlSugarPageExtension
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="pageIndex"><see cref="int"/> 页数</param>
-    /// <param name="pageSize"><see cref="int"/> 页码</param>
+    /// <param name="pageSize"><see cref="int"/> 页码，默认 20</param>
+    /// <param name="enablePaged"><see cref="bool"/> 启用分页，默认 true</param>
     /// <returns></returns>
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
-        int pageIndex, int pageSize)
+        int pageIndex, int pageSize = 20, bool enablePaged = true)
     {
-        RefAsync<int> totalRows = 0;
-        var rows = await queryable.ToPageListAsync(pageIndex, pageSize, totalRows);
-        var totalPage = (int) Math.Ceiling(totalRows.Value / (double) pageSize);
-        return new PagedResult<TEntity>
+        if (enablePaged)
         {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            Rows = rows,
-            TotalRows = totalRows.Value,
-            TotalPage = totalPage,
-            HasNextPages = pageIndex < totalPage,
-            HasPrevPages = pageIndex - 1 > 0
-        };
+            RefAsync<int> totalRows = 0;
+            var rows = await queryable.ToPageListAsync(pageIndex, pageSize, totalRows);
+            var totalPage = (int) Math.Ceiling(totalRows.Value / (double) pageSize);
+
+            return new PagedResult<TEntity>
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Rows = rows,
+                TotalRows = totalRows.Value,
+                TotalPage = totalPage,
+                HasNextPages = pageIndex < totalPage,
+                HasPrevPages = pageIndex - 1 > 0
+            };
+        }
+        else
+        {
+            var rows = await queryable.Take(SqlSugarContext.MaxNotPageSize + 1)
+                .ToListAsync();
+            if (rows.Count > SqlSugarContext.MaxNotPageSize)
+            {
+                throw new SqlSugarException($"当前查询数据量超过 {SqlSugarContext.MaxNotPageSize} 条，请使用分页查询或缩小查询范围。");
+            }
+
+            return new PagedResult<TEntity>
+            {
+                PageIndex = 1,
+                PageSize = rows.Count,
+                Rows = rows,
+                TotalRows = rows.Count,
+                TotalPage = 1,
+                HasNextPages = false,
+                HasPrevPages = false
+            };
+        }
     }
 
     /// <summary>
@@ -335,7 +386,7 @@ public static class SqlSugarPageExtension
                             FieldValue = time1.ToString(),
                             CSharpTypeName = nameof(DateTime)
                         }));
-                    timeConditionals.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.Or,
+                    timeConditionals.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
                         new ConditionalModel
                         {
                             FieldName = string.IsNullOrEmpty(valItem.sugarColumn?.ColumnName)

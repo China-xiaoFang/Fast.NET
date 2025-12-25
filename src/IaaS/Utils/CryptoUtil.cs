@@ -46,17 +46,17 @@ public static class CryptoUtil
     public static string AESEncrypt(string dataStr, string key, string vector, CipherMode cipherMode = CipherMode.CBC,
         PaddingMode paddingMode = PaddingMode.PKCS7)
     {
-        if (string.IsNullOrEmpty(dataStr))
+        if (string.IsNullOrWhiteSpace(dataStr))
         {
             return null;
         }
 
-        if (string.IsNullOrEmpty(key))
+        if (string.IsNullOrWhiteSpace(key))
         {
             return null;
         }
 
-        if (string.IsNullOrEmpty(vector))
+        if (string.IsNullOrWhiteSpace(vector))
         {
             return null;
         }
@@ -125,17 +125,17 @@ public static class CryptoUtil
     public static string AESDecrypt(string dataStr, string key, string vector, CipherMode cipherMode = CipherMode.CBC,
         PaddingMode paddingMode = PaddingMode.PKCS7)
     {
-        if (string.IsNullOrEmpty(dataStr))
+        if (string.IsNullOrWhiteSpace(dataStr))
         {
             return null;
         }
 
-        if (string.IsNullOrEmpty(key))
+        if (string.IsNullOrWhiteSpace(key))
         {
             return null;
         }
 
-        if (string.IsNullOrEmpty(vector))
+        if (string.IsNullOrWhiteSpace(vector))
         {
             return null;
         }
