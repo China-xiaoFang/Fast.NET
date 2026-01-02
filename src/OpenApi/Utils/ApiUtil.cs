@@ -338,6 +338,15 @@ public static partial class OpenApiUtil
                         contentSb.Append(Environment.NewLine);
                     }
 
+                    // 处理文件上传重复请求
+                    if (apiActionEnum is HttpRequestActionEnum.Upload)
+                    {
+                        contentSb.Append("""
+                                               cancelDuplicateRequest: false,
+                                         """);
+                        contentSb.Append(Environment.NewLine);
+                    }
+
                     contentSb.Append($$"""
                                              requestType: "{{apiAction}}",
                                            });
