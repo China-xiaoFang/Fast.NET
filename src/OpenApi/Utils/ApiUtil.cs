@@ -412,7 +412,7 @@ public static partial class OpenApiUtil
                                   /**
                                    * {{tagDescription}}Api
                                    */
-                                  export const {{tag}}Api = {
+                                  export const {{tagName}}Api = {
                                   {{contentSb}}
                                   };
 
