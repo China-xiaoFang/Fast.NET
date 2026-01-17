@@ -90,16 +90,6 @@ public static partial class OpenApiUtil
             var tagList = openApiDocument.Paths.Where(wh => wh.Value.Tag != null)
                 .Select(sl => sl.Value.Tag)
                 .Distinct()
-                .Select(sl =>
-                {
-                    var split = sl.Split("/", StringSplitOptions.RemoveEmptyEntries);
-                    if (split.Length == 1)
-                        return split[0];
-
-                    return split[0]
-                           + string.Concat(split.Skip(1)
-                               .Select(s => char.ToUpperInvariant(s[0]) + s[1..]));
-                })
                 .ToList();
 
             // 获取所有接口描述
