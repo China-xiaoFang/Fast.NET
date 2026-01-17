@@ -108,8 +108,18 @@ public static partial class OpenApiUtil
 
             foreach (var tag in tagList)
             {
+                // 处理 xxx/xxx 这种tag
+                var tagName = tag;
+                var tagSplit = tag.Split("/", StringSplitOptions.RemoveEmptyEntries);
+                if (tagSplit.Length > 1)
+                {
+                    tagName = tagSplit[0]
+                              + string.Concat(tagSplit.Skip(1)
+                                  .Select(s => char.ToUpperInvariant(s[0]) + s[1..]));
+                }
+
                 // 创建 api 文件夹
-                var apiFileDir = Path.Combine(rootDir, tag);
+                var apiFileDir = Path.Combine(rootDir, tagName);
                 Directory.CreateDirectory(apiFileDir);
 
                 // 获取当前 tag 下所有的接口
@@ -379,7 +389,7 @@ public static partial class OpenApiUtil
                               /**
                                * {{tagDescription}}Api
                                */
-                              export const {{tag}}Api = {
+                              export const {{tagName}}Api = {
                               {{contentSb}}
                               };
 
@@ -427,7 +437,7 @@ public static partial class OpenApiUtil
                                   /**
                                    * {{tagDescription}}Api
                                    */
-                                  export const {{tag}}Api = {
+                                  export const {{tagName}}Api = {
                                   {{contentSb}}
                                   };
 
