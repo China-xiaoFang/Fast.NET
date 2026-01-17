@@ -343,11 +343,11 @@ public static class SugarEntityFilter
                     if (sqlSugarEntityHandler != null)
                     {
                         // 更新者Id
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), [null, 0L],
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), null,
                             sqlSugarEntityHandler.AssignUserId(), entityInfo);
 
                         // 更新者名称
-                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserName), [null, ""],
+                        SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserName), null,
                             sqlSugarEntityHandler.AssignUserName(), entityInfo);
                     }
 
