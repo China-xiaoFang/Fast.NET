@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>3.5.16</Version>
+		<Version>3.5.17</Version>
 		<PackageId>Fast.Serialization.Newtonsoft.Json</PackageId>
         <RootNamespace>Fast.Serialization</RootNamespace>
 		<Description>Fast.NET 框架 Newtonsoft.Json 序列化模块库。</Description>
@@ -26,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.22" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.23" />
 	</ItemGroup>
 
 </Project>
