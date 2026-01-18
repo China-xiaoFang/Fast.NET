@@ -38,6 +38,11 @@ public class EnumRequiredAttribute : ValidationAttribute
     /// <remarks>常用于默认的枚举值为 None = 0，但是不允许选择的问题</remarks>
     public bool AllowZero { get; set; } = false;
 
+    /// <summary>
+    /// Flag枚举
+    /// </summary>
+    public bool FlagEnum { get; set; } = false;
+
     /// <summary>Determines whether the specified value of the object is valid.</summary>
     /// <param name="value">The value of the object to validate.</param>
     /// <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
@@ -71,8 +76,17 @@ public class EnumRequiredAttribute : ValidationAttribute
                 return false;
             }
 
-            // 判断值是否为正常的枚举值
-            return Enum.IsDefined(type, value);
+            if (!FlagEnum)
+            {
+                // 判断值是否为正常的枚举值
+                return Enum.IsDefined(type, value);
+            }
+
+            var mask = 0L;
+            foreach (var item in Enum.GetValues(type))
+                mask |= Convert.ToInt64(item);
+
+            return (longVal & ~mask) == 0;
         }
         catch
         {
