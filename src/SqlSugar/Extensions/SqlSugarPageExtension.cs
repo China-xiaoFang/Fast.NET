@@ -33,18 +33,27 @@ namespace Fast.SqlSugar;
 public static class SqlSugarPageExtension
 {
     /// <summary>
-    /// SqlSugar分页扩展
+    /// 分页转换类型
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="pagedResult"><see cref="PagedResult{TResult}"/> 源类型</param>
+    /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
     /// <returns></returns>
-    public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
+    public static PagedResult<TResult> ToPagedData<TEntity, TResult>(this PagedResult<TEntity> pagedResult,
+        Func<TEntity, TResult> selectExpression)
     {
-        return queryable.PagedWhere(input)
-            .PagedSearch(input.SearchList)
-            .PagedOrderBy(input.SortList)
-            .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
+        return new PagedResult<TResult>
+        {
+            PageIndex = pagedResult.PageIndex,
+            PageSize = pagedResult.PageSize,
+            Rows = pagedResult.Rows.Select(selectExpression)
+                .ToList(),
+            TotalRows = pagedResult.TotalRows,
+            TotalPage = pagedResult.TotalPage,
+            HasNextPages = pagedResult.HasNextPages,
+            HasPrevPages = pagedResult.HasPrevPages
+        };
     }
 
     /// <summary>
@@ -53,103 +62,47 @@ public static class SqlSugarPageExtension
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
+    /// <remarks>
+    /// 多表查询（LeftJoin/Join）场景需注意：分页统计依赖 MergeTable，建议在分页前进行结构收敛：
+    /// <code>
+    /// .Select((t1, t2) => new { ... }).MergeTable()
+    /// </code>
+    /// 或
+    /// <code>
+    /// .SelectMergeTable((t1, t2) => new { ... })
+    /// </code>
+    /// 未使用 MergeTable 可能导致总数统计异常或结果不准确。
+    /// </remarks>
+    /// <returns></returns>
+    public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
+    {
+        return queryable.SugarPaged(input)
+            .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
+    }
+
+
+    /// <summary>
+    /// SqlSugar分页扩展
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
+    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
+    /// <remarks>
+    /// 多表查询（LeftJoin/Join）场景需注意：分页统计依赖 MergeTable，建议在分页前进行结构收敛：
+    /// <code>
+    /// .Select((t1, t2) => new { ... }).MergeTable()
+    /// </code>
+    /// 或
+    /// <code>
+    /// .SelectMergeTable((t1, t2) => new { ... })
+    /// </code>
+    /// 未使用 MergeTable 可能导致总数统计异常或结果不准确。
+    /// </remarks>
     /// <returns></returns>
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         PagedInput input)
     {
-        return await queryable.PagedWhere(input)
-            .PagedSearch(input.SearchList)
-            .PagedOrderBy(input.SortList)
-            .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
-    }
-
-    /// <summary>
-    /// SqlSugar分页扩展
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
-    /// <param name="select"><see cref="string"/> 对应的Sql语句映射，例如 t1.*</param>
-    /// <returns></returns>
-    public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, PagedInput input,
-        string select = null)
-    {
-        queryable = queryable.PagedWhere(input)
-            .PagedSearch(input.SearchList)
-            .PagedOrderBy(input.SortList);
-        if (string.IsNullOrEmpty(select))
-        {
-            return queryable.Select<TResult>()
-                .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
-        }
-
-        return queryable.Select<TResult>(select)
-            .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
-    }
-
-    /// <summary>
-    /// SqlSugar分页扩展
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
-    /// <param name="select"><see cref="string"/> 对应的Sql语句映射，例如 t1.*</param>
-    /// <returns></returns>
-    public static async Task<PagedResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
-        PagedInput input, string select = null)
-    {
-        queryable = queryable.PagedWhere(input)
-            .PagedSearch(input.SearchList)
-            .PagedOrderBy(input.SortList);
-        if (string.IsNullOrEmpty(select))
-        {
-            return await queryable.Select<TResult>()
-                .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
-        }
-
-        return await queryable.Select<TResult>(select)
-            .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
-    }
-
-    /// <summary>
-    /// SqlSugar分页扩展
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
-    /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
-    /// <param name="isAutoFill"><see cref="bool"/> 其余字段自动映射，根据字段名称，默认为 false</param>
-    /// <returns></returns>
-    public static PagedResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> queryable, PagedInput input,
-        Expression<Func<TEntity, TResult>> selectExpression, bool isAutoFill = false)
-    {
-        return queryable.PagedWhere(input)
-            .PagedSearch(input.SearchList)
-            .PagedOrderBy(input.SortList)
-            .Select(selectExpression, isAutoFill)
-            .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
-    }
-
-    /// <summary>
-    /// SqlSugar分页扩展
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
-    /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
-    /// <param name="isAutoFill"><see cref="bool"/> 其余字段自动映射，根据字段名称，默认为 false</param>
-    /// <returns></returns>
-    public static async Task<PagedResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> queryable,
-        PagedInput input, Expression<Func<TEntity, TResult>> selectExpression, bool isAutoFill = false)
-    {
-        return await queryable.PagedWhere(input)
-            .PagedSearch(input.SearchList)
-            .PagedOrderBy(input.SortList)
-            .Select(selectExpression, isAutoFill)
+        return await queryable.SugarPaged(input)
             .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
@@ -184,9 +137,9 @@ public static class SqlSugarPageExtension
         }
         else
         {
-            var rows = queryable.Take(SqlSugarContext.MaxNotPageSize + 1)
+            var rows = queryable.Take(SqlSugarContext.MaxNotPageSize)
                 .ToList();
-            if (rows.Count > SqlSugarContext.MaxNotPageSize)
+            if (rows.Count >= SqlSugarContext.MaxNotPageSize)
             {
                 throw new SqlSugarException($"当前查询数据量超过 {SqlSugarContext.MaxNotPageSize} 条，请使用分页查询或缩小查询范围。");
             }
@@ -235,9 +188,9 @@ public static class SqlSugarPageExtension
         }
         else
         {
-            var rows = await queryable.Take(SqlSugarContext.MaxNotPageSize + 1)
+            var rows = await queryable.Take(SqlSugarContext.MaxNotPageSize)
                 .ToListAsync();
-            if (rows.Count > SqlSugarContext.MaxNotPageSize)
+            if (rows.Count >= SqlSugarContext.MaxNotPageSize)
             {
                 throw new SqlSugarException($"当前查询数据量超过 {SqlSugarContext.MaxNotPageSize} 条，请使用分页查询或缩小查询范围。");
             }
@@ -256,73 +209,41 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// 分页转换类型
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="pagedResult"><see cref="PagedResult{TResult}"/> 源类型</param>
-    /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
-    /// <returns></returns>
-    public static PagedResult<TResult> ToPagedData<TEntity, TResult>(this PagedResult<TEntity> pagedResult,
-        Func<TEntity, TResult> selectExpression)
-    {
-        return new PagedResult<TResult>
-        {
-            PageIndex = pagedResult.PageIndex,
-            PageSize = pagedResult.PageSize,
-            Rows = pagedResult.Rows.Select(selectExpression)
-                .ToList(),
-            TotalRows = pagedResult.TotalRows,
-            TotalPage = pagedResult.TotalPage,
-            HasNextPages = pagedResult.HasNextPages,
-            HasPrevPages = pagedResult.HasPrevPages
-        };
-    }
-
-    /// <summary>
-    /// 分页搜索
+    /// Sugar 统一分页处理
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
     /// <param name="input"><see cref="PagedInput"/> 统一分页输入</param>
     /// <remarks>支持多库</remarks>
     /// <returns></returns>
-    public static ISugarQueryable<TEntity> PagedWhere<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
+    public static ISugarQueryable<TEntity> SugarPaged<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
     {
-        var isSearchValue = !string.IsNullOrEmpty(input.SearchValue);
-        var isSearchTime = input.SearchTimeList is {Count: > 0};
-
-        if (!isSearchValue && !isSearchTime)
-        {
-            return queryable;
-        }
-
-        // 获取当前实体类型
+        // 这里必须要判断，字段是否存在于 TEntity 中，不然会执行到Db层面的报错
         var type = typeof(TEntity);
 
         // 获取所有属性
-        var properties = type.GetProperties();
-
-        // 获取所有存在 SugarSearchValueAttribute 和 SugarSearchTimeAttribute 特性的属性
-        var needProperties = properties.Select(sl => new
+        var properties = type.GetProperties()
+            .Select(sl => new
             {
                 propertyInfo = sl,
                 sugarColumn = sl.GetCustomAttribute<SugarColumn>(true),
-                sugarSearchValueAttribute = sl.GetCustomAttribute<SugarSearchValueAttribute>(true),
-                sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>(true)
+                navigate = sl.GetCustomAttribute<Navigate>(true),
+                sugarSearchValueAttribute = sl.GetCustomAttribute<SugarSearchValueAttribute>(),
+                sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>(),
+                sugarOrderByAttribute = sl.GetCustomAttribute<SugarOrderByAttribute>()
             })
             .ToList();
 
-        var conditionals = new List<IConditionalModel>();
+        var whereList = new List<IConditionalModel>();
 
-        // 关键字搜索
-        if (isSearchValue)
+        // 搜索列
+        if (!string.IsNullOrEmpty(input.SearchValue))
         {
-            var valConditionals = new List<KeyValuePair<WhereType, ConditionalModel>>();
+            var searchList = new List<KeyValuePair<WhereType, ConditionalModel>>();
 
             var index = 0;
 
-            foreach (var valItem in needProperties.Where(wh => wh.sugarSearchValueAttribute != null)
+            foreach (var item in properties.Where(wh => wh.sugarSearchValueAttribute != null)
                          .ToList())
             {
                 var whereType = WhereType.Or;
@@ -331,12 +252,12 @@ public static class SqlSugarPageExtension
                     whereType = WhereType.And;
                 }
 
-                valConditionals.Add(new KeyValuePair<WhereType, ConditionalModel>(whereType,
+                searchList.Add(new KeyValuePair<WhereType, ConditionalModel>(whereType,
                     new ConditionalModel
                     {
-                        FieldName = string.IsNullOrEmpty(valItem.sugarColumn?.ColumnName)
-                            ? valItem.propertyInfo.Name
-                            : valItem.sugarColumn.ColumnName,
+                        FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                            ? item.propertyInfo.Name
+                            : item.sugarColumn.ColumnName,
                         ConditionalType = ConditionalType.Like,
                         FieldValue = input.SearchValue
                     }));
@@ -344,14 +265,14 @@ public static class SqlSugarPageExtension
                 index++;
             }
 
-            if (valConditionals.Any())
+            if (searchList.Any())
             {
-                conditionals.Add(new ConditionalCollections {ConditionalList = valConditionals});
+                whereList.Add(new ConditionalCollections {ConditionalList = searchList});
             }
         }
 
-        // 时间范围搜索
-        if (isSearchTime)
+        // 搜素时间列
+        if (input.SearchTimeList is {Count: > 0})
         {
             DateTime? time1 = null;
             DateTime? time2 = null;
@@ -367,31 +288,31 @@ public static class SqlSugarPageExtension
                     break;
             }
 
-            foreach (var valItem in needProperties.Where(wh => wh.sugarSearchTimeAttribute != null)
+            // 如果两个时间都存在，则使用范围搜索，如果只存在一个，则使用 >= 或者 <=
+            var searchList = new List<KeyValuePair<WhereType, ConditionalModel>>();
+
+            foreach (var item in properties.Where(wh => wh.sugarSearchTimeAttribute != null)
                          .ToList())
             {
-                // 如果两个时间都存在，则使用范围搜索，如果只存在一个，则使用 >= 或者 <=
-                var timeConditionals = new List<KeyValuePair<WhereType, ConditionalModel>>();
-
                 if (time1 != null && time2 != null)
                 {
                     // 范围搜索
-                    timeConditionals.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
+                    searchList.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
                         new ConditionalModel
                         {
-                            FieldName = string.IsNullOrEmpty(valItem.sugarColumn?.ColumnName)
-                                ? valItem.propertyInfo.Name
-                                : valItem.sugarColumn.ColumnName,
+                            FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                                ? item.propertyInfo.Name
+                                : item.sugarColumn.ColumnName,
                             ConditionalType = ConditionalType.GreaterThanOrEqual,
                             FieldValue = time1.ToString(),
                             CSharpTypeName = nameof(DateTime)
                         }));
-                    timeConditionals.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
+                    searchList.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
                         new ConditionalModel
                         {
-                            FieldName = string.IsNullOrEmpty(valItem.sugarColumn?.ColumnName)
-                                ? valItem.propertyInfo.Name
-                                : valItem.sugarColumn.ColumnName,
+                            FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                                ? item.propertyInfo.Name
+                                : item.sugarColumn.ColumnName,
                             ConditionalType = ConditionalType.LessThanOrEqual,
                             FieldValue = time2.ToString(),
                             CSharpTypeName = nameof(DateTime)
@@ -400,12 +321,12 @@ public static class SqlSugarPageExtension
                 else if (time1 != null)
                 {
                     // 大于等于开始时间
-                    timeConditionals.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
+                    searchList.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
                         new ConditionalModel
                         {
-                            FieldName = string.IsNullOrEmpty(valItem.sugarColumn?.ColumnName)
-                                ? valItem.propertyInfo.Name
-                                : valItem.sugarColumn.ColumnName,
+                            FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                                ? item.propertyInfo.Name
+                                : item.sugarColumn.ColumnName,
                             ConditionalType = ConditionalType.GreaterThanOrEqual,
                             FieldValue = time1.ToString(),
                             CSharpTypeName = nameof(DateTime)
@@ -414,76 +335,44 @@ public static class SqlSugarPageExtension
                 else if (time2 != null)
                 {
                     // 小于等于结束时间
-                    timeConditionals.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
+                    searchList.Add(new KeyValuePair<WhereType, ConditionalModel>(WhereType.And,
                         new ConditionalModel
                         {
-                            FieldName = string.IsNullOrEmpty(valItem.sugarColumn?.ColumnName)
-                                ? valItem.propertyInfo.Name
-                                : valItem.sugarColumn.ColumnName,
+                            FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                                ? item.propertyInfo.Name
+                                : item.sugarColumn.ColumnName,
                             ConditionalType = ConditionalType.LessThanOrEqual,
                             FieldValue = time2.ToString(),
                             CSharpTypeName = nameof(DateTime)
                         }));
                 }
+            }
 
-                conditionals.Add(new ConditionalCollections {ConditionalList = timeConditionals});
+            if (searchList.Any())
+            {
+                whereList.Add(new ConditionalCollections {ConditionalList = searchList});
             }
         }
 
-        if (conditionals.Any())
-        {
-            queryable = queryable.Where(conditionals);
-        }
-
-        return queryable;
-    }
-
-    /// <summary>
-    /// 分页搜索
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="searchList"><see cref="List{PagedSearchInput}"/> 排序输入</param>
-    /// <remarks>支持多库</remarks>
-    /// <returns></returns>
-    public static ISugarQueryable<TEntity> PagedSearch<TEntity>(this ISugarQueryable<TEntity> queryable,
-        params PagedSearchInput[] searchList)
-    {
-        if (searchList == null || searchList.Length == 0)
-        {
-            return queryable;
-        }
-
-        // 这里必须要判断，搜索的字段是否存在于 TEntity 中，不然会执行到Db层面的报错
-        var type = typeof(TEntity);
-
-        // 获取所有属性
-        var properties = type.GetProperties();
-
-        var whereList = new List<IConditionalModel>();
-
         // 循环传入的集合
-        foreach (var searchInput in searchList)
+        foreach (var searchInput in input.SearchList)
         {
-            var propertyInfo = properties.FirstOrDefault(f =>
-                f.Name.Equals(searchInput.EnField, StringComparison.InvariantCultureIgnoreCase));
+            var item = properties.FirstOrDefault(f =>
+                f.propertyInfo.Name.Equals(searchInput.EnField, StringComparison.InvariantCultureIgnoreCase));
 
-            if (propertyInfo == null)
+            if (item == null)
             {
                 throw new SqlSugarException($"搜索字段 [{searchInput.ChField}] 不存在于类型 [{type.Name}] 中！");
             }
 
-            // 获取属性列的 SugarColumn 特性
-            var sugarColumn = propertyInfo.GetCustomAttribute<SugarColumn>(true);
-
-            if (sugarColumn?.IsIgnore == true)
+            if (item.sugarColumn?.IsIgnore == true)
             {
                 // 如果存在特性，且 IsIgnore = true，则代表不是Db列，不能进行搜索
                 throw new SqlSugarException($"类型 [{type.Name}] 中的搜索字段 [{searchInput.ChField}] 不存在于对应的Db中！");
             }
 
             // 获取属性列的 Navigate 特性
-            if (propertyInfo.GetCustomAttribute<Navigate>(true) != null)
+            if (item.navigate != null)
             {
                 // 如果存在特性，则代表是一个导航属性，不能进行搜索
                 throw new SqlSugarException($"类型 [{type.Name}] 中的搜索字段 [{searchInput.ChField}] 是一个导航属性！");
@@ -504,76 +393,77 @@ public static class SqlSugarPageExtension
 
             whereList.Add(new ConditionalModel
             {
-                FieldName = string.IsNullOrEmpty(sugarColumn?.ColumnName) ? propertyInfo.Name : sugarColumn.ColumnName,
+                FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                    ? item.propertyInfo.Name
+                    : item.sugarColumn.ColumnName,
                 FieldValue = searchInput.Value,
                 ConditionalType = conditionalType
             });
         }
 
-        queryable = queryable.Where(whereList);
-
-        return queryable;
-    }
-
-    /// <summary>
-    /// 分页排序
-    /// </summary>
-    /// <remarks>支持多库</remarks>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="sortList"><see cref="List{PagedSortInput}"/> 排序输入</param>
-    /// <returns></returns>
-    public static ISugarQueryable<TEntity> PagedOrderBy<TEntity>(this ISugarQueryable<TEntity> queryable,
-        params PagedSortInput[] sortList)
-    {
-        if (sortList == null || sortList.Length == 0)
+        if (whereList.Any())
         {
-            return queryable;
+            queryable = queryable.Where(whereList);
         }
-
-        // 这里必须要判断，排序的字段是否存在于 TEntity 中，不然会执行到Db层面的报错
-        var type = typeof(TEntity);
-
-        // 获取所有属性
-        var properties = type.GetProperties();
 
         var orderList = new List<OrderByModel>();
 
-        // 循环传入的集合
-        foreach (var sortInput in sortList)
+        // 排序列
+        if (input.SortList is {Length: > 0})
         {
-            var propertyInfo = properties.FirstOrDefault(f =>
-                f.Name.Equals(sortInput.EnField, StringComparison.InvariantCultureIgnoreCase));
-
-            if (propertyInfo == null)
+            // 循环传入的集合
+            foreach (var sortInput in input.SortList)
             {
-                throw new SqlSugarException($"排序字段 [{sortInput.ChField}] 不存在于类型 [{type.Name}] 中！");
+                var item = properties.FirstOrDefault(f =>
+                    f.propertyInfo.Name.Equals(sortInput.EnField, StringComparison.InvariantCultureIgnoreCase));
+
+                if (item == null)
+                {
+                    throw new SqlSugarException($"排序字段 [{sortInput.ChField}] 不存在于类型 [{type.Name}] 中！");
+                }
+
+                if (item.sugarColumn?.IsIgnore == true)
+                {
+                    // 如果存在特性，且 IsIgnore = true，则代表不是Db列，不能进行排序
+                    throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 不存在于对应的Db中！");
+                }
+
+                // 获取属性列的 Navigate 特性
+                if (item.navigate != null)
+                {
+                    // 如果存在特性，则代表是一个导航属性，不能进行排序
+                    throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 是一个导航属性！");
+                }
+
+                orderList.Add(new OrderByModel
+                {
+                    FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                        ? item.propertyInfo.Name
+                        : item.sugarColumn.ColumnName,
+                    OrderByType = sortInput.IsDescending ? OrderByType.Desc : OrderByType.Asc
+                });
             }
-
-            // 获取属性列的 SugarColumn 特性
-            var sugarColumn = propertyInfo.GetCustomAttribute<SugarColumn>(true);
-
-            if (sugarColumn?.IsIgnore == true)
+        }
+        else
+        {
+            foreach (var item in properties.Where(wh => wh.sugarOrderByAttribute != null)
+                         .OrderBy(ob => ob.sugarOrderByAttribute.Order)
+                         .ToList())
             {
-                // 如果存在特性，且 IsIgnore = true，则代表不是Db列，不能进行排序
-                throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 不存在于对应的Db中！");
+                orderList.Add(new OrderByModel
+                {
+                    FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                        ? item.propertyInfo.Name
+                        : item.sugarColumn.ColumnName,
+                    OrderByType = item.sugarOrderByAttribute.Type
+                });
             }
-
-            // 获取属性列的 Navigate 特性
-            if (propertyInfo.GetCustomAttribute<Navigate>(true) != null)
-            {
-                // 如果存在特性，则代表是一个导航属性，不能进行排序
-                throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 是一个导航属性！");
-            }
-
-            orderList.Add(new OrderByModel
-            {
-                FieldName = string.IsNullOrEmpty(sugarColumn?.ColumnName) ? propertyInfo.Name : sugarColumn.ColumnName,
-                OrderByType = sortInput.IsDescending ? OrderByType.Desc : OrderByType.Asc
-            });
         }
 
-        queryable = queryable.OrderBy(orderList);
+        if (orderList.Any())
+        {
+            queryable = queryable.OrderBy(orderList);
+        }
 
         return queryable;
     }

@@ -58,7 +58,7 @@ public class BaseEntity : IBaseEntity
     /// <summary>
     /// 创建时间
     /// </summary>
-    [Required, SugarSearchTime, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
+    [Required, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
     public virtual DateTime? CreatedTime { get; set; }
 
     /// <summary>

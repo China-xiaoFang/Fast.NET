@@ -20,47 +20,44 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using SqlSugar;
+
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedInput"/> SqlSugar 统一分页输入
+/// <see cref="SugarOrderByAttribute"/> SqlSugar 分页排序列
 /// </summary>
 [SuppressSniffer]
-public class PagedInput
+[AttributeUsage(AttributeTargets.Property)]
+public class SugarOrderByAttribute : Attribute
 {
     /// <summary>
-    /// 当前页面索引值，默认为1
+    /// <see cref="OrderByType"/> 排序方式
     /// </summary>
-    public virtual int PageIndex { get; set; } = 1;
+    public OrderByType Type { get; set; }
 
     /// <summary>
-    /// 页码容量
+    /// <see cref="int"/> 顺序
     /// </summary>
-    public virtual int PageSize { get; set; } = 20;
+    /// <remarks>从小到大</remarks>
+    public int Order { get; set; }
 
     /// <summary>
-    /// 搜索值
+    /// <see cref="SugarOrderByAttribute"/> SqlSugar 分页排序列
     /// </summary>
-    public virtual string SearchValue { get; set; }
+    public SugarOrderByAttribute()
+    {
+        Type = OrderByType.Desc;
+        Order = 1;
+    }
 
     /// <summary>
-    /// 搜索时间
+    /// <see cref="SugarOrderByAttribute"/> SqlSugar 分页排序列
     /// </summary>
-    public virtual IList<DateTime?> SearchTimeList { get; set; }
-
-    /// <summary>
-    /// 搜索集合
-    /// </summary>
-    public virtual PagedSearchInput[] SearchList { get; set; }
-
-    /// <summary>
-    /// 排序集合
-    /// </summary>
-    public virtual PagedSortInput[] SortList { get; set; }
-
-    /// <summary>
-    /// 启用分页
-    /// </summary>
-    /// <remarks>默认启用</remarks>
-    public virtual bool EnablePaged { get; set; } = true;
+    /// <param name="type"><see cref="OrderByType"/> 排序方式</param>
+    public SugarOrderByAttribute(OrderByType type)
+    {
+        Type = type;
+        Order = 1;
+    }
 }
