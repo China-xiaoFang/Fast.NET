@@ -230,7 +230,6 @@ public static class SqlSugarPageExtension
                 navigate = sl.GetCustomAttribute<Navigate>(true),
                 sugarSearchValueAttribute = sl.GetCustomAttribute<SugarSearchValueAttribute>(),
                 sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>(),
-                sugarOrderByAttribute = sl.GetCustomAttribute<SugarOrderByAttribute>()
             })
             .ToList();
 
@@ -408,56 +407,37 @@ public static class SqlSugarPageExtension
 
         var orderList = new List<OrderByModel>();
 
-        // 排序列
-        if (input.SortList is {Length: > 0})
+        // 循环传入的集合
+        foreach (var sortInput in input.SortList)
         {
-            // 循环传入的集合
-            foreach (var sortInput in input.SortList)
+            var item = properties.FirstOrDefault(f =>
+                f.propertyInfo.Name.Equals(sortInput.EnField, StringComparison.InvariantCultureIgnoreCase));
+
+            if (item == null)
             {
-                var item = properties.FirstOrDefault(f =>
-                    f.propertyInfo.Name.Equals(sortInput.EnField, StringComparison.InvariantCultureIgnoreCase));
-
-                if (item == null)
-                {
-                    throw new SqlSugarException($"排序字段 [{sortInput.ChField}] 不存在于类型 [{type.Name}] 中！");
-                }
-
-                if (item.sugarColumn?.IsIgnore == true)
-                {
-                    // 如果存在特性，且 IsIgnore = true，则代表不是Db列，不能进行排序
-                    throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 不存在于对应的Db中！");
-                }
-
-                // 获取属性列的 Navigate 特性
-                if (item.navigate != null)
-                {
-                    // 如果存在特性，则代表是一个导航属性，不能进行排序
-                    throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 是一个导航属性！");
-                }
-
-                orderList.Add(new OrderByModel
-                {
-                    FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
-                        ? item.propertyInfo.Name
-                        : item.sugarColumn.ColumnName,
-                    OrderByType = sortInput.IsDescending ? OrderByType.Desc : OrderByType.Asc
-                });
+                throw new SqlSugarException($"排序字段 [{sortInput.ChField}] 不存在于类型 [{type.Name}] 中！");
             }
-        }
-        else
-        {
-            foreach (var item in properties.Where(wh => wh.sugarOrderByAttribute != null)
-                         .OrderBy(ob => ob.sugarOrderByAttribute.Order)
-                         .ToList())
+
+            if (item.sugarColumn?.IsIgnore == true)
             {
-                orderList.Add(new OrderByModel
-                {
-                    FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
-                        ? item.propertyInfo.Name
-                        : item.sugarColumn.ColumnName,
-                    OrderByType = item.sugarOrderByAttribute.Type
-                });
+                // 如果存在特性，且 IsIgnore = true，则代表不是Db列，不能进行排序
+                throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 不存在于对应的Db中！");
             }
+
+            // 获取属性列的 Navigate 特性
+            if (item.navigate != null)
+            {
+                // 如果存在特性，则代表是一个导航属性，不能进行排序
+                throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 是一个导航属性！");
+            }
+
+            orderList.Add(new OrderByModel
+            {
+                FieldName = string.IsNullOrEmpty(item.sugarColumn?.ColumnName)
+                    ? item.propertyInfo.Name
+                    : item.sugarColumn.ColumnName,
+                OrderByType = sortInput.IsDescending ? OrderByType.Desc : OrderByType.Asc
+            });
         }
 
         if (orderList.Any())

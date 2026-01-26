@@ -46,21 +46,26 @@ public class PagedInput
     /// <summary>
     /// 搜索时间
     /// </summary>
-    public virtual IList<DateTime?> SearchTimeList { get; set; }
+    public virtual IList<DateTime?> SearchTimeList { get; set; } = [];
 
     /// <summary>
     /// 搜索集合
     /// </summary>
-    public virtual PagedSearchInput[] SearchList { get; set; }
+    public virtual PagedSearchInput[] SearchList { get; set; } = [];
 
     /// <summary>
     /// 排序集合
     /// </summary>
-    public virtual PagedSortInput[] SortList { get; set; }
+    public virtual PagedSortInput[] SortList { get; set; } = [];
 
     /// <summary>
     /// 启用分页
     /// </summary>
     /// <remarks>默认启用</remarks>
     public virtual bool EnablePaged { get; set; } = true;
+
+    /// <summary>
+    /// 是否可以使用默认排序
+    /// </summary>
+    public bool IsOrderBy => SortList is not {Length: > 0};
 }
