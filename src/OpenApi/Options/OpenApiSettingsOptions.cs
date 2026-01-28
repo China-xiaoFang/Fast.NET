@@ -31,6 +31,11 @@ namespace Fast.OpenApi;
 public class OpenApiSettingsOptions : IPostConfigure
 {
     /// <summary>
+    /// 文件夹分组
+    /// </summary>
+    public bool? FolderGroup { get; set; }
+
+    /// <summary>
     /// 导入声明映射
     /// </summary>
     /// <remarks>导出也只会会忽略</remarks>
@@ -61,6 +66,7 @@ public class OpenApiSettingsOptions : IPostConfigure
     /// </summary>
     public void PostConfigure()
     {
+        FolderGroup ??= true;
         ImportSchemaMappings ??=
         [
             new OpenApiImportSchemaMappingSettingsOptions

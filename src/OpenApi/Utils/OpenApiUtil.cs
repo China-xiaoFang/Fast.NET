@@ -168,8 +168,9 @@ public static partial class OpenApiUtil
         Directory.CreateDirectory(enumRootDir);
 
         // Api文件
-        //var apiRootDir = Path.Combine(curRootDir, "services", group);
-        var apiRootDir = Path.Combine(curRootDir, "services");
+        var apiRootDir = Penetrates.OpenApiSettings.FolderGroup == true
+            ? Path.Combine(curRootDir, "services", group)
+            : Path.Combine(curRootDir, "services");
         Directory.CreateDirectory(apiRootDir);
 
         // 写入枚举
