@@ -51,18 +51,20 @@ public static partial class OpenApiUtil
                 return "edit";
             case HttpRequestActionEnum.Delete:
                 return "delete";
-            case HttpRequestActionEnum.Download:
-                return "download";
+            case HttpRequestActionEnum.Submit:
+                return "submit";
             case HttpRequestActionEnum.Upload:
                 return "upload";
+            case HttpRequestActionEnum.Download:
+                return "download";
             case HttpRequestActionEnum.Export:
                 return "export";
             case HttpRequestActionEnum.Import:
                 return "import";
-            case HttpRequestActionEnum.None:
-            case HttpRequestActionEnum.Submit:
-            case HttpRequestActionEnum.Notify:
             case HttpRequestActionEnum.Callback:
+                return "callback";
+            case HttpRequestActionEnum.None:
+            case HttpRequestActionEnum.Notify:
             case HttpRequestActionEnum.Other:
             default:
                 return "other";
