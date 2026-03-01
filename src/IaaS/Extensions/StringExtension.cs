@@ -34,6 +34,14 @@ namespace Fast.IaaS;
 public static class StringExtension
 {
     /// <summary>
+    /// 静态构造函数，确保在所有平台上 GB18030 编码提供程序只注册一次
+    /// </summary>
+    static StringExtension()
+    {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+    }
+
+    /// <summary>
     /// 字符串首字母大写
     /// </summary>
     /// <param name="str"><see cref="string"/></param>

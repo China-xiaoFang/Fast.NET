@@ -10,4 +10,8 @@
 		<Description>Fast.NET 框架基础设施模块库。</Description>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.3" />
+	</ItemGroup>
+
 </Project>

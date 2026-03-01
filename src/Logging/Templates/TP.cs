@@ -31,6 +31,14 @@ namespace Fast.Logging;
 internal static class TP
 {
     /// <summary>
+    /// 静态构造函数，确保在所有平台上 GBK/GBK 编码提供程序只注册一次
+    /// </summary>
+    static TP()
+    {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+    }
+
+    /// <summary>
     /// 模板正则表达式对象
     /// </summary>
     private static readonly Lazy<Regex> _lazyRegex = new(() => new Regex(@"^##(?<prop>.*)?##[:：]?\s*(?<content>[\s\S]*)"));
@@ -44,9 +52,6 @@ internal static class TP
     /// <returns><see cref="string"/></returns>
     public static string Wrapper(string title, string description, params string[] items)
     {
-        // 处理不同编码问题
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
         var stringBuilder = new StringBuilder();
         stringBuilder.Append($"┏━━━━━━━━━━━  {title} ━━━━━━━━━━━")
             .AppendLine();
@@ -109,9 +114,6 @@ internal static class TP
     /// <returns><see cref="string"/></returns>
     public static string WrapperRectangle(string[] lines, int align = 0, int pad = 20)
     {
-        // 处理不同编码问题
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
         // 计算矩形框的宽度，取所有字符串中最长的长度，再乘以 2
         var width = lines.Max(GetLength) + pad;
 

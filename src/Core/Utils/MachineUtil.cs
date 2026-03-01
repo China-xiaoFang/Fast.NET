@@ -34,12 +34,21 @@ namespace Fast.NET.Core;
 public static class MachineUtil
 {
     /// <summary>
-    /// 是否为 Unix/Linux 操作系统
+    /// 是否为 Linux 操作系统
     /// </summary>
     /// <returns></returns>
     public static bool IsUnix()
     {
         return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+    }
+
+    /// <summary>
+    /// 是否为 Linux 操作系统
+    /// </summary>
+    /// <returns></returns>
+    public static bool IsLinux()
+    {
+        return IsUnix();
     }
 
     /// <summary>
@@ -98,7 +107,7 @@ public static class MachineUtil
             var output = ShellUtil
                 .Bash("date -r $(sysctl -n kern.boottime | awk '{print $4}' | tr -d ',') +\"%Y-%m-%d %H:%M:%S\"")
                 .Trim();
-            return DateTime.Parse(output);
+            return DateTime.Parse(output, CultureInfo.InvariantCulture);
         }
 
         // 判断是否为 Unix/Linux
@@ -107,7 +116,7 @@ public static class MachineUtil
             // 使用 awk 命令来获取 Linux 系统的 uptime 信息
             var output = ShellUtil.Bash("date -d \"$(awk -F. '{print $1}' /proc/uptime) second ago\" +\"%Y-%m-%d %H:%M:%S\"")
                 .Trim();
-            return DateTime.Parse(output);
+            return DateTime.Parse(output, CultureInfo.InvariantCulture);
         }
         // Windows
         else
@@ -129,7 +138,7 @@ public static class MachineUtil
                 .Trim()
                 .Split('.', StringSplitOptions.RemoveEmptyEntries)[0];
 
-            return DateTime.ParseExact(timeValue, "yyyyMMddHHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None);
+            return DateTime.ParseExact(timeValue, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None);
         }
     }
 
@@ -158,8 +167,15 @@ public static class MachineUtil
     /// <returns></returns>
     public static DateTime GetProgramStartTime()
     {
-        return Process.GetCurrentProcess()
-            .StartTime;
+        try
+        {
+            return Process.GetCurrentProcess().StartTime;
+        }
+        catch (NotSupportedException)
+        {
+            // 在某些受限的 Linux 容器环境中，Process.StartTime 可能不受支持
+            return DateTime.Now;
+        }
     }
 
     /// <summary>
@@ -194,7 +210,7 @@ public static class MachineUtil
         {
             // 使用 top 命令获取获取 CPU 使用率（用户和系统占用总和）
             var output = ShellUtil.Bash("top -l 1 | grep \"CPU usage\" | awk '{print $3 + $5}'");
-            rates.Add(decimal.Parse(output));
+            rates.Add(decimal.Parse(output, CultureInfo.InvariantCulture));
         }
 
         // 判断是否为 Unix/Linux
@@ -203,7 +219,7 @@ public static class MachineUtil
             // 通过解析 '/proc/stat' 文件来计算 CPU 使用率
             var output = ShellUtil.Bash(
                 "awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat)");
-            rates.Add(decimal.Parse(output));
+            rates.Add(decimal.Parse(output, CultureInfo.InvariantCulture));
         }
         // Windows
         else
@@ -231,7 +247,7 @@ public static class MachineUtil
                         return 0;
                     }
 
-                    return decimal.Parse(sl.Trim());
+                    return decimal.Parse(sl.Trim(), CultureInfo.InvariantCulture);
                 }));
         }
 
@@ -251,7 +267,16 @@ public static class MachineUtil
 
         // 启动时间
         var startTime = DateTime.UtcNow;
-        var startUsage = process.TotalProcessorTime;
+        TimeSpan startUsage;
+        try
+        {
+            startUsage = process.TotalProcessorTime;
+        }
+        catch (NotSupportedException)
+        {
+            // 在某些受限的 Linux 容器环境中，TotalProcessorTime 可能不受支持
+            return 0;
+        }
 
         // 线程等待
         await Task.Delay(sleep);
@@ -261,7 +286,15 @@ public static class MachineUtil
 
         // 结束时间
         var endTime = DateTime.UtcNow;
-        var endUsage = process.TotalProcessorTime;
+        TimeSpan endUsage;
+        try
+        {
+            endUsage = process.TotalProcessorTime;
+        }
+        catch (NotSupportedException)
+        {
+            return 0;
+        }
 
         // 计算在延迟期间 CPU 使用的时间（单位：微秒）
         var usedMs = (endUsage - startUsage).TotalMilliseconds;
@@ -301,11 +334,11 @@ public static class MachineUtil
         {
             // 获取总内存：sysctl 命令返回的值为字节，转换为 MB
             var output1 = ShellUtil.Bash("sysctl -n hw.memsize | awk '{printf \"%.2f\", $1/1024/1024}'");
-            total = decimal.Parse(output1.Replace("%", string.Empty));
+            total = decimal.Parse(output1.Replace("%", string.Empty), CultureInfo.InvariantCulture);
 
             // 获取已用内存：top 命令中显示物理内存的使用情况，PhysMem 返回可用内存和已用内存的合计，单位为 KB
             var output2 = ShellUtil.Bash("top -l 1 -s 0 | awk '/PhysMem/ {print $6+$8}'");
-            free = decimal.Parse(output2);
+            free = decimal.Parse(output2, CultureInfo.InvariantCulture);
 
             // 计算已用内存
             used = total - free;
@@ -321,8 +354,8 @@ public static class MachineUtil
             if (memory.Length == 2)
             {
                 // 解析总内存，已用内存，可用内存
-                total = decimal.Parse(memory[0]) / 1024;
-                free = decimal.Parse(memory[1]) / 1024;
+                total = decimal.Parse(memory[0], CultureInfo.InvariantCulture) / 1024;
+                free = decimal.Parse(memory[1], CultureInfo.InvariantCulture) / 1024;
 
                 // 计算已用内存
                 used = total - free;
@@ -354,8 +387,8 @@ public static class MachineUtil
                 .Split("=", StringSplitOptions.RemoveEmptyEntries);
 
             // 将内存值转换为 MB
-            total = decimal.Parse(totalMemoryParts.Length > 1 ? totalMemoryParts[1] : totalMemoryParts[0]) / 1024;
-            free = decimal.Parse(freeMemoryParts.Length > 1 ? freeMemoryParts[1] : freeMemoryParts[0]) / 1024;
+            total = decimal.Parse(totalMemoryParts.Length > 1 ? totalMemoryParts[1] : totalMemoryParts[0], CultureInfo.InvariantCulture) / 1024;
+            free = decimal.Parse(freeMemoryParts.Length > 1 ? freeMemoryParts[1] : freeMemoryParts[0], CultureInfo.InvariantCulture) / 1024;
 
             // 计算已用内存
             used = total - free;
@@ -506,7 +539,7 @@ public static class MachineUtil
                         Used = Math.Round(long.Parse(disk[2]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailableFreeSpace = Math.Round(long.Parse(disk[3]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailablePercent = decimal.Parse(disk[4]
-                            .Replace("%", ""))
+                            .Replace("%", ""), CultureInfo.InvariantCulture)
                     };
                     diskInfos.Add(diskInfo);
                 }
@@ -534,7 +567,7 @@ public static class MachineUtil
                         Used = Math.Round(long.Parse(disk[3]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailableFreeSpace = Math.Round(long.Parse(disk[4]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailablePercent = decimal.Parse(disk[5]
-                            .Replace("%", ""))
+                            .Replace("%", ""), CultureInfo.InvariantCulture)
                     };
                     diskInfos.Add(diskInfo);
                 }

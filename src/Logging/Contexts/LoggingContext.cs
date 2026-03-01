@@ -183,9 +183,9 @@ public static class LoggingContext
         formatString.Append(message);
 
         // 输出控制台前景色和背景色
-        if (colors.Background.HasValue)
-            formatString.Append("\u001b[39m\u001b[22m");
         if (colors.Foreground.HasValue)
+            formatString.Append("\u001b[39m\u001b[22m");
+        if (colors.Background.HasValue)
             formatString.Append("\u001b[49m");
 
         return formatString;

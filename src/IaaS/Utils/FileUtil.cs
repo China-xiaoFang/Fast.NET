@@ -39,24 +39,16 @@ public static class FileUtil
     public static string GetFileSHA1(string filePath)
     {
         // 创建 SHA1 实例
-        var osha1 = SHA1.Create();
+        using var osha1 = SHA1.Create();
 
-        // 打开文件流，读取文件内容
-        var oFileStream = new FileStream(filePath.Replace("\"", ""), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        // 打开文件流，读取文件内容（使用 using 确保异常时也能释放文件句柄）
+        using var oFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
         // 计算文件的 SHA1 哈希值
         var arrBytHashValue = osha1.ComputeHash(oFileStream);
 
-        // 关闭文件流
-        oFileStream.Close();
-
-        // 将哈希值转换为十六进制字符串，并去掉连字符（“-”）
-        var strHashData = BitConverter.ToString(arrBytHashValue);
-        strHashData = strHashData.Replace("-", "");
-
-        // 转换为小写字母形式，作为最终的哈希值结果
-        var strResult = strHashData.ToLower();
-        return strResult;
+        // 将哈希值转换为十六进制字符串，并去掉连字符（"-"），转换为小写
+        return BitConverter.ToString(arrBytHashValue).Replace("-", "").ToLower();
     }
 
     /// <summary>
