@@ -347,7 +347,7 @@ public static class RemoteRequestUtil
         int? timeout = 60)
     {
         var (responseContent, responseHeaders) =
-            await SendAsync(httpMethod, url, urlParam, bodyData, headers, paramEncode, timeout);
+            await SendAsync(httpMethod, url, urlParam, bodyData, headers, paramEncode, timeout).ConfigureAwait(false);
 
         return (JsonSerializer.Deserialize<T>(responseContent, _defaultJsonSerializerOptions), responseHeaders);
     }
@@ -498,7 +498,7 @@ public static class RemoteRequestUtil
         try
         {
             // 发送请求
-            using var response = await httpClient.SendAsync(request);
+            using var response = await httpClient.SendAsync(request).ConfigureAwait(false);
 
             byte[] responseContentBytes;
 
@@ -506,36 +506,36 @@ public static class RemoteRequestUtil
             if (response.Content.Headers.ContentEncoding.Contains("br"))
             {
                 // Brotli 解压缩
-                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var responseBytes = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                 using var compressedStream = new MemoryStream(responseBytes);
                 using var decompressedStream = new MemoryStream();
                 await using var brotliStream = new BrotliStream(compressedStream, CompressionMode.Decompress);
-                await brotliStream.CopyToAsync(decompressedStream);
+                await brotliStream.CopyToAsync(decompressedStream).ConfigureAwait(false);
                 responseContentBytes = decompressedStream.ToArray();
             }
             else if (response.Content.Headers.ContentEncoding.Contains("gzip"))
             {
                 // Gzip 解压缩
-                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var responseBytes = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                 using var compressedStream = new MemoryStream(responseBytes);
                 using var decompressedStream = new MemoryStream();
                 await using var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
-                await gzipStream.CopyToAsync(decompressedStream);
+                await gzipStream.CopyToAsync(decompressedStream).ConfigureAwait(false);
                 responseContentBytes = decompressedStream.ToArray();
             }
             else if (response.Content.Headers.ContentEncoding.Contains("deflate"))
             {
                 // Deflate  解压缩
-                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var responseBytes = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                 using var compressedStream = new MemoryStream(responseBytes);
                 using var decompressedStream = new MemoryStream();
                 await using var deflateStream = new DeflateStream(compressedStream, CompressionMode.Decompress);
-                await deflateStream.CopyToAsync(decompressedStream);
+                await deflateStream.CopyToAsync(decompressedStream).ConfigureAwait(false);
                 responseContentBytes = decompressedStream.ToArray();
             }
             else
             {
-                responseContentBytes = await response.Content.ReadAsByteArrayAsync();
+                responseContentBytes = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
             }
 
             // 获取 charset 编码
