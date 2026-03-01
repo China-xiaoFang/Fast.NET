@@ -43,7 +43,7 @@ public class KeyValueService : IKeyValueService
 
         var value = result.First().Value;
 
-        return JsonSerializer.Deserialize<T>(Encoding.Default.GetString(Convert.FromBase64String(value)));
+        return JsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(Convert.FromBase64String(value)));
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class KeyValueService : IKeyValueService
 
         var value = result.First().Value;
 
-        return Encoding.Default.GetString(Convert.FromBase64String(value));
+        return Encoding.UTF8.GetString(Convert.FromBase64String(value));
     }
 
     /// <summary>
