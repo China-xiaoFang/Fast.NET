@@ -198,7 +198,7 @@ public static class MachineUtil
         }
 
         // 判断是否为 Unix/Linux
-        if (IsUnix())
+        else if (IsUnix())
         {
             // 通过解析 '/proc/stat' 文件来计算 CPU 使用率
             var output = ShellUtil.Bash(
@@ -312,7 +312,7 @@ public static class MachineUtil
         }
 
         // 判断是否为 Unix/Linux
-        if (IsUnix())
+        else if (IsUnix())
         {
             // 使用 `awk` 命令从 `/proc/meminfo` 获取总内存和可用内存，单位为 KB
             var output = ShellUtil.Bash(
@@ -398,7 +398,7 @@ public static class MachineUtil
         }
 
         // 判断是否为 Unix/Linux
-        if (IsUnix())
+        else if (IsUnix())
         {
             decimal ByteToMB(string line)
             {
@@ -514,7 +514,7 @@ public static class MachineUtil
         }
 
         // 判断是否为 Unix/Linux
-        if (IsUnix())
+        else if (IsUnix())
         {
             var output = ShellUtil.Bash(@"df -mT | awk '/^\/dev\/(sd|vd|xvd|nvme|sda|vda|mapper)/ {print $1,$2,$3,$4,$5,$6}'");
             var disks = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
