@@ -51,20 +51,25 @@ public static class SugarEntityFilter
             {
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
+                var useColor = !Console.IsOutputRedirected;
                 var logSb = new StringBuilder();
-                logSb.Append("\u001b[40m\u001b[90m");
+                if (useColor)
+                    logSb.Append("\u001b[40m\u001b[90m");
                 logSb.Append("fsql");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                 logSb.Append(Environment.NewLine);
-                logSb.Append("\u001b[40m\u001b[90m");
+                if (useColor)
+                    logSb.Append("\u001b[40m\u001b[90m");
                 logSb.Append("      ");
                 logSb.Append($"Time: {_db.Ado.SqlExecutionTime}");
                 logSb.Append(Environment.NewLine);
                 logSb.Append("      ");
                 logSb.Append(handleSql);
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 Console.WriteLine(logSb.ToString());
             }
 
@@ -81,19 +86,24 @@ public static class SugarEntityFilter
                 }
                 catch (Exception ex)
                 {
+                    var useColor = !Console.IsOutputRedirected;
                     var logSb = new StringBuilder();
-                    logSb.Append("\u001b[41m\u001b[30m");
+                    if (useColor)
+                        logSb.Append("\u001b[41m\u001b[30m");
                     logSb.Append("fsql");
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                    if (useColor)
+                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                     logSb.Append(": ");
                     logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                     logSb.Append(Environment.NewLine);
-                    logSb.Append("\u001b[41m\u001b[30m");
+                    if (useColor)
+                        logSb.Append("\u001b[41m\u001b[30m");
                     logSb.Append("      ");
                     logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteAsync] method error.");
                     logSb.Append(Environment.NewLine);
                     logSb.Append(ex);
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                    if (useColor)
+                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                     Console.WriteLine(logSb.ToString());
                 }
             }
@@ -114,17 +124,22 @@ public static class SugarEntityFilter
                     $"Sql执行时间超过 {sugarSqlExecMaxSeconds} 秒，建议优化。{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}{Environment.NewLine}SqlExecutionTime：{_db.Ado.SqlExecutionTime}";
 
                 // 控制台输出
+                var useColor = !Console.IsOutputRedirected;
                 var logSb = new StringBuilder();
-                logSb.Append("\u001b[40m\u001b[1m\u001b[33m");
+                if (useColor)
+                    logSb.Append("\u001b[40m\u001b[1m\u001b[33m");
                 logSb.Append("fsql");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                 logSb.Append(Environment.NewLine);
-                logSb.Append("\u001b[40m\u001b[1m\u001b[33m");
+                if (useColor)
+                    logSb.Append("\u001b[40m\u001b[1m\u001b[33m");
                 logSb.Append("      ");
                 logSb.Append(message);
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 Console.WriteLine(logSb.ToString());
 
                 if (!disableAop && sqlSugarEntityHandler != null)
@@ -140,18 +155,22 @@ public static class SugarEntityFilter
                     catch (Exception ex)
                     {
                         var _logSb = new StringBuilder();
-                        _logSb.Append("\u001b[41m\u001b[30m");
+                        if (useColor)
+                            _logSb.Append("\u001b[41m\u001b[30m");
                         _logSb.Append("fsql");
-                        _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                        if (useColor)
+                            _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                         _logSb.Append(": ");
                         _logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                         _logSb.Append(Environment.NewLine);
-                        _logSb.Append("\u001b[41m\u001b[30m");
+                        if (useColor)
+                            _logSb.Append("\u001b[41m\u001b[30m");
                         logSb.Append("      ");
                         _logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteTimeoutAsync] method error.");
                         _logSb.Append(Environment.NewLine);
                         _logSb.Append(ex);
-                        _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                        if (useColor)
+                            _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                         Console.WriteLine(_logSb.ToString());
                     }
                 }
@@ -195,19 +214,24 @@ public static class SugarEntityFilter
                         }
                         catch (Exception ex)
                         {
+                            var useColor = !Console.IsOutputRedirected;
                             var logSb = new StringBuilder();
-                            logSb.Append("\u001b[41m\u001b[30m");
+                            if (useColor)
+                                logSb.Append("\u001b[41m\u001b[30m");
                             logSb.Append("fsql");
-                            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                            if (useColor)
+                                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                             logSb.Append(": ");
                             logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                             logSb.Append(Environment.NewLine);
-                            logSb.Append("\u001b[41m\u001b[30m");
+                            if (useColor)
+                                logSb.Append("\u001b[41m\u001b[30m");
                             logSb.Append("      ");
                             logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteDiffLogAsync] method error.");
                             logSb.Append(Environment.NewLine);
                             logSb.Append(ex);
-                            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                            if (useColor)
+                                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                             Console.WriteLine(logSb.ToString());
                         }
                     }
@@ -230,18 +254,23 @@ public static class SugarEntityFilter
 
             if (isDevelopment)
             {
+                var useColor = !Console.IsOutputRedirected;
                 var logSb = new StringBuilder();
-                logSb.Append("\u001b[41m\u001b[30m");
+                if (useColor)
+                    logSb.Append("\u001b[41m\u001b[30m");
                 logSb.Append("fsql");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                 logSb.Append(Environment.NewLine);
-                logSb.Append("\u001b[41m\u001b[30m");
+                if (useColor)
+                    logSb.Append("\u001b[41m\u001b[30m");
                 logSb.Append("      ");
                 logSb.Append(
                     $"Sql 执行异常{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 Console.WriteLine(logSb.ToString());
             }
 
@@ -256,19 +285,24 @@ public static class SugarEntityFilter
                 }
                 catch (Exception ex)
                 {
+                    var useColor = !Console.IsOutputRedirected;
                     var logSb = new StringBuilder();
-                    logSb.Append("\u001b[41m\u001b[30m");
+                    if (useColor)
+                        logSb.Append("\u001b[41m\u001b[30m");
                     logSb.Append("fsql");
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                    if (useColor)
+                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                     logSb.Append(": ");
                     logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                     logSb.Append(Environment.NewLine);
-                    logSb.Append("\u001b[41m\u001b[30m");
+                    if (useColor)
+                        logSb.Append("\u001b[41m\u001b[30m");
                     logSb.Append("      ");
                     logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteErrorAsync] method error.");
                     logSb.Append(Environment.NewLine);
                     logSb.Append(ex);
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                    if (useColor)
+                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                     Console.WriteLine(logSb.ToString());
                 }
             }

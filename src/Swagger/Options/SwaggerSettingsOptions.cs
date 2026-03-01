@@ -20,9 +20,13 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+#if NET10_0_OR_GREATER
+using Microsoft.OpenApi;
+#else
+using Microsoft.OpenApi.Models;
+#endif
 using System.Reflection;
 using Fast.Runtime;
-using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Fast.Swagger;
@@ -162,6 +166,26 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
         EnableAuthorized ??= true;
         if (EnableAuthorized == true)
         {
+#if NET10_0_OR_GREATER
+            // OpenApi v2: Reference 已移除，Requirement 中不再需要设置 Scheme.Reference
+            SecurityDefinitions ??= new[]
+            {
+                new SwaggerOpenApiSecurityScheme
+                {
+                    Id = "Bearer",
+                    Type = SecuritySchemeType.Http,
+                    Name = "Authorization",
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    BearerFormat = "JWT",
+                    Scheme = "bearer",
+                    In = ParameterLocation.Header,
+                    Requirement = new SwaggerOpenApiSecurityRequirementItem
+                    {
+                        Scheme = new OpenApiSecurityScheme(), Accesses = Array.Empty<string>()
+                    }
+                }
+            };
+#else
             SecurityDefinitions ??= new[]
             {
                 new SwaggerOpenApiSecurityScheme
@@ -183,6 +207,7 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
                     }
                 }
             };
+#endif
         }
 
         Servers ??= Array.Empty<OpenApiServer>();

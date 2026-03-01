@@ -74,21 +74,21 @@ public class DateJsonConverter : JsonConverter<DateTime>
         {
             case 4:
             {
-                var result = DateTime.ParseExact(value, "yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None);
+                var result = DateTime.ParseExact(value, "yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
                 result = new DateTime(result.Year, 1, 1, 0, 0, 0);
                 return result;
             }
             case 6:
             {
-                var result = DateTime.ParseExact(value, "yyyyMM", CultureInfo.CurrentCulture, DateTimeStyles.None);
+                var result = DateTime.ParseExact(value, "yyyyMM", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
                 result = new DateTime(result.Year, result.Month, 1, 0, 0, 0);
                 return result;
             }
             default:
             {
-                var result = DateTime.ParseExact(value, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None);
+                var result = DateTime.ParseExact(value, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
                 result = new DateTime(result.Year, result.Month, result.Day, 0, 0, 0);
                 return result;
@@ -159,21 +159,21 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
         {
             case 4:
             {
-                var result = DateTime.ParseExact(value, "yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None);
+                var result = DateTime.ParseExact(value, "yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
                 result = new DateTime(result.Year, 1, 1, 0, 0, 0);
                 return result;
             }
             case 6:
             {
-                var result = DateTime.ParseExact(value, "yyyyMM", CultureInfo.CurrentCulture, DateTimeStyles.None);
+                var result = DateTime.ParseExact(value, "yyyyMM", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
                 result = new DateTime(result.Year, result.Month, 1, 0, 0, 0);
                 return result;
             }
             default:
             {
-                var result = DateTime.ParseExact(value, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None);
+                var result = DateTime.ParseExact(value, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
                 result = new DateTime(result.Year, result.Month, result.Day, 0, 0, 0);
                 return result;

@@ -216,8 +216,8 @@ public static class JwtBearerUtil
         var tokenHandler = new JsonWebTokenHandler();
         try
         {
-#if NET8_0
-            // 处理 .NET8 中 ValidateToken 方法已过时的警告
+#if NET8_0_OR_GREATER
+            // 处理 .NET8+ 中 ValidateToken 方法已过时的警告
             var tokenValidationResult = tokenHandler.ValidateTokenAsync(accessToken, tokenValidationParameters)
                 .Result;
 #else

@@ -41,7 +41,7 @@ internal static class ILoggingBuilderExtension
             .AddConsoleFormatter<ConsoleFormatterExtend, ConsoleFormatterExtendOptions>(options =>
             {
                 options.DateFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz dddd";
-                options.ColorBehavior = LoggerColorBehavior.Enabled;
+                options.ColorBehavior = LoggerColorBehavior.Default;
                 // JSON 格式输出
                 //options.MessageFormat = LoggerFormatter.JsonIndented;
             });

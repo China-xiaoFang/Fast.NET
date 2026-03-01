@@ -43,8 +43,8 @@ public static class StringEncodingExtension
     /// <returns><see cref="string"/> 转换后的 ASCII 编码形式字符串。</returns>
     public static string EnAscii(this string str)
     {
-        // 使用默认编码将字符串转换为字节数组
-        var textBuf = Encoding.Default.GetBytes(str);
+        // 使用 UTF-8 编码将字符串转换为字节数组
+        var textBuf = Encoding.UTF8.GetBytes(str);
 
         // 将每个字节转换为两位的十六进制数，并拼接起来
         return textBuf.Aggregate(string.Empty, (current, t) => current + t.ToString("X"));
@@ -67,8 +67,8 @@ public static class StringEncodingExtension
             k += 2;
         }
 
-        // 使用默认编码将字节数组转换为字符串
-        return Encoding.Default.GetString(buffer);
+        // 使用 UTF-8 编码将字节数组转换为字符串
+        return Encoding.UTF8.GetString(buffer);
     }
 
     #endregion

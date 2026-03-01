@@ -20,8 +20,12 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using Fast.DynamicApplication;
+#if NET10_0_OR_GREATER
+using Microsoft.OpenApi;
+#else
 using Microsoft.OpenApi.Models;
+#endif
+using Fast.DynamicApplication;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Fast.Swagger;
@@ -38,7 +42,7 @@ internal class TagsOrderDocumentFilter : IDocumentFilter
     /// <param name="context"></param>
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
-        swaggerDoc.Tags = DynamicApplicationContext.ControllerOrderCollection.Where(u => SwaggerDocumentBuilder
+        var orderedTags = DynamicApplicationContext.ControllerOrderCollection.Where(u => SwaggerDocumentBuilder
                 .GetControllerGroups(u.Value.Item3)
                 .Any(c => c.Group == context.DocumentName))
             .OrderByDescending(u => u.Value.Item2)
@@ -46,9 +50,16 @@ internal class TagsOrderDocumentFilter : IDocumentFilter
             .Select(c => new OpenApiTag
             {
                 Name = c.Value.Item1,
-                Description = swaggerDoc.Tags.FirstOrDefault(m => m.Name == c.Key)
+                Description = swaggerDoc.Tags?.FirstOrDefault(m => m.Name == c.Key)
                     ?.Description
-            })
-            .ToList();
+            });
+
+#if NET10_0_OR_GREATER
+        // OpenApi v2: Tags 类型为 ISet<OpenApiTag>
+        swaggerDoc.Tags = new HashSet<OpenApiTag>(orderedTags);
+#else
+        // OpenApi v1: Tags 类型为 IList<OpenApiTag>
+        swaggerDoc.Tags = orderedTags.ToList();
+#endif
     }
 }

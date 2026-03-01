@@ -20,6 +20,8 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using System.Text;
+
 namespace Fast.Logging;
 
 /// <summary>
@@ -151,7 +153,7 @@ internal class FileLoggingWriter
         var baseFileName = GetBaseFileName();
 
         // 如果文件不存在或没有达到 FileSizeLimitBytes 限制大小，则返回基础文件名
-        if (!System.IO.File.Exists(baseFileName)
+        if (!File.Exists(baseFileName)
             || _options.FileSizeLimitBytes <= 0
             || new FileInfo(baseFileName).Length < _options.FileSizeLimitBytes)
             return baseFileName;
@@ -217,8 +219,8 @@ internal class FileLoggingWriter
                 throw;
         }
 
-        // 初始化文本写入器
-        _textWriter = new StreamWriter(_fileStream);
+        // 初始化文本写入器（显式指定 UTF-8 编码，跨平台一致）
+        _textWriter = new StreamWriter(_fileStream, Encoding.UTF8);
 
         // 创建文件流
         void CreateFileStream()
@@ -228,9 +230,10 @@ internal class FileLoggingWriter
             // 判断文件目录是否存在，不存在则自动创建
             fileInfo.Directory?.Create();
 
-            // 创建文件流，采用共享锁方式
-            _fileStream = new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, 4096,
-                FileOptions.WriteThrough);
+            // 创建文件流，允许其他进程读取但不允许写入，避免日志数据竞争
+            // 不使用 FileOptions.WriteThrough，在 Linux/macOS 上会映射为 O_SYNC 导致严重性能下降
+            _fileStream = new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read, 4096,
+                FileOptions.None);
 
             // 删除超出滚动日志限制的文件
             DropFilesIfOverLimit(fileInfo);
@@ -323,8 +326,8 @@ internal class FileLoggingWriter
                 // 执行删除
                 Task.Run(() =>
                 {
-                    if (System.IO.File.Exists(rollingFile.Key))
-                        System.IO.File.Delete(rollingFile.Key);
+                    if (File.Exists(rollingFile.Key))
+                        File.Delete(rollingFile.Key);
                 });
             }
         }
