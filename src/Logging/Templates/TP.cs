@@ -30,6 +30,12 @@ namespace Fast.Logging;
 /// </summary>
 internal static class TP
 {
+    static TP()
+    {
+        // 处理不同编码问题
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+    }
+
     /// <summary>
     /// 模板正则表达式对象
     /// </summary>
@@ -44,9 +50,6 @@ internal static class TP
     /// <returns><see cref="string"/></returns>
     public static string Wrapper(string title, string description, params string[] items)
     {
-        // 处理不同编码问题
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
         var stringBuilder = new StringBuilder();
         stringBuilder.Append($"┏━━━━━━━━━━━  {title} ━━━━━━━━━━━")
             .AppendLine();
@@ -109,9 +112,6 @@ internal static class TP
     /// <returns><see cref="string"/></returns>
     public static string WrapperRectangle(string[] lines, int align = 0, int pad = 20)
     {
-        // 处理不同编码问题
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
         // 计算矩形框的宽度，取所有字符串中最长的长度，再乘以 2
         var width = lines.Max(GetLength) + pad;
 

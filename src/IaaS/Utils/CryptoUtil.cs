@@ -203,7 +203,7 @@ public static class CryptoUtil
         using var mi = MD5.Create();
 
         // 将输入的字符串转换为字节数组
-        var buffer = Encoding.Default.GetBytes(content);
+        var buffer = Encoding.UTF8.GetBytes(content);
 
         // 对字节数组进行加密
         var newBuffer = mi.ComputeHash(buffer);

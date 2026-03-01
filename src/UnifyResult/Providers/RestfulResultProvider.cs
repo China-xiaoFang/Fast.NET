@@ -88,10 +88,10 @@ internal class RestfulResultProvider : IUnifyResultProvider
             var newMessage = "";
             foreach (var dicVal in messageObj.SelectMany(dicItem => dicItem.Value))
             {
-                newMessage += $"{dicVal}\r\n";
+                newMessage += $"{dicVal}{Environment.NewLine}";
             }
 
-            message = newMessage.Remove(newMessage.LastIndexOf("\r\n", StringComparison.Ordinal));
+            message = newMessage.Remove(newMessage.LastIndexOf(Environment.NewLine, StringComparison.Ordinal));
         }
         else
         {

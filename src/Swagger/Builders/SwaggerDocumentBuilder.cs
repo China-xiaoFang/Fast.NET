@@ -32,12 +32,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 #if NET8_0
 using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
+
+#elif NET10_0_OR_GREATER
+using Microsoft.OpenApi;
+#else
+using Microsoft.OpenApi.Models;
 #endif
 
 
@@ -562,18 +567,32 @@ public static class SwaggerDocumentBuilder
             // 添加安全需求
             var securityRequirement = securityDefinition.Requirement;
 
-            // C# 9.0 模式匹配新语法
+#if NET10_0_OR_GREATER
+            // OpenApi v2: Reference 已移除，直接用 OpenApiSecuritySchemeReference
+            if (securityRequirement?.Scheme is not null)
+            {
+                var schemeReference = new OpenApiSecuritySchemeReference(securityDefinition.Id);
+                openApiSecurityRequirement.Add(schemeReference, securityRequirement.Accesses.ToList());
+            }
+#else
+            // OpenApi v1: 使用 Reference 模式
             if (securityRequirement is {Scheme.Reference: not null})
             {
                 securityRequirement.Scheme.Reference.Id ??= securityDefinition.Id;
                 openApiSecurityRequirement.Add(securityRequirement.Scheme, securityRequirement.Accesses);
             }
+#endif
         }
 
         // 添加安全需求
         if (openApiSecurityRequirement.Count > 0)
         {
+#if NET10_0_OR_GREATER
+            // Swashbuckle 新版: 参数改为 Func<OpenApiDocument, OpenApiSecurityRequirement>
+            swaggerGenOptions.AddSecurityRequirement(_ => openApiSecurityRequirement);
+#else
             swaggerGenOptions.AddSecurityRequirement(openApiSecurityRequirement);
+#endif
         }
     }
 

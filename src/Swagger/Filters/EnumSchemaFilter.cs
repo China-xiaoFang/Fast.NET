@@ -20,9 +20,14 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using System.Text.RegularExpressions;
-using Microsoft.OpenApi.Any;
+#if NET10_0_OR_GREATER
+using System.Text.Json.Nodes;
+using Microsoft.OpenApi;
+#else
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Any;
+#endif
+using System.Text.RegularExpressions;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Fast.Swagger;
@@ -37,21 +42,20 @@ internal class EnumSchemaFilter : ISchemaFilter
     /// </summary>
     private const string CHINESE_PATTERN = @"[\u4e00-\u9fa5]";
 
+#if NET10_0_OR_GREATER
     /// <summary>
     /// 实现过滤器方法
     /// </summary>
-    /// <param name="model"></param>
+    /// <param name="schema"></param>
     /// <param name="context"></param>
-    public void Apply(OpenApiSchema model, SchemaFilterContext context)
+    public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
     {
         var type = context.Type;
 
         // 排除其他程序集的枚举
-        if (type.IsEnum && MAppContext.Assemblies.Contains(type.Assembly))
+        if (type.IsEnum && MAppContext.Assemblies.Contains(type.Assembly) && schema is OpenApiSchema model)
         {
-            model.Enum.Clear();
-            //var stringBuilder = new StringBuilder();
-            //stringBuilder.Append($"{model.Description}<br />");
+            model.Enum?.Clear();
 
             var enumValues = Enum.GetValues(type);
 
@@ -73,17 +77,56 @@ internal class EnumSchemaFilter : ISchemaFilter
             {
                 var numValue = value.ChangeType(enumValueType);
 
-                // 获取枚举成员特性
-                //var fieldInfo = type.GetField(Enum.GetName(type, value));
-                //var descriptionAttribute = fieldInfo.GetCustomAttribute<DescriptionAttribute>(true);
+                // OpenApi v2: 使用 JsonNode 替代 OpenApiString/OpenApiAnyFactory
+                model.Enum?.Add(!convertToNumber ? JsonValue.Create(value.ToString()) : JsonNode.Parse($"{numValue}"));
+            }
+
+            if (!convertToNumber)
+            {
+                model.Type = JsonSchemaType.String;
+                model.Format = null;
+            }
+        }
+    }
+#else
+    /// <summary>
+    /// 实现过滤器方法
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="context"></param>
+    public void Apply(OpenApiSchema model, SchemaFilterContext context)
+    {
+        var type = context.Type;
+
+        // 排除其他程序集的枚举
+        if (type.IsEnum && MAppContext.Assemblies.Contains(type.Assembly))
+        {
+            model.Enum.Clear();
+
+            var enumValues = Enum.GetValues(type);
+
+            // 从配置文件中读取全局配置
+            var convertToNumber = Penetrates.SwaggerSettings.EnumToNumber!.Value;
+
+            // 包含中文情况
+            if (Enum.GetNames(type)
+                .Any(v => Regex.IsMatch(v, CHINESE_PATTERN)))
+            {
+                convertToNumber = true;
+            }
+
+            // 获取枚举实际值类型
+            var enumValueType = type.GetField("value__")
+                ?.FieldType;
+
+            foreach (var value in enumValues)
+            {
+                var numValue = value.ChangeType(enumValueType);
+
                 model.Enum.Add(!convertToNumber
                     ? new OpenApiString(value.ToString())
                     : OpenApiAnyFactory.CreateFromJson($"{numValue}"));
-
-                //stringBuilder.Append($"&nbsp;{descriptionAttribute?.Description} {value} = {numValue}<br />");
             }
-
-            //model.Description = stringBuilder.ToString();
 
             if (!convertToNumber)
             {
@@ -92,4 +135,5 @@ internal class EnumSchemaFilter : ISchemaFilter
             }
         }
     }
+#endif
 }

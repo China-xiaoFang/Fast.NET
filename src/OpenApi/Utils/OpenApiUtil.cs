@@ -43,17 +43,22 @@ public static partial class OpenApiUtil
         try
         {
             {
+                var useColor = !Console.IsOutputRedirected;
                 var logSb = new StringBuilder();
-                logSb.Append("\u001b[40m\u001b[1m\u001b[32m");
+                if (useColor)
+                    logSb.Append("\u001b[40m\u001b[1m\u001b[32m");
                 logSb.Append("info");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                 logSb.Append(Environment.NewLine);
-                logSb.Append("\u001b[40m\u001b[90m");
+                if (useColor)
+                    logSb.Append("\u001b[40m\u001b[90m");
                 logSb.Append("      ");
                 logSb.Append("开始生成 Open Api 文件...");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 Console.WriteLine(logSb.ToString());
             }
 
@@ -105,36 +110,46 @@ public static partial class OpenApiUtil
             }
 
             {
+                var useColor = !Console.IsOutputRedirected;
                 var logSb = new StringBuilder();
-                logSb.Append("\u001b[40m\u001b[1m\u001b[32m");
+                if (useColor)
+                    logSb.Append("\u001b[40m\u001b[1m\u001b[32m");
                 logSb.Append("info");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 logSb.Append(": ");
                 logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
                 logSb.Append(Environment.NewLine);
-                logSb.Append("\u001b[40m\u001b[90m");
+                if (useColor)
+                    logSb.Append("\u001b[40m\u001b[90m");
                 logSb.Append("      ");
                 logSb.Append("生成 Open Api 文件成功。");
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+                if (useColor)
+                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
                 Console.WriteLine(logSb.ToString());
             }
         }
         catch (Exception ex)
         {
+            var useColor = !Console.IsOutputRedirected;
             var logSb = new StringBuilder();
-            logSb.Append("\u001b[41m\u001b[30m");
+            if (useColor)
+                logSb.Append("\u001b[41m\u001b[30m");
             logSb.Append("fail");
-            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            if (useColor)
+                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
             logSb.Append(": ");
             logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
             logSb.Append(Environment.NewLine);
-            logSb.Append("\u001b[41m\u001b[30m");
+            if (useColor)
+                logSb.Append("\u001b[41m\u001b[30m");
             logSb.Append("      ");
             logSb.Append("生成 Open Api 文件失败...");
             logSb.Append(Environment.NewLine);
             logSb.Append("      ");
             logSb.Append($"{ex}");
-            logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
+            if (useColor)
+                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
             Console.WriteLine(logSb.ToString());
             throw;
         }
