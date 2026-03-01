@@ -186,7 +186,11 @@ public static class WebApplicationBuilderExtension
 
                 // 若上面配置无效可尝试下列代码，比如在 IIS 中
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+#if NET10_0_OR_GREATER
+                options.KnownIPNetworks.Clear();
+#else
                 options.KnownNetworks.Clear();
+#endif
                 options.KnownProxies.Clear();
             });
         });
