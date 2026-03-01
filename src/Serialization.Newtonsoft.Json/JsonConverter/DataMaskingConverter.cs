@@ -35,6 +35,9 @@ public enum DataMaskingTypeEnum
     /// <summary>姓名（保留首尾）</summary>
     NameKeepLast,
 
+    /// <summary>账号</summary>
+    Account,
+
     /// <summary>手机号</summary>
     Mobile,
 
@@ -92,6 +95,7 @@ public class DataMaskingConverter : JsonConverter<string>
             {
                 DataMaskingTypeEnum.Name => MaskingUtil.NameMasking(value),
                 DataMaskingTypeEnum.NameKeepLast => MaskingUtil.NameKeepLastMasking(value),
+                DataMaskingTypeEnum.Account => MaskingUtil.AccountMasking(value),
                 DataMaskingTypeEnum.Mobile => MaskingUtil.MobileMasking(value),
                 DataMaskingTypeEnum.IdCard => MaskingUtil.IdCardMasking(value),
                 DataMaskingTypeEnum.Email => MaskingUtil.EmailMasking(value),

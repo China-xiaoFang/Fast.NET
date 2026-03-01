@@ -54,6 +54,18 @@ internal static class MaskingUtil
     }
 
     /// <summary>
+    /// 账号脱敏（adm**123）
+    /// </summary>
+    public static string AccountMasking(string account)
+    {
+        if (string.IsNullOrWhiteSpace(account) || account.Length < 6)
+            return account;
+
+        var maskLength = account.Length - 6;
+        return account[..3] + new string('*', maskLength) + account[^3..];
+    }
+
+    /// <summary>
     /// 手机号脱敏（152****5552）
     /// </summary>
     public static string MobileMasking(string mobile)
@@ -61,7 +73,15 @@ internal static class MaskingUtil
         if (string.IsNullOrWhiteSpace(mobile) || mobile.Length < 7)
             return mobile;
 
-        return mobile.Substring(0, 3) + "****" + mobile[^4..];
+        // 超过7位：保留前3位 + 中间4位脱敏 + 保留第8~11位 + 第12位之后全脱敏
+        var tailStart = 7;
+        var tailLength = Math.Min(4, mobile.Length - tailStart);
+        var tail = mobile.Substring(tailStart, tailLength);
+
+        // 第12位（index 11）之后全脱敏
+        var remaining = mobile.Length > 11 ? new string('*', mobile.Length - 11) : string.Empty;
+
+        return mobile[..3] + "****" + tail + remaining;
     }
 
     /// <summary>
