@@ -79,8 +79,15 @@ public static class ShellUtil
             // 检查是否超时或失败
             if (!exited)
             {
-                process.Kill();
-                process.WaitForExit();
+                try
+                {
+                    process.Kill();
+                    process.WaitForExit();
+                }
+                catch
+                {
+                    // ignored - 进程可能已经在 WaitForExit 超时后自行退出
+                }
                 throw new TimeoutException("命令执行超时");
             }
         }
@@ -150,8 +157,15 @@ public static class ShellUtil
             // 检查是否超时或失败
             if (!exited)
             {
-                process.Kill();
-                process.WaitForExit();
+                try
+                {
+                    process.Kill();
+                    process.WaitForExit();
+                }
+                catch
+                {
+                    // ignored - 进程可能已经在 WaitForExit 超时后自行退出
+                }
                 throw new TimeoutException("命令执行超时");
             }
         }

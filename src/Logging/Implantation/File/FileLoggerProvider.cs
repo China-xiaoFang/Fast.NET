@@ -171,10 +171,8 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
         {
             try
             {
-                _logMessageQueue.Add(logMsg);
-            }
-            catch (InvalidOperationException)
-            {
+                // 使用 TryAdd 非阻塞写入，避免后台任务异常退出时队列满导致调用方线程永久阻塞
+                _logMessageQueue.TryAdd(logMsg);
             }
             catch
             {
@@ -190,7 +188,14 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
     {
         foreach (var logMsg in _logMessageQueue.GetConsumingEnumerable())
         {
-            _fileLoggingWriter.Write(logMsg, _logMessageQueue.Count == 0);
+            try
+            {
+                _fileLoggingWriter.Write(logMsg, _logMessageQueue.Count == 0);
+            }
+            catch
+            {
+                // ignored - 防止单条日志写入失败导致后台任务退出，从而造成后续日志全部丢失
+            }
         }
     }
 }
