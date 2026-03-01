@@ -344,6 +344,11 @@ internal class FileLoggingWriter
             return;
 
         CheckForNewLogFile();
+
+        // CheckForNewLogFile 内部 Close() 后若 OpenFile() 失败，_textWriter 可能为 null
+        if (_textWriter == null)
+            return;
+
         _textWriter.WriteLine(logMsg.Message);
 
         if (flush)

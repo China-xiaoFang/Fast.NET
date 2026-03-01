@@ -70,7 +70,8 @@ public static class FileUtil
 
         // 创建目标文件夹（如果不存在）
         var destinationDirectory = Path.GetDirectoryName(toPath);
-        Directory.CreateDirectory(destinationDirectory);
+        if (!string.IsNullOrEmpty(destinationDirectory))
+            Directory.CreateDirectory(destinationDirectory);
 
         // 复制文件
         File.Copy(fromPath, toPath, true);
@@ -84,6 +85,7 @@ public static class FileUtil
     {
         // 创建目标文件夹（如果不存在）
         var destinationDirectory = Path.GetDirectoryName(path);
-        Directory.CreateDirectory(destinationDirectory);
+        if (!string.IsNullOrEmpty(destinationDirectory))
+            Directory.CreateDirectory(destinationDirectory);
     }
 }

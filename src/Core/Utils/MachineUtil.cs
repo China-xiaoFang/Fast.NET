@@ -431,7 +431,7 @@ public static class MachineUtil
             {
                 // 解析文件中的内存值，VmRSS: 123456 kB
                 var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length < 2)
+                if (parts.Length < 3)
                 {
                     return 0;
                 }
@@ -460,8 +460,8 @@ public static class MachineUtil
                 {
                     working = ByteToMB(line);
                 }
-                // 最大物理内存
-                else if (line.StartsWith("VmPeak:"))
+                // 最大物理内存（高水位线）
+                else if (line.StartsWith("VmHWM:"))
                 {
                     peakWorking = ByteToMB(line);
                 }
@@ -471,7 +471,7 @@ public static class MachineUtil
                     virtualMemory = ByteToMB(line);
                 }
                 // 最大虚拟内存
-                else if (line.StartsWith("VmHWM:"))
+                else if (line.StartsWith("VmPeak:"))
                 {
                     peakVirtualMemory = ByteToMB(line);
                 }

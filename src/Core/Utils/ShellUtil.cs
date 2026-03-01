@@ -66,6 +66,10 @@ public static class ShellUtil
         // 启动进程
         process.Start();
 
+        // 异步读取 stdout 和 stderr，防止缓冲区满导致死锁
+        var stdoutTask = process.StandardOutput.ReadToEndAsync();
+        var stderrTask = process.StandardError.ReadToEndAsync();
+
         // 是否超时判断
         if (timeout > 0)
         {
@@ -75,13 +79,25 @@ public static class ShellUtil
             // 检查是否超时或失败
             if (!exited)
             {
+                try
+                {
+                    process.Kill();
+                    process.WaitForExit();
+                }
+                catch
+                {
+                    // ignored - 进程可能已经在 WaitForExit 超时后自行退出
+                }
+
                 throw new TimeoutException("命令执行超时");
             }
         }
 
         // 获取输出内容
-        var output = process.StandardOutput.ReadToEnd();
-        var error = process.StandardError.ReadToEnd();
+        var output = stdoutTask.GetAwaiter()
+            .GetResult();
+        var error = stderrTask.GetAwaiter()
+            .GetResult();
 
         if (!string.IsNullOrEmpty(error))
         {
@@ -126,6 +142,10 @@ public static class ShellUtil
         // 启动进程
         process.Start();
 
+        // 异步读取 stdout 和 stderr，防止缓冲区满导致死锁
+        var stdoutTask = process.StandardOutput.ReadToEndAsync();
+        var stderrTask = process.StandardError.ReadToEndAsync();
+
         // 是否超时判断
         if (timeout > 0)
         {
@@ -135,13 +155,25 @@ public static class ShellUtil
             // 检查是否超时或失败
             if (!exited)
             {
+                try
+                {
+                    process.Kill();
+                    process.WaitForExit();
+                }
+                catch
+                {
+                    // ignored - 进程可能已经在 WaitForExit 超时后自行退出
+                }
+
                 throw new TimeoutException("命令执行超时");
             }
         }
 
         // 获取输出内容
-        var output = process.StandardOutput.ReadToEnd();
-        var error = process.StandardError.ReadToEnd();
+        var output = stdoutTask.GetAwaiter()
+            .GetResult();
+        var error = stderrTask.GetAwaiter()
+            .GetResult();
 
         if (!string.IsNullOrEmpty(error))
         {
