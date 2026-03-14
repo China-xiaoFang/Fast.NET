@@ -72,8 +72,9 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
     public FileLoggerProvider(string fileName, FileLoggerOptions fileLoggerOptions)
     {
         // 支持文件名嵌入系统环境变量，格式为：%SystemDrive%，%SystemRoot%，处理 Windows 和 Linux 路径分隔符不一致问题
-        FileName = Environment.ExpandEnvironmentVariables(fileName)
-            .Replace('\\', '/');
+        // 使用 Path.GetFullPath 将相对路径转换为绝对路径，避免在 Linux 下因工作目录与应用程序目录不一致导致日志文件无法写入
+        FileName = Path.GetFullPath(Environment.ExpandEnvironmentVariables(fileName)
+            .Replace('\\', '/'));
         LoggerOptions = fileLoggerOptions;
 
         // 创建文件日志写入器
