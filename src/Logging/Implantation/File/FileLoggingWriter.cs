@@ -65,6 +65,16 @@ internal class FileLoggingWriter
     private readonly bool _isEnabledRollingFiles;
 
     /// <summary>
+    /// 上次尝试重新打开文件的时间（UTC）
+    /// </summary>
+    private DateTime _lastReopenAttempt = DateTime.MinValue;
+
+    /// <summary>
+    /// 重新打开文件的最小间隔时间
+    /// </summary>
+    private static readonly TimeSpan _reopenInterval = TimeSpan.FromSeconds(5);
+
+    /// <summary>
     /// 构造函数
     /// </summary>
     /// <param name="fileLoggerProvider">文件日志记录器提供程序</param>
@@ -77,8 +87,17 @@ internal class FileLoggingWriter
         // 解析当前写入日志的文件名
         GetCurrentFileName();
 
-        // 打开文件并持续写入
-        OpenFile(true);
+        // 打开文件并持续写入，如果失败则记录错误但不抛出异常，后续写入时会自动重试
+        try
+        {
+            OpenFile(true);
+        }
+        catch (Exception ex)
+        {
+            // 在 Linux 下可能因为权限、路径等问题导致文件创建失败
+            // 输出诊断信息到标准错误流，帮助用户排查问题
+            Console.Error.WriteLine($"[Fast.Logging] Failed to create log file '{_fileName}': {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -265,14 +284,21 @@ internal class FileLoggingWriter
             // 计算新文件名
             _fileName = GetNextFileName();
 
-            // 打开新文件并写入
-            OpenFile(false);
+            // 打开新文件并写入，如果失败则记录错误（_textWriter 会保持 null，Write 方法后续会通过 TryReopenFile 重试）
+            try
+            {
+                OpenFile(false);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[Fast.Logging] Failed to create new log file '{_fileName}': {ex.Message}");
+            }
         }
 
         // 是否超出限制的最大大小
         bool isMaxFileSizeThresholdReached()
         {
-            return _options.FileSizeLimitBytes > 0 && _fileStream.Length > _options.FileSizeLimitBytes;
+            return _options.FileSizeLimitBytes > 0 && _fileStream != null && _fileStream.Length > _options.FileSizeLimitBytes;
         }
 
         // 是否重新自定义了文件名
@@ -340,8 +366,13 @@ internal class FileLoggingWriter
     /// <param name="flush"></param>
     internal void Write(LogMessage logMsg, bool flush)
     {
+        // 如果文本写入器为空，尝试重新打开文件（支持从构造函数失败或文件轮转失败中恢复）
         if (_textWriter == null)
-            return;
+        {
+            TryReopenFile();
+            if (_textWriter == null)
+                return;
+        }
 
         CheckForNewLogFile();
 
@@ -356,19 +387,42 @@ internal class FileLoggingWriter
     }
 
     /// <summary>
+    /// 尝试重新打开日志文件（带有冷却时间以避免频繁重试）
+    /// </summary>
+    private void TryReopenFile()
+    {
+        // 限制重试频率，避免因持续失败导致性能问题
+        if (DateTime.UtcNow - _lastReopenAttempt < _reopenInterval)
+            return;
+
+        _lastReopenAttempt = DateTime.UtcNow;
+
+        try
+        {
+            GetCurrentFileName();
+            OpenFile(true);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"[Fast.Logging] Failed to reopen log file '{_fileName}': {ex.Message}");
+        }
+    }
+
+    /// <summary>
     /// 关闭文本写入器并释放
     /// </summary>
     internal void Close()
     {
-        if (_textWriter == null)
+        if (_textWriter == null && _fileStream == null)
             return;
 
-        var textloWriter = _textWriter;
+        var textWriter = _textWriter;
         _textWriter = null;
 
-        textloWriter.Dispose();
-        _fileStream.Dispose();
-
+        var fileStream = _fileStream;
         _fileStream = null;
+
+        textWriter?.Dispose();
+        fileStream?.Dispose();
     }
 }
