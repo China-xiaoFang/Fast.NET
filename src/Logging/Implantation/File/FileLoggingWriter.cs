@@ -65,12 +65,12 @@ internal class FileLoggingWriter
     private readonly bool _isEnabledRollingFiles;
 
     /// <summary>
-    /// 上次尝试重新打开文件的时间（UTC）
+    /// 上次尝试重新打开文件的时间（UTC），用于控制重试冷却
     /// </summary>
     private DateTime _lastReopenAttempt = DateTime.MinValue;
 
     /// <summary>
-    /// 重新打开文件的最小间隔时间
+    /// 重新打开文件的最小间隔时间（5秒），避免在持续失败时频繁重试导致性能损耗
     /// </summary>
     private static readonly TimeSpan _reopenInterval = TimeSpan.FromSeconds(5);
 
