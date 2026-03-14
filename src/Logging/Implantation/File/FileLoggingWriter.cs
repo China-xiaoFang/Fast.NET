@@ -274,7 +274,7 @@ internal class FileLoggingWriter
     /// </summary>
     private void CheckForNewLogFile()
     {
-        var openNewFile = isMaxFileSizeThresholdReached() || isBaseFileNameChanged();
+        var openNewFile = isMaxFileSizeThresholdReached() || isBaseFileNameChanged() || isFileDeletedExternally();
 
         // 重新创建新文件并写入
         if (openNewFile)
@@ -316,6 +316,14 @@ internal class FileLoggingWriter
             }
 
             return false;
+        }
+
+        // 日志文件是否被外部进程删除
+        // 在 Linux 上，文件被删除后 FileStream 句柄仍然有效（写入到已删除的 inode），但文件在文件系统中不可见
+        // 此检查确保当文件被外部进程（如日志清理服务）删除时，能够自动重新创建文件
+        bool isFileDeletedExternally()
+        {
+            return _fileStream != null && !File.Exists(_fileName);
         }
     }
 
