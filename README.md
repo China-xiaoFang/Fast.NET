@@ -1,34 +1,212 @@
-[中](https://gitee.com/FastDotnet/Fast.NET) | **En**
+[中](README.zh.md) | **En**
 
-# Fast.NET（v3）
+<div align="center">
 
-An application utility class (framework) that you can integrate into any `.NET` application.
+<img src="Fast.png" alt="Fast.NET Logo" width="128" />
 
-## Technology selection
+# Fast.NET
 
-- `Fast.NET` v3 version is developed using `C#10` and `.NET6` `.NET7` `.NET8`.
+**A modular, high-performance .NET framework for rapidly building modern applications.**
 
-## Background of the project
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?label=Fast.NET.Core)](https://www.nuget.org/packages/Fast.NET.Core)
+[![dotnet](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0%20%7C%209.0%20%7C%2010.0-purple.svg)](https://dotnet.microsoft.com)
+[![C#](https://img.shields.io/badge/C%23-12.0-brightgreen.svg)](https://learn.microsoft.com/dotnet/csharp/)
 
-In the past, `.NET` did not have a good open source environment and community in China. As more and more programmers use `.NET` in China, the domestic open source environment and community are gradually getting better and better.
+[Documentation](docs/) · [Quick Start](#quick-start) · [Modules](#modules) · [Contributing](#contributing) · [中文](README.zh.md)
 
-Various `.NET` open source frameworks have also emerged in response to the times.
+</div>
 
-As a newbie who has been working in the `.NET` industry for N years, I have also used many open source frameworks, so I want to make a small contribution to `.NET` open source based on my own work experience and experience. Small contribution.
+---
 
-## Install
+## ✨ Features
 
-Select the tool module library you need to install. For example:
+- 🧩 **Modular Architecture** — Pick only the modules you need; each module is an independent NuGet package
+- 🚀 **Dynamic API Generation** — Automatically convert service classes into RESTful API endpoints without writing controllers
+- 💉 **Auto Dependency Injection** — Register services by simply implementing marker interfaces (`ITransientDependency`, `IScopedDependency`, `ISingletonDependency`)
+- 📡 **Event Bus** — In-process event-driven architecture with retry policies and monitoring
+- 🗄️ **ORM Integration** — Seamlessly integrated [SqlSugar](https://github.com/DotNetNext/SqlSugar) with repository pattern, multi-tenancy, and soft delete
+- 🔐 **JWT Authentication** — Configurable JWT Bearer authentication with custom authorization handlers
+- 📝 **Unified Logging** — File and console logging with automatic rotation, per-level separation, and trace correlation
+- 🔄 **Serialization** — Drop-in support for both `System.Text.Json` and `Newtonsoft.Json` with custom converters
+- 📦 **Redis Caching** — Redis cache abstraction based on [CSRedisCore](https://github.com/2881099/csredis)
+- 📖 **Swagger Integration** — Enhanced Swagger documentation with grouping, authorization, and enum support
+- 🌐 **Consul Service Discovery** — Service registration, health checks, and KV configuration
+- 🛡️ **Unified Result** — Standardized RESTful response format with global exception handling and model validation
+- 🗺️ **Object Mapping** — Integrated [Mapster](https://github.com/MapsterMapper/Mapster) for zero-config object mapping
+- 🧰 **Infrastructure Utilities** — Comprehensive utility library (encryption, data masking, tree building, validation, and more)
+- 🌍 **Cross-Platform** — Runs on Windows, Linux, and macOS
+
+## 🏗️ Architecture
 
 ```
-dotnet add package Fast.xxx
+┌─────────────────────────────────────────────────────────────────┐
+│                        Your Application                        │
+├──────────┬──────────┬──────────┬──────────┬──────────┬─────────┤
+│ Dynamic  │ Unified  │ Swagger  │ OpenApi  │ JwtBearer│ Consul  │
+│Application│ Result  │          │          │          │         │
+├──────────┴──────────┴──────────┴──────────┴──────────┴─────────┤
+│         Fast.NET.Core  (Configuration, Middleware, Utils)       │
+├──────────┬──────────┬──────────┬──────────┬──────────┬─────────┤
+│Dependency│  Event   │ SqlSugar │  Cache   │ Logging  │ Mapster │
+│Injection │  Bus     │          │          │          │         │
+├──────────┴──────────┼──────────┴──────────┼──────────┴─────────┤
+│   Serialization     │     Fast.Runtime    │     Fast.IaaS      │
+│ (STJ / Newtonsoft)  │  (Context, DI, Ext) │   (Utilities)      │
+└─────────────────────┴─────────────────────┴────────────────────┘
 ```
 
-## example
+## 📋 Requirements
 
-Introduce and use as needed~~~
+- .NET 6.0, 7.0, 8.0, 9.0, or 10.0
+- C# 12.0 (LangVersion)
+- Visual Studio 2022+ / VS Code / Rider
 
-```cs
+## 🚀 Quick Start
+
+### 1. Install packages
+
+Install only the modules you need:
+
+```bash
+dotnet add package Fast.NET.Core
+dotnet add package Fast.DependencyInjection
+dotnet add package Fast.DynamicApplication
+dotnet add package Fast.Serialization.System.Text.Json
+```
+
+### 2. Configure `Program.cs`
+
+```csharp
+using Fast.DependencyInjection;
+using Fast.DynamicApplication;
+using Fast.NET.Core;
+using Fast.Serialization;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Initialize the Fast.NET framework
+builder.Initialize();
+
+// Add services
+builder.Services.AddSerialization();
+builder.Services.AddDependencyInjection();
+builder.Services.AddControllers();
+builder.Services.AddDynamicApplication();
+
+var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.EnableBuffering();
+app.UseRouting();
+app.MapControllers();
+app.Run();
+```
+
+### 3. Create a Dynamic API service
+
+```csharp
+using Fast.DynamicApplication;
+
+namespace MyApp.Services;
+
+/// <summary>
+/// User Service — automatically becomes a REST API controller
+/// </summary>
+public class UserService : IDynamicApplication
+{
+    public string GetHello()
+    {
+        return "Hello from Fast.NET!";
+    }
+
+    public Task<UserDto> GetUserAsync(long id)
+    {
+        return Task.FromResult(new UserDto { Id = id, Name = "Test User" });
+    }
+}
+
+public class UserDto
+{
+    public long Id { get; set; }
+    public string Name { get; set; }
+}
+```
+
+### 4. Auto Dependency Injection
+
+```csharp
+using Fast.DependencyInjection;
+
+// Automatically registered as Transient
+public class OrderService : IOrderService, ITransientDependency
+{
+    public Task<string> CreateOrderAsync() => Task.FromResult("Order created");
+}
+
+public interface IOrderService
+{
+    Task<string> CreateOrderAsync();
+}
+```
+
+### 5. Event Bus
+
+```csharp
+using Fast.EventBus;
+
+// Publish an event
+public class OrderController
+{
+    private readonly IEventPublisher _publisher;
+
+    public OrderController(IEventPublisher publisher) => _publisher = publisher;
+
+    public async Task CreateOrder()
+    {
+        await _publisher.PublishAsync("OrderCreated", new { OrderId = 1 });
+    }
+}
+
+// Subscribe to the event
+public class OrderEventSubscriber : IEventSubscriber
+{
+    [EventSubscribe("OrderCreated")]
+    public async Task OnOrderCreated(EventHandlerExecutingContext context)
+    {
+        var payload = context.Payload;
+        // Handle event...
+    }
+}
+```
+
+## 📦 Modules
+
+| Module | Version | Description |
+| --- | --- | --- |
+| [Fast.Runtime](src/Runtime) | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime) | Core runtime library — application context, service resolution, and extension methods |
+| [Fast.IaaS](src/IaaS) | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS) | Infrastructure utilities — encryption, validation, data masking, tree building |
+| [Fast.NET.Core](src/Core) | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core) | Core framework — initialization, configuration, middleware, CORS, Gzip |
+| [Fast.DependencyInjection](src/DependencyInjection) | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection) | Auto dependency injection via marker interfaces |
+| [Fast.DynamicApplication](src/DynamicApplication) | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication) | Dynamic API generation from service classes |
+| [Fast.EventBus](src/EventBus) | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus) | In-process event bus with retry policies |
+| [Fast.SqlSugar](src/SqlSugar) | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar) | ORM integration with repository pattern and multi-tenancy ([SqlSugar](https://github.com/DotNetNext/SqlSugar)) |
+| [Fast.Cache](src/Cache) | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache) | Redis cache abstraction ([CSRedisCore](https://github.com/2881099/csredis)) |
+| [Fast.Logging](src/Logging) | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging) | File and console logging with rotation and trace correlation |
+| [Fast.JwtBearer](src/JwtBearer) | [![nuget](https://img.shields.io/nuget/v/Fast.JwtBearer.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.JwtBearer) | JWT Bearer authentication and authorization |
+| [Fast.Swagger](src/Swagger) | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger) | Enhanced Swagger documentation ([Swashbuckle](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)) |
+| [Fast.OpenApi](src/OpenApi) | [![nuget](https://img.shields.io/nuget/v/Fast.OpenApi.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.OpenApi) | OpenAPI document generation and TypeScript codegen support |
+| [Fast.UnifyResult](src/UnifyResult) | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult) | Unified RESTful response format with exception handling |
+| [Fast.Mapster](src/Mapster) | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster) | Object mapping integration ([Mapster](https://github.com/MapsterMapper/Mapster)) |
+| [Fast.Serialization.System.Text.Json](src/Serialization.System.Text.Json) | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.System.Text.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | System.Text.Json serialization with custom converters |
+| [Fast.Serialization.Newtonsoft.Json](src/Serialization.Newtonsoft.Json) | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.Newtonsoft.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Newtonsoft.Json serialization with custom converters |
+| [Fast.Consul](src/Consul) | [![nuget](https://img.shields.io/nuget/v/Fast.Consul.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Consul) | Consul service discovery, health checks, and KV store |
+
+## 📄 Full Example
+
+A complete `Program.cs` using all modules:
+
+```csharp
 using Fast.Cache;
 using Fast.DependencyInjection;
 using Fast.DynamicApplication;
@@ -37,7 +215,6 @@ using Fast.JwtBearer;
 using Fast.Logging;
 using Fast.Mapster;
 using Fast.NET.Core;
-using Fast.OpenApi;
 using Fast.Serialization;
 using Fast.SqlSugar;
 using Fast.Swagger;
@@ -45,176 +222,99 @@ using Fast.UnifyResult;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Initialize the frame
+// Initialize framework
 builder.Initialize();
 
-// Add serialization service
+// Register services
 builder.Services.AddSerialization();
-
-// Add log service
 builder.Services.AddLoggingService(builder.Environment);
-
-// Add cross-domain service
 builder.Services.AddCorsAccessor();
-
-// Add Gzip compression
 builder.Services.AddGzipCompression();
-
-// Add Mapster service
 builder.Services.AddMapster();
-
-// Add dependency injection service
 builder.Services.AddDependencyInjection();
-
-// Add event bus service
 builder.Services.AddEventBus();
-
-// Add Redis cache service
 builder.Services.AddCache();
-
-// Add SqlSugar service
 builder.Services.AddSqlSugar(builder.Configuration);
-
-// Add JwtBearer service
 builder.Services.AddJwtBearer(builder.Configuration);
-
-// Add controller.
 builder.Services.AddControllers();
-
-// Add dynamic API service
 builder.Services.AddDynamicApplication();
-
-// Add normalized return service
 builder.Services.AddUnifyResult(builder.Configuration);
-
-// Add standardized document service
 builder.Services.AddSwaggerDocuments(builder.Configuration);
-
-// Add open api service
-builder.Services.AddOpenApi(builder.Configuration);
 
 var app = builder.Build();
 
-// Mandatory HTTPS.
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
-// Enable backward reading.
 app.EnableBuffering();
-
 app.UseRouting();
-
-// Enable normalized documents
 app.UseSwaggerDocuments();
-
 app.MapControllers();
-
 app.Run();
 ```
 
-## document
+## 📖 Documentation
 
-Sorry, I'm working on it...
+Comprehensive documentation is available in the [`docs/`](docs/) directory:
 
-## Update log
+- [Getting Started](docs/getting-started.md) — Installation, setup, and first project
+- [Architecture Overview](docs/architecture.md) — Framework design and module dependencies
+- [Module Guide](docs/modules/) — Detailed documentation for each module
+  - [Runtime](docs/modules/runtime.md) · [Core](docs/modules/core.md) · [DI](docs/modules/dependency-injection.md) · [Dynamic API](docs/modules/dynamic-application.md)
+  - [SqlSugar](docs/modules/sqlsugar.md) · [Event Bus](docs/modules/event-bus.md) · [Cache](docs/modules/cache.md) · [Logging](docs/modules/logging.md)
+  - [JwtBearer](docs/modules/jwt-bearer.md) · [Swagger](docs/modules/swagger.md) · [UnifyResult](docs/modules/unify-result.md) · [Serialization](docs/modules/serialization.md)
+  - [Mapster](docs/modules/mapster.md) · [IaaS](docs/modules/iaas.md) · [OpenApi](docs/modules/openapi.md) · [Consul](docs/modules/consul.md)
+- [Configuration Reference](docs/configuration.md) — All configuration options
+- [Changelog](https://gitee.com/FastDotnet/Fast.NET/commits/master)
 
-Update log [Click to view](https://gitee.com/FastDotnet/Fast.NET/commits/master)
+## 🤝 Contributing
 
-## Detailed functions (module description)
+Contributions are welcome! Here's how you can help:
 
-| Module Name                                                                                                | Status | Version                                                                                                                                                                   | Description                                                      | Notes                                                                                                                                                                             |
-| ---------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Fast.Cache](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Cache)                                  | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.Cache.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Cache)                                                   | Fast.NET Framework Cache Module Library                          | A Redis cache library commonly used by a `novice` who has been working in the .NET industry for `N years`, based on the [CSRedisCore](https://github.com/2881099/csredis) package |
-| [Fast.DependencyInjection](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/DependencyInjection)      | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.DependencyInjection.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DependencyInjection)                       | Fast.NET Framework Dependency Injection Module Library           |                                                                                                                                                                                   |
-| [Fast.DynamicApplication](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/DynamicApplication)        | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.DynamicApplication.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.DynamicApplication)                         | Fast.NET Framework Dynamic Api Module Library                    |                                                                                                                                                                                   |
-| [Fast.EventBus](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/EventBus)                            | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.EventBus.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.EventBus)                                             | Fast.NET Framework Event Bus Module Library                      |                                                                                                                                                                                   |
-| [Fast.IaaS](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/IaaS)                                    | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.IaaS.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.IaaS)                                                     | Fast.NET Framework Infrastructure Module Library                 | A commonly used expansion tool class by a `novice` who has been working in the `.NET` industry for `N years`. I personally recommend it, it is absolutely useful!!!               |
-| [Fast.JwtBearer](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/JwtBearer)                          | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.JwtBearer.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.JwtBearer)                                           | Fast.NET Framework JwtBearer module library                      |                                                                                                                                                                                   |
-| [Fast.Logging](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Logging)                              | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.Logging.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Logging)                                               | Fast.NET Framework log module library                            |                                                                                                                                                                                   |
-| [Fast.Mapster](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Mapster)                              | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.Mapster.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Mapster)                                               | Fast.NET Framework object mapping module library                 | Based on [Mapster](https://github.com/MapsterMapper/Mapster) encapsulation                                                                                                        |
-| [Fast.NET.Core](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Core)                                | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.NET.Core.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.NET.Core)                                             | Fast.NET Framework core module library                           | Because Fast.Core already has a Nuget package, it is renamed [Fast.NET.Core](https://gitee.com/FastDotnet/Fast.NET/tree/master/src.NET/Core)                                      |
-| [Fast.OpenApi](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/OpenApi)                              | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.OpenApi.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.OpenApi)                                               | Fast.NET Framework OpenApi module library                        |                                                                                                                                                                                   |
-| [Fast.Runtime](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Runtime)                              | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.Runtime.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Runtime)                                               | Fast.NET Framework Core Runtime Library                          |                                                                                                                                                                                   |
-| [Fast.Serialization.Newtonsoft.Json](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Serialization)  | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.Newtonsoft.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json)   | Fast.NET Framework Newtonsoft.Json Serialization Module Library  | Based on [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) encapsulation                                                                                              |
-| [Fast.Serialization.System.Text.Json](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Serialization) | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.Serialization.System.Text.Json.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | Fast.NET Framework System.Text.Json serialization module library | Based on [System.Text.Json](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) encapsulation                                                                          |
-| [Fast.SqlSugar](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/SqlSugar)                            | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.SqlSugar.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.SqlSugar)                                             | Fast.NET Framework SqlSugar Module Library                       | Based on [SqlSugar](https://gitee.com/dotnetchina/SqlSugar) Encapsulation                                                                                                         |
-| [Fast.Swagger](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/Swagger)                              | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.Swagger.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.Swagger)                                               | Fast.NET Framework Swagger Module Library                        |                                                                                                                                                                                   |
-| [Fast.UnifyResult](https://gitee.com/FastDotnet/Fast.NET/tree/master/src/UnifyResult)                      | ✅     | [![nuget](https://img.shields.io/nuget/v/Fast.UnifyResult.svg?cacheSeconds=10800)](https://www.nuget.org/packages/Fast.UnifyResult)                                       | Fast.NET Framework RESTful Style Unified Return Module Library   |                                                                                                                                                                                   |
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/my-feature`)
+3. **Commit** your changes (`git commit -m 'Add my feature'`)
+4. **Push** to the branch (`git push origin feature/my-feature`)
+5. **Open** a Pull Request
 
-## Recent plans
+Please ensure your code follows the existing coding style and conventions.
 
-- [✅] Infrastructure module
-- [✅] Core module
-- [✅] Cross-domain processing module
-- [✅] Object mapping module
-- [✅] Redis cache module
-- [✅] Serialization module
-- [✅] Dependency injection module
-- [✅] Dynamic API module
-- [✅] Normalized document module
-- [✅] Normalized return module
-- [✅] Log module
-- [✅] Event bus
-- [✅] SqlSugar
-- [✅] Open api
-- [⚠️] ...
+## 📝 License
 
-> Status description
->
-> | Icon | Description            |
-> | ---- | ---------------------- |
-> | ⚠️   | TBA                    |
-> | ⏳   | In progress            |
-> | ✅   | Complete               |
-> | 💔   | Throw away at any time |
-
-## protocol
-
-[Fast.NET](https://gitee.com/FastDotnet/Fast.NET) Follow [Apache-2.0](https://gitee.com/FastDotnet/Fast.NET/blob/master/LICENSE) Open source license, everyone is welcome to submit `PR` or `Issue`.
+Fast.NET is licensed under the [Apache License 2.0](LICENSE).
 
 ```
-Apache Open Source License
+Copyright © 2018-Now XiaoFang
 
-Copyright © 2018-Now xiaoFang
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-License:
-This Agreement grants any individual or organization that obtains a copy of this software and its related documentation (hereinafter referred to as the "Software").
-Subject to the terms of this Agreement, you have the right to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the Software:
-1.All copies or major parts of the Software must retain this Copyright Notice and this License Agreement.
-2.The use, copying, modification, or distribution of the Software shall not violate applicable laws or infringe upon the legitimate rights and interests of others.
-3.Modified or derivative works must clearly indicate the original author and the source of the original Software.
+    http://www.apache.org/licenses/LICENSE-2.0
 
-Special Statement:
-- This Software is provided "as is" without any express or implied warranty of any kind, including but not limited to the warranty of merchantability, fitness for purpose, and non-infringement.
-- In no event shall the author or copyright holder be liable for any direct or indirect loss caused by the use or inability to use this Software.
-- Including but not limited to data loss, business interruption, etc.
-
-Disclaimer:
-It is prohibited to use this software to engage in illegal activities such as endangering national security, disrupting social order, or infringing on the legitimate rights and interests of others.
-The author does not assume any responsibility for any legal disputes and liabilities caused by the secondary development of this software.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
 
-## team member
+## 👥 Team
 
-| Members  | Technology | Nickname | Motto                                                                                                                                                                                                                                            |
-| -------- | ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| XiaoFang | Full Stack | 1.8K 仔  | Accepting your own mediocrity and ordinaryness is a required course for growth<br> The life you envy is the hardship you have not survived<br> When your ability cannot support you When you are ambitious, you need to calm down and study hard |
+| Member | Role | Nickname |
+| --- | --- | --- |
+| XiaoFang (小方) | Full Stack Developer | 1.8K 仔 |
 
-## Coding environment
+## ⭐ Support
 
-| Name               | Remarks                                                                                                                                       |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Visual Studio 2022 |                                                                                                                                               |
-| Visual Studio Code |                                                                                                                                               |
-| Resharper          | The comments starting with `// ReSharper` that you see in the code are generated by this application to avoid unnecessary warnings or prompts |
+If you find Fast.NET helpful, please consider giving it a **Star** ⭐ — it means a lot and helps others discover the project!
 
-## Disclaimer
+## 🙏 Acknowledgements
 
-     Please do not use it for projects that violate the laws of our country.
+Fast.NET stands on the shoulders of excellent open-source projects:
 
-     This framework can be said to continue to reinvent the wheel based on the predecessors, but it is simpler and more convenient than some frameworks on the market. It's better to use. I don't know if we can talk about it.
-
-## Supplementary instructions
-
-     If it is helpful to you, you can click "Star" in the upper right corner to collect it and get the latest updates. Thank you!
+- [SqlSugar](https://github.com/DotNetNext/SqlSugar) — High-performance ORM
+- [CSRedisCore](https://github.com/2881099/csredis) — Redis client
+- [Mapster](https://github.com/MapsterMapper/Mapster) — Object mapping
+- [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) — Swagger/OpenAPI
+- [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) — JSON framework
+- [Furion](https://github.com/MonkSoul/Furion) — Architecture inspiration
