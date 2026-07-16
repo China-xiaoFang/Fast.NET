@@ -114,7 +114,7 @@ public class DataMaskingConverter : JsonConverter<string>
                 DataMaskingTypeEnum.Address => MaskingUtil.AddressMasking(value),
                 DataMaskingTypeEnum.CarNumber => MaskingUtil.CarNumberMasking(value),
                 DataMaskingTypeEnum.Ip => MaskingUtil.IpMasking(value),
-                _ => throw new ArgumentOutOfRangeException()
+                _ => throw new InvalidOperationException($"不支持的数据脱敏类型：{MaskingType}。")
             });
         }
     }

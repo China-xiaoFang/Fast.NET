@@ -38,6 +38,14 @@ namespace Fast.NET.Core;
 [SuppressSniffer]
 public static class RemoteRequestUtil
 {
+    private static readonly Uri _daySentenceUri = new("https://open.iciba.com/dsapi/");
+
+    /// <summary>
+    /// 复用连接池，避免每次请求创建 HttpClient 导致端口耗尽。
+    /// </summary>
+    private static readonly HttpClient _httpClient =
+        new(new HttpClientHandler {AutomaticDecompression = DecompressionMethods.All}) {Timeout = Timeout.InfiniteTimeSpan};
+
     /// <summary>
     /// 默认 System.Text.Json 序列化配置
     /// </summary>
@@ -63,18 +71,19 @@ public static class RemoteRequestUtil
     /// <returns></returns>
     public static async Task<DaySentenceInfo> GetDaySentence()
     {
-        using var client = new HttpClient();
         try
         {
-            var response = await client.GetAsync("https://open.iciba.com/dsapi/");
+            using var response = await _httpClient.GetAsync(_daySentenceUri)
+                .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            var responseBody = await response.Content.ReadAsStringAsync();
+            var responseBody = await response.Content.ReadAsStringAsync()
+                .ConfigureAwait(false);
             return JsonSerializer.Deserialize<DaySentenceInfo>(responseBody);
         }
         catch (HttpRequestException ex)
         {
-            throw new HttpRequestException($"Day sentence request error，{ex.Message}");
+            throw new HttpRequestException($"Day sentence request error，{ex.Message}", ex);
         }
     }
 
@@ -92,7 +101,9 @@ public static class RemoteRequestUtil
         IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
         return SendAsync<T>(HttpMethod.Get, url, param, null, headers, paramEncode, timeout)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -124,7 +135,9 @@ public static class RemoteRequestUtil
         IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
         return SendAsync(HttpMethod.Get, url, param, null, headers, paramEncode, timeout)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -156,7 +169,9 @@ public static class RemoteRequestUtil
         IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
         return SendAsync<T>(HttpMethod.Post, url, null, data, headers, paramEncode, timeout)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -188,7 +203,9 @@ public static class RemoteRequestUtil
         IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
         return SendAsync(HttpMethod.Post, url, null, data, headers, paramEncode, timeout)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -220,7 +237,9 @@ public static class RemoteRequestUtil
         IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60) where T : class
     {
         return SendAsync<T>(HttpMethod.Put, url, null, data, headers, paramEncode, timeout)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -252,7 +271,9 @@ public static class RemoteRequestUtil
         IDictionary<string, string> headers = null, bool paramEncode = false, int? timeout = 60)
     {
         return SendAsync(HttpMethod.Put, url, null, data, headers, paramEncode, timeout)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -283,7 +304,9 @@ public static class RemoteRequestUtil
         bool paramEncode = false, int? timeout = 60) where T : class
     {
         return SendAsync<T>(HttpMethod.Delete, url, null, null, headers, paramEncode, timeout)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -313,7 +336,9 @@ public static class RemoteRequestUtil
         bool paramEncode = false, int? timeout = 60)
     {
         return SendAsync(HttpMethod.Delete, url, null, null, headers, paramEncode, timeout)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -347,7 +372,8 @@ public static class RemoteRequestUtil
         int? timeout = 60)
     {
         var (responseContent, responseHeaders) =
-            await SendAsync(httpMethod, url, urlParam, bodyData, headers, paramEncode, timeout);
+            await SendAsync(httpMethod, url, urlParam, bodyData, headers, paramEncode, timeout)
+                .ConfigureAwait(false);
 
         return (JsonSerializer.Deserialize<T>(responseContent, _defaultJsonSerializerOptions), responseHeaders);
     }
@@ -367,17 +393,16 @@ public static class RemoteRequestUtil
         object urlParam = null, object bodyData = null, IDictionary<string, string> headers = null, bool paramEncode = false,
         int? timeout = 60)
     {
+        ArgumentNullException.ThrowIfNull(httpMethod);
+        if (string.IsNullOrWhiteSpace(url))
+            throw new ArgumentException("请求 URL 不能为空。", nameof(url));
+        if (timeout <= 0)
+            throw new ArgumentOutOfRangeException(nameof(timeout), "超时时间必须大于 0 秒，或使用 null 表示不超时。");
+
         headers ??= new Dictionary<string, string>();
 
-        // 发送 Http 请求
-        using var httpClient = new HttpClient(new HttpClientHandler
-        {
-            // 自动处理各种响应解压缩
-            AutomaticDecompression = DecompressionMethods.All
-        });
-
-        // 设置请求超时时间
-        httpClient.Timeout = timeout == null ? Timeout.InfiniteTimeSpan : TimeSpan.FromSeconds(timeout.Value);
+        using var timeoutTokenSource = timeout.HasValue ? new CancellationTokenSource(TimeSpan.FromSeconds(timeout.Value)) : null;
+        var cancellationToken = timeoutTokenSource?.Token ?? CancellationToken.None;
 
         // 处理请求 URL
         var reqUriBuilder = new UriBuilder(url);
@@ -472,9 +497,7 @@ public static class RemoteRequestUtil
             // 判断是否原本就为字符串
             if (bodyData is string dataStr)
             {
-                var httpContent = new StringContent(dataStr);
-
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                var httpContent = new StringContent(dataStr, Encoding.UTF8, "application/json");
 
                 // 写入请求内容
                 request.Content = httpContent;
@@ -484,9 +507,7 @@ public static class RemoteRequestUtil
                 // 请求数据转为 JSON 字符串
                 var reqBodyDataJson = JsonSerializer.Serialize(bodyData, _defaultJsonSerializerOptions);
 
-                var httpContent = new StringContent(reqBodyDataJson);
-
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                var httpContent = new StringContent(reqBodyDataJson, Encoding.UTF8, "application/json");
 
                 // 写入请求内容
                 request.Content = httpContent;
@@ -498,7 +519,8 @@ public static class RemoteRequestUtil
         try
         {
             // 发送请求
-            using var response = await httpClient.SendAsync(request);
+            using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, cancellationToken)
+                .ConfigureAwait(false);
 
             byte[] responseContentBytes;
 
@@ -506,36 +528,43 @@ public static class RemoteRequestUtil
             if (response.Content.Headers.ContentEncoding.Contains("br"))
             {
                 // Brotli 解压缩
-                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var responseBytes = await response.Content.ReadAsByteArrayAsync()
+                    .ConfigureAwait(false);
                 using var compressedStream = new MemoryStream(responseBytes);
                 using var decompressedStream = new MemoryStream();
                 await using var brotliStream = new BrotliStream(compressedStream, CompressionMode.Decompress);
-                await brotliStream.CopyToAsync(decompressedStream);
+                await brotliStream.CopyToAsync(decompressedStream, cancellationToken)
+                    .ConfigureAwait(false);
                 responseContentBytes = decompressedStream.ToArray();
             }
             else if (response.Content.Headers.ContentEncoding.Contains("gzip"))
             {
                 // Gzip 解压缩
-                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var responseBytes = await response.Content.ReadAsByteArrayAsync()
+                    .ConfigureAwait(false);
                 using var compressedStream = new MemoryStream(responseBytes);
                 using var decompressedStream = new MemoryStream();
                 await using var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
-                await gzipStream.CopyToAsync(decompressedStream);
+                await gzipStream.CopyToAsync(decompressedStream, cancellationToken)
+                    .ConfigureAwait(false);
                 responseContentBytes = decompressedStream.ToArray();
             }
             else if (response.Content.Headers.ContentEncoding.Contains("deflate"))
             {
                 // Deflate  解压缩
-                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var responseBytes = await response.Content.ReadAsByteArrayAsync()
+                    .ConfigureAwait(false);
                 using var compressedStream = new MemoryStream(responseBytes);
                 using var decompressedStream = new MemoryStream();
                 await using var deflateStream = new DeflateStream(compressedStream, CompressionMode.Decompress);
-                await deflateStream.CopyToAsync(decompressedStream);
+                await deflateStream.CopyToAsync(decompressedStream, cancellationToken)
+                    .ConfigureAwait(false);
                 responseContentBytes = decompressedStream.ToArray();
             }
             else
             {
-                responseContentBytes = await response.Content.ReadAsByteArrayAsync();
+                responseContentBytes = await response.Content.ReadAsByteArrayAsync()
+                    .ConfigureAwait(false);
             }
 
             // 获取 charset 编码
@@ -578,9 +607,9 @@ public static class RemoteRequestUtil
 
             throw new HttpRequestException(responseContent, ex);
         }
-        catch (TaskCanceledException ex)
+        catch (OperationCanceledException ex) when (timeoutTokenSource?.IsCancellationRequested == true)
         {
-            throw new Exception("远程请求超时：" + ex.Message, ex);
+            throw new TimeoutException("远程请求超时：" + ex.Message, ex);
         }
     }
 

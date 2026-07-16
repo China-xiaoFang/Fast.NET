@@ -13,6 +13,7 @@
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 using System.Text;
+using System.Text.Json;
 using Fast.IaaS;
 using MiniExcelLibs;
 
@@ -21,7 +22,7 @@ namespace I18nTranslateTool.Modes;
 /// <summary>
 /// <see cref="UpdateTranslateToProject"/> 更新翻译文案到项目
 /// </summary>
-internal class UpdateTranslateToProject
+internal static class UpdateTranslateToProject
 {
     /// <summary>
     /// 执行
@@ -32,40 +33,47 @@ internal class UpdateTranslateToProject
     internal static void Run(string projectPath, string projectName, string translateFilePath)
     {
         // 组装前端项目文件夹 src\lang 的路径
-        var langPath = $"{projectPath}\\src\\lang";
+        var langPath = Path.Combine(projectPath, "src", "lang");
 
         // 获取 lang 文件夹中的语言，只获取文件夹名称
         var langList = Directory.GetDirectories(langPath, "*", SearchOption.TopDirectoryOnly)
-            .Select(sl => sl.Split(Path.DirectorySeparatorChar).Last()).Where(wh => wh != "common").ToList();
+            .Select(Path.GetFileName)
+            .Where(wh => wh != "common")
+            .ToList();
 
         // 获取翻译文件目录下最后一次更新的 xlsx 文件，这里使用文件名称排序的方式
         var excelFile = Directory.GetFiles(translateFilePath, "*.xlsx", SearchOption.TopDirectoryOnly)
             .Select(sl => new FileInfo(sl)).MaxBy(ob => ob.Name);
+        if (excelFile == null)
+            throw new FileNotFoundException($"目录“{translateFilePath}”中没有可用的 xlsx 翻译文件。");
 
         // 组装读取Excel的字典
         var excelDictionary = new List<IDictionary<string, string>>();
 
         // 读取 Excel文件
-        foreach (IDictionary<string, object> row in MiniExcel.Query(excelFile!.FullName, useHeaderRow: true))
+        foreach (IDictionary<string, object> row in MiniExcel.Query(excelFile.FullName, useHeaderRow: true))
         {
             // 先组装默认数据
             var excelRow = new Dictionary<string, string>
             {
-                {"页面文件路径", row["页面文件路径"]?.ToString() ?? ""},
-                {"页面文件路由", row["页面文件路由"]?.ToString() ?? ""},
-                {"页面文件引用相关组件", row["页面文件引用相关组件"]?.ToString() ?? ""},
-                {"翻译文件路径（参数化）", row["翻译文件路径（参数化）"]?.ToString() ?? ""},
-                {"翻译使用前缀", row["翻译使用前缀"]?.ToString() ?? ""},
+                {"页面文件路径", GetRowValue(row, "页面文件路径")},
+                {"页面文件路由", GetRowValue(row, "页面文件路由")},
+                {"页面文件引用相关组件", GetRowValue(row, "页面文件引用相关组件")},
+                {"翻译文件路径（参数化）", GetRowValue(row, "翻译文件路径（参数化）")},
+                {"翻译使用前缀", GetRowValue(row, "翻译使用前缀")},
             };
 
             // 循环语言包
             foreach (var langItem in langList)
             {
-                excelRow.Add(langItem, row[langItem]?.ToString() ?? "");
+                excelRow.Add(langItem, GetRowValue(row, langItem));
             }
 
             excelDictionary.Add(excelRow);
         }
+
+        if (excelDictionary.Count == 0)
+            throw new InvalidDataException($"翻译文件“{excelFile.FullName}”不包含任何数据行。");
 
         var autoLoadList = new List<(string routePath, List<string> refComponentPathList)>();
 
@@ -73,10 +81,11 @@ internal class UpdateTranslateToProject
         foreach (var langItem in langList)
         {
             // 组装语言包的文件夹路径
-            var langItemPath = $"{langPath}\\{langItem}";
+            var langItemPath = Path.Combine(langPath, langItem);
 
             // 删除语言包中的所有文件，包括文件夹;
-            Directory.Delete(langItemPath, true);
+            if (Directory.Exists(langItemPath))
+                Directory.Delete(langItemPath, true);
 
             // 这里会删除语言包本身的文件夹，所以删除完成后立即创建一个
             Directory.CreateDirectory(langItemPath);
@@ -84,15 +93,19 @@ internal class UpdateTranslateToProject
             // 使用 "翻译文件路径（参数化）" 进行分组
             foreach (var fileItem in excelDictionary.GroupBy(gb => gb["翻译文件路径（参数化）"]))
             {
+                if (string.IsNullOrWhiteSpace(fileItem.Key))
+                    throw new InvalidDataException("Excel 中存在空的“翻译文件路径（参数化）”。");
+
+                var firstFileItem = fileItem.First();
                 // 判断路由地址是否存在
-                var routePath = fileItem.First()["页面文件路由"];
+                var routePath = firstFileItem["页面文件路由"];
 
                 if (!string.IsNullOrEmpty(routePath))
                 {
                     // 判断是否已经添加了
                     if (autoLoadList.All(a => a.routePath != routePath))
                     {
-                        var refComponentPathStr = fileItem.First()["页面文件引用相关组件"];
+                        var refComponentPathStr = firstFileItem["页面文件引用相关组件"];
 
                         if (!string.IsNullOrEmpty(refComponentPathStr))
                         {
@@ -103,14 +116,13 @@ internal class UpdateTranslateToProject
                 }
 
                 // 组装对应的语言包详情文件路径
-                var fileItemPath = string.Format(fileItem.Key, langItem);
+                var fileItemPath = string.Format(System.Globalization.CultureInfo.InvariantCulture, fileItem.Key, langItem);
 
                 // 如果翻译文件路径不存在，则创建
                 FileUtil.TryCreateDirectory(fileItemPath);
 
                 // 获取当前文件的所有翻译数据
-                var langObjectList = excelDictionary.Where(wh => wh["翻译文件路径（参数化）"] == fileItem.Key)
-                    .Select(sl => (sl["zh-CN"], sl[langItem])).ToList();
+                var langObjectList = fileItem.Select(sl => (sl["zh-CN"], sl[langItem])).ToList();
 
                 var langContent = new StringBuilder();
 
@@ -129,11 +141,11 @@ internal class UpdateTranslateToProject
 // 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
 
 /**
- * 前缀：{(fileItem.First()["翻译使用前缀"])}
+ * 前缀：{firstFileItem["翻译使用前缀"]}
  * 使用方式：
- * i18n.global.t(""{(fileItem.First()["翻译使用前缀"])}.Fast.NET"")
- * t(""{(fileItem.First()["翻译使用前缀"])}.Fast.NET"")
- * $t(""{(fileItem.First()["翻译使用前缀"])}.Fast.NET"")
+ * i18n.global.t(""{firstFileItem["翻译使用前缀"]}.Fast.NET"")
+ * t(""{firstFileItem["翻译使用前缀"]}.Fast.NET"")
+ * $t(""{firstFileItem["翻译使用前缀"]}.Fast.NET"")
  */
 
 export default {{");
@@ -141,7 +153,10 @@ export default {{");
                 // 循环文件翻译内容
                 foreach (var langObjectItem in langObjectList)
                 {
-                    langContent.AppendLine(@$"    [""{langObjectItem.Item1}""]: ""{langObjectItem.Item2}"",");
+                    // 使用 JSON 编码生成合法的 TypeScript 字符串，避免引号、换行等内容破坏文件语法。
+                    var keyLiteral = JsonSerializer.Serialize(langObjectItem.Item1);
+                    var valueLiteral = JsonSerializer.Serialize(langObjectItem.Item2);
+                    langContent.AppendLine($"    [{keyLiteral}]: {valueLiteral},");
                 }
 
                 // 写入文件尾部
@@ -188,31 +203,12 @@ export default {");
         {
             // 这里需要递归查找对应引用组件相关的关系，比如A组件引用了B，B组件引用了C，则A需要加载 B，C 的语言包，不能只加载 B 的语言包
             var curRefComponentPathList = FindRefComponentRoutePathList(autoLoadItem.routePath, autoLoadList);
-            var valueStr = "";
-            // 去重
-            foreach (var refComponentPathItem in curRefComponentPathList.Distinct())
-            {
-                if (refComponentPathItem.EndsWith(".vue"))
-                {
-                    valueStr += $"\"./${{lang}}/{refComponentPathItem[..^3]}ts\", ";
-                }
-
-                if (refComponentPathItem.EndsWith(".ts"))
-                {
-                    valueStr += $"\"./${{lang}}/{refComponentPathItem[..^2]}ts\", ";
-                }
-
-                if (refComponentPathItem.EndsWith(".tsx"))
-                {
-                    valueStr += $"\"./${{lang}}/{refComponentPathItem[..^2]}ts\", ";
-                }
-            }
-
-            // 去掉多余的 , 
-            if (!string.IsNullOrEmpty(valueStr))
-            {
-                valueStr = valueStr[..^2];
-            }
+            var valueStr = string.Join(", ", curRefComponentPathList
+                .Distinct(StringComparer.Ordinal)
+                .Where(path => path.EndsWith(".vue", StringComparison.OrdinalIgnoreCase)
+                               || path.EndsWith(".ts", StringComparison.OrdinalIgnoreCase)
+                               || path.EndsWith(".tsx", StringComparison.OrdinalIgnoreCase))
+                .Select(path => $"\"./${{lang}}/{NormalizePath(Path.ChangeExtension(path, ".ts"))}\""));
 
             // 格式： ["/"]: ["./${lang}/..."]
             autoLoadContent.AppendLine(@$"    [""{autoLoadItem.routePath}""]: [{valueStr}],");
@@ -222,10 +218,11 @@ export default {");
         autoLoadContent.AppendLine(@"};");
 
         // 写入文件
-        File.WriteAllText($"{langPath}\\autoLoad.ts", autoLoadContent.ToString(), Encoding.UTF8);
+        var autoLoadFilePath = Path.Combine(langPath, "autoLoad.ts");
+        File.WriteAllText(autoLoadFilePath, autoLoadContent.ToString(), Encoding.UTF8);
 
         // 消息提示
-        Console.WriteLine($"{langPath}\\autoLoad.ts");
+        Console.WriteLine(autoLoadFilePath);
     }
 
     /// <summary>
@@ -234,86 +231,55 @@ export default {");
     /// <param name="routePath"></param>
     /// <param name="refComponentPathList"></param>
     /// <returns></returns>
-    static List<string> FindRefComponentRoutePathList(string routePath,
+    private static List<string> FindRefComponentRoutePathList(string routePath,
         List<(string routePath, List<string> refComponentPathList)> refComponentPathList)
     {
-        var result = new List<string>();
+        var result = new HashSet<string>(StringComparer.Ordinal);
+        var visitedRoutes = new HashSet<string>(StringComparer.Ordinal);
 
-        // 查找当前路由引用的组件
-        var curRefComponentPathList = refComponentPathList.FirstOrDefault(f => f.routePath == routePath);
-
-        // 循环查找当前引用组件的关系
-        if (curRefComponentPathList.routePath != null)
+        // 组件引用可能成环（A -> B -> A），必须记录已访问路由，否则递归会无限循环。
+        void Visit(string currentRoute)
         {
-            var index = 0;
-            // 循环当前所有引用组件
-            foreach (var refComponentPathItem in curRefComponentPathList.refComponentPathList)
+            if (!visitedRoutes.Add(currentRoute))
+                return;
+
+            var current = refComponentPathList.FirstOrDefault(item =>
+                string.Equals(item.routePath, currentRoute, StringComparison.Ordinal));
+            if (current.routePath == null)
+                return;
+
+            foreach (var componentPath in current.refComponentPathList)
             {
-                // 这里的 refComponentPathItem 为 views/**/*.vue
-                var curRoutePath = refComponentPathItem;
-
-                // 判断是否已 views 开头，如果是则剔除
-                if (curRoutePath.StartsWith("views"))
-                {
-                    curRoutePath = curRoutePath[5..];
-                }
-
-                // 判断是否已 .vue 结尾，如果是则剔除
-                if (curRoutePath.EndsWith(".vue"))
-                {
-                    curRoutePath = curRoutePath[..^".vue".Length];
-                }
-
-                // 判断是否已 /index 结尾，如果是则剔除
-                if (curRoutePath.EndsWith("/index"))
-                {
-                    curRoutePath = curRoutePath[..^"/index".Length];
-                }
-
-                var curFindInfo1 = refComponentPathList.FirstOrDefault(f => f.routePath == curRoutePath);
-                if (curFindInfo1.routePath != null && curFindInfo1.refComponentPathList.Count > 0)
-                {
-                    result.AddRange(curFindInfo1.refComponentPathList);
-                }
-
-                if (index > 0)
-                {
-                    // 查找当前组件对应的引用
-                    foreach (var findItem in FindRefComponentRoutePathList(curRoutePath, refComponentPathList))
-                    {
-                        // 这里的 findItem 为 views/**/*.vue
-                        var curFindItem = findItem;
-
-                        // 判断是否已 views 开头，如果是则剔除
-                        if (curFindItem.StartsWith("views"))
-                        {
-                            curFindItem = curFindItem[5..];
-                        }
-
-                        // 判断是否已 .vue 结尾，如果是则剔除
-                        if (curFindItem.EndsWith(".vue"))
-                        {
-                            curFindItem = curFindItem[..^".vue".Length];
-                        }
-
-                        // 判断是否已 /index 结尾，如果是则剔除
-                        if (curFindItem.EndsWith("/index"))
-                        {
-                            curFindItem = curFindItem[..^"/index".Length];
-                        }
-
-                        var curFindInfo2 = refComponentPathList.FirstOrDefault(f => f.routePath == curFindItem);
-                        if (curFindInfo2.routePath != null && curFindInfo2.refComponentPathList.Count > 0)
-                        {
-                            result.AddRange(curFindInfo2.refComponentPathList);
-                        }
-                    }
-                }
-
-                index++;
+                var normalizedComponentPath = NormalizePath(componentPath);
+                result.Add(normalizedComponentPath);
+                Visit(ToRoutePath(normalizedComponentPath));
             }
         }
 
-        return result;
+        Visit(routePath);
+        return result.ToList();
+    }
+
+    private static string ToRoutePath(string componentPath)
+    {
+        var routePath = NormalizePath(componentPath);
+        if (routePath.StartsWith("views/", StringComparison.Ordinal))
+            routePath = routePath["views".Length..];
+
+        routePath = Path.ChangeExtension(routePath, null);
+        if (routePath.EndsWith("/index", StringComparison.OrdinalIgnoreCase))
+            routePath = routePath[..^"/index".Length];
+
+        return routePath;
+    }
+
+    private static string GetRowValue(IDictionary<string, object> row, string key)
+    {
+        return row.TryGetValue(key, out var value) ? value?.ToString() ?? string.Empty : string.Empty;
+    }
+
+    private static string NormalizePath(string path)
+    {
+        return path.Replace('\\', '/');
     }
 }

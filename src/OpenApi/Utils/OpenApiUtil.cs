@@ -40,6 +40,12 @@ public static partial class OpenApiUtil
     public static async Task GenerateOpenApi(string address,
         IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider, List<string> groupList = null)
     {
+        if (string.IsNullOrWhiteSpace(address))
+            throw new ArgumentException("OpenAPI 服务地址不能为空。", nameof(address));
+        if (!Uri.TryCreate(address, UriKind.Absolute, out var uri))
+            throw new ArgumentException("OpenAPI 服务地址必须是有效的绝对地址。", nameof(address));
+        ArgumentNullException.ThrowIfNull(apiDescriptionGroupCollectionProvider);
+
         try
         {
             {
@@ -62,16 +68,11 @@ public static partial class OpenApiUtil
                 Console.WriteLine(logSb.ToString());
             }
 
-            if (groupList == null)
-            {
-                // 为空则使用全部分组
-                groupList = ["All Groups"];
-            }
+            // 复制调用方集合，避免为补充默认分组而意外修改外部状态。
+            var groups = groupList?.ToList() ?? ["All Groups"];
             // 增加默认分组
-            else if (groupList.All(a => a != "Default"))
-            {
-                groupList.Add("Default");
-            }
+            if (!groups.Contains("Default", StringComparer.Ordinal))
+                groups.Add("Default");
 
             // 根目录
             var rootDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fast.OpenApi");
@@ -83,30 +84,32 @@ public static partial class OpenApiUtil
 
             Directory.CreateDirectory(rootDir);
 
-            foreach (var group in groupList)
+            foreach (var group in groups)
             {
-                // 获取主机和端口信息
-                var uri = new Uri(address);
-
                 // 获取文档地址
                 var url = $"{address.TrimEnd('/')}/swagger/{group}/swagger.json";
 
                 // 获取文档信息
-                var openApiDocument = await GetOpenApiDocument(url);
+                var openApiDocument = await GetOpenApiDocument(url)
+                    .ConfigureAwait(false);
                 if (openApiDocument == null)
                     continue;
 
                 // JavaScript
                 await GenerateOpenApi(apiDescriptionGroupCollectionProvider, openApiDocument, rootDir, group, uri, true,
-                    ScriptLanguageEnum.JavaScript);
+                        ScriptLanguageEnum.JavaScript)
+                    .ConfigureAwait(false);
                 await GenerateOpenApi(apiDescriptionGroupCollectionProvider, openApiDocument, rootDir, group, uri, false,
-                    ScriptLanguageEnum.JavaScript);
+                        ScriptLanguageEnum.JavaScript)
+                    .ConfigureAwait(false);
 
                 // TypeScript
                 await GenerateOpenApi(apiDescriptionGroupCollectionProvider, openApiDocument, rootDir, group, uri, true,
-                    ScriptLanguageEnum.TypeScript);
+                        ScriptLanguageEnum.TypeScript)
+                    .ConfigureAwait(false);
                 await GenerateOpenApi(apiDescriptionGroupCollectionProvider, openApiDocument, rootDir, group, uri, false,
-                    ScriptLanguageEnum.TypeScript);
+                        ScriptLanguageEnum.TypeScript)
+                    .ConfigureAwait(false);
             }
 
             {
@@ -189,13 +192,16 @@ public static partial class OpenApiUtil
         Directory.CreateDirectory(apiRootDir);
 
         // 写入枚举
-        var enumSchemas = await WriteOpenApiDocumentEnumFile(enumRootDir, openApiDocument, scriptLanguage);
+        var enumSchemas = await WriteOpenApiDocumentEnumFile(enumRootDir, openApiDocument, scriptLanguage)
+            .ConfigureAwait(false);
 
         // 生成Dto
-        var dtoSchemas = await GenerateOpenApiDocumentSchemaFile(openApiDocument, scriptLanguage);
+        var dtoSchemas = await GenerateOpenApiDocumentSchemaFile(openApiDocument, scriptLanguage)
+            .ConfigureAwait(false);
 
         // 写入Api
         await WriteOpenApiDocumentApiFile(apiRootDir, hasWeb, apiDescriptionGroupCollectionProvider, openApiDocument, dtoSchemas,
-            enumSchemas, scriptLanguage);
+                enumSchemas, scriptLanguage)
+            .ConfigureAwait(false);
     }
 }

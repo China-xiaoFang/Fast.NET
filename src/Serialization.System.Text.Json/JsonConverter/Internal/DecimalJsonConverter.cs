@@ -53,7 +53,9 @@ internal class DecimalJsonConverter : JsonConverter<decimal>
     public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         // 这里做处理，前端传入的Decimal类型可能为String类型，或者Number类型。
-        return reader.TokenType == JsonTokenType.String ? decimal.Parse(reader.GetString()) : reader.GetDecimal();
+        return reader.TokenType == JsonTokenType.String
+            ? decimal.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture)
+            : reader.GetDecimal();
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
@@ -103,7 +105,7 @@ internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
             return null;
         }
 
-        return decimal.Parse(reader.GetString());
+        return decimal.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture);
     }
 
     /// <summary>Writes a specified value as JSON.</summary>

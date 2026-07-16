@@ -17,9 +17,9 @@ using I18nTranslateTool.Utils;
 
 namespace I18nTranslateTool;
 
-internal class Program
+internal static class Program
 {
-    static void Main(string[] args)
+    private static void Main()
     {
         // 更改颜色
         Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -62,13 +62,14 @@ Please enter the folder path of the Vue project (the root directory is sufficien
 请输入Vue项目的文件夹路径（根目录即可），比如：F:\Fast.NET\frontend-template
 ");
 
-        var projectPath = ConsoleUtils.GetUserInput<string>(wh => !string.IsNullOrEmpty(wh), Console.ReadLine);
+        var projectPath = ConsoleUtils.GetUserInput<string>(Directory.Exists, Console.ReadLine);
+        projectPath = Path.GetFullPath(projectPath);
 
         // 获取前端项目的文件夹名称
-        var projectName = projectPath.Split(Path.DirectorySeparatorChar).Last();
+        var projectName = new DirectoryInfo(projectPath).Name;
 
         // 组装对应的翻译信息存放地址
-        var translateFilePath = $"{Directory.GetCurrentDirectory()}\\Files\\{projectName}";
+        var translateFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Files", projectName);
 
         // 更改颜色
         Console.ForegroundColor = ConsoleColor.Green;
@@ -100,6 +101,8 @@ Please select the corresponding function/mode.（请选择对应的功能/模式
 
         var modeSelect = ConsoleUtils.GetUserInput<int>(wh => wh is >= 1 and <= 3, Console.ReadLine);
 
+        var executionSucceeded = true;
+
         // 根据对应的模式执行对应的代码
         switch (modeSelect)
         {
@@ -109,7 +112,7 @@ Please select the corresponding function/mode.（请选择对应的功能/模式
                 break;
             // 自动翻译 Excel 文件（可手动翻译）
             case 2:
-                AutoTranslateExcel.Run(projectPath, projectName, translateFilePath);
+                executionSucceeded = AutoTranslateExcel.Run(projectPath, projectName, translateFilePath);
                 break;
             // 更新翻译文案到项目
             case 3:
@@ -117,12 +120,13 @@ Please select the corresponding function/mode.（请选择对应的功能/模式
                 break;
         }
 
-        // 更改颜色
-        Console.ForegroundColor = ConsoleColor.DarkGreen;
-        // 信息输出
-        Console.WriteLine(@"
+        if (executionSucceeded)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine(@"
 execution succeed!（执行成功！）
 ");
+        }
 
         // 还原颜色
         Console.ResetColor();

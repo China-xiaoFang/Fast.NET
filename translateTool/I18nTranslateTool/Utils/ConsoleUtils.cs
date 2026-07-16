@@ -17,7 +17,7 @@ namespace I18nTranslateTool.Utils;
 /// <summary>
 /// <see cref="ConsoleUtils"/> 控制台工具类
 /// </summary>
-internal class ConsoleUtils
+internal static class ConsoleUtils
 {
     /// <summary>
     /// 获取用户输入
@@ -41,41 +41,29 @@ internal class ConsoleUtils
 
         var resultType = typeof(TResult);
 
-        var result = default(TResult);
-
         // 还原颜色
         Console.ResetColor();
 
-        while (!isValidInput(result))
+        while (true)
         {
             var inputStr = func();
             try
             {
                 // 把输入的字符串尝试转为传入的类型
-                var input = (TResult) Convert.ChangeType(inputStr, resultType);
+                var input = (TResult) Convert.ChangeType(inputStr, resultType,
+                    System.Globalization.CultureInfo.InvariantCulture);
 
                 if (isValidInput(input))
-                {
-                    result = input;
-                }
-                else
-                {
-                    throw new Exception();
-                }
+                    return input;
             }
-            catch
+            catch (Exception ex) when (ex is InvalidCastException or FormatException or OverflowException or ArgumentNullException)
             {
-                // 更改颜色
-                Console.ForegroundColor = ConsoleColor.Red;
-
-                // 错误输出
-                Console.WriteLine("Invalid input, please re-enter!（无效的输入，请重新输入！）");
-
-                // 还原颜色
-                Console.ResetColor();
+                // 转换失败与业务校验失败统一在下方提示，但不再用抛异常控制正常分支。
             }
-        }
 
-        return result;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Invalid input, please re-enter!（无效的输入，请重新输入！）");
+            Console.ResetColor();
+        }
     }
 }

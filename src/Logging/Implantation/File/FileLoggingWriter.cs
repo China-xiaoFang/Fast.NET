@@ -27,7 +27,7 @@ namespace Fast.Logging;
 /// <summary>
 /// 文件日志写入器
 /// </summary>
-internal class FileLoggingWriter
+internal sealed class FileLoggingWriter : IDisposable
 {
     /// <summary>
     /// 文件日志记录器提供程序
@@ -47,12 +47,12 @@ internal class FileLoggingWriter
     /// <summary>
     /// 文件流
     /// </summary>
-    private Stream _fileStream;
+    private FileStream _fileStream;
 
     /// <summary>
     /// 文本写入器
     /// </summary>
-    private TextWriter _textWriter;
+    private StreamWriter _textWriter;
 
     /// <summary>
     /// 缓存上次返回的基本日志文件名，避免重复解析
@@ -274,7 +274,7 @@ internal class FileLoggingWriter
     /// </summary>
     private void CheckForNewLogFile()
     {
-        var openNewFile = isMaxFileSizeThresholdReached() || isBaseFileNameChanged() || isFileDeletedExternally();
+        var openNewFile = IsMaxFileSizeThresholdReached() || IsBaseFileNameChanged() || IsFileDeletedExternally();
 
         // 重新创建新文件并写入
         if (openNewFile)
@@ -296,13 +296,13 @@ internal class FileLoggingWriter
         }
 
         // 是否超出限制的最大大小
-        bool isMaxFileSizeThresholdReached()
+        bool IsMaxFileSizeThresholdReached()
         {
-            return _options.FileSizeLimitBytes > 0 && _fileStream != null && _fileStream.Length > _options.FileSizeLimitBytes;
+            return _options.FileSizeLimitBytes > 0 && _fileStream != null && _fileStream.Length >= _options.FileSizeLimitBytes;
         }
 
         // 是否重新自定义了文件名
-        bool isBaseFileNameChanged()
+        bool IsBaseFileNameChanged()
         {
             if (_options.FileNameRule != null)
             {
@@ -321,7 +321,7 @@ internal class FileLoggingWriter
         // 日志文件是否被外部进程删除
         // 在 Linux 上，文件被删除后 FileStream 句柄仍然有效（写入到已删除的 inode），但文件在文件系统中不可见
         // 此检查确保当文件被外部进程（如日志清理服务）删除时，能够自动重新创建文件
-        bool isFileDeletedExternally()
+        bool IsFileDeletedExternally()
         {
             return _fileStream != null && !File.Exists(_fileName);
         }
@@ -357,12 +357,20 @@ internal class FileLoggingWriter
                 if (!removeSucceed)
                     continue;
 
-                // 执行删除
-                Task.Run(() =>
+                // 当前方法本来就在专用日志线程执行，无需再创建无法观察异常的后台任务。
+                try
                 {
                     if (File.Exists(rollingFile.Key))
                         File.Delete(rollingFile.Key);
-                });
+                }
+                catch (IOException)
+                {
+                    _fileLoggerProvider._rollingFileNames.TryAdd(rollingFile.Key, rollingFile.Value);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    _fileLoggerProvider._rollingFileNames.TryAdd(rollingFile.Key, rollingFile.Value);
+                }
             }
         }
     }
@@ -432,5 +440,14 @@ internal class FileLoggingWriter
 
         textWriter?.Dispose();
         fileStream?.Dispose();
+    }
+
+    /// <summary>
+    /// 释放文件写入资源。
+    /// </summary>
+    public void Dispose()
+    {
+        Close();
+        GC.SuppressFinalize(this);
     }
 }

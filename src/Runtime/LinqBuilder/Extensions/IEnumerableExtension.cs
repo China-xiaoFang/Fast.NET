@@ -155,7 +155,7 @@ public static class IEnumerableExtension
                 expressions.Add(expression);
         }
 
-        return Where(sources, expressions.ToArray());
+        return sources.Where(expressions.ToArray());
     }
 
     /// <summary>
@@ -175,7 +175,7 @@ public static class IEnumerableExtension
                 expressions.Add(expression);
         }
 
-        return Where(sources, expressions.ToArray());
+        return sources.Where(expressions.ToArray());
     }
 
     /// <summary>

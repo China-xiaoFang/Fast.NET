@@ -54,7 +54,7 @@ internal class LongJsonConverter : JsonConverter<long>
         {
             var jToken = JToken.ReadFrom(reader);
             var value = jToken.Value<string>();
-            return long.Parse(value);
+            return long.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
         }
 
         return Convert.ToInt64(reader.Value);
@@ -100,6 +100,6 @@ internal class NullableLongJsonConverter : JsonConverter<long?>
         if (string.IsNullOrWhiteSpace(value))
             return null;
 
-        return long.Parse(value);
+        return long.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
     }
 }

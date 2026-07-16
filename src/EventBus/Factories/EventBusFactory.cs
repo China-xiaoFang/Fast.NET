@@ -84,6 +84,6 @@ internal class EventBusFactory : IEventBusFactory
 
         await _eventSourceStorer.WriteAsync(
             new EventSubscribeOperateSource {SubscribeEventId = eventId, Operate = EventSubscribeOperates.Remove},
-            CancellationToken.None);
+            cancellationToken);
     }
 }

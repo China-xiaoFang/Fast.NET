@@ -38,7 +38,8 @@ public static class SerializationExtension
     /// <returns></returns>
     public static T ToObject<T>(this string json)
     {
-        json = json.Replace("&nbsp;", "");
+        ArgumentNullException.ThrowIfNull(json);
+        json = json.Replace("&nbsp;", "", StringComparison.Ordinal);
         return JsonSerializer.Deserialize<T>(json, JsonContext.SerializerOptions);
     }
 
@@ -50,7 +51,9 @@ public static class SerializationExtension
     /// <returns><see cref="object"/> 序列化后的对象</returns>
     public static object ToObject(this string json, Type type)
     {
-        json = json.Replace("&nbsp;", "");
+        ArgumentNullException.ThrowIfNull(json);
+        ArgumentNullException.ThrowIfNull(type);
+        json = json.Replace("&nbsp;", "", StringComparison.Ordinal);
         return JsonSerializer.Deserialize(json, type, JsonContext.SerializerOptions);
     }
 

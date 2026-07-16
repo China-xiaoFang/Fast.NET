@@ -44,7 +44,7 @@ internal class AppAuthorizationHandler : IAuthorizationHandler
         var jwtBearerHandle = httpContext?.RequestServices.GetService<IJwtBearerHandle>();
 
         // 自动刷新 Token 逻辑
-        if (!JwtBearerUtil.AutoRefreshToken(context, httpContext))
+        if (!await JwtBearerUtil.AutoRefreshTokenAsync(context, httpContext))
         {
             // 退出 Swagger 登录
             httpContext?.SignOutToSwagger();

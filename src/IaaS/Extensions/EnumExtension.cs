@@ -44,7 +44,7 @@ public static class EnumExtension
     /// <exception cref="ArgumentException">The parameter is not an enum type.</exception>
     public static string GetDescription<TEnum>(this TEnum value) where TEnum : struct, Enum
     {
-        return GetDescription(value, typeof(TEnum));
+        return value.GetDescription(typeof(TEnum));
     }
 
     /// <summary>
@@ -58,6 +58,11 @@ public static class EnumExtension
     /// <exception cref="ArgumentException">The parameter is not an enum type.</exception>
     public static string GetDescription(this Enum value, Type enumType)
     {
+        if (value == null)
+            throw new ArgumentNullException(nameof(value));
+        if (enumType == null)
+            throw new ArgumentNullException(nameof(enumType));
+
         // 检查是否是枚举类型
         if (!enumType.IsEnum)
         {
@@ -67,7 +72,7 @@ public static class EnumExtension
         // 判断是否有效
         if (!Enum.IsDefined(enumType, value))
         {
-            throw new ArgumentNullException(nameof(value), "传入的枚举值为空");
+            throw new ArgumentException("传入的枚举值不属于指定枚举类型。", nameof(value));
         }
 
         // 获取枚举名称
@@ -76,7 +81,7 @@ public static class EnumExtension
         // 空检查
         if (enumName is null)
         {
-            throw new ArgumentNullException(nameof(enumName));
+            throw new InvalidOperationException("无法获取枚举成员名称。");
         }
 
         // 获取枚举字段
@@ -85,7 +90,7 @@ public static class EnumExtension
         // 空检查
         if (enumField is null)
         {
-            throw new ArgumentNullException(nameof(enumField));
+            throw new InvalidOperationException($"无法获取枚举成员“{enumName}”的字段信息。");
         }
 
         // 获取 [Description] 特性描述

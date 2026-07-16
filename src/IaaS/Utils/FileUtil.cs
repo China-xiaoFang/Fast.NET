@@ -32,28 +32,43 @@ namespace Fast.IaaS;
 public static class FileUtil
 {
     /// <summary>
+    /// 获取文件的 SHA-256 哈希值。
+    /// </summary>
+    /// <param name="filePath">文件路径。</param>
+    /// <returns>由小写字母组成的 SHA-256 哈希值字符串。</returns>
+    public static string GetFileSHA256(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+            throw new ArgumentException("文件路径不能为空。", nameof(filePath));
+
+        using var sha256 = SHA256.Create();
+        using var stream = File.OpenRead(filePath);
+        return CryptographyCompat.ToHexString(sha256.ComputeHash(stream))
+            .ToLowerInvariant();
+    }
+
+    /// <summary>
     /// 获取文件的 SHA1 哈希值。
     /// </summary>
     /// <param name="filePath"><see cref="string"/> 文件的完整路径。</param>
     /// <returns><see cref="string"/> 由小写字母组成的 SHA1 哈希值字符串。</returns>
     public static string GetFileSHA1(string filePath)
     {
+        if (string.IsNullOrWhiteSpace(filePath))
+            throw new ArgumentException("文件路径不能为空。", nameof(filePath));
+
         // 创建 SHA1 实例
         using var osha1 = SHA1.Create();
 
         // 打开文件流，读取文件内容（使用 using 确保异常时也能释放文件句柄）
-        using var oFileStream = new FileStream(filePath.Replace("\"", ""), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        using var oFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
         // 计算文件的 SHA1 哈希值
         var arrBytHashValue = osha1.ComputeHash(oFileStream);
 
-        // 关闭文件流
-        oFileStream.Close();
-
         // 将哈希值转换为十六进制字符串，并去掉连字符（"-"），转换为小写
-        return BitConverter.ToString(arrBytHashValue)
-            .Replace("-", "")
-            .ToLower();
+        return CryptographyCompat.ToHexString(arrBytHashValue)
+            .ToLowerInvariant();
     }
 
     /// <summary>

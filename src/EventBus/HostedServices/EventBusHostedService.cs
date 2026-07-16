@@ -64,6 +64,11 @@ internal sealed class EventBusHostedService : BackgroundService
     private readonly ConcurrentDictionary<EventHandlerWrapper, EventHandlerWrapper> _eventHandlers = new();
 
     /// <summary>
+    /// 最近一次显式 GC 的 UTC Tick。
+    /// </summary>
+    private long _lastGCCollectTicks;
+
+    /// <summary>
     /// 构造函数
     /// </summary>
     /// <param name="logger">日志对象</param>
@@ -121,11 +126,6 @@ internal sealed class EventBusHostedService : BackgroundService
     /// 事件处理程序监视器
     /// </summary>
     private IEventHandlerMonitor Monitor { get; }
-
-    /// <summary>
-    /// 最近一次收集时间
-    /// </summary>
-    private DateTime? LastGCCollectTime { get; set; }
 
     /// <summary>
     /// 执行后台任务
@@ -189,11 +189,13 @@ internal sealed class EventBusHostedService : BackgroundService
             return;
         }
 
-        // 创建一个任务工厂并保证执行任务都使用当前的计划程序
-        var taskFactory = new TaskFactory(TaskScheduler.Current);
-
         // 创建共享上下文数据对象
-        var properties = new Dictionary<object, object>();
+        // 多个订阅器会并行执行，普通 Dictionary 在并发读写时可能损坏内部状态。
+        var properties = new ConcurrentDictionary<object, object>();
+
+        using var processingTokenSource =
+            CancellationTokenSource.CreateLinkedTokenSource(stoppingToken, eventSource.CancellationToken);
+        var processingToken = processingTokenSource.Token;
 
         async Task InvokeAsync(Func<Task> action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
             Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Action<int, int> retryAction = null)
@@ -254,101 +256,92 @@ internal sealed class EventBusHostedService : BackgroundService
 
                     // 如果可重试异常数大于 0，则间隔指定时间后继续执行
                     if (retryTimeout > 0)
-                        await Task.Delay(retryTimeout);
+                        await Task.Delay(retryTimeout, processingToken);
                 }
             }
         }
 
-        // 通过并行方式提高吞吐量并解决 Thread.Sleep 问题
-        Parallel.ForEach(eventHandlersThatShouldRun, eventHandlerThatShouldRun =>
+        async Task HandleEventAsync(EventHandlerWrapper eventHandlerThatShouldRun)
         {
-            // 创建新的线程执行
-            taskFactory.StartNew(async () =>
+            // 获取特性信息，可能为 null
+            var eventSubscribeAttribute = eventHandlerThatShouldRun.Attribute;
+
+            // 创建执行前上下文
+            var eventHandlerExecutingContext =
+                new EventHandlerExecutingContext(eventSource, properties, eventHandlerThatShouldRun.HandlerMethod,
+                    eventSubscribeAttribute) {ExecutingTime = DateTime.Now};
+
+            // 执行异常对象
+            InvalidOperationException executionException = null;
+
+            try
             {
-                // 获取特性信息，可能为 null
-                var eventSubscribeAttribute = eventHandlerThatShouldRun.Attribute;
+                processingToken.ThrowIfCancellationRequested();
 
-                // 创建执行前上下文
-                var eventHandlerExecutingContext =
-                    new EventHandlerExecutingContext(eventSource, properties, eventHandlerThatShouldRun.HandlerMethod,
-                        eventSubscribeAttribute) {ExecutingTime = DateTime.Now};
-
-                // 执行异常对象
-                InvalidOperationException executionException = null;
-
-                try
+                // 调用执行前监视器
+                if (Monitor != null)
                 {
-                    // 处理任务取消
-                    if (eventSource.CancellationToken.IsCancellationRequested)
-                    {
-                        throw new OperationCanceledException();
-                    }
+                    await Monitor.OnExecutingAsync(eventHandlerExecutingContext);
+                }
 
-                    // 调用执行前监视器
-                    if (Monitor != null)
-                    {
-                        await Monitor.OnExecutingAsync(eventHandlerExecutingContext);
-                    }
+                // 判断是否自定义了重试失败回调服务
+                var fallbackPolicyService = eventSubscribeAttribute?.FallbackPolicy == null
+                    ? null
+                    : _serviceProvider.GetService(eventSubscribeAttribute.FallbackPolicy) as IEventFallbackPolicy;
 
-                    // 判断是否自定义了重试失败回调服务
-                    var fallbackPolicyService = eventSubscribeAttribute?.FallbackPolicy == null
+                // 调用事件处理程序并配置出错执行重试
+                await InvokeAsync(() => eventHandlerThatShouldRun.Handler!(eventHandlerExecutingContext),
+                    eventSubscribeAttribute?.NumRetries ?? 0, eventSubscribeAttribute?.RetryTimeout ?? 1000,
+                    exceptionTypes: eventSubscribeAttribute?.ExceptionTypes,
+                    fallbackPolicy: fallbackPolicyService == null
                         ? null
-                        : _serviceProvider.GetService(eventSubscribeAttribute.FallbackPolicy) as IEventFallbackPolicy;
-
-                    // 调用事件处理程序并配置出错执行重试
-                    await InvokeAsync(async () => { await eventHandlerThatShouldRun.Handler!(eventHandlerExecutingContext); },
-                        eventSubscribeAttribute?.NumRetries ?? 0, eventSubscribeAttribute?.RetryTimeout ?? 1000,
-                        exceptionTypes: eventSubscribeAttribute?.ExceptionTypes,
-                        fallbackPolicy: fallbackPolicyService == null
-                            ? null
-                            : async ex => await fallbackPolicyService.CallbackAsync(eventHandlerExecutingContext, ex),
-                        retryAction: (total, times) =>
-                        {
-                            // 输出重试日志
-                            _logger.LogWarning("Retrying {times}/{total} times for {EventId}", times, total, eventSource.EventId);
-                        });
-                }
-                catch (Exception ex)
-                {
-                    // 输出异常日志
-                    Log(LogLevel.Error, "Error occurred executing {EventId}.", new object[] {eventSource.EventId}, ex);
-
-                    // 标记异常
-                    executionException = new InvalidOperationException($"Error occurred executing {eventSource.EventId}.", ex);
-
-                    // 捕获 Task 任务异常信息并统计所有异常
-                    if (UnobservedTaskException != null)
+                        : ex => fallbackPolicyService.CallbackAsync(eventHandlerExecutingContext, ex),
+                    retryAction: (total, times) =>
                     {
-                        var args = new UnobservedTaskExceptionEventArgs(ex as AggregateException ?? new AggregateException(ex));
+                        _logger.LogWarning("Retrying {Times}/{Total} times for {EventId}", times, total, eventSource.EventId);
+                    });
+            }
+            catch (OperationCanceledException) when (processingToken.IsCancellationRequested)
+            {
+                // 主机停止或事件自身取消属于正常控制流，不记录为执行错误。
+            }
+            catch (Exception ex)
+            {
+                Log(LogLevel.Error, "Error occurred executing {EventId}.", new object[] {eventSource.EventId}, ex);
 
-                        UnobservedTaskException.Invoke(this, args);
-                    }
-                }
-                finally
+                executionException = new InvalidOperationException($"Error occurred executing {eventSource.EventId}.", ex);
+
+                if (UnobservedTaskException != null)
                 {
-                    // 调用执行后监视器
-                    if (Monitor != null)
-                    {
-                        // 创建执行后上下文
-                        var eventHandlerExecutedContext =
-                            new EventHandlerExecutedContext(eventSource, properties, eventHandlerThatShouldRun.HandlerMethod,
-                                eventSubscribeAttribute) {ExecutedTime = DateTime.Now, Exception = executionException};
+                    var args = new UnobservedTaskExceptionEventArgs(ex as AggregateException ?? new AggregateException(ex));
+                    UnobservedTaskException.Invoke(this, args);
+                }
+            }
+            finally
+            {
+                if (Monitor != null)
+                {
+                    var eventHandlerExecutedContext =
+                        new EventHandlerExecutedContext(eventSource, properties, eventHandlerThatShouldRun.HandlerMethod,
+                            eventSubscribeAttribute) {ExecutedTime = DateTime.Now, Exception = executionException};
 
+                    try
+                    {
                         await Monitor.OnExecutedAsync(eventHandlerExecutedContext);
                     }
-
-                    // 判断是否执行完成后调用 GC 回收
-                    var nowTime = DateTime.UtcNow;
-                    if (eventHandlerThatShouldRun.GCCollect
-                        && (LastGCCollectTime == null
-                            || (nowTime - LastGCCollectTime.Value).TotalSeconds > GC_COLLECT_INTERVAL_SECONDS))
+                    catch (Exception ex)
                     {
-                        LastGCCollectTime = nowTime;
-                        GC.Collect();
+                        Log(LogLevel.Error, "Error occurred in event handler monitor for {EventId}.",
+                            new object[] {eventSource.EventId}, ex);
                     }
                 }
-            }, stoppingToken);
-        });
+
+                TryCollectGarbage(eventHandlerThatShouldRun.GCCollect);
+            }
+        }
+
+        // 同一事件的订阅器并行执行，但等待全部完成以观察异常并让有界通道形成有效背压。
+        await Task.WhenAll(eventHandlersThatShouldRun.Select(HandleEventAsync));
     }
 
     /// <summary>
@@ -414,7 +407,27 @@ internal sealed class EventBusHostedService : BackgroundService
     /// <returns></returns>
     private bool CheckIsSetGCCollect(object gcCollect)
     {
-        return gcCollect == null || Convert.ToBoolean(gcCollect);
+        return gcCollect != null && Convert.ToBoolean(gcCollect);
+    }
+
+    /// <summary>
+    /// 在调用方明确开启时限制显式垃圾回收频率。
+    /// </summary>
+    private void TryCollectGarbage(bool enabled)
+    {
+        if (!enabled)
+            return;
+
+        var nowTicks = DateTime.UtcNow.Ticks;
+        var previousTicks = Interlocked.Read(ref _lastGCCollectTicks);
+        if (previousTicks != 0
+            && nowTicks - previousTicks
+            <= TimeSpan.FromSeconds(GC_COLLECT_INTERVAL_SECONDS)
+                .Ticks)
+            return;
+
+        if (Interlocked.CompareExchange(ref _lastGCCollectTicks, nowTicks, previousTicks) == previousTicks)
+            GC.Collect();
     }
 
     /// <summary>

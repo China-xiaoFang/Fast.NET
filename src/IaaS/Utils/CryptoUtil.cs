@@ -43,6 +43,7 @@ public static class CryptoUtil
     /// <param name="cipherMode">加密模式，默认为CBC模式。</param>
     /// <param name="paddingMode">填充模式，默认为PKCS7。</param>
     /// <returns>加密后的Base64编码字符串。</returns>
+    /// <remarks>同一密钥重复使用固定 IV 会泄露明文模式；调用方应为不同数据提供不可预测且不重复的 IV。</remarks>
     public static string AESEncrypt(string dataStr, string key, string vector, CipherMode cipherMode = CipherMode.CBC,
         PaddingMode paddingMode = PaddingMode.PKCS7)
     {
@@ -188,17 +189,118 @@ public static class CryptoUtil
         return srDecryption.ReadToEnd();
     }
 
+    /// <summary>
+    /// 使用 AES-GCM 加密并认证字符串。
+    /// </summary>
+    /// <param name="dataStr">待加密字符串。</param>
+    /// <param name="key">密钥材料；内部使用 SHA-256 归一化为 256 位密钥。</param>
+    /// <returns>包含格式版本、随机 nonce、认证标签和密文的 Base64 字符串。</returns>
+    /// <remarks>新数据应优先使用此方法；旧的 CBC 接口仅用于兼容已有密文格式。</remarks>
+    public static string AESEncryptAuthenticated(string dataStr, string key)
+    {
+        if (dataStr == null)
+            throw new ArgumentNullException(nameof(dataStr));
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException("密钥不能为空。", nameof(key));
+
+        const byte formatVersion = 1;
+        const int nonceLength = 12;
+        const int tagLength = 16;
+
+        var plaintext = Encoding.UTF8.GetBytes(dataStr);
+        var keyBytes = CryptographyCompat.ComputeSHA256(Encoding.UTF8.GetBytes(key));
+        var nonce = CryptographyCompat.GetRandomBytes(nonceLength);
+        var tag = new byte[tagLength];
+        var ciphertext = new byte[plaintext.Length];
+
+        try
+        {
+#if NET8_0_OR_GREATER
+            using var aesGcm = new AesGcm(keyBytes, tagLength);
+#else
+            using var aesGcm = new AesGcm(keyBytes);
+#endif
+            aesGcm.Encrypt(nonce, plaintext, ciphertext, tag);
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(keyBytes);
+            CryptographicOperations.ZeroMemory(plaintext);
+        }
+
+        // 格式：[1 字节版本][12 字节随机 nonce][16 字节认证标签][密文]。
+        var payload = new byte[1 + nonceLength + tagLength + ciphertext.Length];
+        payload[0] = formatVersion;
+        Buffer.BlockCopy(nonce, 0, payload, 1, nonceLength);
+        Buffer.BlockCopy(tag, 0, payload, 1 + nonceLength, tagLength);
+        Buffer.BlockCopy(ciphertext, 0, payload, 1 + nonceLength + tagLength, ciphertext.Length);
+        return Convert.ToBase64String(payload);
+    }
+
+    /// <summary>
+    /// 解密并验证 <see cref="AESEncryptAuthenticated"/> 生成的字符串。
+    /// </summary>
+    /// <param name="dataStr">带认证信息的 Base64 密文。</param>
+    /// <param name="key">加密时使用的密钥材料。</param>
+    /// <returns>解密后的原始字符串。</returns>
+    /// <exception cref="CryptographicException">密钥错误、密文被篡改或格式不受支持。</exception>
+    public static string AESDecryptAuthenticated(string dataStr, string key)
+    {
+        if (dataStr == null)
+            throw new ArgumentNullException(nameof(dataStr));
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException("密钥不能为空。", nameof(key));
+
+        const byte supportedVersion = 1;
+        const int nonceLength = 12;
+        const int tagLength = 16;
+
+        var payload = Convert.FromBase64String(dataStr);
+        if (payload.Length < 1 + nonceLength + tagLength || payload[0] != supportedVersion)
+            throw new CryptographicException("AES-GCM 密文格式无效或版本不受支持。");
+
+        var nonce = payload.AsSpan(1, nonceLength)
+            .ToArray();
+        var tag = payload.AsSpan(1 + nonceLength, tagLength)
+            .ToArray();
+        var ciphertext = payload.AsSpan(1 + nonceLength + tagLength)
+            .ToArray();
+        var plaintext = new byte[ciphertext.Length];
+        var keyBytes = CryptographyCompat.ComputeSHA256(Encoding.UTF8.GetBytes(key));
+
+        try
+        {
+#if NET8_0_OR_GREATER
+            using var aesGcm = new AesGcm(keyBytes, tagLength);
+#else
+            using var aesGcm = new AesGcm(keyBytes);
+#endif
+            // 认证失败时 AesGcm.Decrypt 会抛出 CryptographicException，不返回未经验证的明文。
+            aesGcm.Decrypt(nonce, ciphertext, tag, plaintext);
+            return Encoding.UTF8.GetString(plaintext);
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(keyBytes);
+            CryptographicOperations.ZeroMemory(plaintext);
+        }
+    }
+
     #endregion
 
     #region MD5
 
     /// <summary>
-    /// 使用 MD5 算法对给定的字符串进行加密。
+    /// 使用 MD5 算法计算字符串哈希。
     /// </summary>
     /// <param name="content">要加密的字符串。</param>
-    /// <returns>加密后的字符串。</returns>
+    /// <returns>哈希字符串。</returns>
+    /// <remarks>仅用于兼容旧协议或校验值，不得用于密码存储、签名或安全用途；新代码请使用 <see cref="SHA256Encrypt"/>。</remarks>
     public static string MD5Encrypt(string content)
     {
+        if (content == null)
+            throw new ArgumentNullException(nameof(content));
+
         // 创建 MD5 实例
         using var mi = MD5.Create();
 
@@ -209,15 +311,8 @@ public static class CryptoUtil
         var newBuffer = mi.ComputeHash(buffer);
 
         // 创建 StringBuilder 对象用于保存加密后的字符串
-        var sb = new StringBuilder();
-        foreach (var by in newBuffer)
-        {
-            // 将每个字节转换为 16 进制，并添加到 StringBuilder 中
-            sb.Append(by.ToString("x2"));
-        }
-
-        // 返回加密后的字符串
-        return sb.ToString();
+        return CryptographyCompat.ToHexString(newBuffer)
+            .ToLowerInvariant();
     }
 
     #endregion
@@ -225,18 +320,38 @@ public static class CryptoUtil
     #region SHA1
 
     /// <summary>
-    /// SHA1加密
+    /// 计算 SHA-1 哈希
     /// </summary>
     /// <param name="str"><see cref="string"/></param>
     /// <returns><see cref="string"/></returns>
+    /// <remarks>仅用于兼容旧协议或校验值；新代码请使用 <see cref="SHA256Encrypt"/>。</remarks>
     public static string SHA1Encrypt(string str)
     {
-        var sha1 = SHA1.Create();
+        if (str == null)
+            throw new ArgumentNullException(nameof(str));
+
+        using var sha1 = SHA1.Create();
         var inputStrBytes = Encoding.UTF8.GetBytes(str);
         var outputBytes = sha1.ComputeHash(inputStrBytes);
-        sha1.Clear();
-        return BitConverter.ToString(outputBytes)
-            .Replace("-", "");
+        return CryptographyCompat.ToHexString(outputBytes);
+    }
+
+    #endregion
+
+    #region SHA256
+
+    /// <summary>
+    /// 计算字符串的 SHA-256 哈希值。
+    /// </summary>
+    /// <param name="content">待计算内容。</param>
+    /// <returns>大写十六进制哈希值。</returns>
+    public static string SHA256Encrypt(string content)
+    {
+        if (content == null)
+            throw new ArgumentNullException(nameof(content));
+
+        var inputBytes = Encoding.UTF8.GetBytes(content);
+        return CryptographyCompat.ToHexString(CryptographyCompat.ComputeSHA256(inputBytes));
     }
 
     #endregion

@@ -1,7 +1,11 @@
 <Project>
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TranslateToolRoot>$(MSBuildThisFileDirectory)</TranslateToolRoot>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
+		<LangVersion>12.0</LangVersion>
+		<!-- 该工具按仓库兼容矩阵继续产出 net6/net7；运行时已停止官方支持，部署方仍应优先使用受支持版本。 -->
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -33,15 +37,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="$(SolutionDir)README.md" Pack="true" PackagePath="\" />
-		<None Include="$(SolutionDir)README.zh.md" Pack="true" PackagePath="\" />
-		<None Include="$(SolutionDir)..\LICENSE" Pack="true" PackagePath="\" />
-		<None Include="$(SolutionDir)..\Fast.png" Pack="true" PackagePath="\" />
-		<None Include="$(SolutionDir)Directory.Build.props" Pack="true" PackagePath="\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Fast.IaaS" Version="3.4.0" />
+		<None Include="$(TranslateToolRoot)README.md" Pack="true" PackagePath="\" />
+		<None Include="$(TranslateToolRoot)README.zh.md" Pack="true" PackagePath="\" />
+		<None Include="$(TranslateToolRoot)..\LICENSE" Pack="true" PackagePath="\" />
+		<None Include="$(TranslateToolRoot)..\Fast.png" Pack="true" PackagePath="\" />
+		<None Include="$(TranslateToolRoot)Directory.Build.props" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>

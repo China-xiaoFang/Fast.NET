@@ -40,6 +40,17 @@ namespace Fast.Runtime;
 public static class HttpContextExtension
 {
     /// <summary>
+    /// IP 信息查询客户端，复用底层连接池。
+    /// </summary>
+    private static readonly HttpClient _ipLookupHttpClient = new() {Timeout = Timeout.InfiniteTimeSpan};
+
+    static HttpContextExtension()
+    {
+        // .NET 6+ 默认不包含 GBK，注册一次即可供后续响应解码复用。
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+    }
+
+    /// <summary>
     /// 设置规范化响应时间戳
     /// </summary>
     /// <param name="httpContext"><see cref="HttpContext"/></param>
@@ -401,7 +412,9 @@ public static class HttpContextExtension
     public static WanNetIPInfo RemoteIpv4Info(this HttpContext httpContext, string ip = null)
     {
         return httpContext.RemoteIpv4InfoAsync(ip)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
     }
 
     /// <summary>
@@ -418,6 +431,8 @@ public static class HttpContextExtension
     /// <returns><see cref="WanNetIPInfo"/></returns>
     public static async Task<WanNetIPInfo> RemoteIpv4InfoAsync(this HttpContext httpContext, string ip = null)
     {
+        ArgumentNullException.ThrowIfNull(httpContext);
+
         // 从 HttpContext.Items 中尝试获取缓存数据
         var wanNetIPInfoObj = httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)];
 
@@ -438,7 +453,8 @@ public static class HttpContextExtension
 
         if (_memoryCache == null)
         {
-            result = await GetWanNetInfoAsync(ip);
+            result = await GetWanNetInfoAsync(ip, httpContext.RequestAborted)
+                .ConfigureAwait(false);
         }
         else
         {
@@ -447,13 +463,15 @@ public static class HttpContextExtension
             // 避免并发请求
             var semaphoreSlim = ipLockSemaphoreSlims.GetOrAdd(cacheKey, _ => new SemaphoreSlim(1, 1));
 
-            await semaphoreSlim.WaitAsync();
+            await semaphoreSlim.WaitAsync(httpContext.RequestAborted)
+                .ConfigureAwait(false);
             try
             {
                 // 从缓存中读取
                 if (!_memoryCache.TryGetValue(cacheKey, out result))
                 {
-                    result = await GetWanNetInfoAsync(ip);
+                    result = await GetWanNetInfoAsync(ip, httpContext.RequestAborted)
+                        .ConfigureAwait(false);
                     // 放入内存缓存，设置过期时间为24个小时
                     _memoryCache.Set(cacheKey, result, TimeSpan.FromHours(24));
                 }
@@ -475,25 +493,19 @@ public static class HttpContextExtension
     /// 获取远程 Ipv4 地址信息
     /// </summary>
     /// <param name="ip"><see cref="string"/> 要的IP地址信息</param>
+    /// <param name="cancellationToken">取消令牌</param>
     /// <remarks>无内存缓存，请谨慎调用</remarks>
     /// <returns></returns>
-    private static async Task<WanNetIPInfo> GetWanNetInfoAsync(string ip)
+    private static async Task<WanNetIPInfo> GetWanNetInfoAsync(string ip, CancellationToken cancellationToken)
     {
-        // .NET5+ 后，默认没有注册 GBK 编码，所以这里进行注册
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
         var result = new WanNetIPInfo {Ip = ip};
-
-        // 发送 Http 请求
-        using var httpClient = new HttpClient();
-
-        // 设置请求超时时间
-        httpClient.Timeout = TimeSpan.FromSeconds(10);
+        using var timeoutTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeoutTokenSource.CancelAfter(TimeSpan.FromSeconds(10));
 
         using var request = new HttpRequestMessage();
 
         // 设置请求 Url
-        request.RequestUri = new Uri($"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}&json=true");
+        request.RequestUri = new Uri($"https://whois.pconline.com.cn/ipJson.jsp?ip={Uri.EscapeDataString(ip)}&json=true");
         // 设置请求方式
         request.Method = HttpMethod.Get;
         // 设置请求头部
@@ -506,12 +518,14 @@ public static class HttpContextExtension
         try
         {
             // 发送请求
-            using var response = await httpClient.SendAsync(request);
+            using var response = await _ipLookupHttpClient.SendAsync(request, timeoutTokenSource.Token)
+                .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             // 这里默认使用 GBK 编码解析
+            var responseBytes = await response.Content.ReadAsByteArrayAsync(timeoutTokenSource.Token)
+                .ConfigureAwait(false);
             var responseContent = Encoding.GetEncoding("GBK")
-                .GetString(response.Content.ReadAsByteArrayAsync()
-                    .Result);
+                .GetString(responseBytes);
 
             //var ipInfo = responseContent[
             //        (responseContent.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
@@ -519,6 +533,8 @@ public static class HttpContextExtension
             //ipInfo = ipInfo[..^3];
 
             var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, string>>(responseContent);
+            if (ipInfoDictionary == null)
+                return result;
 
             if (ipInfoDictionary.TryGetValue("ip", out var resIp))
             {
@@ -573,7 +589,12 @@ public static class HttpContextExtension
                 logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
             Console.WriteLine(logSb.ToString());
         }
-        catch (TaskCanceledException ex)
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            // 请求终止属于正常取消，交由调用方感知。
+            throw;
+        }
+        catch (OperationCanceledException ex) when (timeoutTokenSource.IsCancellationRequested)
         {
             var useColor = !Console.IsOutputRedirected;
             var logSb = new StringBuilder();

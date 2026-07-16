@@ -23,7 +23,7 @@ namespace I18nTranslateTool.Modes;
 /// <summary>
 /// <see cref="ExtractContentToExcel"/> 提取翻译文案到 Excel 文件
 /// </summary>
-internal class ExtractContentToExcel
+internal static class ExtractContentToExcel
 {
     /// <summary>
     /// 执行
@@ -33,10 +33,13 @@ internal class ExtractContentToExcel
     /// <param name="translateFilePath"><see cref="string"/> 翻译文件存放位置</param>
     internal static void Run(string projectPath, string projectName, string translateFilePath)
     {
-        var srcPath = $"{projectPath}\\src";
+        var srcPath = Path.Combine(projectPath, "src");
 
         // 组装前端项目文件夹 src\lang 的路径
-        var langPath = $"{projectPath}\\src\\lang";
+        var langPath = Path.Combine(srcPath, "lang");
+        var pathComparison = OperatingSystem.IsWindows()
+            ? StringComparison.OrdinalIgnoreCase
+            : StringComparison.Ordinal;
 
         // 获取前端项目文件夹中 src 文件夹的所有文件信息
         var srcDirectoryList = Directory.GetFiles(srcPath, "*", SearchOption.AllDirectories)
@@ -45,11 +48,13 @@ internal class ExtractContentToExcel
                          wh.EndsWith(".ts", StringComparison.OrdinalIgnoreCase) ||
                          wh.EndsWith(".tsx", StringComparison.OrdinalIgnoreCase))
             // 这里剔除前端所在的翻译文件夹路径
-            .Where(wh => !wh.StartsWith(langPath));
+            .Where(wh => !wh.StartsWith(langPath + Path.DirectorySeparatorChar, pathComparison));
 
         // 获取 lang 文件夹中的语言，只获取文件夹名称，并且默认剔除 zh-CN，因为项目默认的就是 zh-CN
         var langList = Directory.GetDirectories(langPath, "*", SearchOption.TopDirectoryOnly)
-            .Select(sl => sl.Split(Path.DirectorySeparatorChar).Last()).Where(wh => wh != "zh-CN" && wh != "common").ToList();
+            .Select(Path.GetFileName)
+            .Where(wh => wh != "zh-CN" && wh != "common")
+            .ToList();
 
         // 匹配 $t 和 t 对应的文案（包含单引号）
         var i18nRegex = new Regex(@"(\$t\(['""](.+?)['""]\))|(t\(['""](.+?)['""]\))");
@@ -90,14 +95,15 @@ internal class ExtractContentToExcel
             // 获取翻译文件的相对路径
             var targetPath = Path.GetRelativePath(srcPath, fileItem);
             // 去掉文件后缀
-            targetPath = targetPath.Substring(0, targetPath.LastIndexOf(".", StringComparison.Ordinal));
+            targetPath = Path.ChangeExtension(targetPath, null);
 
             // 获取在vue中使用的前缀，掉文件最后的index，因为index在vue中默认就是根目录
-            var prefix = targetPath.EndsWith("index")
-                ? targetPath.Substring(0, targetPath.LastIndexOf("\\", StringComparison.Ordinal))
+            var prefix = string.Equals(Path.GetFileName(targetPath), "index", StringComparison.OrdinalIgnoreCase)
+                ? Path.GetDirectoryName(targetPath) ?? string.Empty
                 : targetPath;
-            // 替换 \ 为 .
-            prefix = prefix.Replace("\\", ".");
+            // 路径分隔符只用于磁盘路径；翻译 key 始终使用点号，确保跨平台结果一致。
+            prefix = NormalizePath(prefix)
+                .Replace('/', '.');
 
             // 输出当前执行的文件信息
             Console.WriteLine(@$"{fileItem}  {prefix}");
@@ -115,28 +121,29 @@ internal class ExtractContentToExcel
             var fileContent = File.ReadAllText(fileItem, Encoding.UTF8);
 
             // 只有路径是 views 的路径才会执行
-            if (fileItem.StartsWith($"{srcPath}\\views"))
+            var viewsPath = Path.Combine(srcPath, "views");
+            if (fileItem.StartsWith(viewsPath + Path.DirectorySeparatorChar, pathComparison))
             {
                 // 页面路由地址
-                componentPath = Path.GetRelativePath($"{srcPath}\\views", fileItem);
+                componentPath = Path.GetRelativePath(viewsPath, fileItem);
 
                 // 默认引用自己
-                refComponentList.Add($"views\\{componentPath}");
+                refComponentList.Add(Path.Combine("views", componentPath));
 
                 // 判断是否已 .vue 结尾，如果是则剔除
-                if (componentPath.EndsWith(".vue"))
+                if (componentPath.EndsWith(".vue", StringComparison.OrdinalIgnoreCase))
                 {
                     componentPath = componentPath[..^".vue".Length];
                 }
 
                 // 判断是否已 /index 结尾，如果是则剔除
-                if (componentPath.EndsWith("\\index"))
+                if (string.Equals(Path.GetFileName(componentPath), "index", StringComparison.OrdinalIgnoreCase))
                 {
-                    componentPath = componentPath[..^"\\index".Length];
+                    componentPath = Path.GetDirectoryName(componentPath) ?? string.Empty;
                 }
 
                 // 拼接前缀
-                componentPath = $"\\{componentPath}";
+                componentPath = "/" + NormalizePath(componentPath);
 
                 // 查找对应的页面引用地址
                 var importFromMatch = importFromRegex.Match(fileContent);
@@ -151,7 +158,7 @@ internal class ExtractContentToExcel
                     importFromMatch = importFromMatch.NextMatch();
 
                     // 判断是否已 "@/" 开头，如果是，则删除
-                    if (curComponentPath.StartsWith("@/"))
+                    if (curComponentPath.StartsWith("@/", StringComparison.Ordinal))
                     {
                         curComponentPath = curComponentPath[2..];
                         // 这里的根目录就是 src 目录，组装
@@ -186,10 +193,11 @@ internal class ExtractContentToExcel
                 }
 
                 // 这里必须采用严格模式，也就是当前文件中不能使用别的文件的翻译文本
-                if (text.StartsWith(prefix))
+                var keyPrefix = prefix + ".";
+                if (text.StartsWith(keyPrefix, StringComparison.Ordinal))
                 {
                     // 获取翻译Key
-                    var key = text[(prefix.Length + 1)..];
+                    var key = text[keyPrefix.Length..];
 
                     // 判断当前Key是否已经存在于集合中
                     if (!keyList.Contains(key))
@@ -204,7 +212,7 @@ internal class ExtractContentToExcel
             // 这里只缓存有 key 的文件信息
             if (keyList.Any())
             {
-                var curTranslateFilePath = $"{langPath}\\{{0}}\\{targetPath}.ts";
+                var curTranslateFilePath = Path.Combine(langPath, "{0}", $"{targetPath}.ts");
 
                 var langDictionary = new Dictionary<string, IDictionary<string, string>>();
 
@@ -215,7 +223,7 @@ internal class ExtractContentToExcel
                     foreach (var langItem in langList)
                     {
                         // 当前语言包的文件路径
-                        var curLangFilePath = string.Format(curTranslateFilePath, langItem);
+                        var curLangFilePath = string.Format(CultureInfo.InvariantCulture, curTranslateFilePath, langItem);
 
                         // 判断文件是否存在
                         if (File.Exists(curLangFilePath))
@@ -268,8 +276,8 @@ internal class ExtractContentToExcel
                 var excelRow = new Dictionary<string, string>
                 {
                     {"页面文件路径", item.sourceFilePath},
-                    {"页面文件路由", item.componentPath.Replace("\\", "/")},
-                    {"页面文件引用相关组件", string.Join(",", item.refComponentList.Select(sl => sl.Replace("\\", "/")))},
+                    {"页面文件路由", NormalizePath(item.componentPath)},
+                    {"页面文件引用相关组件", string.Join(",", item.refComponentList.Select(NormalizePath))},
                     {"翻译文件路径（参数化）", item.translateFilePath},
                     {"翻译使用前缀", item.prefix},
                     {"zh-CN", keyItem},
@@ -300,12 +308,18 @@ internal class ExtractContentToExcel
             }
         }
 
-        var filePath = $"{translateFilePath}\\{projectName}-{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+        var filePath = Path.Combine(translateFilePath,
+            $"{projectName}-{DateTime.Now.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture)}.xlsx");
 
         // 如果翻译文件目录不存在，则创建
         FileUtil.TryCreateDirectory(filePath);
 
         // 将翻译信息，写入Excel文件
         MiniExcel.SaveAs(filePath, excelDictionary);
+    }
+
+    private static string NormalizePath(string path)
+    {
+        return path.Replace('\\', '/');
     }
 }

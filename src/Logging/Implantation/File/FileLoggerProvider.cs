@@ -30,7 +30,7 @@ namespace Fast.Logging;
 /// </summary>
 /// <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
 [ProviderAlias("File")]
-internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
+internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
 {
     /// <summary>
     /// 存储多日志分类日志记录器
@@ -65,6 +65,11 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
     private readonly Task _processQueueTask;
 
     /// <summary>
+    /// 是否已经释放。
+    /// </summary>
+    private int _disposed;
+
+    /// <summary>
     /// 构造函数
     /// </summary>
     /// <param name="fileName">日志文件名</param>
@@ -82,7 +87,7 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
 
         // 创建长时间运行的后台任务，并将日志消息队列中数据写入文件中
         _processQueueTask = Task.Factory.StartNew(state => ((FileLoggerProvider) state).ProcessQueue(), this,
-            TaskCreationOptions.LongRunning);
+            CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
     }
 
     /// <summary>
@@ -132,23 +137,21 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
     /// <remarks>控制日志消息队列</remarks>
     public void Dispose()
     {
+        if (Interlocked.Exchange(ref _disposed, 1) != 0)
+            return;
+
         // 标记日志消息队列停止写入
         _logMessageQueue.CompleteAdding();
 
         try
         {
-            // 设置 1.5秒的缓冲时间，避免还有日志消息没有完成写入文件中
-            _processQueueTask?.Wait(1500);
+            // CompleteAdding 会让消费循环在排空队列后自然结束；等待完成可避免关闭文件时仍有后台写入。
+            _processQueueTask.GetAwaiter()
+                .GetResult();
         }
-        catch (TaskCanceledException)
+        catch (Exception ex)
         {
-        }
-        catch (AggregateException ex) when (ex.InnerExceptions.Count == 1 && ex.InnerExceptions[0] is TaskCanceledException)
-        {
-        }
-        catch
-        {
-            // ignored
+            Console.Error.WriteLine($"[Fast.Logging] Failed to drain the log queue: {ex.Message}");
         }
 
         // 清空文件日志记录器
@@ -158,7 +161,10 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
         _rollingFileNames.Clear();
 
         // 释放内部文件写入器
-        _fileLoggingWriter.Close();
+        _fileLoggingWriter.Dispose();
+        _logMessageQueue.Dispose();
+        _processQueueTask.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     /// <summary>
@@ -167,6 +173,9 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
     /// <param name="logMsg">日志消息</param>
     internal void WriteToQueue(LogMessage logMsg)
     {
+        if (Volatile.Read(ref _disposed) != 0)
+            return;
+
         // 只有队列可持续入队才写入
         if (!_logMessageQueue.IsAddingCompleted)
         {
@@ -175,12 +184,11 @@ internal class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
                 // 使用 TryAdd 非阻塞写入，避免后台任务异常退出时队列满导致调用方线程永久阻塞
                 _logMessageQueue.TryAdd(logMsg);
             }
-            catch (InvalidOperationException)
+            catch (ObjectDisposedException)
             {
             }
-            catch
+            catch (InvalidOperationException)
             {
-                // ignored
             }
         }
     }

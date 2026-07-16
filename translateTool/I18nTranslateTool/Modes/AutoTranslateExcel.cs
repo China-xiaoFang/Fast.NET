@@ -17,7 +17,7 @@ namespace I18nTranslateTool.Modes;
 /// <summary>
 /// <see cref="AutoTranslateExcel"/> 自动翻译 Excel 文件
 /// </summary>
-internal class AutoTranslateExcel
+internal static class AutoTranslateExcel
 {
     /// <summary>
     /// 执行
@@ -25,7 +25,11 @@ internal class AutoTranslateExcel
     /// <param name="projectPath"><see cref="string"/> 项目路径</param>
     /// <param name="projectName"><see cref="string"/> 项目名称</param>
     /// <param name="translateFilePath"><see cref="string"/> 翻译文件存放位置</param>
-    internal static void Run(string projectPath, string projectName, string translateFilePath)
+    internal static bool Run(string projectPath, string projectName, string translateFilePath)
     {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("尚未配置自动翻译提供程序，请先手工编辑导出的 Excel 文件，再使用模式 3 写回项目。");
+        Console.ResetColor();
+        return false;
     }
 }

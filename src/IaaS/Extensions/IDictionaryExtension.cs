@@ -192,7 +192,7 @@ public static class IDictionaryExtension
     {
         if (string.IsNullOrWhiteSpace(xml))
         {
-            throw new Exception("不能转换空字符串！");
+            throw new ArgumentException("不能转换空字符串！", nameof(xml));
         }
 
         var rltDic = new Dictionary<string, object>();
@@ -241,7 +241,7 @@ public static class IDictionaryExtension
     {
         if (string.IsNullOrWhiteSpace(xml))
         {
-            throw new Exception("不能转换空字符串！");
+            throw new ArgumentException("不能转换空字符串！", nameof(xml));
         }
 
         var rltDic = new SortedDictionary<string, object>();

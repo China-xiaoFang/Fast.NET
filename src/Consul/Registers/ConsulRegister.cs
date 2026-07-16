@@ -1,16 +1,24 @@
-﻿// Apache开源许可证
-//
+﻿// ------------------------------------------------------------------------
+// Apache开源许可证
+// 
 // 版权所有 © 2018-Now 小方
-//
-// 特此免费授予获得本软件及其相关文档文件（以下简称“软件”）副本的任何人以处理本软件的权利，
-// 包括但不限于使用、复制、修改、合并、发布、分发、再许可、销售软件的副本，
-// 以及允许拥有软件副本的个人进行上述行为，但须遵守以下条件：
-//
-// 在所有副本或重要部分的软件中必须包括上述版权声明和本许可声明。
-//
-// 软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// 在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责，
-// 无论是因合同、侵权或其他方式引起的，与软件或其使用或其他交易有关。
+// 
+// 许可授权：
+// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
+// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
+// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
+// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
+// 3.修改或衍生作品须明确标注原作者及原软件出处。
+// 
+// 特别声明：
+// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
+// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
+// - 包括但不限于数据丢失、业务中断等情况。
+// 
+// 免责条款：
+// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
+// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
+// ------------------------------------------------------------------------
 
 using System.Reflection;
 using Consul;
@@ -46,19 +54,28 @@ internal class ConsulRegister : IConsulRegister
     /// <returns></returns>
     public async Task ConsulRegisterAsync()
     {
-        var client = new ConsulClient(options =>
+        using var client = new ConsulClient(options =>
         {
             // Consul 客户端地址
             options.Address = new Uri(_consulSettingsOptions.Address);
         });
 
         // 获取当前程序启动的地址
-        var startupUri = new Uri(_server.Features?.Get<IServerAddressesFeature>()?.Addresses?.First());
+        var startupAddress = string.IsNullOrWhiteSpace(_consulSettingsOptions.ServiceAddress)
+            ? _server.Features.Get<IServerAddressesFeature>()
+                ?.Addresses.FirstOrDefault()
+            : _consulSettingsOptions.ServiceAddress;
+        if (!Uri.TryCreate(startupAddress, UriKind.Absolute, out var startupUri))
+            throw new InvalidOperationException("无法从服务器功能中获取有效的应用监听地址，Consul 服务注册已终止。");
+
+        if (startupUri.Host is "0.0.0.0" or "::" or "[::]")
+            throw new InvalidOperationException("应用监听的是通配地址，无法直接注册到 Consul；请配置 ConsulSettings:ServiceAddress。");
 
         // TODO：后续可以考虑读取根目录父级文件夹的名称做版本区分
 
         // 获取当前入口程序集的版本号
-        var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+        var version = Assembly.GetEntryAssembly()
+            ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
             ?.InformationalVersion;
 
         var versionArr = version?.Split('.');
@@ -92,10 +109,11 @@ internal class ConsulRegister : IConsulRegister
                 // 健康检查地址
                 HTTP = $"{startupUri.AbsoluteUri.TrimEnd('/')}{_consulSettingsOptions.HealthCheck}",
                 // 健康检查超时时间
-                Timeout = TimeSpan.FromSeconds(_consulSettingsOptions.HealthCheckTimeout!.Value),
+                Timeout = TimeSpan.FromSeconds(_consulSettingsOptions.HealthCheckTimeout!.Value)
             }
         };
 
-        await client.Agent.ServiceRegister(registration);
+        await client.Agent.ServiceRegister(registration)
+            .ConfigureAwait(false);
     }
 }
