@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>3.5.27</Version>
+		<Version>3.5.28</Version>
 		<PackageId>Fast.NET.Core</PackageId>
 		<Description>Fast.NET 框架核心模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="$(SolutionDir)src\Runtime\Fast.Runtime.csproj" />
+		<ProjectReference Include="$(RepositoryRoot)src\Runtime\Fast.Runtime.csproj" />
 	</ItemGroup>
 
 </Project>

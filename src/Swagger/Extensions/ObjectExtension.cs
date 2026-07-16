@@ -105,7 +105,8 @@ internal static class ObjectExtension
                 var p = oldType.GetProperty(property.Name);
                 if (property.CanWrite && p != null && p.CanRead)
                 {
-                    property.SetValue(o, ChangeType(p.GetValue(obj, null), property.PropertyType), null);
+                    property.SetValue(o, p.GetValue(obj, null)
+                        .ChangeType(property.PropertyType), null);
                 }
             }
 

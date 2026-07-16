@@ -48,6 +48,8 @@ internal sealed class ChannelEventPublisher : IEventPublisher
     /// <returns><see cref="Task"/> 实例</returns>
     public async Task PublishAsync(IEventSource eventSource)
     {
+        ArgumentNullException.ThrowIfNull(eventSource);
+
         await _eventSourceStorer.WriteAsync(eventSource, eventSource.CancellationToken);
     }
 
@@ -57,18 +59,16 @@ internal sealed class ChannelEventPublisher : IEventPublisher
     /// <param name="eventSource">事件源</param>
     /// <param name="delay">延迟数（毫秒）</param>
     /// <returns><see cref="Task"/> 实例</returns>
-    public Task PublishDelayAsync(IEventSource eventSource, long delay)
+    public async Task PublishDelayAsync(IEventSource eventSource, long delay)
     {
-        // 创建新线程
-        Task.Factory.StartNew(async () =>
-        {
-            // 延迟 delay 毫秒
-            await Task.Delay(TimeSpan.FromMilliseconds(delay), eventSource.CancellationToken);
+        ArgumentNullException.ThrowIfNull(eventSource);
+        if (delay < 0)
+            throw new ArgumentOutOfRangeException(nameof(delay), "延迟时间不能为负数。");
 
-            await _eventSourceStorer.WriteAsync(eventSource, eventSource.CancellationToken);
-        }, eventSource.CancellationToken);
+        // 必须等待延迟与入队完成，确保取消和写入异常能够由调用方观察到。
+        await Task.Delay(TimeSpan.FromMilliseconds(delay), eventSource.CancellationToken);
 
-        return Task.CompletedTask;
+        await _eventSourceStorer.WriteAsync(eventSource, eventSource.CancellationToken);
     }
 
     /// <summary>

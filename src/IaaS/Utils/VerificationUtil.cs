@@ -21,8 +21,8 @@
 // ------------------------------------------------------------------------
 
 using System;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 
 namespace Fast.IaaS;
 
@@ -63,6 +63,9 @@ public static class VerificationUtil
     /// <returns></returns>
     public static string IdToCodeByLong(long id)
     {
+        if (id < 0)
+            throw new ArgumentOutOfRangeException(nameof(id), "Id 不能为负数。");
+
         var buf = new char[BASE_LEN];
         var charPos = BASE_LEN;
 
@@ -84,11 +87,10 @@ public static class VerificationUtil
             return result;
         var sb = new StringBuilder();
         sb.Append(SUFFIX_CHAR);
-        var random = new Random();
         // 去除SUFFIX_CHAR本身占位之后需要补齐的位数
         for (var i = 0; i < CODE_LEN - len - 1; i++)
         {
-            sb.Append(BASE[random.Next(BASE_LEN)]);
+            sb.Append(BASE[RandomNumberGenerator.GetInt32(BASE_LEN)]);
         }
 
         result += sb.ToString();
@@ -103,32 +105,23 @@ public static class VerificationUtil
     /// <returns></returns>
     public static long CodeToIdByLong(string code)
     {
+        if (string.IsNullOrWhiteSpace(code))
+            throw new ArgumentException("邀请码不能为空。", nameof(code));
+
         var charArray = code.ToCharArray();
         var result = 0L;
         for (var i = 0; i < charArray.Length; i++)
         {
-            var index = 0;
-            for (var j = 0; j < BASE_LEN; j++)
-            {
-                if (charArray[i] != BASE[j])
-                    continue;
-                index = j;
-                break;
-            }
-
             if (charArray[i] == SUFFIX_CHAR)
             {
                 break;
             }
 
-            if (i > 0)
-            {
-                result = result * BASE_LEN + index;
-            }
-            else
-            {
-                result = index;
-            }
+            var index = Array.IndexOf(BASE, charArray[i]);
+            if (index < 0)
+                throw new FormatException($"邀请码包含无效字符“{charArray[i]}”。");
+
+            result = checked(result * BASE_LEN + index);
         }
 
         return result;
@@ -141,6 +134,9 @@ public static class VerificationUtil
     /// <returns></returns>
     public static string IdToCodeByInt(int id)
     {
+        if (id < 0)
+            throw new ArgumentOutOfRangeException(nameof(id), "Id 不能为负数。");
+
         var buf = new char[BASE_LEN];
         var charPos = BASE_LEN;
 
@@ -162,11 +158,10 @@ public static class VerificationUtil
             return result;
         var sb = new StringBuilder();
         sb.Append(SUFFIX_CHAR);
-        var random = new Random();
         // 去除SUFFIX_CHAR本身占位之后需要补齐的位数
         for (var i = 0; i < CODE_LEN - len - 1; i++)
         {
-            sb.Append(BASE[random.Next(BASE_LEN)]);
+            sb.Append(BASE[RandomNumberGenerator.GetInt32(BASE_LEN)]);
         }
 
         result += sb.ToString();
@@ -181,32 +176,23 @@ public static class VerificationUtil
     /// <returns></returns>
     public static int CodeToIdByInt(string code)
     {
+        if (string.IsNullOrWhiteSpace(code))
+            throw new ArgumentException("邀请码不能为空。", nameof(code));
+
         var charArray = code.ToCharArray();
         var result = 0;
         for (var i = 0; i < charArray.Length; i++)
         {
-            var index = 0;
-            for (var j = 0; j < BASE_LEN; j++)
-            {
-                if (charArray[i] != BASE[j])
-                    continue;
-                index = j;
-                break;
-            }
-
             if (charArray[i] == SUFFIX_CHAR)
             {
                 break;
             }
 
-            if (i > 0)
-            {
-                result = result * BASE_LEN + index;
-            }
-            else
-            {
-                result = index;
-            }
+            var index = Array.IndexOf(BASE, charArray[i]);
+            if (index < 0)
+                throw new FormatException($"邀请码包含无效字符“{charArray[i]}”。");
+
+            result = checked(result * BASE_LEN + index);
         }
 
         return result;
@@ -218,26 +204,28 @@ public static class VerificationUtil
     /// <returns></returns>
     public static string PrintBase()
     {
-        var UpperCase = new StringBuilder();
-        var LowerCase = new StringBuilder();
-        var Number = new StringBuilder();
+        var upperCase = new StringBuilder();
+        var lowerCase = new StringBuilder();
+        var number = new StringBuilder();
 
-        Array.Sort(BASE);
-        foreach (var item in BASE)
+        // 编码表的顺序参与 Id 编解码，绝不能为了展示而原地排序。
+        var sortedBase = (char[]) BASE.Clone();
+        Array.Sort(sortedBase);
+        foreach (var item in sortedBase)
         {
             int ascii = item;
             if (ascii >= 48 && ascii <= 57)
-                Number.Append(item);
+                number.Append(item);
             else if (ascii >= 65 && ascii <= 90)
-                UpperCase.Append(item);
+                upperCase.Append(item);
             else if (ascii >= 97 && ascii <= 122)
-                LowerCase.Append(item);
+                lowerCase.Append(item);
         }
 
-        var allStr = UpperCase.Append(",")
-            .Append(LowerCase)
+        var allStr = upperCase.Append(",")
+            .Append(lowerCase)
             .Append(",")
-            .Append(Number)
+            .Append(number)
             .ToString();
         return $"Count({allStr.Length - 2}):{allStr}";
     }
@@ -249,7 +237,17 @@ public static class VerificationUtil
     /// <returns><see cref="string"/></returns>
     public static string GenNumVerCode(int len = CODE_LEN)
     {
-        return $"{new Random().Next((int) Math.Pow(10, len - 1), (int) Math.Pow(10, len) - 1)}";
+        if (len <= 0)
+            throw new ArgumentOutOfRangeException(nameof(len), "验证码长度必须大于 0。");
+
+        var result = new StringBuilder(len);
+        result.Append(RandomNumberGenerator.GetInt32(1, 10));
+        for (var i = 1; i < len; i++)
+        {
+            result.Append(RandomNumberGenerator.GetInt32(10));
+        }
+
+        return result.ToString();
     }
 
     /// <summary>
@@ -259,20 +257,19 @@ public static class VerificationUtil
     /// <returns><see cref="string"/></returns>
     public static string GenStrVerCode(int len = CODE_LEN)
     {
-        var result = "";
-        var random = new Random(Convert.ToInt32($"{DateTime.Now:HHmmssfff}"));
+        if (len <= 0)
+            throw new ArgumentOutOfRangeException(nameof(len), "验证码长度必须大于 0。");
+
+        var result = new StringBuilder(len);
 
         for (var i = 0; i < len; i++)
         {
-            var randomInt = random.Next(0, BASE_LEN);
+            var randomInt = RandomNumberGenerator.GetInt32(BASE_LEN);
             var randomChar = BASE[randomInt];
-            result += randomChar;
+            result.Append(randomChar);
         }
 
-        // 休眠,以使随机数不重叠.
-        Thread.Sleep(1);
-
-        return result;
+        return result.ToString();
     }
 
     /// <summary>
@@ -284,17 +281,30 @@ public static class VerificationUtil
     /// <returns></returns>
     public static int GenRandomNum(int minVal, int maxVal, bool isInclude = false)
     {
-        if (isInclude)
-        {
-            maxVal--;
-        }
+        if (isInclude ? maxVal < minVal : maxVal <= minVal)
+            throw new ArgumentOutOfRangeException(nameof(maxVal), isInclude ? "最大值不能小于最小值。" : "最大值必须大于最小值。");
 
-        if (maxVal < minVal)
-        {
-            throw new Exception("最大值不能小于最小值");
-        }
+        return GetRandomInt32(minVal, isInclude ? maxVal : maxVal - 1);
+    }
 
-        var random = new Random();
-        return random.Next(minVal, isInclude ? maxVal - 1 : maxVal);
+    /// <summary>
+    /// 生成包含上下边界的安全随机整数。
+    /// </summary>
+    private static int GetRandomInt32(int minValue, int maxValue)
+    {
+        var range = (ulong) ((long) maxValue - minValue + 1);
+        const ulong sampleSpace = 1UL << 32;
+        var limit = sampleSpace - sampleSpace % range;
+
+        // 舍弃不能被区间长度整除的尾部样本，避免取模造成某些数字概率偏高。
+        Span<byte> bytes = stackalloc byte[sizeof(uint)];
+        uint sample;
+        do
+        {
+            RandomNumberGenerator.Fill(bytes);
+            sample = BitConverter.ToUInt32(bytes);
+        } while (sample >= limit);
+
+        return (int) (minValue + (long) (sample % range));
     }
 }

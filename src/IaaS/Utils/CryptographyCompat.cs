@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,30 +20,40 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
 
-namespace Fast.Runtime;
+namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="IConfiguration"/> 拓展类
+/// 为 netstandard2.1 提供较新运行时中常见的密码学便捷操作。
 /// </summary>
-[SuppressSniffer]
-public static class IConfigurationExtension
+internal static class CryptographyCompat
 {
-    /// <summary>
-    /// 加载后期配置
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static T LoadPostConfigure<T>(this T type) where T : IPostConfigure
+    private const string HEX_ALPHABET = "0123456789ABCDEF";
+
+    internal static byte[] ComputeSHA256(byte[] data)
     {
-        // 空值判断
-        type ??= Activator.CreateInstance<T>();
+        using var sha256 = SHA256.Create();
+        return sha256.ComputeHash(data);
+    }
 
-        // 加载后期配置
-        type.PostConfigure();
+    internal static byte[] GetRandomBytes(int length)
+    {
+        var bytes = new byte[length];
+        using var randomNumberGenerator = RandomNumberGenerator.Create();
+        randomNumberGenerator.GetBytes(bytes);
+        return bytes;
+    }
 
-        return type;
+    internal static string ToHexString(byte[] bytes)
+    {
+        var characters = new char[bytes.Length * 2];
+        for (var index = 0; index < bytes.Length; index++)
+        {
+            characters[index * 2] = HEX_ALPHABET[bytes[index] >> 4];
+            characters[index * 2 + 1] = HEX_ALPHABET[bytes[index] & 0x0F];
+        }
+
+        return new string(characters);
     }
 }

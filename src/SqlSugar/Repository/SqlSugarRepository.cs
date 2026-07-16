@@ -65,8 +65,11 @@ internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISql
         var sqlSugarEntityHandler = _serviceProvider.GetService<ISqlSugarEntityHandler>();
 
         // 获取新的连接字符串
+        // DI 构造函数不能声明为 async；这里显式解包异步结果，避免 .Result 将真实异常包装成 AggregateException。
         var connectionSettings = sqlSugarEntityHandler?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute, entityType)
-            .Result;
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
 
         // 数据库信息
         DatabaseInfo = connectionSettings ?? SqlSugarContext.ConnectionSettings;

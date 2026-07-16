@@ -69,7 +69,7 @@ internal class DoubleJsonConverter : JsonConverter<double>
         {
             var jToken = JToken.ReadFrom(reader);
             var value = jToken.Value<string>();
-            return double.Parse(value);
+            return double.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
         }
 
         return Convert.ToDouble(reader.Value);
@@ -130,6 +130,6 @@ internal class NullableDoubleJsonConverter : JsonConverter<double?>
         if (string.IsNullOrWhiteSpace(value))
             return null;
 
-        return double.Parse(value);
+        return double.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
     }
 }

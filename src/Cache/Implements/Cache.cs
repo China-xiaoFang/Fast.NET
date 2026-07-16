@@ -29,7 +29,7 @@ namespace Fast.Cache;
 /// <summary>
 /// <see cref="Cache"/> 默认缓存实现
 /// </summary>
-internal class Cache : Cache<DefaultCacheContextLocator>, ICache
+internal sealed class Cache : Cache<DefaultCacheContextLocator>, ICache
 {
     public Cache(IOptionsMonitor<RedisSettingsOptions> redisSettings) : base(redisSettings)
     {
@@ -118,6 +118,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     public void Dispose()
     {
         _optionsReloadToken?.Dispose();
+        Client?.Dispose();
     }
 
     /// <summary>
@@ -152,7 +153,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             return 0;
 
         // 判断是否已 * 结尾
-        if (!pattern.EndsWith("*"))
+        if (!pattern.EndsWith('*'))
         {
             pattern += "*";
         }
@@ -419,11 +420,15 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    if (TryGetCachedValue(key, out result))
+                        return result;
+
                     result = func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -477,11 +482,17 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    var cachedValue = await TryGetCachedValueAsync(key, result)
+                        .ConfigureAwait(false);
+                    if (cachedValue.Found)
+                        return cachedValue.Value;
+
                     result = await func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -538,11 +549,15 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    if (TryGetCachedValue(key, out result))
+                        return result;
+
                     result = func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -604,11 +619,17 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    var cachedValue = await TryGetCachedValueAsync(key, result)
+                        .ConfigureAwait(false);
+                    if (cachedValue.Found)
+                        return cachedValue.Value;
+
                     result = await func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -663,11 +684,15 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    if (TryGetCachedValue(key, out result))
+                        return result;
+
                     result = func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -722,11 +747,17 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    var cachedValue = await TryGetCachedValueAsync(key, result)
+                        .ConfigureAwait(false);
+                    if (cachedValue.Found)
+                        return cachedValue.Value;
+
                     result = await func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -784,11 +815,15 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    if (TryGetCachedValue(key, out result))
+                        return result;
+
                     result = func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -846,11 +881,17 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    var cachedValue = await TryGetCachedValueAsync(key, result)
+                        .ConfigureAwait(false);
+                    if (cachedValue.Found)
+                        return cachedValue.Value;
+
                     result = await func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -905,11 +946,15 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    if (TryGetCachedValue(key, out result))
+                        return result;
+
                     result = func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -964,11 +1009,17 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    var cachedValue = await TryGetCachedValueAsync(key, result)
+                        .ConfigureAwait(false);
+                    if (cachedValue.Found)
+                        return cachedValue.Value;
+
                     result = await func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -1026,11 +1077,15 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    if (TryGetCachedValue(key, out result))
+                        return result;
+
                     result = func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -1088,11 +1143,17 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
         if (IsEmpty(result))
         {
-            var acquired = Client.TryLock($"{key}_lock", 5);
+            var acquired = Client.Lock($"{key}_lock", 5);
             if (acquired != null)
             {
                 try
                 {
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    var cachedValue = await TryGetCachedValueAsync(key, result)
+                        .ConfigureAwait(false);
+                    if (cachedValue.Found)
+                        return cachedValue.Value;
+
                     result = await func.Invoke();
 
                     // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
@@ -1130,46 +1191,63 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     }
 
     /// <summary>
-    /// 检查 Object 或者 集合 是否为 NULL 或者 空集合
+    /// 尝试读取缓存，并区分“缓存未命中”和“已缓存空值”。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    private bool IsEmpty<T>(T value)
+    private bool TryGetCachedValue<T>(string key, out T result)
+    {
+        var rawValue = Client.Get(key);
+        if (string.Equals(rawValue, _nullValue, StringComparison.Ordinal))
+        {
+            result = default;
+            return true;
+        }
+
+        result = typeof(T) == typeof(string) ? (T) (object) rawValue : Client.Get<T>(key);
+        return !IsEmpty(result);
+    }
+
+    /// <summary>
+    /// 异步尝试读取缓存，并区分“缓存未命中”和“已缓存空值”。
+    /// </summary>
+    private async Task<(bool Found, T Value)> TryGetCachedValueAsync<T>(string key, T _)
+    {
+        var rawValue = await Client.GetAsync(key)
+            .ConfigureAwait(false);
+        if (string.Equals(rawValue, _nullValue, StringComparison.Ordinal))
+            return (true, default);
+
+        var result = typeof(T) == typeof(string)
+            ? (T) (object) rawValue
+            : await Client.GetAsync<T>(key)
+                .ConfigureAwait(false);
+        return (!IsEmpty(result), result);
+    }
+
+    /// <summary>
+    /// 检查对象或集合是否为 null、空字符串或空集合。
+    /// </summary>
+    private static bool IsEmpty<T>(T value)
     {
         if (value == null)
-        {
             return true;
-        }
 
-        try
+        if (value is string text)
+            return string.IsNullOrWhiteSpace(text);
+
+        if (value is ICollection collection)
+            return collection.Count == 0;
+
+        if (value is IEnumerable enumerable)
         {
-            if (string.IsNullOrWhiteSpace(value.ToString()))
+            var enumerator = enumerable.GetEnumerator();
+            try
             {
-                return true;
+                return !enumerator.MoveNext();
             }
-        }
-        catch
-        {
-            return true;
-        }
-
-
-        var type = typeof(T);
-
-        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
-        {
-            if (value is not IList list || list.Count == 0)
+            finally
             {
-                return true;
+                (enumerator as IDisposable)?.Dispose();
             }
-
-            return false;
-        }
-
-        if (value is IEnumerable<T> collection && !collection.Any())
-        {
-            return true;
         }
 
         return false;

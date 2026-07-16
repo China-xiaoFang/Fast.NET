@@ -82,7 +82,7 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
                 formatDateTime = value.DateTime;
         }
 
-        writer.WriteValue(formatDateTime.ToString(Format));
+        writer.WriteValue(formatDateTime.ToString(Format, CultureInfo.InvariantCulture));
     }
 
     /// <summary>Reads the JSON representation of the object.</summary>
@@ -102,7 +102,7 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 
         if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
         {
-            result = DateTime.Parse(value);
+            result = DateTime.Parse(value, CultureInfo.InvariantCulture);
         }
         else
         {
@@ -217,7 +217,7 @@ internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffse
                     formatDateTime = value.Value.DateTime;
             }
 
-            writer.WriteValue(formatDateTime.ToString(Format));
+            writer.WriteValue(formatDateTime.ToString(Format, CultureInfo.InvariantCulture));
         }
     }
 
@@ -241,7 +241,7 @@ internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffse
 
         if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
         {
-            result = DateTime.Parse(value);
+            result = DateTime.Parse(value, CultureInfo.InvariantCulture);
         }
         else
         {

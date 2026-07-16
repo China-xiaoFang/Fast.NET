@@ -1,6 +1,7 @@
 <Project>
 
     <PropertyGroup>
+        <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
         <TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
         <LangVersion>12.0</LangVersion>
         <Nullable>disable</Nullable>
@@ -23,7 +24,7 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <IncludeSymbols>True</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <PackageOutputPath>$(SolutionDir)nupkgs</PackageOutputPath>
+        <PackageOutputPath>$(RepositoryRoot)nupkgs</PackageOutputPath>
 
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <DocumentationFile>$(MSBuildProjectName).xml</DocumentationFile>
@@ -36,10 +37,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="$(SolutionDir)README.md" Pack="true" PackagePath="\" />
-        <None Include="$(SolutionDir)README.zh.md" Pack="true" PackagePath="\" />
-        <None Include="$(SolutionDir)LICENSE" Pack="true" PackagePath="\" />
-        <None Include="$(SolutionDir)Fast.png" Pack="true" PackagePath="\" />
+        <None Include="$(RepositoryRoot)README.md" Pack="true" PackagePath="\" />
+        <None Include="$(RepositoryRoot)README.zh.md" Pack="true" PackagePath="\" />
+        <None Include="$(RepositoryRoot)LICENSE" Pack="true" PackagePath="\" />
+        <None Include="$(RepositoryRoot)Fast.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

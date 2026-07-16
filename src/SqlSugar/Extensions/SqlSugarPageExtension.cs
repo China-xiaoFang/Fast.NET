@@ -229,7 +229,7 @@ public static class SqlSugarPageExtension
                 sugarColumn = sl.GetCustomAttribute<SugarColumn>(true),
                 navigate = sl.GetCustomAttribute<Navigate>(true),
                 sugarSearchValueAttribute = sl.GetCustomAttribute<SugarSearchValueAttribute>(),
-                sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>(),
+                sugarSearchTimeAttribute = sl.GetCustomAttribute<SugarSearchTimeAttribute>()
             })
             .ToList();
 

@@ -78,7 +78,7 @@ public static class IServiceCollectionExtension
         var jwtSettings = new JWTSettingsOptions();
         optionAction.Invoke(jwtSettings);
 
-        Penetrates.JWTSettings = jwtSettings;
+        Penetrates.JWTSettings = jwtSettings.LoadPostConfigure();
 
         return services;
     }
@@ -217,7 +217,7 @@ public static class IServiceCollectionExtension
         var jwtSettings = new JWTSettingsOptions();
         optionAction.Invoke(jwtSettings);
 
-        Penetrates.JWTSettings = jwtSettings;
+        Penetrates.JWTSettings = jwtSettings.LoadPostConfigure();
 
         // 查找Jwt验证提供器实现类
         var jwtBearerHandle =

@@ -49,7 +49,7 @@ public static class AssemblyExtension
             // 判断文件是否存在
             if (!File.Exists(depsJsonFilePath))
             {
-                throw new Exception($"Cannot find {assembly.GetName().Name}.deps.json file.");
+                throw new FileNotFoundException($"Cannot find {assembly.GetName().Name}.deps.json file.", depsJsonFilePath);
             }
 
             // 读取文件

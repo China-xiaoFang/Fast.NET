@@ -45,10 +45,11 @@ public static partial class OpenApiUtil
             return null;
 
         // 判断是否存在导入声明类型
-        if (Penetrates.OpenApiSettings.ImportTypeMappings.Any(a => refKey.StartsWith(a.Name)))
+        if (Penetrates.OpenApiSettings.ImportTypeMappings.Any(a => refKey.StartsWith(a.Name, StringComparison.Ordinal)))
         {
             // 导入声明类型
-            foreach (var typeMapping in Penetrates.OpenApiSettings.ImportTypeMappings.Where(wh => refKey.StartsWith(wh.Name)))
+            foreach (var typeMapping in Penetrates.OpenApiSettings.ImportTypeMappings.Where(wh =>
+                         refKey.StartsWith(wh.Name, StringComparison.Ordinal)))
             {
                 // 截取字符串
                 refKey = refKey[typeMapping.Name.Length..];
@@ -57,7 +58,8 @@ public static partial class OpenApiUtil
                 var baseTypeMapping = Penetrates.OpenApiSettings.BaseTypeMappings.FirstOrDefault(f => f.Key == refKey);
                 if (baseTypeMapping.Value != null)
                     refKey = baseTypeMapping.Value;
-                else if (!Penetrates.OpenApiSettings.ImportTypeMappings.Any(a => refKey.StartsWith(a.Name)))
+                else if (!Penetrates.OpenApiSettings.ImportTypeMappings.Any(a =>
+                             refKey.StartsWith(a.Name, StringComparison.Ordinal)))
                 {
                     if (!string.IsNullOrWhiteSpace(refKey))
                     {
@@ -67,7 +69,7 @@ public static partial class OpenApiUtil
                 }
 
                 // 填充字符串
-                refKey = string.Format(typeMapping.MappingName, refKey);
+                refKey = string.Format(System.Globalization.CultureInfo.InvariantCulture, typeMapping.MappingName, refKey);
 
                 // 判断是否存在引用声明
                 if (typeMapping.RefSchema?.Count > 0)
@@ -190,11 +192,13 @@ public static partial class OpenApiUtil
                     continue;
 
                 // 判断是否为导入声明映射Name
-                if (Penetrates.OpenApiSettings.ImportSchemaMappings.Any(a => dtoSchema.Key.StartsWith(a.Name)))
+                if (Penetrates.OpenApiSettings.ImportSchemaMappings.Any(a =>
+                        dtoSchema.Key.StartsWith(a.Name, StringComparison.Ordinal)))
                     continue;
 
                 // 判断是否为导入类型映射Name
-                if (Penetrates.OpenApiSettings.ImportTypeMappings.Any(a => dtoSchema.Key.StartsWith(a.Name)))
+                if (Penetrates.OpenApiSettings.ImportTypeMappings.Any(a =>
+                        dtoSchema.Key.StartsWith(a.Name, StringComparison.Ordinal)))
                     continue;
 
                 // 判断是否为基类

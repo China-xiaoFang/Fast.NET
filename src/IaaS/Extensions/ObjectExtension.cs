@@ -110,7 +110,8 @@ public static class ObjectExtension
                 var p = oldType.GetProperty(property.Name);
                 if (property.CanWrite && p != null && p.CanRead)
                 {
-                    property.SetValue(o, ChangeType(p.GetValue(obj, null), property.PropertyType), null);
+                    property.SetValue(o, p.GetValue(obj, null)
+                        .ChangeType(property.PropertyType), null);
                 }
             }
 
@@ -160,7 +161,7 @@ public static class ObjectExtension
     /// <returns></returns>
     public static T ChangeType<T>(this object obj)
     {
-        return (T) ChangeType(obj, typeof(T));
+        return (T) obj.ChangeType(typeof(T));
     }
 
     /// <summary>

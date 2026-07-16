@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>3.5.19</Version>
+		<Version>3.5.20</Version>
 		<PackageId>Fast.Mapster</PackageId>
 		<Description>Fast.NET 框架对象映射模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="$(SolutionDir)src\Runtime\Fast.Runtime.csproj" />
+		<ProjectReference Include="$(RepositoryRoot)src\Runtime\Fast.Runtime.csproj" />
 	</ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' =='net7.0'">

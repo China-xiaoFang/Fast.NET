@@ -63,7 +63,7 @@ public class DateJsonConverter : JsonConverter<DateTime>
     /// <param name="serializer">The calling serializer.</param>
     public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
     {
-        writer.WriteValue(value.ToString(Format));
+        writer.WriteValue(value.ToString(Format, CultureInfo.InvariantCulture));
     }
 
     /// <summary>Reads the JSON representation of the object.</summary>
@@ -81,7 +81,7 @@ public class DateJsonConverter : JsonConverter<DateTime>
 
         if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
         {
-            var result = DateTime.Parse(value);
+            var result = DateTime.Parse(value, CultureInfo.InvariantCulture);
 
             return result.Date;
         }
@@ -153,7 +153,7 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
         if (value == null)
             writer.WriteNull();
         else
-            writer.WriteValue(value.Value.ToString(Format));
+            writer.WriteValue(value.Value.ToString(Format, CultureInfo.InvariantCulture));
     }
 
     /// <summary>Reads the JSON representation of the object.</summary>
@@ -179,7 +179,7 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
 
         if (value.Contains("-") || value.Contains("/") || value.Contains(":"))
         {
-            var result = DateTime.Parse(value);
+            var result = DateTime.Parse(value, CultureInfo.InvariantCulture);
 
             return result.Date;
         }

@@ -38,7 +38,9 @@ internal class LongJsonConverter : JsonConverter<long>
     public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         // 这里做处理，前端传入的Long类型可能为String类型，或者Number类型。
-        return reader.TokenType == JsonTokenType.String ? long.Parse(reader.GetString()) : reader.GetInt64();
+        return reader.TokenType == JsonTokenType.String
+            ? long.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture)
+            : reader.GetInt64();
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
@@ -73,7 +75,7 @@ internal class NullableLongJsonConverter : JsonConverter<long?>
             return null;
         }
 
-        return long.Parse(reader.GetString());
+        return long.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture);
     }
 
     /// <summary>Writes a specified value as JSON.</summary>

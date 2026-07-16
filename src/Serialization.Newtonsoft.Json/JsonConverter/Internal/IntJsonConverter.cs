@@ -54,7 +54,7 @@ internal class IntJsonConverter : JsonConverter<int>
         {
             var jToken = JToken.ReadFrom(reader);
             var value = jToken.Value<string>();
-            return int.Parse(value);
+            return int.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
         }
 
         return Convert.ToInt32(reader.Value);
@@ -100,6 +100,6 @@ internal class NullableIntJsonConverter : JsonConverter<int?>
         if (string.IsNullOrWhiteSpace(value))
             return null;
 
-        return int.Parse(value);
+        return int.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
     }
 }

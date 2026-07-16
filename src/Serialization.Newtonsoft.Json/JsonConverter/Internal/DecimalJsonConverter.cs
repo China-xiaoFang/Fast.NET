@@ -69,7 +69,7 @@ internal class DecimalJsonConverter : JsonConverter<decimal>
         {
             var jToken = JToken.ReadFrom(reader);
             var value = jToken.Value<string>();
-            return decimal.Parse(value);
+            return decimal.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
         }
 
         return Convert.ToDecimal(reader.Value);
@@ -130,6 +130,6 @@ internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
         if (string.IsNullOrWhiteSpace(value))
             return null;
 
-        return decimal.Parse(value);
+        return decimal.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
     }
 }

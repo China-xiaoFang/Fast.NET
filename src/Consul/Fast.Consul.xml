@@ -16,25 +16,19 @@
             <param name="action"></param>
             <returns></returns>
         </member>
-        <member name="T:Fast.Consul.Injections.ConsulInjection">
+        <member name="T:Fast.Consul.ConsulServiceCollectionExtensions">
             <summary>
-            <see cref="T:Fast.Consul.Injections.ConsulInjection"/> Consul 服务注册
+            Consul 服务注册扩展。
             </summary>
         </member>
-        <member name="P:Fast.Consul.Injections.ConsulInjection.Order">
+        <member name="M:Fast.Consul.ConsulServiceCollectionExtensions.AddFastConsul(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.String)">
             <summary>
-            排序
-            <remarks>
-            <para>顺序越大，越优先注册</para>
-            <para>建议最大不超过9999</para>
-            </remarks>
+            注册 Consul 服务发现、健康检查和键值服务。
             </summary>
-        </member>
-        <member name="M:Fast.Consul.Injections.ConsulInjection.Configure(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
-            <summary>
-            配置
-            </summary>
-            <param name="builder"></param>
+            <param name="services">服务集合。</param>
+            <param name="configuration">应用配置。</param>
+            <param name="section">配置节点名称。</param>
+            <returns>服务集合。</returns>
         </member>
         <member name="T:Fast.Consul.Internal.Penetrates">
             <summary>
@@ -131,6 +125,12 @@
             <summary>
             Consul 客户端地址
             </summary>
+        </member>
+        <member name="P:Fast.Consul.Options.ConsulSettingsOptions.ServiceAddress">
+            <summary>
+            对外注册的服务地址；为空时使用服务器实际监听地址。
+            </summary>
+            <remarks>容器或反向代理场景应显式配置可被 Consul 访问的绝对地址。</remarks>
         </member>
         <member name="P:Fast.Consul.Options.ConsulSettingsOptions.HealthCheck">
             <summary>

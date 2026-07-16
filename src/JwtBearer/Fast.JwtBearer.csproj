@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>3.5.28</Version>
+		<Version>3.5.29</Version>
 		<PackageId>Fast.JwtBearer</PackageId>
 		<Description>Fast.NET 框架 JwtBearer 模块库。</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="$(SolutionDir)src\Runtime\Fast.Runtime.csproj" />
+		<ProjectReference Include="$(RepositoryRoot)src\Runtime\Fast.Runtime.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">

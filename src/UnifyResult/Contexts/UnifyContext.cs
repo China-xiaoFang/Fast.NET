@@ -45,6 +45,11 @@ namespace Fast.UnifyResult;
 [SuppressSniffer]
 public static class UnifyContext
 {
+    private static readonly JsonSerializerOptions _validationSerializerOptions = new()
+    {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, WriteIndented = true
+    };
+
     /// <summary>
     /// 是否启用规范化结果
     /// </summary>
@@ -448,12 +453,19 @@ public static class UnifyContext
                 validationResults = dicResults;
             }
 
-            message = JsonSerializer.Serialize(validationResults,
-                new JsonSerializerOptions {Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, WriteIndented = true});
-            firstErrorMessage = ((Dictionary<string, string[]>) validationResults).First()
-                .Value[0];
-            firstErrorProperty = ((Dictionary<string, string[]>) validationResults).First()
-                .Key;
+            if (validationResults is Dictionary<string, string[]> resultDictionary)
+            {
+                message = JsonSerializer.Serialize(resultDictionary, _validationSerializerOptions);
+
+                // 模型状态可能没有错误项；避免用 First() 将原始验证失败覆盖成新的异常。
+                var firstError = resultDictionary.FirstOrDefault(pair => pair.Value?.Length > 0);
+                firstErrorProperty = firstError.Key;
+                firstErrorMessage = firstError.Value?.FirstOrDefault();
+            }
+            else
+            {
+                validationResults = firstErrorMessage = message = errors?.ToString();
+            }
         }
         // 其他类型
         else

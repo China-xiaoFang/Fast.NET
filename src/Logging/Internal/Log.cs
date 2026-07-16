@@ -880,7 +880,7 @@ public static class Log
         var (logger, loggerFactory, hasException) = loggingPart.GetLogger();
 
         if (logger == null)
-            throw new ArgumentNullException(nameof(logger));
+            throw new InvalidOperationException("Unable to create a logger instance.");
 
         var scope = logger.BeginScope(loggingPart.LogContext);
         if (hasException)

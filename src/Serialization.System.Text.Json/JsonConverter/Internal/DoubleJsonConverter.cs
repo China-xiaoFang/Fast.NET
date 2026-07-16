@@ -53,7 +53,9 @@ internal class DoubleJsonConverter : JsonConverter<double>
     public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         // 这里做处理，前端传入的Double类型可能为String类型，或者Number类型。
-        return reader.TokenType == JsonTokenType.String ? double.Parse(reader.GetString()) : reader.GetDouble();
+        return reader.TokenType == JsonTokenType.String
+            ? double.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture)
+            : reader.GetDouble();
     }
 
     /// <summary>Writes a specified value as JSON.</summary>
@@ -103,7 +105,7 @@ internal class NullableDoubleJsonConverter : JsonConverter<double?>
             return null;
         }
 
-        return double.Parse(reader.GetString());
+        return double.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture);
     }
 
     /// <summary>Writes a specified value as JSON.</summary>

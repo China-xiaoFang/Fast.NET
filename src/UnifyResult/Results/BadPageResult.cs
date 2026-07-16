@@ -141,11 +141,9 @@ public class BadPageResult : StatusCodeResult
 
         if (readStream != null)
         {
-            var buffer = new byte[readStream.Length];
-            _ = readStream.Read(buffer, 0, buffer.Length);
-
-            // 读取内容并替换
-            var content = Encoding.UTF8.GetString(buffer);
+            // Stream.Read 不保证一次读满，使用 StreamReader 可避免页面被静默截断。
+            using var reader = new StreamReader(readStream, Encoding.UTF8, true);
+            var content = reader.ReadToEnd();
             content = content.Replace($"@{{{nameof(Title)}}}", Title)
                 .Replace($"@{{{nameof(Description)}}}", Description)
                 .Replace($"@{{{nameof(StatusCode)}}}", StatusCode.ToString())
@@ -156,6 +154,6 @@ public class BadPageResult : StatusCodeResult
             return content;
         }
 
-        throw new NullReferenceException("The embedded resource file error.html could not be found");
+        throw new InvalidOperationException("The embedded resource file error.html could not be found");
     }
 }

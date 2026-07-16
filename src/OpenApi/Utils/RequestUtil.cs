@@ -33,34 +33,45 @@ namespace Fast.OpenApi;
 /// </summary>
 public static partial class OpenApiUtil
 {
+    private static readonly HttpClient _httpClient = new();
+
+    private static readonly JsonSerializerOptions _openApiSerializerOptions = new()
+    {
+        // 忽略只有在 .NET 6 才会存在的循环引用问题
+        ReferenceHandler = ReferenceHandler.IgnoreCycles,
+        // 解决 JSON 乱码问题
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        AllowTrailingCommas = true,
+        ReadCommentHandling = JsonCommentHandling.Skip,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString,
+        PropertyNameCaseInsensitive = true
+    };
+
     /// <summary>
     /// 获取 OpenApi 文档信息
     /// </summary>
     /// <param name="documentUrl"><see cref="string"/> 文档地址</param>
+    /// <param name="cancellationToken">取消令牌</param>
     /// <returns></returns>
-    internal static async Task<OpenApiDocumentDto> GetOpenApiDocument(string documentUrl)
+    internal static async Task<OpenApiDocumentDto> GetOpenApiDocument(string documentUrl,
+        CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(documentUrl))
+            throw new ArgumentException("OpenAPI 文档地址不能为空。", nameof(documentUrl));
+        if (!Uri.TryCreate(documentUrl, UriKind.Absolute, out var documentUri))
+            throw new ArgumentException("OpenAPI 文档地址必须是有效的绝对地址。", nameof(documentUrl));
+
         try
         {
-            using var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(documentUrl);
+            using var response = await _httpClient.GetAsync(documentUri, cancellationToken)
+                .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-            var jsonContent = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<OpenApiDocumentDto>(jsonContent, new JsonSerializerOptions
-            {
-                // 忽略只有在 .NET 6 才会存在的循环引用问题
-                ReferenceHandler = ReferenceHandler.IgnoreCycles,
-                // 解决 JSON 乱码问题
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                // 允许尾随逗号
-                AllowTrailingCommas = true,
-                // 忽略注释
-                ReadCommentHandling = JsonCommentHandling.Skip,
-                // 允许数字带引号
-                NumberHandling = JsonNumberHandling.AllowReadingFromString,
-                // 默认不区分大小写匹配
-                PropertyNameCaseInsensitive = true
-            });
+            var jsonContent = await response.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<OpenApiDocumentDto>(jsonContent, _openApiSerializerOptions);
+
+            if (result == null)
+                throw new JsonException($"OpenAPI 文档“{documentUrl}”的内容为空或格式无效。");
 
             result.Url = documentUrl;
 
@@ -70,6 +81,10 @@ public static partial class OpenApiUtil
         {
             // 404，Swagger 文档不存在
             return null;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {

@@ -60,8 +60,8 @@ public sealed class EventSubscribeAttribute : Attribute
     /// <summary>
     /// 是否启用执行完成触发 GC 回收
     /// </summary>
-    /// <remarks>bool 类型，默认为 null</remarks>
-    public object GCCollect { get; set; } = null;
+    /// <remarks>bool 类型，默认关闭；通常应交由运行时自行决定垃圾回收时机。</remarks>
+    public object GCCollect { get; set; } = false;
 
     /// <summary>
     /// 重试次数

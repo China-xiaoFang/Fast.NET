@@ -33,7 +33,7 @@ public sealed class JWTSettingsOptions : IPostConfigure
     /// <summary>
     /// 验证签发方密钥
     /// </summary>
-    /// <remarks>默认false</remarks>
+    /// <remarks>默认 true</remarks>
     public bool? ValidateIssuerSigningKey { get; set; }
 
     /// <summary>
@@ -44,7 +44,7 @@ public sealed class JWTSettingsOptions : IPostConfigure
     /// <summary>
     /// 验证签发方
     /// </summary>
-    /// <remarks>默认false</remarks>
+    /// <remarks>默认 true</remarks>
     public bool? ValidateIssuer { get; set; }
 
     /// <summary>
@@ -55,7 +55,7 @@ public sealed class JWTSettingsOptions : IPostConfigure
     /// <summary>
     /// 验证签收方
     /// </summary>
-    /// <remarks>默认false</remarks>
+    /// <remarks>默认 true</remarks>
     public bool? ValidateAudience { get; set; }
 
     /// <summary>
@@ -66,7 +66,7 @@ public sealed class JWTSettingsOptions : IPostConfigure
     /// <summary>
     /// 验证生存期
     /// </summary>
-    /// <remarks>默认false</remarks>
+    /// <remarks>默认 true</remarks>
     public bool? ValidateLifetime { get; set; }
 
     /// <summary>
@@ -113,18 +113,24 @@ public sealed class JWTSettingsOptions : IPostConfigure
     /// </summary>
     public void PostConfigure()
     {
-        ValidateIssuerSigningKey ??= false;
-        IssuerSigningKey ??= "Ax5/zZ8NB~[%^SIJsL)1o2Mw4jm6eg73";
-        ValidateIssuer ??= false;
+        ValidateIssuerSigningKey ??= true;
+        ValidateIssuer ??= true;
         ValidIssuer ??= "Fast.NET.API";
-        ValidateAudience ??= false;
+        ValidateAudience ??= true;
         ValidAudience ??= "Fast.NET.Client";
-        ValidateLifetime ??= false;
+        ValidateLifetime ??= true;
         ValidateAccessToken ??= false;
         ClockSkew ??= 5;
         TokenExpiredTime ??= 20;
         RefreshTokenExpireTime ??= 1440;
         Algorithm ??= JwtBearerAlgorithmEnum.HS256;
         Enable ??= true;
+
+        // 禁止继续使用框架内置的公共默认密钥，否则任何知道源码的人都能伪造令牌。
+        if (string.IsNullOrWhiteSpace(IssuerSigningKey))
+            throw new InvalidOperationException("JWTSettings:IssuerSigningKey 必须显式配置，且至少包含 32 个 UTF-8 字节。");
+
+        if (System.Text.Encoding.UTF8.GetByteCount(IssuerSigningKey) < 32)
+            throw new InvalidOperationException("JWTSettings:IssuerSigningKey 至少需要 32 个 UTF-8 字节。");
     }
 }

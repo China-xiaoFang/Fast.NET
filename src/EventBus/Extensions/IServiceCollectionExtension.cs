@@ -76,13 +76,14 @@ public static class IServiceCollectionExtension
         }
 
         // 查找继承了 IEventFallbackPolicy 的类
-        var iEventFallbackPolicyType =
-            entryAssemblyType.FirstOrDefault(f => typeof(IEventFallbackPolicy).IsAssignableFrom(f) && !f.IsInterface);
+        var iEventFallbackPolicyTypes = entryAssemblyType.Where(f =>
+                typeof(IEventFallbackPolicy).IsAssignableFrom(f) && f is {IsInterface: false, IsAbstract: false})
+            .ToList();
 
-        // 注册事件重试策略
-        if (iEventFallbackPolicyType != null)
+        // 特性保存的是具体策略类型，因此必须同时按具体类型注册，否则运行时按 Type 解析始终得到 null。
+        foreach (var fallbackPolicyType in iEventFallbackPolicyTypes)
         {
-            services.AddSingleton(typeof(IEventFallbackPolicy), iEventFallbackPolicyType);
+            services.AddSingleton(fallbackPolicyType);
         }
 
         #endregion
