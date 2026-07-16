@@ -1,176 +1,227 @@
 @echo off
+setlocal EnableExtensions DisableDelayedExpansion
 
-REM 使用 chcp 65001 命令将命令行窗口的代码页设置为 UTF-8
-chcp 65001 > nul
+REM Use the native Simplified Chinese code page so cmd.exe parses Chinese lines reliably.
+for /f "tokens=2 delims=:" %%C in ('chcp') do set "ORIGINAL_CODE_PAGE=%%C"
+set "ORIGINAL_CODE_PAGE=%ORIGINAL_CODE_PAGE: =%"
+chcp 936 >nul
 
-echo 欢迎使用 Fast.NET 打包编译工具
-
-REM 换行
-echo.
-
-echo 正在删除 NuGet 包缓存
-
-REM 换行
-echo.
-
-REM 删除包缓存
-rd /s /q "%~dp0nupkgs"
-
-REM 判断删除包缓存是否成功
-if %errorlevel% equ 0 (
-	REM 换行
-	echo.
-
-	echo 删除包缓存成功...... 
-) else (
-	REM 换行
-	echo.
-
-	echo 删除包缓存失败...... 
+pushd "%~dp0" >nul
+if errorlevel 1 (
+    echo �޷�����ű�����Ŀ¼��%~dp0
+    if defined ORIGINAL_CODE_PAGE chcp %ORIGINAL_CODE_PAGE% >nul
+    endlocal & exit /b 1
 )
 
-REM 换行
+set "SOLUTION_FILE=%CD%\Fast.NET.sln"
+set "PACKAGE_DIR=%CD%\nupkgs"
+set "BUILD_CONFIGURATION="
+set "PACKAGE_COUNT=0"
+set "NEXT_PACKAGE_INDEX=11"
+set "MAX_PACKAGE_INDEX=10"
+set "UPLOAD_SELECTION="
+set "SELECTED_PACKAGE="
+set "SUCCESS_COUNT=0"
+set "ERROR_COUNT=0"
+set "ERROR_FILES="
+set "EXIT_CODE=0"
+
+REM ��ͨ��ͬ������������������Դ������ʹ��˽�� NuGet ����
+if not defined NUGET_SOURCE set "NUGET_SOURCE=https://api.nuget.org/v3/index.json"
+
+echo ��ӭʹ�� Fast.NET �����������
 echo.
 
-REM 开启变量延迟
-setlocal enabledelayedexpansion
-
-echo 请选择您 Visual Studio 的安装目录
-
-REM 换行
-echo.
-
-REM 设置要编译和生成的 .sln 项目文件路径。使用 %~dp0 变量来获取 当前批处理文件所在的目录
-set solution_file=%~dp0Fast.NET.sln
-
-REM 设置多个生成模式
-set build_mode[1]=Debug
-set build_mode[2]=Release
-
-REM 定义一个标签
-:BuildMode
-
-echo 选择生成模式： 
-echo [1] !build_mode[1]!
-echo [2] !build_mode[2]!
-
-REM 换行
-echo.
-
-REM 数据数字
-choice /c 12 /n /m "输入当前需要生成的模式："
-
-REM 获取输入的值，得到生成模式
-set "build_mode=!build_mode[%errorlevel%]!"
-
-REM 判断是否输入正确
-if not defined build_mode (
-	echo 输入有误，请重新输入。
-	goto BuildMode
+where dotnet >nul 2>&1
+if errorlevel 1 (
+    echo [����] δ�ҵ� dotnet ������Ȱ�װ�� global.json ƥ��� .NET SDK��
+    set "EXIT_CODE=1"
+    goto :Finish
 )
 
-REM 换行
-echo.
-
-REM 输出执行命令
-echo dotnet build "%solution_file%" --configuration %build_mode% --no-incremental
-
-REM 换行
-echo.
-
-echo 等待重新生成中......
-
-REM 换行
-echo.
-
-REM 编译生成项目，指定生成模式，先清理，再生成
-dotnet build "%solution_file%" --configuration %build_mode% --no-incremental
-
-REM 换行
-echo.
-
-REM 参数定义
-set "public_api_key="
-
-REM 是否上传外网
-set /p public_choice=是否上传外网？(y/n)
-
-if /i "!public_choice!"=="y" (
-	REM 输入 APIKey
-	set /p public_api_key=请输入 NuGet Api 密钥：
+if not exist "%SOLUTION_FILE%" (
+    echo [����] δ�ҵ����������%SOLUTION_FILE%
+    set "EXIT_CODE=1"
+    goto :Finish
 )
 
-REM 换行
+echo ���������ɵ� NuGet ��......
+if exist "%PACKAGE_DIR%" rd /s /q "%PACKAGE_DIR%"
+if exist "%PACKAGE_DIR%" (
+    echo [����] �޷�ɾ��Ŀ¼��%PACKAGE_DIR%
+    echo ��ȷ�����е��ļ�û�б���������ռ�á�
+    set "EXIT_CODE=1"
+    goto :Finish
+)
+echo ������ɡ�
 echo.
 
-echo 当前上传的所有 NuGet 包信息：
+echo ��ѡ������ģʽ��
+echo [1] Debug
+echo [2] Release
+echo.
+choice /c 12 /n /m "������ѡ�"
+if errorlevel 2 set "BUILD_CONFIGURATION=Release"
+if not errorlevel 2 set "BUILD_CONFIGURATION=Debug"
 
-REM 获取 nupkgs 文件夹中所有的包文件
-set "nuget_file_list="
-for /f "delims=" %%a in ('dir /b /s "%~dp0nupkgs"') do (
-	REM 这里可以自动上传 .snupkg 符号包，所以手动排除
-	if not "%%~xa"==".snupkg" (
-		set "nuget_file_list=!nuget_file_list! "%%a""
-	)
-)
-
-REM 初始化计数器和记录变量
-set "success_count=0"
-set "error_count=0"
-set "error_file="
-
-REM 循环遍历文件列表
-for %%f in (%nuget_file_list%) do (
-	REM 换行
-	echo.
-	
-	echo 正在上传：%%f
-	
-	REM 这里因为 dotnet 命令的错误码不会直接传递给批处理脚本的 %errorlevel% 变量。所以这里使用 && 和 || 运算符进行判断
-	
-	if /i "!public_choice!"=="y" (
-		REM 上传 NuGet 服务器
-		dotnet nuget push --api-key !public_api_key! --skip-duplicate --source https://api.nuget.org/v3/index.json %%f && (
-			REM 记录成功次数
-			set /a success_count+=1
-		
-			REM 换行
-			echo.
-
-			echo 上传：%%f 成功...... 
-		) || (
-			REM 记录失败次数
-			set /a error_count+=1
-			
-			REM 记录失败文件
-			set "error_file=!error_file! %%f"
-		
-			REM 换行
-			echo.
-
-			echo 上传：%%f 失败......
-		)
-
-		timeout /t 1 >nul 2>&1
-	)
-)
-
-REM 换行
+echo.
+echo ����ʹ�� %BUILD_CONFIGURATION% ģʽ���벢���� NuGet ��......
+echo dotnet build "%SOLUTION_FILE%" --configuration %BUILD_CONFIGURATION% --no-incremental
 echo.
 
-REM 输出上传结果
-echo 上传成功 %success_count% 个，失败 %error_count% 个，失败列表：
-
-REM 循环遍历失败文件列表
-for %%f in (%error_file%) do (
-	echo %%f
+dotnet build "%SOLUTION_FILE%" --configuration "%BUILD_CONFIGURATION%" --no-incremental
+if errorlevel 1 (
+    echo.
+    echo [����] �������ʧ�ܣ�����ֹ�ϴ���
+    set "EXIT_CODE=1"
+    goto :Finish
 )
 
-REM 结束关闭变量延迟
-endlocal
+echo.
+echo ��ѡ�񷢲���ʽ��
+echo [0] ����ɱ���ʹ�������ϴ�
+echo [1] �ϴ�ȫ�� NuGet ��
+if exist "%PACKAGE_DIR%" for /r "%PACKAGE_DIR%" %%F in (*) do if /i "%%~xF"==".nupkg" call :RegisterPackage "%%~fF"
 
-REM 等待用户按下任意键继续。
-REM pause
+if "%PACKAGE_COUNT%"=="0" (
+    echo [����] û��������Ŀ¼���ҵ� .nupkg �ļ���%PACKAGE_DIR%
+    set "EXIT_CODE=1"
+    goto :Finish
+)
 
-set /p="按任意键继续 . . ." <nul
-pause >nul
+set /a MAX_PACKAGE_INDEX=NEXT_PACKAGE_INDEX-1
+
+echo.
+echo ���ҵ� %PACKAGE_COUNT% �����������������ϴ����Ϊ 11 �� %MAX_PACKAGE_INDEX%��
+echo ���Ű� .snupkg ���� dotnet nuget push �Զ������ϴ���
+echo.
+
+:SelectUploadMode
+call :ReadUploadSelection
+if errorlevel 1 (
+    echo [����] ������˵�����Ч�����ֱ�š�
+    goto :SelectUploadMode
+)
+
+if "%UPLOAD_SELECTION%"=="0" goto :SkipUpload
+if "%UPLOAD_SELECTION%"=="1" goto :PrepareUpload
+
+call set "SELECTED_PACKAGE=%%PACKAGE_%UPLOAD_SELECTION%%%"
+if not defined SELECTED_PACKAGE (
+    echo [����] ��� %UPLOAD_SELECTION% �����ڣ�������ѡ��
+    goto :SelectUploadMode
+)
+
+:PrepareUpload
+
+REM ���ȶ�ȡ����������δ����ʱʹ���������룬������Կֱ����ʾ�ڴ����С�
+if not defined NUGET_API_KEY call :ReadApiKey
+if not defined NUGET_API_KEY (
+    echo.
+    echo [����] NuGet API Key ����Ϊ�գ�����ֹ�ϴ���
+    set "EXIT_CODE=1"
+    goto :Finish
+)
+
+echo.
+echo ��ʼ�ϴ�����%NUGET_SOURCE%
+if "%UPLOAD_SELECTION%"=="1" goto :PushAllPackages
+
+call :PushPackage "%SELECTED_PACKAGE%"
+goto :UploadSummary
+
+:PushAllPackages
+for /l %%I in (11,1,%MAX_PACKAGE_INDEX%) do call :PushPackageByIndex %%I
+
+:UploadSummary
+
+REM ��������ű��ֲ������е���Կ��
+set "NUGET_API_KEY="
+
+echo.
+echo �ϴ���ɣ��ɹ� %SUCCESS_COUNT% ����ʧ�� %ERROR_COUNT% ����
+if not "%ERROR_COUNT%"=="0" (
+    echo ʧ�ܰ��б���%ERROR_FILES%
+    set "EXIT_CODE=1"
+)
+goto :Finish
+
+:SkipUpload
+echo.
+echo ����ɱ���ʹ��������δִ���ϴ���
+echo NuGet ��Ŀ¼��%PACKAGE_DIR%
+goto :Finish
+
+:RegisterPackage
+set "CURRENT_PACKAGE_INDEX=%NEXT_PACKAGE_INDEX%"
+set "PACKAGE_%CURRENT_PACKAGE_INDEX%=%~f1"
+set /a PACKAGE_COUNT+=1
+set /a NEXT_PACKAGE_INDEX+=1
+echo [%CURRENT_PACKAGE_INDEX%] %~nx1
+exit /b 0
+
+:ReadUploadSelection
+setlocal EnableDelayedExpansion
+set "INPUT_VALUE="
+set /p "INPUT_VALUE=�����뷢����ţ�"
+if not defined INPUT_VALUE (
+    endlocal
+    exit /b 1
+)
+
+REM ֻ���������֣������λ��ű� choice ��ɵ����ַ���
+for /f "delims=0123456789" %%A in ("!INPUT_VALUE!") do (
+    endlocal
+    exit /b 1
+)
+
+endlocal & set "UPLOAD_SELECTION=%INPUT_VALUE%"
+exit /b 0
+
+:ReadApiKey
+where powershell.exe >nul 2>&1
+if errorlevel 1 goto :ReadApiKeyPlainText
+
+for /f "delims=" %%K in ('powershell.exe -NoLogo -NoProfile -Command "$secure = Read-Host '������ NuGet API Key' -AsSecureString; $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure); try { [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer) } finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer) }"') do set "NUGET_API_KEY=%%K"
+exit /b 0
+
+:ReadApiKeyPlainText
+echo [����] δ�ҵ� PowerShell��API Key ���뽫����ʾ�ڴ����С�
+set /p "NUGET_API_KEY=������ NuGet API Key��"
+exit /b 0
+
+:PushPackageByIndex
+set "PACKAGE_PATH="
+call set "PACKAGE_PATH=%%PACKAGE_%~1%%%"
+if defined PACKAGE_PATH call :PushPackage "%PACKAGE_PATH%"
+set "PACKAGE_PATH="
+exit /b 0
+
+:PushPackage
+echo.
+echo �����ϴ���%~nx1
+dotnet nuget push "%~f1" --api-key "%NUGET_API_KEY%" --skip-duplicate --source "%NUGET_SOURCE%"
+if errorlevel 1 goto :PushFailed
+
+set /a SUCCESS_COUNT+=1
+echo [�ɹ�] %~nx1
+timeout /t 1 /nobreak >nul 2>&1
+exit /b 0
+
+:PushFailed
+set /a ERROR_COUNT+=1
+set "ERROR_FILES=%ERROR_FILES% %~nx1"
+echo [ʧ��] %~nx1
+timeout /t 1 /nobreak >nul 2>&1
+exit /b 0
+
+:Finish
+popd
+if defined CI goto :Exit
+if defined NO_PAUSE goto :Exit
+echo.
+pause
+
+:Exit
+if defined ORIGINAL_CODE_PAGE chcp %ORIGINAL_CODE_PAGE% >nul
+endlocal & exit /b %EXIT_CODE%
