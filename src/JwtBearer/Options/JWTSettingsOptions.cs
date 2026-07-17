@@ -97,6 +97,16 @@ public sealed class JWTSettingsOptions : IPostConfigure
     public long? RefreshTokenExpireTime { get; set; }
 
     /// <summary>
+    /// 刷新 Token 时是否强制使用分布式缓存进行重放校验
+    /// </summary>
+    /// <remarks>
+    /// <para>默认 true；标准注册流程未配置共享缓存时会自动使用进程内缓存。</para>
+    /// <para>如果应用绕过标准注册且没有提供 <c>IDistributedCache</c>，则拒绝刷新以避免 RefreshToken 被重复使用。</para>
+    /// <para>多实例部署应使用 Redis 等共享缓存，而不是进程内缓存。</para>
+    /// </remarks>
+    public bool? RequireRefreshTokenCache { get; set; }
+
+    /// <summary>
     /// 加密算法
     /// </summary>
     /// <remarks>默认HS256</remarks>
@@ -123,6 +133,7 @@ public sealed class JWTSettingsOptions : IPostConfigure
         ClockSkew ??= 5;
         TokenExpiredTime ??= 20;
         RefreshTokenExpireTime ??= 1440;
+        RequireRefreshTokenCache ??= true;
         Algorithm ??= JwtBearerAlgorithmEnum.HS256;
         Enable ??= true;
 
