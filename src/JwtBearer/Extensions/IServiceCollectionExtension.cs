@@ -59,6 +59,10 @@ public static class IServiceCollectionExtension
             .Get<JWTSettingsOptions>()
             .LoadPostConfigure();
 
+        // 未配置 Redis 等 IDistributedCache 实现时提供进程内回退。
+        // AddDistributedMemoryCache 使用 TryAdd 注册，不会覆盖用户已经配置的缓存实现。
+        services.AddDistributedMemoryCache();
+
         return services;
     }
 
@@ -79,6 +83,9 @@ public static class IServiceCollectionExtension
         optionAction.Invoke(jwtSettings);
 
         Penetrates.JWTSettings = jwtSettings.LoadPostConfigure();
+
+        // 未配置 Redis 等 IDistributedCache 实现时提供进程内回退。
+        services.AddDistributedMemoryCache();
 
         return services;
     }
@@ -160,12 +167,7 @@ public static class IServiceCollectionExtension
     {
         Debugging.Info("Registering jwt bearer......");
 
-        // 配置验证
-        services.AddConfigurableOptions<JWTSettingsOptions>(section);
-
-        Penetrates.JWTSettings = configuration.GetSection(section)
-            .Get<JWTSettingsOptions>()
-            .LoadPostConfigure();
+        services.AddJwtBearerSetting(configuration, section);
 
         // 查找Jwt验证提供器实现类
         var jwtBearerHandle =
@@ -211,13 +213,7 @@ public static class IServiceCollectionExtension
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddJwtBearer(this IServiceCollection services, Action<JWTSettingsOptions> optionAction)
     {
-        // 配置验证
-        services.Configure(optionAction);
-
-        var jwtSettings = new JWTSettingsOptions();
-        optionAction.Invoke(jwtSettings);
-
-        Penetrates.JWTSettings = jwtSettings.LoadPostConfigure();
+        services.AddJwtBearerSetting(optionAction);
 
         // 查找Jwt验证提供器实现类
         var jwtBearerHandle =

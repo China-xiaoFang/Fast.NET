@@ -25,7 +25,7 @@ using System.Security.Cryptography;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 为 netstandard2.1 提供较新运行时中常见的密码学便捷操作。
+/// <see cref="CryptographyCompat"/> 为 netstandard2.1 提供较新运行时中常见的密码学便捷操作。
 /// </summary>
 internal static class CryptographyCompat
 {

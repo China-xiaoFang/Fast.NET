@@ -26,7 +26,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
@@ -44,6 +44,10 @@ namespace Fast.JwtBearer;
 /// </summary>
 public static class JwtBearerUtil
 {
+    private const string AccessTokenBlacklistCacheKeyPrefix = "BLACKLIST_ACCESS_TOKEN:";
+    private const string RefreshTokenBlacklistCacheKeyPrefix = "BLACKLIST_REFRESH_TOKEN:";
+    private const int RefreshTokenLockCount = 64;
+
     /// <summary>
     /// JWT 载荷序列化配置。
     /// </summary>
@@ -51,6 +55,14 @@ public static class JwtBearerUtil
     {
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
+
+    /// <summary>
+    /// 避免同一进程内的并发请求同时消费同一个 RefreshToken。
+    /// 多实例部署仍需依赖支持原子操作的共享缓存实现。
+    /// </summary>
+    private static readonly SemaphoreSlim[] _refreshTokenLocks = Enumerable.Range(0, RefreshTokenLockCount)
+        .Select(_ => new SemaphoreSlim(1, 1))
+        .ToArray();
 
     /// <summary>
     /// 日期类型的 Claim 类型
@@ -225,6 +237,68 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
+    /// 生成不包含 Token 明文的缓存键，避免缓存监控和诊断信息泄露凭据。
+    /// </summary>
+    private static string CreateTokenCacheKey(string cacheKeyPrefix, string token)
+    {
+        var tokenHash = SHA256.HashData(Encoding.UTF8.GetBytes(token));
+        return cacheKeyPrefix + Convert.ToHexString(tokenHash);
+    }
+
+    /// <summary>
+    /// 使用哈希缓存键读取 Token 状态。
+    /// </summary>
+    private static async Task<string> GetTokenCacheValueAsync(IDistributedCache distributedCache, string cacheKeyPrefix,
+        string token, CancellationToken cancellationToken = default)
+    {
+        return await distributedCache.GetStringAsync(CreateTokenCacheKey(cacheKeyPrefix, token), cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// 消费 RefreshToken，防止同一个令牌被重复换取新令牌。
+    /// </summary>
+    private static async Task<bool> TryConsumeRefreshTokenAsync(IDistributedCache distributedCache, string refreshToken,
+        DateTimeOffset absoluteExpiration, long reuseLeewaySeconds, CancellationToken cancellationToken = default)
+    {
+        var nowTime = DateTimeOffset.UtcNow;
+        if (absoluteExpiration <= nowTime)
+            return false;
+
+        var cacheKey = CreateTokenCacheKey(RefreshTokenBlacklistCacheKeyPrefix, refreshToken);
+        var lockIndex = (int) ((uint) StringComparer.Ordinal.GetHashCode(cacheKey) % _refreshTokenLocks.Length);
+        var refreshTokenLock = _refreshTokenLocks[lockIndex];
+
+        await refreshTokenLock.WaitAsync(cancellationToken)
+            .ConfigureAwait(false);
+        try
+        {
+            var cachedValue = await GetTokenCacheValueAsync(distributedCache, RefreshTokenBlacklistCacheKeyPrefix, refreshToken,
+                    cancellationToken)
+                .ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(cachedValue))
+            {
+                // 默认不允许重放；仅保留显式传入容差值时的兼容行为。
+                if (reuseLeewaySeconds <= 0 || !long.TryParse(cachedValue, out var refreshTicks))
+                    return false;
+
+                var refreshTime = new DateTimeOffset(refreshTicks, TimeSpan.Zero);
+                var elapsed = nowTime - refreshTime;
+                return elapsed >= TimeSpan.Zero && elapsed.TotalSeconds <= reuseLeewaySeconds;
+            }
+
+            await distributedCache.SetStringAsync(cacheKey, nowTime.Ticks.ToString(),
+                    new DistributedCacheEntryOptions {AbsoluteExpiration = absoluteExpiration}, cancellationToken)
+                .ConfigureAwait(false);
+            return true;
+        }
+        finally
+        {
+            refreshTokenLock.Release();
+        }
+    }
+
+    /// <summary>
     /// 验证 Token
     /// </summary>
     /// <param name="accessToken"></param>
@@ -352,7 +426,7 @@ public static class JwtBearerUtil
     /// <param name="expiredToken"></param>
     /// <param name="refreshToken"></param>
     /// <param name="expiredTime">过期时间（分钟）</param>
-    /// <param name="clockSkew">刷新token容差值，秒做单位</param>
+    /// <param name="clockSkew">允许同一刷新 Token 重复提交的兼容容差（秒），默认 0（禁止重放）</param>
     /// <returns></returns>
     public static string Exchange(HttpContext httpContext, string expiredToken, string refreshToken, long? expiredTime = null,
         long? clockSkew = null)
@@ -395,27 +469,9 @@ public static class JwtBearerUtil
             || !refreshTokenObj.TryGetPayloadValue<int>("l", out var length)
             || !refreshTokenObj.TryGetPayloadValue<string>("f", out var refreshHeader)
             || !refreshTokenObj.TryGetPayloadValue<string>("e", out var refreshSignature)
-            || !refreshTokenObj.TryGetPayloadValue<string>("k", out var refreshPayloadFragment))
+            || !refreshTokenObj.TryGetPayloadValue<string>("k", out var refreshPayloadFragment)
+            || !refreshTokenObj.TryGetPayloadValue<long>(JwtRegisteredClaimNames.Exp, out var refreshExpiresAt))
             return null;
-
-        var blacklistRefreshKey = "BLACKLIST_REFRESH_TOKEN:" + refreshToken;
-        var distributedCache = httpContext?.RequestServices.GetService<IDistributedCache>();
-
-        var nowTime = DateTimeOffset.UtcNow;
-        var cachedValue = distributedCache == null
-            ? null
-            : await distributedCache.GetStringAsync(blacklistRefreshKey)
-                .ConfigureAwait(false);
-        var isRefresh = !string.IsNullOrWhiteSpace(cachedValue);
-        if (isRefresh)
-        {
-            if (!long.TryParse(cachedValue, out var refreshTicks))
-                return null;
-
-            var refreshTime = new DateTimeOffset(refreshTicks, TimeSpan.Zero);
-            if ((nowTime - refreshTime).TotalSeconds > (clockSkew ?? Penetrates.JWTSettings.ClockSkew ?? 5))
-                return null;
-        }
 
         var tokenParagraphs = expiredToken.Split('.', StringSplitOptions.RemoveEmptyEntries);
         if (tokenParagraphs.Length != 3)
@@ -430,23 +486,27 @@ public static class JwtBearerUtil
                 .Substring(start, length), refreshPayloadFragment, StringComparison.Ordinal))
             return null;
 
+        var distributedCache = httpContext.RequestServices.GetService<IDistributedCache>();
+        if (distributedCache == null)
+        {
+            // 默认安全失败：没有共享状态就无法识别 RefreshToken 重放。
+            if (Penetrates.JWTSettings.RequireRefreshTokenCache == true)
+                return null;
+        }
+        else if (!await TryConsumeRefreshTokenAsync(distributedCache, refreshToken,
+                         DateTimeOffset.FromUnixTimeSeconds(refreshExpiresAt), Math.Max(0, clockSkew ?? 0),
+                         httpContext.RequestAborted)
+                     .ConfigureAwait(false))
+        {
+            return null;
+        }
+
         // 上面已完成签名验证，此时才可以读取原令牌载荷并签发新令牌。
         var payload = SecurityReadJwtToken(expiredToken)
             .Payload;
         foreach (var innerKey in DateTypeClaimTypes)
         {
             payload.Remove(innerKey);
-        }
-
-        if (!isRefresh && distributedCache != null)
-        {
-            await distributedCache.SetStringAsync(blacklistRefreshKey, nowTime.Ticks.ToString(),
-                    new DistributedCacheEntryOptions
-                    {
-                        AbsoluteExpiration = DateTimeOffset.FromUnixTimeSeconds(
-                            refreshTokenObj.GetPayloadValue<long>(JwtRegisteredClaimNames.Exp))
-                    })
-                .ConfigureAwait(false);
         }
 
         return GenerateToken(payload, expiredTime);
@@ -480,18 +540,18 @@ public static class JwtBearerUtil
             return;
 
         var nowTime = DateTimeOffset.UtcNow;
-        var blacklistAccessKey = "BLACKLIST_ACCESS_TOKEN:" + expiredToken;
         var distributedCache = httpContext?.RequestServices.GetService<IDistributedCache>();
 
         // 标记失效
         if (distributedCache != null)
         {
-            await distributedCache.SetStringAsync(blacklistAccessKey, nowTime.Ticks.ToString(),
+            await distributedCache.SetStringAsync(CreateTokenCacheKey(AccessTokenBlacklistCacheKeyPrefix, expiredToken),
+                    nowTime.Ticks.ToString(),
                     new DistributedCacheEntryOptions
                     {
                         AbsoluteExpiration = DateTimeOffset.FromUnixTimeSeconds(
                             accessTokenObj.GetPayloadValue<long>(JwtRegisteredClaimNames.Exp))
-                    })
+                    }, httpContext.RequestAborted)
                 .ConfigureAwait(false);
         }
     }
@@ -503,7 +563,7 @@ public static class JwtBearerUtil
     /// <param name="httpContext"></param>
     /// <param name="expiredTime">新 Token 过期时间（分钟）</param>
     /// <param name="tokenPrefix"></param>
-    /// <param name="clockSkew"></param>
+    /// <param name="clockSkew">允许同一刷新 Token 重复提交的兼容容差（秒），默认 0（禁止重放）</param>
     /// <returns></returns>
     public static bool AutoRefreshToken(AuthorizationHandlerContext context, HttpContext httpContext, long? expiredTime = null,
         string tokenPrefix = "Bearer ", long? clockSkew = null)
@@ -547,12 +607,12 @@ public static class JwtBearerUtil
                     return false;
 
                 // 判断这个Token 是否已标记过期
-                var blacklistAccessKey = "BLACKLIST_ACCESS_TOKEN:" + accessToken;
                 var distributedCache = httpContext.RequestServices.GetService<IDistributedCache>();
 
                 var cachedValue = distributedCache == null
                     ? null
-                    : await distributedCache.GetStringAsync(blacklistAccessKey)
+                    : await GetTokenCacheValueAsync(distributedCache, AccessTokenBlacklistCacheKeyPrefix, accessToken,
+                            httpContext.RequestAborted)
                         .ConfigureAwait(false);
                 if (!string.IsNullOrWhiteSpace(cachedValue))
                     return false;
@@ -579,21 +639,20 @@ public static class JwtBearerUtil
         if (string.IsNullOrWhiteSpace(newAccessToken))
             return false;
 
-        // 读取新的 Token Clamis
+        // 读取新的 Token Claims
         var claims = ReadJwtToken(newAccessToken)
             ?.Claims;
         if (claims == null)
             return false;
 
         // 创建身份信息
-        var claimIdentity = new ClaimsIdentity("AuthenticationTypes.Federation");
+        var claimIdentity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
         claimIdentity.AddClaims(claims);
         var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
 
-        // 设置 HttpContext.User 并登录
+        // JWT Bearer 是无状态认证，不支持 SignInAsync。这里只更新当前请求身份，
+        // 新 Token 已通过响应头返回，由客户端在后续请求中携带。
         httpContext.User = claimsPrincipal;
-        await httpContext.SignInAsync(claimsPrincipal)
-            .ConfigureAwait(false);
 
         string accessTokenKey = "access-token",
             xAccessTokenKey = "x-access-token",
@@ -604,11 +663,15 @@ public static class JwtBearerUtil
         // 返回新的 刷新Token
         httpContext.Response.Headers[xAccessTokenKey] = GenerateRefreshToken(newAccessToken);
 
+        // 包含凭据的响应禁止被浏览器、代理或网关缓存。
+        httpContext.Response.Headers["Cache-Control"] = "no-store";
+        httpContext.Response.Headers["Pragma"] = "no-cache";
+
         // 处理 axios 问题
         httpContext.Response.Headers.TryGetValue(accessControlExposeKey, out var aches);
         httpContext.Response.Headers[accessControlExposeKey] = string.Join(',',
             StringValues.Concat(aches, new StringValues([accessTokenKey, xAccessTokenKey]))
-                .Distinct());
+                .Distinct(StringComparer.OrdinalIgnoreCase));
 
         return true;
     }
