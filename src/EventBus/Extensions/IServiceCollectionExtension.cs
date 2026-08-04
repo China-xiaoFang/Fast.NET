@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,16 +25,16 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> 动态Api 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加事件总线服务
+    /// 添加事件总线服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddEventBus(this IServiceCollection services)
     {
         Debugging.Info("Registering event bus......");

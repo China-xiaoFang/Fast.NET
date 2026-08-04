@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,27 +26,20 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="IntJsonConverter"/> int 类型Json返回处理
+/// <see cref="IntJsonConverter"/> int 类型 JSON 返回处理。
 /// </summary>
 internal class IntJsonConverter : JsonConverter<int>
 {
-    /// <summary>Reads and converts the JSON to type <see cref="int"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Int类型可能为String类型，或者Number类型。
+        // 同时接受 JSON 字符串和数字令牌。
         return reader.TokenType == JsonTokenType.String
             ? int.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture)
             : reader.GetInt32();
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, int value, JsonSerializerOptions options)
     {
         writer.WriteNumberValue(value);
@@ -54,18 +47,14 @@ internal class IntJsonConverter : JsonConverter<int>
 }
 
 /// <summary>
-/// <see cref="NullableIntJsonConverter"/> int? 类型Json返回处理
+/// <see cref="NullableIntJsonConverter"/> int? 类型 JSON 返回处理。
 /// </summary>
 internal class NullableIntJsonConverter : JsonConverter<int?>
 {
-    /// <summary>Reads and converts the JSON to type <see cref="int"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override int? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Int类型可能为String类型，或者Number类型。
+        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理。
         if (reader.TokenType != JsonTokenType.String)
             return reader.GetInt32();
 
@@ -78,10 +67,7 @@ internal class NullableIntJsonConverter : JsonConverter<int?>
         return int.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture);
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, int? value, JsonSerializerOptions options)
     {
         if (value == null)

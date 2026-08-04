@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -30,26 +30,24 @@ using System.Runtime.CompilerServices;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="Type"/> 拓展类
+/// 为 <see cref="Type"/> 提供扩展方法。
 /// </summary>
 public static class TypeExtension
 {
     /// <summary>
-    /// 判断类型是否实现某个泛型
+    /// 判断类型是否实现某个泛型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/> 类型</param>
-    /// <param name="generic"><see cref="Type"/>泛型类型</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="generic">是否按泛型类型规则进行匹配。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool HasImplementedRawGeneric(this Type type, Type generic)
     {
         var localType = type;
-        // 检查接口类型
         var isTheRawGenericType = type.GetInterfaces()
             .Any(IsTheRawGenericType);
         if (isTheRawGenericType)
             return true;
 
-        // 检查类型
         while (localType != null && localType != typeof(object))
         {
             isTheRawGenericType = IsTheRawGenericType(localType);
@@ -60,7 +58,6 @@ public static class TypeExtension
 
         return false;
 
-        // 判断逻辑
         bool IsTheRawGenericType(Type t)
         {
             return generic == (t.IsGenericType ? t.GetGenericTypeDefinition() : t);
@@ -68,10 +65,10 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 获取类型所在程序集名称
+    /// 获取类型所在程序集名称。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>获取到的类型所在程序集名称。</returns>
     public static string GetAssemblyName(this Type type)
     {
         return type.GetTypeInfo()
@@ -79,33 +76,32 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 获取类型所在程序集名称
+    /// 获取类型所在程序集名称。
     /// </summary>
-    /// <param name="typeInfo"><see cref="TypeInfo"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="typeInfo">目标类型的反射元数据。</param>
+    /// <returns>获取到的类型所在程序集名称。</returns>
     public static string GetAssemblyName(this TypeInfo typeInfo)
     {
         return typeInfo.Assembly.GetAssemblyName();
     }
 
     /// <summary>
-    /// 判断是否是富基元类型
+    /// 判断是否是富基元类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsRichPrimitive(this Type type)
     {
-        // 处理元组类型
         if (type.IsValueTuple())
             return false;
 
-        // 处理数组类型，基元数组类型也可以是基元类型
+        // 数组需要按元素类型生成架构，不能仅按数组对象本身判断。
         if (type.IsArray)
             return type.GetElementType()
                        ?.IsRichPrimitive()
                    == true;
 
-        // 基元类型或值类型或字符串类型
+        // 基元、值类型和字符串可直接映射，无需展开成员。
         if (type.IsPrimitive || type.IsValueType || type == typeof(string))
             return true;
 
@@ -117,30 +113,30 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 判断是否是元组类型
+    /// 判断是否是元组类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsValueTuple(this Type type)
     {
         return type.Namespace == "System" && type.Name.Contains("ValueTuple`");
     }
 
     /// <summary>
-    /// 检查类型是否是静态类型
+    /// 检查类型是否是静态类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsStatic(this Type type)
     {
         return type is {IsSealed: true, IsAbstract: true};
     }
 
     /// <summary>
-    /// 检查类型是否是匿名类型
+    /// 检查类型是否是匿名类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsAnonymous(this Type type)
     {
         // 检查是否贴有 [CompilerGenerated] 特性
@@ -154,24 +150,23 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 检查类型是否可实例化
+    /// 检查类型是否可实例化。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsInstantiable(this Type type)
     {
         return type is {IsClass: true, IsAbstract: false} && !type.IsStatic();
     }
 
     /// <summary>
-    /// 检查类型是否派生自指定类型
+    /// 检查类型是否派生自指定类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="fromType"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="fromType">from 类型。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsAlienAssignableTo(this Type type, Type fromType)
     {
-        // 空检查
         if (fromType is null)
         {
             throw new ArgumentNullException(nameof(fromType));
@@ -181,13 +176,13 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 获取指定特性实例
+    /// 获取指定特性实例。
     /// </summary>
-    /// <remarks>若特性不存在则返回 null</remarks>
-    /// <typeparam name="TAttribute">特性类型</typeparam>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="inherit">是否查找基类型特性</param>
-    /// <returns><typeparamref name="TAttribute"/></returns>
+    /// <remarks>若特性不存在则返回 <see langword="null"/>。</remarks>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="inherit">是否在基类型中继续查找成员或特性。</param>
+    /// <typeparam name="TAttribute">要查找的特性类型。</typeparam>
+    /// <returns>获取到的指定特性实例。</returns>
     public static TAttribute GetDefinedCustomAttribute<TAttribute>(this Type type, bool inherit = false)
         where TAttribute : Attribute
     {
@@ -196,11 +191,11 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 检查类型是否定义了公开无参构造函数
+    /// 检查类型是否定义了公开无参构造函数。
     /// </summary>
-    /// <remarks>用于 <see cref="Activator.CreateInstance(Type)"/> 实例化</remarks>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <remarks>用于 <see cref="Activator.CreateInstance(Type)"/> 实例化。</remarks>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool HasDefinePublicParameterlessConstructor(this Type type)
     {
         return type.IsInstantiable()
@@ -208,14 +203,13 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 检查类型和指定类型定义是否相等
+    /// 检查类型和指定类型定义是否相等。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="compareType"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="compareType">compare 类型。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDefinitionEqual(this Type type, Type compareType)
     {
-        // 空检查
         if (compareType is null)
         {
             throw new ArgumentNullException(nameof(compareType));
@@ -229,14 +223,13 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 检查类型和指定继承类型是否兼容
+    /// 检查类型和指定继承类型是否兼容。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="inheritType"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="inheritType">inherit 类型。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsCompatibilityTo(this Type type, Type inheritType)
     {
-        // 空检查
         if (inheritType is null)
         {
             throw new ArgumentNullException(nameof(inheritType));
@@ -252,17 +245,16 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 检查类型是否定义了指定方法
+    /// 检查类型是否定义了指定方法。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="name">方法名称</param>
-    /// <param name="accessibilityBindingFlags">可访问性成员绑定标记</param>
-    /// <param name="methodInfo"><see cref="MethodInfo"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="name">方法名称。</param>
+    /// <param name="accessibilityBindingFlags">用于筛选成员可见性的绑定标志。</param>
+    /// <param name="methodInfo">目标方法的反射元数据。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDeclarationMethod(this Type type, string name, BindingFlags accessibilityBindingFlags,
         out MethodInfo methodInfo)
     {
-        // 空检查
         if (type is null)
         {
             throw new ArgumentNullException(nameof(type));
@@ -276,10 +268,10 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 检查类型是否是整数类型
+    /// 检查类型是否是整数类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsInteger(this Type type)
     {
         // 如果是枚举或浮点类型则直接返回
@@ -288,7 +280,6 @@ public static class TypeExtension
             return false;
         }
 
-        // 检查 TypeCode
         var typeCode = Type.GetTypeCode(type);
         return typeCode == TypeCode.Byte
                || typeCode == TypeCode.SByte
@@ -301,10 +292,10 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 检查类型是否是小数类型
+    /// 检查类型是否是小数类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDecimal(this Type type)
     {
         // 如果是浮点类型则直接返回
@@ -313,26 +304,25 @@ public static class TypeExtension
             return true;
         }
 
-        // 检查 TypeCode
         var typeCode = Type.GetTypeCode(type);
         return typeCode == TypeCode.Double || typeCode == TypeCode.Decimal;
     }
 
     /// <summary>
-    /// 检查类型是否是数值类型
+    /// 检查类型是否是数值类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNumeric(this Type type)
     {
         return type.IsInteger() || type.IsDecimal();
     }
 
     /// <summary>
-    /// 检查类型是否是字典类型
+    /// 检查类型是否是字典类型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDictionary(this Type type)
     {
         // 如果是 IDictionary<,> 类型则直接返回
@@ -380,15 +370,14 @@ public static class TypeExtension
     }
 
     /// <summary>
-    /// 获取类型自定义特性
+    /// 获取类型自定义特性。
     /// </summary>
-    /// <typeparam name="TAttribute">特性类型</typeparam>
-    /// <param name="type">类类型</param>
-    /// <param name="inherit">是否继承查找</param>
-    /// <returns>特性对象</returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="inherit">是否在基类型中继续查找成员或特性。</param>
+    /// <typeparam name="TAttribute">要查找的特性类型。</typeparam>
+    /// <returns>获取到的类型自定义特性。</returns>
     public static TAttribute GetTypeAttribute<TAttribute>(this Type type, bool inherit = false) where TAttribute : Attribute
     {
-        // 空检查
         if (type == null)
         {
             throw new ArgumentNullException(nameof(type));

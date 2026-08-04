@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,60 +26,58 @@ using Fast.Runtime;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="CorsAccessorSettingsOptions"/> 跨域配置选项
+/// <see cref="CorsAccessorSettingsOptions"/> 跨域配置选项。
 /// </summary>
 [SuppressSniffer]
 public sealed class CorsAccessorSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 策略名称
+    /// 策略名称。
     /// </summary>
     [Required]
     public string PolicyName { get; set; }
 
     /// <summary>
-    /// 允许来源域名，没有配置则允许所有来源
+    /// 允许来源域名，没有配置则允许所有来源。
     /// </summary>
     public string[] WithOrigins { get; set; }
 
     /// <summary>
-    /// 请求表头，没有配置则允许所有表头
+    /// 请求表头，没有配置则允许所有表头。
     /// </summary>
     public string[] WithHeaders { get; set; }
 
     /// <summary>
-    /// 设置客户端可获取的响应标头
+    /// 设置客户端可获取的响应标头。
     /// </summary>
     public string[] WithExposedHeaders { get; set; }
 
     /// <summary>
-    /// 设置跨域允许请求谓词，没有配置则允许所有
+    /// 设置跨域允许请求谓词，没有配置则允许所有。
     /// </summary>
     public string[] WithMethods { get; set; }
 
     /// <summary>
-    /// 是否允许跨域请求中的凭据
+    /// 是否允许跨域请求中的凭据。
     /// </summary>
     public bool? AllowCredentials { get; set; }
 
     /// <summary>
-    /// 设置预检过期时间
+    /// 设置预检过期时间。
     /// </summary>
     public int? SetPreflightMaxAge { get; set; }
 
     /// <summary>
-    /// 修正前端无法获取 Token 问题
+    /// 修正前端无法获取 Token 问题。
     /// </summary>
     public bool? FixedClientToken { get; set; }
 
     /// <summary>
-    /// 启用 SignalR 跨域支持
+    /// 启用 SignalR 跨域支持。
     /// </summary>
     public bool? SignalRSupport { get; set; }
 
-    /// <summary>
-    /// 后期配置
-    /// </summary>
+    /// <inheritdoc />
     public void PostConfigure()
     {
         PolicyName ??= "App.Cors.Policy";
@@ -87,7 +85,7 @@ public sealed class CorsAccessorSettingsOptions : IPostConfigure
         AllowCredentials ??= true;
         FixedClientToken ??= true;
         SignalRSupport ??= false;
-        // 默认支持前端非代理情况，使用Axios的情况
+        // 默认支持前端非代理情况，使用 Axios 的情况
         WithExposedHeaders ??= new[] {"Content-Disposition"};
     }
 }

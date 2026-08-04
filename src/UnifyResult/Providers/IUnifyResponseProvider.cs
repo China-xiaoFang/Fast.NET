@@ -26,36 +26,36 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="IUnifyResponseProvider"/> 规范化响应数据提供器
+/// <see cref="IUnifyResponseProvider"/> 规范化响应数据提供器。
 /// </summary>
 public interface IUnifyResponseProvider
 {
     /// <summary>
-    /// 响应异常处理
+    /// 响应异常处理。
     /// </summary>
-    /// <param name="context"><see cref="ExceptionContext"/></param>
-    /// <param name="metadata"><see cref="ExceptionMetadata"/> 异常元数据</param>
-    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
-    /// <returns></returns>
+    /// <param name="context">当前操作上下文 <see cref="ExceptionContext"/>。</param>
+    /// <param name="metadata">异常响应使用的 <see cref="ExceptionMetadata"/>。</param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>表示异步响应异常处理的任务，任务结果为响应异常处理。</returns>
     Task<(int statusCode, string message)> ResponseExceptionAsync(ExceptionContext context, ExceptionMetadata metadata,
         HttpContext httpContext);
 
     /// <summary>
-    /// 响应数据验证异常处理
+    /// 响应数据验证异常处理。
     /// </summary>
-    /// <param name="context"><see cref="ActionExecutingContext"/></param>
-    /// <param name="metadata"><see cref="ValidationMetadata"/> 验证信息元数据</param>
-    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
-    /// <returns></returns>
+    /// <param name="context">当前操作上下文 <see cref="ActionExecutingContext"/>。</param>
+    /// <param name="metadata">验证失败响应使用的 <see cref="ValidationMetadata"/>。</param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>表示异步“响应数据验证异常处理”操作的任务。</returns>
     Task ResponseValidationExceptionAsync(ActionExecutingContext context, ValidationMetadata metadata, HttpContext httpContext);
 
     /// <summary>
-    /// 响应数据处理
+    /// 响应数据处理。
     /// </summary>
-    /// <remarks>只有响应成功且为正常返回才会调用</remarks>
-    /// <param name="timestamp"><see cref="long"/> 响应时间戳</param>
-    /// <param name="data"><see cref="object"/> 数据</param>
-    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
-    /// <returns></returns>
+    /// <remarks>只有响应成功且为正常返回才会调用。</remarks>
+    /// <param name="timestamp">时间戳。</param>
+    /// <param name="data">要处理或传输的数据。</param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>表示异步响应数据处理的任务，任务结果为响应数据处理。</returns>
     Task<object> ResponseDataAsync(long timestamp, object data, HttpContext httpContext);
 }

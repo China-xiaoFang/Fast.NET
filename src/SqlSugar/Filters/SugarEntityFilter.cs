@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,20 +27,20 @@ using Yitter.IdGenerator;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SugarEntityFilter"/> Sugar 实体过滤器
+/// <see cref="SugarEntityFilter"/> Sugar 实体过滤器。
 /// </summary>
 [SuppressSniffer]
 public static class SugarEntityFilter
 {
     /// <summary>
-    /// 加载 Sugar Aop
+    /// 加载 Sugar AOP。
     /// </summary>
-    /// <param name="isDevelopment"><see cref="bool"/> 是否为开发环境</param>
-    /// <param name="_db"><see cref="ISqlSugarClient"/></param>
-    /// <param name="sugarSqlExecMaxSeconds"><see cref="int"/> Sql最大执行秒数</param>
-    /// <param name="diffLog"><see cref="bool"/> 是否启用差异日志</param>
-    /// <param name="disableAop"><see cref="bool"/> 是否禁用Aop</param>
-    /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
+    /// <param name="isDevelopment">当前环境是否为开发环境。</param>
+    /// <param name="_db">当前仓储使用的 SqlSugar 客户端。</param>
+    /// <param name="sugarSqlExecMaxSeconds">SQL 执行耗时告警阈值，单位为秒。</param>
+    /// <param name="diffLog">是否记录数据变更前后的差异。</param>
+    /// <param name="disableAop">是否禁用 SqlSugar AOP 回调。</param>
+    /// <param name="sqlSugarEntityHandler">实体保存前后的扩展处理器。</param>
     public static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int? sugarSqlExecMaxSeconds = null,
         bool diffLog = false, bool disableAop = true, ISqlSugarEntityHandler sqlSugarEntityHandler = null)
     {
@@ -77,7 +77,7 @@ public static class SugarEntityFilter
             {
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
-                // 执行Sql处理
+                // 将已执行的 SQL 及耗时交给自定义处理器。
                 try
                 {
                     sqlSugarEntityHandler.ExecuteAsync(rawSql, pars, _db.Ado.SqlExecutionTime, handleSql)
@@ -108,16 +108,13 @@ public static class SugarEntityFilter
                 }
             }
 
-            // 执行时间判断
+            // 仅在 SQL 耗时超过配置阈值时触发超时处理。
             if (_db.Ado.SqlExecutionTime.TotalSeconds > sugarSqlExecMaxSeconds)
             {
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
-                // 代码CS文件名称
                 var fileName = _db.Ado.SqlStackTrace.FirstFileName;
-                // 代码行数
                 var fileLine = _db.Ado.SqlStackTrace.FirstLine;
-                // 方法名称
                 var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
                 // 消息
                 var message =
@@ -144,7 +141,7 @@ public static class SugarEntityFilter
 
                 if (!disableAop && sqlSugarEntityHandler != null)
                 {
-                    // 执行Sql超时处理
+                    // 将超时 SQL 和调用位置交给自定义处理器。
                     try
                     {
                         sqlSugarEntityHandler.ExecuteTimeoutAsync(fileName, fileLine, firstMethodName, rawSql, pars,
@@ -202,7 +199,7 @@ public static class SugarEntityFilter
                         var tableName = firstData?.TableName;
                         var tableDescription = firstData?.TableDescription;
 
-                        // 执行Sql差异处理
+                        // 将数据变更前后的差异交给自定义处理器。
                         try
                         {
                             sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, tableName, tableDescription,
@@ -245,11 +242,8 @@ public static class SugarEntityFilter
 
             var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, exp.Sql, param);
 
-            // 代码CS文件名称
             var fileName = _db.Ado.SqlStackTrace.FirstFileName;
-            // 代码行数
             var fileLine = _db.Ado.SqlStackTrace.FirstLine;
-            // 方法名称
             var firstMethodName = _db.Ado.SqlStackTrace.FirstMethodName;
 
             if (isDevelopment)
@@ -276,7 +270,7 @@ public static class SugarEntityFilter
 
             if (!disableAop && sqlSugarEntityHandler != null)
             {
-                // 执行Sql错误处理
+                // 将 SQL 异常和调用位置交给自定义处理器。
                 try
                 {
                     sqlSugarEntityHandler.ExecuteErrorAsync(fileName, fileLine, firstMethodName, exp.Sql, param, handleSql, exp)
@@ -308,8 +302,7 @@ public static class SugarEntityFilter
             }
         };
 
-        // Model基类处理
-        //_db.Aop.DataExecuting = (oldValue, entityInfo) =>
+        // 在 SqlSugar 写入实体字段前统一填充框架约定字段。
         _db.Aop.DataExecuting = (_, entityInfo) =>
         {
             switch (entityInfo.OperationType)
@@ -319,7 +312,7 @@ public static class SugarEntityFilter
                     // 主键，这里一条记录只会匹配一次
                     if (!entityInfo.EntityColumnInfo.IsIdentity && entityInfo.EntityColumnInfo.IsPrimarykey)
                     {
-                        // 赋值雪花Id（long）
+                        // 赋值雪花 ID（long）
                         if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
                         {
                             if (SqlSugarContext.EntityValueCheck([null, 0L], entityInfo))
@@ -327,7 +320,7 @@ public static class SugarEntityFilter
                                 entityInfo.SetValue(YitIdHelper.NextId());
                             }
                         }
-                        // 赋值Guid
+                        // 赋值 Guid
                         else if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(Guid))
                         {
                             if (SqlSugarContext.EntityValueCheck([null, Guid.Empty], entityInfo))
@@ -343,10 +336,9 @@ public static class SugarEntityFilter
                     // 创建时间
                     SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedTime), [null], DateTime.Now, entityInfo);
 
-                    // 其余字段判断
                     if (sqlSugarEntityHandler != null)
                     {
-                        // 部门Id
+                        // 部门 ID
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentId), [null, 0L],
                             sqlSugarEntityHandler.AssignDepartmentId(), entityInfo);
 
@@ -354,7 +346,7 @@ public static class SugarEntityFilter
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentName), [null, ""],
                             sqlSugarEntityHandler.AssignDepartmentName(), entityInfo);
 
-                        // 创建者Id
+                        // 创建者 ID
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserId), [null, 0L],
                             sqlSugarEntityHandler.AssignUserId(), entityInfo);
 
@@ -362,7 +354,7 @@ public static class SugarEntityFilter
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserName), [null, ""],
                             sqlSugarEntityHandler.AssignUserName(), entityInfo);
 
-                        // 租户Id
+                        // 租户 ID
                         SqlSugarContext.SetEntityValue(nameof(IBaseTEntity.TenantId), [null, 0L],
                             sqlSugarEntityHandler.AssignTenantId() ?? 0L, entityInfo);
                     }
@@ -373,10 +365,9 @@ public static class SugarEntityFilter
                     // 更新时间
                     SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedTime), null, DateTime.Now, entityInfo);
 
-                    // 其余字段判断
                     if (sqlSugarEntityHandler != null)
                     {
-                        // 更新者Id
+                        // 更新者 ID
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), null,
                             sqlSugarEntityHandler.AssignUserId(), entityInfo);
 
@@ -393,10 +384,10 @@ public static class SugarEntityFilter
     }
 
     /// <summary>
-    /// 加载Sugar过滤器
+    /// 加载 Sugar 过滤器。
     /// </summary>
-    /// <param name="_db"><see cref="ISqlSugarClient"/></param>
-    /// <param name="sqlSugarEntityHandler"><see cref="ISqlSugarEntityHandler"/> Sugar实体处理 程序</param>
+    /// <param name="_db">当前仓储使用的 SqlSugar 客户端。</param>
+    /// <param name="sqlSugarEntityHandler">实体保存前后的扩展处理器。</param>
     public static void LoadSugarFilter(ISqlSugarClient _db, ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
         if (sqlSugarEntityHandler != null)

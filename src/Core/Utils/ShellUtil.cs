@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,32 +26,27 @@ using System.Text;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="ShellUtil"/> 系统Shell工具类
+/// <see cref="ShellUtil"/> 系统 Shell 工具类。
 /// </summary>
 [SuppressSniffer]
 public static class ShellUtil
 {
     /// <summary>
-    /// Linux Bash 命令
+    /// Linux Bash 命令。
     /// </summary>
-    /// <param name="command"><see cref="string"/> 执行的命令</param>
-    /// <param name="timeout"><see cref="int"/> 执行名称超时时间，单位毫秒</param>
-    /// <returns></returns>
+    /// <param name="command">要执行的命令文本。</param>
+    /// <param name="timeout">超时时间，单位为毫秒。</param>
+    /// <returns>Linux Bash 命令。</returns>
     public static string Bash(string command, int timeout = 0)
     {
         var escapedArgs = command.Replace("\"", "\\\"");
-        // 创建进程对象
         using var process = new Process();
-        // 创建新的进程启动信息
         process.StartInfo = new ProcessStartInfo
         {
             // 执行的命令
             FileName = "/bin/bash",
-            // 命令参数
             Arguments = $"-c \"{escapedArgs}\"",
-            // 重定向标准输出
             RedirectStandardOutput = true,
-            // 重定向标准错误
             RedirectStandardError = true,
             // 不使用操作系统外壳程序来启动进程
             UseShellExecute = false,
@@ -63,17 +58,14 @@ public static class ShellUtil
             StandardErrorEncoding = Encoding.UTF8
         };
 
-        // 启动进程
         process.Start();
 
         // 异步读取 stdout 和 stderr，防止缓冲区满导致死锁
         var stdoutTask = process.StandardOutput.ReadToEndAsync();
         var stderrTask = process.StandardError.ReadToEndAsync();
 
-        // 是否超时判断
         if (timeout > 0)
         {
-            // 等待命令执行完成
             var exited = process.WaitForExit(timeout);
 
             // 检查是否超时或失败
@@ -86,14 +78,13 @@ public static class ShellUtil
                 }
                 catch
                 {
-                    // ignored - 进程可能已经在 WaitForExit 超时后自行退出
+                    // 进程可能在 WaitForExit 超时后自行退出，此时无需重复终止。
                 }
 
                 throw new TimeoutException("命令执行超时");
             }
         }
 
-        // 获取输出内容
         var output = stdoutTask.GetAwaiter()
             .GetResult();
         var error = stderrTask.GetAwaiter()
@@ -108,26 +99,21 @@ public static class ShellUtil
     }
 
     /// <summary>
-    /// Windows Cmd 命令
+    /// Windows Cmd 命令。
     /// </summary>
-    /// <param name="command"><see cref="string"/> 执行的命令</param>
-    /// <param name="args"><see cref="string"/> 执行的命令参数</param>
-    /// <param name="timeout"><see cref="int"/> 执行名称超时时间，单位毫秒</param>
-    /// <returns></returns>
+    /// <param name="command">要执行的命令文本。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <param name="timeout">超时时间，单位为毫秒。</param>
+    /// <returns>Windows Cmd 命令。</returns>
     public static string Cmd(string command, string args = null, int timeout = 0)
     {
-        // 创建进程对象
         using var process = new Process();
-        // 创建新的进程启动信息
         process.StartInfo = new ProcessStartInfo
         {
             // 执行的命令
             FileName = command,
-            // 命令参数
             Arguments = args,
-            // 重定向标准输出
             RedirectStandardOutput = true,
-            // 重定向标准错误
             RedirectStandardError = true,
             // 不使用操作系统外壳程序来启动进程
             UseShellExecute = false,
@@ -139,17 +125,14 @@ public static class ShellUtil
             StandardErrorEncoding = Encoding.UTF8
         };
 
-        // 启动进程
         process.Start();
 
         // 异步读取 stdout 和 stderr，防止缓冲区满导致死锁
         var stdoutTask = process.StandardOutput.ReadToEndAsync();
         var stderrTask = process.StandardError.ReadToEndAsync();
 
-        // 是否超时判断
         if (timeout > 0)
         {
-            // 等待命令执行完成
             var exited = process.WaitForExit(timeout);
 
             // 检查是否超时或失败
@@ -162,14 +145,13 @@ public static class ShellUtil
                 }
                 catch
                 {
-                    // ignored - 进程可能已经在 WaitForExit 超时后自行退出
+                    // 进程可能在 WaitForExit 超时后自行退出，此时无需重复终止。
                 }
 
                 throw new TimeoutException("命令执行超时");
             }
         }
 
-        // 获取输出内容
         var output = stdoutTask.GetAwaiter()
             .GetResult();
         var error = stderrTask.GetAwaiter()

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,16 +25,16 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DbType"/> 拓展类
+/// 为 <see cref="DbType"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class DbTypeExtension
 {
     /// <summary>
-    /// 将 <see cref="SugarDbType"/> 转换为 <see cref="DbType"/>
+    /// 将 <see cref="SugarDbType"/> 转换为 <see cref="DbType"/>。
     /// </summary>
-    /// <param name="sugarDbType"><see cref="SugarDbType"/></param>
-    /// <returns><see cref="DbType"/></returns>
+    /// <param name="sugarDbType">sugar Db 类型。</param>
+    /// <returns>将 SugarDbType 转换为 DbType。</returns>
     public static DbType ToDbType(this SugarDbType sugarDbType)
     {
         return sugarDbType switch
@@ -78,10 +78,10 @@ public static class DbTypeExtension
     }
 
     /// <summary>
-    /// 将 <see cref="DbType"/> 转换为 <see cref="SugarDbType"/>
+    /// 将 <see cref="DbType"/> 转换为 <see cref="SugarDbType"/>。
     /// </summary>
-    /// <param name="dbType"><see cref="DbType"/></param>
-    /// <returns><see cref="SugarDbType"/></returns>
+    /// <param name="dbType">数据库类型。</param>
+    /// <returns>将 DbType 转换为 SugarDbType。</returns>
     public static SugarDbType ToSugarDbType(this DbType dbType)
     {
         return dbType switch

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -29,15 +29,11 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="CoreStartupFilter"/> 应用启动时自动注册中间件
+/// <see cref="CoreStartupFilter"/> 应用启动时自动注册中间件。
 /// </summary>
 internal class CoreStartupFilter : IStartupFilter
 {
-    /// <summary>
-    /// 配置中间件
-    /// </summary>
-    /// <param name="action"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
     {
         return app =>
@@ -48,7 +44,7 @@ internal class CoreStartupFilter : IStartupFilter
             // 存储根服务
             FastContext.RootServices = app.ApplicationServices;
 
-            // 解决 IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题
+            // 解决 IIS 或者 Nginx 反向代理获取不到真实客户端 IP 的问题
             app.UseForwardedHeaders();
 
             // 环境名
@@ -76,8 +72,7 @@ internal class CoreStartupFilter : IStartupFilter
 
                     // 默认输出信息
                     context.Response.Headers.TryAdd(nameof(Fast) + "-Site-Url", "https://fastdotnet.com");
-                    context.Response.Headers.TryAdd(nameof(Fast) + "-Repository-Url",
-                        "https://gitee.com/China-xiaoFang/Fast.NET");
+                    context.Response.Headers.TryAdd(nameof(Fast) + "-Repository-Url", "https://gitee.com/FastDotnet/Fast.NET");
 
                     // 执行下一个中间件
                     await next.Invoke();

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,15 +28,15 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarDatabaseUtil"/> SugarExternalServices工具类
+/// <see cref="SqlSugarDatabaseUtil"/> SugarExternalServices 工具类。
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 目前只验证了Sql Server 和 MySql
+    /// 目前只验证了 SQL Server 和 MySql。
     /// </summary>
-    /// <param name="dbType"></param>
-    /// <returns></returns>
+    /// <param name="dbType">数据库类型。</param>
+    /// <returns>目前只验证了 SQL Server 和 MySql。</returns>
     internal static ConfigureExternalServices GetSugarExternalServices(DbType dbType)
     {
         var externalServices = new ConfigureExternalServices
@@ -46,7 +46,7 @@ public partial class SqlSugarDatabaseUtil
                 // 全局开启创建表按照字段排序，避免重复代码
                 entityInfo.IsCreateTableFiledSort = true;
 
-                // Table Name 配置，如果使用SqlSugar的规范，其实这里是不会走的
+                // Table Name 配置，如果使用 SqlSugar 的规范，其实这里是不会走的
                 var tableAttribute = type.GetCustomAttribute<TableAttribute>(true);
                 if (tableAttribute != null)
                 {
@@ -58,14 +58,14 @@ public partial class SqlSugarDatabaseUtil
             },
             EntityService = (propertyInfo, columnInfo) =>
             {
-                // 列名配置，如果使用SqlSugar的规范，其实这里是不会走的
+                // 列名配置，如果使用 SqlSugar 的规范，其实这里是不会走的
                 var columnAttribute = propertyInfo.GetCustomAttribute<ColumnAttribute>(true);
                 if (columnAttribute != null)
                 {
                     columnInfo.DbColumnName = columnAttribute.Name;
                 }
 
-                // 主键配置，如果使用SqlSugar的规范，其实这里是不会走的
+                // 主键配置，如果使用 SqlSugar 的规范，其实这里是不会走的
                 var keyAttribute = propertyInfo.GetCustomAttribute<KeyAttribute>(true);
                 if (keyAttribute != null)
                 {
@@ -102,7 +102,7 @@ public partial class SqlSugarDatabaseUtil
                     }
                 }
 
-                // 这里默认都是 Sql Server 的配置
+                // 这里默认都是 SQL Server 的配置
                 if (string.IsNullOrEmpty(columnInfo.DataType))
                 {
                     var propertyType = propertyInfo.PropertyType.IsGenericType
@@ -128,7 +128,7 @@ public partial class SqlSugarDatabaseUtil
                     }
                 }
 
-                // 这里的所有数据库类型，默认是根据SqlServer配置的
+                // 这里的所有数据库类型，默认是根据 SqlServer 配置的
                 var columnDbType = columnInfo.DataType?.ToLower();
                 if (columnDbType == null)
                     return;

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,68 +27,68 @@ using System.Linq.Expressions;
 namespace System.Linq;
 
 /// <summary>
-/// <see cref="LinqExpression"/> 拓展类
+/// 提供 Linq Expression 相关扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class LinqExpression
 {
     /// <summary>
-    /// 创建 Linq/Lambda 表达式
+    /// 创建 Linq/Lambda 表达式。
     /// </summary>
-    /// <typeparam name="TSource">泛型类型</typeparam>
-    /// <param name="expression">表达式</param>
-    /// <returns>新的表达式</returns>
+    /// <param name="expression">要组合或执行的表达式。</param>
+    /// <typeparam name="TSource">源对象类型。</typeparam>
+    /// <returns>创建的 Linq/Lambda 表达式。</returns>
     public static Expression<Func<TSource, bool>> Create<TSource>(Expression<Func<TSource, bool>> expression)
     {
         return expression;
     }
 
     /// <summary>
-    /// 创建 Linq/Lambda 表达式，支持索引器
+    /// 创建 Linq/Lambda 表达式，支持索引器。
     /// </summary>
-    /// <typeparam name="TSource">泛型类型</typeparam>
-    /// <param name="expression">表达式</param>
-    /// <returns>新的表达式</returns>
+    /// <param name="expression">要组合或执行的表达式。</param>
+    /// <typeparam name="TSource">源对象类型。</typeparam>
+    /// <returns>创建的 Linq/Lambda 表达式，支持索引器。</returns>
     public static Expression<Func<TSource, int, bool>> Create<TSource>(Expression<Func<TSource, int, bool>> expression)
     {
         return expression;
     }
 
     /// <summary>
-    /// 创建 And 表达式
+    /// 创建 And 表达式。
     /// </summary>
-    /// <typeparam name="TSource">泛型类型</typeparam>
-    /// <returns>新的表达式</returns>
+    /// <typeparam name="TSource">源对象类型。</typeparam>
+    /// <returns>创建的 And 表达式。</returns>
     public static Expression<Func<TSource, bool>> And<TSource>()
     {
         return u => true;
     }
 
     /// <summary>
-    /// 创建 And 表达式，支持索引器
+    /// 创建 And 表达式，支持索引器。
     /// </summary>
-    /// <typeparam name="TSource">泛型类型</typeparam>
-    /// <returns>新的表达式</returns>
+    /// <typeparam name="TSource">源对象类型。</typeparam>
+    /// <returns>创建的 And 表达式，支持索引器。</returns>
     public static Expression<Func<TSource, int, bool>> IndexAnd<TSource>()
     {
         return (u, i) => true;
     }
 
     /// <summary>
-    /// 创建 Or 表达式
+    /// 创建 Or 表达式。
     /// </summary>
-    /// <typeparam name="TSource">泛型类型</typeparam>
-    /// <returns>新的表达式</returns>
+    /// <typeparam name="TSource">源对象类型。</typeparam>
+    /// <returns>创建的 Or 表达式。</returns>
     public static Expression<Func<TSource, bool>> Or<TSource>()
     {
         return u => false;
     }
 
     /// <summary>
-    /// 创建 Or 表达式，支持索引器
+    /// 创建 Or 表达式，支持索引器。
     /// </summary>
-    /// <typeparam name="TSource">泛型类型</typeparam>
-    /// <returns>新的表达式</returns>
+    /// <typeparam name="TSource">源对象类型。</typeparam>
+    /// <returns>创建的 Or 表达式，支持索引器。</returns>
     public static Expression<Func<TSource, int, bool>> IndexOr<TSource>()
     {
         return (u, i) => false;

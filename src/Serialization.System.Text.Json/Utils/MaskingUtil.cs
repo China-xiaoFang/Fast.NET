@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,13 +23,15 @@
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="MaskingUtil"/> 数据脱敏工具类
+/// <see cref="MaskingUtil"/> 数据脱敏工具类。
 /// </summary>
 internal static class MaskingUtil
 {
     /// <summary>
-    /// 姓名脱敏（只保留首字）
+    /// 姓名脱敏（只保留首字）。
     /// </summary>
+    /// <param name="name">名称。</param>
+    /// <returns>姓名脱敏（只保留首字）。</returns>
     public static string NameMasking(string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length == 1)
@@ -41,8 +43,10 @@ internal static class MaskingUtil
     }
 
     /// <summary>
-    /// 姓名脱敏（保留首尾）
+    /// 姓名脱敏（保留首尾）。
     /// </summary>
+    /// <param name="name">名称。</param>
+    /// <returns>姓名脱敏（保留首尾）。</returns>
     public static string NameKeepLastMasking(string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length == 1)
@@ -54,8 +58,10 @@ internal static class MaskingUtil
     }
 
     /// <summary>
-    /// 账号脱敏（adm**123）
+    /// 账号脱敏（adm**123）。
     /// </summary>
+    /// <param name="account">要脱敏的账户标识。</param>
+    /// <returns>账号脱敏（adm**123）。</returns>
     public static string AccountMasking(string account)
     {
         if (string.IsNullOrWhiteSpace(account) || account.Length < 6)
@@ -66,27 +72,31 @@ internal static class MaskingUtil
     }
 
     /// <summary>
-    /// 手机号脱敏（152****5552）
+    /// 手机号脱敏（152****5552）。
     /// </summary>
+    /// <param name="mobile">要脱敏的手机号码。</param>
+    /// <returns>手机号脱敏（152****5552）。</returns>
     public static string MobileMasking(string mobile)
     {
         if (string.IsNullOrWhiteSpace(mobile) || mobile.Length < 7)
             return mobile;
 
-        // 超过7位：保留前3位 + 中间4位脱敏 + 保留第8~11位 + 第12位之后全脱敏
+        // 长号码保留前 3 位和第 8 至 11 位，其余字符脱敏。
         var tailStart = 7;
         var tailLength = Math.Min(4, mobile.Length - tailStart);
         var tail = mobile.Substring(tailStart, tailLength);
 
-        // 第12位（index 11）之后全脱敏
+        // 从第 12 个字符起全部脱敏。
         var remaining = mobile.Length > 11 ? new string('*', mobile.Length - 11) : string.Empty;
 
         return mobile[..3] + "****" + tail + remaining;
     }
 
     /// <summary>
-    /// 身份证脱敏处理（前4后4）
+    /// 身份证脱敏处理（前 4 后 4）。
     /// </summary>
+    /// <param name="idCard">要脱敏的身份证号码。</param>
+    /// <returns>身份证脱敏处理（前 4 后 4）。</returns>
     public static string IdCardMasking(string idCard)
     {
         if (string.IsNullOrWhiteSpace(idCard) || idCard.Length < 8)
@@ -96,8 +106,10 @@ internal static class MaskingUtil
     }
 
     /// <summary>
-    /// 邮箱脱敏（最多保留3位字符 + 域名）
+    /// 邮箱脱敏（最多保留 3 位字符 + 域名）。
     /// </summary>
+    /// <param name="email">要脱敏的电子邮箱地址。</param>
+    /// <returns>邮箱脱敏（最多保留 3 位字符 + 域名）。</returns>
     public static string EmailMasking(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
@@ -120,8 +132,10 @@ internal static class MaskingUtil
     }
 
     /// <summary>
-    /// 银行卡脱敏（前6后4）
+    /// 银行卡脱敏（前 6 后 4）。
     /// </summary>
+    /// <param name="cardNo">要脱敏的银行卡号。</param>
+    /// <returns>银行卡脱敏（前 6 后 4）。</returns>
     public static string BankCardMasking(string cardNo)
     {
         if (string.IsNullOrWhiteSpace(cardNo) || cardNo.Length < 10)
@@ -131,8 +145,10 @@ internal static class MaskingUtil
     }
 
     /// <summary>
-    /// 地址脱敏（优先识别省/市/区/街道等行政区划，保留上级区域）
+    /// 地址脱敏（优先识别省/市/区/街道等行政区划，保留上级区域）。
     /// </summary>
+    /// <param name="address">目标服务地址。</param>
+    /// <returns>地址脱敏（优先识别省/市/区/街道等行政区划，保留上级区域）。</returns>
     public static string AddressMasking(string address)
     {
         if (string.IsNullOrWhiteSpace(address))
@@ -147,7 +163,7 @@ internal static class MaskingUtil
                 return address[..(index + 1)] + "****";
         }
 
-        // fallback：无法识别，则保留前 6
+        // 无法识别地址格式时保留前 6 个字符。
         if (address.Length <= 6)
             return address;
 
@@ -155,17 +171,19 @@ internal static class MaskingUtil
     }
 
     /// <summary>
-    /// 车牌号脱敏（保留前两位，如有分隔符则保留“省份+地区字母+分隔符”）
+    /// 车牌号脱敏（保留前两位，如有分隔符则保留“省份+地区字母+分隔符”）。
     /// </summary>
+    /// <param name="carNumber">要验证的车牌号码。</param>
+    /// <returns>车牌号脱敏（保留前两位，如有分隔符则保留“省份+地区字母+分隔符”）。</returns>
     public static string CarNumberMasking(string carNumber)
     {
         if (string.IsNullOrWhiteSpace(carNumber) || carNumber.Length <= 2)
             return carNumber;
 
-        // 常见分隔符集合）
+        // 支持车牌文本中常见的地区分隔符。
         char[] separators = ['·', '•', '.', '-', ' '];
 
-        // 若第三位是分隔符，保留前两位 + 分隔符，再脱敏后面所有字符
+        // 第三个字符是分隔符时保留前两位及分隔符，其余字符全部脱敏。
         if (carNumber.Length >= 3 && separators.Contains(carNumber[2]))
         {
             var head = carNumber[..3];
@@ -173,13 +191,15 @@ internal static class MaskingUtil
             return head + new string('*', tailLen);
         }
 
-        // 否则保留前两位，其余全部脱敏（保持原格式长度）
+        // 普通格式仅保留前两位，其余字符按原长度脱敏。
         return carNumber[..2] + new string('*', carNumber.Length - 2);
     }
 
     /// <summary>
-    /// IP 地址脱敏（保留前两段）
+    /// IP 地址脱敏（保留前两段）。
     /// </summary>
+    /// <param name="ip">要验证的 IP 地址。</param>
+    /// <returns>IP 地址脱敏（保留前两段）。</returns>
     public static string IpMasking(string ip)
     {
         if (string.IsNullOrWhiteSpace(ip))

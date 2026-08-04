@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,26 +20,25 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using System.Linq.Expressions;
 using System.Reflection;
 using SqlSugar;
 
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="ISugarQueryable{T}"/> ISugarQueryable 分页拓展类
+/// 为 <see cref="ISugarQueryable{T}"/> 提供 ISugarQueryable 分页扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class SqlSugarPageExtension
 {
     /// <summary>
-    /// 分页转换类型
+    /// 分页转换类型。
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="pagedResult"><see cref="PagedResult{TResult}"/> 源类型</param>
-    /// <param name="selectExpression"><see cref="Expression"/> Select关系映射</param>
-    /// <returns></returns>
+    /// <param name="pagedResult">要写入数据的分页结果。</param>
+    /// <param name="selectExpression">用于分页转换类型的表达式。</param>
+    /// <typeparam name="TEntity">实体类型。</typeparam>
+    /// <typeparam name="TResult">操作结果类型。</typeparam>
+    /// <returns>分页转换类型。</returns>
     public static PagedResult<TResult> ToPagedData<TEntity, TResult>(this PagedResult<TEntity> pagedResult,
         Func<TEntity, TResult> selectExpression)
     {
@@ -57,11 +56,8 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// SqlSugar分页扩展
+    /// SqlSugar 分页扩展。
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
     /// <remarks>
     /// 多表查询（LeftJoin/Join）场景需注意：分页统计依赖 MergeTable，建议在分页前进行结构收敛：
     /// <code>
@@ -73,7 +69,10 @@ public static class SqlSugarPageExtension
     /// </code>
     /// 未使用 MergeTable 可能导致总数统计异常或结果不准确。
     /// </remarks>
-    /// <returns></returns>
+    /// <param name="queryable">要继续构建的查询对象。</param>
+    /// <param name="input">PagedInput 通用 SqlSugar 分页输入。</param>
+    /// <typeparam name="TEntity">实体类型。</typeparam>
+    /// <returns>SqlSugar 分页扩展。</returns>
     public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
     {
         return queryable.SugarPaged(input)
@@ -82,11 +81,8 @@ public static class SqlSugarPageExtension
 
 
     /// <summary>
-    /// SqlSugar分页扩展
+    /// SqlSugar 分页扩展。
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="input"><see cref="PagedInput"/> 通用SqlSugar 分页输入</param>
     /// <remarks>
     /// 多表查询（LeftJoin/Join）场景需注意：分页统计依赖 MergeTable，建议在分页前进行结构收敛：
     /// <code>
@@ -98,7 +94,10 @@ public static class SqlSugarPageExtension
     /// </code>
     /// 未使用 MergeTable 可能导致总数统计异常或结果不准确。
     /// </remarks>
-    /// <returns></returns>
+    /// <param name="queryable">要继续构建的查询对象。</param>
+    /// <param name="input">PagedInput 通用 SqlSugar 分页输入。</param>
+    /// <typeparam name="TEntity">实体类型。</typeparam>
+    /// <returns>表示异步 SqlSugar 分页扩展的任务，任务结果为 SqlSugar 分页扩展。</returns>
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         PagedInput input)
     {
@@ -107,14 +106,14 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// SqlSugar分页扩展
+    /// SqlSugar 分页扩展。
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="pageIndex"><see cref="int"/> 页数</param>
-    /// <param name="pageSize"><see cref="int"/> 页码，默认 20</param>
-    /// <param name="enablePaged"><see cref="bool"/> 启用分页，默认 true</param>
-    /// <returns></returns>
+    /// <param name="queryable">要继续构建的查询对象。</param>
+    /// <param name="pageIndex">页码，从 1 开始。</param>
+    /// <param name="pageSize">每页记录数。</param>
+    /// <param name="enablePaged">是否启用分页查询。</param>
+    /// <typeparam name="TEntity">实体类型。</typeparam>
+    /// <returns>SqlSugar 分页扩展。</returns>
     public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, int pageIndex,
         int pageSize = 20, bool enablePaged = true)
     {
@@ -158,14 +157,14 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// SqlSugar分页扩展
+    /// SqlSugar 分页扩展。
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="pageIndex"><see cref="int"/> 页数</param>
-    /// <param name="pageSize"><see cref="int"/> 页码，默认 20</param>
-    /// <param name="enablePaged"><see cref="bool"/> 启用分页，默认 true</param>
-    /// <returns></returns>
+    /// <param name="queryable">要继续构建的查询对象。</param>
+    /// <param name="pageIndex">页码，从 1 开始。</param>
+    /// <param name="pageSize">每页记录数。</param>
+    /// <param name="enablePaged">是否启用分页查询。</param>
+    /// <typeparam name="TEntity">实体类型。</typeparam>
+    /// <returns>表示异步 SqlSugar 分页扩展的任务，任务结果为 SqlSugar 分页扩展。</returns>
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         int pageIndex, int pageSize = 20, bool enablePaged = true)
     {
@@ -209,19 +208,18 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// Sugar 统一分页处理
+    /// Sugar 统一分页处理。
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <param name="queryable"><see cref="ISugarQueryable{T}"/></param>
-    /// <param name="input"><see cref="PagedInput"/> 统一分页输入</param>
-    /// <remarks>支持多库</remarks>
-    /// <returns></returns>
+    /// <remarks>支持多库。</remarks>
+    /// <param name="queryable">要继续构建的查询对象。</param>
+    /// <param name="input">方法的输入数据。</param>
+    /// <typeparam name="TEntity">实体类型。</typeparam>
+    /// <returns>Sugar 统一分页处理。</returns>
     public static ISugarQueryable<TEntity> SugarPaged<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
     {
-        // 这里必须要判断，字段是否存在于 TEntity 中，不然会执行到Db层面的报错
+        // 这里必须要判断，字段是否存在于 TEntity 中，不然会执行到 Db 层面的报错
         var type = typeof(TEntity);
 
-        // 获取所有属性
         var properties = type.GetProperties()
             .Select(sl => new
             {
@@ -353,7 +351,6 @@ public static class SqlSugarPageExtension
             }
         }
 
-        // 循环传入的集合
         foreach (var searchInput in input.SearchList)
         {
             var item = properties.FirstOrDefault(f =>
@@ -366,11 +363,10 @@ public static class SqlSugarPageExtension
 
             if (item.sugarColumn?.IsIgnore == true)
             {
-                // 如果存在特性，且 IsIgnore = true，则代表不是Db列，不能进行搜索
+                // 如果存在特性，且 IsIgnore = true，则代表不是 Db 列，不能进行搜索
                 throw new SqlSugarException($"类型 [{type.Name}] 中的搜索字段 [{searchInput.ChField}] 不存在于对应的Db中！");
             }
 
-            // 获取属性列的 Navigate 特性
             if (item.navigate != null)
             {
                 // 如果存在特性，则代表是一个导航属性，不能进行搜索
@@ -407,7 +403,6 @@ public static class SqlSugarPageExtension
 
         var orderList = new List<OrderByModel>();
 
-        // 循环传入的集合
         foreach (var sortInput in input.SortList)
         {
             var item = properties.FirstOrDefault(f =>
@@ -420,11 +415,10 @@ public static class SqlSugarPageExtension
 
             if (item.sugarColumn?.IsIgnore == true)
             {
-                // 如果存在特性，且 IsIgnore = true，则代表不是Db列，不能进行排序
+                // 如果存在特性，且 IsIgnore = true，则代表不是 Db 列，不能进行排序
                 throw new SqlSugarException($"类型 [{type.Name}] 中的排序字段 [{sortInput.ChField}] 不存在于对应的Db中！");
             }
 
-            // 获取属性列的 Navigate 特性
             if (item.navigate != null)
             {
                 // 如果存在特性，则代表是一个导航属性，不能进行排序

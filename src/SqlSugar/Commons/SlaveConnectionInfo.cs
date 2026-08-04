@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,17 +25,17 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SlaveConnectionInfo"/> 从库连接信息
+/// <see cref="SlaveConnectionInfo"/> 从库连接信息。
 /// </summary>
 [SuppressSniffer]
 public class SlaveConnectionInfo : DbConnectionInfo
 {
     /// <summary>
-    /// 从库命中率
+    /// 从库命中率。
     /// </summary>
     /// <remarks>
-    /// <para>为 0 则不命中</para>
-    /// <para>建议相加不超过10</para>
+    /// <para>为 0 则不命中。</para>
+    /// <para>建议相加不超过 10。</para>
     /// </remarks>
     [SugarColumn(ColumnDescription = "从库命中率")]
     public virtual int HitRate { get; set; }

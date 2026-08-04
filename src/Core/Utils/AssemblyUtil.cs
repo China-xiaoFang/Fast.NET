@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,16 +26,16 @@ using System.Runtime.Loader;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="Assembly"/> 工具类
+/// <see cref="Assembly"/> 工具类。
 /// </summary>
 [SuppressSniffer]
 public static class AssemblyUtil
 {
     /// <summary>
-    /// 根据程序集名称获取运行时程序集
+    /// 根据程序集名称获取运行时程序集。
     /// </summary>
-    /// <param name="assemblyName"><see cref="string"/> 程序集名称</param>
-    /// <returns><see cref="Assembly"/></returns>
+    /// <param name="assemblyName">目标程序集名称。</param>
+    /// <returns>根据程序集名称获取运行时程序集。</returns>
     public static Assembly GetAssembly(string assemblyName)
     {
         // 加载程序集
@@ -43,10 +43,10 @@ public static class AssemblyUtil
     }
 
     /// <summary>
-    /// 根据路径加载程序集
+    /// 根据路径加载程序集。
     /// </summary>
-    /// <param name="path"><see cref="string"/> 绝对路径</param>
-    /// <returns><see cref="Assembly"/></returns>
+    /// <param name="path">绝对路径。</param>
+    /// <returns>根据路径加载程序集。</returns>
     public static Assembly LoadAssembly(string path)
     {
         if (!File.Exists(path))
@@ -55,21 +55,21 @@ public static class AssemblyUtil
     }
 
     /// <summary>
-    /// 通过流加载程序集
+    /// 通过流加载程序集。
     /// </summary>
-    /// <param name="assembly"><see cref="MemoryStream"/> 内存流</param>
-    /// <returns><see cref="Assembly"/></returns>
+    /// <param name="assembly">MemoryStream 内存流。</param>
+    /// <returns>通过流加载程序集。</returns>
     public static Assembly LoadAssembly(MemoryStream assembly)
     {
         return Assembly.Load(assembly.ToArray());
     }
 
     /// <summary>
-    /// 根据程序集名称、类型完整限定名获取运行时类型
+    /// 根据程序集名称、类型完整限定名获取运行时类型。
     /// </summary>
-    /// <param name="assemblyName"><see cref="string"/> 程序集名称</param>
-    /// <param name="typeFullName"><see cref="string"/> 类型完整限定名称</param>
-    /// <returns><see cref="Type"/></returns>
+    /// <param name="assemblyName">目标程序集名称。</param>
+    /// <param name="typeFullName">目标类型的完全限定名。</param>
+    /// <returns>根据程序集名称、类型完整限定名获取运行时类型。</returns>
     public static Type GetType(string assemblyName, string typeFullName)
     {
         return GetAssembly(assemblyName)
@@ -77,11 +77,11 @@ public static class AssemblyUtil
     }
 
     /// <summary>
-    /// 根据程序集和类型完全限定名获取运行时类型
+    /// 根据程序集和类型完全限定名获取运行时类型。
     /// </summary>
-    /// <param name="assembly"><see cref="MemoryStream"/> 内存流</param>
-    /// <param name="typeFullName"><see cref="string"/> 类型完整限定名称</param>
-    /// <returns><see cref="Type"/></returns>
+    /// <param name="assembly">MemoryStream 内存流。</param>
+    /// <param name="typeFullName">目标类型的完全限定名。</param>
+    /// <returns>根据程序集和类型完全限定名获取运行时类型。</returns>
     public static Type GetType(MemoryStream assembly, string typeFullName)
     {
         return LoadAssembly(assembly)

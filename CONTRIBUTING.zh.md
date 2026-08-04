@@ -16,10 +16,10 @@
 git clone https://gitee.com/FastDotnet/Fast.NET.git
 cd Fast.NET
 dotnet restore Fast.NET.sln
-dotnet build Fast.NET.sln -c Release
+dotnet build Fast.NET.sln -c Release --no-restore
 ```
 
-仓库主要模块同时面向 .NET 6–10，`Fast.IaaS` 面向 .NET Standard 2.1。修改公共构建配置、条件编译或依赖版本时，应验证所有受影响目标。
+仓库主要模块同时面向 .NET 8–10，`Fast.IaaS` 面向 .NET Standard 2.1。修改公共构建配置、条件编译或依赖版本时，应验证所有受影响目标。NuGet 版本统一维护在 `Directory.Packages.props`。
 
 ## 代码约定
 
@@ -27,6 +27,7 @@ dotnet build Fast.NET.sln -c Release
 - 保持模块职责单一，不为便利引入反向或循环依赖。
 - 公共 API 应具有准确的 XML 文档。
 - 复杂兼容逻辑、并发控制和安全相关代码应添加说明原因的中文注释。
+- 遵循[注释与公共 API 文档规范](docs/COMMENTING_GUIDE.zh.md)，不要保留模板文本、废弃代码或无上下文的待办注释。
 - 异步 API 避免不必要的同步阻塞，并正确释放流、令牌和其他资源。
 - 新增框架专属依赖时，按 `TargetFramework` 使用条件引用。
 - 行为变更应同步更新 `README.zh.md`、`README.md` 及相关架构文档。
@@ -38,14 +39,13 @@ dotnet build Fast.NET.sln -c Release
 ```bash
 dotnet restore Fast.NET.sln
 dotnet build Fast.NET.sln -c Release --no-restore
-dotnet pack Fast.NET.sln -c Release --no-restore --no-build
 ```
 
 同时检查：
 
 - 构建没有新增警告或错误。
 - `Fast.IaaS` 包只包含 `lib/netstandard2.1`。
-- 其他 SDK 包包含所支持的 .NET 6–10 目标。
+- 其他 SDK 包包含所支持的 .NET 8–10 目标。
 - 没有提交 `bin/`、`obj/`、`nupkgs/`、密钥或本地配置。
 - 中英文公共文档结构和信息保持一致。
 

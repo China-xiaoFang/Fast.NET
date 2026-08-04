@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,17 +26,17 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiUtil"/> OpenApi 工具类
+/// <see cref="OpenApiUtil"/> OpenAPI 工具类。
 /// </summary>
 public static partial class OpenApiUtil
 {
     /// <summary>
-    /// 生成 OpenApi 文档资源
+    /// 生成 OpenAPI 文档资源。
     /// </summary>
-    /// <param name="address"><see cref="string"/> 文档地址；<see href="http://127.0.0.1:38080"/></param>
-    /// <param name="apiDescriptionGroupCollectionProvider"><see cref="IApiDescriptionGroupCollectionProvider"/> 接口描述提供程序</param>
-    /// <param name="groupList"><see cref="List{T}"/> 分组集合；默认使用 ["All Groups"]</param>
-    /// <returns></returns>
+    /// <param name="address">目标服务地址。</param>
+    /// <param name="apiDescriptionGroupCollectionProvider">用于读取所有 API 描述分组的提供器。</param>
+    /// <param name="groupList">文档分组集合。</param>
+    /// <returns>表示异步“生成 OpenAPI 文档资源”操作的任务。</returns>
     public static async Task GenerateOpenApi(string address,
         IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider, List<string> groupList = null)
     {
@@ -159,16 +159,16 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 生成 OpenApi 文档资源
+    /// 生成 OpenAPI 文档资源。
     /// </summary>
-    /// <param name="apiDescriptionGroupCollectionProvider"><see cref="IApiDescriptionGroupCollectionProvider"/> 接口描述提供程序</param>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档信息</param>
-    /// <param name="rootDir"><see cref="string"/> 根目录</param>
-    /// <param name="group"><see cref="string"/> 分组</param>
-    /// <param name="uri"><see cref="Uri"/> 地址</param>
-    /// <param name="hasWeb"><see cref="bool"/> 是否为Web端</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言</param>
-    /// <returns></returns>
+    /// <param name="apiDescriptionGroupCollectionProvider"><see cref="IApiDescriptionGroupCollectionProvider"/> 接口描述提供程序。</param>
+    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档信息。</param>
+    /// <param name="rootDir"><see cref="string"/> 根目录。</param>
+    /// <param name="group"><see cref="string"/> 分组。</param>
+    /// <param name="uri"><see cref="Uri"/> 地址。</param>
+    /// <param name="hasWeb"><see cref="bool"/> 是否为 Web 端。</param>
+    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <returns>表示异步生成 OpenAPI 文档资源的任务。</returns>
     internal static async Task GenerateOpenApi(IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider,
         OpenApiDocumentDto openApiDocument, string rootDir, string group, Uri uri, bool hasWeb, ScriptLanguageEnum scriptLanguage)
     {
@@ -185,7 +185,7 @@ public static partial class OpenApiUtil
         var enumRootDir = Path.Combine(curRootDir, "enums");
         Directory.CreateDirectory(enumRootDir);
 
-        // Api文件
+        // API 文件
         var apiRootDir = Penetrates.OpenApiSettings.FolderGroup == true
             ? Path.Combine(curRootDir, "services", group)
             : Path.Combine(curRootDir, "services");
@@ -195,11 +195,11 @@ public static partial class OpenApiUtil
         var enumSchemas = await WriteOpenApiDocumentEnumFile(enumRootDir, openApiDocument, scriptLanguage)
             .ConfigureAwait(false);
 
-        // 生成Dto
+        // 生成 Dto
         var dtoSchemas = await GenerateOpenApiDocumentSchemaFile(openApiDocument, scriptLanguage)
             .ConfigureAwait(false);
 
-        // 写入Api
+        // 写入 API
         await WriteOpenApiDocumentApiFile(apiRootDir, hasWeb, apiDescriptionGroupCollectionProvider, openApiDocument, dtoSchemas,
                 enumSchemas, scriptLanguage)
             .ConfigureAwait(false);

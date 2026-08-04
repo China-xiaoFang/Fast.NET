@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,81 +28,56 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="BaseRecordEntity"/> 记录Entity基类
+/// <see cref="BaseRecordEntity"/> 记录 Entity 基类。
 /// </summary>
 [SuppressSniffer]
 public class BaseRecordEntity : IBaseRecordEntity
 {
-    /// <summary>
-    /// 设备
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "设备", Length = 50, IsNullable = true, CreateTableFieldSort = 983)]
     public virtual string Device { get; set; }
 
-    /// <summary>
-    /// 操作系统（版本）
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "操作系统（版本）", Length = 50, IsNullable = true, CreateTableFieldSort = 984)]
     public virtual string OS { get; set; }
 
-    /// <summary>
-    /// 浏览器（版本）
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "浏览器（版本）", Length = 50, IsNullable = true, CreateTableFieldSort = 985)]
     public virtual string Browser { get; set; }
 
-    /// <summary>
-    /// 省份
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "省份", Length = 20, IsNullable = true, CreateTableFieldSort = 986)]
     public virtual string Province { get; set; }
 
-    /// <summary>
-    /// 城市
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "城市", Length = 20, IsNullable = true, CreateTableFieldSort = 987)]
     public virtual string City { get; set; }
 
-    /// <summary>
-    /// Ip
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "Ip", Length = 15, IsNullable = true, CreateTableFieldSort = 988)]
     public virtual string Ip { get; set; }
 
-    /// <summary>
-    /// 部门Id
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "部门Id", CreateTableFieldSort = 989)]
     public virtual long? DepartmentId { get; set; }
 
-    /// <summary>
-    /// 部门名称
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "部门名称", Length = 20, IsNullable = true, CreateTableFieldSort = 990)]
     public virtual string DepartmentName { get; set; }
 
-    /// <summary>
-    /// 创建者用户Id
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "创建者用户Id", CreateTableFieldSort = 991)]
     public virtual long? CreatedUserId { get; set; }
 
-    /// <summary>
-    /// 创建者用户名称
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "创建者用户名称", Length = 20, IsNullable = true, CreateTableFieldSort = 992)]
     public virtual string CreatedUserName { get; set; }
 
-    /// <summary>
-    /// 创建时间
-    /// </summary>
+    /// <inheritdoc />
     [Required, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
     public virtual DateTime? CreatedTime { get; set; }
 
-    /// <summary>
-    /// 记录表创建
-    /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
+    /// <inheritdoc />
     public void RecordCreate(HttpContext httpContext)
     {
         var userAgentInfo = httpContext.RequestUserAgentInfo();

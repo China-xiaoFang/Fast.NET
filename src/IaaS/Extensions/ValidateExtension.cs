@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,29 +28,28 @@ using System.Text.RegularExpressions;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="ValidateExtension"/> 验证拓展类
+/// 提供验证扩展方法。
 /// </summary>
 public static class ValidateExtension
 {
     /// <summary>
-    /// 判断 string 是否为 Null
+    /// 判断 string 是否为 <see langword="null"/>。
     /// </summary>
-    /// <param name="value"><see cref="string"/>字符串</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsEmpty(this string value)
     {
         return value == null || string.IsNullOrEmpty(value);
     }
 
     /// <summary>
-    /// 判断 Enum 是否为 Null
+    /// 判断 Enum 是否为 <see langword="null"/>。
     /// </summary>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="value">枚举值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">要验证的值。</param>
+    /// <typeparam name="TEnum">枚举类型。</typeparam>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsEmpty<TEnum>(this TEnum value) where TEnum : struct, Enum
     {
-        // 判断是否有效
         if (!Enum.IsDefined(typeof(TEnum), value))
         {
             return true;
@@ -66,14 +65,13 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 判断 Enum 是否为 Null
+    /// 判断 Enum 是否为 <see langword="null"/>。
     /// </summary>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="value">枚举值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">要验证的值。</param>
+    /// <typeparam name="TEnum">枚举类型。</typeparam>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsEmpty<TEnum>(this TEnum? value) where TEnum : struct, Enum
     {
-        // 判断是否为空
         if (!value.HasValue)
         {
             return true;
@@ -83,46 +81,44 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 判断 Enum 是否为 Null 或者 0
+    /// 判断 Enum 是否为 <see langword="null"/> 或者 0。
     /// </summary>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="value">枚举值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">要验证的值。</param>
+    /// <typeparam name="TEnum">枚举类型。</typeparam>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNullOrZero<TEnum>(this TEnum value) where TEnum : struct, Enum
     {
-        // 判断是否为空
         if (value.IsEmpty())
         {
             return true;
         }
 
-        // 这里全部转为 Long 类型处理，避免 Int 长度过短，导致报错
+        // 统一按 Int64 比较，避免较小整数类型在转换时溢出。
         return value.ParseToLong() == 0;
     }
 
     /// <summary>
-    /// 判断 Enum 是否为 Null 或者 0
+    /// 判断 Enum 是否为 <see langword="null"/> 或者 0。
     /// </summary>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="value">枚举值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">要验证的值。</param>
+    /// <typeparam name="TEnum">枚举类型。</typeparam>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNullOrZero<TEnum>(this TEnum? value) where TEnum : struct, Enum
     {
-        // 判断是否为空
         if (value.IsEmpty())
         {
             return true;
         }
 
-        // 这里全部转为 Long 类型处理，避免 Int 长度过短，导致报错
+        // 统一按 Int64 比较，避免较小整数类型在转换时溢出。
         return value.ParseToLong() == 0;
     }
 
     /// <summary>
-    /// 判断 byte 是否为 Null 或者 0
+    /// 判断 byte 是否为 <see langword="null"/> 或者 0。
     /// </summary>
-    /// <param name="value"><see cref="int"/>值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">要验证的值。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNullOrZero(this byte? value)
     {
         return value switch
@@ -134,10 +130,10 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 判断 int 是否为 Null 或者 0
+    /// 判断 int 是否为 <see langword="null"/> 或者 0。
     /// </summary>
-    /// <param name="value"><see cref="int"/>值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">要验证的值。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNullOrZero(this int? value)
     {
         return value switch
@@ -149,10 +145,10 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 判断 double 是否为 Null 或者 0
+    /// 判断 double 是否为 <see langword="null"/> 或者 0。
     /// </summary>
-    /// <param name="value"><see cref="double"/>值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">double 值。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNullOrZero(this double? value)
     {
         return value switch
@@ -164,10 +160,10 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 判断 decimal 是否为 Null 或者 0
+    /// 判断 decimal 是否为 <see langword="null"/> 或者 0。
     /// </summary>
-    /// <param name="value"><see cref="decimal"/>值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">decimal 值。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNullOrZero(this decimal? value)
     {
         return value switch
@@ -179,10 +175,10 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 判断 float 是否为 Null 或者 0
+    /// 判断 float 是否为 <see langword="null"/> 或者 0。
     /// </summary>
-    /// <param name="value"><see cref="decimal"/>值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">decimal 值。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNullOrZero(this float? value)
     {
         return value switch
@@ -194,10 +190,10 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 判断 long 是否为 Null 或者 0
+    /// 判断 long 是否为 <see langword="null"/> 或者 0。
     /// </summary>
-    /// <param name="value"><see cref="long"/>值</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="value">要验证的值。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNullOrZero(this long? value)
     {
         return value switch
@@ -211,20 +207,20 @@ public static class ValidateExtension
     #region 验证输入字符串为数字(带小数)
 
     /// <summary>
-    /// 验证输入字符串为带小数点正数
+    /// 验证输入字符串为带小数点正数。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNumber(this string str)
     {
         return Regex.IsMatch(str, "^([0]|([1-9]+\\d{0,}?))(.[\\d]+)?$");
     }
 
     /// <summary>
-    /// 验证输入字符串为带小数点正负数
+    /// 验证输入字符串为带小数点正负数。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDecimalNumber(this string str)
     {
         return Regex.IsMatch(str, "^-?\\d+$|^(-?\\d+)(\\.\\d+)?$");
@@ -235,10 +231,10 @@ public static class ValidateExtension
     #region 验证中国电话格式是否有效，格式010-85849685
 
     /// <summary>
-    /// 验证中国电话格式是否有效，格式010-85849685
+    /// 验证中国电话格式是否有效，格式 010-85849685。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsTel(this string str)
     {
         return Regex.IsMatch(str, @"^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$", RegexOptions.IgnoreCase);
@@ -249,10 +245,10 @@ public static class ValidateExtension
     #region 验证输入字符串为电话号码
 
     /// <summary>
-    /// 验证输入字符串为电话号码
+    /// 验证输入字符串为电话号码。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsPhone(this string str)
     {
         return Regex.IsMatch(str, @"(^(\d{2,4}[-_－—]?)?\d{3,8}([-_－—]?\d{3,8})?([-_－—]?\d{1,7})?$)|(^0?1[35]\d{9}$)");
@@ -264,10 +260,10 @@ public static class ValidateExtension
     #region 验证是否是有效传真号码
 
     /// <summary>
-    /// 验证是否是有效传真号码
+    /// 验证是否是有效传真号码。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsFax(this string str)
     {
         return Regex.IsMatch(str, @"^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$");
@@ -278,10 +274,10 @@ public static class ValidateExtension
     #region 验证手机号是否合法
 
     /// <summary>
-    /// 验证手机号是否合法 号段为13,14,15,16,17,18,19  0，86开头将自动识别
+    /// 验证手机号是否合法 号段为 13,14,15,16,17,18,19 0，86 开头将自动识别。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsMobile(this string str)
     {
         if (!str.StartsWith("1"))
@@ -298,10 +294,10 @@ public static class ValidateExtension
     #region 验证身份证是否有效
 
     /// <summary>
-    /// 验证身份证是否有效
+    /// 验证身份证是否有效。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsIdCard(this string str)
     {
         return str.Length switch
@@ -313,10 +309,10 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 验证输入字符串为18位的身份证号码
+    /// 验证输入字符串为 18 位的身份证号码。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsIdCard18(this string str)
     {
         if (!long.TryParse(str.Remove(17), out var n)
@@ -361,10 +357,10 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 验证输入字符串为15位的身份证号码
+    /// 验证输入字符串为 15 位的身份证号码。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsIdCard15(this string str)
     {
         if (!long.TryParse(str, out var n) || n < Math.Pow(10, 14))
@@ -390,10 +386,10 @@ public static class ValidateExtension
     #region 验证是否是有效邮箱地址
 
     /// <summary>
-    /// 验证是否是有效邮箱地址
+    /// 验证是否是有效邮箱地址。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsEmail(this string str)
     {
         return Regex.IsMatch(str,
@@ -401,10 +397,10 @@ public static class ValidateExtension
     }
 
     /// <summary>
-    /// 验证是否是有效QQ邮箱地址
+    /// 验证是否是有效 QQ 邮箱地址。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsQqEmail(this string str)
     {
         return Regex.IsMatch(str, @"[1-9]\d{4,10}@qq\.com");
@@ -415,10 +411,10 @@ public static class ValidateExtension
     #region 验证是否只含有汉字
 
     /// <summary>
-    /// 验证是否只含有汉字
+    /// 验证是否只含有汉字。
     /// </summary>
-    /// <param name="strLn">输入字符</param>
-    /// <returns></returns>
+    /// <param name="strLn">要追加的文本行。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsOnlyChinese(this string strLn)
     {
         return Regex.IsMatch(strLn, @"^[\u4e00-\u9fa5]+$");
@@ -429,10 +425,10 @@ public static class ValidateExtension
     #region 是否有多余的字符 防止SQL注入
 
     /// <summary>
-    /// 是否有多余的字符 防止SQL注入
+    /// 是否有多余的字符 防止 SQL 注入。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns></returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsBadString(this string str)
     {
         if (string.IsNullOrEmpty(str))
@@ -448,10 +444,10 @@ public static class ValidateExtension
     #region 是否由数字、26个英文字母或者下划线組成的字串
 
     /// <summary>
-    /// 是否由数字、26个英文字母或者下划线組成的字串 
+    /// 是否由数字、26 个英文字母或者下划线組成的字串。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns></returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNzx(this string str)
     {
         return Regex.Match(str, "^[0-9a-zA-Z_]+$")
@@ -463,10 +459,10 @@ public static class ValidateExtension
     #region 由数字、26个英文字母、汉字組成的字串
 
     /// <summary>
-    /// 由数字、26个英文字母、汉字組成的字串
+    /// 由数字、26 个英文字母、汉字組成的字串。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns></returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsAlphaNumericChinese(this string str)
     {
         return Regex.Match(str, @"^[0-9a-zA-Z\u4e00-\u9fa5]+$")
@@ -478,10 +474,10 @@ public static class ValidateExtension
     #region 由数字、26个英文字母組成的字串
 
     /// <summary>
-    /// 是否由数字、26个英文字母組成的字串
+    /// 是否由数字、26 个英文字母組成的字串。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns></returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsAlphaNumeric(this string str)
     {
         return Regex.Match(str, @"^[0-9a-zA-Z]+$")
@@ -493,10 +489,10 @@ public static class ValidateExtension
     #region 验证输入字符串为邮政编码
 
     /// <summary>
-    /// 验证输入字符串为邮政编码
+    /// 验证输入字符串为邮政编码。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsPostCode(this string str)
     {
         return Regex.IsMatch(str, @"\d{6}");
@@ -507,16 +503,16 @@ public static class ValidateExtension
     #region 检查对象的输入长度
 
     /// <summary>
-    /// 检查对象的输入长度
+    /// 检查对象的输入长度。
     /// </summary>
-    /// <param name="str">输入字符</param>
-    /// <param name="length">指定的长度</param>
-    /// <returns>false 太长，true -太短</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <param name="length">目标长度。</param>
+    /// <returns>字符串长度恰好等于 <paramref name="length"/> 时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool CheckLength(this string str, int length)
     {
         if (str.Length > length)
         {
-            return false; //长度太长
+            return false;
         }
 
         return str.Length >= length;
@@ -527,14 +523,14 @@ public static class ValidateExtension
     #region 判断用户输入是否为日期
 
     /// <summary>
-    /// 判断用户输入是否为日期
+    /// 判断用户输入是否为日期。
     /// </summary>
     /// <remarks>
-    /// <para>可判断格式如下（其中-可替换为/，不影响验证):</para>
-    /// <para>YYYY | YYYY-MM | YYYYMM | YYYY-MM-DD | YYYYMMDD | YYYY-MM-DD HH:MM:SS | YYYY-MM-DD HH:MM:SS.FFF</para>
+    /// <para>可判断格式如下（其中-可替换为/，不影响验证):。</para>
+    /// <para>YYYY | YYYY-MM | YYYYMM | YYYY-MM-DD | YYYYMMDD | YYYY-MM-DD HH:MM:SS | YYYY-MM-DD HH:MM:SS.FFF。</para>
     /// </remarks>
-    /// <param name="str">输入字符</param>
-    /// <returns>返回一个bool类型的值</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDateTime(this string str)
     {
         // 检查输入是否为空
@@ -561,7 +557,7 @@ public static class ValidateExtension
             // 提取年份部分
             var year = int.Parse(cleanStr[..4]);
 
-            // 如果字符串长度大于等于6，提取月份部分
+            // 如果字符串长度大于等于 6，提取月份部分
             if (cleanStr.Length >= 6)
             {
                 var month = int.Parse(cleanStr.Substring(4, 2));
@@ -570,7 +566,7 @@ public static class ValidateExtension
                 if (month < 1 || month > 12)
                     return false;
 
-                // 如果字符串长度为8，提取日部分
+                // 如果字符串长度为 8，提取日部分
                 if (cleanStr.Length == 8)
                 {
                     var day = int.Parse(cleanStr.Substring(6, 2));
@@ -585,7 +581,7 @@ public static class ValidateExtension
             return true;
         }
 
-        // 如果不符合任何日期格式，返回false
+        // 如果不符合任何日期格式，返回 false
         return false;
     }
 

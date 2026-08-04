@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,26 +26,26 @@ using System.Reflection;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="Assembly"/> 拓展类
+/// 为 <see cref="Assembly"/> 提供扩展方法。
 /// </summary>
 public static class AssemblyExtension
 {
     /// <summary>
-    /// 获取所有类型
+    /// 获取所有类型。
     /// </summary>
-    /// <param name="assembly"><see cref="Assembly"/></param>
-    /// <param name="exported">类型导出设置</param>
-    /// <returns><see cref="Type"/>[]</returns>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="exported">是否只返回导出的类型。</param>
+    /// <returns>获取到的所有类型集合。</returns>
     public static Type[] GetTypes(this Assembly assembly, bool exported)
     {
         return exported ? assembly.GetExportedTypes() : assembly.GetTypes();
     }
 
     /// <summary>
-    /// 获取程序集描述
+    /// 获取程序集描述。
     /// </summary>
-    /// <param name="assembly"><see cref="Assembly"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <returns>获取到的程序集描述。</returns>
     public static string GetDescription(this Assembly assembly)
     {
         var descriptionAttribute =
@@ -55,10 +55,10 @@ public static class AssemblyExtension
     }
 
     /// <summary>
-    /// 获取程序集版本
+    /// 获取程序集版本。
     /// </summary>
-    /// <param name="assembly"><see cref="Assembly"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <returns>获取到的程序集版本。</returns>
     public static Version GetVersion(this Assembly assembly)
     {
         return assembly.GetName()
@@ -66,10 +66,10 @@ public static class AssemblyExtension
     }
 
     /// <summary>
-    /// 获取程序集名称
+    /// 获取程序集名称。
     /// </summary>
-    /// <param name="assembly"><see cref="Assembly"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <returns>获取到的程序集名称。</returns>
     public static string GetAssemblyName(this Assembly assembly)
     {
         return assembly.GetName()
@@ -77,11 +77,11 @@ public static class AssemblyExtension
     }
 
     /// <summary>
-    /// 根据程序集和类型完整限定名获取运行时类型
+    /// 根据程序集和类型完整限定名获取运行时类型。
     /// </summary>
-    /// <param name="assembly"><see cref="Assembly"/> 程序集</param>
-    /// <param name="typeFullName"><see cref="string"/> 类型完整限定名称</param>
-    /// <returns><see cref="Type"/></returns>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="typeFullName">目标类型的完全限定名。</param>
+    /// <returns>根据程序集和类型完整限定名获取运行时类型。</returns>
     public static Type GetType(Assembly assembly, string typeFullName)
     {
         return assembly.GetType(typeFullName);

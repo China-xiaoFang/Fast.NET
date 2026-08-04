@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -22,25 +22,34 @@
 
 using System.Text;
 using System.Text.Json;
-using Fast.Consul.Internal;
-using Fast.Consul.KeyValue.Dto;
 using Fast.NET.Core;
 
-namespace Fast.Consul.KeyValue;
+namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="KeyValueService"/> Key/Value 服务
+/// <see cref="ConsulKeyValueResponseDto"/> Consul Key/Value 响应 DTO。
+/// </summary>
+internal class ConsulKeyValueResponseDto
+{
+    public int LockIndex { get; set; }
+
+    public string Key { get; set; }
+
+    public int Flags { get; set; }
+
+    public string Value { get; set; }
+
+    public long CreateIndex { get; set; }
+
+    public long ModifyIndex { get; set; }
+}
+
+/// <summary>
+/// <see cref="KeyValueService"/> Key/Value 服务。
 /// </summary>
 public class KeyValueService : IKeyValueService
 {
-    /// <summary>
-    /// 读取 Consul 配置
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="settingPath"><see cref="string"/> 路径</param>
-    /// <param name="dcName"><see cref="string"/> 数据中心名称</param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc />
     public async Task<T> GetKeyValue<T>(string settingPath, string dcName)
     {
         ValidatePath(settingPath, dcName);
@@ -55,13 +64,7 @@ public class KeyValueService : IKeyValueService
         return JsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(Convert.FromBase64String(value)));
     }
 
-    /// <summary>
-    /// 读取 Consul 配置
-    /// </summary>
-    /// <param name="settingPath"><see cref="string"/> 路径</param>
-    /// <param name="dcName"><see cref="string"/> 数据中心名称</param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc />
     public async Task<string> GetKeyValue(string settingPath, string dcName)
     {
         ValidatePath(settingPath, dcName);
@@ -76,13 +79,7 @@ public class KeyValueService : IKeyValueService
         return Encoding.UTF8.GetString(Convert.FromBase64String(value));
     }
 
-    /// <summary>
-    /// 编辑 Consul 配置
-    /// </summary>
-    /// <param name="settingPath"><see cref="string"/> 路径</param>
-    /// <param name="dcName"><see cref="string"/> 数据中心名称</param>
-    /// <param name="data"><see cref="string"/> JSON 格式字符串</param>
-    /// <returns><see cref="bool"/> 是否成功</returns>
+    /// <inheritdoc />
     public async Task<bool> EditKeyValue(string settingPath, string dcName, string data)
     {
         ValidatePath(settingPath, dcName);

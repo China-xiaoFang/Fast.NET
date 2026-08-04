@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,22 +28,22 @@ using System.Text;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="CryptoUtil"/> 加密解密工具类
+/// <see cref="CryptoUtil"/> 加密解密工具类。
 /// </summary>
 public static class CryptoUtil
 {
     #region AES
 
     /// <summary>
-    /// 使用AES算法对给定字符串进行加密。
+    /// 使用 AES 算法对给定字符串进行加密。
     /// </summary>
-    /// <param name="dataStr">要加密的字符串。</param>
-    /// <param name="key">用于加密的密钥。必须32位</param>
-    /// <param name="vector">用于加密的向量（IV）。必须16位</param>
-    /// <param name="cipherMode">加密模式，默认为CBC模式。</param>
-    /// <param name="paddingMode">填充模式，默认为PKCS7。</param>
-    /// <returns>加密后的Base64编码字符串。</returns>
     /// <remarks>同一密钥重复使用固定 IV 会泄露明文模式；调用方应为不同数据提供不可预测且不重复的 IV。</remarks>
+    /// <param name="dataStr">要解析或处理的数据文本。</param>
+    /// <param name="key">用于加密的密钥。必须 32 位。</param>
+    /// <param name="vector">对称加密使用的初始化向量。</param>
+    /// <param name="cipherMode">对称加密使用的密码块模式。</param>
+    /// <param name="paddingMode">对称加密使用的填充模式。</param>
+    /// <returns>使用 AES 算法对给定字符串进行加密。</returns>
     public static string AESEncrypt(string dataStr, string key, string vector, CipherMode cipherMode = CipherMode.CBC,
         PaddingMode paddingMode = PaddingMode.PKCS7)
     {
@@ -62,31 +62,27 @@ public static class CryptoUtil
             return null;
         }
 
-        // 处理Key不足32位的问题
+        // AES 密钥不足 32 个字符时使用 f 补齐。
         if (key.Length < 32)
         {
-            // 不足
             key = key.PadRight(32, 'f');
         }
 
-        // 处理Key超过32位的问题
+        // AES 密钥超过 32 个字符时截断。
         if (key.Length > 32)
         {
-            // 超过
             key = key[..32];
         }
 
-        // 处理IV不足32位的问题
+        // AES 初始化向量不足 16 个字符时使用 f 补齐。
         if (vector.Length < 16)
         {
-            // 不足
             vector = vector.PadRight(16, 'f');
         }
 
-        // 处理IV超过32位的问题
+        // AES 初始化向量超过 16 个字符时截断。
         if (vector.Length > 16)
         {
-            // 超过
             vector = vector[..16];
         }
 
@@ -95,7 +91,7 @@ public static class CryptoUtil
         var keyBytes = Encoding.UTF8.GetBytes(key);
         var vectorBytes = Encoding.UTF8.GetBytes(vector);
 
-        // 创建AES实例并设置加密模式和填充模式
+        // 创建 AES 实例并设置加密模式和填充模式
         using var aesAlg = Aes.Create();
         aesAlg.Mode = cipherMode;
         aesAlg.Padding = paddingMode;
@@ -109,20 +105,20 @@ public static class CryptoUtil
         csEncrypt.Write(dataBytes, 0, dataBytes.Length);
         csEncrypt.FlushFinalBlock();
 
-        // 获取加密后的字节数组并转换为Base64编码字符串
+        // 获取加密后的字节数组并转换为 Base64 编码字符串
         var array = msEncrypt.ToArray();
         return Convert.ToBase64String(array);
     }
 
     /// <summary>
-    /// 使用AES算法对给定的Base64编码字符串进行解密。
+    /// 使用 AES 算法对给定的 Base64 编码字符串进行解密。
     /// </summary>
-    /// <param name="dataStr">要解密的Base64编码字符串。</param>
-    /// <param name="key">用于解密的密钥。必须32位</param>
-    /// <param name="vector">用于解密的向量（IV）。必须16位</param>
-    /// <param name="cipherMode">解密模式，默认为CBC模式。</param>
-    /// <param name="paddingMode">填充模式，默认为PKCS7。</param>
-    /// <returns>解密后的原始字符串。</returns>
+    /// <param name="dataStr">要解析或处理的数据文本。</param>
+    /// <param name="key">用于解密的密钥。必须 32 位。</param>
+    /// <param name="vector">对称加密使用的初始化向量。</param>
+    /// <param name="cipherMode">对称加密使用的密码块模式。</param>
+    /// <param name="paddingMode">对称加密使用的填充模式。</param>
+    /// <returns>使用 AES 算法对给定的 Base64 编码字符串进行解密。</returns>
     public static string AESDecrypt(string dataStr, string key, string vector, CipherMode cipherMode = CipherMode.CBC,
         PaddingMode paddingMode = PaddingMode.PKCS7)
     {
@@ -141,40 +137,36 @@ public static class CryptoUtil
             return null;
         }
 
-        // 处理Key不足32位的问题
+        // AES 密钥不足 32 个字符时使用 f 补齐。
         if (key.Length < 32)
         {
-            // 不足
             key = key.PadRight(32, 'f');
         }
 
-        // 处理Key超过32位的问题
+        // AES 密钥超过 32 个字符时截断。
         if (key.Length > 32)
         {
-            // 超过
             key = key[..32];
         }
 
-        // 处理IV不足32位的问题
+        // AES 初始化向量不足 16 个字符时使用 f 补齐。
         if (vector.Length < 16)
         {
-            // 不足
             vector = vector.PadRight(16, 'f');
         }
 
-        // 处理IV超过32位的问题
+        // AES 初始化向量超过 16 个字符时截断。
         if (vector.Length > 16)
         {
-            // 超过
             vector = vector[..16];
         }
 
-        // 将输入的Base64字符串、密钥和向量转换为字节数组
+        // 将输入的 Base64 字符串、密钥和向量转换为字节数组
         var dataBytes = Convert.FromBase64String(dataStr);
         var keyBytes = Encoding.UTF8.GetBytes(key);
         var vectorBytes = Encoding.UTF8.GetBytes(vector);
 
-        // 创建AES实例并设置解密模式和填充模式
+        // 创建 AES 实例并设置解密模式和填充模式
         using var aesAlg = Aes.Create();
         aesAlg.Mode = cipherMode;
         aesAlg.Padding = paddingMode;
@@ -192,10 +184,10 @@ public static class CryptoUtil
     /// <summary>
     /// 使用 AES-GCM 加密并认证字符串。
     /// </summary>
-    /// <param name="dataStr">待加密字符串。</param>
+    /// <remarks>新数据应优先使用此方法；旧的 CBC 接口仅用于兼容已有密文格式。</remarks>
+    /// <param name="dataStr">要解析或处理的数据文本。</param>
     /// <param name="key">密钥材料；内部使用 SHA-256 归一化为 256 位密钥。</param>
     /// <returns>包含格式版本、随机 nonce、认证标签和密文的 Base64 字符串。</returns>
-    /// <remarks>新数据应优先使用此方法；旧的 CBC 接口仅用于兼容已有密文格式。</remarks>
     public static string AESEncryptAuthenticated(string dataStr, string key)
     {
         if (dataStr == null)
@@ -240,10 +232,10 @@ public static class CryptoUtil
     /// <summary>
     /// 解密并验证 <see cref="AESEncryptAuthenticated"/> 生成的字符串。
     /// </summary>
-    /// <param name="dataStr">带认证信息的 Base64 密文。</param>
-    /// <param name="key">加密时使用的密钥材料。</param>
-    /// <returns>解密后的原始字符串。</returns>
     /// <exception cref="CryptographicException">密钥错误、密文被篡改或格式不受支持。</exception>
+    /// <param name="dataStr">要解析或处理的数据文本。</param>
+    /// <param name="key">加密时使用的密钥材料。</param>
+    /// <returns>解密并验证 AESEncryptAuthenticated 生成的字符串。</returns>
     public static string AESDecryptAuthenticated(string dataStr, string key)
     {
         if (dataStr == null)
@@ -293,9 +285,9 @@ public static class CryptoUtil
     /// <summary>
     /// 使用 MD5 算法计算字符串哈希。
     /// </summary>
-    /// <param name="content">要加密的字符串。</param>
-    /// <returns>哈希字符串。</returns>
     /// <remarks>仅用于兼容旧协议或校验值，不得用于密码存储、签名或安全用途；新代码请使用 <see cref="SHA256Encrypt"/>。</remarks>
+    /// <param name="content">要处理的内容。</param>
+    /// <returns>使用 MD5 算法计算字符串哈希。</returns>
     public static string MD5Encrypt(string content)
     {
         if (content == null)
@@ -320,11 +312,11 @@ public static class CryptoUtil
     #region SHA1
 
     /// <summary>
-    /// 计算 SHA-1 哈希
+    /// 计算 SHA-1 哈希。
     /// </summary>
-    /// <param name="str"><see cref="string"/></param>
-    /// <returns><see cref="string"/></returns>
     /// <remarks>仅用于兼容旧协议或校验值；新代码请使用 <see cref="SHA256Encrypt"/>。</remarks>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>计算得到的 SHA-1 哈希。</returns>
     public static string SHA1Encrypt(string str)
     {
         if (str == null)
@@ -343,8 +335,8 @@ public static class CryptoUtil
     /// <summary>
     /// 计算字符串的 SHA-256 哈希值。
     /// </summary>
-    /// <param name="content">待计算内容。</param>
-    /// <returns>大写十六进制哈希值。</returns>
+    /// <param name="content">要处理的内容。</param>
+    /// <returns>计算得到的字符串的 SHA-256 哈希值。</returns>
     public static string SHA256Encrypt(string content)
     {
         if (content == null)

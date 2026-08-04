@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: true
+  NUGET_XMLDOC_MODE: skip
+
+jobs:
+  validate:
+    name: audit, build, and pack
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore Fast.NET.sln
+
+      - name: Audit dependencies
+        run: dotnet package list --project Fast.NET.sln --vulnerable --include-transitive --no-restore
+
+      - name: Build
+        run: dotnet build Fast.NET.sln --configuration Release --no-restore
+
+      - name: Pack
+        run: >-
+          dotnet pack Fast.NET.sln --configuration Release --no-build --no-restore
+          --property:WarnOnPackingNonPackableProject=false
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v7
+        with:
+          name: nuget-packages
+          path: nupkgs/*.*nupkg
+          if-no-files-found: error

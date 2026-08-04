@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,15 +25,15 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarDatabaseUtil"/> Database DateTime 类型工具类
+/// <see cref="SqlSugarDatabaseUtil"/> 数据库字段类型映射工具类。
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 设置 <see cref="long"/> 类型
+    /// 设置 <see cref="long"/> 类型。
     /// </summary>
-    /// <param name="dbType"></param>
-    /// <param name="columnInfo"></param>
+    /// <param name="dbType">数据库类型。</param>
+    /// <param name="columnInfo">要补充数据库类型信息的实体列元数据。</param>
     internal static void SetDbTypeLong(DbType dbType, EntityColumnInfo columnInfo)
     {
         switch (dbType)
@@ -118,7 +118,6 @@ public partial class SqlSugarDatabaseUtil
                 columnInfo.DataType = "bigint";
                 break;
 
-            // 默认
             case DbType.Custom:
             default:
                 columnInfo.DataType = "bigint";

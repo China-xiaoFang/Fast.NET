@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,25 +27,26 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="ISwaggerOptions"/> Swagger配置
+/// <see cref="ISwaggerOptions"/> Swagger 配置。
 /// </summary>
 [SuppressSniffer]
 public interface ISwaggerOptions
 {
     /// <summary>
-    /// 配置 Swagger生成器
+    /// 配置 Swagger 生成器。
     /// </summary>
+    /// <returns>配置 Swagger 生成器。</returns>
     Action<SwaggerGenOptions> SwaggerGen();
 
     /// <summary>
-    /// 配置 Swagger 全局参数
+    /// 配置 Swagger 全局参数。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>配置 Swagger 全局参数。</returns>
     Action<SwaggerOptions> Swagger();
 
     /// <summary>
-    /// 配置 Swagger UI 全局参数
+    /// 配置 Swagger UI 全局参数。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>配置 Swagger UI 全局参数。</returns>
     Action<SwaggerUIOptions> SwaggerUI();
 }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,16 +26,16 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> System.Text.Json 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供 System.Text.Json 扩展方法。
 /// </summary>
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加 System.Text.Json 序列化服务
+    /// 添加 System.Text.Json 序列化服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configureOptions"><see cref="Action{JsonOptions}"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="configureOptions">用于配置 <see cref="JsonOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSerialization(this IServiceCollection services,
         Action<JsonOptions> configureOptions = null)
     {
@@ -45,7 +45,6 @@ public static class IServiceCollectionExtension
         configureOptions?.Invoke(jsonOptions);
         JsonContext.SerializerOptions = jsonOptions.JsonSerializerOptions;
 
-        // 配置验证
         services.Configure(JsonContext.JsonOptionsAction);
 
         return services;

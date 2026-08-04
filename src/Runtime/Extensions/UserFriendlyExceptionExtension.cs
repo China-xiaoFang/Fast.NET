@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,17 +25,17 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="UserFriendlyException"/> 拓展类
+/// 为 <see cref="UserFriendlyException"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class UserFriendlyExceptionExtension
 {
     /// <summary>
-    /// 设置异常状态码
+    /// 设置异常状态码。
     /// </summary>
-    /// <param name="exception"><see cref="UserFriendlyException"/></param>
-    /// <param name="statusCode"><see cref="int"/></param>
-    /// <returns><see cref="UserFriendlyException"/></returns>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="statusCode">HTTP 状态码。</param>
+    /// <returns>设置异常状态码。</returns>
     public static UserFriendlyException StatusCode(this UserFriendlyException exception,
         int statusCode = StatusCodes.Status400BadRequest)
     {
@@ -44,11 +44,11 @@ public static class UserFriendlyExceptionExtension
     }
 
     /// <summary>
-    /// 设置额外数据
+    /// 设置额外数据。
     /// </summary>
-    /// <param name="exception"><see cref="UserFriendlyException"/></param>
-    /// <param name="data"><see cref="object"/></param>
-    /// <returns><see cref="UserFriendlyException"/></returns>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="data">要处理或传输的数据。</param>
+    /// <returns>设置额外数据。</returns>
     public static UserFriendlyException WithData(this UserFriendlyException exception, object data)
     {
         exception.Data = data;

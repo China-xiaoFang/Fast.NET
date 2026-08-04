@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,24 +26,25 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 全局日志静态类
+/// 全局日志静态类。
 /// </summary>
 [SuppressSniffer]
 public static class Log
 {
     /// <summary>
-    /// 手动构建方式
+    /// 手动构建方式。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>手动构建方式。</returns>
     public static StringLoggingPart Default()
     {
         return StringLoggingPart.Default();
     }
 
     /// <summary>
-    /// 创建日志记录器
+    /// 创建日志记录器。
     /// </summary>
-    /// <returns></returns>
+    /// <typeparam name="T">日志记录器使用的分类类型。</typeparam>
+    /// <returns>创建的日志记录器。</returns>
     public static ILogger CreateLogger<T>()
     {
         return MAppContext.GetServiceProvider(typeof(ILogger<T>), Penetrates.RootServices, Penetrates.InternalServices,
@@ -52,11 +53,11 @@ public static class Log
     }
 
     /// <summary>
-    /// 创建日志工厂
+    /// 创建日志工厂。
     /// </summary>
-    /// <remarks><see cref="ILoggerFactory"/> 实现了 <see cref="IDisposable"/> 接口，注意使用 `using` 控制</remarks>
-    /// <param name="configure">日志构建器</param>
-    /// <returns></returns>
+    /// <remarks><see cref="ILoggerFactory"/> 实现了 <see cref="IDisposable"/> 接口，注意使用 `using` 控制。</remarks>
+    /// <param name="configure">用于配置 <see cref="ILoggingBuilder"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>创建的日志工厂。</returns>
     public static ILoggerFactory CreateLoggerFactory(Action<ILoggingBuilder> configure = null)
     {
         return LoggerFactory.Create(builder =>
@@ -69,10 +70,10 @@ public static class Log
     }
 
     /// <summary>
-    /// 配置日志上下文
+    /// 创建包含指定属性的日志作用域。
     /// </summary>
-    /// <param name="properties">建议使用 ConcurrentDictionary 类型</param>
-    /// <returns></returns>
+    /// <param name="properties">要加入日志作用域的属性；并发修改时应使用 <see cref="System.Collections.Concurrent.ConcurrentDictionary{TKey,TValue}"/>。</param>
+    /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
     public static (ILogger logger, IDisposable scope) ScopeContext(IDictionary<object, object> properties)
     {
         return GetLogger(StringLoggingPart.Default()
@@ -80,10 +81,10 @@ public static class Log
     }
 
     /// <summary>
-    /// 配置日志上下文
+    /// 创建包含指定属性的日志作用域。
     /// </summary>
-    /// <param name="configure"></param>
-    /// <returns></returns>
+    /// <param name="configure">用于配置 <see cref="LogContext"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
     public static (ILogger logger, IDisposable scope) ScopeContext(Action<LogContext> configure)
     {
         return GetLogger(StringLoggingPart.Default()
@@ -91,10 +92,10 @@ public static class Log
     }
 
     /// <summary>
-    /// 配置日志上下文
+    /// 创建包含指定属性的日志作用域。
     /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <param name="context">当前操作上下文 <see cref="LogContext"/>。</param>
+    /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
     public static (ILogger logger, IDisposable scope) ScopeContext(LogContext context)
     {
         return GetLogger(StringLoggingPart.Default()
@@ -102,10 +103,10 @@ public static class Log
     }
 
     /// <summary>
-    /// LogInformation
+    /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Information(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -115,11 +116,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogInformation
+    /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Information(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -130,11 +131,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogInformation
+    /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Information(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -145,12 +146,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogInformation
+    /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Information(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -162,11 +163,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogInformation
+    /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Information<TClass>(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -177,12 +178,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogInformation
+    /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Information<TClass>(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -194,12 +195,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogInformation
+    /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Information<TClass>(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -211,13 +212,13 @@ public static class Log
     }
 
     /// <summary>
-    /// LogInformation
+    /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Information<TClass>(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -230,10 +231,10 @@ public static class Log
     }
 
     /// <summary>
-    /// LogWarning
+    /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Warning(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -243,11 +244,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogWarning
+    /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Warning(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -258,11 +259,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogWarning
+    /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Warning(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -273,12 +274,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogWarning
+    /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Warning(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -290,11 +291,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogWarning
+    /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Warning<TClass>(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -305,12 +306,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogWarning
+    /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Warning<TClass>(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -322,12 +323,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogWarning
+    /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Warning<TClass>(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -339,13 +340,13 @@ public static class Log
     }
 
     /// <summary>
-    /// LogWarning
+    /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Warning<TClass>(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -358,10 +359,10 @@ public static class Log
     }
 
     /// <summary>
-    /// LogError
+    /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Error(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -371,11 +372,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogError
+    /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Error(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -386,11 +387,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogError
+    /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Error(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -401,12 +402,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogError
+    /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Error(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -418,11 +419,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogError
+    /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Error<TClass>(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -433,12 +434,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogError
+    /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Error<TClass>(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -450,12 +451,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogError
+    /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Error<TClass>(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -467,13 +468,13 @@ public static class Log
     }
 
     /// <summary>
-    /// LogError
+    /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Error<TClass>(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -486,10 +487,10 @@ public static class Log
     }
 
     /// <summary>
-    /// LogDebug
+    /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Debug(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -499,11 +500,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogDebug
+    /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Debug(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -514,11 +515,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogDebug
+    /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Debug(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -529,12 +530,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogDebug
+    /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Debug(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -546,11 +547,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogDebug
+    /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Debug<TClass>(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -561,12 +562,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogDebug
+    /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Debug<TClass>(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -578,12 +579,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogDebug
+    /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Debug<TClass>(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -595,13 +596,13 @@ public static class Log
     }
 
     /// <summary>
-    /// LogDebug
+    /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Debug<TClass>(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -614,10 +615,10 @@ public static class Log
     }
 
     /// <summary>
-    /// LogTrace
+    /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Trace(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -627,11 +628,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogTrace
+    /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Trace(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -642,11 +643,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogTrace
+    /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Trace(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -657,12 +658,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogTrace
+    /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Trace(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -674,11 +675,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogTrace
+    /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Trace<TClass>(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -689,12 +690,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogTrace
+    /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Trace<TClass>(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -706,12 +707,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogTrace
+    /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Trace<TClass>(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -723,13 +724,13 @@ public static class Log
     }
 
     /// <summary>
-    /// LogTrace
+    /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Trace<TClass>(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -742,10 +743,10 @@ public static class Log
     }
 
     /// <summary>
-    /// LogCritical
+    /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Critical(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -755,11 +756,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogCritical
+    /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Critical(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -770,11 +771,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogCritical
+    /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Critical(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -785,12 +786,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogCritical
+    /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
     public static void Critical(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -802,11 +803,11 @@ public static class Log
     }
 
     /// <summary>
-    /// LogCritical
+    /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Critical<TClass>(string message, params object[] args)
     {
         StringLoggingPart.Default()
@@ -817,12 +818,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogCritical
+    /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Critical<TClass>(string message, EventId eventId, params object[] args)
     {
         StringLoggingPart.Default()
@@ -834,12 +835,12 @@ public static class Log
     }
 
     /// <summary>
-    /// LogCritical
+    /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Critical<TClass>(string message, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -851,13 +852,13 @@ public static class Log
     }
 
     /// <summary>
-    /// LogCritical
+    /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    /// <param name="message"></param>
-    /// <param name="eventId"></param>
-    /// <param name="exception"></param>
-    /// <param name="args"></param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="args">格式化消息时使用的参数。</param>
+    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Critical<TClass>(string message, EventId eventId, Exception exception, params object[] args)
     {
         StringLoggingPart.Default()
@@ -870,13 +871,12 @@ public static class Log
     }
 
     /// <summary>
-    /// 获取日志实例
+    /// 获取日志实例。
     /// </summary>
-    /// <param name="loggingPart"></param>
-    /// <returns></returns>
+    /// <param name="loggingPart">用于创建日志记录器的日志消息构建器。</param>
+    /// <returns>获取到的日志实例。</returns>
     private static (ILogger, IDisposable) GetLogger(StringLoggingPart loggingPart)
     {
-        // 获取日志实例
         var (logger, loggerFactory, hasException) = loggingPart.GetLogger();
 
         if (logger == null)

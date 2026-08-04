@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,95 +25,86 @@ using System.Text.Json.Serialization;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="ChannelEventSource"/> 内存通道事件源（事件承载对象）
+/// <see cref="ChannelEventSource"/> 内存通道事件源（事件承载对象）。
 /// </summary>
 [SuppressSniffer]
 public sealed class ChannelEventSource : IEventSource
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
     /// </summary>
     public ChannelEventSource()
     {
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
+    /// <param name="eventId">日志事件标识。</param>
     public ChannelEventSource(string eventId)
     {
         EventId = eventId;
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="payload">事件承载（携带）数据</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="payload">要写入令牌的载荷。</param>
     public ChannelEventSource(string eventId, object payload) : this(eventId)
     {
         Payload = payload;
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="payload">事件承载（携带）数据</param>
-    /// <param name="cancellationToken">取消任务 Token</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="payload">要写入令牌的载荷。</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
     public ChannelEventSource(string eventId, object payload, CancellationToken cancellationToken) : this(eventId, payload)
     {
         CancellationToken = cancellationToken;
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
+    /// <param name="eventId">日志事件标识。</param>
     public ChannelEventSource(Enum eventId) : this(eventId.EventBusToString())
     {
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="payload">事件承载（携带）数据</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="payload">要写入令牌的载荷。</param>
     public ChannelEventSource(Enum eventId, object payload) : this(eventId.EventBusToString(), payload)
     {
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="payload">事件承载（携带）数据</param>
-    /// <param name="cancellationToken">取消任务 Token</param>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="payload">要写入令牌的载荷。</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
     public ChannelEventSource(Enum eventId, object payload, CancellationToken cancellationToken) : this(
         eventId.EventBusToString(), payload, cancellationToken)
     {
     }
 
-    /// <summary>
-    /// 事件 Id
-    /// </summary>
+    /// <inheritdoc />
     public string EventId { get; set; }
 
-    /// <summary>
-    /// 事件承载（携带）数据
-    /// </summary>
+    /// <inheritdoc />
     public object Payload { get; set; }
 
-    /// <summary>
-    /// 事件创建时间
-    /// </summary>
+    /// <inheritdoc />
     public DateTime CreatedTime { get; set; } = DateTime.UtcNow;
 
-    /// <summary>
-    /// 取消任务 Token
-    /// </summary>
-    /// <remarks>用于取消本次消息处理</remarks>
+    /// <inheritdoc />
     [JsonIgnore]
     public CancellationToken CancellationToken { get; set; }
 }

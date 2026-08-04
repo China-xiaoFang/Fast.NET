@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,30 +25,26 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// <see cref="NamedServiceProvider{TService}"/> 命名服务提供器默认实现
+/// <see cref="NamedServiceProvider{TService}"/> 命名服务提供器默认实现。
 /// </summary>
-/// <typeparam name="TService">目标服务接口</typeparam>
+/// <typeparam name="TService">目标服务接口。</typeparam>
 internal class NamedServiceProvider<TService> : INamedServiceProvider<TService> where TService : class
 {
     /// <summary>
-    /// 服务提供器
+    /// 服务提供器。
     /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// 
+    /// 初始化命名服务提供器。
     /// </summary>
+    /// <param name="serviceProvider">用于解析命名服务工厂的服务提供器。</param>
     public NamedServiceProvider(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
 
-    /// <summary>
-    /// 根据服务名称获取服务
-    /// </summary>
-    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/></typeparam>
-    /// <param name="serviceName"><see cref="string"/> 服务名称</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public TService GetService<ILifetime>(string serviceName) where ILifetime : IDependency
     {
         var resolveNamed = _serviceProvider.GetService<Func<string, ILifetime, object>>();
@@ -60,12 +56,7 @@ internal class NamedServiceProvider<TService> : INamedServiceProvider<TService> 
         throw new InvalidOperationException($"Named service `{serviceName}` is not registered in container.");
     }
 
-    /// <summary>
-    /// 根据服务名称获取服务
-    /// </summary>
-    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/></typeparam>
-    /// <param name="serviceName"><see cref="string"/> 服务名称</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public TService GetRequiredService<ILifetime>(string serviceName) where ILifetime : IDependency
     {
         var resolveNamed = _serviceProvider.GetRequiredService<Func<string, ILifetime, object>>();

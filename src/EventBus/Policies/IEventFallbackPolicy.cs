@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,16 +23,16 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventFallbackPolicy"/> 事件重试失败回调服务
+/// <see cref="IEventFallbackPolicy"/> 事件重试失败回调服务。
 /// </summary>
 [SuppressSniffer]
 public interface IEventFallbackPolicy
 {
     /// <summary>
-    /// 重试失败回调
+    /// 重试失败回调。
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="ex"></param>
-    /// <returns></returns>
+    /// <param name="context">当前操作上下文 <see cref="EventHandlerExecutingContext"/>。</param>
+    /// <param name="ex">触发当前处理流程的异常。</param>
+    /// <returns>表示异步“重试失败回调”操作的任务。</returns>
     Task CallbackAsync(EventHandlerExecutingContext context, Exception ex);
 }

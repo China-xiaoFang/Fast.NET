@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,15 +27,15 @@ using System.Linq;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="DateTime"/> 拓展类
+/// 为 <see cref="DateTime"/> 提供扩展方法。
 /// </summary>
 public static class DateTimeExtension
 {
     /// <summary>
-    /// 得到问好
+    /// 得到问好。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>得到问好。</returns>
     public static string GetSayHello(this DateTime dateTime)
     {
         var hour = dateTime.Hour;
@@ -57,30 +57,30 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取当前月的第一天
+    /// 获取当前月的第一天。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns><see cref="DateTime"/></returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>获取到的当前月的第一天。</returns>
     public static DateTime GetCurMonthFirstDay(this DateTime dateTime)
     {
         return DateTimeUtil.GetYearMonthFirstDay(dateTime.Year, dateTime.Month);
     }
 
     /// <summary>
-    /// 获取当前月的最后一天
+    /// 获取当前月的最后一天。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns><see cref="DateTime"/></returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>获取到的当前月的最后一天。</returns>
     public static DateTime GetCurMonthLastDay(this DateTime dateTime)
     {
         return DateTimeUtil.GetYearMonthLastDay(dateTime.Year, dateTime.Month);
     }
 
     /// <summary>
-    /// 获取上月的第一天
+    /// 获取上月的第一天。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns><see cref="DateTime"/></returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>获取到的上月的第一天。</returns>
     public static DateTime GetUpMonthFirstDay(this DateTime dateTime)
     {
         var nowDate = dateTime.AddMonths(-1);
@@ -88,10 +88,10 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取上月的最后一天
+    /// 获取上月的最后一天。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns><see cref="DateTime"/></returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>获取到的上月的最后一天。</returns>
     public static DateTime GetUpMonthLastDay(this DateTime dateTime)
     {
         var internalDate = new DateTime(dateTime.Year, dateTime.Month, 01, 23, 59, 59);
@@ -99,10 +99,10 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取本周时间
+    /// 获取本周时间。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns>(<see cref="DateTime"/>, <see cref="DateTime"/>)</returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>时间范围的起始时间和结束时间。</returns>
     public static (DateTime startTime, DateTime lastTime) GetCurWeekDay(this DateTime dateTime)
     {
         var startTime = dateTime.AddDays(0 - Convert.ToInt16(dateTime.DayOfWeek) + 1);
@@ -112,10 +112,10 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取上周时间
+    /// 获取上周时间。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns>(<see cref="DateTime"/>, <see cref="DateTime"/>)</returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>时间范围的起始时间和结束时间。</returns>
     public static (DateTime startTime, DateTime lastTime) GetUpWeekDay(this DateTime dateTime)
     {
         var startTime = dateTime.AddDays(0 - Convert.ToInt16(dateTime.DayOfWeek) - 6);
@@ -125,10 +125,10 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取当天时间
+    /// 获取当天时间。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns>(<see cref="DateTime"/>, <see cref="DateTime"/>)</returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>时间范围的起始时间和结束时间。</returns>
     public static (DateTime startTime, DateTime lastTime) GetCurDay(this DateTime dateTime)
     {
         return (new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0),
@@ -136,10 +136,10 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取昨天时间
+    /// 获取昨天时间。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns>(<see cref="DateTime"/>, <see cref="DateTime"/>)</returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>时间范围的起始时间和结束时间。</returns>
     public static (DateTime startTime, DateTime lastTime) GetUpDay(this DateTime dateTime)
     {
         var internalDate = dateTime.AddDays(-1);
@@ -148,10 +148,10 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取生肖
+    /// 获取生肖。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>获取到的生肖。</returns>
     public static string GetZodiac(this DateTime dateTime)
     {
         if (dateTime < new DateTime(1900, 1, 1))
@@ -169,10 +169,10 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取星座
+    /// 获取星座。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>获取到的星座。</returns>
     public static string GetConstellation(this DateTime dateTime)
     {
         if (dateTime < new DateTime(1900, 1, 1))
@@ -208,10 +208,10 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 生命密码
+    /// 生命密码。
     /// </summary>
-    /// <param name="dateTime"><see cref="DateTime"/></param>
-    /// <returns><see cref="int"/></returns>
+    /// <param name="dateTime">要处理的日期时间。</param>
+    /// <returns>生命密码。</returns>
     public static int GetLifeCode(this DateTime dateTime)
     {
         if (dateTime < new DateTime(1900, 1, 1))

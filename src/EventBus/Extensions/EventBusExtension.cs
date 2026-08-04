@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,16 +25,16 @@ using System.Reflection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventBusExtension"/> 事件总线拓展类
+/// 提供事件总线扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class EventBusExtension
 {
     /// <summary>
-    /// 将事件枚举 Id 转换成字符串对象
+    /// 将事件枚举 ID 转换成字符串对象。
     /// </summary>
-    /// <param name="em"></param>
-    /// <returns></returns>
+    /// <param name="em">要转换为事件标识字符串的枚举值。</param>
+    /// <returns>将事件枚举 ID 转换成字符串对象。</returns>
     public static string EventBusToString(this Enum em)
     {
         var enumType = em.GetType();
@@ -42,10 +42,10 @@ public static class EventBusExtension
     }
 
     /// <summary>
-    /// 将事件枚举字符串转换成枚举对象
+    /// 将事件枚举字符串转换成枚举对象。
     /// </summary>
-    /// <param name="str"></param>
-    /// <returns></returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>将事件枚举字符串转换成枚举对象。</returns>
     public static Enum EventBusToEnum(this string str)
     {
         var assemblyName = str[..str.IndexOf(';')];

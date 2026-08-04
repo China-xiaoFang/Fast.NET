@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,27 +20,20 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-#if NET10_0_OR_GREATER
-using Microsoft.OpenApi;
-#else
-using Microsoft.OpenApi.Models;
-#endif
+
 using System.Reflection;
 using Fast.DynamicApplication;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.OpenApi;
 
 namespace Fast.Swagger;
 
 /// <summary>
-/// 规范化文档自定义更多功能
+/// 规范化文档自定义更多功能。
 /// </summary>
 internal class ApiActionFilter : IOperationFilter
 {
-    /// <summary>
-    /// 实现过滤器方法
-    /// </summary>
-    /// <param name="operation"></param>
-    /// <param name="context"></param>
+    /// <inheritdoc />
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         // 获取方法

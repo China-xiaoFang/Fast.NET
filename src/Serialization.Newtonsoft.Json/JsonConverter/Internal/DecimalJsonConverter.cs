@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,12 +26,12 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DecimalJsonConverter"/> decimal 类型Json返回处理
+/// <see cref="DecimalJsonConverter"/> decimal 类型 JSON 返回处理。
 /// </summary>
 internal class DecimalJsonConverter : JsonConverter<decimal>
 {
     /// <summary>
-    /// 小数点位数
+    /// 小数点位数。
     /// </summary>
     public int? Places { get; set; }
 
@@ -45,26 +45,17 @@ internal class DecimalJsonConverter : JsonConverter<decimal>
         Places = places;
     }
 
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, decimal value, JsonSerializer serializer)
     {
         writer.WriteValue(Places == null ? (decimal) (double) value : Math.Round(value, Places.Value));
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override decimal ReadJson(JsonReader reader, Type objectType, decimal existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
-        // 这里做处理，前端传入的Decimal类型可能为String类型，或者Number类型。
+        // 同时接受 JSON 字符串和数字令牌。
         if (reader.TokenType == JsonToken.String)
         {
             var jToken = JToken.ReadFrom(reader);
@@ -77,12 +68,12 @@ internal class DecimalJsonConverter : JsonConverter<decimal>
 }
 
 /// <summary>
-/// <see cref="NullableDecimalJsonConverter"/> decimal? 类型Json返回处理
+/// <see cref="NullableDecimalJsonConverter"/> decimal? 类型 JSON 返回处理。
 /// </summary>
 internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
 {
     /// <summary>
-    /// 小数点位数
+    /// 小数点位数。
     /// </summary>
     public int? Places { get; set; }
 
@@ -96,10 +87,7 @@ internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
         Places = places;
     }
 
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, decimal? value, JsonSerializer serializer)
     {
         if (value == null)
@@ -108,20 +96,14 @@ internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
             writer.WriteValue(Places == null ? (decimal) (double) value.Value : Math.Round(value.Value, Places.Value));
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override decimal? ReadJson(JsonReader reader, Type objectType, decimal? existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
         if (reader.TokenType == JsonToken.Null)
             return null;
 
-        // 这里做处理，前端传入的Decimal类型可能为String类型，或者Number类型。
+        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理。
         if (reader.TokenType != JsonToken.String)
             return Convert.ToDecimal(reader.Value);
 

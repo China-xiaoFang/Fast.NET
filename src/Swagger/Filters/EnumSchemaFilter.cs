@@ -20,34 +20,25 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-#if NET10_0_OR_GREATER
+
+using System.Text.RegularExpressions;
 using System.Text.Json.Nodes;
 using Microsoft.OpenApi;
-#else
-using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Any;
-#endif
-using System.Text.RegularExpressions;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Fast.Swagger;
 
 /// <summary>
-/// 修正 规范化文档 Enum 提示
+/// 修正 规范化文档 Enum 提示。
 /// </summary>
 internal class EnumSchemaFilter : ISchemaFilter
 {
     /// <summary>
-    /// 中文正则表达式
+    /// 中文正则表达式。
     /// </summary>
     private const string CHINESE_PATTERN = @"[\u4e00-\u9fa5]";
 
-#if NET10_0_OR_GREATER
-    /// <summary>
-    /// 实现过滤器方法
-    /// </summary>
-    /// <param name="schema"></param>
-    /// <param name="context"></param>
+    /// <inheritdoc />
     public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
     {
         var type = context.Type;
@@ -77,7 +68,7 @@ internal class EnumSchemaFilter : ISchemaFilter
             {
                 var numValue = value.ChangeType(enumValueType);
 
-                // OpenApi v2: 使用 JsonNode 替代 OpenApiString/OpenApiAnyFactory
+                // Microsoft.OpenAPI 2.x 使用 JsonNode 表示枚举值。
                 model.Enum?.Add(!convertToNumber ? JsonValue.Create(value.ToString()) : JsonNode.Parse($"{numValue}"));
             }
 
@@ -88,52 +79,4 @@ internal class EnumSchemaFilter : ISchemaFilter
             }
         }
     }
-#else
-    /// <summary>
-    /// 实现过滤器方法
-    /// </summary>
-    /// <param name="model"></param>
-    /// <param name="context"></param>
-    public void Apply(OpenApiSchema model, SchemaFilterContext context)
-    {
-        var type = context.Type;
-
-        // 排除其他程序集的枚举
-        if (type.IsEnum && MAppContext.Assemblies.Contains(type.Assembly))
-        {
-            model.Enum.Clear();
-
-            var enumValues = Enum.GetValues(type);
-
-            // 从配置文件中读取全局配置
-            var convertToNumber = Penetrates.SwaggerSettings.EnumToNumber!.Value;
-
-            // 包含中文情况
-            if (Enum.GetNames(type)
-                .Any(v => Regex.IsMatch(v, CHINESE_PATTERN)))
-            {
-                convertToNumber = true;
-            }
-
-            // 获取枚举实际值类型
-            var enumValueType = type.GetField("value__")
-                ?.FieldType;
-
-            foreach (var value in enumValues)
-            {
-                var numValue = value.ChangeType(enumValueType);
-
-                model.Enum.Add(!convertToNumber
-                    ? new OpenApiString(value.ToString())
-                    : OpenApiAnyFactory.CreateFromJson($"{numValue}"));
-            }
-
-            if (!convertToNumber)
-            {
-                model.Type = "string";
-                model.Format = null;
-            }
-        }
-    }
-#endif
 }

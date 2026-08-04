@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,42 +25,42 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="ISqlSugarRepository{TEntity}"/> SqlSugar 仓储接口
+/// <see cref="ISqlSugarRepository{TEntity}"/> SqlSugar 仓储接口。
 /// </summary>
 public partial interface ISqlSugarRepository<TEntity> : ISqlSugarClient where TEntity : class, new()
 {
     /// <summary>
-    /// 是否支持逻辑删除
+    /// 是否支持逻辑删除。
     /// </summary>
-    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用</remarks>
+    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用。</remarks>
     bool SupportsLogicDelete { get; }
 
     /// <summary>
-    /// 是否支持行版本控制（乐观锁）
+    /// 是否支持行版本控制（乐观锁）。
     /// </summary>
-    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用</remarks>
+    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用。</remarks>
     bool SupportsRowVersion { get; }
 
     /// <summary>
-    /// 是否分表
+    /// 是否分表。
     /// </summary>
-    /// <remarks><typeparamref name="TEntity"/> 头部标记 <see cref="SplitTableAttribute"/> 特性才有用</remarks>
+    /// <remarks><typeparamref name="TEntity"/> 头部标记 <see cref="SplitTableAttribute"/> 特性才有用。</remarks>
     bool IsSplitTable { get; }
 
     /// <summary>
-    /// 实体集合
+    /// 实体集合。
     /// </summary>
     ISugarQueryable<TEntity> Entities { get; }
 
     /// <summary>
-    /// 当前仓储的数据库信息
+    /// 当前仓储的数据库信息。
     /// </summary>
     ConnectionSettingsOptions DatabaseInfo { get; }
 
     /// <summary>
-    /// 切换仓储/切换租户仓储
+    /// 切换仓储/切换租户仓储。
     /// </summary>
-    /// <typeparam name="TChangeEntity">实体类型</typeparam>
-    /// <returns>仓储</returns>
+    /// <typeparam name="TChangeEntity">临时切换使用的实体类型。</typeparam>
+    /// <returns>切换仓储/切换租户仓储。</returns>
     ISqlSugarRepository<TChangeEntity> Change<TChangeEntity>() where TChangeEntity : class, new();
 }

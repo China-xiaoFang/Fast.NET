@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,47 +26,37 @@ using Microsoft.Extensions.Options;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// 授权策略提供器
+/// 授权策略提供器。
 /// </summary>
 internal sealed class AppAuthorizationPolicyProvider : IAuthorizationPolicyProvider
 {
     /// <summary>
-    /// 默认回退策略
+    /// 默认回退策略。
     /// </summary>
     public DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="AppAuthorizationPolicyProvider"/> 类的新实例。
     /// </summary>
-    /// <param name="options"></param>
+    /// <param name="options">当前组件使用的选项 <see cref="IOptions{AuthorizationOptions}"/>。</param>
     public AppAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options)
     {
         FallbackPolicyProvider = new DefaultAuthorizationPolicyProvider(options);
     }
 
-    /// <summary>
-    /// 获取默认策略
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<AuthorizationPolicy> GetDefaultPolicyAsync()
     {
         return FallbackPolicyProvider.GetDefaultPolicyAsync();
     }
 
-    /// <summary>
-    /// 获取回退策略
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<AuthorizationPolicy> GetFallbackPolicyAsync()
     {
         return FallbackPolicyProvider.GetFallbackPolicyAsync();
     }
 
-    /// <summary>
-    /// 获取策略
-    /// </summary>
-    /// <param name="policyName"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
     {
         // 判断是否是包含授权策略前缀

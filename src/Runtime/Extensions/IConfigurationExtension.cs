@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,17 +25,17 @@ using Microsoft.Extensions.Configuration;
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="IConfiguration"/> 拓展类
+/// 为 <see cref="IConfiguration"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IConfigurationExtension
 {
     /// <summary>
-    /// 加载后期配置
+    /// 加载后期配置。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <typeparam name="T">要执行后期配置的选项类型。</typeparam>
+    /// <returns>加载后的后期配置。</returns>
     public static T LoadPostConfigure<T>(this T type) where T : IPostConfigure
     {
         // 空值判断

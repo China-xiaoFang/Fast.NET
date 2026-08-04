@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,16 +25,16 @@ using Microsoft.Extensions.Configuration;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="IConfiguration"/> 拓展类
+/// 为 <see cref="IConfiguration"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IConfigurationExtension
 {
     /// <summary>
-    /// 刷新配置对象
+    /// 刷新配置对象。
     /// </summary>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <returns><see cref="IConfiguration"/></returns>
+    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <returns>刷新配置对象。</returns>
     public static IConfiguration Reload(this IConfiguration configuration)
     {
         if (FastContext.RootServices == null)

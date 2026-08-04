@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,12 +23,12 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="Penetrates"/> 常量，公共方法配置类。
 /// </summary>
 internal static class Penetrates
 {
     /// <summary>
-    /// OpenApi 配置
+    /// OpenAPI 配置。
     /// </summary>
     internal static OpenApiSettingsOptions OpenApiSettings { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,18 +27,17 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DateJsonConverter"/> Datetime 类型Json返回日期处理
+/// <see cref="DateJsonConverter"/> DateTime 类型 JSON 返回日期处理。
 /// </summary>
 public class DateJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
-    /// 日期格式化
-    /// <para>默认：yyyy-MM-dd</para>
+    /// 日期格式化 <para>默认：yyyy-MM-dd</para>。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// <see cref="DateJsonConverter"/> Datetime 类型Json返回日期处理
+    /// <see cref="DateJsonConverter"/> DateTime 类型 JSON 返回日期处理。
     /// </summary>
     public DateJsonConverter()
     {
@@ -46,33 +45,21 @@ public class DateJsonConverter : JsonConverter<DateTime>
     }
 
     /// <summary>
-    /// <see cref="DateJsonConverter"/> Datetime 类型Json返回日期处理
+    /// <see cref="DateJsonConverter"/> DateTime 类型 JSON 返回日期处理。
     /// </summary>
-    /// <param name="format">
-    /// <see cref="string"/> 日期格式化
-    /// <para>默认：yyyy-MM-dd</para>
-    /// </param>
+    /// <param name="format">日期格式化 默认：yyyy-MM-dd。</param>
     public DateJsonConverter(string format)
     {
         Format = format;
     }
 
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
     {
         writer.WriteValue(value.ToString(Format, CultureInfo.InvariantCulture));
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
@@ -114,18 +101,17 @@ public class DateJsonConverter : JsonConverter<DateTime>
 }
 
 /// <summary>
-/// <see cref="NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+/// <see cref="NullableDateJsonConverter"/> DateTime? 类型 JSON 返回日期处理。
 /// </summary>
 public class NullableDateJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
-    /// 日期格式化
-    /// <para>默认：yyyy-MM-dd</para>
+    /// 日期格式化 <para>默认：yyyy-MM-dd</para>。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// <see cref="NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+    /// <see cref="NullableDateJsonConverter"/> DateTime? 类型 JSON 返回日期处理。
     /// </summary>
     public NullableDateJsonConverter()
     {
@@ -133,21 +119,15 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
     }
 
     /// <summary>
-    /// <see cref="NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+    /// <see cref="NullableDateJsonConverter"/> DateTime? 类型 JSON 返回日期处理。
     /// </summary>
-    /// <param name="format">
-    /// <see cref="string"/> 日期格式化
-    /// <para>默认：yyyy-MM-dd</para>
-    /// </param>
+    /// <param name="format">日期格式化 默认：yyyy-MM-dd。</param>
     public NullableDateJsonConverter(string format)
     {
         Format = format;
     }
 
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, DateTime? value, JsonSerializer serializer)
     {
         if (value == null)
@@ -156,13 +136,7 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
             writer.WriteValue(value.Value.ToString(Format, CultureInfo.InvariantCulture));
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override DateTime? ReadJson(JsonReader reader, Type objectType, DateTime? existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -34,65 +34,51 @@ using Microsoft.Extensions.DependencyInjection;
 namespace System;
 
 /// <summary>
-/// <see cref="MAppContext"/> Microsoft App 上下文
+/// <see cref="MAppContext"/> Microsoft App 上下文。
 /// </summary>
 [SuppressSniffer]
 public static class MAppContext
 {
-    #region 内部属性
-
     /// <summary>
-    /// GC 回收默认间隔
-    /// </summary>
-    private const int GC_COLLECT_INTERVAL_SECONDS = 5;
-
-    /// <summary>
-    /// 记录最近 GC 回收时间
-    /// </summary>
-    private static DateTime? LastGCCollectTime { get; set; }
-
-    #endregion
-
-    /// <summary>
-    /// 入口程序集版本号
+    /// 入口程序集版本号。
     /// </summary>
     public static readonly string AssemblyVersion;
 
     /// <summary>
-    /// 应用运行库
+    /// 应用运行库。
     /// </summary>
     public static readonly IEnumerable<DependencyLibrary> RuntimeLibraries;
 
     /// <summary>
-    /// 应用有效程序集
+    /// 应用有效程序集。
     /// </summary>
     public static readonly IEnumerable<Assembly> Assemblies;
 
     /// <summary>
-    /// 应用本地引用项目有效程序集
+    /// 应用本地引用项目有效程序集。
     /// </summary>
     public static readonly IEnumerable<Assembly> ProjectAssemblies;
 
     /// <summary>
-    /// 有效程序集类型
+    /// 有效程序集类型。
     /// </summary>
-    /// <remarks>所有公共的类型</remarks>
+    /// <remarks>所有公共的类型。</remarks>
     public static readonly IEnumerable<Type> Types;
 
     /// <summary>
-    /// 有效程序集类型
+    /// 有效程序集类型。
     /// </summary>
-    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型</remarks>
+    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型。</remarks>
     public static readonly IEnumerable<Type> EffectiveTypes;
 
     /// <summary>
-    /// 本地引用项目有效程序集类型
+    /// 本地引用项目有效程序集类型。
     /// </summary>
-    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型</remarks>
+    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型。</remarks>
     public static readonly IEnumerable<Type> ProjectEffectiveTypes;
 
     /// <summary>
-    /// 未托管的对象集合
+    /// 未托管的对象集合。
     /// </summary>
     public static ConcurrentBag<IDisposable> UnmanagedObjects { get; private set; }
 
@@ -135,12 +121,12 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 处理获取对象异常问题
+    /// 处理获取对象异常问题。
     /// </summary>
-    /// <typeparam name="T">类型</typeparam>
-    /// <param name="action">获取对象委托</param>
-    /// <param name="defaultValue">默认值</param>
-    /// <returns>T</returns>
+    /// <param name="action">要执行的操作委托。</param>
+    /// <param name="defaultValue">操作无法产生结果时使用的默认值。</param>
+    /// <typeparam name="T">操作返回的引用类型。</typeparam>
+    /// <returns>处理获取对象异常问题。</returns>
     public static T CatchOrDefault<T>(Func<T> action, T defaultValue = null) where T : class
     {
         try
@@ -154,10 +140,10 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 获取选项名称
+    /// 获取选项名称。
     /// </summary>
-    /// <typeparam name="TOptions"></typeparam>
-    /// <returns></returns>
+    /// <typeparam name="TOptions">配置选项类型。</typeparam>
+    /// <returns>获取到的选项名称。</returns>
     public static string GetOptionName<TOptions>() where TOptions : class, new()
     {
         // 默认后缀
@@ -166,17 +152,19 @@ public static class MAppContext
         var optionsType = typeof(TOptions);
 
         // 判断是否已 “Options” 结尾
-        return optionsType.Name.EndsWith(defaultSuffix) ? optionsType.Name[..^defaultSuffix.Length] : optionsType.Name;
+        return optionsType.Name.EndsWith(defaultSuffix, StringComparison.Ordinal)
+            ? optionsType.Name[..^defaultSuffix.Length]
+            : optionsType.Name;
     }
 
     /// <summary>
-    /// 解析服务提供器
+    /// 解析服务提供器。
     /// </summary>
-    /// <param name="serviceType"></param>
-    /// <param name="rootServices"></param>
-    /// <param name="internalServices"></param>
-    /// <param name="httpContext"></param>
-    /// <returns></returns>
+    /// <param name="serviceType">要查询的服务类型。</param>
+    /// <param name="rootServices">应用根服务提供器。</param>
+    /// <param name="internalServices">框架内部使用的服务注册集合。</param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>解析后的服务提供器。</returns>
     public static IServiceProvider GetServiceProvider(Type serviceType, IServiceProvider rootServices,
         IServiceCollection internalServices, HttpContext httpContext)
     {
@@ -206,11 +194,11 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 获取当前程序启动Uri信息
+    /// 获取当前程序启动 Uri 信息。
     /// </summary>
-    /// <remarks>默认获取第一个地址，可能为空，请勿在程序启动过程中使用</remarks>
-    /// <param name="server"><see cref="IServer"/></param>
-    /// <returns><see cref="Uri"/></returns>
+    /// <remarks>默认获取第一个地址，可能为空，请勿在程序启动过程中使用。</remarks>
+    /// <param name="server">目标服务实例。</param>
+    /// <returns>获取到的当前程序启动 Uri 信息。</returns>
     public static Uri GetCurrentStartupUri(IServer server)
     {
         var addresses = server?.Features.Get<IServerAddressesFeature>()
@@ -225,31 +213,32 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 获取当前线程 Id
+    /// 获取当前线程 ID。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>获取到的当前线程 ID。</returns>
     public static int GetThreadId()
     {
         return Environment.CurrentManagedThreadId;
     }
 
     /// <summary>
-    /// 获取当前请求 TraceId
+    /// 获取当前请求 TraceId。
     /// </summary>
-    /// <returns></returns>
+    /// <param name="rootServices">应用根服务提供器。</param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>获取到的当前请求 TraceId。</returns>
     public static string GetTraceId(IServiceProvider rootServices, HttpContext httpContext)
     {
         return Activity.Current?.Id ?? (rootServices == null ? null : httpContext?.TraceIdentifier);
     }
 
     /// <summary>
-    /// 获取一段代码执行耗时
+    /// 获取一段代码执行耗时。
     /// </summary>
-    /// <param name="action">委托</param>
-    /// <returns><see cref="long"/></returns>
+    /// <param name="action">要执行的操作委托。</param>
+    /// <returns>获取到的一段代码执行耗时。</returns>
     public static long GetExecutionTime(Action action)
     {
-        // 空检查
         if (action == null)
             throw new ArgumentNullException(nameof(action));
 
@@ -261,36 +250,25 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 添加未托管的对象
+    /// 添加未托管的对象。
     /// </summary>
-    /// <param name="dsp"></param>
+    /// <param name="dsp">用于解析动态服务的服务提供器。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="dsp"/> 为 <see langword="null"/>。</exception>
     public static void AddUnmanagedObjects(IDisposable dsp)
     {
+        ArgumentNullException.ThrowIfNull(dsp);
         UnmanagedObjects.Add(dsp);
     }
 
     /// <summary>
-    /// 释放所有未托管的对象
+    /// 释放所有未托管的对象。
     /// </summary>
     public static void DisposeUnmanagedObjects()
     {
-        foreach (var dsp in UnmanagedObjects)
+        // 逐个移除后再释放，避免 Clear() 丢弃遍历期间并发加入但尚未释放的对象。
+        while (UnmanagedObjects.TryTake(out var dsp))
         {
-            dsp?.Dispose();
+            dsp.Dispose();
         }
-
-        // 强制手动回收 GC 内存
-        if (UnmanagedObjects.IsEmpty)
-        {
-            var nowTime = DateTime.UtcNow;
-            if (LastGCCollectTime == null || (nowTime - LastGCCollectTime.Value).TotalSeconds > GC_COLLECT_INTERVAL_SECONDS)
-            {
-                LastGCCollectTime = nowTime;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-        }
-
-        UnmanagedObjects.Clear();
     }
 }

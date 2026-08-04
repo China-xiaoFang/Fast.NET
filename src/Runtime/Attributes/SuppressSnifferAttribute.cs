@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,9 +25,9 @@
 namespace System;
 
 /// <summary>
-/// <see cref="SuppressSnifferAttribute"/> 不被扫描和发现的特性
+/// <see cref="SuppressSnifferAttribute"/> 不被扫描和发现的特性。
 /// </summary>
-/// <remarks>用于程序集扫描类型或方法时候</remarks>
+/// <remarks>用于程序集扫描类型或方法时候。</remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class
                 | AttributeTargets.Interface

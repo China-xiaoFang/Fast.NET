@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,30 +25,30 @@ using System.Text;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="ComponentSchemaDto"/> OpenApi 文档组件声明Dto
+/// <see cref="ComponentSchemaDto"/> OpenAPI 文档组件声明 DTO。
 /// </summary>
 internal class ComponentSchemaDto
 {
     /// <summary>
-    /// 名称
+    /// 名称。
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 导入路径
+    /// 导入路径。
     /// </summary>
-    /// <remarks>枚举专用</remarks>
+    /// <remarks>枚举专用。</remarks>
     public string ImportPath { get; set; }
 
     /// <summary>
-    /// 内容
+    /// 内容。
     /// </summary>
-    /// <remarks>Dto专用</remarks>
+    /// <remarks>DTO 专用。</remarks>
     public StringBuilder Content { get; set; }
 
     /// <summary>
-    /// 引用声明
+    /// 引用声明。
     /// </summary>
-    /// <remarks>Dto专用</remarks>
+    /// <remarks>DTO 专用。</remarks>
     public HashSet<string> RefSchemas { get; set; }
 }

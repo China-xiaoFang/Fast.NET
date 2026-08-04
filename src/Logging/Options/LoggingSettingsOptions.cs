@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,34 +26,32 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="LoggingSettingsOptions"/> 日志配置选项
+/// <see cref="LoggingSettingsOptions"/> 日志配置选项。
 /// </summary>
 [SuppressSniffer]
 public class LoggingSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 文件格式字符串
+    /// 文件格式字符串。
     /// </summary>
     public string FileFormat { get; set; }
 
     /// <summary>
-    /// 文件大小限制（字节）
+    /// 文件大小限制（字节）。
     /// </summary>
     public int? FileSizeLimit { get; set; }
 
     /// <summary>
-    /// 最小日志级别
+    /// 最小日志级别。
     /// </summary>
     public LogLevel? MiniLogLevel { get; set; }
 
     /// <summary>
-    /// 启用 <see cref="LogLevel.Critical"/> 级别日志
+    /// 启用 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
     public bool? EnableCritical { get; set; }
 
-    /// <summary>
-    /// 后期配置
-    /// </summary>
+    /// <inheritdoc />
     public void PostConfigure()
     {
         FileFormat ??= "/{0:yyyy}/{0:MM}/{0:dd}/{0:HH}";

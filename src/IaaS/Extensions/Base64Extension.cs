@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,23 +28,23 @@ using System.Text;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="Base64Extension"/> Base64 拓展类
+/// 提供 Base64 扩展方法。
 /// </summary>
 public static class Base64Extension
 {
     /// <summary>
-    /// 随机字符长度
+    /// 随机字符长度。
     /// </summary>
     public const int RandomPrefixStrLength = 6;
 
     private static readonly Encoding encoding = Encoding.UTF8;
 
     /// <summary>
-    /// 普通 字符串 转换为 Base64 字符串
+    /// 普通 字符串 转换为 Base64 字符串。
     /// </summary>
-    /// <param name="str"><see cref="string"/> 字符串</param>
-    /// <param name="randomPrefixStrLength"><see cref="int"/> 随机字符长度，默认6位</param>
-    /// <returns><see cref="string"/> 转换后的 Base64 字符串</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <param name="randomPrefixStrLength">随机前缀的字符数。</param>
+    /// <returns>普通 字符串 转换为 Base64 字符串。</returns>
     public static string ToBase64(this string str, int randomPrefixStrLength = RandomPrefixStrLength)
     {
         if (string.IsNullOrWhiteSpace(str))
@@ -87,11 +87,11 @@ public static class Base64Extension
     }
 
     /// <summary>
-    /// Base64 字符串 转换为 普通 字符串
+    /// Base64 字符串 转换为 普通 字符串。
     /// </summary>
-    /// <param name="base64Str"><see cref="string"/> Base64 字符串</param>
-    /// <param name="randomPrefixStrLength"><see cref="int"/> 随机字符长度，默认6位</param>
-    /// <returns><see cref="string"/> 转换后的 字符串</returns>
+    /// <param name="base64Str">要解码的 Base64 文本。</param>
+    /// <param name="randomPrefixStrLength">随机前缀的字符数。</param>
+    /// <returns>Base64 字符串 转换为 普通 字符串。</returns>
     public static string Base64ToString(this string base64Str, int randomPrefixStrLength = RandomPrefixStrLength)
     {
         var result = base64Str.Trim();
@@ -134,10 +134,10 @@ public static class Base64Extension
     }
 
     /// <summary>
-    /// 添加随机字符串到 Base64 字符串
+    /// 添加随机字符串到 Base64 字符串。
     /// </summary>
-    /// <param name="base64Str"><see cref="string"/> Base64 字符串</param>
-    /// <returns></returns>
+    /// <param name="base64Str"><see cref="string"/> Base64 字符串。</param>
+    /// <returns>添加随机字符串到 Base64 字符串。</returns>
     private static string InsertRandomStrToBase64Str(string base64Str)
     {
         var strResult = $"{base64Str}";
@@ -155,10 +155,10 @@ public static class Base64Extension
     }
 
     /// <summary>
-    /// 删除 Base64 字符串中的随机数
+    /// 删除 Base64 字符串中的随机数。
     /// </summary>
-    /// <param name="input"><see cref="string"/> Base64 字符串</param>
-    /// <returns></returns>
+    /// <param name="input"><see cref="string"/> Base64 字符串。</param>
+    /// <returns>删除 Base64 字符串中的随机数。</returns>
     private static string RemoveBase64StrRandomStr(string input)
     {
         var items = dic.Item.OrderBy(x => x.Index)
@@ -170,7 +170,6 @@ public static class Base64Extension
         {
             if (item.Index < strResult.Length)
             {
-                //var randomChar = input[item.RandomIndex];
                 strResult = strResult.Remove(item.Index, 1);
             }
         });

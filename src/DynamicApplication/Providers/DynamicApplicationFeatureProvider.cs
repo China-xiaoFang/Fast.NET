@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,15 +26,11 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 动态API引用特性提供器
+/// 动态 API 引用特性提供器。
 /// </summary>
 internal sealed class DynamicApplicationFeatureProvider : ControllerFeatureProvider
 {
-    /// <summary>
-    /// 扫描控制器
-    /// </summary>
-    /// <param name="typeInfo">类型</param>
-    /// <returns>bool</returns>
+    /// <inheritdoc />
     protected override bool IsController(TypeInfo typeInfo)
     {
         return DynamicApplicationContext.IsApiController(typeInfo);

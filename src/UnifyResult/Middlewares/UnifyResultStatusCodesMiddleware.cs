@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,29 +25,29 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="UnifyResultStatusCodesMiddleware"/> 状态码中间件
+/// <see cref="UnifyResultStatusCodesMiddleware"/> 状态码中间件。
 /// </summary>
 internal class UnifyResultStatusCodesMiddleware
 {
     /// <summary>
-    /// 请求委托
+    /// 请求委托。
     /// </summary>
     private readonly RequestDelegate _next;
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="UnifyResultStatusCodesMiddleware"/> 类的新实例。
     /// </summary>
-    /// <param name="next"></param>
+    /// <param name="next">处理管道中的下一个委托 <see cref="RequestDelegate"/>。</param>
     public UnifyResultStatusCodesMiddleware(RequestDelegate next)
     {
         _next = next;
     }
 
     /// <summary>
-    /// 中间件执行方法
+    /// 中间件执行方法。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>表示异步中间件执行方法的任务。</returns>
     public async Task InvokeAsync(HttpContext httpContext)
     {
         await _next(httpContext);
@@ -58,7 +58,6 @@ internal class UnifyResultStatusCodesMiddleware
             return;
         }
 
-        // 处理规范化结果
         if (!UnifyContext.CheckStatusCodeNonUnify(httpContext, out var unifyResult))
         {
             // 解决刷新 Token 和 Token 时间相近问题

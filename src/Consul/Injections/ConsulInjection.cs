@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,10 +20,6 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using Fast.Consul.Internal;
-using Fast.Consul.KeyValue;
-using Fast.Consul.Options;
-using Fast.Consul.Registers;
 using Fast.Runtime;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,10 +35,10 @@ public static class ConsulServiceCollectionExtensions
     /// <summary>
     /// 注册 Consul 服务发现、健康检查和键值服务。
     /// </summary>
-    /// <param name="services">服务集合。</param>
+    /// <param name="services">服务注册集合。</param>
     /// <param name="configuration">应用配置。</param>
     /// <param name="section">配置节点名称。</param>
-    /// <returns>服务集合。</returns>
+    /// <returns>返回当前服务注册集合，便于链式调用。</returns>
     public static IServiceCollection AddFastConsul(this IServiceCollection services, IConfiguration configuration,
         string section = "ConsulSettings")
     {
@@ -62,7 +58,7 @@ public static class ConsulServiceCollectionExtensions
         services.AddTransient<IConsulRegister, ConsulRegister>();
         services.AddTransient<IKeyValueService, KeyValueService>();
         services.TryAddEnumerable(ServiceDescriptor
-            .Transient<Microsoft.AspNetCore.Hosting.IStartupFilter, Filters.ConsulStartupFilter>());
+            .Transient<Microsoft.AspNetCore.Hosting.IStartupFilter, ConsulStartupFilter>());
 
         return services;
     }

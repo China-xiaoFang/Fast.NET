@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -30,30 +30,30 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="CorsAccessorExtension"/> 跨域处理 拓展类
+/// 提供跨域处理扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class CorsAccessorExtension
 {
     /// <summary>
-    /// 默认跨域导出响应头 Key
+    /// 默认跨域导出响应头 Key。
     /// </summary>
-    /// <remarks>解决 ajax，XMLHttpRequest，axios 不能获取请求头问题</remarks>
+    /// <remarks>解决 ajax，XMLHttpRequest，axios 不能获取请求头问题。</remarks>
     private static readonly string[] _defaultExposedHeaders = {"access-token", "x-access-token"};
 
     /// <summary>
-    /// 设置跨域策略
+    /// 设置跨域策略。
     /// </summary>
-    /// <param name="builder"><see cref="CorsPolicyBuilder"/></param>
-    /// <param name="corsAccessorSettings"><see cref="CorsAccessorSettingsOptions"/></param>
-    /// <param name="isMiddleware"><see cref="bool"/></param>
+    /// <param name="builder">要配置的跨域策略构建器。</param>
+    /// <param name="corsAccessorSettings">允许的来源、请求头、方法及凭据配置。</param>
+    /// <param name="isMiddleware">是否为应用中间件阶段生成策略。</param>
     internal static void SetCorsPolicy(CorsPolicyBuilder builder, CorsAccessorSettingsOptions corsAccessorSettings,
         bool isMiddleware = false)
     {
-        // 判断是否设置了来源，因为 AllowAnyOrigin 不能和 AllowCredentials一起公用
+        // 判断是否设置了来源，因为 AllowAnyOrigin 不能和 AllowCredentials 一起公用
         var isNotSetOrigins = corsAccessorSettings.WithOrigins == null || corsAccessorSettings.WithOrigins.Length == 0;
 
-        // https://docs.microsoft.com/zh-cn/aspnet/core/signalr/security?view=aspnetcore-6.0
+        // https://learn.microsoft.com/aspnet/core/signalr/security
         var isSupportSignalR = isMiddleware && corsAccessorSettings.SignalRSupport == true;
 
         // 设置总是允许跨域源配置
@@ -108,15 +108,15 @@ public static class CorsAccessorExtension
         if (exposedHeaders.Any())
             builder.WithExposedHeaders(exposedHeaders.ToArray());
 
-        // 设置预检过期时间，如果不设置默认为 24小时
+        // 设置预检过期时间，如果不设置默认为 24 小时
         builder.SetPreflightMaxAge(TimeSpan.FromSeconds(corsAccessorSettings.SetPreflightMaxAge ?? 24 * 60 * 60));
     }
 
     /// <summary>
-    /// 添加跨域服务
+    /// 添加跨域服务。
     /// </summary>
-    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
-    /// <returns><see cref="WebApplicationBuilder"/></returns>
+    /// <param name="builder">要配置的应用构建器 <see cref="WebApplicationBuilder"/>。</param>
+    /// <returns>返回 <paramref name="builder"/>，便于链式调用。</returns>
     public static WebApplicationBuilder AddCorsAccessor(this WebApplicationBuilder builder)
     {
         builder.Services.AddCorsAccessor(builder.Configuration);
@@ -125,21 +125,17 @@ public static class CorsAccessorExtension
     }
 
     /// <summary>
-    /// 添加跨域服务
+    /// 添加跨域服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section"><see cref="string"/>
-    /// <para>Json配置文件节点的Key</para>
-    /// <para>默认值：CorsAccessorSettings</para>
-    /// </param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：CorsAccessorSettings。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddCorsAccessor(this IServiceCollection services, IConfiguration configuration,
         string section = "CorsAccessorSettings")
     {
         Debugging.Info("Registering for the Cors accessor service......");
 
-        // 配置验证
         services.AddConfigurableOptions<CorsAccessorSettingsOptions>(section);
 
         // 获取跨域配置选项
@@ -151,11 +147,8 @@ public static class CorsAccessorExtension
         services.AddCors(options =>
         {
             // 添加策略跨域
-            options.AddPolicy(corsAccessorSettings.PolicyName, configurePolicy =>
-            {
-                // 设置跨域策略
-                SetCorsPolicy(configurePolicy, corsAccessorSettings);
-            });
+            options.AddPolicy(corsAccessorSettings.PolicyName,
+                configurePolicy => { SetCorsPolicy(configurePolicy, corsAccessorSettings); });
         });
 
         // 注册 CorsAccessor Startup 过滤器
@@ -165,17 +158,16 @@ public static class CorsAccessorExtension
     }
 
     /// <summary>
-    /// 添加跨域服务
+    /// 添加跨域服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="optionAction"><see cref="Action{T}"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="optionAction">用于配置 <see cref="CorsAccessorSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddCorsAccessor(this IServiceCollection services,
         Action<CorsAccessorSettingsOptions> optionAction)
     {
         Debugging.Info("Registering for the Cors accessor service......");
 
-        // 配置验证
         services.Configure(optionAction);
 
         var corsAccessorSettings = new CorsAccessorSettingsOptions();
@@ -185,11 +177,8 @@ public static class CorsAccessorExtension
         services.AddCors(options =>
         {
             // 添加策略跨域
-            options.AddPolicy(corsAccessorSettings.PolicyName, configurePolicy =>
-            {
-                // 设置跨域策略
-                SetCorsPolicy(configurePolicy, corsAccessorSettings);
-            });
+            options.AddPolicy(corsAccessorSettings.PolicyName,
+                configurePolicy => { SetCorsPolicy(configurePolicy, corsAccessorSettings); });
         });
 
         // 注册 CorsAccessor Startup 过滤器

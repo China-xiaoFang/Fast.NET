@@ -20,126 +20,121 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-#if NET10_0_OR_GREATER
-using Microsoft.OpenApi;
-#else
-using Microsoft.OpenApi.Models;
-#endif
+
 using System.Reflection;
 using Fast.Runtime;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="SwaggerSettingsOptions"/> Swagger配置选项
+/// <see cref="SwaggerSettingsOptions"/> Swagger 配置选项。
 /// </summary>
 [SuppressSniffer]
 public sealed class SwaggerSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 是否启用/注入规范化文档
+    /// 是否启用/注入规范化文档。
     /// </summary>
     public bool? Enable { get; set; }
 
     /// <summary>
-    /// 文档标题
+    /// 文档标题。
     /// </summary>
     public string DocumentTitle { get; set; }
 
     /// <summary>
-    /// 默认分组名
+    /// 默认分组名。
     /// </summary>
     public string DefaultGroupName { get; set; }
 
     /// <summary>
-    /// 启用授权支持
+    /// 启用授权支持。
     /// </summary>
     public bool? EnableAuthorized { get; set; }
 
     /// <summary>
-    /// 格式化为V2版本
+    /// 格式化为 V2 版本。
     /// </summary>
     public bool? FormatAsV2 { get; set; }
 
     /// <summary>
-    /// 配置规范化文档地址
+    /// 配置规范化文档地址。
     /// </summary>
     public string RoutePrefix { get; set; }
 
     /// <summary>
-    /// 文档展开设置
+    /// 文档展开设置。
     /// </summary>
     public DocExpansion? DocExpansionState { get; set; }
 
     /// <summary>
-    /// XML 描述文件
+    /// XML 描述文件。
     /// </summary>
     public string[] XmlComments { get; set; }
 
     /// <summary>
-    /// 分组信息
+    /// 分组信息。
     /// </summary>
     public SwaggerOpenApiInfo[] GroupOpenApiInfos { get; set; }
 
     /// <summary>
-    /// 安全定义
+    /// 安全定义。
     /// </summary>
     public SwaggerOpenApiSecurityScheme[] SecurityDefinitions { get; set; }
 
     /// <summary>
-    /// 配置 Servers
+    /// 配置 Servers。
     /// </summary>
     public OpenApiServer[] Servers { get; set; }
 
     /// <summary>
-    /// 隐藏 Servers
+    /// 隐藏 Servers。
     /// </summary>
     public bool? HideServers { get; set; }
 
     /// <summary>
-    /// 默认 swagger.json 路由模板
+    /// 默认 swagger.json 路由模板。
     /// </summary>
     public string RouteTemplate { get; set; }
 
     /// <summary>
-    /// 配置安装第三方包的分组名
+    /// 配置安装第三方包的分组名。
     /// </summary>
     public string[] PackagesGroups { get; set; }
 
     /// <summary>
-    /// 启用枚举 Schema 筛选器
+    /// 启用枚举 Schema 筛选器。
     /// </summary>
     public bool? EnableEnumSchemaFilter { get; set; }
 
     /// <summary>
-    /// 启用标签排序筛选器
+    /// 启用标签排序筛选器。
     /// </summary>
     public bool? EnableTagsOrderDocumentFilter { get; set; }
 
     /// <summary>
-    /// 服务目录（修正 IIS 创建 Application 问题）
+    /// 服务目录（修正 IIS 创建 Application 问题）。
     /// </summary>
     public string ServerDir { get; set; }
 
     /// <summary>
-    /// 配置规范化文档登录信息
+    /// 配置规范化文档登录信息。
     /// </summary>
     public SwaggerLoginInfo LoginInfo { get; set; }
 
     /// <summary>
-    /// 启用 All Groups 功能
+    /// 启用 All Groups 功能。
     /// </summary>
     public bool? EnableAllGroups { get; set; }
 
     /// <summary>
-    /// 枚举类型生成值类型
+    /// 枚举类型生成值类型。
     /// </summary>
     public bool? EnumToNumber { get; set; }
 
-    /// <summary>
-    /// 后期配置
-    /// </summary>
+    /// <inheritdoc />
     public void PostConfigure()
     {
         Enable ??= true;
@@ -166,8 +161,7 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
         EnableAuthorized ??= true;
         if (EnableAuthorized == true)
         {
-#if NET10_0_OR_GREATER
-            // OpenApi v2: Reference 已移除，Requirement 中不再需要设置 Scheme.Reference
+            // Microsoft.OpenAPI 2.x 已移除 Reference，需求项在注册时通过方案标识创建引用。
             SecurityDefinitions ??= new[]
             {
                 new SwaggerOpenApiSecurityScheme
@@ -185,29 +179,6 @@ public sealed class SwaggerSettingsOptions : IPostConfigure
                     }
                 }
             };
-#else
-            SecurityDefinitions ??= new[]
-            {
-                new SwaggerOpenApiSecurityScheme
-                {
-                    Id = "Bearer",
-                    Type = SecuritySchemeType.Http,
-                    Name = "Authorization",
-                    Description = "JWT Authorization header using the Bearer scheme.",
-                    BearerFormat = "JWT",
-                    Scheme = "bearer",
-                    In = ParameterLocation.Header,
-                    Requirement = new SwaggerOpenApiSecurityRequirementItem
-                    {
-                        Scheme = new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference {Id = "Bearer", Type = ReferenceType.SecurityScheme}
-                        },
-                        Accesses = Array.Empty<string>()
-                    }
-                }
-            };
-#endif
         }
 
         Servers ??= Array.Empty<OpenApiServer>();

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,33 +25,27 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// <see cref="EnumRequiredAttribute"/> 验证 <see cref="Enum"/> 类型属性必填
+/// <see cref="EnumRequiredAttribute"/> 验证 <see cref="Enum"/> 类型属性必填。
 /// </summary>
-/// <remarks>默认验证当前值是否在枚举值中，如果需要验证其余的逻辑，请自行验证</remarks>
+/// <remarks>默认验证当前值是否在枚举值中，如果需要验证其余的逻辑，请自行验证。</remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class EnumRequiredAttribute : ValidationAttribute
 {
     /// <summary>
-    /// 允许零
+    /// 允许零。
     /// </summary>
-    /// <remarks>常用于默认的枚举值为 None = 0，但是不允许选择的问题</remarks>
+    /// <remarks>常用于默认的枚举值为 None = 0，但是不允许选择的问题。</remarks>
     public bool AllowZero { get; set; } = false;
 
     /// <summary>
-    /// Flag枚举
+    /// Flag 枚举。
     /// </summary>
     public bool FlagEnum { get; set; } = false;
 
-    /// <summary>Determines whether the specified value of the object is valid.</summary>
-    /// <param name="value">The value of the object to validate.</param>
-    /// <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-    /// <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-    /// <returns>
-    /// <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+    /// <inheritdoc />
     public override bool IsValid(object value)
     {
-        // 判断是否为空
         if (value == null)
         {
             return false;
@@ -70,7 +64,7 @@ public class EnumRequiredAttribute : ValidationAttribute
             // 转为 long 类型，不使用 int 是因为可能会有 long 类型的枚举
             var longVal = Convert.ToInt64(value);
 
-            // 判断是否允许为0
+            // 判断是否允许为 0
             if (!AllowZero && longVal == 0)
             {
                 return false;

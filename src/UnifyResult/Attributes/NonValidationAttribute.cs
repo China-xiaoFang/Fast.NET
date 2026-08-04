@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,7 +23,7 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="NonValidationAttribute"/> 跳过验证
+/// <see cref="NonValidationAttribute"/> 跳过验证。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]

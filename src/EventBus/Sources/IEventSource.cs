@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,29 +23,29 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventSource"/> 事件源（事件承载对象）依赖接口
+/// <see cref="IEventSource"/> 事件源（事件承载对象）依赖接口。
 /// </summary>
 [SuppressSniffer]
 public interface IEventSource
 {
     /// <summary>
-    /// 事件 Id
+    /// 事件 ID。
     /// </summary>
     string EventId { get; }
 
     /// <summary>
-    /// 事件承载（携带）数据
+    /// 事件承载（携带）数据。
     /// </summary>
     object Payload { get; }
 
     /// <summary>
-    /// 事件创建时间
+    /// 事件创建时间。
     /// </summary>
     DateTime CreatedTime { get; }
 
     /// <summary>
-    /// 取消任务 Token
+    /// 取消任务 Token。
     /// </summary>
-    /// <remarks>用于取消本次消息处理</remarks>
+    /// <remarks>用于取消本次消息处理。</remarks>
     CancellationToken CancellationToken { get; }
 }

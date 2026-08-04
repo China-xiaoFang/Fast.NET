@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,19 +25,19 @@ using System.Text;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiUtil"/> OpenApi Dto工具类
+/// <see cref="OpenApiUtil"/> OpenAPI DTO 工具类。
 /// </summary>
 public static partial class OpenApiUtil
 {
     /// <summary>
-    /// 处理声明引用key
+    /// 处理声明引用 key。
     /// </summary>
-    /// <param name="refKey"></param>
-    /// <param name="refSchemas"></param>
-    /// <returns></returns>
+    /// <param name="refKey">OpenAPI 架构引用键。</param>
+    /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合。</param>
+    /// <returns>处理声明引用 key。</returns>
     internal static string DisposeSchemaRefKey(string refKey, HashSet<string> refSchemas = null)
     {
-        // 获取 $ref 最后一个/后的Name
+        // 获取 $ref 最后一个/后的 Name
         refKey = refKey?.Split("/")
             .LastOrDefault();
 
@@ -86,10 +86,10 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 处理基础类型
+    /// 处理基础类型。
     /// </summary>
-    /// <param name="refKey"></param>
-    /// <returns></returns>
+    /// <param name="refKey">OpenAPI 架构引用键。</param>
+    /// <returns>处理基础类型。</returns>
     internal static string DisposeBaseType(string refKey)
     {
         var baseTypeMapping = Penetrates.OpenApiSettings.BaseTypeMappings.FirstOrDefault(f => f.Key == refKey);
@@ -97,13 +97,13 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 生成声明导入
+    /// 生成声明导入。
     /// </summary>
-    /// <param name="hasWeb"><see cref="bool"/> 是否Web端</param>
-    /// <param name="dirName"><see cref="string"/> 文件夹名称</param>
-    /// <param name="refSchemas"><see cref="List{String}"/>引用声明</param>
-    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明</param>
-    /// <returns></returns>
+    /// <param name="hasWeb"><see cref="bool"/> 是否 Web 端。</param>
+    /// <param name="dirName"><see cref="string"/> 文件夹名称。</param>
+    /// <param name="refSchemas"><see cref="List{String}"/>引用声明。</param>
+    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明。</param>
+    /// <returns>生成的声明导入。</returns>
     internal static (StringBuilder importSb, HashSet<string> refSchemas) GenerateSchemaImport(bool hasWeb, string dirName,
         HashSet<string> refSchemas, List<ComponentSchemaDto> enumSchemas)
     {
@@ -113,7 +113,6 @@ public static partial class OpenApiUtil
         var schemaImport = new StringBuilder();
         var newRefSchemas = new HashSet<string>();
 
-        // 导入声明映射
         var schemaMapping = Penetrates.OpenApiSettings.ImportSchemaMappings.Where(wh => refSchemas.Contains(wh.Name))
             .ToList();
         if (schemaMapping.Count != 0)
@@ -133,11 +132,9 @@ public static partial class OpenApiUtil
 
         foreach (var refSchema in refSchemas)
         {
-            // 判断是否为导入声明映射
             if (schemaMapping.Any(a => a.Name == refSchema))
                 continue;
 
-            // 判断是否为枚举
             var enumSchema = enumSchemas.SingleOrDefault(s => s.Name == refSchema);
             if (enumSchema != null)
             {
@@ -155,11 +152,11 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 生成 OpenApi 文档声明文件
+    /// 生成 OpenAPI 文档声明文件。
     /// </summary>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档Dto</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言</param>
-    /// <returns></returns>
+    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档 DTO。</param>
+    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <returns>表示异步生成 OpenAPI 文档声明文件的任务，任务结果为生成的 OpenAPI 文档声明文件集合。</returns>
     internal static async Task<List<ComponentSchemaDto>> GenerateOpenApiDocumentSchemaFile(OpenApiDocumentDto openApiDocument,
         ScriptLanguageEnum scriptLanguage)
     {
@@ -168,13 +165,13 @@ public static partial class OpenApiUtil
 
         var result = new List<ComponentSchemaDto>();
 
-        // JavaScript 没有类型声明
+        // JavaScript 版本不生成 TypeScript 类型声明。
         if (scriptLanguage == ScriptLanguageEnum.JavaScript)
             return result;
 
         try
         {
-            // 获取文档Dto声明
+            // 获取文档 Dto 声明
             var dtoSchemas = openApiDocument.Components.Schemas.Where(wh => wh.Value.Enum == null)
                 .ToList();
 
@@ -183,7 +180,6 @@ public static partial class OpenApiUtil
                 if (string.IsNullOrWhiteSpace(dtoSchema.Key))
                     continue;
 
-                // 判断是否已经生成
                 if (result.Any(a => a.Name == dtoSchema.Key))
                     continue;
 
@@ -191,12 +187,12 @@ public static partial class OpenApiUtil
                 if (Penetrates.OpenApiSettings.IgnoreSchemas.Contains(dtoSchema.Key))
                     continue;
 
-                // 判断是否为导入声明映射Name
+                // 判断是否为导入声明映射 Name
                 if (Penetrates.OpenApiSettings.ImportSchemaMappings.Any(a =>
                         dtoSchema.Key.StartsWith(a.Name, StringComparison.Ordinal)))
                     continue;
 
-                // 判断是否为导入类型映射Name
+                // 判断是否为导入类型映射 Name
                 if (Penetrates.OpenApiSettings.ImportTypeMappings.Any(a =>
                         dtoSchema.Key.StartsWith(a.Name, StringComparison.Ordinal)))
                     continue;
@@ -207,7 +203,6 @@ public static partial class OpenApiUtil
 
                 var schemaDto = new ComponentSchemaDto {Name = dtoSchema.Key, Content = new StringBuilder(), RefSchemas = []};
 
-                // 获取声明描述
                 var schemaDescription = dtoSchema.Value.Description?.Replace("\r\n", "\r\n * ");
 
                 schemaDto.Content.Append($"""
@@ -253,7 +248,6 @@ public static partial class OpenApiUtil
                         var propertyRefKey = DisposeSchemaRefKey(property.Value.Ref, schemaDto.RefSchemas);
                         schemaDto.Content.Append($"{propertyRefKey};");
                     }
-                    // 判断是否为数组
                     else if (property.Value.Type == "array")
                     {
                         var propertyRefKey =
@@ -307,21 +301,21 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 写入 OpenApi 文档声明文件
+    /// 写入 OpenAPI 文档声明文件。
     /// </summary>
-    /// <param name="hasWeb"><see cref="bool"/> 是否Web端</param>
-    /// <param name="rootDir"><see cref="string"/> 根目录</param>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档Dto</param>
-    /// <param name="schemaDto"><see cref="ComponentSchemaDto"/> 声明</param>
-    /// <param name="dtoSchemas"><see cref="List{ComponentSchemaDto}"/> Dto声明</param>
-    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言</param>
-    /// <returns></returns>
+    /// <param name="hasWeb"><see cref="bool"/> 是否 Web 端。</param>
+    /// <param name="rootDir"><see cref="string"/> 根目录。</param>
+    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档 DTO。</param>
+    /// <param name="schemaDto"><see cref="ComponentSchemaDto"/> 声明。</param>
+    /// <param name="dtoSchemas"><see cref="List{ComponentSchemaDto}"/> DTO 声明。</param>
+    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明。</param>
+    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <returns>表示异步写入 OpenAPI 文档声明文件的任务。</returns>
     internal static async Task WriteOpenApiDocumentSchemaFile(bool hasWeb, string rootDir, OpenApiDocumentDto openApiDocument,
         ComponentSchemaDto schemaDto, List<ComponentSchemaDto> dtoSchemas, List<ComponentSchemaDto> enumSchemas,
         ScriptLanguageEnum scriptLanguage)
     {
-        // JavaScript 没有类型声明
+        // JavaScript 版本不生成 TypeScript 类型声明。
         if (scriptLanguage == ScriptLanguageEnum.JavaScript)
             return;
 
@@ -333,7 +327,6 @@ public static partial class OpenApiUtil
 
             var schemaImport = new StringBuilder();
 
-            // 导入声明映射
             var schemaMapping = Penetrates.OpenApiSettings.ImportSchemaMappings.Where(wh => refSchemas.Contains(wh.Name))
                 .ToList();
             if (schemaMapping.Count != 0)
@@ -353,11 +346,9 @@ public static partial class OpenApiUtil
 
             foreach (var refSchema in refSchemas)
             {
-                // 判断是否为导入声明映射
                 if (schemaMapping.Any(a => a.Name == refSchema))
                     continue;
 
-                // 判断是否为枚举
                 var enumSchema = enumSchemas.SingleOrDefault(s => s.Name == refSchema);
                 if (enumSchema != null)
                 {
@@ -371,20 +362,17 @@ public static partial class OpenApiUtil
             }
 
             if (schemaImport.Length > 0)
-                // 写入文件
                 await File.WriteAllTextAsync(Path.Combine(rootDir, $"{schemaDto.Name}.ts"), $"""
                      {schemaImport}
                      {schemaDto.Content}
                      """);
             else
-                // 写入文件
                 await File.WriteAllTextAsync(Path.Combine(rootDir, $"{schemaDto.Name}.ts"), $"{schemaDto.Content}");
 
 
             // 处理引用文件
             foreach (var refSchema in refSchemas)
             {
-                // 判断是否为导入声明映射
                 if (schemaMapping.Any(a => a.Name == refSchema))
                     continue;
 

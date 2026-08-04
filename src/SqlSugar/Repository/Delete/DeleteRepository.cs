@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,15 +25,11 @@ using System.Linq.Expressions;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 删除仓储实现
+/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 删除仓储实现。
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity>
 {
-    /// <summary>
-    /// 删除一条记录
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Delete(TEntity entity)
     {
         var deleteable = Deleteable(entity)
@@ -48,11 +44,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 删除一条记录
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> DeleteAsync(TEntity entity)
     {
         var deleteable = Deleteable(entity)
@@ -67,11 +59,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 删除一条记录
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Delete(object key)
     {
         var deleteable = Deleteable<TEntity>()
@@ -87,11 +75,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 删除一条记录
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> DeleteAsync(object key)
     {
         var deleteable = Deleteable<TEntity>()
@@ -107,11 +91,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 删除多条记录
-    /// </summary>
-    /// <param name="keys"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Delete(params object[] keys)
     {
         var deleteable = Deleteable<TEntity>()
@@ -127,11 +107,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 删除多条记录
-    /// </summary>
-    /// <param name="keys"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> DeleteAsync(params object[] keys)
     {
         var deleteable = Deleteable<TEntity>()
@@ -147,11 +123,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 删除多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Delete(params TEntity[] entities)
     {
         var deleteable = Deleteable(entities.ToList())
@@ -166,11 +138,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 删除多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> DeleteAsync(params TEntity[] entities)
     {
         var deleteable = Deleteable(entities.ToList())
@@ -185,11 +153,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 删除多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Delete(IEnumerable<TEntity> entities)
     {
         var deleteable = Deleteable(entities.ToList())
@@ -204,11 +168,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 删除多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> DeleteAsync(IEnumerable<TEntity> entities)
     {
         var deleteable = Deleteable(entities.ToList())
@@ -223,11 +183,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 自定义条件删除记录
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Delete(Expression<Func<TEntity, bool>> whereExpression)
     {
         var deleteable = Deleteable<TEntity>()
@@ -243,11 +199,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 自定义条件删除记录
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         var deleteable = Deleteable<TEntity>()
@@ -263,29 +215,19 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return deleteable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 自定义条件逻辑删除记录
-    /// </summary>
-    /// <remarks>注意，实体必须继承 <see cref="IDeletedEntity"/></remarks>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int LogicDelete(Expression<Func<TEntity, bool>> whereExpression)
     {
-        // 判断是否支持逻辑删除
         if (!SupportsLogicDelete)
             throw new InvalidOperationException(
                 $"{nameof(TEntity)} does not inherit {nameof(IDeletedEntity)} interface, Logical deletion cannot be used.");
 
-        // 反射创建实体
         var deletedEntity = Activator.CreateInstance<TEntity>();
 
-        // 获取 IsDeleted 字段属性
         var isDeletedProperty = typeof(TEntity).GetProperty(nameof(IDeletedEntity.IsDeleted));
 
-        // 设置 IsDeleted 字段属性值
         isDeletedProperty!.SetValue(deletedEntity, true);
 
-        // 执行逻辑删除
         var updateable = Updateable<TEntity>()
             .Where(whereExpression)
             .SetColumns(_ => deletedEntity, true)
@@ -300,29 +242,19 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return updateable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 自定义条件逻辑删除记录
-    /// </summary>
-    /// <remarks>注意，实体必须继承 <see cref="IDeletedEntity"/></remarks>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> LogicDeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
-        // 判断是否支持逻辑删除
         if (!SupportsLogicDelete)
             throw new InvalidOperationException(
                 $"{nameof(TEntity)} does not inherit {nameof(IDeletedEntity)} interface, Logical deletion cannot be used.");
 
-        // 反射创建实体
         var deletedEntity = Activator.CreateInstance<TEntity>();
 
-        // 获取 IsDeleted 字段属性
         var isDeletedProperty = typeof(TEntity).GetProperty(nameof(IDeletedEntity.IsDeleted));
 
-        // 设置 IsDeleted 字段属性值
         isDeletedProperty!.SetValue(deletedEntity, true);
 
-        // 执行逻辑删除
         var updateable = Updateable<TEntity>()
             .Where(whereExpression)
             .SetColumns(_ => deletedEntity, true)

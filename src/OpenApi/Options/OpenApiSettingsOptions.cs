@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,45 +25,43 @@ using Fast.Runtime;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiSettingsOptions"/> OpenApi 配置
+/// <see cref="OpenApiSettingsOptions"/> OpenAPI 配置。
 /// </summary>
 [SuppressSniffer]
 public class OpenApiSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 文件夹分组
+    /// 文件夹分组。
     /// </summary>
     public bool? FolderGroup { get; set; }
 
     /// <summary>
-    /// 导入声明映射
+    /// 导入声明映射。
     /// </summary>
-    /// <remarks>导出也只会会忽略</remarks>
+    /// <remarks>导出也只会会忽略。</remarks>
     public List<OpenApiImportSchemaMappingSettingsOptions> ImportSchemaMappings { get; set; }
 
     /// <summary>
-    /// 导入类型声明
+    /// 导入类型声明。
     /// </summary>
     public List<OpenApiImportTypeMappingSettingsOptions> ImportTypeMappings { get; set; }
 
     /// <summary>
-    /// 忽略声明
+    /// 忽略声明。
     /// </summary>
     public HashSet<string> IgnoreSchemas { get; set; }
 
     /// <summary>
-    /// 分页声明属性
+    /// 分页声明属性。
     /// </summary>
     public HashSet<string> PagedSchemaProperties { get; set; }
 
     /// <summary>
-    /// 基础类型映射
+    /// 基础类型映射。
     /// </summary>
     public IDictionary<string, string> BaseTypeMappings { get; set; }
 
-    /// <summary>
-    /// 后期配置
-    /// </summary>
+    /// <inheritdoc />
     public void PostConfigure()
     {
         FolderGroup ??= true;
@@ -262,52 +260,52 @@ public class OpenApiSettingsOptions : IPostConfigure
 }
 
 /// <summary>
-/// <see cref="OpenApiImportSchemaMappingSettingsOptions"/> OpenApi 导入声明映射配置
+/// <see cref="OpenApiImportSchemaMappingSettingsOptions"/> OpenAPI 导入声明映射配置。
 /// </summary>
 [SuppressSniffer]
 public class OpenApiImportSchemaMappingSettingsOptions
 {
     /// <summary>
-    /// 名称
+    /// 名称。
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 映射名称
+    /// 映射名称。
     /// </summary>
-    /// <remarks>为空默认取 <see cref="Name"/></remarks>
+    /// <remarks>为空默认取 <see cref="Name"/>。</remarks>
     public string MappingName { get; set; }
 
     /// <summary>
-    /// Web端导入路径
+    /// Web 端导入路径。
     /// </summary>
     public string WebImportPath { get; set; }
 
     /// <summary>
-    /// 移动端导入路径
+    /// 移动端导入路径。
     /// </summary>
     public string MobileImportPath { get; set; }
 }
 
 /// <summary>
-/// <see cref="OpenApiImportTypeMappingSettingsOptions"/> OpenApi 导入类型映射配置
+/// <see cref="OpenApiImportTypeMappingSettingsOptions"/> OpenAPI 导入类型映射配置。
 /// </summary>
 [SuppressSniffer]
 public class OpenApiImportTypeMappingSettingsOptions
 {
     /// <summary>
-    /// 名称（开头）
+    /// 名称（开头）。
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 映射名称
+    /// 映射名称。
     /// </summary>
-    /// <remarks>{0}取名称截取后的所有字符</remarks>
+    /// <remarks>{0}取名称截取后的所有字符。</remarks>
     public string MappingName { get; set; }
 
     /// <summary>
-    /// 引用声明
+    /// 引用声明。
     /// </summary>
     public HashSet<string> RefSchema { get; set; }
 }

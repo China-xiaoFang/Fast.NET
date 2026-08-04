@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,20 +23,20 @@
 namespace Fast.Logging;
 
 /// <summary>
-/// 日志上下文
+/// 日志上下文。
 /// </summary>
 [SuppressSniffer]
 public sealed class LogContext
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="LogContext"/> 类的新实例。
     /// </summary>
     public LogContext()
     {
     }
 
     /// <summary>
-    /// 日志上下文数据
+    /// 日志上下文数据。
     /// </summary>
     public IDictionary<object, object> Properties { get; set; }
 }

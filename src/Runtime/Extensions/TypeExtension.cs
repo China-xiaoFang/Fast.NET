@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,19 +26,18 @@ using System.Reflection.Emit;
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="Type"/> 拓展类
+/// 为 <see cref="Type"/> 提供扩展方法。
 /// </summary>
 public static class TypeExtension
 {
     /// <summary>
-    /// 创建属性值设置器
+    /// 创建属性值设置器。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="propertyInfo"><see cref="PropertyInfo"/></param>
-    /// <returns><see cref="Action{T1, T2}"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="propertyInfo">目标属性的反射元数据。</param>
+    /// <returns>创建的属性值设置器。</returns>
     public static Action<object, object> CreatePropertySetter(this Type type, PropertyInfo propertyInfo)
     {
-        // 空检查
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_设置_属性名
@@ -51,20 +50,16 @@ public static class TypeExtension
         // 获取属性的设置方法，并允许非公开访问
         var setMethod = propertyInfo.GetSetMethod(true);
 
-        // 空检查
         ArgumentNullException.ThrowIfNull(setMethod);
 
-        // 将目标对象加载到堆栈上，并将其转换为所需的类型
         ilGenerator.Emit(OpCodes.Ldarg_0);
         ilGenerator.Emit(OpCodes.Castclass, type);
 
-        // 将要分配的值加载到堆栈上
         ilGenerator.Emit(OpCodes.Ldarg_1);
 
         // 检查属性类型是否为值类型
         if (propertyInfo.PropertyType.IsValueType)
         {
-            // 对值进行拆箱，转换为适当的值类型
             ilGenerator.Emit(OpCodes.Unbox_Any, propertyInfo.PropertyType);
         }
         else
@@ -79,19 +74,17 @@ public static class TypeExtension
         // 从动态方法返回
         ilGenerator.Emit(OpCodes.Ret);
 
-        // 创建一个委托并将其转换为适当的 Action 类型
         return (Action<object, object>) setterMethod.CreateDelegate(typeof(Action<object, object>));
     }
 
     /// <summary>
-    /// 创建字段值设置器
+    /// 创建字段值设置器。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="fieldInfo"><see cref="FieldInfo"/></param>
-    /// <returns><see cref="Action{T1, T2}"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="fieldInfo">目标字段的反射元数据。</param>
+    /// <returns>创建的字段值设置器。</returns>
     public static Action<object, object> CreateFieldSetter(this Type type, FieldInfo fieldInfo)
     {
-        // 空检查
         ArgumentNullException.ThrowIfNull(fieldInfo);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_设置_字段名
@@ -101,17 +94,14 @@ public static class TypeExtension
         // 获取动态方法的 IL 生成器
         var ilGenerator = setterMethod.GetILGenerator();
 
-        // 将目标对象加载到堆栈上，并将其转换为所需的类型
         ilGenerator.Emit(OpCodes.Ldarg_0);
         ilGenerator.Emit(OpCodes.Castclass, type);
 
-        // 将要分配的值加载到堆栈上
         ilGenerator.Emit(OpCodes.Ldarg_1);
 
         // 检查字段类型是否为值类型
         if (fieldInfo.FieldType.IsValueType)
         {
-            // 对值进行拆箱，转换为适当的值类型
             ilGenerator.Emit(OpCodes.Unbox_Any, fieldInfo.FieldType);
         }
         else
@@ -126,19 +116,17 @@ public static class TypeExtension
         // 从动态方法返回
         ilGenerator.Emit(OpCodes.Ret);
 
-        // 创建一个委托并将其转换为适当的 Action 类型
         return (Action<object, object>) setterMethod.CreateDelegate(typeof(Action<object, object>));
     }
 
     /// <summary>
-    /// 创建属性值访问器
+    /// 创建属性值访问器。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="propertyInfo"><see cref="PropertyInfo"/></param>
-    /// <returns><see cref="Func{T1, T2}"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="propertyInfo">目标属性的反射元数据。</param>
+    /// <returns>创建的属性值访问器。</returns>
     public static Func<object, object> CreatePropertyGetter(this Type type, PropertyInfo propertyInfo)
     {
-        // 空检查
         ArgumentNullException.ThrowIfNull(propertyInfo);
         ArgumentNullException.ThrowIfNull(propertyInfo.DeclaringType);
 
@@ -152,7 +140,6 @@ public static class TypeExtension
         // 获取属性的获取方法，并允许非公开访问
         var getMethod = propertyInfo.GetGetMethod(true);
 
-        // 空检查
         ArgumentNullException.ThrowIfNull(getMethod);
 
         // 将目标对象加载到堆栈上，并将其转换为声明类型
@@ -171,19 +158,17 @@ public static class TypeExtension
         // 从动态方法返回
         ilGenerator.Emit(OpCodes.Ret);
 
-        // 创建一个委托并将其转换为适当的 Func 类型
         return (Func<object, object>) dynamicMethod.CreateDelegate(typeof(Func<object, object>));
     }
 
     /// <summary>
-    /// 创建字段值访问器
+    /// 创建字段值访问器。
     /// </summary>
-    /// <param name="type"><see cref="Type"/></param>
-    /// <param name="fieldInfo"><see cref="FieldInfo"/></param>
-    /// <returns><see cref="Func{T1, T2}"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="fieldInfo">目标字段的反射元数据。</param>
+    /// <returns>创建的字段值访问器。</returns>
     public static Func<object, object> CreateFieldGetter(this Type type, FieldInfo fieldInfo)
     {
-        // 空检查
         ArgumentNullException.ThrowIfNull(fieldInfo);
         ArgumentNullException.ThrowIfNull(fieldInfo.DeclaringType);
 
@@ -210,7 +195,6 @@ public static class TypeExtension
         // 从动态方法返回
         ilGenerator.Emit(OpCodes.Ret);
 
-        // 创建一个委托并将其转换为适当的 Func 类型
         return (Func<object, object>) dynamicMethod.CreateDelegate(typeof(Func<object, object>));
     }
 }

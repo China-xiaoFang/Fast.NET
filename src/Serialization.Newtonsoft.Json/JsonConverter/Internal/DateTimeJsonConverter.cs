@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,13 +27,12 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DateTimeJsonConverter"/> DateTime 类型Json返回处理
+/// <see cref="DateTimeJsonConverter"/> DateTime 类型 JSON 返回处理。
 /// </summary>
 internal class DateTimeJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
-    /// 格式化
-    /// 默认：yyyy-MM-dd HH:mm:ss
+    /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
     /// </summary>
     public string Format { get; set; }
 
@@ -47,22 +46,13 @@ internal class DateTimeJsonConverter : JsonConverter<DateTime>
         Format = format;
     }
 
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
     {
         writer.WriteValue(value.ToString(Format, CultureInfo.InvariantCulture));
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
@@ -124,13 +114,12 @@ internal class DateTimeJsonConverter : JsonConverter<DateTime>
 }
 
 /// <summary>
-/// <see cref="NullableDateTimeJsonConverter"/> DateTime? 类型Json返回处理
+/// <see cref="NullableDateTimeJsonConverter"/> DateTime? 类型 JSON 返回处理。
 /// </summary>
 internal class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
-    /// 格式化
-    /// 默认：yyyy-MM-dd HH:mm:ss
+    /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
     /// </summary>
     public string Format { get; set; }
 
@@ -144,10 +133,7 @@ internal class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
         Format = format;
     }
 
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, DateTime? value, JsonSerializer serializer)
     {
         if (value == null)
@@ -156,13 +142,7 @@ internal class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
             writer.WriteValue(value.Value.ToString(Format, CultureInfo.InvariantCulture));
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override DateTime? ReadJson(JsonReader reader, Type objectType, DateTime? existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {

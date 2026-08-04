@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,15 +27,15 @@ using System.Security.Cryptography;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="FileUtil"/> 文件工具类
+/// <see cref="FileUtil"/> 文件工具类。
 /// </summary>
 public static class FileUtil
 {
     /// <summary>
     /// 获取文件的 SHA-256 哈希值。
     /// </summary>
-    /// <param name="filePath">文件路径。</param>
-    /// <returns>由小写字母组成的 SHA-256 哈希值字符串。</returns>
+    /// <param name="filePath">file Path 路径。</param>
+    /// <returns>获取到的文件的 SHA-256 哈希值。</returns>
     public static string GetFileSHA256(string filePath)
     {
         if (string.IsNullOrWhiteSpace(filePath))
@@ -50,8 +50,8 @@ public static class FileUtil
     /// <summary>
     /// 获取文件的 SHA1 哈希值。
     /// </summary>
-    /// <param name="filePath"><see cref="string"/> 文件的完整路径。</param>
-    /// <returns><see cref="string"/> 由小写字母组成的 SHA1 哈希值字符串。</returns>
+    /// <param name="filePath">file Path 路径。</param>
+    /// <returns>由小写字母组成的 SHA1 哈希值字符串。</returns>
     public static string GetFileSHA1(string filePath)
     {
         if (string.IsNullOrWhiteSpace(filePath))
@@ -72,10 +72,10 @@ public static class FileUtil
     }
 
     /// <summary>
-    /// 复制文件
+    /// 复制文件。
     /// </summary>
-    /// <param name="fromPath"><see cref="string"/>来源文件路径</param>
-    /// <param name="toPath"><see cref="string"/>复制的文件路径</param>
+    /// <param name="fromPath">from Path 路径。</param>
+    /// <param name="toPath">to Path 路径。</param>
     public static void CopyFile(string fromPath, string toPath)
     {
         if (!File.Exists(fromPath))
@@ -83,7 +83,6 @@ public static class FileUtil
             throw new FileNotFoundException("源文件不存在！");
         }
 
-        // 创建目标文件夹（如果不存在）
         var destinationDirectory = Path.GetDirectoryName(toPath);
         if (!string.IsNullOrEmpty(destinationDirectory))
             Directory.CreateDirectory(destinationDirectory);
@@ -93,12 +92,11 @@ public static class FileUtil
     }
 
     /// <summary>
-    /// 尝试创建文件夹
+    /// 尝试创建文件夹。
     /// </summary>
-    /// <param name="path"><see cref="string"/>路径</param>
+    /// <param name="path">路径。</param>
     public static void TryCreateDirectory(string path)
     {
-        // 创建目标文件夹（如果不存在）
         var destinationDirectory = Path.GetDirectoryName(path);
         if (!string.IsNullOrEmpty(destinationDirectory))
             Directory.CreateDirectory(destinationDirectory);

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,22 +25,22 @@ using Microsoft.AspNetCore.Authorization;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// 策略对应的需求
+/// 策略对应的需求。
 /// </summary>
 [SuppressSniffer]
 public sealed class AppAuthorizeRequirement : IAuthorizationRequirement
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="AppAuthorizeRequirement"/> 类的新实例。
     /// </summary>
-    /// <param name="policies"></param>
+    /// <param name="policies">授权策略名称集合。</param>
     public AppAuthorizeRequirement(params string[] policies)
     {
         Policies = policies;
     }
 
     /// <summary>
-    /// 策略
+    /// 策略。
     /// </summary>
     public string[] Policies { get; private set; }
 }

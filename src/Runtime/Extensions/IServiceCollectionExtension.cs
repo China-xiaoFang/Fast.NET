@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,25 +27,24 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加选项配置
+    /// 添加选项配置。
     /// </summary>
-    /// <typeparam name="TOptions"></typeparam>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="path"><see cref="string"/> 配置中对应的Key</param>
-    /// <returns></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="path">配置中对应的 Key。</param>
+    /// <typeparam name="TOptions">配置选项类型。</typeparam>
+    /// <returns>返回当前服务注册集合，便于链式调用。</returns>
     public static IServiceCollection AddConfigurableOptions<TOptions>(this IServiceCollection services, string path = null)
         where TOptions : class, new()
     {
         // 获取配置选项名称
         path ??= MAppContext.GetOptionName<TOptions>();
 
-        // 配置验证
         var optionsConfigure = services.AddOptions<TOptions>()
             .BindConfiguration(path, options =>
             {
@@ -75,12 +74,12 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 注册 Mvc 过滤器
+    /// 注册 Mvc 过滤器。
     /// </summary>
-    /// <typeparam name="TFilter"></typeparam>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configure"></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="configure">额外的 MVC 配置操作。</param>
+    /// <typeparam name="TFilter">要注册的 MVC 过滤器类型。</typeparam>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddMvcFilter<TFilter>(this IServiceCollection services, Action<MvcOptions> configure = null)
         where TFilter : IFilterMetadata
     {
@@ -88,7 +87,6 @@ public static class IServiceCollectionExtension
         {
             options.Filters.Add<TFilter>();
 
-            // 其他额外配置
             configure?.Invoke(options);
         });
 
@@ -96,12 +94,12 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 注册 Mvc 过滤器
+    /// 注册 Mvc 过滤器。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="filter"></param>
-    /// <param name="configure"></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="filter">要注册的 MVC 过滤器实例。</param>
+    /// <param name="configure">额外的 MVC 配置操作。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddMvcFilter(this IServiceCollection services, IFilterMetadata filter,
         Action<MvcOptions> configure = null)
     {
@@ -109,7 +107,6 @@ public static class IServiceCollectionExtension
         {
             options.Filters.Add(filter);
 
-            // 其他额外配置
             configure?.Invoke(options);
         });
 

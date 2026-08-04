@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -29,7 +29,7 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiUtil"/> OpenApi 请求工具类
+/// <see cref="OpenApiUtil"/> OpenAPI 请求工具类。
 /// </summary>
 public static partial class OpenApiUtil
 {
@@ -37,9 +37,9 @@ public static partial class OpenApiUtil
 
     private static readonly JsonSerializerOptions _openApiSerializerOptions = new()
     {
-        // 忽略只有在 .NET 6 才会存在的循环引用问题
+        // 忽略 OpenAPI 对象图中的循环引用
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
-        // 解决 JSON 乱码问题
+        // 显式指定 UTF-8 JSON 媒体类型，避免响应编码被错误推断。
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         AllowTrailingCommas = true,
         ReadCommentHandling = JsonCommentHandling.Skip,
@@ -48,11 +48,11 @@ public static partial class OpenApiUtil
     };
 
     /// <summary>
-    /// 获取 OpenApi 文档信息
+    /// 获取 OpenAPI 文档信息。
     /// </summary>
-    /// <param name="documentUrl"><see cref="string"/> 文档地址</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns></returns>
+    /// <param name="documentUrl"><see cref="string"/> 文档地址。</param>
+    /// <param name="cancellationToken">取消令牌。</param>
+    /// <returns>表示异步获取 OpenAPI 文档信息的任务，任务结果为获取到的 OpenAPI 文档信息。</returns>
     internal static async Task<OpenApiDocumentDto> GetOpenApiDocument(string documentUrl,
         CancellationToken cancellationToken = default)
     {

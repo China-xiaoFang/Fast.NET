@@ -1,21 +1,28 @@
 @echo off
 setlocal EnableExtensions DisableDelayedExpansion
 
-REM Use the native Simplified Chinese code page so cmd.exe parses Chinese lines reliably.
 for /f "tokens=2 delims=:" %%C in ('chcp') do set "ORIGINAL_CODE_PAGE=%%C"
 set "ORIGINAL_CODE_PAGE=%ORIGINAL_CODE_PAGE: =%"
 chcp 936 >nul
 
+REM å°†æ§åˆ¶å°åˆ‡æ¢ä¸ºç®€ä½“ä¸­æ–‡ä»£ç é¡µï¼Œç¡®ä¿ä¸­æ–‡æç¤ºå¯ä»¥æ­£å¸¸æ˜¾ç¤ºï¼›é€€å‡ºå‰ä¼šæ¢å¤åŸä»£ç é¡µã€‚
+REM å›ºå®šåœ¨è„šæœ¬æ‰€åœ¨çš„ä»“åº“æ ¹ç›®å½•æ‰§è¡Œï¼Œé¿å…ä»å…¶ä»–ç›®å½•å¯åŠ¨æ—¶æ‰¾ä¸åˆ°è§£å†³æ–¹æ¡ˆã€‚
 pushd "%~dp0" >nul
 if errorlevel 1 (
-    echo ÎŞ·¨½øÈë½Å±¾ËùÔÚÄ¿Â¼£º%~dp0
+    echo [é”™è¯¯] æ— æ³•è¿›å…¥è„šæœ¬æ‰€åœ¨ç›®å½•ï¼š%~dp0
     if defined ORIGINAL_CODE_PAGE chcp %ORIGINAL_CODE_PAGE% >nul
     endlocal & exit /b 1
 )
 
+REM ä»“åº“è·¯å¾„å’Œè¿è¡Œå‚æ•°ã€‚
 set "SOLUTION_FILE=%CD%\Fast.NET.sln"
+set "SOURCE_DIR=%CD%\src"
 set "PACKAGE_DIR=%CD%\nupkgs"
-set "BUILD_CONFIGURATION="
+set "RUN_MODE=%~1"
+set "REQUESTED_PACKAGE_ID=%~2"
+set "BUILD_CONFIGURATION=Release"
+
+REM å½“å‰æ‰“åŒ…ç»“æœå’Œå‘å¸ƒçŠ¶æ€ã€‚
 set "PACKAGE_COUNT=0"
 set "NEXT_PACKAGE_INDEX=11"
 set "MAX_PACKAGE_INDEX=10"
@@ -24,198 +31,290 @@ set "SELECTED_PACKAGE="
 set "SUCCESS_COUNT=0"
 set "ERROR_COUNT=0"
 set "ERROR_FILES="
+set "MISSING_PACKAGE_COUNT=0"
 set "EXIT_CODE=0"
 
-REM ¿ÉÍ¨¹ıÍ¬Ãû»·¾³±äÁ¿¸²¸ÇÍÆËÍÔ´£¬±ãÓÚÊ¹ÓÃË½ÓĞ NuGet ·şÎñ¡£
+REM å¯é€šè¿‡ NUGET_SOURCE è¦†ç›–å‘å¸ƒæºï¼Œæœªè®¾ç½®æ—¶é»˜è®¤å‘å¸ƒåˆ° NuGet.orgã€‚
 if not defined NUGET_SOURCE set "NUGET_SOURCE=https://api.nuget.org/v3/index.json"
 
-echo »¶Ó­Ê¹ÓÃ Fast.NET ´ò°ü·¢²¼¹¤¾ß
-echo.
-
+REM å¼€å§‹å‰æ£€æŸ¥ .NET SDK å’Œè§£å†³æ–¹æ¡ˆæ–‡ä»¶ã€‚
 where dotnet >nul 2>&1
 if errorlevel 1 (
-    echo [´íÎó] Î´ÕÒµ½ dotnet ÃüÁî£¬ÇëÏÈ°²×°Óë global.json Æ¥ÅäµÄ .NET SDK¡£
+    echo [é”™è¯¯] æœªæ‰¾åˆ° dotnet å‘½ä»¤ï¼Œè¯·å®‰è£… global.json æŒ‡å®šçš„ .NET SDKã€‚
     set "EXIT_CODE=1"
     goto :Finish
 )
 
 if not exist "%SOLUTION_FILE%" (
-    echo [´íÎó] Î´ÕÒµ½½â¾ö·½°¸£º%SOLUTION_FILE%
+    echo [é”™è¯¯] æœªæ‰¾åˆ°è§£å†³æ–¹æ¡ˆï¼š%SOLUTION_FILE%
     set "EXIT_CODE=1"
     goto :Finish
 )
 
-echo ÕıÔÚÇåÀí¾ÉµÄ NuGet °ü......
-if exist "%PACKAGE_DIR%" rd /s /q "%PACKAGE_DIR%"
-if exist "%PACKAGE_DIR%" (
-    echo [´íÎó] ÎŞ·¨É¾³ıÄ¿Â¼£º%PACKAGE_DIR%
-    echo ÇëÈ·ÈÏÆäÖĞµÄÎÄ¼şÃ»ÓĞ±»ÆäËû³ÌĞòÕ¼ÓÃ¡£
-    set "EXIT_CODE=1"
-    goto :Finish
+REM æ”¯æŒä»¥ä¸‹å‘½ä»¤è¡Œæ¨¡å¼ï¼š
+REM   pack                         åªæ‰§è¡Œè¿˜åŸã€æ„å»ºå’Œæ‰“åŒ…ã€‚
+REM   publish-all                  æ„å»ºå¹¶æ‰“åŒ…åå‘å¸ƒå½“å‰å…¨éƒ¨åŒ…ã€‚
+REM   publish-one Fast.Cache       æ„å»ºå¹¶æ‰“åŒ…ååªå‘å¸ƒæŒ‡å®š PackageIdã€‚
+REM ä¸å¸¦å‚æ•°è¿è¡Œæ—¶ï¼Œè¿›å…¥æ„å»ºé…ç½®å’Œå‘å¸ƒèŒƒå›´çš„äº¤äº’é€‰æ‹©ã€‚
+if not defined RUN_MODE goto :InteractiveConfiguration
+if /i "%RUN_MODE%"=="pack" (
+    set "UPLOAD_SELECTION=0"
+    goto :BuildAndPack
 )
-echo ÇåÀíÍê³É¡£
+if /i "%RUN_MODE%"=="publish-all" (
+    set "UPLOAD_SELECTION=1"
+    goto :BuildAndPack
+)
+if /i "%RUN_MODE%"=="publish-one" (
+    if not defined REQUESTED_PACKAGE_ID (
+        echo [é”™è¯¯] publish-one æ¨¡å¼å¿…é¡»æŒ‡å®š PackageIdã€‚
+        echo ç¤ºä¾‹ï¼šUploadNuget.bat publish-one Fast.Cache
+        set "EXIT_CODE=1"
+        goto :Finish
+    )
+    goto :BuildAndPack
+)
+
+echo [é”™è¯¯] æœªçŸ¥è¿è¡Œæ¨¡å¼ï¼š%RUN_MODE%
+call :ShowUsage
+set "EXIT_CODE=1"
+goto :Finish
+
+:InteractiveConfiguration
+echo Fast.NET æ‰“åŒ…ä¸å‘å¸ƒå·¥å…·
 echo.
-
-echo ÇëÑ¡ÔñÉú³ÉÄ£Ê½£º
+echo è¯·é€‰æ‹©æ„å»ºé…ç½®ï¼š
 echo [1] Debug
 echo [2] Release
-echo.
-choice /c 12 /n /m "ÇëÊäÈëÑ¡Ïî£º"
+choice /c 12 /n /m "è¯·è¾“å…¥é€‰é¡¹ï¼š"
 if errorlevel 2 set "BUILD_CONFIGURATION=Release"
 if not errorlevel 2 set "BUILD_CONFIGURATION=Debug"
 
+:BuildAndPack
+REM æ‰“åŒ…æµç¨‹å›ºå®šä¸º Restoreã€Buildã€Packï¼ŒBuild æœ¬èº«ä¸ä¼šéšå¼ç”Ÿæˆ NuGet åŒ…ã€‚
 echo.
-echo ÕıÔÚÊ¹ÓÃ %BUILD_CONFIGURATION% Ä£Ê½±àÒë²¢Éú³É NuGet °ü......
-echo dotnet build "%SOLUTION_FILE%" --configuration %BUILD_CONFIGURATION% --no-incremental
-echo.
-
-dotnet build "%SOLUTION_FILE%" --configuration "%BUILD_CONFIGURATION%" --no-incremental
+echo [1/3] æ­£åœ¨è¿˜åŸè§£å†³æ–¹æ¡ˆ...
+dotnet restore "%SOLUTION_FILE%"
 if errorlevel 1 (
-    echo.
-    echo [´íÎó] ±àÒë»ò´ò°üÊ§°Ü£¬ÒÑÖÕÖ¹ÉÏ´«¡£
+    echo [é”™è¯¯] è§£å†³æ–¹æ¡ˆè¿˜åŸå¤±è´¥ã€‚
     set "EXIT_CODE=1"
     goto :Finish
 )
 
 echo.
-echo ÇëÑ¡Ôñ·¢²¼·½Ê½£º
-echo [0] ½öÍê³É±àÒëºÍ´ò°ü£¬²»ÉÏ´«
-echo [1] ÉÏ´«È«²¿ NuGet °ü
-if exist "%PACKAGE_DIR%" for /r "%PACKAGE_DIR%" %%F in (*) do if /i "%%~xF"==".nupkg" call :RegisterPackage "%%~fF"
+echo [2/3] æ­£åœ¨ä½¿ç”¨ %BUILD_CONFIGURATION% é…ç½®æ„å»ºè§£å†³æ–¹æ¡ˆ...
+dotnet build "%SOLUTION_FILE%" --configuration "%BUILD_CONFIGURATION%" --no-restore
+if errorlevel 1 (
+    echo [é”™è¯¯] æ„å»ºå¤±è´¥ï¼Œæœªæ‰§è¡Œæ‰“åŒ…å’Œå‘å¸ƒã€‚
+    set "EXIT_CODE=1"
+    goto :Finish
+)
+
+echo.
+echo [3/3] æ­£åœ¨å°† NuGet åŒ…è¾“å‡ºåˆ° %PACKAGE_DIR%...
+dotnet pack "%SOLUTION_FILE%" --configuration "%BUILD_CONFIGURATION%" --no-build --no-restore --property:WarnOnPackingNonPackableProject=false
+if errorlevel 1 (
+    echo [é”™è¯¯] æ‰“åŒ…å¤±è´¥ï¼Œæœªæ‰§è¡Œå‘å¸ƒã€‚
+    set "EXIT_CODE=1"
+    goto :Finish
+)
+
+REM æ ¹æ®æ¯ä¸ªé¡¹ç›®å½“å‰çš„ PackageId å’Œ PackageVersion ç²¾ç¡®å®šä½åŒ…ï¼Œé¿å…è¯¯é€‰ nupkgs ä¸­çš„æ—§ç‰ˆæœ¬ã€‚
+echo.
+echo å½“å‰é¡¹ç›®ç‰ˆæœ¬å¯¹åº”çš„ NuGet åŒ…ï¼š
+for /r "%SOURCE_DIR%" %%P in (*.csproj) do call :RegisterProjectPackage "%%~fP"
+
+if not "%MISSING_PACKAGE_COUNT%"=="0" (
+    echo [é”™è¯¯] æœ‰ %MISSING_PACKAGE_COUNT% ä¸ªé¢„æœŸåŒ…æ–‡ä»¶ä¸å­˜åœ¨ã€‚
+    set "EXIT_CODE=1"
+    goto :Finish
+)
 
 if "%PACKAGE_COUNT%"=="0" (
-    echo [´íÎó] Ã»ÓĞÔÚÒÔÏÂÄ¿Â¼ÖĞÕÒµ½ .nupkg ÎÄ¼ş£º%PACKAGE_DIR%
+    echo [é”™è¯¯] æ²¡æœ‰æ‰¾åˆ°å¯å‘å¸ƒçš„ NuGet åŒ…ã€‚
     set "EXIT_CODE=1"
     goto :Finish
 )
 
 set /a MAX_PACKAGE_INDEX=NEXT_PACKAGE_INDEX-1
 
-echo.
-echo ¹²ÕÒµ½ %PACKAGE_COUNT% ¸ö´ı·¢²¼°ü£¬µ¥¶ÀÉÏ´«±àºÅÎª 11 ÖÁ %MAX_PACKAGE_INDEX%¡£
-echo ·ûºÅ°ü .snupkg ½«ÓÉ dotnet nuget push ×Ô¶¯¹ØÁªÉÏ´«¡£
-echo.
-
-:SelectUploadMode
-call :ReadUploadSelection
-if errorlevel 1 (
-    echo [´íÎó] ÇëÊäÈë²Ëµ¥ÖĞÓĞĞ§µÄÊı×Ö±àºÅ¡£
-    goto :SelectUploadMode
+REM å‘½ä»¤è¡Œæ¨¡å¼ç›´æ¥è¿›å…¥å¯¹åº”åˆ†æ”¯ï¼Œäº¤äº’æ¨¡å¼åˆ™ç»§ç»­é€‰æ‹©å‘å¸ƒèŒƒå›´ã€‚
+if /i "%RUN_MODE%"=="pack" goto :SkipPublish
+if /i "%RUN_MODE%"=="publish-all" goto :PreparePublish
+if /i "%RUN_MODE%"=="publish-one" (
+    if not defined SELECTED_PACKAGE (
+        echo [é”™è¯¯] æœªæ‰¾åˆ°æŒ‡å®šçš„ PackageIdï¼š%REQUESTED_PACKAGE_ID%
+        set "EXIT_CODE=1"
+        goto :Finish
+    )
+    goto :PreparePublish
 )
 
-if "%UPLOAD_SELECTION%"=="0" goto :SkipUpload
-if "%UPLOAD_SELECTION%"=="1" goto :PrepareUpload
+:SelectPublishMode
+echo.
+echo è¯·é€‰æ‹©å‘å¸ƒæ–¹å¼ï¼š
+echo [0] åªå®Œæˆæ„å»ºå’Œæ‰“åŒ…ï¼Œä¸å‘å¸ƒ
+echo [1] å‘å¸ƒå½“å‰å…¨éƒ¨ NuGet åŒ…
+echo [11-%MAX_PACKAGE_INDEX%] å‘å¸ƒä¸Šæ–¹åˆ—è¡¨ä¸­çš„å•ä¸ªåŒ…
+call :ReadNumericSelection
+if errorlevel 1 (
+    echo [é”™è¯¯] è¯·è¾“å…¥æœ‰æ•ˆçš„æ•°å­—é€‰é¡¹ã€‚
+    goto :SelectPublishMode
+)
+
+if "%UPLOAD_SELECTION%"=="0" goto :SkipPublish
+if "%UPLOAD_SELECTION%"=="1" goto :PreparePublish
 
 call set "SELECTED_PACKAGE=%%PACKAGE_%UPLOAD_SELECTION%%%"
 if not defined SELECTED_PACKAGE (
-    echo [´íÎó] ±àºÅ %UPLOAD_SELECTION% ²»´æÔÚ£¬ÇëÖØĞÂÑ¡Ôñ¡£
-    goto :SelectUploadMode
+    echo [é”™è¯¯] åŒ…åºå·ä¸å­˜åœ¨ï¼š%UPLOAD_SELECTION%
+    goto :SelectPublishMode
 )
 
-:PrepareUpload
-
-REM ÓÅÏÈ¶ÁÈ¡»·¾³±äÁ¿£»Î´ÉèÖÃÊ±Ê¹ÓÃÒş²ØÊäÈë£¬±ÜÃâÃÜÔ¿Ö±½ÓÏÔÊ¾ÔÚ´°¿ÚÖĞ¡£
-if not defined NUGET_API_KEY call :ReadApiKey
+:PreparePublish
+REM ä¼˜å…ˆè¯»å–å½“å‰ç¯å¢ƒä¸­çš„ API Keyï¼›æœªè®¾ç½®æ—¶å†ä½¿ç”¨ PowerShell éšè—è¾“å…¥ã€‚
+if not defined NUGET_API_KEY call :ReadNuGetApiKey
 if not defined NUGET_API_KEY (
-    echo.
-    echo [´íÎó] NuGet API Key ²»ÄÜÎª¿Õ£¬ÒÑÖÕÖ¹ÉÏ´«¡£
+    echo [é”™è¯¯] NuGet API Key ä¸èƒ½ä¸ºç©ºï¼Œå·²å–æ¶ˆå‘å¸ƒã€‚
     set "EXIT_CODE=1"
     goto :Finish
 )
 
 echo.
-echo ¿ªÊ¼ÉÏ´«µ½£º%NUGET_SOURCE%
-if "%UPLOAD_SELECTION%"=="1" goto :PushAllPackages
+if "%UPLOAD_SELECTION%"=="1" (
+    echo å³å°†å‘ä»¥ä¸‹æºå‘å¸ƒå½“å‰å…¨éƒ¨ %PACKAGE_COUNT% ä¸ªåŒ…ï¼š
+) else (
+    echo å³å°†å‘å¸ƒå•ä¸ªåŒ…ï¼š
+    echo   %SELECTED_PACKAGE%
+    echo å‘å¸ƒæºï¼š
+)
+echo   %NUGET_SOURCE%
+echo.
 
+if "%UPLOAD_SELECTION%"=="1" goto :PublishAllPackages
 call :PushPackage "%SELECTED_PACKAGE%"
-goto :UploadSummary
+goto :PublishSummary
 
-:PushAllPackages
+:PublishAllPackages
+REM å…¨é‡æ¨¡å¼ä»…éå†æœ¬æ¬¡è¯†åˆ«å‡ºçš„å½“å‰ç‰ˆæœ¬åŒ…ã€‚
 for /l %%I in (11,1,%MAX_PACKAGE_INDEX%) do call :PushPackageByIndex %%I
 
-:UploadSummary
-
-REM ¾¡ÔçÇå³ı½Å±¾¾Ö²¿»·¾³ÖĞµÄÃÜÔ¿¡£
-set "NUGET_API_KEY="
-
+:PublishSummary
 echo.
-echo ÉÏ´«Íê³É£º³É¹¦ %SUCCESS_COUNT% ¸ö£¬Ê§°Ü %ERROR_COUNT% ¸ö¡£
+echo å‘å¸ƒå®Œæˆï¼ŒæˆåŠŸ %SUCCESS_COUNT% ä¸ªï¼Œå¤±è´¥ %ERROR_COUNT% ä¸ªã€‚
 if not "%ERROR_COUNT%"=="0" (
-    echo Ê§°Ü°üÁĞ±í£º%ERROR_FILES%
+    echo å‘å¸ƒå¤±è´¥çš„åŒ…ï¼š%ERROR_FILES%
     set "EXIT_CODE=1"
 )
 goto :Finish
 
-:SkipUpload
+:SkipPublish
 echo.
-echo ÒÑÍê³É±àÒëºÍ´ò°ü£¬±¾´ÎÎ´Ö´ĞĞÉÏ´«¡£
-echo NuGet °üÄ¿Â¼£º%PACKAGE_DIR%
+echo æ„å»ºå’Œæ‰“åŒ…å·²å®Œæˆï¼Œæœ¬æ¬¡æœªæ‰§è¡Œå‘å¸ƒã€‚
+echo NuGet åŒ…ç›®å½•ï¼š%PACKAGE_DIR%
 goto :Finish
 
-:RegisterPackage
+:RegisterProjectPackage
+REM è¯»å–é¡¹ç›®æœ€ç»ˆç”Ÿæ•ˆçš„åŒ…åå’Œç‰ˆæœ¬ï¼Œå†æ£€æŸ¥å¯¹åº” nupkg æ˜¯å¦å­˜åœ¨ã€‚
+set "CURRENT_PACKAGE_ID="
+set "CURRENT_PACKAGE_VERSION="
+for /f "usebackq delims=" %%I in (`dotnet msbuild "%~1" -nologo -getProperty:PackageId`) do if not defined CURRENT_PACKAGE_ID set "CURRENT_PACKAGE_ID=%%I"
+for /f "usebackq delims=" %%V in (`dotnet msbuild "%~1" -nologo -getProperty:PackageVersion`) do if not defined CURRENT_PACKAGE_VERSION set "CURRENT_PACKAGE_VERSION=%%V"
+
+if not defined CURRENT_PACKAGE_ID (
+    echo [é”™è¯¯] æ— æ³•è¯»å–é¡¹ç›®çš„ PackageIdï¼š%~1
+    set /a MISSING_PACKAGE_COUNT+=1
+    exit /b 0
+)
+if not defined CURRENT_PACKAGE_VERSION (
+    echo [é”™è¯¯] æ— æ³•è¯»å–é¡¹ç›®çš„ PackageVersionï¼š%~1
+    set /a MISSING_PACKAGE_COUNT+=1
+    exit /b 0
+)
+
+set "CURRENT_PACKAGE_PATH=%PACKAGE_DIR%\%CURRENT_PACKAGE_ID%.%CURRENT_PACKAGE_VERSION%.nupkg"
+if not exist "%CURRENT_PACKAGE_PATH%" (
+    echo [é”™è¯¯] ç¼ºå°‘åŒ…æ–‡ä»¶ï¼š%CURRENT_PACKAGE_PATH%
+    set /a MISSING_PACKAGE_COUNT+=1
+    exit /b 0
+)
+
+REM ä» 11 å¼€å§‹ç¼–å·ï¼Œä¿ç•™ 0 å’Œ 1 ä½œä¸ºä¸å‘å¸ƒä¸å…¨é‡å‘å¸ƒé€‰é¡¹ã€‚
 set "CURRENT_PACKAGE_INDEX=%NEXT_PACKAGE_INDEX%"
-set "PACKAGE_%CURRENT_PACKAGE_INDEX%=%~f1"
+set "PACKAGE_%CURRENT_PACKAGE_INDEX%=%CURRENT_PACKAGE_PATH%"
 set /a PACKAGE_COUNT+=1
 set /a NEXT_PACKAGE_INDEX+=1
-echo [%CURRENT_PACKAGE_INDEX%] %~nx1
+echo [%CURRENT_PACKAGE_INDEX%] %CURRENT_PACKAGE_ID% %CURRENT_PACKAGE_VERSION%
+
+REM publish-one æ¨¡å¼é€šè¿‡ PackageId åŒ¹é…éœ€è¦å‘å¸ƒçš„å•ä¸ªåŒ…ã€‚
+if /i "%RUN_MODE%"=="publish-one" if /i "%CURRENT_PACKAGE_ID%"=="%REQUESTED_PACKAGE_ID%" set "SELECTED_PACKAGE=%CURRENT_PACKAGE_PATH%"
 exit /b 0
 
-:ReadUploadSelection
+:ReadNumericSelection
+REM ä»…æ¥å—çº¯æ•°å­—ï¼Œé¿å…æ— æ•ˆåºå·è¿›å…¥åŠ¨æ€å˜é‡æŸ¥è¯¢ã€‚
 setlocal EnableDelayedExpansion
 set "INPUT_VALUE="
-set /p "INPUT_VALUE=ÇëÊäÈë·¢²¼±àºÅ£º"
+set /p "INPUT_VALUE=è¯·è¾“å…¥é€‰é¡¹ï¼š"
 if not defined INPUT_VALUE (
     endlocal
     exit /b 1
 )
-
-REM Ö»ÔÊĞí´¿Êı×Ö£¬±ÜÃâ¶àÎ»±àºÅ±» choice ²ğ³Éµ¥¸ö×Ö·û¡£
 for /f "delims=0123456789" %%A in ("!INPUT_VALUE!") do (
     endlocal
     exit /b 1
 )
-
 endlocal & set "UPLOAD_SELECTION=%INPUT_VALUE%"
 exit /b 0
 
-:ReadApiKey
+:ReadNuGetApiKey
+REM ä¸­æ–‡æç¤ºç”±æ‰¹å¤„ç†è¾“å‡ºï¼ŒPowerShell å‘½ä»¤ä»…ä½¿ç”¨ ASCII å­—ç¬¦ï¼Œé¿å…åµŒå¥—å‘½ä»¤å‘ç”Ÿç¼–ç å’Œè§£æé”™è¯¯ã€‚
+REM PowerShell ç›´æ¥ä»æ§åˆ¶å°å®‰å…¨è¯»å–ï¼Œè¾“å…¥å†…å®¹åªæ˜¾ç¤ºä¸ºæ˜Ÿå·ã€‚
 where powershell.exe >nul 2>&1
-if errorlevel 1 goto :ReadApiKeyPlainText
+if errorlevel 1 goto :ReadNuGetApiKeyPlainText
 
-for /f "delims=" %%K in ('powershell.exe -NoLogo -NoProfile -Command "$secure = Read-Host 'ÇëÊäÈë NuGet API Key' -AsSecureString; $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure); try { [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer) } finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer) }"') do set "NUGET_API_KEY=%%K"
+echo è¯·è¾“å…¥ NuGet API Keyï¼ˆè¾“å…¥å†…å®¹ä¸ä¼šæ˜¾ç¤ºï¼‰ï¼š
+for /f "delims=" %%K in ('powershell.exe -NoLogo -NoProfile -Command "$secureValue = $Host.UI.ReadLineAsSecureString(); $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureValue); try { [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer) } finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer) }"') do if not defined NUGET_API_KEY set "NUGET_API_KEY=%%K"
 exit /b 0
 
-:ReadApiKeyPlainText
-echo [¾¯¸æ] Î´ÕÒµ½ PowerShell£¬API Key ÊäÈë½«»áÏÔÊ¾ÔÚ´°¿ÚÖĞ¡£
-set /p "NUGET_API_KEY=ÇëÊäÈë NuGet API Key£º"
+:ReadNuGetApiKeyPlainText
+REM æå°‘æ•°æ²¡æœ‰ PowerShell çš„ç¯å¢ƒåªèƒ½ä½¿ç”¨æ˜æ–‡è¾“å…¥ï¼Œå¹¶æ˜ç¡®ç»™å‡ºå®‰å…¨æç¤ºã€‚
+echo [è­¦å‘Š] æœªæ‰¾åˆ° PowerShellï¼Œè¾“å…¥çš„ API Key å°†æ˜¾ç¤ºåœ¨æ§åˆ¶å°ä¸­ã€‚
+set /p "NUGET_API_KEY=è¯·è¾“å…¥ NuGet API Keyï¼š"
 exit /b 0
 
 :PushPackageByIndex
+REM æ ¹æ®äº¤äº’èœå•ä¸­çš„åºå·å–å‡ºåŒ…è·¯å¾„ã€‚
 set "PACKAGE_PATH="
-call set "PACKAGE_PATH=%%PACKAGE_%~1%%%"
+call set "PACKAGE_PATH=%%PACKAGE_%~1%%"
 if defined PACKAGE_PATH call :PushPackage "%PACKAGE_PATH%"
-set "PACKAGE_PATH="
 exit /b 0
 
 :PushPackage
+REM dotnet nuget push é»˜è®¤ä¼šåŒæ—¶å¤„ç†åŒç›®å½•ä¸‹çš„ç¬¦å·åŒ…ï¼Œå¹¶è·³è¿‡æœåŠ¡ç«¯å·²æœ‰ç‰ˆæœ¬ã€‚
 echo.
-echo ÕıÔÚÉÏ´«£º%~nx1
-dotnet nuget push "%~f1" --api-key "%NUGET_API_KEY%" --skip-duplicate --source "%NUGET_SOURCE%"
-if errorlevel 1 goto :PushFailed
-
-set /a SUCCESS_COUNT+=1
-echo [³É¹¦] %~nx1
-timeout /t 1 /nobreak >nul 2>&1
+echo æ­£åœ¨å‘å¸ƒ %~nx1...
+dotnet nuget push "%~f1" --api-key "%NUGET_API_KEY%" --source "%NUGET_SOURCE%" --skip-duplicate
+if errorlevel 1 (
+    set /a ERROR_COUNT+=1
+    set "ERROR_FILES=%ERROR_FILES% %~nx1"
+    echo [é”™è¯¯] å‘å¸ƒå¤±è´¥ï¼š%~nx1
+) else (
+    set /a SUCCESS_COUNT+=1
+    echo [æˆåŠŸ] å·²å‘å¸ƒï¼š%~nx1
+)
 exit /b 0
 
-:PushFailed
-set /a ERROR_COUNT+=1
-set "ERROR_FILES=%ERROR_FILES% %~nx1"
-echo [Ê§°Ü] %~nx1
-timeout /t 1 /nobreak >nul 2>&1
+:ShowUsage
+echo ä½¿ç”¨æ–¹å¼ï¼š
+echo   UploadNuget.bat
+echo   UploadNuget.bat pack
+echo   UploadNuget.bat publish-all
+echo   UploadNuget.bat publish-one Fast.Cache
 exit /b 0
 
 :Finish
+REM å¯†é’¥ä»…å­˜åœ¨äºå½“å‰è¿›ç¨‹ç¯å¢ƒï¼Œé€€å‡ºå‰æ¸…ç©ºæœ¬åœ°å‰¯æœ¬ã€‚
+set "NUGET_API_KEY="
 popd
 if defined CI goto :Exit
 if defined NO_PAUSE goto :Exit

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -29,37 +29,37 @@ using Microsoft.Extensions.Logging;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventBusHostedService"/> 事件总线后台主机服务
+/// <see cref="EventBusHostedService"/> 事件总线后台主机服务。
 /// </summary>
 internal sealed class EventBusHostedService : BackgroundService
 {
     /// <summary>
-    /// GC 回收默认间隔
+    /// GC 回收默认间隔。
     /// </summary>
     private const int GC_COLLECT_INTERVAL_SECONDS = 3;
 
     /// <summary>
-    /// 避免由 CLR 的终结器捕获该异常从而终止应用程序，让所有未觉察异常被觉察
+    /// 避免由 CLR 的终结器捕获该异常从而终止应用程序，让所有未觉察异常被觉察。
     /// </summary>
     internal event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
 
     /// <summary>
-    /// 日志对象
+    /// 日志对象。
     /// </summary>
     private readonly ILogger _logger;
 
     /// <summary>
-    /// 服务提供器
+    /// 服务提供器。
     /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// 事件源存储器
+    /// 事件源存储器。
     /// </summary>
     private readonly IEventSourceStorer _eventSourceStorer;
 
     /// <summary>
-    /// 事件处理程序集合
+    /// 事件处理程序集合。
     /// </summary>
     private readonly ConcurrentDictionary<EventHandlerWrapper, EventHandlerWrapper> _eventHandlers = new();
 
@@ -69,12 +69,12 @@ internal sealed class EventBusHostedService : BackgroundService
     private long _lastGCCollectTicks;
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="EventBusHostedService"/> 类的新实例。
     /// </summary>
-    /// <param name="logger">日志对象</param>
-    /// <param name="serviceProvider">服务提供器</param>
-    /// <param name="eventSourceStorer">事件源存储器</param>
-    /// <param name="eventSubscribers">事件订阅者集合</param>
+    /// <param name="logger">日志对象。</param>
+    /// <param name="serviceProvider">服务提供器。</param>
+    /// <param name="eventSourceStorer">事件源存储器。</param>
+    /// <param name="eventSubscribers">事件订阅者集合。</param>
     public EventBusHostedService(ILogger<EventBusService> logger, IServiceProvider serviceProvider,
         IEventSourceStorer eventSourceStorer, IEnumerable<IEventSubscriber> eventSubscribers)
     {
@@ -101,7 +101,7 @@ internal sealed class EventBusHostedService : BackgroundService
                 var handler = (Func<EventHandlerExecutingContext, Task>) eventHandlerMethod.CreateDelegate(
                     typeof(Func<EventHandlerExecutingContext, Task>), eventSubscriber);
 
-                // 处理同一个事件处理程序支持多个事件 Id 情况
+                // 处理同一个事件处理程序支持多个事件 ID 情况
                 var eventSubscribeAttributes = eventHandlerMethod.GetCustomAttributes<EventSubscribeAttribute>(false);
 
                 // 逐条包装并添加到 _eventHandlers 集合中
@@ -123,15 +123,11 @@ internal sealed class EventBusHostedService : BackgroundService
     }
 
     /// <summary>
-    /// 事件处理程序监视器
+    /// 事件处理程序监视器。
     /// </summary>
     private IEventHandlerMonitor Monitor { get; }
 
-    /// <summary>
-    /// 执行后台任务
-    /// </summary>
-    /// <param name="stoppingToken">后台主机服务停止时取消任务 Token</param>
-    /// <returns><see cref="Task"/> 实例</returns>
+    /// <inheritdoc />
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Log(LogLevel.Information, "EventBus hosted service is running.");
@@ -150,10 +146,10 @@ internal sealed class EventBusHostedService : BackgroundService
     }
 
     /// <summary>
-    /// 后台调用处理程序
+    /// 后台调用处理程序。
     /// </summary>
-    /// <param name="stoppingToken">后台主机服务停止时取消任务 Token</param>
-    /// <returns><see cref="Task"/> 实例</returns>
+    /// <param name="stoppingToken">主机停止时用于终止后台循环的令牌。</param>
+    /// <returns>表示单次事件读取和分发的任务。</returns>
     private async Task BackgroundProcessing(CancellationToken stoppingToken)
     {
         // 从事件存储器中读取一条
@@ -167,7 +163,6 @@ internal sealed class EventBusHostedService : BackgroundService
             return;
         }
 
-        // 空检查
         if (string.IsNullOrWhiteSpace(eventSource?.EventId))
         {
             Log(LogLevel.Warning, "Invalid EventId, EventId cannot be <null> or an empty string.");
@@ -175,7 +170,7 @@ internal sealed class EventBusHostedService : BackgroundService
             return;
         }
 
-        // 查找事件 Id 匹配的事件处理程序
+        // 查找事件 ID 匹配的事件处理程序
         var eventHandlersThatShouldRun = _eventHandlers.Where(t => t.Key.ShouldRun(eventSource.EventId))
             .OrderByDescending(u => u.Value.Order)
             .Select(u => u.Key)
@@ -203,7 +198,7 @@ internal sealed class EventBusHostedService : BackgroundService
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
 
-            // 如果重试次数小于或等于 0，则直接调用
+            // 未配置重试次数时只执行一次，不进入重试循环。
             if (numRetries <= 0)
             {
                 await action();
@@ -213,7 +208,6 @@ internal sealed class EventBusHostedService : BackgroundService
             // 存储总的重试次数
             var totalNumRetries = numRetries;
 
-            // 不断重试
             while (true)
             {
                 try
@@ -221,9 +215,14 @@ internal sealed class EventBusHostedService : BackgroundService
                     await action();
                     break;
                 }
+                catch (OperationCanceledException) when (processingToken.IsCancellationRequested)
+                {
+                    // 取消是控制流，不应消耗剩余重试次数或触发失败回调。
+                    throw;
+                }
                 catch (Exception ex)
                 {
-                    // 如果可重试次数小于或等于0，则终止重试
+                    // 如果可重试次数小于或等于 0，则终止重试
                     if (--numRetries < 0)
                     {
                         if (finalThrow)
@@ -254,7 +253,7 @@ internal sealed class EventBusHostedService : BackgroundService
                     // 重试调用委托
                     retryAction?.Invoke(totalNumRetries, totalNumRetries - numRetries);
 
-                    // 如果可重试异常数大于 0，则间隔指定时间后继续执行
+                    // 仅对允许重试的异常等待指定间隔后重试。
                     if (retryTimeout > 0)
                         await Task.Delay(retryTimeout, processingToken);
                 }
@@ -345,15 +344,15 @@ internal sealed class EventBusHostedService : BackgroundService
     }
 
     /// <summary>
-    /// 管理事件订阅器动态
+    /// 管理事件订阅器动态。
     /// </summary>
-    /// <param name="subscribeOperateSource"></param>
+    /// <param name="subscribeOperateSource">描述订阅者新增或移除操作的事件源。</param>
     private void ManageEventSubscribers(EventSubscribeOperateSource subscribeOperateSource)
     {
-        // 获取实际订阅事件 Id
+        // 获取实际订阅事件 ID
         var eventId = subscribeOperateSource.SubscribeEventId;
 
-        // 确保事件订阅 Id 和传入的特性 EventId 一致
+        // 确保事件订阅 ID 和传入的特性 EventId 一致
         if (subscribeOperateSource.Attribute != null && subscribeOperateSource.Attribute.EventId != eventId)
             throw new InvalidOperationException(
                 "Ensure that the <eventId> is consistent with the <EventId> attribute of the EventSubscribeAttribute object.");
@@ -373,7 +372,6 @@ internal sealed class EventBusHostedService : BackgroundService
             // 追加到集合中
             var succeeded = _eventHandlers.TryAdd(wrapper, wrapper);
 
-            // 输出日志
             if (succeeded)
             {
                 Log(LogLevel.Information, "Subscriber with event ID <{EventId}> was appended successfully.",
@@ -383,7 +381,7 @@ internal sealed class EventBusHostedService : BackgroundService
         // 处理动态删除
         else if (subscribeOperateSource.Operate == EventSubscribeOperates.Remove)
         {
-            // 删除所有匹配事件 Id 的处理程序
+            // 删除所有匹配事件 ID 的处理程序
             foreach (var wrapper in _eventHandlers.Keys)
             {
                 if (wrapper.EventId != eventId)
@@ -393,7 +391,6 @@ internal sealed class EventBusHostedService : BackgroundService
                 if (!succeeded)
                     continue;
 
-                // 输出日志
                 Log(LogLevel.Warning, "Subscriber<{Name}> with event ID <{EventId}> was remove.",
                     new object[] {wrapper.HandlerMethod?.Name, eventId});
             }
@@ -401,10 +398,10 @@ internal sealed class EventBusHostedService : BackgroundService
     }
 
     /// <summary>
-    /// 检查是否开启执行完成触发 GC 回收
+    /// 检查是否开启执行完成触发 GC 回收。
     /// </summary>
-    /// <param name="gcCollect"></param>
-    /// <returns></returns>
+    /// <param name="gcCollect">是否在本轮事件处理后执行垃圾回收。</param>
+    /// <returns>检查通过时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     private bool CheckIsSetGCCollect(object gcCollect)
     {
         return gcCollect != null && Convert.ToBoolean(gcCollect);
@@ -413,6 +410,7 @@ internal sealed class EventBusHostedService : BackgroundService
     /// <summary>
     /// 在调用方明确开启时限制显式垃圾回收频率。
     /// </summary>
+    /// <param name="enabled">是否启用该功能。</param>
     private void TryCollectGarbage(bool enabled)
     {
         if (!enabled)
@@ -431,12 +429,12 @@ internal sealed class EventBusHostedService : BackgroundService
     }
 
     /// <summary>
-    /// 记录日志
+    /// 记录日志。
     /// </summary>
-    /// <param name="logLevel">日志级别</param>
-    /// <param name="message">消息</param>
-    /// <param name="args">参数</param>
-    /// <param name="ex">异常</param>
+    /// <param name="logLevel">日志级别。</param>
+    /// <param name="message">消息。</param>
+    /// <param name="args">参数。</param>
+    /// <param name="ex">异常。</param>
     private void Log(LogLevel logLevel, string message, object[] args = null, Exception ex = null)
     {
         if (logLevel == LogLevel.Error)

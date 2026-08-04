@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,13 +23,13 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IBaseTEntity"/> 租户Entity基类接口
+/// <see cref="IBaseTEntity"/> 租户 Entity 基类接口。
 /// </summary>
 [SuppressSniffer]
 public interface IBaseTEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 租户Id
+    /// 租户 ID。
     /// </summary>
     long TenantId { get; set; }
 }

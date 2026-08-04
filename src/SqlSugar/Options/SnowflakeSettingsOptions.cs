@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,20 +26,18 @@ using Fast.Runtime;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SnowflakeSettingsOptions"/> 雪花Id配置
+/// <see cref="SnowflakeSettingsOptions"/> 雪花 ID 配置。
 /// </summary>
 [SuppressSniffer]
 public class SnowflakeSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 工作Id
+    /// 工作 ID。
     /// </summary>
     [Required]
     public ushort? WorkerId { get; set; }
 
-    /// <summary>
-    /// 后期配置
-    /// </summary>
+    /// <inheritdoc />
     public void PostConfigure()
     {
         WorkerId ??= 1;

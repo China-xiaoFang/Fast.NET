@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -29,33 +29,33 @@ using System.Reflection;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="Enum"/> 拓展类
+/// 为 <see cref="Enum"/> 提供扩展方法。
 /// </summary>
 public static class EnumExtension
 {
     /// <summary>
-    /// 获取枚举值的描述
+    /// 获取枚举值的描述。
     /// </summary>
-    /// <remarks>需要有 [Description] 特性，否则返回的是枚举值的Name</remarks>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="value">枚举值</param>
-    /// <returns><see cref="string"/>枚举的 [Description] 特性描述</returns>
-    /// <exception cref="ArgumentNullException">传入的枚举值为空</exception>
+    /// <remarks>需要有 [Description] 特性，否则返回的是枚举值的 Name。</remarks>
+    /// <exception cref="ArgumentNullException">传入的枚举值为空。</exception>
     /// <exception cref="ArgumentException">The parameter is not an enum type.</exception>
+    /// <param name="value">要转换为枚举的名称或数值。</param>
+    /// <typeparam name="TEnum">枚举类型。</typeparam>
+    /// <returns>枚举的 [Description] 特性描述。</returns>
     public static string GetDescription<TEnum>(this TEnum value) where TEnum : struct, Enum
     {
         return value.GetDescription(typeof(TEnum));
     }
 
     /// <summary>
-    /// 获取枚举值的描述
+    /// 获取枚举值的描述。
     /// </summary>
-    /// <remarks>需要有 [Description] 特性，否则返回的是枚举值的Name</remarks>
-    /// <param name="value"><see cref="Enum"/>枚举值</param>
-    /// <param name="enumType"><see cref="Type"/>枚举类型</param>
-    /// <returns><see cref="string"/>枚举的 [Description] 特性描述</returns>
-    /// <exception cref="ArgumentNullException">传入的枚举值为空</exception>
+    /// <remarks>需要有 [Description] 特性，否则返回的是枚举值的 Name。</remarks>
+    /// <exception cref="ArgumentNullException">传入的枚举值为空。</exception>
     /// <exception cref="ArgumentException">The parameter is not an enum type.</exception>
+    /// <param name="value">Enum 枚举值。</param>
+    /// <param name="enumType">enum 类型。</param>
+    /// <returns>枚举的 [Description] 特性描述。</returns>
     public static string GetDescription(this Enum value, Type enumType)
     {
         if (value == null)
@@ -69,7 +69,6 @@ public static class EnumExtension
             throw new ArgumentException("The parameter is not an enum type.", nameof(value));
         }
 
-        // 判断是否有效
         if (!Enum.IsDefined(enumType, value))
         {
             throw new ArgumentException("传入的枚举值不属于指定枚举类型。", nameof(value));
@@ -78,7 +77,6 @@ public static class EnumExtension
         // 获取枚举名称
         var enumName = Enum.GetName(enumType, value);
 
-        // 空检查
         if (enumName is null)
         {
             throw new InvalidOperationException("无法获取枚举成员名称。");
@@ -87,7 +85,6 @@ public static class EnumExtension
         // 获取枚举字段
         var enumField = enumType.GetField(enumName);
 
-        // 空检查
         if (enumField is null)
         {
             throw new InvalidOperationException($"无法获取枚举成员“{enumName}”的字段信息。");
@@ -100,23 +97,23 @@ public static class EnumExtension
     }
 
     /// <summary>
-    /// 将枚举转成枚举信息集合
+    /// 将枚举转成枚举信息集合。
     /// </summary>
-    /// <param name="enumType"><see cref="Type"/>枚举值类型</param>
-    /// <returns><see cref="List{T}"/></returns>
-    /// <exception cref="ArgumentException">类型不是一个枚举类型</exception>
+    /// <exception cref="ArgumentException">类型不是一个枚举类型。</exception>
+    /// <param name="enumType">enum 类型。</param>
+    /// <returns>将枚举转成枚举信息集合集合。</returns>
     public static List<EnumItem<int>> EnumToList(this Type enumType)
     {
         return enumType.EnumToList<int>();
     }
 
     /// <summary>
-    /// 将枚举转成枚举信息集合
+    /// 将枚举转成枚举信息集合。
     /// </summary>
-    /// <typeparam name="TProperty"></typeparam>
-    /// <param name="enumType"><see cref="Type"/>枚举值类型</param>
-    /// <returns><see cref="List{EnumEntity}"/></returns>
-    /// <exception cref="ArgumentException">类型不是一个枚举类型</exception>
+    /// <exception cref="ArgumentException">类型不是一个枚举类型。</exception>
+    /// <param name="enumType">enum 类型。</param>
+    /// <typeparam name="TProperty">属性值类型。</typeparam>
+    /// <returns>将枚举转成枚举信息集合集合。</returns>
     public static List<EnumItem<TProperty>> EnumToList<TProperty>(this Type enumType)
         where TProperty : struct, IComparable, IConvertible, IFormattable
     {

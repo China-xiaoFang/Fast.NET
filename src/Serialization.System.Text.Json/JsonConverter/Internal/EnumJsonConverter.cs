@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,18 +26,15 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="EnumJsonConverter{T}"/> Enum 类型Json返回处理
+/// <see cref="EnumJsonConverter{T}"/> Enum 类型 JSON 返回处理。
 /// </summary>
+/// <typeparam name="T">序列化或转换后的对象类型。</typeparam>
 internal class EnumJsonConverter<T> : JsonConverter<T> where T : struct, Enum
 {
-    /// <summary>Reads and converts the JSON to type <see cref="int"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Enum类型可能为String类型，或者Number类型。
+        // 同时接受枚举名称和底层数值。
         if (reader.TokenType == JsonTokenType.String)
         {
             var enumValueStr = reader.GetString();
@@ -48,7 +45,7 @@ internal class EnumJsonConverter<T> : JsonConverter<T> where T : struct, Enum
         }
         else if (reader.TokenType == JsonTokenType.Number)
         {
-            // 通过 Type.GetTypeCode() 获取底层类型的 TypeCode，判断是是什么类型的值
+            // 按枚举底层类型的 TypeCode 分派数值转换逻辑。
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (Type.GetTypeCode(typeToConvert))
             {
@@ -76,10 +73,7 @@ internal class EnumJsonConverter<T> : JsonConverter<T> where T : struct, Enum
         throw new JsonException($"Unable to convert JSON value to Enum {typeToConvert}");
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
         writer.WriteNumberValue(Convert.ToInt64(value));
@@ -87,18 +81,15 @@ internal class EnumJsonConverter<T> : JsonConverter<T> where T : struct, Enum
 }
 
 /// <summary>
-/// <see cref="NullableEnumJsonConverter{T}"/> Enum? 类型Json返回处理
+/// <see cref="NullableEnumJsonConverter{T}"/> Enum? 类型 JSON 返回处理。
 /// </summary>
+/// <typeparam name="T">序列化或转换后的对象类型。</typeparam>
 internal class NullableEnumJsonConverter<T> : JsonConverter<T?> where T : struct, Enum
 {
-    /// <summary>Reads and converts the JSON to type <see cref="int"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Enum类型可能为String类型，或者Number类型。
+        // 同时接受枚举名称和底层数值；空字符串按 null 处理。
         if (reader.TokenType == JsonTokenType.Null)
         {
             return null;
@@ -115,7 +106,7 @@ internal class NullableEnumJsonConverter<T> : JsonConverter<T?> where T : struct
         }
         else if (reader.TokenType == JsonTokenType.Number)
         {
-            // 通过 Type.GetTypeCode() 获取底层类型的 TypeCode，判断是是什么类型的值
+            // 按枚举底层类型的 TypeCode 分派数值转换逻辑。
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (Type.GetTypeCode(underlyingType))
             {
@@ -143,10 +134,7 @@ internal class NullableEnumJsonConverter<T> : JsonConverter<T?> where T : struct
         throw new JsonException($"Unable to convert JSON value to Enum {typeToConvert}");
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, T? value, JsonSerializerOptions options)
     {
         if (value.HasValue)

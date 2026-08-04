@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,43 +25,43 @@
 namespace System;
 
 /// <summary>
-/// <see cref="FastEnumAttribute"/> 枚举特性
+/// <see cref="FastEnumAttribute"/> 枚举特性。
 /// </summary>
-/// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
+/// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Enum)]
 public class FastEnumAttribute : Attribute
 {
     /// <summary>
-    /// 中文名称
+    /// 中文名称。
     /// </summary>
     public string ChName { get; set; }
 
     /// <summary>
-    /// 英文名称
+    /// 英文名称。
     /// </summary>
     public string EnName { get; set; }
 
     /// <summary>
-    /// 备注
+    /// 备注。
     /// </summary>
     public string Remark { get; set; }
 
     /// <summary>
-    /// <see cref="FastEnumAttribute"/> 枚举特性
+    /// <see cref="FastEnumAttribute"/> 枚举特性。
     /// </summary>
-    /// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
+    /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
     public FastEnumAttribute()
     {
     }
 
     /// <summary>
-    /// <see cref="FastEnumAttribute"/> 枚举特性
+    /// <see cref="FastEnumAttribute"/> 枚举特性。
     /// </summary>
-    /// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
-    /// <param name="chName"><see cref="string"/> 中文名称</param>
-    /// <param name="enName"><see cref="string"/> 英文名称</param>
-    /// <param name="remark"><see cref="string"/> 备注</param>
+    /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
+    /// <param name="chName">中文显示名称。</param>
+    /// <param name="enName">英文显示名称。</param>
+    /// <param name="remark">补充说明。</param>
     public FastEnumAttribute(string chName, string enName, string remark)
     {
         ChName = chName;
@@ -70,11 +70,11 @@ public class FastEnumAttribute : Attribute
     }
 
     /// <summary>
-    /// <see cref="FastEnumAttribute"/> 枚举特性
+    /// <see cref="FastEnumAttribute"/> 枚举特性。
     /// </summary>
-    /// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
-    /// <param name="chName"><see cref="string"/> 中文名称</param>
-    /// <param name="enName"><see cref="string"/> 英文名称</param>
+    /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
+    /// <param name="chName">中文显示名称。</param>
+    /// <param name="enName">英文显示名称。</param>
     public FastEnumAttribute(string chName, string enName)
     {
         ChName = chName;
@@ -82,10 +82,10 @@ public class FastEnumAttribute : Attribute
     }
 
     /// <summary>
-    /// <see cref="FastEnumAttribute"/> 枚举特性
+    /// <see cref="FastEnumAttribute"/> 枚举特性。
     /// </summary>
-    /// <remarks>用于区分是否可以写入枚举字典的特性</remarks>
-    /// <param name="chName"><see cref="string"/> 中文名称</param>
+    /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
+    /// <param name="chName">中文显示名称。</param>
     public FastEnumAttribute(string chName)
     {
         ChName = chName;

@@ -30,12 +30,11 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// 授权策略执行程序
+/// 授权策略执行程序。
 /// </summary>
 internal class AppAuthorizationHandler : IAuthorizationHandler
 {
-    /// <summary>Makes a decision if authorization is allowed.</summary>
-    /// <param name="context">The authorization information.</param>
+    /// <inheritdoc />
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
         var filterContext = context.Resource as AuthorizationFilterContext;

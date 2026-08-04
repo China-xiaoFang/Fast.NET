@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,18 +27,17 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DateJsonConverter"/> Datetime 类型Json返回日期处理
+/// <see cref="DateJsonConverter"/> DateTime 类型 JSON 返回日期处理。
 /// </summary>
 public class DateJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
-    /// 日期格式化
-    /// <para>默认：yyyy-MM-dd</para>
+    /// 日期格式化 <para>默认：yyyy-MM-dd</para>。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// <see cref="DateJsonConverter"/> Datetime 类型Json返回日期处理
+    /// <see cref="DateJsonConverter"/> DateTime 类型 JSON 返回日期处理。
     /// </summary>
     public DateJsonConverter()
     {
@@ -46,19 +45,15 @@ public class DateJsonConverter : JsonConverter<DateTime>
     }
 
     /// <summary>
-    /// <see cref="DateJsonConverter"/> Datetime 类型Json返回日期处理
+    /// <see cref="DateJsonConverter"/> DateTime 类型 JSON 返回日期处理。
     /// </summary>
-    /// <param name="format"><see cref="string"/> 日期格式化</param>
+    /// <param name="format">日期格式化。</param>
     public DateJsonConverter(string format)
     {
         Format = format;
     }
 
-    /// <summary>Reads and converts the JSON to type <see cref="DateTime"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = reader.GetString()!;
@@ -96,10 +91,7 @@ public class DateJsonConverter : JsonConverter<DateTime>
         }
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
     {
         writer.WriteStringValue(value.ToString(Format, CultureInfo.InvariantCulture));
@@ -107,18 +99,17 @@ public class DateJsonConverter : JsonConverter<DateTime>
 }
 
 /// <summary>
-/// <see cref="NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+/// <see cref="NullableDateJsonConverter"/> DateTime? 类型 JSON 返回日期处理。
 /// </summary>
 public class NullableDateJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
-    /// 日期格式化
-    /// <para>默认：yyyy-MM-dd</para>
+    /// 日期格式化 <para>默认：yyyy-MM-dd</para>。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// <see cref="NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+    /// <see cref="NullableDateJsonConverter"/> DateTime? 类型 JSON 返回日期处理。
     /// </summary>
     public NullableDateJsonConverter()
     {
@@ -126,19 +117,15 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
     }
 
     /// <summary>
-    /// <see cref="NullableDateJsonConverter"/> Datetime? 类型Json返回日期处理
+    /// <see cref="NullableDateJsonConverter"/> DateTime? 类型 JSON 返回日期处理。
     /// </summary>
-    /// <param name="format"><see cref="string"/> 日期格式化</param>
+    /// <param name="format">日期格式化。</param>
     public NullableDateJsonConverter(string format)
     {
         Format = format;
     }
 
-    /// <summary>Reads and converts the JSON to type <see cref="DateTime"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = reader.GetString();
@@ -181,10 +168,7 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
         }
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
     {
         if (value == null)

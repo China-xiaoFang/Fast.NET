@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,28 +25,25 @@ using System.Text;
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="string"/> 拓展类
+/// 为 <see cref="string"/> 提供扩展方法。
 /// </summary>
 internal static class StringExtension
 {
     /// <summary>
-    /// 字符串首字母大写
+    /// 字符串首字母大写。
     /// </summary>
-    /// <param name="str"><see cref="string"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="str">要转换的字符串。</param>
+    /// <returns>首字母大写后的字符串；输入为空时返回原值。</returns>
     public static string FirstCharToUpper(this string str)
     {
-        // 空检查
         if (string.IsNullOrWhiteSpace(str))
         {
             return str;
         }
 
-        // 初始化字符串构建器
         var stringBuilder = new StringBuilder(str);
 
-        // 设置字符串构建器首个字符为小写
-        stringBuilder[0] = char.ToUpper(stringBuilder[0]);
+        stringBuilder[0] = char.ToUpperInvariant(stringBuilder[0]);
 
         return stringBuilder.ToString();
     }

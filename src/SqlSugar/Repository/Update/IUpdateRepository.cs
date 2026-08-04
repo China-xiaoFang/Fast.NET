@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,83 +25,83 @@ using System.Linq.Expressions;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="ISqlSugarRepository{TEntity}"/> SqlSugar 插入仓储接口
+/// <see cref="ISqlSugarRepository{TEntity}"/> SqlSugar 更新仓储接口。
 /// </summary>
 public partial interface ISqlSugarRepository<TEntity>
 {
     /// <summary>
-    /// 更新一条记录
+    /// 更新一条记录。
     /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
-    /// <returns></returns>
+    /// <param name="entity">要处理的实体。</param>
+    /// <param name="isNoUpdateNull">更新时是否跳过值为 <see langword="null"/> 的属性。</param>
+    /// <returns>更新一条记录。</returns>
     int Update(TEntity entity, bool isNoUpdateNull = false);
 
     /// <summary>
-    /// 更新一条记录
+    /// 更新一条记录。
     /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
-    /// <returns></returns>
+    /// <param name="entity">要处理的实体。</param>
+    /// <param name="isNoUpdateNull">更新时是否跳过值为 <see langword="null"/> 的属性。</param>
+    /// <returns>表示异步更新一条记录的任务，任务结果为更新一条记录。</returns>
     Task<int> UpdateAsync(TEntity entity, bool isNoUpdateNull = false);
 
     /// <summary>
-    /// 更新多条记录
+    /// 更新多条记录。
     /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <param name="entities">要批量处理的实体集合。</param>
+    /// <returns>更新多条记录。</returns>
     int Update(params TEntity[] entities);
 
     /// <summary>
-    /// 更新多条记录
+    /// 更新多条记录。
     /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <param name="entities">要批量处理的实体集合。</param>
+    /// <returns>表示异步更新多条记录的任务，任务结果为更新多条记录。</returns>
     Task<int> UpdateAsync(params TEntity[] entities);
 
     /// <summary>
-    /// 更新多条记录
+    /// 更新多条记录。
     /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <param name="entities">要批量处理的实体集合。</param>
+    /// <returns>更新多条记录。</returns>
     int Update(IEnumerable<TEntity> entities);
 
     /// <summary>
-    /// 更新多条记录
+    /// 更新多条记录。
     /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <param name="entities">要批量处理的实体集合。</param>
+    /// <returns>表示异步更新多条记录的任务，任务结果为更新多条记录。</returns>
     Task<int> UpdateAsync(IEnumerable<TEntity> entities);
 
     /// <summary>
-    /// 无主键更新一条记录
+    /// 无主键更新一条记录。
     /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
+    /// <param name="entity">要处理的实体。</param>
+    /// <param name="columns">参与更新的列集合。</param>
+    /// <returns>无主键更新一条记录。</returns>
     int UpdateNoPrimaryKey(TEntity entity, Expression<Func<TEntity, object>> columns);
 
     /// <summary>
-    /// 无主键更新一条记录
+    /// 无主键更新一条记录。
     /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
+    /// <param name="entity">要处理的实体。</param>
+    /// <param name="columns">参与更新的列集合。</param>
+    /// <returns>表示异步无主键更新一条记录的任务，任务结果为无主键更新一条记录。</returns>
     Task<int> UpdateNoPrimaryKeyAsync(TEntity entity, Expression<Func<TEntity, object>> columns);
 
     /// <summary>
-    /// 无主键更新多条记录
+    /// 无主键更新多条记录。
     /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
+    /// <param name="entity">要处理的实体。</param>
+    /// <param name="columns">参与更新的列集合。</param>
+    /// <returns>无主键更新多条记录。</returns>
     int UpdateNoPrimaryKey(List<TEntity> entity, Expression<Func<TEntity, object>> columns);
 
     /// <summary>
-    /// 无主键更新多条记录
+    /// 无主键更新多条记录。
     /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
+    /// <param name="entity">要处理的实体。</param>
+    /// <param name="columns">参与更新的列集合。</param>
+    /// <returns>表示异步无主键更新多条记录的任务，任务结果为无主键更新多条记录。</returns>
     Task<int> UpdateNoPrimaryKeyAsync(List<TEntity> entity, Expression<Func<TEntity, object>> columns);
 }

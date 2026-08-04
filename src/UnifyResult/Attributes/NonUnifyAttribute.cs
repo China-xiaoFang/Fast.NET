@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,7 +23,7 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="NonUnifyAttribute"/> 禁止规范化处理
+/// <see cref="NonUnifyAttribute"/> 禁止规范化处理。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]

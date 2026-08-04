@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,14 +26,11 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="EnumJsonConverter"/> Enum 类型Json返回处理
+/// <see cref="EnumJsonConverter"/> Enum 类型 JSON 返回处理。
 /// </summary>
 internal class EnumJsonConverter : JsonConverter
 {
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
     {
         if (value == null)
@@ -44,7 +41,7 @@ internal class EnumJsonConverter : JsonConverter
             var enumType = value.GetType();
             var underlyingType = Nullable.GetUnderlyingType(enumType) ?? enumType;
 
-            // 通过 Type.GetTypeCode() 获取底层类型的 TypeCode，判断是是什么类型的值
+            // 按枚举底层类型的 TypeCode 分派数值转换逻辑。
             var typeCode = Type.GetTypeCode(underlyingType);
 
             // 判断是否为 long 类型
@@ -59,12 +56,7 @@ internal class EnumJsonConverter : JsonConverter
         }
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
         // 前端传入的 Enum 类型可能为 String 类型，或者 Number 类型。
@@ -84,7 +76,7 @@ internal class EnumJsonConverter : JsonConverter
         }
         else if (reader.TokenType == JsonToken.Integer)
         {
-            // 通过 Type.GetTypeCode() 获取底层类型的 TypeCode，判断是是什么类型的值
+            // 按枚举底层类型的 TypeCode 分派数值转换逻辑。
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (Type.GetTypeCode(underlyingType))
             {
@@ -108,7 +100,7 @@ internal class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 如果不是枚举值，并且值还是0，则默认为null
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
                     if (value == 0)
                     {
                         return null;
@@ -135,7 +127,7 @@ internal class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 如果不是枚举值，并且值还是0，则默认为null
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
                     if (value == 0)
                     {
                         return null;
@@ -162,7 +154,7 @@ internal class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 如果不是枚举值，并且值还是0，则默认为null
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
                     if (value == 0)
                     {
                         return null;
@@ -189,7 +181,7 @@ internal class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 如果不是枚举值，并且值还是0，则默认为null
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
                     if (value == 0)
                     {
                         return null;
@@ -216,7 +208,7 @@ internal class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 如果不是枚举值，并且值还是0，则默认为null
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
                     if (value == 0)
                     {
                         return null;
@@ -243,7 +235,7 @@ internal class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 如果不是枚举值，并且值还是0，则默认为null
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
                     if (value == 0)
                     {
                         return null;
@@ -270,7 +262,7 @@ internal class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 如果不是枚举值，并且值还是0，则默认为null
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
                     if (value == 0)
                     {
                         return null;
@@ -297,7 +289,7 @@ internal class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 如果不是枚举值，并且值还是0，则默认为null
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
                     if (value == 0)
                     {
                         return null;
@@ -319,13 +311,7 @@ internal class EnumJsonConverter : JsonConverter
         throw new JsonSerializationException($"Unable to convert JSON value to Enum {objectType}");
     }
 
-    /// <summary>
-    /// Determines whether this instance can convert the specified object type.
-    /// </summary>
-    /// <param name="objectType">Type of the object.</param>
-    /// <returns>
-    /// 	<c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-    /// </returns>
+    /// <inheritdoc />
     public override bool CanConvert(Type objectType)
     {
         if (objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(Nullable<>))

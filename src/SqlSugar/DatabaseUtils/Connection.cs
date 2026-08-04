@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,16 +25,16 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarDatabaseUtil"/> 连接字符串工具类
+/// <see cref="SqlSugarDatabaseUtil"/> 连接字符串工具类。
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 得到数据库连接字符串
+    /// 得到数据库连接字符串。
     /// </summary>
-    /// <param name="dbType"><see cref="DbType"/> 数据库类型</param>
-    /// <param name="dbInfo"><see cref="DbConnectionInfo"/> 数据库连接信息</param>
-    /// <returns></returns>
+    /// <param name="dbType">数据库类型。</param>
+    /// <param name="dbInfo">数据库连接与类型信息。</param>
+    /// <returns>得到数据库连接字符串。</returns>
     public static string GetConnectionStr(DbType dbType, DbConnectionInfo dbInfo)
     {
         string connectionStr;

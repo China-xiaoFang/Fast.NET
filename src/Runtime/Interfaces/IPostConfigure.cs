@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,14 +23,14 @@
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="IPostConfigure"/> 后期配置接口
+/// <see cref="IPostConfigure"/> 后期配置接口。
 /// </summary>
-/// <remarks>可在一些不能通过构造函数载入默认配置的地方进行加载默认配置</remarks>
+/// <remarks>用于补充无法在构造函数或选项绑定阶段完成的默认配置。</remarks>
 [SuppressSniffer]
 public interface IPostConfigure
 {
     /// <summary>
-    /// 后期配置
+    /// 在选项绑定完成后执行补充配置。
     /// </summary>
     void PostConfigure();
 }

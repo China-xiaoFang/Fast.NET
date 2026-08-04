@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -40,7 +40,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="UnifyContext"/> 规范化结果上下文
+/// <see cref="UnifyContext"/> 规范化结果上下文。
 /// </summary>
 [SuppressSniffer]
 public static class UnifyContext
@@ -51,23 +51,23 @@ public static class UnifyContext
     };
 
     /// <summary>
-    /// 是否启用规范化结果
+    /// 是否启用规范化结果。
     /// </summary>
     public static bool EnabledUnifyHandler = false;
 
     /// <summary>
-    /// 统一返回类型
+    /// 统一返回类型。
     /// </summary>
     public static Type UnifyResultType => typeof(RestfulResult<>);
 
     /// <summary>
-    /// 处理 Restful 响应状态码
+    /// 处理 Restful 响应状态码。
     /// </summary>
-    /// <param name="code"><see cref="int"/> 状态码</param>
-    /// <param name="data"><see cref="object"/> 数据</param>
-    /// <param name="message"><see cref="string"/> 错误信息</param>
-    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
-    /// <returns></returns>
+    /// <param name="code">业务或枚举编码。</param>
+    /// <param name="data">要处理或传输的数据。</param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>处理 Restful 响应状态码。</returns>
     public static RestfulResult<object> HandleRestfulStatusCode(int code, object data, string message, HttpContext httpContext)
     {
         return code switch
@@ -119,14 +119,14 @@ public static class UnifyContext
     }
 
     /// <summary>
-    /// 获取规范化RESTful风格返回值
+    /// 获取规范化 RESTful 风格返回值。
     /// </summary>
-    /// <param name="code"><see cref="int"/> 状态码</param>
-    /// <param name="success"><see cref="bool"/> 执行成功</param>
-    /// <param name="data"><see cref="object"/> 数据</param>
-    /// <param name="message"><see cref="string"/> 错误信息</param>
-    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
-    /// <returns></returns>
+    /// <param name="code">业务或枚举编码。</param>
+    /// <param name="success">操作是否成功。</param>
+    /// <param name="data">要处理或传输的数据。</param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>获取到的规范化 RESTful 风格返回值。</returns>
     public static RestfulResult<object> GetRestfulResult(int code, bool success, object data, object message,
         HttpContext httpContext)
     {
@@ -144,14 +144,13 @@ public static class UnifyContext
     }
 
     /// <summary>
-    /// 检查请求成功是否进行规范化处理
+    /// 检查请求成功是否进行规范化处理。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="method"><see cref="MethodInfo"/></param>
-    /// <param name="unifyResult"><see cref="IUnifyResultProvider"/></param>
-    /// <param name="isWebRequest"><see cref="bool"/></param>
-    /// <returns>返回 true 跳过处理，否则进行规范化处理</returns>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="method">当前动作方法。</param>
+    /// <param name="unifyResult">可用的规范化结果提供器；跳过处理时为 <see langword="null"/>。</param>
+    /// <param name="isWebRequest">是否需要从请求服务中解析结果提供器。</param>
+    /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     internal static bool CheckSucceededNonUnify(HttpContext httpContext, MethodInfo method, out IUnifyResultProvider unifyResult,
         bool isWebRequest = true)
     {
@@ -161,19 +160,14 @@ public static class UnifyContext
 
         var nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
-        // 这是不使用 method.GetCustomAttribute<NonUnifyAttribute>() != null 的原因是，避免直接继承了 NonUnifyAttribute 使用自定义的特性
+        // 使用 IsAssignableFrom 同时识别 NonUnifyAttribute 及其自定义派生特性。
         var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
         var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
         if (!isSkip
             && method.CustomAttributes.Any(a =>
-                // 判断方法头部是否贴有 NonUnifyAttribute 特性
                 nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
-                ||
-                // 判断方法头部是否贴有 原生的 HTTP 响应类型的特性 ProducesResponseTypeAttribute
-                producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
-                ||
-                // 判断方法头部是否贴有 IApiResponseMetadataProvider 特性
-                iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType)))
+                || producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
+                || iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType)))
         {
             isSkip = true;
         }
@@ -184,7 +178,7 @@ public static class UnifyContext
             isSkip = true;
         }
 
-        // 判断方法所属类型的程序集的名称以 "Microsoft.AspNetCore.OData" 
+        // OData 自行协商响应格式，不能套用普通 MVC 的统一结果结构。
         if (!isSkip
             && method.ReflectedType?.Assembly.GetName()
                 .Name?.StartsWith("Microsoft.AspNetCore.OData")
@@ -213,35 +207,27 @@ public static class UnifyContext
     }
 
     /// <summary>
-    /// 检查请求失败（验证失败、抛异常）是否进行规范化处理
+    /// 检查请求失败（验证失败、抛异常）是否进行规范化处理。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="method"><see cref="MethodInfo"/></param>
-    /// <param name="unifyResult"><see cref="IUnifyResultProvider"/></param>
-    /// <returns>返回 true 跳过处理，否则进行规范化处理</returns>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="method">发生验证失败或异常的动作方法。</param>
+    /// <param name="unifyResult">可用的规范化结果提供器；跳过处理时为 <see langword="null"/>。</param>
+    /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     internal static bool CheckFailedNonUnify(HttpContext httpContext, MethodInfo method, out IUnifyResultProvider unifyResult)
     {
-        // 这是不使用 method.GetCustomAttribute<NonUnifyAttribute>() != null 的原因是，避免直接继承了 NonUnifyAttribute 使用自定义的特性
+        // 使用 IsAssignableFrom 同时识别框架特性及其自定义派生特性。
         var nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
         var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
         var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
 
         var isSkip = !method.CustomAttributes.Any(a =>
-                         // 判断方法头部是否贴有 NonUnifyAttribute 特性
                          nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
-                         ||
-                         // 判断方法头部是否贴有 原生的 HTTP 响应类型的特性 ProducesResponseTypeAttribute
-                         producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
-                         ||
-                         // 判断方法头部是否贴有 IApiResponseMetadataProvider 特性
-                         iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
-                     &&
-                     // 判断方法所在的类是否贴有 NonUnifyAttribute 特性
-                     method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
+                         || producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
+                         || iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
+                     && method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
 
-        // 判断方法所属类型的程序集的名称以 "Microsoft.AspNetCore.OData" 
+        // OData 自行协商响应格式，不能套用普通 MVC 的统一结果结构。
         if (!isSkip
             && method.ReflectedType?.Assembly.GetName()
                 .Name?.StartsWith("Microsoft.AspNetCore.OData")
@@ -263,36 +249,28 @@ public static class UnifyContext
     }
 
     /// <summary>
-    /// 检查请求响应数据是否进行规范化处理
+    /// 检查请求响应数据是否进行规范化处理。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="method"><see cref="MethodInfo"/></param>
-    /// <param name="unifyResponse"><see cref="IUnifyResponseProvider"/></param>
-    /// <returns>返回 true 跳过处理，否则进行规范化处理</returns>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="method">当前动作方法。</param>
+    /// <param name="unifyResponse">可用的规范化响应提供器；跳过处理时为 <see langword="null"/>。</param>
+    /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     internal static bool CheckResponseNonUnify(HttpContext httpContext, MethodInfo method,
         out IUnifyResponseProvider unifyResponse)
     {
-        // 这是不使用 method.GetCustomAttribute<NonUnifyAttribute>() != null 的原因是，避免直接继承了 NonUnifyAttribute 使用自定义的特性
+        // 使用 IsAssignableFrom 同时识别框架特性及其自定义派生特性。
         var nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
         var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
         var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
 
         var isSkip = !method.CustomAttributes.Any(a =>
-                         // 判断方法头部是否贴有 NonUnifyAttribute 特性
                          nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
-                         ||
-                         // 判断方法头部是否贴有 原生的 HTTP 响应类型的特性 ProducesResponseTypeAttribute
-                         producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
-                         ||
-                         // 判断方法头部是否贴有 IApiResponseMetadataProvider 特性
-                         iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
-                     &&
-                     // 判断方法所在的类是否贴有 NonUnifyAttribute 特性
-                     method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
+                         || producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
+                         || iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
+                     && method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
 
-        // 判断方法所属类型的程序集的名称以 "Microsoft.AspNetCore.OData" 
+        // OData 自行协商响应格式，不能套用普通 MVC 的统一结果结构。
         if (!isSkip
             && method.ReflectedType?.Assembly.GetName()
                 .Name?.StartsWith("Microsoft.AspNetCore.OData")
@@ -314,11 +292,11 @@ public static class UnifyContext
     }
 
     /// <summary>
-    /// 检查短路状态码（>=400）是否进行规范化处理
+    /// 检查短路状态码（>=400）是否进行规范化处理。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="unifyResult"><see cref="IUnifyResultProvider"/></param>
-    /// <returns>返回 true 跳过处理，否则进行规范化处理</returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="unifyResult">可用的规范化结果提供器；跳过处理时为 <see langword="null"/>。</param>
+    /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     internal static bool CheckStatusCodeNonUnify(HttpContext httpContext, out IUnifyResultProvider unifyResult)
     {
         // 获取终点路由特性
@@ -371,11 +349,11 @@ public static class UnifyContext
     }
 
     /// <summary>
-    /// 检查是否是有效的结果（可进行规范化的结果）
+    /// 检查是否是有效的结果（可进行规范化的结果）。
     /// </summary>
-    /// <param name="result"><see cref="IActionResult"/></param>
-    /// <param name="data"><see cref="object"/></param>
-    /// <returns></returns>
+    /// <param name="result">MVC 动作结果。</param>
+    /// <param name="data">可参与规范化的数据；结果类型不受支持时为 <see langword="null"/>。</param>
+    /// <returns>结果可转换为统一响应时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     internal static bool CheckValidResult(IActionResult result, out object data)
     {
         data = null;
@@ -402,7 +380,7 @@ public static class UnifyContext
             _ => true
         };
 
-        // 目前支持返回值 ActionResult
+        // 仅从携带正文的结果类型中提取数据，其他可规范化结果由调用方按空数据处理。
         if (isDataResult)
             data = result switch
             {
@@ -419,10 +397,10 @@ public static class UnifyContext
     }
 
     /// <summary>
-    /// 获取验证错误信息
+    /// 获取验证错误信息。
     /// </summary>
-    /// <param name="errors"><see cref="object"/></param>
-    /// <returns><see cref="ValidationMetadata"/></returns>
+    /// <param name="errors">模型状态、验证问题详情、错误字典或普通错误对象。</param>
+    /// <returns>包含完整错误集合及首个错误位置的验证元数据。</returns>
     internal static ValidationMetadata GetValidationMetadata(object errors)
     {
         ModelStateDictionary _modelState = null;
@@ -436,7 +414,7 @@ public static class UnifyContext
             if (errors is ModelStateDictionary modelState)
             {
                 _modelState = modelState;
-                // 将验证错误信息转换成字典并序列化成 Json
+                // 将验证错误整理为字典并序列化为 JSON。
                 validationResults = modelState.Where(u => modelState[u.Key]!.ValidationState == ModelValidationState.Invalid)
                     .ToDictionary(u => u.Key, u => modelState[u.Key]
                         ?.Errors.Select(c => c.ErrorMessage)
@@ -484,10 +462,10 @@ public static class UnifyContext
     }
 
     /// <summary>
-    /// 获取异常元数据
+    /// 获取异常元数据。
     /// </summary>
-    /// <param name="context"><see cref="ActionContext"/></param>
-    /// <returns><see cref="ExceptionMetadata"/></returns>
+    /// <param name="context">包含当前异常和请求信息的 MVC 上下文。</param>
+    /// <returns>从异常类型及上下文解析出的统一异常元数据。</returns>
     internal static ExceptionMetadata GetExceptionMetadata(ActionContext context)
     {
         object errorCode = null;

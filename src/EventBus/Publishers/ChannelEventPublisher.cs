@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,29 +23,25 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="ChannelEventPublisher"/> 基于内存通道事件发布者（默认实现）
+/// <see cref="ChannelEventPublisher"/> 基于内存通道事件发布者（默认实现）。
 /// </summary>
 internal sealed class ChannelEventPublisher : IEventPublisher
 {
     /// <summary>
-    /// 事件源存储器
+    /// 事件源存储器。
     /// </summary>
     private readonly IEventSourceStorer _eventSourceStorer;
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ChannelEventPublisher"/> 类的新实例。
     /// </summary>
-    /// <param name="eventSourceStorer">事件源存储器</param>
+    /// <param name="eventSourceStorer">事件源存储器。</param>
     public ChannelEventPublisher(IEventSourceStorer eventSourceStorer)
     {
         _eventSourceStorer = eventSourceStorer;
     }
 
-    /// <summary>
-    /// 发布一条消息
-    /// </summary>
-    /// <param name="eventSource">事件源</param>
-    /// <returns><see cref="Task"/> 实例</returns>
+    /// <inheritdoc />
     public async Task PublishAsync(IEventSource eventSource)
     {
         ArgumentNullException.ThrowIfNull(eventSource);
@@ -53,12 +49,7 @@ internal sealed class ChannelEventPublisher : IEventPublisher
         await _eventSourceStorer.WriteAsync(eventSource, eventSource.CancellationToken);
     }
 
-    /// <summary>
-    /// 延迟发布一条消息
-    /// </summary>
-    /// <param name="eventSource">事件源</param>
-    /// <param name="delay">延迟数（毫秒）</param>
-    /// <returns><see cref="Task"/> 实例</returns>
+    /// <inheritdoc />
     public async Task PublishDelayAsync(IEventSource eventSource, long delay)
     {
         ArgumentNullException.ThrowIfNull(eventSource);
@@ -71,52 +62,26 @@ internal sealed class ChannelEventPublisher : IEventPublisher
         await _eventSourceStorer.WriteAsync(eventSource, eventSource.CancellationToken);
     }
 
-    /// <summary>
-    /// 发布一条消息
-    /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="payload">事件承载（携带）数据</param>
-    /// <param name="cancellationToken"> 取消任务 Token</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task PublishAsync(string eventId, object payload = null, CancellationToken cancellationToken = default)
     {
         await PublishAsync(new ChannelEventSource(eventId, payload, cancellationToken));
     }
 
-    /// <summary>
-    /// 发布一条消息
-    /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="payload">事件承载（携带）数据</param>
-    /// <param name="cancellationToken"> 取消任务 Token</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task PublishAsync(Enum eventId, object payload = null, CancellationToken cancellationToken = default)
     {
         await PublishAsync(new ChannelEventSource(eventId, payload, cancellationToken));
     }
 
-    /// <summary>
-    /// 延迟发布一条消息
-    /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="delay">延迟数（毫秒）</param>
-    /// <param name="payload">事件承载（携带）数据</param>
-    /// <param name="cancellationToken"> 取消任务 Token</param>
-    /// <returns><see cref="Task"/> 实例</returns>
+    /// <inheritdoc />
     public async Task PublishDelayAsync(string eventId, long delay, object payload = null,
         CancellationToken cancellationToken = default)
     {
         await PublishDelayAsync(new ChannelEventSource(eventId, payload, cancellationToken), delay);
     }
 
-    /// <summary>
-    /// 延迟发布一条消息
-    /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="delay">延迟数（毫秒）</param>
-    /// <param name="payload">事件承载（携带）数据</param>
-    /// <param name="cancellationToken"> 取消任务 Token</param>
-    /// <returns><see cref="Task"/> 实例</returns>
+    /// <inheritdoc />
     public async Task PublishDelayAsync(Enum eventId, long delay, object payload = null,
         CancellationToken cancellationToken = default)
     {

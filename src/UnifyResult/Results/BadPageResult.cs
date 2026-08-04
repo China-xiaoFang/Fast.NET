@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,40 +27,40 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="BadPageResult"/> 错误页面
+/// <see cref="BadPageResult"/> 错误页面。
 /// </summary>
 [SuppressSniffer]
 public class BadPageResult : StatusCodeResult
 {
     /// <summary>
-    /// 标题
+    /// 标题。
     /// </summary>
     public string Title { get; set; } = "ModelState Invalid";
 
     /// <summary>
-    /// 描述
+    /// 描述。
     /// </summary>
     public string Description { get; set; } = "User data verification failed. Please input it correctly.";
 
     /// <summary>
-    /// 图标
+    /// 图标。
     /// </summary>
-    /// <remarks>必须是 base64 类型</remarks>
+    /// <remarks>必须是 base64 类型。</remarks>
     public string Base64Icon { get; set; } =
         "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE0LjIxIDEzLjVsMS43NjcgMS43NzMtLjcwNC43MDRMMTMuNSAxNC4yMWwtMS43NzMgMS43NzMtLjcwNC0uNzEgMS43NzQtMS43NzQtMS43NzQtMS43NzMuNzA0LS43MDQgMS43NzMgMS43NzQgMS43NzMtMS43NzQuNzA0LjcxMUwxNC4yMSAxMy41ek0yIDE1aDh2MUgxVjBoOC43MUwxNCA0LjI5VjEwaC0xVjVIOVYxSDJ2MTR6bTgtMTFoMi4yOUwxMCAxLjcxVjR6IiBmaWxsPSIjMTAxMDEwIi8+PC9zdmc+";
 
     /// <summary>
-    /// 错误代码
+    /// 错误代码。
     /// </summary>
     public string Code { get; set; } = "";
 
     /// <summary>
-    /// 错误代码语言
+    /// 错误代码语言。
     /// </summary>
     public string CodeLang { get; set; } = "json";
 
     /// <summary>
-    /// 返回通用 401 错误页
+    /// 返回通用 401 错误页。
     /// </summary>
     public static BadPageResult Status401Unauthorized =>
         new(StatusCodes.Status401Unauthorized)
@@ -69,19 +69,19 @@ public class BadPageResult : StatusCodeResult
         };
 
     /// <summary>
-    /// 返回通用 403 错误页
+    /// 返回通用 403 错误页。
     /// </summary>
     public static BadPageResult Status403Forbidden =>
         new(StatusCodes.Status403Forbidden) {Title = "403 Forbidden", Code = "403 Forbidden", Description = "", CodeLang = "txt"};
 
     /// <summary>
-    /// 返回通用 404 错误页
+    /// 返回通用 404 错误页。
     /// </summary>
     public static BadPageResult Status404NotFound =>
         new(StatusCodes.Status404NotFound) {Title = "404 Not Found", Code = "404 Not Found", Description = "", CodeLang = "txt"};
 
     /// <summary>
-    /// 返回通用 500 错误页
+    /// 返回通用 500 错误页。
     /// </summary>
     public static BadPageResult Status500InternalServerError =>
         new(StatusCodes.Status500InternalServerError)
@@ -90,25 +90,21 @@ public class BadPageResult : StatusCodeResult
         };
 
     /// <summary>
-    /// 
+    /// 初始化默认返回 HTTP 400 的错误页结果。
     /// </summary>
     public BadPageResult() : base(400)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult" /> class
-    /// with the given <paramref name="statusCode" />.
+    /// 使用指定 HTTP 状态码初始化错误页结果。
     /// </summary>
-    /// <param name="statusCode">The HTTP status code of the response.</param>
+    /// <param name="statusCode">要写入响应的 HTTP 状态码。</param>
     public BadPageResult(int statusCode) : base(statusCode)
     {
     }
 
-    /// <summary>
-    /// 重写返回结果
-    /// </summary>
-    /// <param name="context"></param>
+    /// <inheritdoc />
     public override void ExecuteResult(ActionContext context)
     {
         // 如果 Response 已经完成输出或 WebSocket 请求，则禁止写入
@@ -122,10 +118,7 @@ public class BadPageResult : StatusCodeResult
         context.HttpContext.Response.Body.Write(Encoding.UTF8.GetBytes(ToString()));
     }
 
-    /// <summary>
-    /// 将 <see cref="BadPageResult"/> 转换成字符串
-    /// </summary>
-    /// <returns><see cref="string"/></returns>
+    /// <inheritdoc />
     public override string ToString()
     {
         // 获取当前类型信息

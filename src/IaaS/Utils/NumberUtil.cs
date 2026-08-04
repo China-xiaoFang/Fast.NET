@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,12 +25,12 @@ using System.Collections.Generic;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="NumberUtil"/> 序号工具类
+/// <see cref="NumberUtil"/> 序号工具类。
 /// </summary>
 public static class NumberUtil
 {
     /// <summary>
-    /// 自定义进制所用的编码，大写和数字(初始36位)，但去掉3位相似：O,0,I，去掉一个补位：A;最终只留(26+10)-(3+1)=32位
+    /// 自定义进制所用的编码，大写和数字(初始 36 位)，但去掉 3 位相似：O,0,I，去掉一个补位：A;最终只留(26+10)-(3+1)=32 位。
     /// </summary>
     private static readonly char[] BASE =
     {
@@ -39,26 +39,26 @@ public static class NumberUtil
     };
 
     /// <summary>
-    /// A补位字符，不能与自定义重复
+    /// A 补位字符，不能与自定义重复。
     /// </summary>
     private static readonly char SUFFIX_CHAR = 'A';
 
     /// <summary>
-    /// 进制长度
+    /// 进制长度。
     /// </summary>
     private static readonly int BASE_LEN = BASE.Length;
 
     /// <summary>
-    /// 最小长度
+    /// 最小长度。
     /// </summary>
     private const int MIN_LEN = 6;
 
     /// <summary>
-    /// Id转为 Base32 Crockford 字符串
+    /// ID 转为 Base32 Crockford 字符串。
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="maxLength"><see cref="int"/> 最长长度，默认12</param>
-    /// <returns></returns>
+    /// <param name="id">要编码的 ID。</param>
+    /// <param name="maxLength">目标长度。</param>
+    /// <returns>ID 转为 Base32 Crockford 字符串。</returns>
     public static string IdToCodeByLong(long id, int maxLength = 12)
     {
         var chars = new List<char>();

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,7 +20,7 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using System.Collections.Concurrent;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
@@ -34,38 +34,49 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="HttpContext"/> 拓展类
+/// 为 <see cref="HttpContext"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class HttpContextExtension
 {
     /// <summary>
+    /// IP 信息查询使用的锁分片数量。
+    /// </summary>
+    private const int IP_LOOKUP_LOCK_COUNT = 64;
+
+    /// <summary>
     /// IP 信息查询客户端，复用底层连接池。
     /// </summary>
     private static readonly HttpClient _ipLookupHttpClient = new() {Timeout = Timeout.InfiniteTimeSpan};
 
+    /// <summary>
+    /// IP 信息查询锁分片，限制锁对象数量并保证同一缓存键串行回源。
+    /// </summary>
+    private static readonly SemaphoreSlim[] _ipLookupLocks = Enumerable.Range(0, IP_LOOKUP_LOCK_COUNT)
+        .Select(_ => new SemaphoreSlim(1, 1))
+        .ToArray();
+
     static HttpContextExtension()
     {
-        // .NET 6+ 默认不包含 GBK，注册一次即可供后续响应解码复用。
+        // 现代 .NET 默认不注册代码页编码，初始化一次即可复用 GBK 解码器。
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
     }
 
     /// <summary>
-    /// 设置规范化响应时间戳
+    /// 设置规范化响应时间戳。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="timestamp"><see cref="long"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="timestamp">时间戳。</param>
     public static void UnifyResponseTimestamp(this HttpContext httpContext, long timestamp)
     {
         httpContext?.Response.Headers.TryAdd(nameof(Fast) + "-NET-Timestamp", $"{timestamp}");
     }
 
     /// <summary>
-    /// 获取规范化响应时间戳
+    /// 获取规范化响应时间戳。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>获取到的规范化响应时间戳。</returns>
     public static long UnifyResponseTimestamp(this HttpContext httpContext)
     {
         var timestampStr = httpContext?.Response.Headers[nameof(Fast) + "-NET-Timestamp"];
@@ -74,31 +85,31 @@ public static class HttpContextExtension
         {
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
-            // 设置请求响应头部时间戳
+            // 将请求开始时间写入响应头，供耗时统计复用。
             httpContext.UnifyResponseTimestamp(timestamp);
 
             return timestamp;
         }
 
-        return long.Parse(timestampStr);
+        return long.Parse(timestampStr, CultureInfo.InvariantCulture);
     }
 
     /// <summary>
-    /// 判断是否是 WebSocket 请求
+    /// 判断是否是 WebSocket 请求。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsWebSocketRequest(this HttpContext httpContext)
     {
         return httpContext.WebSockets.IsWebSocketRequest || httpContext.Request.Path == "/ws";
     }
 
     /// <summary>
-    /// 获取 Action 特性
+    /// 获取终结点元数据中的指定特性。
     /// </summary>
-    /// <typeparam name="TAttribute"></typeparam>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <typeparam name="TAttribute">要查找的特性类型。</typeparam>
+    /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/>。</returns>
     public static TAttribute GetMetadata<TAttribute>(this HttpContext httpContext) where TAttribute : class
     {
         return httpContext.GetEndpoint()
@@ -106,11 +117,11 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 获取 Action 特性
+    /// 获取终结点元数据中的指定特性。
     /// </summary>
-    /// <param name="metadata"><see cref="EndpointMetadataCollection"/></param>
-    /// <param name="attributeType"><see cref="Type"/></param>
-    /// <returns><see cref="object"/></returns>
+    /// <param name="metadata">当前元数据 <see cref="EndpointMetadataCollection"/>。</param>
+    /// <param name="attributeType">要读取的特性类型。</param>
+    /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/>。</returns>
     public static object GetMetadata(this EndpointMetadataCollection metadata, Type attributeType)
     {
         return metadata?.GetType()
@@ -120,11 +131,11 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 获取 Action 特性
+    /// 获取终结点元数据中的指定特性。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="attributeType"><see cref="Type"/></param>
-    /// <returns><see cref="object"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="attributeType">要读取的特性类型。</param>
+    /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/>。</returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)
     {
         return httpContext.GetEndpoint()
@@ -132,10 +143,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 设置规范化文档自动登录
+    /// 设置规范化文档自动登录。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="accessToken"></param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="accessToken">访问令牌。</param>
     public static void SignInToSwagger(this HttpContext httpContext, string accessToken)
     {
         if (httpContext != null)
@@ -146,9 +157,9 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 设置规范化文档退出登录
+    /// 设置规范化文档退出登录。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
     public static void SignOutToSwagger(this HttpContext httpContext)
     {
         if (httpContext != null)
@@ -158,10 +169,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 局域网 IPv4 地址
+    /// 局域网 IPv4 地址。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>局域网 IPv4 地址。</returns>
     public static string LanIpv4(this HttpContext httpContext)
     {
         var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
@@ -170,7 +181,7 @@ public static class HttpContextExtension
             return remoteIpAddress.ToString();
         }
 
-        // 处理可能获取到的是 IPV6 的地址，且是 localhost，则获取到的为 ::1
+        // localhost 的 IPv6 回环地址为 ::1，按当前方法的地址族进行转换。
         if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && remoteIpAddress.ToString() == "::1")
         {
             return "127.0.0.1";
@@ -180,10 +191,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 局域网 IPv6 地址
+    /// 局域网 IPv6 地址。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>局域网 IPv6 地址。</returns>
     public static string LanIpv6(this HttpContext httpContext)
     {
         var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
@@ -196,14 +207,14 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 本机 IPv4 地址
+    /// 本机 IPv4 地址。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>本机 IPv4 地址。</returns>
     public static string LocalIpv4(this HttpContext httpContext)
     {
         var localIpAddress = httpContext.Connection.LocalIpAddress;
-        // 处理可能获取到的是 IPV6 的地址，且是 localhost，则获取到的为 ::1
+        // localhost 的 IPv6 回环地址为 ::1，按当前方法的地址族进行转换。
         if (localIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && localIpAddress.ToString() == "::1")
         {
             return "127.0.0.1";
@@ -214,10 +225,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 本机 IPv6 地址
+    /// 本机 IPv6 地址。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>本机 IPv6 地址。</returns>
     public static string LocalIpv6(this HttpContext httpContext)
     {
         return httpContext.Connection.LocalIpAddress?.MapToIPv6()
@@ -225,10 +236,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 远程 Ipv4 地址
+    /// 远程 IPv4 地址。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>远程 IPv4 地址。</returns>
     public static string RemoteIpv4(this HttpContext httpContext)
     {
         if (httpContext == null)
@@ -236,7 +247,7 @@ public static class HttpContextExtension
 
         var remoteIpv4 = string.Empty;
 
-        // 判断是否为 Nginx 反向代理
+        // Nginx 反向代理场景优先读取转发地址头。
         if (httpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
         {
             if (IPAddress.TryParse(header1, out var ipv4) && ipv4.AddressFamily == AddressFamily.InterNetwork)
@@ -245,7 +256,7 @@ public static class HttpContextExtension
             }
         }
 
-        // 判断是否启用了代理并获取代理服务器的IP地址
+        // 启用受信任代理后，优先读取代理传递的客户端 IP 地址。
         if (httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
         {
             if (IPAddress.TryParse(header2, out var ipv4) && ipv4.AddressFamily == AddressFamily.InterNetwork)
@@ -257,7 +268,7 @@ public static class HttpContextExtension
         if (string.IsNullOrEmpty(remoteIpv4))
         {
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
-            // 处理可能获取到的是 IPV6 的地址，且是 localhost，则获取到的为 ::1
+            // localhost 的 IPv6 回环地址为 ::1，按当前方法的地址族进行转换。
             if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && remoteIpAddress.ToString() == "::1")
             {
                 remoteIpv4 = "127.0.0.1";
@@ -273,10 +284,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 远程 Ipv6 地址
+    /// 远程 IPv6 地址。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>远程 IPv6 地址。</returns>
     public static string RemoteIpv6(this HttpContext httpContext)
     {
         if (httpContext == null)
@@ -285,7 +296,7 @@ public static class HttpContextExtension
         var remoteIpv4 = httpContext.Connection.RemoteIpAddress?.MapToIPv6()
             .ToString();
 
-        // 判断是否为 Nginx 反向代理
+        // Nginx 反向代理场景优先读取转发地址头。
         if (httpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
         {
             if (IPAddress.TryParse(header1, out var ipv6) && ipv6.AddressFamily == AddressFamily.InterNetworkV6)
@@ -294,7 +305,7 @@ public static class HttpContextExtension
             }
         }
 
-        // 判断是否启用了代理并获取代理服务器的IP地址
+        // 启用受信任代理后，优先读取代理传递的客户端 IP 地址。
         if (httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
         {
             if (IPAddress.TryParse(header2, out var ipv6) && ipv6.AddressFamily == AddressFamily.InterNetworkV6)
@@ -307,31 +318,29 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 请求用户代理字符串（User-Agent）
+    /// 请求用户代理字符串（User-Agent）。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="userAgentHeaderKey">默认从 “User-Agent” 获取</param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="userAgentHeaderKey">包含用户代理信息的请求头名称。</param>
+    /// <returns>请求用户代理字符串（User-Agent）。</returns>
     public static string RequestUserAgent(this HttpContext httpContext, string userAgentHeaderKey = "User-Agent")
     {
         return httpContext?.Request.Headers[userAgentHeaderKey];
     }
 
     /// <summary>
-    /// 请求用户代理信息（User-Agent）
+    /// 请求用户代理信息（User-Agent）。
     /// </summary>
-    /// <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 null</remarks>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="UserAgentInfo"/></returns>
+    /// <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 <see langword="null"/>。</remarks>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>请求用户代理信息（User-Agent）。</returns>
     public static UserAgentInfo RequestUserAgentInfo(this HttpContext httpContext)
     {
-        // 从 HttpContext.Items 中尝试获取缓存数据
+        // 同一请求内优先复用 HttpContext.Items 中的解析结果。
         var userAgentObj = httpContext.Items[nameof(Fast) + nameof(UserAgentInfo)];
 
-        // 判断是否为空
         if (userAgentObj != null)
         {
-            // 直接返回缓存中的信息
             return userAgentObj as UserAgentInfo;
         }
 
@@ -342,7 +351,8 @@ public static class HttpContextExtension
         {
             // 判断是否安装了 UAParser 程序集
             var uaParserAssembly = MAppContext.Assemblies.SingleOrDefault(s => s.GetName()
-                                                                                   .Name?.Equals("UAParser")
+                                                                                   .Name?.Equals("UAParser",
+                                                                                       StringComparison.Ordinal)
                                                                                == true);
 
             if (uaParserAssembly == null)
@@ -370,7 +380,7 @@ public static class HttpContextExtension
             // 调用 Parser 类型 的 GetDefault() 方法
             var parser = uaParserParserGetDefaultMethod.Invoke(null, new object[] {null});
 
-            // 加载 Parser 类型 的 Parse() 方法，这里是 Public | HideBySig，但是我没有找到 HideBySig 所以直接获取吧
+            // Parse 是唯一匹配的公共实例方法，按名称获取即可兼容 UAParser 的可选依赖加载方式。
             var uaParserParserParseMethod = uaParserParserType.GetMethod("Parse");
 
             if (uaParserParserParseMethod == null)
@@ -391,7 +401,7 @@ public static class HttpContextExtension
                 Device = clientInfo.Device.ToString(), OS = clientInfo.OS.ToString(), Browser = clientInfo.UA.ToString()
             };
 
-            // 放入 HttpContext.Items 中
+            // 缓存到 HttpContext.Items，避免同一请求重复解析。
             httpContext.Items[nameof(Fast) + nameof(UserAgentInfo)] = result;
 
             return result;
@@ -403,12 +413,12 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 远程 Ipv4 地址信息
+    /// 远程 IPv4 地址信息。
     /// </summary>
-    /// <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="ip"><see cref="string"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
-    /// <returns><see cref="WanNetIPInfo"/></returns>
+    /// <remarks>自带内存缓存，缓存过期时间为 24 小时（注：需要注入内存缓存，如不注入，则默认不走缓存）。</remarks>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="ip">要的 IP 地址信息，默认为 <see langword="null"/>，如果为 <see langword="null"/>，默认获取当前远程的 IPv4 地址。</param>
+    /// <returns>远程 IPv4 地址信息。</returns>
     public static WanNetIPInfo RemoteIpv4Info(this HttpContext httpContext, string ip = null)
     {
         return httpContext.RemoteIpv4InfoAsync(ip)
@@ -418,32 +428,25 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// Ip地址获取并发锁
+    /// 远程 IPv4 地址信息。
     /// </summary>
-    private static readonly ConcurrentDictionary<string, SemaphoreSlim> ipLockSemaphoreSlims = new();
-
-    /// <summary>
-    /// 远程 Ipv4 地址信息
-    /// </summary>
-    /// <remarks>自带内存缓存，缓存过期时间为24小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="ip"><see cref="string"/> 要的IP地址信息，默认为 null，如果为 null，默认获取当前远程的 Ipv4 地址</param>
-    /// <returns><see cref="WanNetIPInfo"/></returns>
+    /// <remarks>自带内存缓存，缓存过期时间为 24 小时（注：需要注入内存缓存，如不注入，则默认不走缓存）。</remarks>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="ip">要的 IP 地址信息，默认为 <see langword="null"/>，如果为 <see langword="null"/>，默认获取当前远程的 IPv4 地址。</param>
+    /// <returns>表示异步远程 IPv4 地址信息的任务，任务结果为远程 IPv4 地址信息。</returns>
     public static async Task<WanNetIPInfo> RemoteIpv4InfoAsync(this HttpContext httpContext, string ip = null)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
 
-        // 从 HttpContext.Items 中尝试获取缓存数据
+        // 同一请求内优先复用 HttpContext.Items 中的解析结果。
         var wanNetIPInfoObj = httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)];
 
-        // 判断是否为空
         if (wanNetIPInfoObj != null)
         {
-            // 直接返回缓存中的信息
             return wanNetIPInfoObj as WanNetIPInfo;
         }
 
-        // 判断是否传入IP地址
+        // 判断是否传入 IP 地址
         ip ??= httpContext.RemoteIpv4();
 
         WanNetIPInfo result;
@@ -460,8 +463,8 @@ public static class HttpContextExtension
         {
             var cacheKey = $"{nameof(Fast)}.NET:Http:RemoteIpv4Info:{ip}";
 
-            // 避免并发请求
-            var semaphoreSlim = ipLockSemaphoreSlims.GetOrAdd(cacheKey, _ => new SemaphoreSlim(1, 1));
+            // 同一缓存键始终映射到同一锁分片，避免重复回源和按 IP 永久累积锁对象。
+            var semaphoreSlim = GetIpLookupLock(cacheKey);
 
             await semaphoreSlim.WaitAsync(httpContext.RequestAborted)
                 .ConfigureAwait(false);
@@ -472,30 +475,40 @@ public static class HttpContextExtension
                 {
                     result = await GetWanNetInfoAsync(ip, httpContext.RequestAborted)
                         .ConfigureAwait(false);
-                    // 放入内存缓存，设置过期时间为24个小时
+                    // 放入内存缓存，设置过期时间为 24 个小时
                     _memoryCache.Set(cacheKey, result, TimeSpan.FromHours(24));
                 }
             }
             finally
             {
                 semaphoreSlim.Release();
-                ipLockSemaphoreSlims.TryRemove(cacheKey, out _);
             }
         }
 
-        // 放入 HttpContext.Items 中
+        // 缓存到 HttpContext.Items，避免同一请求重复解析。
         httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)] = result;
 
         return result;
     }
 
     /// <summary>
-    /// 获取远程 Ipv4 地址信息
+    /// 获取指定缓存键对应的 IP 查询锁分片。
     /// </summary>
-    /// <param name="ip"><see cref="string"/> 要的IP地址信息</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <remarks>无内存缓存，请谨慎调用</remarks>
-    /// <returns></returns>
+    /// <param name="cacheKey">IP 信息缓存键。</param>
+    /// <returns>用于串行化同一缓存键回源操作的信号量。</returns>
+    private static SemaphoreSlim GetIpLookupLock(string cacheKey)
+    {
+        var hashCode = StringComparer.Ordinal.GetHashCode(cacheKey);
+        return _ipLookupLocks[(int) ((uint) hashCode % (uint) _ipLookupLocks.Length)];
+    }
+
+    /// <summary>
+    /// 获取远程 IPv4 地址信息。
+    /// </summary>
+    /// <remarks>无内存缓存，请谨慎调用。</remarks>
+    /// <param name="ip"><see cref="string"/> 要的 IP 地址信息。</param>
+    /// <param name="cancellationToken">取消令牌。</param>
+    /// <returns>表示异步获取远程 IPv4 地址信息的任务，任务结果为获取到的远程 IPv4 地址信息。</returns>
     private static async Task<WanNetIPInfo> GetWanNetInfoAsync(string ip, CancellationToken cancellationToken)
     {
         var result = new WanNetIPInfo {Ip = ip};
@@ -504,9 +517,7 @@ public static class HttpContextExtension
 
         using var request = new HttpRequestMessage();
 
-        // 设置请求 Url
         request.RequestUri = new Uri($"https://whois.pconline.com.cn/ipJson.jsp?ip={Uri.EscapeDataString(ip)}&json=true");
-        // 设置请求方式
         request.Method = HttpMethod.Get;
         // 设置请求头部
         request.Headers.Add("Accept", "application/json, text/plain, */*");
@@ -517,20 +528,14 @@ public static class HttpContextExtension
 
         try
         {
-            // 发送请求
             using var response = await _ipLookupHttpClient.SendAsync(request, timeoutTokenSource.Token)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-            // 这里默认使用 GBK 编码解析
+            // 目标 IP 查询服务固定返回 GBK 字节流，不能依赖响应头推断编码。
             var responseBytes = await response.Content.ReadAsByteArrayAsync(timeoutTokenSource.Token)
                 .ConfigureAwait(false);
             var responseContent = Encoding.GetEncoding("GBK")
                 .GetString(responseBytes);
-
-            //var ipInfo = responseContent[
-            //        (responseContent.IndexOf("IPCallBack(", StringComparison.Ordinal) + "IPCallBack(".Length)..]
-            //    .TrimEnd();
-            //ipInfo = ipInfo[..^3];
 
             var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, string>>(responseContent);
             if (ipInfoDictionary == null)
@@ -622,10 +627,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 获取 控制器/Action 描述器
+    /// 获取 控制器/Action 描述器。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="ControllerActionDescriptor"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>获取到的 控制器/Action 描述器。</returns>
     public static ControllerActionDescriptor GetControllerActionDescriptor(this HttpContext httpContext)
     {
         return httpContext.GetEndpoint()
@@ -633,11 +638,11 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 读取 Body 内容
+    /// 读取 Body 内容。
     /// </summary>
-    /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()。</remarks>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>表示异步读取 Body 内容的任务，任务结果为读取到的 Body 内容。</returns>
     public static async Task<string> ReadBodyContentAsync(this HttpContext httpContext)
     {
         if (httpContext == null)
@@ -646,11 +651,11 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 读取 Body 内容
+    /// 读取 Body 内容。
     /// </summary>
-    /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
-    /// <param name="httpRequest"><see cref="HttpRequest"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()。</remarks>
+    /// <param name="httpRequest">当前 HTTP 请求。</param>
+    /// <returns>表示异步读取 Body 内容的任务，任务结果为读取到的 Body 内容。</returns>
     public static async Task<string> ReadBodyContentAsync(this HttpRequest httpRequest)
     {
         httpRequest.Body.Seek(0, SeekOrigin.Begin);
@@ -663,10 +668,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 完整请求地址
+    /// 完整请求地址。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>完整请求地址。</returns>
     public static string RequestUrlAddress(this HttpContext httpContext)
     {
         var request = httpContext?.Request;
@@ -685,10 +690,10 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 完整请求地址
+    /// 完整请求地址。
     /// </summary>
-    /// <param name="httpRequest"><see cref="HttpRequest"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpRequest">当前 HTTP 请求。</param>
+    /// <returns>完整请求地址。</returns>
     public static string RequestUrlAddress(this HttpRequest httpRequest)
     {
         if (httpRequest != null)
@@ -706,11 +711,11 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 来源地址
+    /// 来源地址。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="refererHeaderKey">默认从 “Referer” 获取</param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="refererHeaderKey">包含来源地址的请求头名称。</param>
+    /// <returns>来源地址。</returns>
     public static string RefererUrlAddress(this HttpContext httpContext, string refererHeaderKey = "Referer")
     {
         var request = httpContext?.Request;
@@ -724,17 +729,17 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 设置响应状态码
+    /// 设置响应状态码。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="statusCode"><see cref="int"/></param>
-    /// <param name="return200StatusCodes"><see cref="Array"/> 设置返回 200 状态码列表。只支持 400+(404除外) 状态码</param>
-    /// <param name="adaptStatusCodes"><see cref="Array"/> 适配（篡改）状态码。只支持 400+(404除外) 状态码</param>
     /// <remarks>
     /// 示例：
-    ///     return200StatusCodes = [401, 403]
-    ///     adaptStatusCodes = [[401, 200], [403, 200]]
+    /// return200StatusCodes = [401, 403]
+    /// adaptStatusCodes = [[401, 200], [403, 200]]
     /// </remarks>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="statusCode">HTTP 状态码。</param>
+    /// <param name="return200StatusCodes">设置返回 200 状态码列表。只支持 400+(404 除外) 状态码。</param>
+    /// <param name="adaptStatusCodes">适配（篡改）状态码。只支持 400+(404 除外) 状态码。</param>
     public static void SetResponseStatusCodes(this HttpContext httpContext, int statusCode, int[] return200StatusCodes = null,
         int[][] adaptStatusCodes = null)
     {
@@ -752,7 +757,7 @@ public static class HttpContextExtension
         // 200 状态码返回
         if (return200StatusCodes is {Length: > 0})
         {
-            // 判断当前状态码是否存在与200状态码列表中
+            // 判断当前状态码是否存在与 200 状态码列表中
             if (return200StatusCodes.Contains(statusCode))
             {
                 httpContext.Response.StatusCode = StatusCodes.Status200OK;

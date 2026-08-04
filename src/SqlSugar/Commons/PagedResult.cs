@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,51 +23,51 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedResult{TResult}"/> SqlSugar 统一分页返回结果类
+/// <see cref="PagedResult{TResult}"/> SqlSugar 统一分页返回结果类。
 /// </summary>
-/// <typeparam name="TResult"></typeparam>
+/// <typeparam name="TResult">操作结果类型。</typeparam>
 [SuppressSniffer]
 public class PagedResult<TResult>
 {
     /// <summary>
-    /// 当前页
+    /// 当前页。
     /// </summary>
     public virtual int PageIndex { get; set; }
 
     /// <summary>
-    /// 当前页码
+    /// 当前页码。
     /// </summary>
     public virtual int PageSize { get; set; }
 
     /// <summary>
-    /// 总页数
+    /// 总页数。
     /// </summary>
     public virtual int TotalPage { get; set; }
 
     /// <summary>
-    /// 总条数
+    /// 总条数。
     /// </summary>
     public virtual int TotalRows { get; set; }
 
     /// <summary>
-    /// Data
+    /// Data。
     /// </summary>
     public virtual IEnumerable<TResult> Rows { get; set; }
 
     /// <summary>
-    /// 是否有上一页
+    /// 是否有上一页。
     /// </summary>
     public virtual bool HasPrevPages { get; set; }
 
     /// <summary>
-    /// 是否有下一页
+    /// 是否有下一页。
     /// </summary>
     public virtual bool HasNextPages { get; set; }
 
     private string _assemblyName { get; set; }
 
     /// <summary>
-    /// 程序集名称
+    /// 程序集名称。
     /// </summary>
     public virtual string AssemblyName
     {
@@ -87,7 +87,7 @@ public class PagedResult<TResult>
     private string _fullName { get; set; }
 
     /// <summary>
-    /// 类型完全限定名称
+    /// 类型完全限定名称。
     /// </summary>
     public virtual string TypeFullName
     {

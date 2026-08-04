@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,22 +20,18 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-#if NET10_0_OR_GREATER
 using Microsoft.OpenApi;
-#else
-using Microsoft.OpenApi.Models;
-#endif
 
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="SwaggerOpenApiSecurityRequirementItem"/> 安全定义需求子项
+/// <see cref="SwaggerOpenApiSecurityRequirementItem"/> 安全定义需求子项。
 /// </summary>
 [SuppressSniffer]
 public sealed class SwaggerOpenApiSecurityRequirementItem
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="SwaggerOpenApiSecurityRequirementItem"/> 类的新实例。
     /// </summary>
     public SwaggerOpenApiSecurityRequirementItem()
     {
@@ -43,12 +39,12 @@ public sealed class SwaggerOpenApiSecurityRequirementItem
     }
 
     /// <summary>
-    /// 安全Schema
+    /// 安全 Schema。
     /// </summary>
     public OpenApiSecurityScheme Scheme { get; set; }
 
     /// <summary>
-    /// 权限
+    /// 权限。
     /// </summary>
     public string[] Accesses { get; set; }
 }

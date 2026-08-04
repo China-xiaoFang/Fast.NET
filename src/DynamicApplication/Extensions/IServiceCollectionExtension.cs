@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,17 +27,17 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> 动态Api 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加动态Api服务
+    /// 添加动态 API 服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="routePrefix"><see cref="string"/> 路由前缀</param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="routePrefix">应用于生成路由的统一前缀。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddDynamicApplication(this IServiceCollection services, string routePrefix = null)
     {
         Debugging.Info("Registering dynamic application......");
@@ -52,9 +52,9 @@ public static class IServiceCollectionExtension
         // 解决项目类型为 <Project Sdk="Microsoft.NET.Sdk"> 不能加载 API 问题，默认支持 <Project Sdk="Microsoft.NET.Sdk.Web">
         foreach (var assembly in MAppContext.Assemblies)
         {
-            if (partManager.ApplicationParts.Any(u => u.Name
-                                                      != assembly.GetName()
-                                                          .Name))
+            var assemblyName = assembly.GetName()
+                .Name;
+            if (partManager.ApplicationParts.All(u => !string.Equals(u.Name, assemblyName, StringComparison.Ordinal)))
             {
                 partManager.ApplicationParts.Add(new AssemblyPart(assembly));
             }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,15 +26,11 @@ using Microsoft.AspNetCore.Hosting;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="LoggingStartupFilter"/> 应用启动时自动注册中间件
+/// <see cref="LoggingStartupFilter"/> 应用启动时自动注册中间件。
 /// </summary>
 internal class LoggingStartupFilter : IStartupFilter
 {
-    /// <summary>
-    /// 配置中间件
-    /// </summary>
-    /// <param name="action"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
     {
         return app =>

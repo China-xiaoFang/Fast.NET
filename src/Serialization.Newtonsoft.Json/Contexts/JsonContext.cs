@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,17 +26,17 @@ using Newtonsoft.Json;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="JsonContext"/> Newtonsoft.Json 序列化上下文
+/// <see cref="JsonContext"/> Newtonsoft.Json 序列化上下文。
 /// </summary>
 public static class JsonContext
 {
     /// <summary>
-    /// Newtonsoft.Json 选项
+    /// Newtonsoft.Json 选项。
     /// </summary>
     internal static Action<MvcNewtonsoftJsonOptions> JsonOptionsAction =>
         options =>
         {
-            // 这里其实可以改为从配置文件中读取，但是目前好像没必要，后续再看吧~~~
+            // 两套 JSON 实现使用同一默认格式，确保切换序列化器后日期协议保持一致。
             const string dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
             options.SerializerSettings.Converters.Add(new DateTimeJsonConverter(dateTimeFormat));
@@ -45,7 +45,7 @@ public static class JsonContext
             options.SerializerSettings.Converters.Add(new DateTimeOffsetJsonConverter(dateTimeFormat));
             options.SerializerSettings.Converters.Add(new NullableDateTimeOffsetJsonConverter(dateTimeFormat));
 
-            // 解决 long 类型返回前端可能会导致精度丢失的问题
+            // 将 64 位整数按约定格式输出，避免 JavaScript 数值精度丢失。
             options.SerializerSettings.Converters.Add(new LongJsonConverter());
             options.SerializerSettings.Converters.Add(new NullableLongJsonConverter());
 
@@ -58,25 +58,24 @@ public static class JsonContext
             options.SerializerSettings.Converters.Add(new DoubleJsonConverter());
             options.SerializerSettings.Converters.Add(new NullableDoubleJsonConverter());
 
-            // 解决 Exception 类型不能被正常序列化和反序列化的问题
+            // Exception 包含反射成员和循环引用，使用专用转换器输出安全的属性集合。
             options.SerializerSettings.Converters.Add(new ExceptionJsonConverter());
 
-            // 解决 Enum 类型前端传入 string 的问题
+            // 同时接受枚举名称和数值输入。
             options.SerializerSettings.Converters.Add(new EnumJsonConverter());
 
-            // 忽略只有在.NET 6 才会存在的循环引用问题
+            // 忽略对象图中的循环引用
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
-            // 解决 JSON 乱码问题
+            // 保留非 ASCII 字符，避免中文被转义为 Unicode 序列。
             options.SerializerSettings.StringEscapeHandling = StringEscapeHandling.Default;
-            //options.SerializerSettings.StringEscapeHandling = StringEscapeHandling.EscapeNonAscii;
 
             // 默认日期格式
             options.SerializerSettings.DateFormatString = dateTimeFormat;
         };
 
     /// <summary>
-    /// Newtonsoft.Json 序列化选项
+    /// Newtonsoft.Json 序列化选项。
     /// </summary>
     public static JsonSerializerSettings SerializerOptions { get; internal set; }
 }

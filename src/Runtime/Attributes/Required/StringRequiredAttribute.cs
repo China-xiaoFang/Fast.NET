@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,33 +25,27 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// <see cref="StringRequiredAttribute"/> 验证 <see cref="string"/> 类型属性必填
+/// <see cref="StringRequiredAttribute"/> 验证 <see cref="string"/> 类型属性必填。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class StringRequiredAttribute : ValidationAttribute
 {
     /// <summary>
-    /// 允许空字符串
+    /// 允许空字符串。
     /// </summary>
     public bool AllowEmptyString { get; set; } = false;
 
     /// <summary>
-    /// 允许前后空格
+    /// 允许前后空格。
     /// </summary>
     public bool AllowWhitespace { get; set; } = true;
 
-    /// <summary>Determines whether the specified value of the object is valid.</summary>
-    /// <param name="value">The value of the object to validate.</param>
-    /// <exception cref="T:System.InvalidOperationException">The current attribute is malformed.</exception>
-    /// <exception cref="T:System.NotImplementedException">Neither overload of <see langword="IsValid" /> has been implemented by a derived class.</exception>
-    /// <returns>
-    /// <see langword="true" /> if the specified value is valid; otherwise, <see langword="false" />.</returns>
+    /// <inheritdoc />
     public override bool IsValid(object value)
     {
         var valueParse = value?.ToString();
 
-        // 判断是否为空
         if (valueParse == null)
         {
             return false;

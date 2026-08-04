@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,13 +23,13 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IDeletedEntity"/> 软删除实体接口
+/// <see cref="IDeletedEntity"/> 软删除实体接口。
 /// </summary>
 [SuppressSniffer]
 public interface IDeletedEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 软删除标识
+    /// 软删除标识。
     /// </summary>
     bool IsDeleted { get; set; }
 }

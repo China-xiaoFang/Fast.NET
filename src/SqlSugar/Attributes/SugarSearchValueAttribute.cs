@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SugarSearchValueAttribute"/> SqlSugar 分页搜索列
+/// <see cref="SugarSearchValueAttribute"/> SqlSugar 分页搜索列。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property)]

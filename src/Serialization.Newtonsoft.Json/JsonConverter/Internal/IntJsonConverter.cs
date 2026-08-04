@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,30 +26,21 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="IntJsonConverter"/> int 类型Json返回处理
+/// <see cref="IntJsonConverter"/> int 类型 JSON 返回处理。
 /// </summary>
 internal class IntJsonConverter : JsonConverter<int>
 {
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, int value, JsonSerializer serializer)
     {
         writer.WriteValue(value);
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override int ReadJson(JsonReader reader, Type objectType, int existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
-        // 这里做处理，前端传入的Int类型可能为String类型，或者Number类型。
+        // 同时接受 JSON 字符串和数字令牌。
         if (reader.TokenType == JsonToken.String)
         {
             var jToken = JToken.ReadFrom(reader);
@@ -62,14 +53,11 @@ internal class IntJsonConverter : JsonConverter<int>
 }
 
 /// <summary>
-/// <see cref="NullableIntJsonConverter"/> int? 类型Json返回处理
+/// <see cref="NullableIntJsonConverter"/> int? 类型 JSON 返回处理。
 /// </summary>
 internal class NullableIntJsonConverter : JsonConverter<int?>
 {
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, int? value, JsonSerializer serializer)
     {
         if (value == null)
@@ -78,20 +66,14 @@ internal class NullableIntJsonConverter : JsonConverter<int?>
             writer.WriteValue(value.Value);
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override int? ReadJson(JsonReader reader, Type objectType, int? existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
         if (reader.TokenType == JsonToken.Null)
             return null;
 
-        // 这里做处理，前端传入的Int类型可能为String类型，或者Number类型。
+        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理。
         if (reader.TokenType != JsonToken.String)
             return Convert.ToInt32(reader.Value);
 

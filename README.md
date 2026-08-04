@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/v/Fast.NET.Core.svg?label=Fast.NET.Core&logo=nuget" alt="NuGet version" /></a>
   <a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/dt/Fast.NET.Core.svg?logo=nuget" alt="NuGet downloads" /></a>
-  <img src="https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0%20%7C%209.0%20%7C%2010.0-512BD4?logo=dotnet" alt="Supported .NET versions" />
+  <img src="https://img.shields.io/badge/.NET-8.0%20%7C%209.0%20%7C%2010.0-512BD4?logo=dotnet" alt="Supported .NET versions" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="Apache-2.0 License" /></a>
 </p>
 
@@ -24,20 +24,20 @@ Fast.NET is a set of composable .NET infrastructure libraries covering web appli
 ## Why Fast.NET
 
 - **Modular by design**: 17 independent packages keep unrelated dependencies out of your application.
-- **Multi-version support**: the primary modules target `net6.0`, `net7.0`, `net8.0`, `net9.0`, and `net10.0` together.
+- **Supported .NET releases**: the primary modules target `net8.0`, `net9.0`, and `net10.0` together.
 - **Reusable foundation**: `Fast.IaaS` stays on `netstandard2.1` for broad reuse across modern .NET projects.
 - **Idiomatic integration**: consistent extension methods for `IServiceCollection`, `WebApplicationBuilder`, and `IApplicationBuilder`.
 - **Independent adoption**: caching, logging, serialization, data access, and other modules can be used without adopting the entire stack.
-- **Release ready**: shared XML documentation, NuGet package, symbol package, and repository metadata configuration, plus an interactive Windows publishing script.
+- **Release ready**: deterministic builds, centrally managed dependencies, vulnerability auditing, symbol packages, CI, and an explicitly confirmed publishing script.
 
 ## Compatibility
 
 | Item | Supported range |
 | --- | --- |
-| Primary SDK modules | `net6.0; net7.0; net8.0; net9.0; net10.0` |
+| Primary SDK modules | `net8.0; net9.0; net10.0` |
 | `Fast.IaaS` | `netstandard2.1` |
 | Build SDK | .NET SDK `10.0.100` selected by [`global.json`](global.json), with roll-forward to newer feature bands |
-| C# language version | C# 12 |
+| C# language version | C# 14 |
 | License | Apache-2.0 |
 
 `netstandard2.1` does not support the classic .NET Framework. Applications that still run on .NET Framework require a separate compatibility assessment.
@@ -98,10 +98,10 @@ builder.Services.AddLoggingService(builder.Configuration);
 builder.Services.AddSqlSugar(builder.Configuration, builder.Environment);
 builder.Services.AddJwtBearer(builder.Configuration);
 builder.Services.AddUnifyResult();
+builder.Services.AddControllers();
 builder.Services.AddDynamicApplication();
 builder.Services.AddSwaggerDocuments(builder.Configuration);
 builder.Services.AddOpenApi(builder.Configuration);
-builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -165,35 +165,37 @@ This diagram presents the responsibility layers. See the [architecture guide](do
 
 | NuGet package | Primary capability | Target frameworks | Source |
 | --- | --- | --- | --- |
-| [`Fast.Runtime`](https://www.nuget.org/packages/Fast.Runtime) | ASP.NET Core runtime foundation, contexts, and shared extensions | .NET 6–10 | [`src/Runtime`](src/Runtime) |
+| [`Fast.Runtime`](https://www.nuget.org/packages/Fast.Runtime) | ASP.NET Core runtime foundation, contexts, and shared extensions | .NET 8–10 | [`src/Runtime`](src/Runtime) |
 | [`Fast.IaaS`](https://www.nuget.org/packages/Fast.IaaS) | General extensions, validation, file, and cryptography utilities | .NET Standard 2.1 | [`src/IaaS`](src/IaaS) |
-| [`Fast.NET.Core`](https://www.nuget.org/packages/Fast.NET.Core) | Application initialization, configuration loading, CORS, and compression | .NET 6–10 | [`src/Core`](src/Core) |
-| [`Fast.Cache`](https://www.nuget.org/packages/Fast.Cache) | Redis caching built on CSRedisCore | .NET 6–10 | [`src/Cache`](src/Cache) |
-| [`Fast.Consul`](https://www.nuget.org/packages/Fast.Consul) | Consul service registration, health checks, and KV integration | .NET 6–10 | [`src/Consul`](src/Consul) |
-| [`Fast.DependencyInjection`](https://www.nuget.org/packages/Fast.DependencyInjection) | Convention-based dependency injection and service scanning | .NET 6–10 | [`src/DependencyInjection`](src/DependencyInjection) |
-| [`Fast.DynamicApplication`](https://www.nuget.org/packages/Fast.DynamicApplication) | Dynamic APIs and application service discovery | .NET 6–10 | [`src/DynamicApplication`](src/DynamicApplication) |
-| [`Fast.EventBus`](https://www.nuget.org/packages/Fast.EventBus) | In-process event publishing, subscription, and background consumption | .NET 6–10 | [`src/EventBus`](src/EventBus) |
-| [`Fast.JwtBearer`](https://www.nuget.org/packages/Fast.JwtBearer) | JWT Bearer configuration, authentication, and authorization helpers | .NET 6–10 | [`src/JwtBearer`](src/JwtBearer) |
-| [`Fast.Logging`](https://www.nuget.org/packages/Fast.Logging) | Console and file logging extensions | .NET 6–10 | [`src/Logging`](src/Logging) |
-| [`Fast.Mapster`](https://www.nuget.org/packages/Fast.Mapster) | Mapster object-mapping integration | .NET 6–10 | [`src/Mapster`](src/Mapster) |
-| [`Fast.OpenApi`](https://www.nuget.org/packages/Fast.OpenApi) | OpenAPI models, schemas, and type-conversion utilities | .NET 6–10 | [`src/OpenApi`](src/OpenApi) |
-| [`Fast.Serialization.System.Text.Json`](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | System.Text.Json configuration, converters, and data masking | .NET 6–10 | [`src/Serialization.System.Text.Json`](src/Serialization.System.Text.Json) |
-| [`Fast.Serialization.Newtonsoft.Json`](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Newtonsoft.Json configuration, converters, and data masking | .NET 6–10 | [`src/Serialization.Newtonsoft.Json`](src/Serialization.Newtonsoft.Json) |
-| [`Fast.SqlSugar`](https://www.nuget.org/packages/Fast.SqlSugar) | SqlSugar integration, multi-database settings, repositories, and paging models | .NET 6–10 | [`src/SqlSugar`](src/SqlSugar) |
-| [`Fast.Swagger`](https://www.nuget.org/packages/Fast.Swagger) | Swagger documents, grouping, security definitions, and filters | .NET 6–10 | [`src/Swagger`](src/Swagger) |
-| [`Fast.UnifyResult`](https://www.nuget.org/packages/Fast.UnifyResult) | RESTful unified responses, exception handling, and validation | .NET 6–10 | [`src/UnifyResult`](src/UnifyResult) |
+| [`Fast.NET.Core`](https://www.nuget.org/packages/Fast.NET.Core) | Application initialization, configuration loading, CORS, and compression | .NET 8–10 | [`src/Core`](src/Core) |
+| [`Fast.Cache`](https://www.nuget.org/packages/Fast.Cache) | Redis caching built on CSRedisCore | .NET 8–10 | [`src/Cache`](src/Cache) |
+| [`Fast.Consul`](https://www.nuget.org/packages/Fast.Consul) | Consul service registration, health checks, and KV integration | .NET 8–10 | [`src/Consul`](src/Consul) |
+| [`Fast.DependencyInjection`](https://www.nuget.org/packages/Fast.DependencyInjection) | Convention-based dependency injection and service scanning | .NET 8–10 | [`src/DependencyInjection`](src/DependencyInjection) |
+| [`Fast.DynamicApplication`](https://www.nuget.org/packages/Fast.DynamicApplication) | Dynamic APIs and application service discovery | .NET 8–10 | [`src/DynamicApplication`](src/DynamicApplication) |
+| [`Fast.EventBus`](https://www.nuget.org/packages/Fast.EventBus) | In-process event publishing, subscription, and background consumption | .NET 8–10 | [`src/EventBus`](src/EventBus) |
+| [`Fast.JwtBearer`](https://www.nuget.org/packages/Fast.JwtBearer) | JWT Bearer configuration, authentication, and authorization helpers | .NET 8–10 | [`src/JwtBearer`](src/JwtBearer) |
+| [`Fast.Logging`](https://www.nuget.org/packages/Fast.Logging) | Console and file logging extensions | .NET 8–10 | [`src/Logging`](src/Logging) |
+| [`Fast.Mapster`](https://www.nuget.org/packages/Fast.Mapster) | Mapster object-mapping integration | .NET 8–10 | [`src/Mapster`](src/Mapster) |
+| [`Fast.OpenApi`](https://www.nuget.org/packages/Fast.OpenApi) | OpenAPI models, schemas, and type-conversion utilities | .NET 8–10 | [`src/OpenApi`](src/OpenApi) |
+| [`Fast.Serialization.System.Text.Json`](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | System.Text.Json configuration, converters, and data masking | .NET 8–10 | [`src/Serialization.System.Text.Json`](src/Serialization.System.Text.Json) |
+| [`Fast.Serialization.Newtonsoft.Json`](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Newtonsoft.Json configuration, converters, and data masking | .NET 8–10 | [`src/Serialization.Newtonsoft.Json`](src/Serialization.Newtonsoft.Json) |
+| [`Fast.SqlSugar`](https://www.nuget.org/packages/Fast.SqlSugar) | SqlSugar integration, multi-database settings, repositories, and paging models | .NET 8–10 | [`src/SqlSugar`](src/SqlSugar) |
+| [`Fast.Swagger`](https://www.nuget.org/packages/Fast.Swagger) | Swagger documents, grouping, security definitions, and filters | .NET 8–10 | [`src/Swagger`](src/Swagger) |
+| [`Fast.UnifyResult`](https://www.nuget.org/packages/Fast.UnifyResult) | RESTful unified responses, exception handling, and validation | .NET 8–10 | [`src/UnifyResult`](src/UnifyResult) |
 
 ## Repository layout
 
 ```text
 Fast.NET/
 ├─ src/                         # 17 independently published SDK modules
-├─ docs/                        # Architecture and design documentation
+├─ docs/                        # Bilingual usage, architecture, and release guides
+├─ .github/                     # GitHub CI workflow
 ├─ translateTool/               # Vue i18n text extraction and update tool
 ├─ Directory.Build.props        # Shared target, package, and repository metadata
+├─ Directory.Packages.props     # Central NuGet dependency versions
 ├─ global.json                  # .NET SDK selection policy
 ├─ Fast.NET.sln                 # Main solution
-├─ UploadNuget.bat              # Interactive Windows build and NuGet publisher
+├─ UploadNuget.bat              # Build, pack, and optional publishing entry point
 ├─ README.zh.md / README.md     # Chinese and English entry points
 └─ LICENSE                      # Apache-2.0 license
 ```
@@ -204,21 +206,35 @@ Install a .NET SDK compatible with [`global.json`](global.json), then run:
 
 ```bash
 dotnet restore Fast.NET.sln
-dotnet build Fast.NET.sln -c Release
+dotnet build Fast.NET.sln -c Release --no-restore
 ```
 
-Create NuGet packages with:
+Build and pack all SDK projects on Windows:
+
+```bat
+UploadNuget.bat pack
+```
+
+Create NuGet packages separately:
 
 ```bash
-dotnet pack Fast.NET.sln -c Release --no-restore
+dotnet pack Fast.NET.sln -c Release --no-build --no-restore -p:WarnOnPackingNonPackableProject=false
 ```
 
-Windows users can also double-click `UploadNuget.bat` and choose to build only, publish all packages, or publish one selected package.
+Builds don't implicitly create packages. `UploadNuget.bat` explicitly restores, builds, and then packs into `nupkgs`; publishing is an optional final step and always requires an explicit `PUBLISH` confirmation.
 
 ## Documentation and collaboration
 
+- [Getting started](docs/GETTING_STARTED.md)
+- [Module catalog](docs/MODULES.md)
 - [Architecture guide](docs/ARCHITECTURE.md)
+- [Comments and public API documentation](docs/COMMENTING_GUIDE.md)
+- [Release guide](docs/RELEASING.md)
 - [Contribution guide](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Support policy](SUPPORT.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
+- [Changelog](CHANGELOG.md)
 - [Localization tool](translateTool/README.md)
 - [Commit history](https://gitee.com/FastDotnet/Fast.NET/commits/master)
 - [Issue tracker](https://gitee.com/FastDotnet/Fast.NET/issues)

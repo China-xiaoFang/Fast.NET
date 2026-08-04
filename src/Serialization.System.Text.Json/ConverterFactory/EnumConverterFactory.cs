@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,23 +26,17 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="EnumConverterFactory"/> Enum 类型Json转换工厂
+/// <see cref="EnumConverterFactory"/> Enum 类型 JSON 转换工厂。
 /// </summary>
 internal class EnumConverterFactory : JsonConverterFactory
 {
-    /// <summary>When overridden in a derived class, determines whether the converter instance can convert the specified object type.</summary>
-    /// <param name="typeToConvert">The type of the object to check whether it can be converted by this converter instance.</param>
-    /// <returns>
-    /// <see langword="true" /> if the instance can convert the specified object type; otherwise, <see langword="false" />.</returns>
+    /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert)
     {
         return typeToConvert.IsEnum;
     }
 
-    /// <summary>Creates a converter for a specified type.</summary>
-    /// <param name="typeToConvert">The type handled by the converter.</param>
-    /// <param name="options">The serialization options to use.</param>
-    /// <returns>A converter for which <see cref="Enum"/> is compatible with <paramref name="typeToConvert" />.</returns>
+    /// <inheritdoc />
     public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
     {
         var converterType = typeof(EnumJsonConverter<>).MakeGenericType(typeToConvert);
@@ -51,14 +45,11 @@ internal class EnumConverterFactory : JsonConverterFactory
 }
 
 /// <summary>
-/// <see cref="NullableEnumConverterFactory"/> Enum 类型Json转换工厂
+/// <see cref="NullableEnumConverterFactory"/> Enum 类型 JSON 转换工厂。
 /// </summary>
 internal class NullableEnumConverterFactory : JsonConverterFactory
 {
-    /// <summary>When overridden in a derived class, determines whether the converter instance can convert the specified object type.</summary>
-    /// <param name="typeToConvert">The type of the object to check whether it can be converted by this converter instance.</param>
-    /// <returns>
-    /// <see langword="true" /> if the instance can convert the specified object type; otherwise, <see langword="false" />.</returns>
+    /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert)
     {
         if (typeToConvert.IsGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -71,10 +62,7 @@ internal class NullableEnumConverterFactory : JsonConverterFactory
         return false;
     }
 
-    /// <summary>Creates a converter for a specified type.</summary>
-    /// <param name="typeToConvert">The type handled by the converter.</param>
-    /// <param name="options">The serialization options to use.</param>
-    /// <returns>A converter for which <see cref="Enum"/> is compatible with <paramref name="typeToConvert" />.</returns>
+    /// <inheritdoc />
     public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
     {
         var enumType = Nullable.GetUnderlyingType(typeToConvert);

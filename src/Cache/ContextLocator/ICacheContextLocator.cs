@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,13 +23,13 @@
 namespace Fast.Cache;
 
 /// <summary>
-/// 缓存上下文定位器
+/// 缓存上下文定位器。
 /// </summary>
 [SuppressSniffer]
 public interface ICacheContextLocator
 {
     /// <summary>
-    /// 服务名称
+    /// 服务名称。
     /// </summary>
     public string ServiceName { get; }
 }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,18 +23,18 @@
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="DependencyLibrary"/> .deps.json 文件中 libraries 节点的Model
+/// <see cref="DependencyLibrary"/> .deps.json 文件中 libraries 节点的 Model。
 /// </summary>
 public class DependencyLibrary
 {
     /// <summary>
-    /// 
+    /// 初始化依赖库元数据。
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="name"></param>
-    /// <param name="version"></param>
-    /// <param name="fileName"></param>
-    /// <param name="serviceable"></param>
+    /// <param name="type">依赖来源类型，通常为 <c>project</c> 或 <c>package</c>。</param>
+    /// <param name="name">依赖名称。</param>
+    /// <param name="version">依赖版本。</param>
+    /// <param name="fileName">不含扩展名的运行时程序集文件名。</param>
+    /// <param name="serviceable">指示依赖是否可通过运行时服务更新。</param>
     internal DependencyLibrary(string type, string name, string version, string fileName, bool serviceable)
     {
         Type = type;
@@ -45,32 +45,32 @@ public class DependencyLibrary
     }
 
     /// <summary>
-    /// 类型
+    /// 类型。
     /// </summary>
-    /// <remarks>"package"是引用的包，"project"是本地引用的项目</remarks>
+    /// <remarks>"package"是引用的包，"project"是本地引用的项目。</remarks>
     public string Type { get; }
 
     /// <summary>
-    /// 程序集名称
+    /// 程序集名称。
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// 程序集dll文件名称（不带后缀）
+    /// 程序集 dll 文件名称（不带后缀）。
     /// </summary>
     /// <remarks>
-    /// <para>从 "runtime" 节点获取，如果为空，则默认为 Name</para>
-    /// <para>注意：部分时候可能和Name不一致</para>
+    /// <para>从 "runtime" 节点获取，如果为空，则默认为 Name。</para>
+    /// <para>注意：部分时候可能和 Name 不一致。</para>
     /// </remarks>
     public string FileName { get; }
 
     /// <summary>
-    /// 程序集版本
+    /// 程序集版本。
     /// </summary>
     public string Version { get; }
 
     /// <summary>
-    /// 是否可服务
+    /// 是否可服务。
     /// </summary>
     public bool Serviceable { get; }
 }

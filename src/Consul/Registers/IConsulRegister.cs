@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,16 +20,16 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-namespace Fast.Consul.Registers;
+namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulRegister"/> Consul 服务注册
+/// <see cref="ConsulRegister"/> Consul 服务注册。
 /// </summary>
 internal interface IConsulRegister
 {
     /// <summary>
-    /// 服务注册
+    /// 服务注册。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>表示异步服务注册的任务。</returns>
     Task ConsulRegisterAsync();
 }

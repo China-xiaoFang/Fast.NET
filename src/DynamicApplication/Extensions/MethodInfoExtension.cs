@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,33 +26,33 @@ using System.Runtime.CompilerServices;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// <see cref="MethodInfo"/> 拓展类
+/// 为 <see cref="MethodInfo"/> 提供扩展方法。
 /// </summary>
 internal static class MethodInfoExtension
 {
     /// <summary>
-    /// 判断方法是否是异步
+    /// 判断方法是否是异步。
     /// </summary>
-    /// <param name="methodInfo"><see cref="MemberInfo"/></param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="methodInfo">要检查的方法。</param>
+    /// <returns>方法由异步状态机生成或返回任务类型时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsAsync(this MethodInfo methodInfo)
     {
-        return methodInfo.GetCustomAttribute<AsyncMethodBuilderAttribute>() != null
-               || methodInfo.ReturnType.ToString()
-                   .StartsWith(typeof(Task).FullName);
+        var returnType = methodInfo.ReturnType;
+        return methodInfo.GetCustomAttribute<AsyncStateMachineAttribute>() != null
+               || typeof(Task).IsAssignableFrom(returnType)
+               || returnType == typeof(ValueTask)
+               || returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(ValueTask<>);
     }
 
     /// <summary>
-    /// 获取方法真实返回类型
+    /// 获取方法真实返回类型。
     /// </summary>
-    /// <param name="methodInfo"><see cref="MethodInfo"/></param>
-    /// <returns><see cref="Type"/></returns>
+    /// <param name="methodInfo">目标方法。</param>
+    /// <returns>同步方法的声明返回类型；任务方法返回其任务结果类型。</returns>
     public static Type GetRealReturnType(this MethodInfo methodInfo)
     {
-        // 判断是否是异步方法
         var isAsyncMethod = methodInfo.IsAsync();
 
-        // 获取类型返回值并处理 Task 和 Task<T> 类型返回值
         var returnType = methodInfo.ReturnType;
         return isAsyncMethod ? returnType.GenericTypeArguments.FirstOrDefault() ?? typeof(void) : returnType;
     }

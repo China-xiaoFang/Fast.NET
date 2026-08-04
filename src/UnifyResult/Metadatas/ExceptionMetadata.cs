@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,33 +23,33 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="ExceptionMetadata"/> 异常元数据
+/// <see cref="ExceptionMetadata"/> 异常元数据。
 /// </summary>
 [SuppressSniffer]
 public sealed class ExceptionMetadata
 {
     /// <summary>
-    /// 状态码
+    /// 状态码。
     /// </summary>
     public int StatusCode { get; set; }
 
     /// <summary>
-    /// 错误码
+    /// 错误码。
     /// </summary>
     public object ErrorCode { get; set; }
 
     /// <summary>
-    /// 错误码（没被复写过的 ErrorCode ）
+    /// 原始错误码（未被覆盖的 <see cref="ErrorCode"/>）。
     /// </summary>
     public object OriginErrorCode { get; set; }
 
     /// <summary>
-    /// 错误对象（信息）
+    /// 错误对象（信息）。
     /// </summary>
     public object Errors { get; set; }
 
     /// <summary>
-    /// 额外数据
+    /// 额外数据。
     /// </summary>
     public object Data { get; set; }
 }

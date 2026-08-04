@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,40 +28,35 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> Swagger 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供 Swagger 扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加 Swagger 服务
+    /// 添加 Swagger 服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section"><see cref="string"/></param>
-    /// <param name="configure"></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="section">配置节名称。</param>
+    /// <param name="configure">用于配置 <see cref="SwaggerGenOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, IConfiguration configuration,
         string section = "SwaggerSettings", Action<SwaggerGenOptions> configure = null)
     {
         Debugging.Info("Registering swagger......");
 
-        // 配置验证
         services.AddConfigurableOptions<SwaggerSettingsOptions>(section);
 
-        // 获取Swagger文档配置选项
+        // 获取 Swagger 文档配置选项
         Penetrates.SwaggerSettings = configuration.GetSection(section)
             .Get<SwaggerSettingsOptions>()
             .LoadPostConfigure();
 
-#if !NET5_0
         services.AddEndpointsApiExplorer();
-#endif
 
-        // 判断是否启用规范化文档
         if (Penetrates.SwaggerSettings.Enable!.Value)
         {
-            // 添加Swagger生成器服务
             services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildGen(options, configure));
         }
 
@@ -69,12 +64,12 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加 Swagger 服务
+    /// 添加 Swagger 服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="optionAction"><see cref="Action{T}"/></param>
-    /// <param name="configure"></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="optionAction">用于配置 <see cref="SwaggerSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="configure">用于配置 <see cref="SwaggerGenOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services,
         Action<SwaggerSettingsOptions> optionAction, Action<SwaggerGenOptions> configure = null)
     {
@@ -87,14 +82,10 @@ public static class IServiceCollectionExtension
 
         Penetrates.SwaggerSettings = swaggerSettings;
 
-#if !NET5_0
         services.AddEndpointsApiExplorer();
-#endif
 
-        // 判断是否启用规范化文档
         if (Penetrates.SwaggerSettings.Enable!.Value)
         {
-            // 添加Swagger生成器服务
             services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildGen(options, configure));
         }
 

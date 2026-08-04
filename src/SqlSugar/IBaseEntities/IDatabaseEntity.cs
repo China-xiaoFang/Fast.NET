@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IDatabaseEntity"/> 实体接口
+/// <see cref="IDatabaseEntity"/> 实体接口。
 /// </summary>
 [SuppressSniffer]
 public interface IDatabaseEntity

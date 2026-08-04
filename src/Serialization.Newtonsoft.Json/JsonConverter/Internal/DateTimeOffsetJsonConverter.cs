@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,18 +27,17 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DateTimeOffsetJsonConverter"/> DateTimeOffset 类型Json返回处理
+/// <see cref="DateTimeOffsetJsonConverter"/> DateTimeOffset 类型 JSON 返回处理。
 /// </summary>
 internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 {
     /// <summary>
-    /// 格式化
-    /// 默认：yyyy-MM-dd HH:mm:ss
+    /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// 是否输出为为当地时间
+    /// 是否将输出时间转换为本地时区。
     /// </summary>
     public bool Localized { get; private set; }
 
@@ -53,20 +52,17 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="DateTimeOffsetJsonConverter"/> 类的新实例。
     /// </summary>
-    /// <param name="format"></param>
-    /// <param name="outputToLocalDateTime"></param>
+    /// <param name="format">格式字符串。</param>
+    /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区。</param>
     public DateTimeOffsetJsonConverter(string format, bool outputToLocalDateTime)
     {
         Format = format;
         Localized = outputToLocalDateTime;
     }
 
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, DateTimeOffset value, JsonSerializer serializer)
     {
         // 判断是否序列化成当地时间
@@ -85,13 +81,7 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
         writer.WriteValue(formatDateTime.ToString(Format, CultureInfo.InvariantCulture));
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override DateTimeOffset ReadJson(JsonReader reader, Type objectType, DateTimeOffset existingValue,
         bool hasExistingValue, JsonSerializer serializer)
     {
@@ -156,18 +146,17 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 }
 
 /// <summary>
-/// <see cref="NullableDateTimeOffsetJsonConverter"/> DateTimeOffset? 类型Json返回处理
+/// <see cref="NullableDateTimeOffsetJsonConverter"/> DateTimeOffset? 类型 JSON 返回处理。
 /// </summary>
 internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset?>
 {
     /// <summary>
-    /// 格式化
-    /// 默认：yyyy-MM-dd HH:mm:ss
+    /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// 是否输出为为当地时间
+    /// 是否将输出时间转换为本地时区。
     /// </summary>
     public bool Localized { get; private set; }
 
@@ -182,20 +171,17 @@ internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffse
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="NullableDateTimeOffsetJsonConverter"/> 类的新实例。
     /// </summary>
-    /// <param name="format"></param>
-    /// <param name="outputToLocalDateTime"></param>
+    /// <param name="format">格式字符串。</param>
+    /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区。</param>
     public NullableDateTimeOffsetJsonConverter(string format, bool outputToLocalDateTime)
     {
         Format = format;
         Localized = outputToLocalDateTime;
     }
 
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, DateTimeOffset? value, JsonSerializer serializer)
     {
         if (value == null)
@@ -221,13 +207,7 @@ internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffse
         }
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override DateTimeOffset? ReadJson(JsonReader reader, Type objectType, DateTimeOffset? existingValue,
         bool hasExistingValue, JsonSerializer serializer)
     {

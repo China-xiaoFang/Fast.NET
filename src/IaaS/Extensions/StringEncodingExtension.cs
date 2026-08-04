@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -30,7 +30,7 @@ using System.Web;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="StringEncodingExtension"/> 字符串编码拓展类
+/// 提供字符串编码扩展方法。
 /// </summary>
 public static class StringEncodingExtension
 {
@@ -39,8 +39,8 @@ public static class StringEncodingExtension
     /// <summary>
     /// 将字符串转换为 ASCII 编码形式。
     /// </summary>
-    /// <param name="str"><see cref="string"/> 要进行编码的字符串。</param>
-    /// <returns><see cref="string"/> 转换后的 ASCII 编码形式字符串。</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>转换后的 ASCII 编码形式字符串。</returns>
     public static string EnAscii(this string str)
     {
         // 使用 UTF-8 编码将字符串转换为字节数组
@@ -53,8 +53,8 @@ public static class StringEncodingExtension
     /// <summary>
     /// 将 ASCII 编码形式的字符串转换为字符串。
     /// </summary>
-    /// <param name="str"><see cref="string"/> 要进行解码的 ASCII 编码形式字符串。</param>
-    /// <returns><see cref="string"/> 解码后的字符串。</returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>将 ASCII 编码形式的字符串转换为字符串。</returns>
     public static string DeAscii(this string str)
     {
         var k = 0;
@@ -76,10 +76,10 @@ public static class StringEncodingExtension
     #region Unicode
 
     /// <summary>
-    /// Unicode编码
+    /// Unicode 编码。
     /// </summary>
-    /// <param name="str"><see cref="string"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>Unicode 编码。</returns>
     public static string EnUnicode(this string str)
     {
         var strResult = new StringBuilder();
@@ -95,13 +95,13 @@ public static class StringEncodingExtension
     }
 
     /// <summary>
-    /// Unicode解码
+    /// Unicode 解码。
     /// </summary>
-    /// <param name="str"><see cref="string"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>Unicode 解码。</returns>
     public static string DeUnicode(this string str)
     {
-        //最直接的方法Regex.Unescape(str);
+        //最直接的方法 Regex.Unescape(str);
         var reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
         return reg.Replace(str, m => ((char) Convert.ToInt32(m.Groups[1].Value, 16)).ToString());
     }
@@ -111,11 +111,10 @@ public static class StringEncodingExtension
     #region Url
 
     /// <summary>
-    /// 将一个字符串 URL 编码
-    /// <para>如果已经 URL 编码则不会继续编码</para>
+    /// 对字符串进行 URL 编码；已编码的字符串保持不变。
     /// </summary>
-    /// <param name="str"><see cref="string"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="str">要编码的字符串。</param>
+    /// <returns>URL 编码后的字符串；输入为空时返回空字符串。</returns>
     public static string UrlEncode(this string str)
     {
         if (string.IsNullOrEmpty(str))
@@ -134,16 +133,16 @@ public static class StringEncodingExtension
         }
         catch
         {
-            // 报错了，不管直接编码返回
+            // 无法可靠判断原字符串是否已编码时，返回本次编码结果。
             return result;
         }
     }
 
     /// <summary>
-    /// 将一个Url 编码 转为字符串
+    /// 将一个 URL 编码 转为字符串。
     /// </summary>
-    /// <param name="str"><see cref="string"/></param>
-    /// <returns><see cref="string"/></returns>
+    /// <param name="str">要处理的字符串。</param>
+    /// <returns>将一个 URL 编码 转为字符串。</returns>
     public static string UrlDecode(this string str)
     {
         return string.IsNullOrEmpty(str) ? "" : HttpUtility.UrlDecode(str, Encoding.UTF8);

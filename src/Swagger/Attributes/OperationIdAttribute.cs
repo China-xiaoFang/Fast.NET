@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,23 +23,23 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="OperationIdAttribute"/> 配置规范化文档 OperationId 问题
+/// <see cref="OperationIdAttribute"/> 配置规范化文档 OperationId 问题。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class OperationIdAttribute : Attribute
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="OperationIdAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="operationId">自定义 OperationId，可用户生成可读的前端代码</param>
+    /// <param name="operationId">operation 的唯一标识。</param>
     public OperationIdAttribute(string operationId)
     {
         OperationId = operationId;
     }
 
     /// <summary>
-    /// 自定义 OperationId
+    /// 自定义 OperationId。
     /// </summary>
     public string OperationId { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,15 +26,15 @@ using Microsoft.Extensions.Logging.Console;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="ILoggingBuilder"/> 拓展
+/// <see cref="ILoggingBuilder"/> 扩展。
 /// </summary>
 internal static class ILoggingBuilderExtension
 {
     /// <summary>
-    /// 添加控制台默认格式化器
+    /// 添加控制台默认格式化器。
     /// </summary>
-    /// <param name="builder"><see cref="ILoggingBuilder"/></param>
-    /// <returns></returns>
+    /// <param name="builder">日志服务构建器。</param>
+    /// <returns>添加控制台默认格式化器。</returns>
     internal static ILoggingBuilder AddConsoleFormatter(this ILoggingBuilder builder)
     {
         builder.AddConsole(options => { options.FormatterName = Penetrates.ConsoleFormatterName; })
@@ -42,8 +42,6 @@ internal static class ILoggingBuilderExtension
             {
                 options.DateFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz dddd";
                 options.ColorBehavior = LoggerColorBehavior.Default;
-                // JSON 格式输出
-                //options.MessageFormat = LoggerFormatter.JsonIndented;
             });
 
         return builder;

@@ -22,25 +22,26 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="RetryUtil"/> 重试静态类
+/// <see cref="RetryUtil"/> 重试静态类。
 /// </summary>
 public sealed class RetryUtil
 {
     /// <summary>
-    /// 重试有异常的方法，还可以指定特定异常
+    /// 重试有异常的方法，还可以指定特定异常。
     /// </summary>
-    /// <param name="action"></param>
-    /// <param name="numRetries">重试次数</param>
-    /// <param name="retryTimeout">重试间隔时间</param>
-    /// <param name="finalThrow">是否最终抛异常</param>
-    /// <param name="exceptionTypes">异常类型,可多个</param>
-    /// <param name="fallbackPolicy">重试失败回调</param>
-    /// <param name="retryAction">重试时调用方法</param>
+    /// <param name="action">要执行的操作委托。</param>
+    /// <param name="numRetries">最大重试次数。</param>
+    /// <param name="retryTimeout">两次重试之间的等待时间。</param>
+    /// <param name="finalThrow">重试耗尽后要抛出的异常工厂。</param>
+    /// <param name="exceptionTypes">允许触发重试的异常类型集合。</param>
+    /// <param name="fallbackPolicy">重试耗尽后使用的降级策略。</param>
+    /// <param name="retryAction">每次失败后执行的重试回调。</param>
     public static void Invoke(Action action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
         Type[] exceptionTypes = null, Action<Exception> fallbackPolicy = null, Action<int, int> retryAction = null)
     {
@@ -65,76 +66,82 @@ public sealed class RetryUtil
     }
 
     /// <summary>
-    /// 重试有异常的方法，还可以指定特定异常
+    /// 重试有异常的方法，还可以指定特定异常。
     /// </summary>
-    /// <param name="action"></param>
-    /// <param name="numRetries">重试次数</param>
-    /// <param name="retryTimeout">重试间隔时间</param>
-    /// <param name="finalThrow">是否最终抛异常</param>
-    /// <param name="exceptionTypes">异常类型,可多个</param>
-    /// <param name="fallbackPolicy">重试失败回调</param>
-    /// <param name="retryAction">重试时调用方法</param>
-    /// <returns><see cref="Task"/></returns>
+    /// <param name="action">要执行的操作委托。</param>
+    /// <param name="numRetries">最大重试次数。</param>
+    /// <param name="retryTimeout">两次重试之间的等待时间。</param>
+    /// <param name="finalThrow">重试耗尽后要抛出的异常工厂。</param>
+    /// <param name="exceptionTypes">允许触发重试的异常类型集合。</param>
+    /// <param name="fallbackPolicy">重试耗尽后使用的降级策略。</param>
+    /// <param name="retryAction">每次失败后执行的重试回调。</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
+    /// <returns>表示异步“重试有异常的方法，还可以指定特定异常”操作的任务。</returns>
     public static async Task InvokeAsync(Func<Task> action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
-        Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Func<int, int, Task> retryAction = null)
+        Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Func<int, int, Task> retryAction = null,
+        CancellationToken cancellationToken = default)
     {
         if (action == null)
             throw new ArgumentNullException(nameof(action));
 
-        // 如果重试次数小于或等于 0，则直接调用
+        // 未配置重试次数时只执行一次，不进入重试循环。
         if (numRetries <= 0)
         {
-            await action();
+            cancellationToken.ThrowIfCancellationRequested();
+            await action()
+                .ConfigureAwait(false);
             return;
         }
 
         // 存储总的重试次数
         var totalNumRetries = numRetries;
 
-        // 不断重试
         while (true)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             try
             {
-                await action();
+                await action()
+                    .ConfigureAwait(false);
                 break;
             }
             catch (Exception ex)
             {
-                // 如果可重试次数小于或等于0，则终止重试
-                if (--numRetries < 0)
+                var retriesExhausted = --numRetries < 0;
+                var cannotRetryException = exceptionTypes != null
+                                           && exceptionTypes.Length > 0
+                                           && !exceptionTypes.Where(u => u != null)
+                                               .Any(u => u.IsAssignableFrom(ex.GetType()));
+
+                // 重试耗尽或异常类型不匹配时统一执行失败回调。
+                if (retriesExhausted || cannotRetryException)
                 {
-                    if (finalThrow)
+                    if (fallbackPolicy != null)
                     {
-                        if (fallbackPolicy != null)
-                            await fallbackPolicy.Invoke(ex);
-                        throw;
+                        await fallbackPolicy.Invoke(ex)
+                            .ConfigureAwait(false);
                     }
 
-                    return;
-                }
-
-                // 如果填写了 exceptionTypes 且异常类型不在 exceptionTypes 之内，则终止重试
-                if (exceptionTypes != null
-                    && exceptionTypes.Length > 0
-                    && !exceptionTypes.Any(u => u.IsAssignableFrom(ex.GetType())))
-                {
                     if (finalThrow)
-                    {
-                        if (fallbackPolicy != null)
-                            await fallbackPolicy.Invoke(ex);
                         throw;
-                    }
 
                     return;
                 }
 
                 // 重试调用委托
-                retryAction?.Invoke(totalNumRetries, totalNumRetries - numRetries);
+                if (retryAction != null)
+                {
+                    await retryAction.Invoke(totalNumRetries, totalNumRetries - numRetries)
+                        .ConfigureAwait(false);
+                }
 
-                // 如果可重试异常数大于 0，则间隔指定时间后继续执行
+                // 仅对允许重试的异常等待指定间隔后重试。
                 if (retryTimeout > 0)
-                    await Task.Delay(retryTimeout);
+                {
+                    await Task.Delay(retryTimeout, cancellationToken)
+                        .ConfigureAwait(false);
+                }
             }
         }
     }

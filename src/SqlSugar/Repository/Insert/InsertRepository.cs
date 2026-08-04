@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,15 +23,11 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 插入仓储实现
+/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 插入仓储实现。
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity>
 {
-    /// <summary>
-    /// 新增一条记录
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Insert(TEntity entity)
     {
         var insertable = Insertable(entity)
@@ -46,11 +42,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return insertable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 新增一条记录
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> InsertAsync(TEntity entity)
     {
         var insertable = Insertable(entity)
@@ -65,11 +57,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return insertable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 新增多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Insert(params TEntity[] entities)
     {
         var insertable = Insertable(entities)
@@ -84,11 +72,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return insertable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 新增多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> InsertAsync(params TEntity[] entities)
     {
         var insertable = Insertable(entities)
@@ -103,11 +87,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return insertable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 新增多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Insert(IEnumerable<TEntity> entities)
     {
         var _entities = entities?.ToArray();
@@ -128,11 +108,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return 0;
     }
 
-    /// <summary>
-    /// 新增多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> InsertAsync(IEnumerable<TEntity> entities)
     {
         var _entities = entities?.ToArray();
@@ -153,11 +129,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return Task.FromResult(0);
     }
 
-    /// <summary>
-    /// 新增一条记录返回自增Id
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int InsertReturnIdentity(TEntity entity)
     {
         return Insertable(entity)
@@ -165,11 +137,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
             .ExecuteReturnIdentity();
     }
 
-    /// <summary>
-    /// 新增一条记录返回自增Id
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> InsertReturnIdentityAsync(TEntity entity)
     {
         return Insertable(entity)
@@ -177,11 +145,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
             .ExecuteReturnIdentityAsync();
     }
 
-    /// <summary>
-    /// 新增一条记录返回Long类型的自增Id
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public long ExecuteReturnBigIdentity(TEntity entity)
     {
         return Insertable(entity)
@@ -189,11 +153,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
             .ExecuteReturnBigIdentity();
     }
 
-    /// <summary>
-    /// 新增一条记录返回Long类型的自增Id
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<long> ExecuteReturnBigIdentityAsync(TEntity entity)
     {
         return Insertable(entity)
@@ -201,11 +161,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
             .ExecuteReturnBigIdentityAsync();
     }
 
-    /// <summary>
-    /// 新增一条记录返回新增的数据
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public TEntity InsertReturnEntity(TEntity entity)
     {
         return Insertable(entity)
@@ -213,11 +169,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
             .ExecuteReturnEntity();
     }
 
-    /// <summary>
-    /// 新增一条记录返回新增的数据
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<TEntity> InsertReturnEntityAsync(TEntity entity)
     {
         return Insertable(entity)

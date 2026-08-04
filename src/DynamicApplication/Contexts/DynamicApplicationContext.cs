@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,31 +26,31 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// <see cref="DynamicApplicationContext"/> Dynamic Application 上下文
+/// <see cref="DynamicApplicationContext"/> Dynamic Application 上下文。
 /// </summary>
 [SuppressSniffer]
 public static class DynamicApplicationContext
 {
     /// <summary>
-    /// <see cref="IsApiController(Type)"/> 缓存集合
+    /// <see cref="IsApiController(Type)"/> 缓存集合。
     /// </summary>
     private static readonly ConcurrentDictionary<Type, bool> IsApiControllerCached = new();
 
     /// <summary>
-    /// 路由前缀
+    /// 路由前缀。
     /// </summary>
     public static string RoutePrefix { get; internal set; } = null;
 
     /// <summary>
-    /// 控制器排序集合
+    /// 控制器排序集合。
     /// </summary>
     public static ConcurrentDictionary<string, (string, int, Type)> ControllerOrderCollection { get; set; } = new();
 
     /// <summary>
-    /// 是否是Api控制器
+    /// 是否是 API 控制器。
     /// </summary>
-    /// <param name="type">type</param>
-    /// <returns></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsApiController(Type type)
     {
         return IsApiControllerCached.GetOrAdd(type, Function);

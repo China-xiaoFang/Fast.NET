@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -31,16 +31,16 @@ using Microsoft.Extensions.Hosting;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="WebApplicationBuilder"/> 拓展类
+/// 为 <see cref="WebApplicationBuilder"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class WebApplicationBuilderExtension
 {
     /// <summary>
-    /// 框架初始化
+    /// 框架初始化。
     /// </summary>
-    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
-    /// <returns><see cref="WebApplicationBuilder"/></returns>
+    /// <param name="builder">要配置的应用构建器 <see cref="WebApplicationBuilder"/>。</param>
+    /// <returns>返回 <paramref name="builder"/>，便于链式调用。</returns>
     public static WebApplicationBuilder Initialize(this WebApplicationBuilder builder)
     {
         // 运行控制台输出
@@ -81,7 +81,7 @@ public static class WebApplicationBuilderExtension
             sb.Append("\u001b[1m\u001b[31m");
         sb.Append(Environment.NewLine);
         sb.Append(Environment.NewLine);
-        sb.Append("    Gitee：https://gitee.com/China-xiaoFang/Fast.NET");
+        sb.Append("    Gitee：https://gitee.com/FastDotnet/Fast.NET");
         sb.Append(Environment.NewLine);
         sb.Append(Environment.NewLine);
         if (useColor)
@@ -97,10 +97,10 @@ public static class WebApplicationBuilderExtension
     }
 
     /// <summary>
-    /// 配置 Application
+    /// 配置 Application。
     /// </summary>
-    /// <param name="builder"></param>
-    /// <param name="hostBuilder"></param>
+    /// <param name="builder">要配置的应用构建器 <see cref="IWebHostBuilder"/>。</param>
+    /// <param name="hostBuilder">要配置的主机构建器 <see cref="IHostBuilder"/>。</param>
     private static void ConfigureApplication(IWebHostBuilder builder, IHostBuilder hostBuilder = null)
     {
         if (hostBuilder == null)
@@ -111,7 +111,7 @@ public static class WebApplicationBuilderExtension
                 // 存储环境对象
                 FastContext.HostEnvironment = FastContext.WebHostEnvironment = hostContext.HostingEnvironment;
 
-                // 处理命令行启动参数 公共JSON 文件地址
+                // 处理命令行启动参数 公共 JSON 文件地址
                 var publicJsonPath = hostContext.Configuration["publicJsonPath"];
 
                 if (!string.IsNullOrWhiteSpace(publicJsonPath))
@@ -141,7 +141,7 @@ public static class WebApplicationBuilderExtension
                 // 存储环境对象
                 FastContext.HostEnvironment = hostContext.HostingEnvironment;
 
-                // 处理命令行启动参数 公共JSON 文件地址
+                // 处理命令行启动参数 公共 JSON 文件地址
                 var publicJsonPath = hostContext.Configuration["publicJsonPath"];
 
                 if (!string.IsNullOrWhiteSpace(publicJsonPath))
@@ -187,12 +187,9 @@ public static class WebApplicationBuilderExtension
             services.AddTransient(typeof(IStartupFilter), typeof(CoreStartupFilter));
 
             Debugging.Info("Registering forwarded headers......");
-            // 解决 IIS 或者 Nginx 反向代理获取不到真实客户端IP的问题
+            // 信任代理转发的客户端地址和协议；部署端仍需限制可信代理边界。
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                //options.ForwardedHeaders = ForwardedHeaders.All;
-
-                // 若上面配置无效可尝试下列代码，比如在 IIS 中
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 
 #if NET10_0_OR_GREATER
@@ -207,18 +204,18 @@ public static class WebApplicationBuilderExtension
     }
 
     /// <summary>
-    /// 默认配置文件扫描目录
+    /// 默认配置文件扫描目录。
     /// </summary>
     private static IEnumerable<string> InternalConfigurationScanDirectories =>
         new[] {"AppConfig", "AppSettings", "JsonConfig", "Config", "Settings"};
 
     /// <summary>
-    /// 排除的配置文件前缀
+    /// 排除的配置文件前缀。
     /// </summary>
     private static readonly string[] excludeJsonPrefixArr = {"appsettings", "bundleconfig", "compilerconfig"};
 
     /// <summary>
-    /// 排除运行时 Json 后缀
+    /// 排除运行时 JSON 后缀。
     /// </summary>
     private static readonly string[] runtimeJsonSuffixArr =
     {
@@ -226,10 +223,10 @@ public static class WebApplicationBuilderExtension
     };
 
     /// <summary>
-    /// 添加 JSON 文件
+    /// 添加 JSON 文件。
     /// </summary>
-    /// <param name="configurationBuilder"></param>
-    /// <param name="hostEnvironment"></param>
+    /// <param name="configurationBuilder">要添加配置源的配置构建器 <see cref="IConfigurationBuilder"/>。</param>
+    /// <param name="hostEnvironment">当前应用的宿主环境。</param>
     private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
     {
         // 获取根配置
@@ -286,16 +283,15 @@ public static class WebApplicationBuilderExtension
     }
 
     /// <summary>
-    /// 对配置文件名进行分组
+    /// 对配置文件名进行分组。
     /// </summary>
-    /// <param name="configFiles"></param>
-    /// <returns></returns>
+    /// <param name="configFiles">要按名称分组的配置文件集合。</param>
+    /// <returns>对配置文件名进行分组集合。</returns>
     private static IEnumerable<IGrouping<string, string>> SplitConfigFileNameToGroups(IEnumerable<string> configFiles)
     {
         // 分组
         return configFiles.GroupBy(Function);
 
-        // 本地函数
         static string Function(string file)
         {
             // 根据 . 分隔

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,35 +25,35 @@ using System.ComponentModel.DataAnnotations;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedSortInput"/> SqlSugar 统一分页排序输入
+/// <see cref="PagedSortInput"/> SqlSugar 统一分页排序输入。
 /// </summary>
 [SuppressSniffer]
 public class PagedSortInput
 {
     /// <summary>
-    /// 排序字段英文
+    /// 排序字段英文。
     /// </summary>
-    /// <remarks>主要字段，用于生成排序语句</remarks>
+    /// <remarks>主要字段，用于生成排序语句。</remarks>
     [StringRequired(ErrorMessage = "排序字段不能为空")]
     public virtual string EnField { get; set; }
 
     /// <summary>
-    /// 排序字段中文
+    /// 排序字段中文。
     /// </summary>
-    /// <remarks>次要字段，用于提示</remarks>
+    /// <remarks>次要字段，用于提示。</remarks>
     public virtual string ChField { get; set; }
 
     /// <summary>
-    /// 排序方式
+    /// 排序方式。
     /// </summary>
     /// <remarks>
-    /// <para>ElementPlus 的 Table 排序方式</para>
-    /// <para>ascending 正序；descending：倒序；为空默认正序</para>
+    /// <para>ElementPlus 的 Table 排序方式。</para>
+    /// <para>ascending 正序；descending：倒序；为空默认正序。</para>
     /// </remarks>
     public virtual string Mode { get; set; }
 
     /// <summary>
-    /// 是否倒序排序
+    /// 是否倒序排序。
     /// </summary>
     public virtual bool IsDescending =>
         !string.IsNullOrEmpty(Mode) && Mode.Equals("descending", StringComparison.InvariantCultureIgnoreCase);

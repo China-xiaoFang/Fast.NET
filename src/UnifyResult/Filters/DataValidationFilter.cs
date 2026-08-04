@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -29,40 +29,33 @@ using Microsoft.Extensions.Options;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="DataValidationFilter"/> 数据验证拦截器
+/// <see cref="DataValidationFilter"/> 数据验证拦截器。
 /// </summary>
 internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
 {
     /// <summary>
-    /// Api 行为配置选项
+    /// API 行为配置选项。
     /// </summary>
     private readonly ApiBehaviorOptions _apiBehaviorOptions;
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="DataValidationFilter"/> 类的新实例。
     /// </summary>
-    /// <param name="options"></param>
+    /// <param name="options">当前组件使用的选项 <see cref="IOptions{ApiBehaviorOptions}"/>。</param>
     public DataValidationFilter(IOptions<ApiBehaviorOptions> options)
     {
         _apiBehaviorOptions = options.Value;
     }
 
     /// <summary>
-    /// 过滤器排序
+    /// 过滤器排序。
     /// </summary>
     private const int FilterOrder = -1000;
 
-    /// <summary>
-    /// 排序属性
-    /// </summary>
+    /// <inheritdoc />
     public int Order => FilterOrder;
 
-    /// <summary>
-    /// 拦截请求
-    /// </summary>
-    /// <param name="context">动作方法上下文</param>
-    /// <param name="next">中间件委托</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         // 排除 WebSocket 请求处理
@@ -107,12 +100,12 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     }
 
     /// <summary>
-    /// 调用未处理的结果类型
+    /// 调用未处理的结果类型。
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="next"></param>
-    /// <param name="actionDescriptor"></param>
-    /// <returns></returns>
+    /// <param name="context">当前操作上下文 <see cref="ActionExecutingContext"/>。</param>
+    /// <param name="next">处理管道中的下一个委托 <see cref="ActionExecutionDelegate"/>。</param>
+    /// <param name="actionDescriptor">当前控制器操作的描述信息。</param>
+    /// <returns>表示异步调用未处理的结果类型的任务。</returns>
     private async Task CallUnHandleResult(ActionExecutingContext context, ActionExecutionDelegate next,
         ControllerActionDescriptor actionDescriptor)
     {
@@ -134,14 +127,14 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     }
 
     /// <summary>
-    /// 内部处理异常
+    /// 内部处理异常。
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="actionDescriptor"></param>
-    /// <param name="errors"></param>
-    /// <param name="resultContext"></param>
-    /// <param name="userFriendlyException"></param>
-    /// <returns>返回 false 表示结果没有处理</returns>
+    /// <param name="context">当前操作上下文 <see cref="ActionExecutingContext"/>。</param>
+    /// <param name="actionDescriptor">当前控制器操作的描述信息。</param>
+    /// <param name="errors">模型验证产生的错误集合。</param>
+    /// <param name="resultContext">用于写入验证失败结果的过滤器上下文。</param>
+    /// <param name="userFriendlyException">根据验证错误构造的用户友好异常。</param>
+    /// <returns>返回 <see langword="false"/> 表示结果没有处理。</returns>
     private async Task<bool> HandleValidation(ActionExecutingContext context, ControllerActionDescriptor actionDescriptor,
         object errors, ActionExecutedContext resultContext = null, UserFriendlyException userFriendlyException = null)
     {
@@ -176,14 +169,11 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
         }
         else
         {
-            // 判断是否跳过规范化响应数据处理
             if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, actionDescriptor.MethodInfo, out var unifyResponse))
             {
-                // 处理规范化响应数据
                 await unifyResponse.ResponseValidationExceptionAsync(context, validationMetadata, context.HttpContext);
             }
 
-            // 执行规范化异常处理
             finalContext.Result = unifyResult.OnValidateFailed(context, validationMetadata);
         }
 

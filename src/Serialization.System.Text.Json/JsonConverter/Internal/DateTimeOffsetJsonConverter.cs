@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,18 +27,17 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DateTimeOffsetJsonConverter"/> DateTimeOffset 类型Json返回处理
+/// <see cref="DateTimeOffsetJsonConverter"/> DateTimeOffset 类型 JSON 返回处理。
 /// </summary>
 internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 {
     /// <summary>
-    /// 格式化
-    /// 默认：yyyy-MM-dd HH:mm:ss
+    /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// 是否输出为为当地时间
+    /// 是否将输出时间转换为本地时区。
     /// </summary>
     public bool Localized { get; private set; }
 
@@ -53,21 +52,17 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="DateTimeOffsetJsonConverter"/> 类的新实例。
     /// </summary>
-    /// <param name="format"></param>
-    /// <param name="outputToLocalDateTime"></param>
+    /// <param name="format">格式字符串。</param>
+    /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区。</param>
     public DateTimeOffsetJsonConverter(string format, bool outputToLocalDateTime)
     {
         Format = format;
         Localized = outputToLocalDateTime;
     }
 
-    /// <summary>Reads and converts the JSON to type <see cref="DateTimeOffset"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = reader.GetString()!;
@@ -128,10 +123,7 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
         return DateTime.SpecifyKind(result, Localized ? DateTimeKind.Local : DateTimeKind.Utc);
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
     {
         // 判断是否序列化成当地时间
@@ -152,18 +144,17 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 }
 
 /// <summary>
-/// <see cref="NullableDateTimeOffsetJsonConverter"/> DateTimeOffset? 类型Json返回处理
+/// <see cref="NullableDateTimeOffsetJsonConverter"/> DateTimeOffset? 类型 JSON 返回处理。
 /// </summary>
 internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset?>
 {
     /// <summary>
-    /// 格式化
-    /// 默认：yyyy-MM-dd HH:mm:ss
+    /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// 是否输出为为当地时间
+    /// 是否将输出时间转换为本地时区。
     /// </summary>
     public bool Localized { get; private set; }
 
@@ -178,21 +169,17 @@ internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffse
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="NullableDateTimeOffsetJsonConverter"/> 类的新实例。
     /// </summary>
-    /// <param name="format"></param>
-    /// <param name="outputToLocalDateTime"></param>
+    /// <param name="format">格式字符串。</param>
+    /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区。</param>
     public NullableDateTimeOffsetJsonConverter(string format, bool outputToLocalDateTime)
     {
         Format = format;
         Localized = outputToLocalDateTime;
     }
 
-    /// <summary>Reads and converts the JSON to type <see cref="DateTimeOffset"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override DateTimeOffset? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = reader.GetString()!;
@@ -253,10 +240,7 @@ internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffse
         return DateTime.SpecifyKind(result, Localized ? DateTimeKind.Local : DateTimeKind.Utc);
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, DateTimeOffset? value, JsonSerializerOptions options)
     {
         if (value == null)

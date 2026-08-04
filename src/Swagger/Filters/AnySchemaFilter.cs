@@ -20,27 +20,19 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-#if NET10_0_OR_GREATER
-using Microsoft.OpenApi;
-#else
-using Microsoft.OpenApi.Models;
-#endif
+
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.OpenApi;
 
 namespace Fast.Swagger;
 
 /// <summary>
-/// 修正 规范化文档 object schema，统一显示为 any
+/// 修正 规范化文档 object schema，统一显示为 any。
 /// </summary>
-/// <remarks>相关 issue：https://github.com/swagger-api/swagger-codegen-generators/issues/692 </remarks>
+/// <remarks>相关 issue：https://github.com/swagger-api/swagger-codegen-generators/issues/692。</remarks>
 internal class AnySchemaFilter : ISchemaFilter
 {
-#if NET10_0_OR_GREATER
-    /// <summary>
-    /// 实现过滤器方法
-    /// </summary>
-    /// <param name="schema"></param>
-    /// <param name="context"></param>
+    /// <inheritdoc />
     public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
     {
         var type = context.Type;
@@ -50,20 +42,4 @@ internal class AnySchemaFilter : ISchemaFilter
             openApiSchema.AdditionalPropertiesAllowed = false;
         }
     }
-#else
-    /// <summary>
-    /// 实现过滤器方法
-    /// </summary>
-    /// <param name="model"></param>
-    /// <param name="context"></param>
-    public void Apply(OpenApiSchema model, SchemaFilterContext context)
-    {
-        var type = context.Type;
-
-        if (type == typeof(object))
-        {
-            model.AdditionalPropertiesAllowed = false;
-        }
-    }
-#endif
 }

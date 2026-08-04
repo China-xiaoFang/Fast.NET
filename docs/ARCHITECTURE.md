@@ -98,7 +98,7 @@ flowchart LR
     newtonsoft["Fast.Serialization.Newtonsoft.Json"]
 ```
 
-The serialization packages and `Fast.IaaS` have no repository project references and are suitable for independent consumption. Third-party dependencies include CSRedisCore, Consul, Mapster, Newtonsoft.Json, SqlSugar, and Swashbuckle.AspNetCore; consult each `.csproj` for authoritative versions.
+The serialization packages and `Fast.IaaS` have no repository project references and are suitable for independent consumption. Third-party dependencies include CSRedisCore, Consul, Mapster, Newtonsoft.Json, SqlSugar, and Swashbuckle.AspNetCore; exact versions are managed centrally in `Directory.Packages.props`.
 
 ## Application startup
 
@@ -125,10 +125,10 @@ sequenceDiagram
 
 | Scope | Strategy |
 | --- | --- |
-| Web and infrastructure modules | Build for .NET 6, 7, 8, 9, and 10 together |
+| Web and infrastructure modules | Build for .NET 8, 9, and 10 together |
 | General utility module | `Fast.IaaS` targets .NET Standard 2.1 |
 | Framework differences | Isolated through conditional compilation and conditional `PackageReference` items |
-| Shared configuration | `Directory.Build.props` owns targets, documentation, package metadata, and output paths |
+| Shared configuration | `Directory.Build.props` owns targets, documentation, package metadata, validation, and output paths; `Directory.Packages.props` owns dependency versions |
 | SDK selection | `global.json` pins a baseline and allows feature-band roll-forward |
 | Published artifacts | Every module produces `.nupkg`, `.snupkg`, and XML documentation |
 
@@ -142,7 +142,7 @@ New modules should follow these constraints:
 4. Expose host integration through focused extension methods and document public APIs with XML comments.
 5. Use target-specific conditional references for framework-specific dependencies.
 6. Update the Chinese and English README files, architecture diagrams, and package catalog.
-7. Build every affected target and inspect the NuGet package `lib/` layout.
+7. Provide clear validation steps when behavior changes, then build every affected target; before publishing, run `dotnet pack` separately and inspect the generated packages in `nupkgs/`.
 
 ## Related documentation
 

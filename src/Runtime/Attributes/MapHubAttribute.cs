@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,21 +25,21 @@
 namespace System;
 
 /// <summary>
-/// <see cref="MapHubAttribute"/> 集线器配置特征
+/// <see cref="MapHubAttribute"/> 集线器配置特征。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class MapHubAttribute : Attribute
 {
     /// <summary>
-    /// 配置终点路由地址
+    /// 配置终点路由地址。
     /// </summary>
     public string Pattern { get; set; }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="MapHubAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="pattern"></param>
+    /// <param name="pattern">用于匹配目标项的模式。</param>
     public MapHubAttribute(string pattern)
     {
         Pattern = pattern;

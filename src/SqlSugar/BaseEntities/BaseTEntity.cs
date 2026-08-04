@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,14 +25,12 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="BaseTEntity"/> 租户Entity基类
+/// <see cref="BaseTEntity"/> 租户 Entity 基类。
 /// </summary>
 [SuppressSniffer]
 public class BaseTEntity : BaseEntity, IBaseTEntity
 {
-    /// <summary>
-    /// 租户Id
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "租户Id", CreateTableFieldSort = 997)]
     public virtual long TenantId { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,18 +23,18 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventSubscribeOperates"/> 事件订阅器操作选项
+/// <see cref="EventSubscribeOperates"/> 事件订阅器操作选项。
 /// </summary>
-/// <remarks>控制动态新增/删除事件订阅器</remarks>
+/// <remarks>控制动态新增/删除事件订阅器。</remarks>
 internal enum EventSubscribeOperates
 {
     /// <summary>
-    /// 添加一条订阅器
+    /// 添加一条订阅器。
     /// </summary>
     Append,
 
     /// <summary>
-    /// 删除一条订阅器
+    /// 删除一条订阅器。
     /// </summary>
     Remove
 }

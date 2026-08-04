@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,159 +26,99 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 查询仓储实现
+/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 查询仓储实现。
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity>
 {
-    /// <summary>
-    /// 获取总数
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Count(Expression<Func<TEntity, bool>> whereExpression = null)
     {
         return Entities.WhereIF(whereExpression != null, whereExpression)
             .Count();
     }
 
-    /// <summary>
-    /// 获取总数
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression = null)
     {
         return Entities.WhereIF(whereExpression != null, whereExpression)
             .CountAsync();
     }
 
-    /// <summary>
-    /// 检查是否存在
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public bool Any(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.Any(whereExpression);
     }
 
-    /// <summary>
-    /// 检查是否存在
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         return await Entities.AnyAsync(whereExpression);
     }
 
-    /// <summary>
-    /// 根据主键获取实体
-    /// </summary>
-    /// <param name="Id"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public TEntity SingleOrDefault(object Id)
     {
         return Entities.InSingle(Id);
     }
 
-    /// <summary>
-    /// 根据主键获取实体
-    /// </summary>
-    /// <param name="Id"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<TEntity> SingleOrDefaultAsync(object Id)
     {
         return Entities.InSingleAsync(Id);
     }
 
-    /// <summary>
-    /// 根据条件获取实体
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.Single(whereExpression);
     }
 
-    /// <summary>
-    /// 根据条件获取实体
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.SingleAsync(whereExpression);
     }
 
-    /// <summary>
-    /// 获取一个实体
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.First(whereExpression);
     }
 
-    /// <summary>
-    /// 获取一个实体
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         return await Entities.FirstAsync(whereExpression);
     }
 
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     public List<TEntity> ToList()
     {
         return Entities.ToList();
     }
 
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<List<TEntity>> ToListAsync()
     {
         return Entities.ToListAsync();
     }
 
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.Where(whereExpression)
             .ToList();
     }
 
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression)
     {
         return Entities.Where(whereExpression)
             .ToListAsync();
     }
 
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <param name="orderByExpression"></param>
-    /// <param name="orderByType"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression,
         Expression<Func<TEntity, object>> orderByExpression, OrderByType orderByType = OrderByType.Asc)
     {
@@ -187,13 +127,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
             .ToList();
     }
 
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <param name="whereExpression"></param>
-    /// <param name="orderByExpression"></param>
-    /// <param name="orderByType"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression,
         Expression<Func<TEntity, object>> orderByExpression, OrderByType orderByType = OrderByType.Asc)
     {

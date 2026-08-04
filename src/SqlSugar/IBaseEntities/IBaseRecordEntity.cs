@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,69 +25,69 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IBaseRecordEntity"/> 自增主键记录Entity基类接口
+/// <see cref="IBaseRecordEntity"/> 自增主键记录 Entity 基类接口。
 /// </summary>
 [SuppressSniffer]
 public interface IBaseRecordEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 设备
+    /// 设备。
     /// </summary>
     string Device { get; set; }
 
     /// <summary>
-    /// 操作系统（版本）
+    /// 操作系统（版本）。
     /// </summary>
     string OS { get; set; }
 
     /// <summary>
-    /// 浏览器（版本）
+    /// 浏览器（版本）。
     /// </summary>
     string Browser { get; set; }
 
     /// <summary>
-    /// 省份
+    /// 省份。
     /// </summary>
     string Province { get; set; }
 
     /// <summary>
-    /// 城市
+    /// 城市。
     /// </summary>
     string City { get; set; }
 
     /// <summary>
-    /// Ip
+    /// Ip。
     /// </summary>
     string Ip { get; set; }
 
     /// <summary>
-    /// 部门Id
+    /// 部门 ID。
     /// </summary>
     long? DepartmentId { get; set; }
 
     /// <summary>
-    /// 部门名称
+    /// 部门名称。
     /// </summary>
     string DepartmentName { get; set; }
 
     /// <summary>
-    /// 创建者用户Id
+    /// 创建者用户 ID。
     /// </summary>
     long? CreatedUserId { get; set; }
 
     /// <summary>
-    /// 创建者用户名称
+    /// 创建者用户名称。
     /// </summary>
     string CreatedUserName { get; set; }
 
     /// <summary>
-    /// 创建时间
+    /// 创建时间。
     /// </summary>
     DateTime? CreatedTime { get; set; }
 
     /// <summary>
-    /// 记录表创建
+    /// 记录表创建。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/> 请求上下文</param>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
     void RecordCreate(HttpContext httpContext);
 }

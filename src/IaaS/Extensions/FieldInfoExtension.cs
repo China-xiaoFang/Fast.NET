@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,22 +26,22 @@ using System.Reflection;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="FieldInfo"/> 拓展类
+/// 为 <see cref="FieldInfo"/> 提供扩展方法。
 /// </summary>
 public static class FieldInfoExtension
 {
     /// <summary>
-    /// 获取字段特性
+    /// 获取字段特性。
     /// </summary>
-    /// <param name="field"><see cref="FieldInfo"/></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="field">目标 <see cref="FieldInfo"/>。</param>
+    /// <typeparam name="T">要读取的特性类型。</typeparam>
+    /// <returns>获取到的字段特性。</returns>
     public static T GetDescriptionValue<T>(this FieldInfo field) where T : Attribute
     {
         // 获取字段的指定特性，不包含继承中的特性
         var customAttributes = field.GetCustomAttributes(typeof(T), false);
 
-        // 如果没有数据返回null
+        // 如果没有数据返回 null
         return customAttributes.Length > 0 ? (T) customAttributes[0] : null;
     }
 }

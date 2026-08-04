@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,7 +23,7 @@
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// 瞬时服务注册依赖
+/// 瞬时服务注册依赖。
 /// </summary>
 [SuppressSniffer]
 public interface ITransientDependency : IDependency

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,12 +26,12 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DecimalJsonConverter"/> decimal 类型Json返回处理
+/// <see cref="DecimalJsonConverter"/> decimal 类型 JSON 返回处理。
 /// </summary>
 internal class DecimalJsonConverter : JsonConverter<decimal>
 {
     /// <summary>
-    /// 小数点位数
+    /// 小数点位数。
     /// </summary>
     public int? Places { get; set; }
 
@@ -45,23 +45,16 @@ internal class DecimalJsonConverter : JsonConverter<decimal>
         Places = places;
     }
 
-    /// <summary>Reads and converts the JSON to type <see cref="decimal"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Decimal类型可能为String类型，或者Number类型。
+        // 同时接受 JSON 字符串和数字令牌。
         return reader.TokenType == JsonTokenType.String
             ? decimal.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture)
             : reader.GetDecimal();
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options)
     {
         writer.WriteNumberValue(Places == null ? (decimal) (double) value : Math.Round(value, Places.Value));
@@ -69,12 +62,12 @@ internal class DecimalJsonConverter : JsonConverter<decimal>
 }
 
 /// <summary>
-/// <see cref="NullableDecimalJsonConverter"/> decimal? 类型Json返回处理
+/// <see cref="NullableDecimalJsonConverter"/> decimal? 类型 JSON 返回处理。
 /// </summary>
 internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
 {
     /// <summary>
-    /// 小数点位数
+    /// 小数点位数。
     /// </summary>
     public int? Places { get; set; }
 
@@ -88,14 +81,10 @@ internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
         Places = places;
     }
 
-    /// <summary>Reads and converts the JSON to type <see cref="decimal"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override decimal? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 这里做处理，前端传入的Decimal类型可能为String类型，或者Number类型。
+        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理。
         if (reader.TokenType != JsonTokenType.String)
             return reader.GetDecimal();
 
@@ -108,10 +97,7 @@ internal class NullableDecimalJsonConverter : JsonConverter<decimal?>
         return decimal.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture);
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, decimal? value, JsonSerializerOptions options)
     {
         if (value == null)

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,21 +23,21 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventSubscribeAttribute"/> 事件处理程序特性
+/// <see cref="EventSubscribeAttribute"/> 事件处理程序特性。
 /// </summary>
 /// <remarks>
-/// <para>作用于 <see cref="IEventSubscriber"/> 实现类实例方法</para>
-/// <para>支持多个事件 Id 触发同一个事件处理程序</para>
+/// <para>作用于 <see cref="IEventSubscriber"/> 实现类实例方法。</para>
+/// <para>支持多个事件 ID 触发同一个事件处理程序。</para>
 /// </remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
 public sealed class EventSubscribeAttribute : Attribute
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="EventSubscribeAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <remarks>只支持事件类型和 Enum 类型</remarks>
+    /// <remarks>只支持事件类型和 Enum 类型。</remarks>
+    /// <param name="eventId">日志事件标识。</param>
     public EventSubscribeAttribute(object eventId)
     {
         if (eventId is string eventIdStr)
@@ -53,40 +53,40 @@ public sealed class EventSubscribeAttribute : Attribute
     }
 
     /// <summary>
-    /// 事件 Id
+    /// 事件 ID。
     /// </summary>
     public string EventId { get; set; }
 
     /// <summary>
-    /// 是否启用执行完成触发 GC 回收
+    /// 是否启用执行完成触发 GC 回收。
     /// </summary>
-    /// <remarks>bool 类型，默认关闭；通常应交由运行时自行决定垃圾回收时机。</remarks>
+    /// <remarks>类型，默认关闭；通常应交由运行时自行决定垃圾回收时机。</remarks>
     public object GCCollect { get; set; } = false;
 
     /// <summary>
-    /// 重试次数
+    /// 重试次数。
     /// </summary>
     public int NumRetries { get; set; } = 0;
 
     /// <summary>
-    /// 重试间隔时间
+    /// 重试间隔时间。
     /// </summary>
-    /// <remarks>默认1000毫秒</remarks>
+    /// <remarks>默认 1000 毫秒。</remarks>
     public int RetryTimeout { get; set; } = 1000;
 
     /// <summary>
-    /// 可以指定特定异常类型才重试
+    /// 可以指定特定异常类型才重试。
     /// </summary>
     public Type[] ExceptionTypes { get; set; }
 
     /// <summary>
-    /// 重试失败策略配置
+    /// 重试失败策略配置。
     /// </summary>
     public Type FallbackPolicy { get; set; }
 
     /// <summary>
-    /// 排序
+    /// 排序。
     /// </summary>
-    /// <remarks>数值越大的先执行</remarks>
+    /// <remarks>数值越大的先执行。</remarks>
     public int Order { get; set; } = 0;
 }

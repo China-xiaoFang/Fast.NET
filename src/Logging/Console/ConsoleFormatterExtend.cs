@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,29 +28,29 @@ using Microsoft.Extensions.Options;
 namespace Fast.Logging;
 
 /// <summary>
-/// 控制台默认格式化程序拓展
+/// 控制台默认格式化程序扩展。
 /// </summary>
 internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
 {
     /// <summary>
-    /// 日志格式化选项刷新 Token
+    /// 日志格式化选项刷新 Token。
     /// </summary>
     private readonly IDisposable _formatOptionsReloadToken;
 
     /// <summary>
-    /// 日志格式化配置选项
+    /// 日志格式化配置选项。
     /// </summary>
     private ConsoleFormatterExtendOptions _formatterOptions;
 
     /// <summary>
-    /// 是否启用控制台颜色
+    /// 是否启用控制台颜色。
     /// </summary>
     private bool _disableColors;
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ConsoleFormatterExtend"/> 类的新实例。
     /// </summary>
-    /// <param name="formatterOptions"></param>
+    /// <param name="formatterOptions">formatter Options 配置。</param>
     public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions) : base(Penetrates
         .ConsoleFormatterName)
     {
@@ -60,16 +60,9 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
                          || (_formatterOptions.ColorBehavior == LoggerColorBehavior.Default && Console.IsOutputRedirected);
     }
 
-    /// <summary>
-    /// 写入日志
-    /// </summary>
-    /// <typeparam name="TState"></typeparam>
-    /// <param name="logEntry"></param>
-    /// <param name="scopeProvider"></param>
-    /// <param name="textWriter"></param>
+    /// <inheritdoc />
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
     {
-        // 获取格式化后的消息
         var message = logEntry.Formatter!.Invoke(logEntry.State, logEntry.Exception);
 
         // 创建日志消息
@@ -83,10 +76,8 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
         // 是否自定义了自定义日志格式化程序，如果是则使用
         if (_formatterOptions.MessageFormat != null)
         {
-            // 设置日志上下文
             logMsg = Penetrates.SetLogContext(scopeProvider, logMsg, _formatterOptions.IncludeScopes);
 
-            // 设置日志消息模板
             standardMessage = _formatterOptions.MessageFormat(logMsg);
         }
         else
@@ -96,7 +87,6 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
                 _formatterOptions.WithTraceId, _formatterOptions.WithStackFrame);
         }
 
-        // 空检查
         if (message is null)
             return;
 
@@ -112,18 +102,16 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
         }
     }
 
-    /// <summary>
-    /// 释放非托管资源
-    /// </summary>
+    /// <inheritdoc />
     public void Dispose()
     {
         _formatOptionsReloadToken?.Dispose();
     }
 
     /// <summary>
-    /// 刷新日志格式化选项
+    /// 刷新日志格式化选项。
     /// </summary>
-    /// <param name="options"></param>
+    /// <param name="options">当前组件使用的选项 <see cref="ConsoleFormatterExtendOptions"/>。</param>
     private void ReloadFormatterOptions(ConsoleFormatterExtendOptions options)
     {
         _formatterOptions = options;

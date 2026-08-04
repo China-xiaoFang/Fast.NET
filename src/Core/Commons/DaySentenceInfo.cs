@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,39 +25,39 @@ using System.Text.Json.Serialization;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="DaySentenceInfo"/> 每日一句信息
+/// <see cref="DaySentenceInfo"/> 每日一句信息。
 /// </summary>
 [SuppressSniffer]
 public class DaySentenceInfo
 {
     /// <summary>
-    /// 图片2
+    /// 图片 2。
     /// </summary>
     public string Picture2 { get; set; }
 
     /// <summary>
-    /// 说明
+    /// 说明。
     /// </summary>
     public string Caption { get; set; }
 
     /// <summary>
-    /// 内容
+    /// 内容。
     /// </summary>
     public string Note { get; set; }
 
     /// <summary>
-    /// 英文内容
+    /// 英文内容。
     /// </summary>
     public string Content { get; set; }
 
     /// <summary>
-    /// 分享图片
+    /// 分享图片。
     /// </summary>
     [JsonPropertyName("fenxiang_img")]
     public string ShareImg { get; set; }
 
     /// <summary>
-    /// 时间
+    /// 时间。
     /// </summary>
     [JsonPropertyName("dateline")]
     public DateTime DateTime { get; set; }

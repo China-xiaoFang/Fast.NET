@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,18 +27,18 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="IMvcBuilder"/> 拓展类
+/// 为 <see cref="IMvcBuilder"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IMvcBuilderExtension
 {
     /// <summary>
-    /// 注册 Mvc 过滤器
+    /// 注册 Mvc 过滤器。
     /// </summary>
-    /// <typeparam name="TFilter"></typeparam>
-    /// <param name="builder"><see cref="IMvcBuilder"/></param>
-    /// <param name="configure"></param>
-    /// <returns><see cref="IMvcBuilder"/></returns>
+    /// <param name="builder">要配置的应用构建器 <see cref="IMvcBuilder"/>。</param>
+    /// <param name="configure">额外的 MVC 配置操作。</param>
+    /// <typeparam name="TFilter">要注册的 MVC 过滤器类型。</typeparam>
+    /// <returns>返回当前 MVC 构建器，便于链式调用。</returns>
     public static IMvcBuilder AddMvcFilter<TFilter>(this IMvcBuilder builder, Action<MvcOptions> configure = null)
         where TFilter : IFilterMetadata
     {

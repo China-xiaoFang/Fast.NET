@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -32,27 +32,22 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> 动态Api 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加JwtBearer设置
+    /// 添加 JwtBearer 设置。
     /// </summary>
-    /// <remarks>适用于只使用工具类</remarks>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section">
-    /// <see cref="string"/>
-    /// <para>Json配置文件节点的Key</para>
-    /// <para>默认值：JWTSettings</para>
-    /// </param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <remarks>适用于只使用工具类。</remarks>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services, IConfiguration configuration,
         string section = "JWTSettings")
     {
-        // 配置验证
         services.AddConfigurableOptions<JWTSettingsOptions>(section);
 
         Penetrates.JWTSettings = configuration.GetSection(section)
@@ -67,16 +62,15 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加JwtBearer设置
+    /// 添加 JwtBearer 设置。
     /// </summary>
-    /// <remarks>适用于只使用工具类</remarks>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="optionAction"><see cref="Action{T}"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <remarks>适用于只使用工具类。</remarks>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="optionAction">用于配置 <see cref="JWTSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services,
         Action<JWTSettingsOptions> optionAction)
     {
-        // 配置验证
         services.Configure(optionAction);
 
         var jwtSettings = new JWTSettingsOptions();
@@ -91,17 +85,13 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加JwtBearer授权
+    /// 添加 JwtBearer 授权。
     /// </summary>
-    /// <remarks>适用于自定义验证</remarks>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section">
-    /// <see cref="string"/>
-    /// <para>Json配置文件节点的Key</para>
-    /// <para>默认值：JWTSettings</para>
-    /// </param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <remarks>适用于自定义验证。</remarks>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services, IConfiguration configuration,
         string section = "JWTSettings")
     {
@@ -109,7 +99,6 @@ public static class IServiceCollectionExtension
 
         services.AddJwtBearerSetting(configuration, section);
 
-        // 添加默认授权
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -124,12 +113,12 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加JwtBearer授权
+    /// 添加 JwtBearer 授权。
     /// </summary>
-    /// <remarks>适用于自定义验证</remarks>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="optionAction"><see cref="Action{T}"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <remarks>适用于自定义验证。</remarks>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="optionAction">用于配置 <see cref="JWTSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services,
         Action<JWTSettingsOptions> optionAction)
     {
@@ -137,7 +126,6 @@ public static class IServiceCollectionExtension
 
         services.AddJwtBearerSetting(optionAction);
 
-        // 添加默认授权
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -152,16 +140,12 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加JwtBearer服务
+    /// 添加 JwtBearer 服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section">
-    /// <see cref="string"/>
-    /// <para>Json配置文件节点的Key</para>
-    /// <para>默认值：JWTSettings</para>
-    /// </param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearer(this IServiceCollection services, IConfiguration configuration,
         string section = "JWTSettings")
     {
@@ -169,13 +153,13 @@ public static class IServiceCollectionExtension
 
         services.AddJwtBearerSetting(configuration, section);
 
-        // 查找Jwt验证提供器实现类
+        // 解析当前请求使用的 JWT 验证处理器。
         var jwtBearerHandle =
             MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
 
         if (jwtBearerHandle != null)
         {
-            // 注册Jwt验证提供器实现类，这里使用作用域注入
+            // JWT 验证处理器按请求作用域解析，避免跨请求共享状态。
             services.AddScoped(typeof(IJwtBearerHandle), jwtBearerHandle);
         }
 
@@ -185,13 +169,12 @@ public static class IServiceCollectionExtension
         // 注册策略授权处理程序
         services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
 
-        //启用全局授权
+        // 未显式标记匿名访问的端点统一要求授权。
         if (Penetrates.JWTSettings.Enable.HasValue && Penetrates.JWTSettings.Enable.Value)
         {
             services.Configure<MvcOptions>(options => { options.Filters.Add(new AuthorizeFilter()); });
         }
 
-        // 添加默认授权
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -206,22 +189,22 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加JwtBearer服务
+    /// 添加 JwtBearer 服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="optionAction"><see cref="Action{T}"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="optionAction">用于配置 <see cref="JWTSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearer(this IServiceCollection services, Action<JWTSettingsOptions> optionAction)
     {
         services.AddJwtBearerSetting(optionAction);
 
-        // 查找Jwt验证提供器实现类
+        // 解析当前请求使用的 JWT 验证处理器。
         var jwtBearerHandle =
             MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
 
         if (jwtBearerHandle != null)
         {
-            // 注册Jwt验证提供器实现类，这里使用作用域注入
+            // JWT 验证处理器按请求作用域解析，避免跨请求共享状态。
             services.AddScoped(typeof(IJwtBearerHandle), jwtBearerHandle);
         }
 
@@ -231,13 +214,12 @@ public static class IServiceCollectionExtension
         // 注册策略授权处理程序
         services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
 
-        //启用全局授权
+        // 未显式标记匿名访问的端点统一要求授权。
         if (Penetrates.JWTSettings.Enable.HasValue && Penetrates.JWTSettings.Enable.Value)
         {
             services.Configure<MvcOptions>(options => { options.Filters.Add(new AuthorizeFilter()); });
         }
 
-        // 添加默认授权
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

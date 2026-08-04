@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,34 +28,25 @@ using System.Text.Json;
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="Assembly"/> 拓展类
+/// 为 <see cref="Assembly"/> 提供扩展方法。
 /// </summary>
 public static class AssemblyExtension
 {
     /// <summary>
-    /// 获取入口运行库
+    /// 获取入口运行库。
     /// </summary>
-    /// <remarks>暂不支持独立/单文件发布</remarks>
-    /// <param name="assembly"><see cref="Assembly"/> 入口程序集</param>
-    /// <returns></returns>
+    /// <remarks>暂不支持独立/单文件发布。</remarks>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <returns>获取到的入口运行库集合。</returns>
     public static List<DependencyLibrary> GetEntryRuntimeLibraries(this Assembly assembly)
     {
-        // 判断是否为独立/单文件发布
-        if (!string.IsNullOrWhiteSpace(assembly?.Location))
+        var depsJsonFilePath = ResolveDependencyContextPath(assembly);
+        if (!string.IsNullOrWhiteSpace(depsJsonFilePath))
         {
-            // 获取程序入口文件的 .deps.json 文件
-            var depsJsonFilePath = $"{assembly.Location[..^".dll".Length]}.deps.json";
-
-            // 判断文件是否存在
-            if (!File.Exists(depsJsonFilePath))
-            {
-                throw new FileNotFoundException($"Cannot find {assembly.GetName().Name}.deps.json file.", depsJsonFilePath);
-            }
-
             // 读取文件
             var depsJsonContent = File.ReadAllText(depsJsonFilePath);
 
-            // 解析 JSON字符串
+            // 解析 JSON 字符串
             var depsJsonRoot = JsonDocument.Parse(depsJsonContent)
                 .RootElement;
 
@@ -66,7 +57,7 @@ public static class AssemblyExtension
                 .EnumerateObject();
             foreach (var targetsArr in targetsContent)
             {
-                // "targets" 节点下通常有一个节点：".NETCoreApp,Version=v6.0"
+                // "targets" 节点下通常有一个节点，例如 ".NETCoreApp,Version=v8.0"
                 foreach (var targets in targetsArr.Value.EnumerateObject())
                 {
                     if (targets.Value.TryGetProperty("runtime", out var runtimeElement))
@@ -99,7 +90,7 @@ public static class AssemblyExtension
                 var libraryName = library.Name;
                 var libraryNameArr = libraryName.Split("/");
 
-                // 根据Key，获取Name 和 Version
+                // 根据 Key，获取 Name 和 Version
                 var name = libraryNameArr.Length >= 1 ? libraryNameArr[0] : null;
                 var version = libraryNameArr.Length >= 2 ? libraryNameArr[1] : null;
 
@@ -128,15 +119,55 @@ public static class AssemblyExtension
     }
 
     /// <summary>
-    /// 获取入口引用程序集
+    /// 解析当前宿主实际使用的依赖上下文文件。
     /// </summary>
-    /// <remarks>暂不支持独立/单文件发布</remarks>
-    /// <param name="assembly"><see cref="Assembly"/> 入口程序集</param>
-    /// <param name="dependencyLibraryList"><see cref="List{T}"/> 运行库</param>
-    /// <returns></returns>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <returns>解析后的当前宿主实际使用的依赖上下文文件。</returns>
+    private static string ResolveDependencyContextPath(Assembly assembly)
+    {
+        if (!string.IsNullOrWhiteSpace(assembly?.Location))
+        {
+            var assemblyDepsFile = Path.ChangeExtension(assembly.Location, ".deps.json");
+            if (File.Exists(assemblyDepsFile))
+                return assemblyDepsFile;
+        }
+
+        // 测试宿主和插件宿主的入口程序集可能位于 SDK 目录，实际应用的 deps 文件由宿主上下文提供。
+        var contextDepsFiles = AppContext.GetData("APP_CONTEXT_DEPS_FILES") as string;
+        if (!string.IsNullOrWhiteSpace(contextDepsFiles))
+        {
+            var baseDirectory = Path.GetFullPath(AppContext.BaseDirectory)
+                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            var applicationDepsFile = contextDepsFiles.Split(Path.PathSeparator,
+                    StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Where(File.Exists)
+                .FirstOrDefault(file => string.Equals(Path.GetDirectoryName(Path.GetFullPath(file))
+                        ?.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar), baseDirectory,
+                    StringComparison.OrdinalIgnoreCase));
+            if (applicationDepsFile != null)
+                return applicationDepsFile;
+        }
+
+        return Directory.Exists(AppContext.BaseDirectory)
+            ? Directory.EnumerateFiles(AppContext.BaseDirectory, "*.deps.json", SearchOption.TopDirectoryOnly)
+                .OrderBy(file => file, StringComparer.OrdinalIgnoreCase)
+                .FirstOrDefault()
+            : null;
+    }
+
+    /// <summary>
+    /// 获取入口引用程序集。
+    /// </summary>
+    /// <remarks>暂不支持独立/单文件发布。</remarks>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="dependencyLibraryList">应用依赖库集合。</param>
+    /// <returns>获取到的入口引用程序集集合。</returns>
     public static List<Assembly> GetEntryReferencedAssembly(this Assembly assembly,
         List<DependencyLibrary> dependencyLibraryList = null)
     {
+        if (assembly == null)
+            return [];
+
         dependencyLibraryList ??= assembly.GetEntryRuntimeLibraries();
 
         if (!dependencyLibraryList.Any())
@@ -156,9 +187,7 @@ public static class AssemblyExtension
                 (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) || wh.Type == "package")
             .Select(sl =>
             {
-                // 这里由于一些dll文件是运行时文件，但是却也包含了在 .deps.json 文件的 "libraries" 节点中，所以采用极限1换100操作，报错的不处理
-
-                // 检查是否已加载，避免重复加载
+                // .deps.json 同时包含应用依赖和仅供运行时使用的库；不可加载的条目会被跳过。
                 var loadedAssembly = loadedAssemblies.FirstOrDefault(f => f.GetName()
                                                                               ?.Name?.Equals(sl.FileName,
                                                                                   StringComparison.OrdinalIgnoreCase)
@@ -189,12 +218,12 @@ public static class AssemblyExtension
     }
 
     /// <summary>
-    /// 获取程序集中所有类型
+    /// 获取程序集中所有类型。
     /// </summary>
-    /// <remarks>这里默认获取所有 Public 声明的</remarks>
-    /// <param name="assembly"><see cref="Assembly"/> 程序集</param>
-    /// <param name="typeFilter"><see cref="Func{TResult}"/> 类型过滤条件</param>
-    /// <returns></returns>
+    /// <remarks>默认仅返回公开声明的类型；可通过筛选器进一步限制结果。</remarks>
+    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="typeFilter">用于筛选程序集类型的委托。</param>
+    /// <returns>获取到的程序集中所有类型集合。</returns>
     public static IEnumerable<Type> GetAssemblyTypes(this Assembly assembly, Func<Type, bool> typeFilter = null)
     {
         var types = Array.Empty<Type>();

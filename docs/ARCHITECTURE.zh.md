@@ -98,7 +98,7 @@ flowchart LR
     newtonsoft["Fast.Serialization.Newtonsoft.Json"]
 ```
 
-序列化包和 `Fast.IaaS` 没有仓库内项目依赖，因此适合被独立引用。第三方依赖包括 CSRedisCore、Consul、Mapster、Newtonsoft.Json、SqlSugar、Swashbuckle.AspNetCore 等，具体版本以对应 `.csproj` 为准。
+序列化包和 `Fast.IaaS` 没有仓库内项目依赖，因此适合被独立引用。第三方依赖包括 CSRedisCore、Consul、Mapster、Newtonsoft.Json、SqlSugar、Swashbuckle.AspNetCore 等，具体版本统一由 `Directory.Packages.props` 管理。
 
 ## 应用启动流程
 
@@ -125,10 +125,10 @@ sequenceDiagram
 
 | 范围 | 策略 |
 | --- | --- |
-| Web 与基础设施模块 | 同时面向 .NET 6、7、8、9、10 构建 |
+| Web 与基础设施模块 | 同时面向 .NET 8、9、10 构建 |
 | 通用工具模块 | `Fast.IaaS` 面向 .NET Standard 2.1 |
 | 框架差异 | 通过条件编译和条件 `PackageReference` 隔离 |
-| 统一配置 | `Directory.Build.props` 管理目标框架、文档、包元数据和输出目录 |
+| 统一配置 | `Directory.Build.props` 管理目标框架、文档、包元数据、验证和输出目录；`Directory.Packages.props` 管理依赖版本 |
 | SDK 选择 | `global.json` 固定基线并允许 feature-band 滚动 |
 | 发布产物 | 每个模块生成 `.nupkg`、`.snupkg` 和 XML 文档 |
 
@@ -142,7 +142,7 @@ sequenceDiagram
 4. 面向宿主的注册入口使用清晰的扩展方法，并为公共 API 编写 XML 文档。
 5. 框架专属依赖使用按 `TargetFramework` 区分的条件引用。
 6. 更新中英文 README、架构图和模块目录。
-7. 构建所有受影响目标框架，并检查 NuGet 包中的 `lib/` 目录。
+7. 行为变更应提供明确的验证步骤，然后构建所有受影响目标；发布前单独执行 `dotnet pack` 并检查 `nupkgs/` 中生成的包。
 
 ## 相关文档
 

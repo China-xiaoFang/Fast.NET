@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,26 +23,24 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="Type"/> 拓展类
+/// 为 <see cref="Type"/> 提供扩展方法。
 /// </summary>
 internal static class TypeExtension
 {
     /// <summary>
-    /// 判断类型是否实现某个泛型
+    /// 判断类型是否实现某个泛型。
     /// </summary>
-    /// <param name="type"><see cref="Type"/> 类型</param>
-    /// <param name="generic"><see cref="Type"/>泛型类型</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="generic"><see cref="Type"/>泛型类型。</param>
+    /// <returns>目标类型自身、其基类型或接口匹配指定开放泛型时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool HasImplementedRawGeneric(this Type type, Type generic)
     {
         var localType = type;
-        // 检查接口类型
         var isTheRawGenericType = type.GetInterfaces()
             .Any(IsTheRawGenericType);
         if (isTheRawGenericType)
             return true;
 
-        // 检查类型
         while (localType != null && localType != typeof(object))
         {
             isTheRawGenericType = IsTheRawGenericType(localType);
@@ -53,7 +51,6 @@ internal static class TypeExtension
 
         return false;
 
-        // 判断逻辑
         bool IsTheRawGenericType(Type t)
         {
             return generic == (t.IsGenericType ? t.GetGenericTypeDefinition() : t);

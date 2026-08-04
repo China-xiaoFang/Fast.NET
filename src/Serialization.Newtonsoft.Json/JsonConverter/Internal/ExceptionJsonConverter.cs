@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,24 +25,21 @@ using Newtonsoft.Json;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="ExceptionJsonConverter"/> Exception 类型Json返回处理
+/// <see cref="ExceptionJsonConverter"/> Exception 类型 JSON 返回处理。
 /// </summary>
-/// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
+/// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作。</remarks>
 internal class ExceptionJsonConverter : JsonConverter<Exception>
 {
-    /// <summary>Writes the JSON representation of the object.</summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-    /// <param name="value">The value.</param>
-    /// <param name="serializer">The calling serializer.</param>
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, Exception value, JsonSerializer serializer)
     {
-        // 默认只写入 Message，Source，StackTrace，InnerException
+        // 默认仅输出 Message、Source、StackTrace 和 InnerException。
         var writeNameArr = new[]
         {
             nameof(Exception.Message), nameof(Exception.Source), nameof(Exception.StackTrace),
             nameof(Exception.InnerException)
         };
-        // 获取可序列化的属性，排除 TargetSite 属性
+        // TargetSite 含有不可安全序列化的反射信息，因此从输出属性中排除。
         var serializableProperties = value.GetType()
             .GetProperties()
             .Select(sl => new {sl.Name, Value = sl.GetValue(value)})
@@ -50,38 +47,28 @@ internal class ExceptionJsonConverter : JsonConverter<Exception>
             .Where(wh => wh.Value != null)
             .ToList();
 
-        // 判断是否还存在可以序列化的属性
         if (serializableProperties.Count == 0)
         {
             return;
         }
 
-        // 开始写入对象
         writer.WriteStartObject();
 
         foreach (var prop in serializableProperties)
         {
-            // 写入属性名
             writer.WritePropertyName(prop.Name);
             // 使用 JsonConvert.SerializeObject 来序列化属性值，确保处理属性值的类型
             serializer.Serialize(writer, prop.Value);
         }
 
-        // 结束写入对象
         writer.WriteEndObject();
     }
 
-    /// <summary>Reads the JSON representation of the object.</summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-    /// <param name="objectType">Type of the object.</param>
-    /// <param name="existingValue">The existing value of object being read. If there is no existing value then <c>null</c> will be used.</param>
-    /// <param name="hasExistingValue">The existing value has a value.</param>
-    /// <param name="serializer">The calling serializer.</param>
-    /// <returns>The object value.</returns>
+    /// <inheritdoc />
     public override Exception ReadJson(JsonReader reader, Type objectType, Exception existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
-        // 反序列化异常是不允许的。
+        // 异常对象只允许序列化输出，不支持从外部数据重建。
         throw new NotSupportedException("Deserializing exceptions is not allowed.");
     }
 }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -21,29 +21,20 @@
 // ------------------------------------------------------------------------
 
 using System.Net;
-using System.Runtime.CompilerServices;
-using Fast.Consul.Internal;
-using Fast.Consul.Registers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-[assembly: InternalsVisibleTo("Fast.IaaS")]
-
-namespace Fast.Consul.Filters;
+namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulStartupFilter"/> 应用启动时自动注册中间件
+/// <see cref="ConsulStartupFilter"/> 应用启动时自动注册中间件。
 /// </summary>
 internal class ConsulStartupFilter : IStartupFilter
 {
-    /// <summary>
-    /// 配置中间件
-    /// </summary>
-    /// <param name="action"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
     {
         return app =>

@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
-        <TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
-        <LangVersion>12.0</LangVersion>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        <LangVersion>14.0</LangVersion>
         <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
 
@@ -11,32 +11,30 @@
 
         <Authors>小方</Authors>
         <Product>Fast.NET</Product>
-        <Description>一个快速构建项目的 .NET 框架。</Description>
-        <PackageTags>Fast.NET;ASP.NET;dotNET China;Cross Platform;1.8K仔;小方</PackageTags>
+        <Description>面向 ASP.NET Core 的模块化 .NET SDK。</Description>
+        <PackageTags>Fast.NET;ASP.NET Core;.NET;SDK;Cross Platform</PackageTags>
         <Copyright>版权所有 © 2018-Now 小方</Copyright>
         <PackageProjectUrl>https://fastdotnet.com</PackageProjectUrl>
-        <RepositoryUrl>https://gitee.com/China-xiaoFang/Fast.NET</RepositoryUrl>
-        <RepositoryType>Gitee</RepositoryType>
+        <RepositoryUrl>https://gitee.com/FastDotnet/Fast.NET</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageIcon>Fast.png</PackageIcon>
-        <PackageReadmeFile>README.zh.md</PackageReadmeFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
 
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <IncludeSymbols>True</IncludeSymbols>
+        <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageOutputPath>$(RepositoryRoot)nupkgs</PackageOutputPath>
 
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <DocumentationFile>$(MSBuildProjectName).xml</DocumentationFile>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
         <SatelliteResourceLanguages>en-US;zh-CN</SatelliteResourceLanguages>
-        <GenerateResxSourceIncludeDefaultValues>True</GenerateResxSourceIncludeDefaultValues>
 
-        <!-- 解决多个SDK版本生成报错的问题 -->
+        <!-- 避免多个目标框架在构建阶段重复生成 OpenAPI 文档。 -->
         <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
     </PropertyGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="'$(IsPackable)' != 'false'">
         <None Include="$(RepositoryRoot)README.md" Pack="true" PackagePath="\" />
         <None Include="$(RepositoryRoot)README.zh.md" Pack="true" PackagePath="\" />
         <None Include="$(RepositoryRoot)LICENSE" Pack="true" PackagePath="\" />

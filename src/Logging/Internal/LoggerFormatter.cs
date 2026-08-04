@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,13 +25,13 @@ using System.Text.Json;
 namespace Fast.Logging;
 
 /// <summary>
-/// 日志格式化静态类
+/// 日志格式化静态类。
 /// </summary>
 [SuppressSniffer]
 public static class LoggerFormatter
 {
     /// <summary>
-    /// Json 输出格式化
+    /// JSON 输出格式化。
     /// </summary>
     public static readonly Func<LogMessage, string> Json = logMsg =>
     {
@@ -39,7 +39,7 @@ public static class LoggerFormatter
     };
 
     /// <summary>
-    /// Json 输出格式化
+    /// JSON 输出格式化。
     /// </summary>
     public static readonly Func<LogMessage, string> JsonIndented = logMsg =>
     {
@@ -47,10 +47,10 @@ public static class LoggerFormatter
     };
 
     /// <summary>
-    /// 写入 JSON
+    /// 写入 JSON。
     /// </summary>
-    /// <param name="logMsg"></param>
-    /// <param name="writer"></param>
+    /// <param name="logMsg">要格式化或输出的日志消息。</param>
+    /// <param name="writer">目标 JSON 写入器。</param>
     private static void WriteJson(LogMessage logMsg, Utf8JsonWriter writer)
     {
         writer.WriteStartObject();
@@ -64,7 +64,7 @@ public static class LoggerFormatter
         // 输出日志类别
         writer.WriteString("logName", logMsg.LogName);
 
-        // 输出日志事件 Id
+        // 输出日志事件 ID
         if (logMsg.EventId != null)
         {
             writer.WriteNumber("eventId", logMsg.EventId.Value.Id);
@@ -73,7 +73,7 @@ public static class LoggerFormatter
         // 输出日志消息
         writer.WriteString("message", logMsg.Message);
 
-        // 输出日志所在线程 Id
+        // 输出日志所在线程 ID
         writer.WriteNumber("threadId", logMsg.ThreadId);
 
         // 输出是否使用 UTC 时间戳

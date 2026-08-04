@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,22 +27,21 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="IApplicationBuilder"/> Swagger 拓展类
+/// 为 <see cref="IApplicationBuilder"/> 提供 Swagger 扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IApplicationBuilderExtension
 {
     /// <summary>
-    /// 启用 Swagger
+    /// 启用 Swagger。
     /// </summary>
-    /// <param name="app"><see cref="IApplicationBuilder"/></param>
-    /// <param name="configure"><see cref="Action{T}"/></param>
-    /// <param name="configureUI"><see cref="Action{T}"/></param>
-    /// <returns></returns>
+    /// <param name="app">要配置的应用管道构建器 <see cref="IApplicationBuilder"/>。</param>
+    /// <param name="configure">用于配置 <see cref="SwaggerOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="configureUI">用于配置 <see cref="SwaggerUIOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回当前应用管道构建器，便于链式调用。</returns>
     public static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app, Action<SwaggerOptions> configure = null,
         Action<SwaggerUIOptions> configureUI = null)
     {
-        // 判断是否启用规范化文档
         if (Penetrates.SwaggerSettings.Enable!.Value)
         {
             // 配置 Swagger 全局参数

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,17 +25,17 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentPathMethodResponseDto"/> OpenApi 文档路由响应Dto
+/// <see cref="OpenApiDocumentPathMethodResponseDto"/> OpenAPI 文档路由响应 DTO。
 /// </summary>
 public class OpenApiDocumentPathMethodResponseDto
 {
     /// <summary>
-    /// 描述
+    /// 描述。
     /// </summary>
     public string Description { get; set; }
 
     /// <summary>
-    /// 响应码200内容
+    /// 响应码 200 内容。
     /// </summary>
     [JsonPropertyName("200")]
     public OpenApiDocumentPathMethodResponseContentDto Code200 { get; set; }

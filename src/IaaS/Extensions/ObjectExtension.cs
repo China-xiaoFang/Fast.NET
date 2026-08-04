@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -30,16 +30,16 @@ using System.Reflection;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="object"/> 拓展类
+/// 为 <see cref="object"/> 提供扩展方法。
 /// </summary>
 public static class ObjectExtension
 {
     /// <summary>
-    /// 将一个对象转换为指定类型
+    /// 将一个对象转换为指定类型。
     /// </summary>
-    /// <param name="obj">待转换的对象</param>
-    /// <param name="type">目标类型</param>
-    /// <returns>转换后的对象</returns>
+    /// <param name="obj">要处理的对象。</param>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>将一个对象转换为指定类型。</returns>
     public static object ChangeType(this object obj, Type type)
     {
         if (type == null)
@@ -69,13 +69,13 @@ public static class ObjectExtension
                 return null;
             return Enum.Parse(underlyingType ?? type, obj.ToString());
         }
-        // 处理DateTime -> DateTimeOffset 类型
+        // 将 DateTime 按配置的时区规则转换为 DateTimeOffset。
 
         if (obj is DateTime dateTime && (underlyingType ?? type) == typeof(DateTimeOffset))
         {
             return DateTime.SpecifyKind(dateTime, DateTimeKind.Local);
         }
-        // 处理 DateTimeOffset -> DateTime 类型
+        // 将 DateTimeOffset 按配置的时区规则转换为 DateTime。
 
         if (obj is DateTimeOffset dateTimeOffset && (underlyingType ?? type) == typeof(DateTime))
         {
@@ -122,11 +122,11 @@ public static class ObjectExtension
     }
 
     /// <summary>
-    /// 将一个Object对象转为 字典
+    /// 将一个 Object 对象转为 字典。
     /// </summary>
-    /// <param name="obj"><see cref="object"/></param>
-    /// <param name="includeNull"><see cref="bool"/> 包括 null 值的属性</param>
-    /// <returns><see cref="IDictionary{TKey,TValue}"/></returns>
+    /// <param name="obj">要处理的对象。</param>
+    /// <param name="includeNull">是否在结果中包含值为 <see langword="null"/> 的属性。</param>
+    /// <returns>IDictionary{TKey,TValue}。</returns>
     public static IDictionary<string, object> ToDictionary(this object obj, bool includeNull = false)
     {
         var dictionary = new Dictionary<string, object>();
@@ -143,7 +143,6 @@ public static class ObjectExtension
                 continue;
 
             var o = m.Invoke(obj, Array.Empty<object>());
-            // 进行判NULL处理
             if (o != null || includeNull)
             {
                 dictionary.Add(p.Name, o); // 向字典添加元素
@@ -154,23 +153,23 @@ public static class ObjectExtension
     }
 
     /// <summary>
-    /// 将一个对象转换为指定类型
+    /// 将一个对象转换为指定类型。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">要处理的对象。</param>
+    /// <typeparam name="T">转换操作使用的对象类型。</typeparam>
+    /// <returns>将一个对象转换为指定类型。</returns>
     public static T ChangeType<T>(this object obj)
     {
         return (T) obj.ChangeType(typeof(T));
     }
 
     /// <summary>
-    /// 将一个对象转化为 Get 请求的String字符串
-    /// 注：List，Array，Object属性不支持
+    /// 将对象的公共属性转换为查询字符串。
     /// </summary>
-    /// <param name="obj"><see cref="object"/></param>
-    /// <param name="isToLower">首字母是否小写</param>
-    /// <returns><see cref="string"/></returns>
+    /// <remarks>字符串和整数列表会使用带 <c>[]</c> 后缀的重复查询参数；其他复杂属性使用其字符串表示形式。</remarks>
+    /// <param name="obj">要转换的对象。</param>
+    /// <param name="isToLower">是否将属性名的首字母转换为小写。</param>
+    /// <returns>由非空公共属性组成的查询字符串；对象为空时返回空字符串。</returns>
     public static string ToQueryString(this object obj, bool isToLower = false)
     {
         if (obj == null)
@@ -188,13 +187,12 @@ public static class ObjectExtension
 
             if (m == null || !m.IsPublic)
                 continue;
-            // 进行判NULL处理
             if (m.Invoke(obj, new object[] { }) == null)
                 continue;
 
             var value = m.Invoke(obj, new object[] { });
 
-            // 进行List集合处理
+            // 进行 List 集合处理
             var valType = value?.GetType();
             if (valType is {IsGenericType: true})
             {
@@ -234,11 +232,11 @@ public static class ObjectExtension
     }
 
     /// <summary>
-    /// 尝试获取对象的数量
+    /// 尝试获取对象的数量。
     /// </summary>
-    /// <param name="obj"><see cref="object"/></param>
-    /// <param name="count">数量</param>
-    /// <returns><see cref="bool"/></returns>
+    /// <param name="obj">要处理的对象。</param>
+    /// <param name="count">得到的元素数量。</param>
+    /// <returns>能够读取字符、字符串、集合或公开 <c>Count</c> 属性的数量时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool TryGetCount(this object obj, out int count)
     {
         // 处理可直接获取长度的类型

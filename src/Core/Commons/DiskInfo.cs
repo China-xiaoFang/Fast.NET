@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,43 +23,43 @@
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="DiskInfo"/> 磁盘信息
+/// <see cref="DiskInfo"/> 磁盘信息。
 /// </summary>
 [SuppressSniffer]
 public class DiskInfo
 {
     /// <summary>
-    /// 磁盘名
+    /// 磁盘名。
     /// </summary>
     public string DiskName { get; set; }
 
     /// <summary>
-    /// 类型名
+    /// 类型名。
     /// </summary>
     public string TypeName { get; set; }
 
     /// <summary>
-    /// 总剩余
+    /// 总剩余。
     /// </summary>
     public decimal TotalFree { get; set; }
 
     /// <summary>
-    /// 总量
+    /// 总量。
     /// </summary>
     public decimal TotalSize { get; set; }
 
     /// <summary>
-    /// 已使用
+    /// 已使用。
     /// </summary>
     public decimal Used { get; set; }
 
     /// <summary>
-    /// 可使用
+    /// 可使用。
     /// </summary>
     public decimal AvailableFreeSpace { get; set; }
 
     /// <summary>
-    /// 使用百分比
+    /// 使用百分比。
     /// </summary>
     public decimal AvailablePercent { get; set; }
 }

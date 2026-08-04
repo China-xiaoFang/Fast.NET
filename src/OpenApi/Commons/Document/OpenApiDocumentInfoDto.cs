@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,22 +23,22 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentInfoDto"/> OpenApi 文档信息Dto
+/// <see cref="OpenApiDocumentInfoDto"/> OpenAPI 文档信息 DTO。
 /// </summary>
 public class OpenApiDocumentInfoDto
 {
     /// <summary>
-    /// 标题
+    /// 标题。
     /// </summary>
     public string Title { get; set; }
 
     /// <summary>
-    /// 描述
+    /// 描述。
     /// </summary>
     public string Description { get; set; }
 
     /// <summary>
-    /// 版本
+    /// 版本。
     /// </summary>
     public string Version { get; set; }
 }

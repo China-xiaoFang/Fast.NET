@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventBusService"/> EventBusService 日志拓展默认分类名
+/// <see cref="EventBusService"/> EventBusService 日志扩展默认分类名。
 /// </summary>
 internal sealed class EventBusService
 {

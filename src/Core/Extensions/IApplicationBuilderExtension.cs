@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,17 +28,17 @@ using Microsoft.AspNetCore.SignalR;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="IApplicationBuilder"/> 拓展类
+/// 为 <see cref="IApplicationBuilder"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IApplicationBuilderExtension
 {
     /// <summary>
-    /// 启用 Body 重复读功能
+    /// 启用 Body 重复读功能。
     /// </summary>
-    /// <remarks>须在 app.UseRouting() 之前注册</remarks>
-    /// <param name="app"><see cref="IApplicationBuilder"/></param>
-    /// <returns><see cref="IApplicationBuilder"/></returns>
+    /// <remarks>须在 app.UseRouting() 之前注册。</remarks>
+    /// <param name="app">要配置的应用管道构建器 <see cref="IApplicationBuilder"/>。</param>
+    /// <returns>返回 <paramref name="app"/>，便于链式调用。</returns>
     public static IApplicationBuilder EnableBuffering(this IApplicationBuilder app)
     {
         return app.Use(next => context =>
@@ -49,11 +49,11 @@ public static class IApplicationBuilderExtension
     }
 
     /// <summary>
-    /// 启用集线器
+    /// 启用集线器。
     /// </summary>
-    /// <remarks>须在 app.UseRouting() 之后注册</remarks>
-    /// <param name="app"><see cref="IApplicationBuilder"/></param>
-    /// <returns><see cref="IApplicationBuilder"/></returns>
+    /// <remarks>须在 app.UseRouting() 之后注册。</remarks>
+    /// <param name="app">要配置的应用管道构建器 <see cref="IApplicationBuilder"/>。</param>
+    /// <returns>返回 <paramref name="app"/>，便于链式调用。</returns>
     public static IApplicationBuilder UseMapHub(this IApplicationBuilder app)
     {
         var hubTypes = typeof(Hub);

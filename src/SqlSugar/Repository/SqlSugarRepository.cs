@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,21 +28,21 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 仓储实现
+/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 仓储实现。
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepository<TEntity>
     where TEntity : class, new()
 {
     /// <summary>
-    /// 服务提供器
+    /// 服务提供器。
     /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 仓储实现
+    /// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 仓储实现。
     /// </summary>
-    /// <param name="hostEnvironment"></param>
-    /// <param name="serviceProvider"></param>
+    /// <param name="hostEnvironment">当前应用的宿主环境。</param>
+    /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器。</param>
     public SqlSugarRepository(IHostEnvironment hostEnvironment, IServiceProvider serviceProvider) : base(
         SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings))
     {
@@ -74,53 +74,35 @@ internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISql
         // 数据库信息
         DatabaseInfo = connectionSettings ?? SqlSugarContext.ConnectionSettings;
 
-        // 重新初始化Context
+        // 重新初始化 Context
         InitContext(SqlSugarContext.GetConnectionConfig(DatabaseInfo));
 
-        // 执行超时时间
         Context.Ado.CommandTimeOut = DatabaseInfo.CommandTimeOut!.Value;
 
-        // Aop
         SugarEntityFilter.LoadSugarAop(hostEnvironment.IsDevelopment(), Context, DatabaseInfo.SugarSqlExecMaxSeconds!.Value,
             DatabaseInfo.DiffLog!.Value, DatabaseInfo.DisableAop!.Value, sqlSugarEntityHandler);
 
-        // 过滤器
         SugarEntityFilter.LoadSugarFilter(Context, sqlSugarEntityHandler);
     }
 
-    /// <summary>
-    /// 是否支持逻辑删除
-    /// </summary>
-    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IDeletedEntity"/> 才有用</remarks>
+    /// <inheritdoc />
     public bool SupportsLogicDelete { get; }
 
-    /// <summary>
-    /// 是否支持行版本控制（乐观锁）
-    /// </summary>
-    /// <remarks><typeparamref name="TEntity"/> 继承了 <see cref="IUpdateVersion"/> 才有用</remarks>
+    /// <inheritdoc />
     public bool SupportsRowVersion { get; }
 
-    /// <summary>
-    /// 是否分表
-    /// </summary>
-    /// <remarks><typeparamref name="TEntity"/> 头部标记 <see cref="SplitTableAttribute"/> 特性才有用</remarks>
+    /// <inheritdoc />
     public bool IsSplitTable { get; }
 
     /// <summary>
-    /// 实体集合
+    /// 实体集合。
     /// </summary>
     public ISugarQueryable<TEntity> Entities => Queryable<TEntity>();
 
-    /// <summary>
-    /// 当前仓储的数据库信息
-    /// </summary>
+    /// <inheritdoc />
     public ConnectionSettingsOptions DatabaseInfo { get; set; }
 
-    /// <summary>
-    /// 切换仓储/切换租户仓储
-    /// </summary>
-    /// <typeparam name="TChangeEntity">实体类型</typeparam>
-    /// <returns>仓储</returns>
+    /// <inheritdoc />
     public ISqlSugarRepository<TChangeEntity> Change<TChangeEntity>() where TChangeEntity : class, new()
     {
         return _serviceProvider.GetService(typeof(ISqlSugarRepository<TChangeEntity>)) as ISqlSugarRepository<TChangeEntity>;

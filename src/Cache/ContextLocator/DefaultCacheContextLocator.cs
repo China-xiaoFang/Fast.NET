@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,13 +23,11 @@
 namespace Fast.Cache;
 
 /// <summary>
-/// <see cref="DefaultCacheContextLocator"/> 默认缓存上下文定位器
+/// <see cref="DefaultCacheContextLocator"/> 默认缓存上下文定位器。
 /// </summary>
 [SuppressSniffer]
 public class DefaultCacheContextLocator : ICacheContextLocator
 {
-    /// <summary>
-    /// 服务名称
-    /// </summary>
+    /// <inheritdoc />
     public string ServiceName => "Default";
 }

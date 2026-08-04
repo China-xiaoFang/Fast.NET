@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,15 +25,15 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarDatabaseUtil"/> Database DateTime 类型工具类
+/// <see cref="SqlSugarDatabaseUtil"/> 数据库字段类型映射工具类。
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 设置 <see cref="int"/> 类型
+    /// 设置 <see cref="int"/> 类型。
     /// </summary>
-    /// <param name="dbType"></param>
-    /// <param name="columnInfo"></param>
+    /// <param name="dbType">数据库类型。</param>
+    /// <param name="columnInfo">要补充数据库类型信息的实体列元数据。</param>
     internal static void SetDbTypeInt(DbType dbType, EntityColumnInfo columnInfo)
     {
         switch (dbType)
@@ -99,7 +99,7 @@ public partial class SqlSugarDatabaseUtil
                 columnInfo.DataType = "integer";
                 break;
 
-            // Dm、Oscar、Kdbndp、DB2、HANA、Odbc
+            // 其余兼容分支覆盖 DM、Oscar、Kdbndp、DB2、HANA 和 ODBC。
             case DbType.Dm:
             case DbType.Oscar:
             case DbType.Kdbndp:
@@ -114,11 +114,10 @@ public partial class SqlSugarDatabaseUtil
                 columnInfo.DataType = "int";
                 break;
 
-            // TDengine：原生不支持 int，建议不使用
+            // TDengine 不原生支持 Int32，避免生成该列类型。
             case DbType.TDengine:
                 throw new SqlSugarException("TDengine 不支持 int 类型，请使用 long 或 float 替代。");
 
-            // 默认
             case DbType.Custom:
             default:
                 columnInfo.DataType = "int";

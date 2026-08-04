@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,16 +25,16 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="HttpContext"/> 拓展类
+/// 为 <see cref="HttpContext"/> 提供扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class HttpContextExtension
 {
     /// <summary>
-    /// 获取请求方式
+    /// 获取请求方式。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <returns></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <returns>获取到的请求方式。</returns>
     public static HttpRequestMethodEnum GetRequestMethod(this HttpContext httpContext)
     {
         return httpContext.Request.Method switch

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,12 +23,12 @@
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// <see cref="ParameterRouteTemplate"/> 参数路由模板
+/// <see cref="ParameterRouteTemplate"/> 参数路由模板。
 /// </summary>
 internal class ParameterRouteTemplate
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ParameterRouteTemplate"/> 类的新实例。
     /// </summary>
     internal ParameterRouteTemplate()
     {
@@ -39,22 +39,22 @@ internal class ParameterRouteTemplate
     }
 
     /// <summary>
-    /// 控制器之前的参数
+    /// 控制器之前的参数。
     /// </summary>
     public IList<string> ControllerStartTemplates { get; set; }
 
     /// <summary>
-    /// 控制器之后的参数
+    /// 控制器之后的参数。
     /// </summary>
     public IList<string> ControllerEndTemplates { get; set; }
 
     /// <summary>
-    /// 行为之前的参数
+    /// 行为之前的参数。
     /// </summary>
     public IList<string> ActionStartTemplates { get; set; }
 
     /// <summary>
-    /// 行为之后的参数
+    /// 行为之后的参数。
     /// </summary>
     public IList<string> ActionEndTemplates { get; set; }
 }

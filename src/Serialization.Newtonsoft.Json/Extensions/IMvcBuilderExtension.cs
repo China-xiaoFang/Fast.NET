@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,15 +25,15 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="IMvcBuilder"/> Newtonsoft.Json 拓展类
+/// 为 <see cref="IMvcBuilder"/> 提供 Newtonsoft.Json 扩展方法。
 /// </summary>
 public static class IMvcBuilderExtension
 {
     /// <summary>
-    /// 添加 Newtonsoft.Json 序列化服务
+    /// 添加 Newtonsoft.Json 序列化服务。
     /// </summary>
-    /// <param name="builder"><see cref="IMvcBuilder"/></param>
-    /// <returns><see cref="IMvcBuilder"/></returns>
+    /// <param name="builder">要配置的应用构建器 <see cref="IMvcBuilder"/>。</param>
+    /// <returns>返回当前 MVC 构建器，便于链式调用。</returns>
     public static IMvcBuilder AddSerialization(this IMvcBuilder builder)
     {
         // Web 环境配置

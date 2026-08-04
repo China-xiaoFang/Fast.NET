@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,26 +20,19 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-#if NET10_0_OR_GREATER
-using Microsoft.OpenApi;
-#else
-using Microsoft.OpenApi.Models;
-#endif
+
 using Fast.DynamicApplication;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Fast.Swagger;
 
 /// <summary>
-/// 标签文档排序/注释拦截器
+/// 标签文档排序/注释拦截器。
 /// </summary>
 internal class TagsOrderDocumentFilter : IDocumentFilter
 {
-    /// <summary>
-    /// 配置拦截
-    /// </summary>
-    /// <param name="swaggerDoc"></param>
-    /// <param name="context"></param>
+    /// <inheritdoc />
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
         var orderedTags = DynamicApplicationContext.ControllerOrderCollection.Where(u => SwaggerDocumentBuilder
@@ -54,12 +47,7 @@ internal class TagsOrderDocumentFilter : IDocumentFilter
                     ?.Description
             });
 
-#if NET10_0_OR_GREATER
-        // OpenApi v2: Tags 类型为 ISet<OpenApiTag>
+        // Microsoft.OpenAPI 2.x 的 Tags 属性使用集合类型。
         swaggerDoc.Tags = new HashSet<OpenApiTag>(orderedTags);
-#else
-        // OpenApi v1: Tags 类型为 IList<OpenApiTag>
-        swaggerDoc.Tags = orderedTags.ToList();
-#endif
     }
 }

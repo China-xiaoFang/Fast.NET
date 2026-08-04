@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,17 +23,17 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentPathMethodRequestBodyDto"/> OpenApi 文档路由请求体Dto
+/// <see cref="OpenApiDocumentPathMethodRequestBodyDto"/> OpenAPI 文档路由请求体 DTO。
 /// </summary>
 public class OpenApiDocumentPathMethodRequestBodyDto
 {
     /// <summary>
-    /// 描述
+    /// 描述。
     /// </summary>
     public string Description { get; set; }
 
     /// <summary>
-    /// 请求体内容
+    /// 请求体内容。
     /// </summary>
     public OpenApiDocumentPathMethodContentDto Content { get; set; }
 }

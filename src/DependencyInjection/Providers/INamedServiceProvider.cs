@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,24 +23,24 @@
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// <see cref="INamedServiceProvider{TService}"/> 命名服务提供器
+/// <see cref="INamedServiceProvider{TService}"/> 命名服务提供器。
 /// </summary>
-/// <typeparam name="TService">目标服务接口</typeparam>
+/// <typeparam name="TService">目标服务接口。</typeparam>
 internal interface INamedServiceProvider<out TService> where TService : class
 {
     /// <summary>
-    /// 根据服务名称获取服务
+    /// 根据服务名称获取服务。
     /// </summary>
-    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/></typeparam>
-    /// <param name="serviceName"><see cref="string"/> 服务名称</param>
-    /// <returns></returns>
+    /// <param name="serviceName"><see cref="string"/> 服务名称。</param>
+    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/>。</typeparam>
+    /// <returns>根据服务名称获取服务。</returns>
     TService GetService<ILifetime>(string serviceName) where ILifetime : IDependency;
 
     /// <summary>
-    /// 根据服务名称获取服务
+    /// 根据服务名称获取服务。
     /// </summary>
-    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/></typeparam>
-    /// <param name="serviceName"><see cref="string"/> 服务名称</param>
-    /// <returns></returns>
+    /// <param name="serviceName"><see cref="string"/> 服务名称。</param>
+    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/>。</typeparam>
+    /// <returns>根据服务名称获取服务。</returns>
     TService GetRequiredService<ILifetime>(string serviceName) where ILifetime : IDependency;
 }

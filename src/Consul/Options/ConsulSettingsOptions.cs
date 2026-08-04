@@ -23,21 +23,21 @@
 using System.ComponentModel.DataAnnotations;
 using Fast.Runtime;
 
-namespace Fast.Consul.Options;
+namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulSettingsOptions"/> Consul配置选项
+/// <see cref="ConsulSettingsOptions"/> Consul 配置选项。
 /// </summary>
 public sealed class ConsulSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// Consul 是否启用
+    /// Consul 是否启用。
     /// </summary>
     [Required]
     public bool? Enable { get; set; }
 
     /// <summary>
-    /// Consul 客户端地址
+    /// Consul 客户端地址。
     /// </summary>
     [Required]
     public string Address { get; set; }
@@ -49,29 +49,27 @@ public sealed class ConsulSettingsOptions : IPostConfigure
     public string ServiceAddress { get; set; }
 
     /// <summary>
-    /// Consul 健康检查地址
+    /// Consul 健康检查地址。
     /// </summary>
     [Required]
     public string HealthCheck { get; set; }
 
     /// <summary>
-    /// Consul 服务启动后多久注册，单位秒
+    /// Consul 服务启动后多久注册，单位为秒。
     /// </summary>
     public int? DeregisterCriticalServiceAfter { get; set; }
 
     /// <summary>
-    /// Consul 健康检查时间间隔，单位秒
+    /// Consul 健康检查时间间隔，单位为秒。
     /// </summary>
     public int? HealthCheckInterval { get; set; }
 
     /// <summary>
-    /// Consul 健康检查超时时间，单位秒
+    /// Consul 健康检查超时时间，单位为秒。
     /// </summary>
     public int? HealthCheckTimeout { get; set; }
 
-    /// <summary>
-    /// 后期配置
-    /// </summary>
+    /// <inheritdoc />
     public void PostConfigure()
     {
         Enable ??= true;

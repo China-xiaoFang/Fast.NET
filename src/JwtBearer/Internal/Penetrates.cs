@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,12 +23,12 @@
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="Penetrates"/> 常量，公共方法配置类。
 /// </summary>
 internal static class Penetrates
 {
     /// <summary>
-    /// Jwt 配置
+    /// JWT 配置。
     /// </summary>
     internal static JWTSettingsOptions JWTSettings { get; set; }
 }

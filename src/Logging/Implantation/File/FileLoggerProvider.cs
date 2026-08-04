@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,42 +26,42 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 文件日志记录器提供程序
+/// 文件日志记录器提供程序。
 /// </summary>
-/// <remarks>https://docs.microsoft.com/zh-cn/dotnet/core/extensions/custom-logging-provider</remarks>
+/// <remarks>实现遵循 Microsoft.Extensions.Logging 自定义日志提供器约定。</remarks>
 [ProviderAlias("File")]
 internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
 {
     /// <summary>
-    /// 存储多日志分类日志记录器
+    /// 存储多日志分类日志记录器。
     /// </summary>
     private readonly ConcurrentDictionary<string, FileLogger> _fileLoggers = new();
 
     /// <summary>
-    /// 日志消息队列（线程安全）
+    /// 日志消息队列（线程安全）。
     /// </summary>
     private readonly BlockingCollection<LogMessage> _logMessageQueue = new(1024);
 
     /// <summary>
-    /// 日志作用域提供器
+    /// 日志作用域提供器。
     /// </summary>
     private IExternalScopeProvider _scopeProvider;
 
     /// <summary>
-    /// 记录日志所有滚动文件名
+    /// 记录日志所有滚动文件名。
     /// </summary>
-    /// <remarks>只有 MaxRollingFiles 和 FileSizeLimitBytes 大于 0 有效</remarks>
+    /// <remarks>只有 MaxRollingFiles 和 FileSizeLimitBytes 大于 0 有效。</remarks>
     internal readonly ConcurrentDictionary<string, FileInfo> _rollingFileNames = new();
 
     /// <summary>
-    /// 文件日志写入器
+    /// 文件日志写入器。
     /// </summary>
     private readonly FileLoggingWriter _fileLoggingWriter;
 
     /// <summary>
-    /// 长时间运行的后台任务
+    /// 长时间运行的后台任务。
     /// </summary>
-    /// <remarks>实现不间断写入</remarks>
+    /// <remarks>实现不间断写入。</remarks>
     private readonly Task _processQueueTask;
 
     /// <summary>
@@ -70,10 +70,15 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
     private int _disposed;
 
     /// <summary>
-    /// 构造函数
+    /// 当前队列饱和周期是否已输出警告。
     /// </summary>
-    /// <param name="fileName">日志文件名</param>
-    /// <param name="fileLoggerOptions">文件日志记录器配置选项</param>
+    private int _queueFullWarningEmitted;
+
+    /// <summary>
+    /// 初始化 <see cref="FileLoggerProvider"/> 类的新实例。
+    /// </summary>
+    /// <param name="fileName">日志文件名。</param>
+    /// <param name="fileLoggerOptions">文件日志记录器配置选项。</param>
     public FileLoggerProvider(string fileName, FileLoggerOptions fileLoggerOptions)
     {
         // 支持文件名嵌入系统环境变量，格式为：%SystemDrive%，%SystemRoot%，处理 Windows 和 Linux 路径分隔符不一致问题
@@ -91,17 +96,17 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
     }
 
     /// <summary>
-    /// 文件名
+    /// 文件名。
     /// </summary>
     internal string FileName;
 
     /// <summary>
-    /// 文件日志记录器配置选项
+    /// 文件日志记录器配置选项。
     /// </summary>
     internal FileLoggerOptions LoggerOptions { get; private set; }
 
     /// <summary>
-    /// 日志作用域提供器
+    /// 日志作用域提供器。
     /// </summary>
     internal IExternalScopeProvider ScopeProvider
     {
@@ -112,29 +117,19 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
         }
     }
 
-    /// <summary>
-    /// 创建文件日志记录器
-    /// </summary>
-    /// <param name="categoryName">日志分类名</param>
-    /// <returns><see cref="ILogger"/></returns>
+    /// <inheritdoc />
     public ILogger CreateLogger(string categoryName)
     {
         return _fileLoggers.GetOrAdd(categoryName, name => new FileLogger(name, this));
     }
 
-    /// <summary>
-    /// 设置作用域提供器
-    /// </summary>
-    /// <param name="scopeProvider"></param>
+    /// <inheritdoc />
     public void SetScopeProvider(IExternalScopeProvider scopeProvider)
     {
         _scopeProvider = scopeProvider;
     }
 
-    /// <summary>
-    /// 释放非托管资源
-    /// </summary>
-    /// <remarks>控制日志消息队列</remarks>
+    /// <inheritdoc />
     public void Dispose()
     {
         if (Interlocked.Exchange(ref _disposed, 1) != 0)
@@ -168,33 +163,45 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
     }
 
     /// <summary>
-    /// 将日志消息写入队列中等待后台任务出队写入文件
+    /// 将日志消息写入队列中等待后台任务出队写入文件。
     /// </summary>
-    /// <param name="logMsg">日志消息</param>
+    /// <param name="logMsg">日志消息。</param>
     internal void WriteToQueue(LogMessage logMsg)
     {
         if (Volatile.Read(ref _disposed) != 0)
             return;
 
-        // 只有队列可持续入队才写入
-        if (!_logMessageQueue.IsAddingCompleted)
+        try
         {
-            try
+            // 只有队列可持续入队才写入。
+            if (_logMessageQueue.IsAddingCompleted)
+                return;
+
+            // 使用 TryAdd 非阻塞写入，避免后台任务异常退出时队列满导致调用方线程永久阻塞。
+            if (_logMessageQueue.TryAdd(logMsg))
             {
-                // 使用 TryAdd 非阻塞写入，避免后台任务异常退出时队列满导致调用方线程永久阻塞
-                _logMessageQueue.TryAdd(logMsg);
+                Volatile.Write(ref _queueFullWarningEmitted, 0);
+                return;
             }
-            catch (ObjectDisposedException)
-            {
-            }
-            catch (InvalidOperationException)
-            {
-            }
+
+            // 每个连续饱和周期只输出一次，既暴露日志丢弃，又避免持续写满标准错误流。
+            if (Interlocked.Exchange(ref _queueFullWarningEmitted, 1) == 0)
+                Console.Error.WriteLine("[Fast.Logging] Log queue is full; new log messages are being dropped.");
+        }
+        catch (ObjectDisposedException)
+        {
+            // Dispose 与生产者并发时属于正常关闭流程。
+            return;
+        }
+        catch (InvalidOperationException)
+        {
+            // CompleteAdding 与生产者并发时属于正常关闭流程。
+            return;
         }
     }
 
     /// <summary>
-    /// 将日志消息写入文件中
+    /// 将日志消息写入文件中。
     /// </summary>
     private void ProcessQueue()
     {
@@ -204,9 +211,10 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
             {
                 _fileLoggingWriter.Write(logMsg, _logMessageQueue.Count == 0);
             }
-            catch
+            catch (Exception ex)
             {
-                // ignored - 防止单条日志写入失败导致后台任务退出，从而造成后续日志全部丢失
+                // 保持消费线程继续运行，同时把无法写入文件的事实暴露给宿主诊断通道。
+                Console.Error.WriteLine($"[Fast.Logging] Failed to write log file '{FileName}': {ex.Message}");
             }
         }
     }

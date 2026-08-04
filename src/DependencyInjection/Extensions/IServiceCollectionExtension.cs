@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,21 +26,21 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> 依赖注入 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供依赖注入扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 类型名称集合
+    /// 类型名称集合。
     /// </summary>
     private static readonly ConcurrentDictionary<string, Type> TypeNamedCollection = new();
 
     /// <summary>
-    /// 添加依赖注入服务
+    /// 添加依赖注入服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
     {
         Debugging.Info("Registering dependency injection......");
@@ -91,16 +91,16 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 注册服务
+    /// 注册服务。
     /// </summary>
-    /// <param name="services">服务集合</param>
-    /// <param name="dependencyType"></param>
-    /// <param name="type">类型</param>
-    /// <param name="canInjectInterfaces">能被注册的接口</param>
+    /// <param name="services">服务集合。</param>
+    /// <param name="dependencyType">用于确定服务生命周期的依赖标记类型。</param>
+    /// <param name="type">类型。</param>
+    /// <param name="canInjectInterfaces">能被注册的接口。</param>
     private static void RegisterService(IServiceCollection services, Type dependencyType, Type type,
         IEnumerable<Type> canInjectInterfaces)
     {
-        // 这里默认注册多个接口
+        // 一个实现可同时暴露多个业务接口，并共享同一生命周期规则。
         foreach (var inter in canInjectInterfaces)
         {
             Register(services, dependencyType, type, inter);
@@ -108,12 +108,12 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 注册类型
+    /// 注册类型。
     /// </summary>
-    /// <param name="services">服务</param>
-    /// <param name="dependencyType"></param>
-    /// <param name="type">类型</param>
-    /// <param name="inter">接口</param>
+    /// <param name="services">服务。</param>
+    /// <param name="dependencyType">用于确定服务生命周期的依赖标记类型。</param>
+    /// <param name="type">类型。</param>
+    /// <param name="inter">接口。</param>
     private static void Register(IServiceCollection services, Type dependencyType, Type type, Type inter = null)
     {
         // 修复泛型注册类型
@@ -132,10 +132,10 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 修复泛型类型注册类型问题
+    /// 修复泛型类型注册类型问题。
     /// </summary>
-    /// <param name="type">类型</param>
-    /// <returns></returns>
+    /// <param name="type">类型。</param>
+    /// <returns>修复泛型类型注册类型问题。</returns>
     private static Type FixedGenericType(Type type)
     {
         if (!type.IsGenericType)
@@ -145,10 +145,10 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 注册命名服务（接口多实现）
+    /// 注册命名服务（接口多实现）。
     /// </summary>
-    /// <typeparam name="TDependency"></typeparam>
-    /// <param name="services"></param>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <typeparam name="TDependency">要注册的依赖服务类型。</typeparam>
     private static void RegisterNamedService<TDependency>(IServiceCollection services) where TDependency : IDependency
     {
         var lifetime = TryGetServiceLifetime(typeof(TDependency));
@@ -167,10 +167,10 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 根据依赖接口类型解析 ServiceLifetime 对象
+    /// 根据依赖接口类型解析 ServiceLifetime 对象。
     /// </summary>
-    /// <param name="dependencyType"></param>
-    /// <returns></returns>
+    /// <param name="dependencyType">dependency 类型。</param>
+    /// <returns>根据依赖接口类型解析 ServiceLifetime 对象。</returns>
     private static ServiceLifetime TryGetServiceLifetime(Type dependencyType)
     {
         if (dependencyType == typeof(ITransientDependency))

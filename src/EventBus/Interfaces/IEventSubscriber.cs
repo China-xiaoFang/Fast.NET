@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,11 +23,11 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventSubscriber"/> 事件订阅者依赖接口
+/// <see cref="IEventSubscriber"/> 事件订阅者依赖接口。
 /// </summary>
 /// <remarks>
-/// <para>可自定义事件处理方法，但须符合 Func{EventSubscribeExecutingContext, Task} 签名</para>
-/// <para>通常只做依赖查找，不做服务调用</para>
+/// <para>可自定义事件处理方法，但须符合 <see cref="Func{EventSubscribeExecutingContext, Task}"/> 签名。</para>
+/// <para>通常只做依赖查找，不做服务调用。</para>
 /// </remarks>
 [SuppressSniffer]
 public interface IEventSubscriber

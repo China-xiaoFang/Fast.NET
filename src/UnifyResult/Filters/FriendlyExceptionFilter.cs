@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -30,15 +30,11 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="FriendlyExceptionFilter"/> 友好异常拦截器
+/// <see cref="FriendlyExceptionFilter"/> 友好异常拦截器。
 /// </summary>
 internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
 {
-    /// <summary>
-    /// 异常拦截
-    /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task OnExceptionAsync(ExceptionContext context)
     {
         var isUserFriendlyException = false;
@@ -140,16 +136,13 @@ internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
             {
                 int? statusCode = null;
                 string message = null;
-                // 判断是否跳过规范化响应数据处理
                 if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, controllerActionDescriptor!.MethodInfo,
                         out var unifyResponse))
                 {
-                    // 处理规范化响应数据
                     (statusCode, message) =
                         await unifyResponse.ResponseExceptionAsync(context, exceptionMetadata, context.HttpContext);
                 }
 
-                // 执行规范化异常处理
                 context.Result = unifyResult.OnException(context, exceptionMetadata, statusCode, message);
             }
         }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -30,18 +30,11 @@ using Microsoft.Extensions.Options;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="RestfulResultProvider"/> 规范化RESTful风格返回值
+/// <see cref="RestfulResultProvider"/> 规范化 RESTful 风格返回值。
 /// </summary>
 internal class RestfulResultProvider : IUnifyResultProvider
 {
-    /// <summary>
-    /// 异常返回值
-    /// </summary>
-    /// <param name="context"><see cref="ExceptionContext"/></param>
-    /// <param name="metadata"><see cref="ExceptionMetadata"/> 异常元数据</param>
-    /// <param name="statusCode"><see cref="int"/> 更改的状态码</param>
-    /// <param name="message"><see cref="string"/> 返回的错误消息</param>
-    /// <returns><see cref="IActionResult"/></returns>
+    /// <inheritdoc />
     public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata, int? statusCode = null,
         string message = null)
     {
@@ -59,12 +52,7 @@ internal class RestfulResultProvider : IUnifyResultProvider
             message ?? context.Exception.Message, context.HttpContext)) {StatusCode = statusCode ?? metadata.StatusCode};
     }
 
-    /// <summary>
-    /// 成功返回值
-    /// </summary>
-    /// <param name="context"><see cref="ActionExecutedContext"/></param>
-    /// <param name="data"></param>
-    /// <returns><see cref="IActionResult"/></returns>
+    /// <inheritdoc />
     public IActionResult OnSucceeded(ActionExecutedContext context, object data)
     {
         return new JsonResult(UnifyContext.GetRestfulResult(
@@ -73,16 +61,11 @@ internal class RestfulResultProvider : IUnifyResultProvider
             context.HttpContext));
     }
 
-    /// <summary>
-    /// 验证失败返回值
-    /// </summary>
-    /// <param name="context"><see cref="ActionExecutingContext"/></param>
-    /// <param name="metadata"><see cref="ValidationMetadata"/> 验证信息元数据</param>
-    /// <returns><see cref="IActionResult"/></returns>
+    /// <inheritdoc />
     public IActionResult OnValidateFailed(ActionExecutingContext context, ValidationMetadata metadata)
     {
         string message;
-        // 一般为Model验证失败返回的结果
+        // 一般为 Model 验证失败返回的结果
         if (metadata.ValidationResult is Dictionary<string, string[]> messageObj)
         {
             var newMessage = "";
@@ -102,12 +85,7 @@ internal class RestfulResultProvider : IUnifyResultProvider
             context.HttpContext)) {StatusCode = StatusCodes.Status400BadRequest};
     }
 
-    /// <summary>
-    /// 拦截返回状态码
-    /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="statusCode"><see cref="int"/> 状态码</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task OnResponseStatusCodes(HttpContext httpContext, int statusCode)
     {
         var jsonSerializerOptions = httpContext.RequestServices.GetService<IOptions<JsonOptions>>()

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,37 +23,37 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentComponentSchemaDto"/> OpenApi 文档组件声明Dto
+/// <see cref="OpenApiDocumentComponentSchemaDto"/> OpenAPI 文档组件声明 DTO。
 /// </summary>
 public class OpenApiDocumentComponentSchemaDto
 {
     /// <summary>
-    /// 枚举
+    /// 枚举。
     /// </summary>
     public List<long> Enum { get; set; }
 
     /// <summary>
-    /// 类型
+    /// 类型。
     /// </summary>
     public string Type { get; set; }
 
     /// <summary>
-    /// 格式
+    /// 格式。
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// 属性
+    /// 架构属性定义。
     /// </summary>
     public IDictionary<string, OpenApiDocumentSchemaPropertyDto> Properties { get; set; }
 
     /// <summary>
-    /// 附加属性
+    /// 附加属性。
     /// </summary>
     public bool AdditionalProperties { get; set; }
 
     /// <summary>
-    /// 描述
+    /// 描述。
     /// </summary>
     public string Description { get; set; }
 }

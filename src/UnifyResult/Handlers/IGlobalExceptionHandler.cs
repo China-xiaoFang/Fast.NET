@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,16 +25,16 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="IGlobalExceptionHandler"/> 全局异常处理
+/// <see cref="IGlobalExceptionHandler"/> 全局异常处理。
 /// </summary>
 public interface IGlobalExceptionHandler
 {
     /// <summary>
-    /// 异常拦截
+    /// 异常拦截。
     /// </summary>
-    /// <param name="context"><see cref="ExceptionContext"/></param>
-    /// <param name="isUserFriendlyException"><see cref="bool"/> 是否友好异常</param>
-    /// <param name="isValidationException"><see cref="bool"/> 是否验证异常</param>
-    /// <returns></returns>
+    /// <param name="context">当前操作上下文 <see cref="ExceptionContext"/>。</param>
+    /// <param name="isUserFriendlyException">是否将异常作为可直接展示给用户的异常处理。</param>
+    /// <param name="isValidationException">是否将异常作为参数验证异常处理。</param>
+    /// <returns>表示异步“异常拦截”操作的任务。</returns>
     Task OnExceptionAsync(ExceptionContext context, bool isUserFriendlyException, bool isValidationException);
 }

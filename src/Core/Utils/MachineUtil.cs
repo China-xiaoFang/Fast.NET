@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,37 +28,35 @@ using System.Runtime.InteropServices;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="MachineUtil"/> 系统机器工具类
+/// <see cref="MachineUtil"/> 系统机器工具类。
 /// </summary>
 [SuppressSniffer]
 public static class MachineUtil
 {
     /// <summary>
-    /// 是否为 Unix/Linux 操作系统
+    /// 是否为 Unix/Linux 操作系统。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsUnix()
     {
         return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
     }
 
     /// <summary>
-    /// 是否为 MacOS 操作系统
+    /// 是否为 MacOS 操作系统。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsMacOS()
     {
         return RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
     }
 
     /// <summary>
-    /// 获取操作系统版本
-    /// <para>Linux获取发行版本</para>
+    /// 获取当前操作系统的版本描述。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>macOS 或 Linux 的发行版本；Windows 返回运行时提供的操作系统描述。</returns>
     public static string GetOSDescription()
     {
-        // 判断是否为 MacOS
         if (IsMacOS())
         {
             // 使用 sw_vers 命令获取 MacOS 的版本信息，并提取操作系统版本号
@@ -72,7 +70,6 @@ public static class MachineUtil
             return string.Empty;
         }
 
-        // 判断是否为 Unix/Linux
         if (IsUnix())
         {
             // 使用 /etc/os-release 文件中的 VERSION_ID 获取 Linux 发行版的版本号
@@ -85,12 +82,11 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取系统启动时间
+    /// 获取系统启动时间。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>获取到的系统启动时间。</returns>
     public static DateTime GetSystemStartTime()
     {
-        // 判断是否为 MacOS
         if (IsMacOS())
         {
             // MacOS 获取系统启动时间：sysctl -n kern.boottime | awk '{print $4}' | tr -d ','
@@ -101,7 +97,6 @@ public static class MachineUtil
             return DateTime.Parse(output, CultureInfo.InvariantCulture);
         }
 
-        // 判断是否为 Unix/Linux
         if (IsUnix())
         {
             // 使用 awk 命令来获取 Linux 系统的 uptime 信息
@@ -134,28 +129,25 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取系统运行时间描述
+    /// 获取系统运行时间描述。
     /// </summary>
-    /// <param name="format"><see cref="string"/> 输出格式化，默认：“00 天 00 时 00 分 00 秒”</param>
-    /// <returns></returns>
+    /// <param name="format">输出格式化，默认：“00 天 00 时 00 分 00 秒”。</param>
+    /// <returns>获取到的系统运行时间描述。</returns>
     public static string GetSystemRunTimes(string format = "dd\\ \\天\\ hh\\ \\时\\ mm\\ \\分\\ ss\\ \\秒")
     {
-        // 当前时间
         var dateTime = DateTime.Now;
 
-        // 系统启动时间
         var startTime = GetSystemStartTime();
 
-        // 当前时间 - 系统启动时间
         var diffTime = dateTime - startTime;
 
         return diffTime.ToString(format);
     }
 
     /// <summary>
-    /// 获取当前进程启动时间
+    /// 获取当前进程启动时间。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>获取到的当前进程启动时间。</returns>
     public static DateTime GetProgramStartTime()
     {
         try
@@ -171,40 +163,35 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取当前进程运行时间描述
+    /// 获取当前进程运行时间描述。
     /// </summary>
-    /// <param name="format"><see cref="string"/> 输出格式化，默认：“00 天 00 时 00 分 00 秒”</param>
-    /// <returns></returns>
+    /// <param name="format">输出格式化，默认：“00 天 00 时 00 分 00 秒”。</param>
+    /// <returns>获取到的当前进程运行时间描述。</returns>
     public static string GetProgramRunTimes(string format = "dd\\ \\天\\ hh\\ \\时\\ mm\\ \\分\\ ss\\ \\秒")
     {
-        // 当前时间
         var dateTime = DateTime.Now;
 
-        // 线程启动时间
         var startTime = GetProgramStartTime();
 
-        // 当前时间 - 线程启动时间
         var diffTime = dateTime - startTime;
 
         return diffTime.ToString(format);
     }
 
     /// <summary>
-    /// 获取操作系统 CPU 使用率
+    /// 获取操作系统 CPU 使用率。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>获取到的操作系统 CPU 使用率集合。</returns>
     public static List<decimal> GetSystemCpuRate()
     {
         var rates = new List<decimal>();
 
-        // 判断是否为 MacOS
         if (IsMacOS())
         {
             // 使用 top 命令获取获取 CPU 使用率（用户和系统占用总和）
             var output = ShellUtil.Bash("top -l 1 | grep \"CPU usage\" | awk '{print $3 + $5}'");
             rates.Add(decimal.Parse(output, CultureInfo.InvariantCulture));
         }
-        // 判断是否为 Unix/Linux
         else if (IsUnix())
         {
             // 通过解析 '/proc/stat' 文件来计算 CPU 使用率
@@ -246,17 +233,15 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取当前进程 CPU 使用率
-    /// <para>注：这里存在线程等待</para>
+    /// 在指定采样间隔内计算当前进程的 CPU 使用率。
     /// </summary>
-    /// <param name="sleep"><see cref="int"/> 线程等待时间，单位毫秒。建议不要超过3秒，0.5秒 1秒为性能最优</param>
-    /// <returns></returns>
+    /// <param name="sleep">采样间隔，单位为毫秒；默认值为 500。</param>
+    /// <returns>表示异步采样的任务，任务结果为按逻辑处理器数量归一化后的 CPU 使用百分比。</returns>
     public static async Task<decimal> GetProgramCpuUsage(int sleep = 500)
     {
         // 获取当前进程对象
         var process = Process.GetCurrentProcess();
 
-        // 启动时间
         var startTime = DateTime.UtcNow;
         TimeSpan startUsage;
         try
@@ -269,13 +254,10 @@ public static class MachineUtil
             return 0;
         }
 
-        // 线程等待
         await Task.Delay(sleep);
 
-        // 刷新进程状态
         process.Refresh();
 
-        // 结束时间
         var endTime = DateTime.UtcNow;
         TimeSpan endUsage;
         try
@@ -305,23 +287,15 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取操作系统内存信息，单位(MB)
+    /// 获取操作系统内存信息，单位(MB)。
     /// </summary>
-    /// <returns>
-    /// <para>total：总内存</para>
-    /// <para>used：已用内存</para>
-    /// <para>free：可用内存</para>
-    /// </returns>
+    /// <returns>total：总内存 used：已用内存 free：可用内存。</returns>
     public static (decimal total, decimal used, decimal free) GetSystemRamInfo()
     {
-        // 总内存
         decimal total = 0;
-        // 已用内存
         decimal used = 0;
-        // 可用内存
         decimal free = 0;
 
-        // 判断是否为 MacOS
         if (IsMacOS())
         {
             // 获取总内存：sysctl 命令返回的值为字节，转换为 MB
@@ -332,10 +306,8 @@ public static class MachineUtil
             var output2 = ShellUtil.Bash("top -l 1 -s 0 | awk '/PhysMem/ {print $6+$8}'");
             free = decimal.Parse(output2, CultureInfo.InvariantCulture);
 
-            // 计算已用内存
             used = total - free;
         }
-        // 判断是否为 Unix/Linux
         else if (IsUnix())
         {
             // 使用 `awk` 命令从 `/proc/meminfo` 获取总内存和可用内存，单位为 KB
@@ -348,7 +320,6 @@ public static class MachineUtil
                 total = decimal.Parse(memory[0], CultureInfo.InvariantCulture) / 1024;
                 free = decimal.Parse(memory[1], CultureInfo.InvariantCulture) / 1024;
 
-                // 计算已用内存
                 used = total - free;
             }
         }
@@ -377,7 +348,6 @@ public static class MachineUtil
             var totalMemoryParts = lines[1]
                 .Split("=", StringSplitOptions.RemoveEmptyEntries);
 
-            // 将内存值转换为 MB
             total = decimal.Parse(totalMemoryParts.Length > 1 ? totalMemoryParts[1] : totalMemoryParts[0],
                         CultureInfo.InvariantCulture)
                     / 1024;
@@ -385,7 +355,6 @@ public static class MachineUtil
                        CultureInfo.InvariantCulture)
                    / 1024;
 
-            // 计算已用内存
             used = total - free;
         }
 
@@ -393,16 +362,9 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取当前进程内存信息，单位(MB)
+    /// 获取当前进程内存信息，单位(MB)。
     /// </summary>
-    /// <returns>
-    /// <para>working：RAM 物理内存</para>
-    /// <para>peakWorking：最大 RAM 物理内存</para>
-    /// <para>virtualMemory：虚拟内存</para>
-    /// <para>peakVirtualMemory：最大虚拟内存</para>
-    /// <para>pagedMemory：分页内存</para>
-    /// <para>peakPagedMemory：最大分页内存</para>
-    /// </returns>
+    /// <returns>working：RAM 物理内存 peakWorking：最大 RAM 物理内存 virtualMemory：虚拟内存 peakVirtualMemory：最大虚拟内存 pagedMemory：分页内存 peakPagedMemory：最大分页内存。</returns>
     public static (decimal working, decimal peakWorking, decimal virtualMemory, decimal peakVirtualMemory, decimal pagedMemory,
         decimal peakPagedMemory) GetProgramMemoryInfo()
     {
@@ -410,21 +372,17 @@ public static class MachineUtil
         decimal working = 0;
         // 最大 RAM 物理内存
         decimal peakWorking = 0;
-        // 虚拟内存
         decimal virtualMemory = 0;
-        // 最大虚拟内存
         decimal peakVirtualMemory = 0;
         // 分页内存
         decimal pagedMemory = 0;
         // 最大分页内存
         decimal peakPagedMemory = 0;
 
-        // 判断是否为 MacOS
         if (IsMacOS())
         {
             // 本地获取内存的方法可能需要额外的库或调用系统 API
         }
-        // 判断是否为 Unix/Linux
         else if (IsUnix())
         {
             decimal ByteToMB(string line)
@@ -440,7 +398,6 @@ public static class MachineUtil
                 var unit = parts[2]
                     .ToLower();
 
-                // 将内存值转换为 MB
                 return unit switch
                 {
                     "kb" => value / 1024,
@@ -465,12 +422,10 @@ public static class MachineUtil
                 {
                     peakWorking = ByteToMB(line);
                 }
-                // 虚拟内存
                 else if (line.StartsWith("VmSize:"))
                 {
                     virtualMemory = ByteToMB(line);
                 }
-                // 最大虚拟内存
                 else if (line.StartsWith("VmPeak:"))
                 {
                     peakVirtualMemory = ByteToMB(line);
@@ -492,7 +447,6 @@ public static class MachineUtil
 
             const decimal relation = 1024 * 1024;
 
-            // 将内存值转换为 MB
             working = process.WorkingSet64 / relation;
             peakWorking = process.PeakWorkingSet64 / relation;
             virtualMemory = process.VirtualMemorySize64 / relation;
@@ -505,14 +459,13 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取硬盘信息
+    /// 获取硬盘信息。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>获取到的硬盘信息集合。</returns>
     public static List<DiskInfo> GetDiskInfos()
     {
         var diskInfos = new List<DiskInfo>();
 
-        // 判断是否为 MacOS
         if (IsMacOS())
         {
             var output = ShellUtil.Bash(@"df -m | awk '/^\/dev\/disk/ {print $1,$2,$3,$4,$5}'");
@@ -539,7 +492,6 @@ public static class MachineUtil
                 }
             }
         }
-        // 判断是否为 Unix/Linux
         else if (IsUnix())
         {
             var output = ShellUtil.Bash(@"df -mT | awk '/^\/dev\/(sd|vd|xvd|nvme|sda|vda|mapper)/ {print $1,$2,$3,$4,$5,$6}'");

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,16 +25,11 @@ using System.Linq.Expressions;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 更新仓储实现
+/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 更新仓储实现。
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity>
 {
-    /// <summary>
-    /// 更新一条记录
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Update(TEntity entity, bool isNoUpdateNull = false)
     {
         var updateable = Updateable(entity)
@@ -53,12 +48,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return SupportsRowVersion ? updateable.ExecuteCommandWithOptLock(true) : updateable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 更新一条记录
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="isNoUpdateNull">是否排除NULL值字段更新</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> UpdateAsync(TEntity entity, bool isNoUpdateNull = false)
     {
         var updateable = Updateable(entity)
@@ -77,11 +67,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return SupportsRowVersion ? updateable.ExecuteCommandWithOptLockAsync(true) : updateable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 更新多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Update(params TEntity[] entities)
     {
         var updateable = Updateable(entities)
@@ -96,11 +82,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return updateable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 更新多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> UpdateAsync(params TEntity[] entities)
     {
         var updateable = Updateable(entities)
@@ -115,11 +97,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return updateable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 更新多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int Update(IEnumerable<TEntity> entities)
     {
         var updateable = Updateable(entities.ToArray())
@@ -134,11 +112,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return updateable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 更新多条记录
-    /// </summary>
-    /// <param name="entities"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> UpdateAsync(IEnumerable<TEntity> entities)
     {
         var updateable = Updateable(entities.ToArray())
@@ -153,12 +127,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return updateable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 无主键更新一条记录
-    /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int UpdateNoPrimaryKey(TEntity entity, Expression<Func<TEntity, object>> columns)
     {
         var updateable = Updateable(entity)
@@ -174,12 +143,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return updateable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 无主键更新一条记录
-    /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> UpdateNoPrimaryKeyAsync(TEntity entity, Expression<Func<TEntity, object>> columns)
     {
         var updateable = Updateable(entity)
@@ -195,12 +159,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return updateable.ExecuteCommandAsync();
     }
 
-    /// <summary>
-    /// 无主键更新多条记录
-    /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public int UpdateNoPrimaryKey(List<TEntity> entity, Expression<Func<TEntity, object>> columns)
     {
         var updateable = Updateable(entity)
@@ -216,12 +175,7 @@ internal sealed partial class SqlSugarRepository<TEntity>
         return updateable.ExecuteCommand();
     }
 
-    /// <summary>
-    /// 无主键更新多条记录
-    /// </summary>
-    /// <param name="entity">更新的实体</param>
-    /// <param name="columns">根据那些字段更新</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<int> UpdateNoPrimaryKeyAsync(List<TEntity> entity, Expression<Func<TEntity, object>> columns)
     {
         var updateable = Updateable(entity)

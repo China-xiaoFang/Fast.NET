@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,15 +25,15 @@ using System;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="TimeSpan"/> 拓展类
+/// 为 <see cref="TimeSpan"/> 提供扩展方法。
 /// </summary>
 public static class TimeSpanExtension
 {
     /// <summary>
-    /// 获取描述
+    /// 获取描述。
     /// </summary>
-    /// <param name="timeSpan"><see cref="TimeSpan"/></param>
-    /// <returns></returns>
+    /// <param name="timeSpan">要处理的时间间隔。</param>
+    /// <returns>获取到的描述。</returns>
     public static string ToDescription(this TimeSpan timeSpan)
     {
         var formatStr = "ss\\秒";

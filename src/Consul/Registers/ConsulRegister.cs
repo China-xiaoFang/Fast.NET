@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -22,17 +22,16 @@
 
 using System.Reflection;
 using Consul;
-using Fast.Consul.Options;
 using Fast.IaaS;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Options;
 
-namespace Fast.Consul.Registers;
+namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulRegister"/> Consul 服务注册
+/// <see cref="ConsulRegister"/> Consul 服务注册。
 /// </summary>
 internal class ConsulRegister : IConsulRegister
 {
@@ -48,10 +47,7 @@ internal class ConsulRegister : IConsulRegister
         _consulSettingsOptions = consulSettingsOptions.CurrentValue;
     }
 
-    /// <summary>
-    /// 服务注册
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task ConsulRegisterAsync()
     {
         using var client = new ConsulClient(options =>
@@ -71,18 +67,14 @@ internal class ConsulRegister : IConsulRegister
         if (startupUri.Host is "0.0.0.0" or "::" or "[::]")
             throw new InvalidOperationException("应用监听的是通配地址，无法直接注册到 Consul；请配置 ConsulSettings:ServiceAddress。");
 
-        // TODO：后续可以考虑读取根目录父级文件夹的名称做版本区分
-
-        // 获取当前入口程序集的版本号
+        // 服务名携带入口程序集版本，便于不同版本在 Consul 中并行注册。
         var version = Assembly.GetEntryAssembly()
             ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
             ?.InformationalVersion;
 
         var versionArr = version?.Split('.');
 
-        // TODO：这里考虑是否要放开副修订版本号，类似 v1.1.1.1 最后的 .1 是否算一个单独的版本，还是说算入 v1.1.1 版本
-
-        // 处理存在副修订版本号的情况
+        // Consul 服务版本统一到 major.minor.patch，忽略第四段副修订版本号。
         if (versionArr?.Length >= 4)
         {
             version = $"{versionArr[0]}.{versionArr[1]}.{versionArr[2]}";
@@ -90,11 +82,11 @@ internal class ConsulRegister : IConsulRegister
 
         var registration = new AgentServiceRegistration
         {
-            // 唯一ID
+            // 唯一 ID
             ID = GuidUtil.GetGuid(),
             // 服务名，
             Name = _webHostEnvironment.ApplicationName + $"{(string.IsNullOrEmpty(version) ? null : $"_v{version}")}",
-            // 服务绑定IP
+            // 服务绑定 IP
             Address = startupUri.Host,
             // 服务绑定端口
             Port = startupUri.Port,

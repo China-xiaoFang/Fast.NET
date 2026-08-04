@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,17 +23,17 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentTagDto"/> OpenApi 文档模块Dto
+/// <see cref="OpenApiDocumentTagDto"/> OpenAPI 文档模块 DTO。
 /// </summary>
 public class OpenApiDocumentTagDto
 {
     /// <summary>
-    /// 模块名称
+    /// 模块名称。
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 描述
+    /// 描述。
     /// </summary>
     public string Description { get; set; }
 }

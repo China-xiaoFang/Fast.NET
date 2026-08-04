@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,26 +25,26 @@
 namespace System;
 
 /// <summary>
-/// <see cref="ApiInfoAttribute"/> 接口信息
+/// <see cref="ApiInfoAttribute"/> 接口信息。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method)]
 public class ApiInfoAttribute : Attribute
 {
     /// <summary>
-    /// 接口名称
+    /// 接口名称。
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 操作方式
+    /// 操作方式。
     /// </summary>
     public HttpRequestActionEnum Action { get; set; }
 
     /// <summary>
-    /// <see cref="ApiInfoAttribute"/> 接口信息
+    /// <see cref="ApiInfoAttribute"/> 接口信息。
     /// </summary>
-    /// <param name="name"><see cref="string"/> 接口名称</param>
+    /// <param name="name">接口名称。</param>
     public ApiInfoAttribute(string name)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -52,10 +52,10 @@ public class ApiInfoAttribute : Attribute
     }
 
     /// <summary>
-    /// <see cref="ApiInfoAttribute"/> 接口信息
+    /// <see cref="ApiInfoAttribute"/> 接口信息。
     /// </summary>
-    /// <param name="name"><see cref="string"/> 接口名称</param>
-    /// <param name="action"><see cref="HttpRequestActionEnum"/> 操作方式</param>
+    /// <param name="name">接口名称。</param>
+    /// <param name="action">HttpRequestActionEnum 操作方式。</param>
     public ApiInfoAttribute(string name, HttpRequestActionEnum action)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));

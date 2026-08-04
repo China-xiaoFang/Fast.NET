@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,18 +25,18 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentPathMethodContentDto"/> OpenApi 文档路由内容Dto
+/// <see cref="OpenApiDocumentPathMethodContentDto"/> OpenAPI 文档路由内容 DTO。
 /// </summary>
 public class OpenApiDocumentPathMethodContentDto
 {
     /// <summary>
-    /// JSON格式
+    /// JSON 格式。
     /// </summary>
     [JsonPropertyName("application/json")]
     public OpenApiDocumentPathMethodContentSchemaDto Json { get; set; }
 
     /// <summary>
-    /// 表单格式
+    /// 表单格式。
     /// </summary>
     [JsonPropertyName("multipart/form-data")]
     public OpenApiDocumentPathMethodContentSchemaDto FormData { get; set; }

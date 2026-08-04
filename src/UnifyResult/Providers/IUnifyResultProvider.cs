@@ -27,42 +27,42 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="IUnifyResultProvider"/> 规范化结果提供器
+/// <see cref="IUnifyResultProvider"/> 规范化结果提供器。
 /// </summary>
 public interface IUnifyResultProvider
 {
     /// <summary>
-    /// 异常返回值
+    /// 异常返回值。
     /// </summary>
-    /// <param name="context"><see cref="ExceptionContext"/></param>
-    /// <param name="metadata"><see cref="ExceptionMetadata"/> 异常元数据</param>
-    /// <param name="statusCode"><see cref="int"/> 更改的状态码</param>
-    /// <param name="message"><see cref="string"/> 返回的错误消息</param>
-    /// <returns><see cref="IActionResult"/></returns>
+    /// <param name="context">当前操作上下文 <see cref="ExceptionContext"/>。</param>
+    /// <param name="metadata">异常响应使用的 <see cref="ExceptionMetadata"/>。</param>
+    /// <param name="statusCode">HTTP 状态码。</param>
+    /// <param name="message">要记录或返回的消息。</param>
+    /// <returns>异常返回值。</returns>
     IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata, int? statusCode = null,
         string message = null);
 
     /// <summary>
-    /// 成功返回值
+    /// 成功返回值。
     /// </summary>
-    /// <param name="context"><see cref="ActionExecutedContext"/></param>
-    /// <param name="data"></param>
-    /// <returns><see cref="IActionResult"/></returns>
+    /// <param name="context">当前操作上下文 <see cref="ActionExecutedContext"/>。</param>
+    /// <param name="data">要处理或传输的数据。</param>
+    /// <returns>成功返回值。</returns>
     IActionResult OnSucceeded(ActionExecutedContext context, object data);
 
     /// <summary>
-    /// 验证失败返回值
+    /// 验证失败返回值。
     /// </summary>
-    /// <param name="context"><see cref="ActionExecutingContext"/></param>
-    /// <param name="metadata"><see cref="ValidationMetadata"/> 验证信息元数据</param>
-    /// <returns><see cref="IActionResult"/></returns>
+    /// <param name="context">当前操作上下文 <see cref="ActionExecutingContext"/>。</param>
+    /// <param name="metadata">验证失败响应使用的 <see cref="ValidationMetadata"/>。</param>
+    /// <returns>验证失败返回值。</returns>
     IActionResult OnValidateFailed(ActionExecutingContext context, ValidationMetadata metadata);
 
     /// <summary>
-    /// 拦截返回状态码
+    /// 拦截返回状态码。
     /// </summary>
-    /// <param name="httpContext"><see cref="HttpContext"/></param>
-    /// <param name="statusCode"><see cref="int"/> 状态码</param>
-    /// <returns></returns>
+    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="statusCode">HTTP 状态码。</param>
+    /// <returns>表示异步“拦截返回状态码”操作的任务。</returns>
     Task OnResponseStatusCodes(HttpContext httpContext, int statusCode);
 }

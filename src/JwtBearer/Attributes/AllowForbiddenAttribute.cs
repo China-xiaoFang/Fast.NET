@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,14 +23,13 @@
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// <see cref="AllowForbiddenAttribute"/> 允许无权限访问(403)
+/// <see cref="AllowForbiddenAttribute"/> 允许无权限访问(403)。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class AllowForbiddenAttribute : Attribute
 {
-    /// <summary>Returns a string that represents the current object.</summary>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     public override string ToString()
     {
         return "AllowForbidden";

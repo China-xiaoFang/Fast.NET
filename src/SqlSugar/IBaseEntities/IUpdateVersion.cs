@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,14 +25,14 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IUpdateVersion"/> 行版本实体接口
+/// <see cref="IUpdateVersion"/> 行版本实体接口。
 /// </summary>
-/// <remarks>只支持单条实体更新才会处罚，错误类型 <see cref="VersionExceptions"/></remarks>
+/// <remarks>仅单条实体更新会触发行版本检查，冲突时抛出 <see cref="VersionExceptions"/>。</remarks>
 [SuppressSniffer]
 public interface IUpdateVersion : IDatabaseEntity
 {
     /// <summary>
-    /// 更新版本控制字段
+    /// 更新版本控制字段。
     /// </summary>
     long RowVersion { get; set; }
 }

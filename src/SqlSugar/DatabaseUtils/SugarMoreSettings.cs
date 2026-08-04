@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,14 +25,14 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarDatabaseUtil"/> SugarMoreSettings工具类
+/// <see cref="SqlSugarDatabaseUtil"/> SugarMoreSettings 工具类。
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 获取配置
+    /// 获取配置。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>获取到的配置。</returns>
     internal static ConnMoreSettings GetSugarMoreSettings()
     {
         var moreSettings = new ConnMoreSettings
@@ -41,7 +41,7 @@ public partial class SqlSugarDatabaseUtil
             SqlServerCodeFirstNvarchar = true,
             // 最小时间
             DbMinDate = new DateTime(1970, 01, 01),
-            // CodeFirst 启用Sqlite列删除
+            // CodeFirst 启用 Sqlite 列删除
             SqliteCodeFirstEnableDropColumn = true,
             // CodeFirst 启用精度修改
             EnableCodeFirstUpdatePrecision = true

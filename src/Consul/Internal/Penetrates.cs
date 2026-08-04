@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,17 +20,15 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using Fast.Consul.Options;
-
-namespace Fast.Consul.Internal;
+namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类
+/// <see cref="Penetrates"/> 常量，公共方法配置类。
 /// </summary>
 internal static class Penetrates
 {
     /// <summary>
-    /// Consul配置
+    /// Consul 配置。
     /// </summary>
     internal static ConsulSettingsOptions ConsulSettings { get; set; }
 }

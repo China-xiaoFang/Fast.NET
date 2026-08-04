@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,17 +28,17 @@ using System.Linq.Expressions;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="EnumExtension"/> GroupBy 拓展类
+/// 为 <see cref="EnumExtension"/> 提供 GroupBy 扩展方法。
 /// </summary>
 public static class GroupByExtension
 {
     /// <summary>
-    /// 多个GroupBy
+    /// 多个 GroupBy。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="groupByProperties"></param>
-    /// <returns></returns>
+    /// <param name="source">源对象。</param>
+    /// <param name="groupByProperties">参与分组的属性名称集合。</param>
+    /// <typeparam name="TKey">键类型。</typeparam>
+    /// <returns>多个 GroupBy 集合。</returns>
     public static IEnumerable<IGrouping<string, TKey>> GroupByMultiple<TKey>(this IEnumerable<TKey> source,
         params Expression<Func<TKey, object>>[] groupByProperties)
     {

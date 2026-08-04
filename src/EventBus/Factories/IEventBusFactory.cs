@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,28 +25,28 @@ using System.Reflection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventBusFactory"/> 事件总线工厂接口
+/// <see cref="IEventBusFactory"/> 事件总线工厂接口。
 /// </summary>
 [SuppressSniffer]
 public interface IEventBusFactory
 {
     /// <summary>
-    /// 添加事件订阅者
+    /// 添加事件订阅者。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="handler">事件订阅委托</param>
-    /// <param name="attribute"><see cref="EventSubscribeAttribute"/> 特性对象</param>
-    /// <param name="handlerMethod"><see cref="MethodInfo"/> 对象</param>
-    /// <param name="cancellationToken">取消任务 Token</param>
-    /// <returns></returns>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="handler">处理当前事件或请求的委托。</param>
+    /// <param name="attribute">EventSubscribeAttribute 特性对象。</param>
+    /// <param name="handlerMethod">事件处理器方法。</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
+    /// <returns>表示异步“添加事件订阅者”操作的任务。</returns>
     Task Subscribe(string eventId, Func<EventHandlerExecutingContext, Task> handler, EventSubscribeAttribute attribute = null,
         MethodInfo handlerMethod = null, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 删除事件订阅者
+    /// 删除事件订阅者。
     /// </summary>
-    /// <param name="eventId">事件 Id</param>
-    /// <param name="cancellationToken">取消任务 Token</param>
-    /// <returns></returns>
+    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
+    /// <returns>表示异步“删除事件订阅者”操作的任务。</returns>
     Task Unsubscribe(string eventId, CancellationToken cancellationToken = default);
 }

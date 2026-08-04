@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,24 +26,19 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.Cache;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> Cache 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供缓存扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加缓存服务
+    /// 添加缓存服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="section">
-    /// <see cref="string"/>
-    /// <para>Json配置文件节点的Key</para>
-    /// <para>默认值：RedisSettings</para>
-    /// </param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：RedisSettings。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddCache(this IServiceCollection services, string section = "RedisSettings")
     {
-        // 配置验证
         services.AddConfigurableOptions<RedisSettingsOptions>(section);
 
         // 添加默认缓存服务
@@ -65,14 +60,13 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加缓存服务
+    /// 添加缓存服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="optionAction"><see cref="Action{T}"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="optionAction">用于配置 <see cref="RedisSettingsOptions"/> 集合的 <see cref="Action{T}"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddCache(this IServiceCollection services, Action<List<RedisSettingsOptions>> optionAction)
     {
-        // 配置验证
         services.Configure(optionAction);
 
         // 添加默认缓存服务

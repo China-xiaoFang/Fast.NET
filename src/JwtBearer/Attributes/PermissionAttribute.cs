@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,19 +25,19 @@
 namespace Microsoft.AspNetCore.Authorization;
 
 /// <summary>
-/// <see cref="PermissionAttribute"/> 权限
+/// <see cref="PermissionAttribute"/> 权限。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class PermissionAttribute : Attribute
 {
     /// <summary>
-    /// 权限标识集合
+    /// 权限标识集合。
     /// </summary>
     public List<string> TagList { get; set; }
 
     /// <summary>
-    /// <see cref="PermissionAttribute"/> 权限
+    /// <see cref="PermissionAttribute"/> 权限。
     /// </summary>
     public PermissionAttribute()
     {
@@ -45,9 +45,9 @@ public class PermissionAttribute : Attribute
     }
 
     /// <summary>
-    /// <see cref="PermissionAttribute"/> 权限
+    /// <see cref="PermissionAttribute"/> 权限。
     /// </summary>
-    /// <param name="tagList"><see cref="List{T}"/>权限标识集合</param>
+    /// <param name="tagList">权限匹配使用的标签集合。</param>
     public PermissionAttribute(params string[] tagList)
     {
         TagList = tagList.ToList();

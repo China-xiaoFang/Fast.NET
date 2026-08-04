@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,50 +26,40 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="ExceptionJsonConverter"/> Exception 类型Json返回处理
+/// <see cref="ExceptionJsonConverter"/> Exception 类型 JSON 返回处理。
 /// </summary>
-/// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
+/// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作。</remarks>
 internal class ExceptionJsonConverter : JsonConverter<Exception>
 {
-    /// <summary>Determines whether the specified type can be converted.</summary>
-    /// <param name="typeToConvert">The type to compare against.</param>
-    /// <returns>
-    /// <see langword="true" /> if the type can be converted; otherwise, <see langword="false" />.</returns>
+    /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert)
     {
         return typeof(Exception).IsAssignableFrom(typeToConvert);
     }
 
-    /// <summary>Reads and converts the JSON to type <see cref="Exception"/>.</summary>
-    /// <param name="reader">The reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
-    /// <returns>The converted value.</returns>
+    /// <inheritdoc />
     public override Exception Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 反序列化异常是不允许的。
+        // 异常对象只允许序列化输出，不支持从外部数据重建。
         throw new NotSupportedException("Deserializing exceptions is not allowed.");
     }
 
-    /// <summary>Writes a specified value as JSON.</summary>
-    /// <param name="writer">The writer to write to.</param>
-    /// <param name="value">The value to convert to JSON.</param>
-    /// <param name="options">An object that specifies serialization options to use.</param>
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, Exception value, JsonSerializerOptions options)
     {
-        // 默认只写入 Message，Source，StackTrace，InnerException
+        // 默认仅输出 Message、Source、StackTrace 和 InnerException。
         var writeNameArr = new[]
         {
             nameof(Exception.Message), nameof(Exception.Source), nameof(Exception.StackTrace),
             nameof(Exception.InnerException)
         };
-        // 获取可序列化的属性，排除 TargetSite 属性
+        // TargetSite 含有不可安全序列化的反射信息，因此从输出属性中排除。
         var serializableProperties = value.GetType()
             .GetProperties()
             .Select(sl => new {sl.Name, Value = sl.GetValue(value)})
             .Where(wh => writeNameArr.Contains(wh.Name));
 
-        // 如果设置了 DefaultIgnoreCondition 为 JsonIgnoreCondition.WhenWritingNull，则过滤掉值为 Null 的属性
+        // 启用 JsonIgnoreCondition.WhenWritingNull 时跳过值为 null 的属性。
         if (options.DefaultIgnoreCondition == JsonIgnoreCondition.WhenWritingNull)
         {
             serializableProperties = serializableProperties.Where(wh => wh.Value != null);
@@ -77,63 +67,20 @@ internal class ExceptionJsonConverter : JsonConverter<Exception>
 
         var propList = serializableProperties.ToList();
 
-        // 判断是否还存在可以序列化的属性
         if (propList.Count == 0)
         {
             return;
         }
 
-        // 开始写入对象
         writer.WriteStartObject();
 
         foreach (var prop in propList)
         {
-            // 写入属性名
             writer.WritePropertyName(prop.Name);
             // 使用 JsonSerializer 序列化属性值
             JsonSerializer.Serialize(writer, prop.Value, options);
         }
 
-        // 结束写入对象
         writer.WriteEndObject();
     }
-
-    ///// <summary>Writes a specified value as JSON.</summary>
-    ///// <param name="writer">The writer to write to.</param>
-    ///// <param name="value">The value to convert to JSON.</param>
-    ///// <param name="options">An object that specifies serialization options to use.</param>
-    //public override void Write(Utf8JsonWriter writer, Exception value, JsonSerializerOptions options)
-    //{
-    //    // 获取可序列化的属性，排除 TargetSite 属性
-    //    var serializableProperties = value.GetType().GetProperties().Select(sl => new {sl.Name, Value = sl.GetValue(value)})
-    //        .Where(wh => wh.Name != nameof(Exception.TargetSite));
-
-    //    // 如果设置了 DefaultIgnoreCondition 为 JsonIgnoreCondition.WhenWritingNull，则过滤掉值为 Null 的属性
-    //    if (options?.DefaultIgnoreCondition == JsonIgnoreCondition.WhenWritingNull)
-    //    {
-    //        serializableProperties = serializableProperties.Where(wh => wh.Value != null);
-    //    }
-
-    //    var propList = serializableProperties.ToList();
-
-    //    // 判断是否还存在可以序列化的属性
-    //    if (propList.Count == 0)
-    //    {
-    //        return;
-    //    }
-
-    //    // 开始写入对象
-    //    writer.WriteStartObject();
-
-    //    foreach (var prop in propList)
-    //    {
-    //        // 写入属性名
-    //        writer.WritePropertyName(prop.Name);
-    //        // 使用 JsonSerializer 序列化属性值
-    //        JsonSerializer.Serialize(writer, prop.Value, options);
-    //    }
-
-    //    // 结束写入对象
-    //    writer.WriteEndObject();
-    //}
 }

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -29,26 +29,19 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="SucceededUnifyResultFilter"/> 规范化结构（请求成功）过滤器
+/// <see cref="SucceededUnifyResultFilter"/> 规范化结构（请求成功）过滤器。
 /// </summary>
 internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
 {
     /// <summary>
-    /// 过滤器排序
+    /// 过滤器排序。
     /// </summary>
     private const int FilterOrder = 8888;
 
-    /// <summary>
-    /// 排序属性
-    /// </summary>
+    /// <inheritdoc />
     public int Order => FilterOrder;
 
-    /// <summary>
-    /// 处理规范化结果
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="next"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         // 执行 Action 并获取结果
@@ -65,7 +58,6 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
             // 小于 200 或者 大于 299 都不是成功值，直接跳过
             if (statusCodeActionResult.StatusCode.Value < 200 || statusCodeActionResult.StatusCode.Value > 299)
             {
-                // 处理规范化结果
                 if (!UnifyContext.CheckStatusCodeNonUnify(context.HttpContext, out var failUnifyResult))
                 {
                     var httpContext = context.HttpContext;
@@ -129,11 +121,9 @@ internal class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
             {
                 var timestamp = context.HttpContext.UnifyResponseTimestamp();
 
-                // 判断是否跳过规范化响应数据处理
                 if (!UnifyContext.CheckResponseNonUnify(context.HttpContext, controllerActionDescriptor!.MethodInfo,
                         out var unifyResponse))
                 {
-                    // 处理规范化响应数据
                     data = await unifyResponse.ResponseDataAsync(timestamp, data, context.HttpContext);
                 }
 

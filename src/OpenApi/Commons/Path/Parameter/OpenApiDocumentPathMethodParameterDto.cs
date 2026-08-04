@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,27 +23,27 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentPathMethodParameterDto"/> OpenApi 文档路由请求方法参数Dto
+/// <see cref="OpenApiDocumentPathMethodParameterDto"/> OpenAPI 文档路由请求方法参数 DTO。
 /// </summary>
 public class OpenApiDocumentPathMethodParameterDto
 {
     /// <summary>
-    /// 参数名称
+    /// 参数名称。
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 
+    /// 参数来源位置，例如 query、path、header 或 cookie。
     /// </summary>
     public string In { get; set; }
 
     /// <summary>
-    /// 描述
+    /// 描述。
     /// </summary>
     public string Description { get; set; }
 
     /// <summary>
-    /// 声明
+    /// 声明。
     /// </summary>
     public OpenApiDocumentSchemaPropertyDto Schema { get; set; }
 }

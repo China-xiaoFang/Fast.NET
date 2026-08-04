@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,12 +27,12 @@ using Microsoft.Net.Http.Headers;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// text/plain 请求 Body 参数支持
+/// text/plain 请求 Body 参数支持。
 /// </summary>
 internal sealed class TextPlainMediaTypeFormatter : TextInputFormatter
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="TextPlainMediaTypeFormatter"/> 类的新实例。
     /// </summary>
     public TextPlainMediaTypeFormatter()
     {
@@ -42,12 +42,7 @@ internal sealed class TextPlainMediaTypeFormatter : TextInputFormatter
         SupportedEncodings.Add(Encoding.Unicode);
     }
 
-    /// <summary>
-    /// 重写 <see cref="ReadRequestBodyAsync(InputFormatterContext, Encoding)"/>
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="effectiveEncoding"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context,
         Encoding effectiveEncoding)
     {

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,27 +27,22 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> 动态Api 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加OpenApi设置
+    /// 添加 OpenAPI 设置。
     /// </summary>
-    /// <remarks>适用于只使用工具类</remarks>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
-    /// <param name="section">
-    /// <see cref="string"/>
-    /// <para>Json配置文件节点的Key</para>
-    /// <para>默认值：OpenApiSettings</para>
-    /// </param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <remarks>适用于只使用工具类。</remarks>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：OpenAPISettings。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddOpenApi(this IServiceCollection services, IConfiguration configuration,
         string section = "OpenApiSettings")
     {
-        // 配置验证
         services.AddConfigurableOptions<OpenApiSettingsOptions>(section);
 
         Penetrates.OpenApiSettings = configuration.GetSection(section)

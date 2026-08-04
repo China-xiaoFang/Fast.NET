@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,15 +27,15 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiUtil"/> OpenApi Api工具类
+/// <see cref="OpenApiUtil"/> OpenAPI API 工具类。
 /// </summary>
 public static partial class OpenApiUtil
 {
     /// <summary>
-    /// 处理请求行为
+    /// 处理请求行为。
     /// </summary>
-    /// <param name="requestAction"><see cref="HttpRequestActionEnum"/> 请求行为</param>
-    /// <returns></returns>
+    /// <param name="requestAction"><see cref="HttpRequestActionEnum"/> 请求行为。</param>
+    /// <returns>处理请求行为。</returns>
     internal static string DisposeRequestAction(HttpRequestActionEnum requestAction)
     {
         switch (requestAction)
@@ -72,23 +72,23 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 写入 OpenApi 文档 Api 文件
+    /// 写入 OpenAPI 文档 API 文件。
     /// </summary>
-    /// <param name="rootDir"><see cref="string"/> 根目录</param>
-    /// <param name="hasWeb"><see cref="bool"/> 是否为Web端</param>
-    /// <param name="apiDescriptionGroupCollectionProvider"><see cref="IApiDescriptionGroupCollectionProvider"/> 接口描述提供程序</param>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档Dto</param>
-    /// <param name="dtoSchemas"><see cref="List{ComponentSchemaDto}"/> Dto声明</param>
-    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言</param>
-    /// <returns></returns>
+    /// <param name="rootDir"><see cref="string"/> 根目录。</param>
+    /// <param name="hasWeb"><see cref="bool"/> 是否为 Web 端。</param>
+    /// <param name="apiDescriptionGroupCollectionProvider"><see cref="IApiDescriptionGroupCollectionProvider"/> 接口描述提供程序。</param>
+    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档 DTO。</param>
+    /// <param name="dtoSchemas"><see cref="List{ComponentSchemaDto}"/> DTO 声明。</param>
+    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明。</param>
+    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <returns>表示异步写入 OpenAPI 文档 API 文件的任务。</returns>
     internal static async Task WriteOpenApiDocumentApiFile(string rootDir, bool hasWeb,
         IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider, OpenApiDocumentDto openApiDocument,
         List<ComponentSchemaDto> dtoSchemas, List<ComponentSchemaDto> enumSchemas, ScriptLanguageEnum scriptLanguage)
     {
         try
         {
-            // 获取所有Tag
+            // 获取所有 Tag
             var tagList = openApiDocument.Paths.Where(wh => wh.Value.Tag != null)
                 .Select(sl => sl.Value.Tag)
                 .Distinct()
@@ -100,7 +100,7 @@ public static partial class OpenApiUtil
 
             foreach (var tag in tagList)
             {
-                // 处理 xxx/xxx 这种tag
+                // 处理 xxx/xxx 这种 tag
                 var tagName = tag;
                 var tagSplit = tag.Split("/", StringSplitOptions.RemoveEmptyEntries);
                 if (tagSplit.Length > 1)
@@ -173,12 +173,10 @@ public static partial class OpenApiUtil
                     // 请求体类型
                     var requestDataType = "";
 
-                    // 判断是否为 FormData 文件上传
                     if (methodInfo?.RequestBody?.Content?.FormData != null)
                     {
                         requestDataType = "FormData";
                     }
-                    // 判断是否为引用类型
                     else if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Ref != null)
                     {
                         requestDataType = DisposeSchemaRefKey(methodInfo.RequestBody.Content.Json.Schema.Ref, refSchemas);
@@ -201,7 +199,6 @@ public static partial class OpenApiUtil
                                     requestParam += $"{parameter.Name}, ";
                                     break;
                                 case ScriptLanguageEnum.TypeScript:
-                                    // 判断是否为引用类型
                                     if (parameter?.Schema?.Ref != null)
                                     {
                                         var schemaRefKey = DisposeSchemaRefKey(parameter.Schema.Ref, refSchemas);
@@ -226,7 +223,7 @@ public static partial class OpenApiUtil
                             }
                         }
 
-                        // 处理可能存在Url参数和Body参数的情况
+                        // 处理可能存在 URL 参数和 Body 参数的情况
                         if (string.IsNullOrWhiteSpace(requestDataType))
                         {
                             requestParam = requestParam.TrimEnd(' ')
@@ -241,10 +238,9 @@ public static partial class OpenApiUtil
                         switch (scriptLanguage)
                         {
                             case ScriptLanguageEnum.JavaScript:
-                                // 判断是否为 FormData 文件上传
                                 if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
                                 {
-                                    // 移动端使用的是 filePath 参数，默认 String 类型
+                                    // 移动端使用 filePath 参数，并按字符串处理。
                                     contentSb.Append("filePath");
                                 }
                                 else
@@ -254,10 +250,9 @@ public static partial class OpenApiUtil
 
                                 break;
                             case ScriptLanguageEnum.TypeScript:
-                                // 判断是否为 FormData 文件上传
                                 if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
                                 {
-                                    // 移动端使用的是 filePath 参数，默认 String 类型
+                                    // 移动端使用 filePath 参数，并按字符串处理。
                                     contentSb.Append("filePath: string");
                                 }
                                 else
@@ -265,7 +260,6 @@ public static partial class OpenApiUtil
                                     contentSb.Append($"data: {requestDataType}");
                                 }
 
-                                // 判断是否为数组
                                 if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Type == "array")
                                 {
                                     contentSb.Append("[]");
@@ -293,7 +287,6 @@ public static partial class OpenApiUtil
                                        """);
                     contentSb.Append(Environment.NewLine);
 
-                    // 判断是否为 FormData 文件上传
                     if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
                     {
                         // 移动端默认使用 upload
@@ -322,10 +315,9 @@ public static partial class OpenApiUtil
 
                     if (!string.IsNullOrWhiteSpace(requestDataType))
                     {
-                        // 判断是否为 FormData 文件上传
                         if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
                         {
-                            // 移动端使用的是 filePath 参数，默认 String 类型
+                            // 移动端使用 filePath 参数，并按字符串处理。
                             contentSb.Append("""
                                                    name: "file",
                                              """);
@@ -374,7 +366,6 @@ public static partial class OpenApiUtil
                 switch (scriptLanguage)
                 {
                     case ScriptLanguageEnum.JavaScript:
-                        // 写入文件
                         await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.js"), $$"""
                               import { axiosUtil } from "@fast-china/axios";
 
@@ -407,7 +398,6 @@ public static partial class OpenApiUtil
 
                         if (schemaImport?.Length > 0)
                         {
-                            // 写入文件
                             await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.ts"), $$"""
                                   import { axiosUtil } from "@fast-china/axios";
                                   {{schemaImport}}
@@ -422,7 +412,6 @@ public static partial class OpenApiUtil
                         }
                         else
                         {
-                            // 写入文件
                             await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.ts"), $$"""
                                   import { axiosUtil } from "@fast-china/axios";
 

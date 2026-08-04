@@ -16,10 +16,10 @@ Thank you for helping improve Fast.NET. Follow this guide so changes remain revi
 git clone https://gitee.com/FastDotnet/Fast.NET.git
 cd Fast.NET
 dotnet restore Fast.NET.sln
-dotnet build Fast.NET.sln -c Release
+dotnet build Fast.NET.sln -c Release --no-restore
 ```
 
-The primary modules target .NET 6–10, while `Fast.IaaS` targets .NET Standard 2.1. Changes to shared build configuration, conditional compilation, or dependency versions should be validated against every affected target.
+The primary modules target .NET 8–10, while `Fast.IaaS` targets .NET Standard 2.1. Changes to shared build configuration, conditional compilation, or dependency versions should be validated against every affected target. NuGet versions belong in `Directory.Packages.props`.
 
 ## Code conventions
 
@@ -27,6 +27,7 @@ The primary modules target .NET 6–10, while `Fast.IaaS` targets .NET Standard 
 - Keep each module focused and avoid reverse or circular dependencies.
 - Public APIs should have accurate XML documentation.
 - Add Chinese comments that explain the reason behind complex compatibility, concurrency, and security logic.
+- Follow the [comment and public API documentation guide](docs/COMMENTING_GUIDE.md); do not retain template wording, dead code, or context-free TODO comments.
 - Avoid unnecessary synchronous blocking in asynchronous APIs and dispose streams, tokens, and other resources correctly.
 - Use target-specific conditional references for framework-specific dependencies.
 - Update `README.zh.md`, `README.md`, and relevant architecture documentation when behavior changes.
@@ -38,14 +39,13 @@ Run at least:
 ```bash
 dotnet restore Fast.NET.sln
 dotnet build Fast.NET.sln -c Release --no-restore
-dotnet pack Fast.NET.sln -c Release --no-restore --no-build
 ```
 
 Also verify that:
 
 - The build introduces no warnings or errors.
 - The `Fast.IaaS` package contains only `lib/netstandard2.1`.
-- Other SDK packages contain the supported .NET 6–10 targets.
+- Other SDK packages contain the supported .NET 8–10 targets.
 - `bin/`, `obj/`, `nupkgs/`, secrets, and local configuration are not committed.
 - Public Chinese and English documentation remains structurally and semantically synchronized.
 

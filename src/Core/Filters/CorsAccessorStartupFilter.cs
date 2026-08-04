@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,15 +28,11 @@ using Microsoft.Extensions.Options;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="CorsAccessorStartupFilter"/> 应用启动时自动注册中间件
+/// <see cref="CorsAccessorStartupFilter"/> 应用启动时自动注册中间件。
 /// </summary>
 internal class CorsAccessorStartupFilter : IStartupFilter
 {
-    /// <summary>
-    /// 配置中间件
-    /// </summary>
-    /// <param name="action"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)
     {
         return app =>
@@ -54,11 +50,7 @@ internal class CorsAccessorStartupFilter : IStartupFilter
             else
             {
                 // 配置跨域中间件
-                app.UseCors(builder =>
-                {
-                    // 设置跨域策略
-                    CorsAccessorExtension.SetCorsPolicy(builder, corsAccessorSettings, true);
-                });
+                app.UseCors(builder => { CorsAccessorExtension.SetCorsPolicy(builder, corsAccessorSettings, true); });
             }
 
             // 调用启动层的 Startup

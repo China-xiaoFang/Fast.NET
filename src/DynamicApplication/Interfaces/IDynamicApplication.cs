@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -23,7 +23,7 @@
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// <see cref="IDynamicApplication"/> 动态API应用依赖接口
+/// <see cref="IDynamicApplication"/> 动态 API 应用依赖接口。
 /// </summary>
 [SuppressSniffer]
 public interface IDynamicApplication

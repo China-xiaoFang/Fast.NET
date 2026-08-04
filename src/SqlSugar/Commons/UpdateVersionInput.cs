@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,13 +25,13 @@ using System.ComponentModel.DataAnnotations;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="UpdateVersionInput"/> 行版本更新输入
+/// <see cref="UpdateVersionInput"/> 行版本更新输入。
 /// </summary>
 [SuppressSniffer]
 public class UpdateVersionInput
 {
     /// <summary>
-    /// 更新版本控制字段
+    /// 更新版本控制字段。
     /// </summary>
     [LongRequired(ErrorMessage = "更新版本控制字段不能为空", AllowZero = true)]
     public long RowVersion { get; set; }

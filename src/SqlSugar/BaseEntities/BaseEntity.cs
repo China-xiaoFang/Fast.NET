@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -26,56 +26,40 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="BaseEntity"/> Entity基类
+/// <see cref="BaseEntity"/> Entity 基类。
 /// </summary>
 [SuppressSniffer]
 public class BaseEntity : IBaseEntity
 {
-    /// <summary>
-    /// 部门Id
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "部门Id", CreateTableFieldSort = 989)]
     public virtual long? DepartmentId { get; set; }
 
-    /// <summary>
-    /// 部门名称
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "部门名称", Length = 20, IsNullable = true, CreateTableFieldSort = 990)]
     public virtual string DepartmentName { get; set; }
 
-    /// <summary>
-    /// 创建者用户Id
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "创建者用户Id", CreateTableFieldSort = 991)]
     public virtual long? CreatedUserId { get; set; }
 
-    /// <summary>
-    /// 创建者用户名称
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "创建者用户名称", Length = 20, IsNullable = true, CreateTableFieldSort = 992)]
     public virtual string CreatedUserName { get; set; }
 
-    /// <summary>
-    /// 创建时间
-    /// </summary>
+    /// <inheritdoc />
     [Required, SugarColumn(ColumnDescription = "创建时间", CreateTableFieldSort = 993)]
     public virtual DateTime? CreatedTime { get; set; }
 
-    /// <summary>
-    /// 更新者用户Id
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "更新者用户Id", CreateTableFieldSort = 994)]
     public virtual long? UpdatedUserId { get; set; }
 
-    /// <summary>
-    /// 更新者用户名称
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "更新者用户名称", Length = 20, IsNullable = true, CreateTableFieldSort = 995)]
     public virtual string UpdatedUserName { get; set; }
 
-    /// <summary>
-    /// 更新时间
-    /// </summary>
+    /// <inheritdoc />
     [SugarColumn(ColumnDescription = "更新时间", CreateTableFieldSort = 996)]
     public virtual DateTime? UpdatedTime { get; set; }
 }

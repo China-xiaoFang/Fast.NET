@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,17 +27,17 @@ using System.Text;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiUtil"/> OpenApi 枚举工具类
+/// <see cref="OpenApiUtil"/> OpenAPI 枚举工具类。
 /// </summary>
 public static partial class OpenApiUtil
 {
     /// <summary>
-    /// 写入 OpenApi 文档枚举文件
+    /// 写入 OpenAPI 文档枚举文件。
     /// </summary>
-    /// <param name="rootDir"><see cref="string"/> 根目录</param>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档Dto</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言</param>
-    /// <returns></returns>
+    /// <param name="rootDir"><see cref="string"/> 根目录。</param>
+    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档 DTO。</param>
+    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <returns>表示异步写入 OpenAPI 文档枚举文件的任务，任务结果为写入 OpenAPI 文档枚举文件集合。</returns>
     internal static async Task<List<ComponentSchemaDto>> WriteOpenApiDocumentEnumFile(string rootDir,
         OpenApiDocumentDto openApiDocument, ScriptLanguageEnum scriptLanguage)
     {
@@ -74,7 +74,6 @@ public static partial class OpenApiUtil
                 if (Penetrates.OpenApiSettings.IgnoreSchemas.Any(a => a == enumType.Name))
                     continue;
 
-                // 判断是否已经生成
                 if (result.Any(a => a.Name == enumType.Name))
                     continue;
 
@@ -99,7 +98,7 @@ public static partial class OpenApiUtil
                     if (hasLong)
                         enumValue = @$"""{enumValue}""";
 
-                    // 获取枚举描述，如果为空则默认使用Name
+                    // 获取枚举描述，如果为空则默认使用 Name
                     var enumDescription = enumType.GetField(enumName)
                                               ?.GetCustomAttribute<DescriptionAttribute>(false)
                                               ?.Description
@@ -132,7 +131,6 @@ public static partial class OpenApiUtil
                         enumDetail.Append(Environment.NewLine);
                 }
 
-                // 获取声明描述
                 var schemaDescription = enumSchema.Value.Description?.Replace("\r\n", "\r\n * ")
                                         ?? enumType.GetCustomAttribute<FastEnumAttribute>()
                                             ?.ChName;
@@ -140,7 +138,6 @@ public static partial class OpenApiUtil
                 switch (scriptLanguage)
                 {
                     case ScriptLanguageEnum.JavaScript:
-                        // 写入文件
                         await File.WriteAllTextAsync(Path.Combine(rootDir, $"{enumType.Name}.js"), $$"""
                               /**
                                * {{schemaDescription}}
@@ -157,7 +154,6 @@ public static partial class OpenApiUtil
                         });
                         break;
                     case ScriptLanguageEnum.TypeScript:
-                        // 写入文件
                         await File.WriteAllTextAsync(Path.Combine(rootDir, $"{enumType.Name}.ts"), $$"""
                               /**
                                * {{schemaDescription}}

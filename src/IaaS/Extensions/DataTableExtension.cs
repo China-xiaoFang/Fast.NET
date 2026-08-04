@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,16 +27,16 @@ using System.Data;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="DataTable"/> 拓展类
+/// 为 <see cref="DataTable"/> 提供扩展方法。
 /// </summary>
 public static class DataTableExtension
 {
     /// <summary>
-    /// 转换为DataTable
+    /// 转换为 DataTable。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="data"><see cref="IEnumerable{T}"/></param>
-    /// <returns><see cref="DataTable"/></returns>
+    /// <param name="data">要处理或传输的数据。</param>
+    /// <typeparam name="T">数据表行对应的模型类型。</typeparam>
+    /// <returns>转换后的为 DataTable。</returns>
     public static DataTable ToDataTable<T>(this IEnumerable<T> data)
     {
         var dataTable = new DataTable();
@@ -67,11 +67,11 @@ public static class DataTableExtension
     }
 
     /// <summary>
-    /// DataTable To List
+    /// DataTable To List。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="dataTable"><see cref="DataTable"/></param>
-    /// <returns><see cref="List{T}"/></returns>
+    /// <param name="dataTable">要转换的数据表。</param>
+    /// <typeparam name="T">数据表行对应的模型类型。</typeparam>
+    /// <returns>DataTable To List 集合。</returns>
     public static List<T> ToList<T>(this DataTable dataTable) where T : new()
     {
         var list = new List<T>();

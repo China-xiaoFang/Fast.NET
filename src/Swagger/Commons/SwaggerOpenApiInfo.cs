@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -20,22 +20,18 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-#if NET10_0_OR_GREATER
 using Microsoft.OpenApi;
-#else
-using Microsoft.OpenApi.Models;
-#endif
 
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="SwaggerOpenApiInfo"/> Swagger文档开放接口信息
+/// <see cref="SwaggerOpenApiInfo"/> Swagger 文档开放接口信息。
 /// </summary>
 [SuppressSniffer]
 public sealed class SwaggerOpenApiInfo : OpenApiInfo
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="SwaggerOpenApiInfo"/> 类的新实例。
     /// </summary>
     public SwaggerOpenApiInfo()
     {
@@ -43,12 +39,12 @@ public sealed class SwaggerOpenApiInfo : OpenApiInfo
     }
 
     /// <summary>
-    /// 分组私有字段
+    /// 分组私有字段。
     /// </summary>
     private string _group;
 
     /// <summary>
-    /// 所属组
+    /// 所属组。
     /// </summary>
     public string Group
     {
@@ -62,17 +58,17 @@ public sealed class SwaggerOpenApiInfo : OpenApiInfo
     }
 
     /// <summary>
-    /// 排序
+    /// 排序。
     /// </summary>
     public int? Order { get; set; }
 
     /// <summary>
-    /// 是否可见
+    /// 是否可见。
     /// </summary>
     public bool? Visible { get; set; }
 
     /// <summary>
-    /// 路由模板
+    /// 路由模板。
     /// </summary>
     public string RouteTemplate { get; internal set; }
 }

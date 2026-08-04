@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,279 +25,280 @@ using CSRedis;
 namespace Fast.Cache;
 
 /// <summary>
-/// <see cref="ICache"/> 默认缓存服务接口
+/// <see cref="ICache"/> 默认缓存服务接口。
 /// </summary>
 public interface ICache : ICache<DefaultCacheContextLocator>
 {
 }
 
 /// <summary>
-/// <see cref="ICache{CacheContextLocator}"/> 缓存服务接口
+/// <see cref="ICache{CacheContextLocator}"/> 缓存服务接口。
 /// </summary>
+/// <typeparam name="CacheContextLocator">缓存上下文定位器类型，用于隔离不同缓存配置。</typeparam>
 public interface ICache<out CacheContextLocator> where CacheContextLocator : ICacheContextLocator, new()
 {
     /// <summary>
-    /// 前缀
+    /// 前缀。
     /// </summary>
     public string Prefix { get; }
 
     /// <summary>
-    /// CSRedis 缓存客户端
+    /// CSRedis 缓存客户端。
     /// </summary>
     CSRedisClient Client { get; }
 
     /// <summary>
-    /// 缓存上下文定位器
+    /// 缓存上下文定位器。
     /// </summary>
     CacheContextLocator ContextLocator { get; }
 
     /// <summary>
-    /// 删除缓存
+    /// 删除指定键的缓存项。
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <returns>实际删除的项数。</returns>
     long Del(params string[] key);
 
     /// <summary>
-    /// 删除缓存
+    /// 异步删除指定键的缓存项。
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <returns>表示异步删除缓存的任务，任务结果为实际删除的项数。</returns>
     Task<long> DelAsync(params string[] key);
 
     /// <summary>
-    /// 根据前缀删除缓存
-    /// 慎用
+    /// 根据匹配模式批量删除缓存。
     /// </summary>
-    /// <param name="pattern"></param>
-    /// <returns></returns>
+    /// <remarks>该操作会扫描并删除所有匹配键，键数量较多时可能造成 Redis 阻塞，请避免在高流量路径中调用。</remarks>
+    /// <param name="pattern">用于匹配目标项的模式。</param>
+    /// <returns>实际删除的项数。</returns>
     long DelByPattern(string pattern);
 
     /// <summary>
-    /// 根据前缀删除缓存
-    /// 慎用
+    /// 异步根据匹配模式批量删除缓存。
     /// </summary>
-    /// <param name="pattern"></param>
-    /// <returns></returns>
+    /// <remarks>该操作会扫描并删除所有匹配键，键数量较多时可能造成 Redis 阻塞，请避免在高流量路径中调用。</remarks>
+    /// <param name="pattern">用于匹配目标项的模式。</param>
+    /// <returns>表示异步根据匹配模式批量删除缓存的任务，任务结果为实际删除的项数。</returns>
     Task<long> DelByPatternAsync(string pattern);
 
     /// <summary>
-    /// 判断是否存在
+    /// 判断指定缓存键是否存在。
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     bool Exists(string key);
 
     /// <summary>
-    /// 判断是否存在
+    /// 异步判断指定缓存键是否存在。
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     Task<bool> ExistsAsync(string key);
 
     /// <summary>
-    /// 获取缓存
+    /// 获取指定键的缓存值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <returns>获取到的缓存。</returns>
     string Get(string key);
 
     /// <summary>
-    /// 获取缓存
+    /// 获取指定键的缓存值。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>获取到的缓存。</returns>
     T Get<T>(string key);
 
     /// <summary>
-    /// 获取缓存
+    /// 异步获取指定键的缓存值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <returns>表示异步获取缓存的任务，任务结果为获取到的缓存。</returns>
     Task<string> GetAsync(string key);
 
     /// <summary>
-    /// 获取缓存
+    /// 异步获取指定键的缓存值。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>表示异步获取缓存的任务，任务结果为获取到的缓存。</returns>
     Task<T> GetAsync<T>(string key);
 
     /// <summary>
-    /// 设置缓存
+    /// 写入指定键的缓存值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="value">要写入缓存的值。</param>
+    /// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     bool Set(string key, object value);
 
     /// <summary>
-    /// 设置缓存
+    /// 写入指定键的缓存值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="value">要写入缓存的值。</param>
+    /// <param name="expireSeconds">有效时长，单位为秒。</param>
+    /// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     bool Set(string key, object value, int expireSeconds);
 
     /// <summary>
-    /// 设置缓存
+    /// 写入指定键的缓存值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="value">要写入缓存的值。</param>
+    /// <param name="expireTimeSpan">有效时长。</param>
+    /// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     bool Set(string key, object value, TimeSpan expireTimeSpan);
 
     /// <summary>
-    /// 设置缓存
+    /// 异步写入指定键的缓存值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="value">要写入缓存的值。</param>
+    /// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     Task<bool> SetAsync(string key, object value);
 
     /// <summary>
-    /// 设置缓存
+    /// 异步写入指定键的缓存值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="value">要写入缓存的值。</param>
+    /// <param name="expireSeconds">有效时长，单位为秒。</param>
+    /// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     Task<bool> SetAsync(string key, object value, int expireSeconds);
 
     /// <summary>
-    /// 设置缓存
+    /// 异步写入指定键的缓存值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="value">要写入缓存的值。</param>
+    /// <param name="expireTimeSpan">有效时长。</param>
+    /// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     Task<bool> SetAsync(string key, object value, TimeSpan expireTimeSpan);
 
     /// <summary>
-    /// 获取所有缓存Key
-    /// 慎用
+    /// 获取当前 Redis 数据库中的所有缓存键。
     /// </summary>
-    /// <returns></returns>
+    /// <remarks>该操作需要扫描数据库中的键，键数量较多时开销较大，不应在高频请求中调用。</remarks>
+    /// <returns>获取到的当前 Redis 数据库中的所有缓存键集合。</returns>
     List<string> GetAllKeys();
 
     /// <summary>
-    /// 获取所有缓存Key
-    /// 慎用
+    /// 异步获取当前 Redis 数据库中的所有缓存键。
     /// </summary>
-    /// <returns></returns>
+    /// <remarks>该操作需要扫描数据库中的键，键数量较多时开销较大，不应在高频请求中调用。</remarks>
+    /// <returns>表示异步获取当前 Redis 数据库中的所有缓存键的任务，任务结果为获取到的当前 Redis 数据库中的所有缓存键集合。</returns>
     Task<List<string>> GetAllKeysAsync();
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <returns>缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     string GetAndSet(string key, Func<string> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     T GetAndSet<T>(string key, Func<T> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="expireSeconds">有效时长，单位为秒。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <returns>缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     string GetAndSet(string key, int expireSeconds, Func<string> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="expireSeconds">有效时长，单位为秒。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     T GetAndSet<T>(string key, int expireSeconds, Func<T> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="expireTimeSpan">有效时长。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <returns>缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     string GetAndSet(string key, TimeSpan expireTimeSpan, Func<string> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="expireTimeSpan">有效时长。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     T GetAndSet<T>(string key, TimeSpan expireTimeSpan, Func<T> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 异步获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <returns>表示异步获取并且设置缓存的任务，任务结果为缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     Task<string> GetAndSetAsync(string key, Func<Task<string>> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 异步获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>表示异步获取并且设置缓存的任务，任务结果为缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     Task<T> GetAndSetAsync<T>(string key, Func<Task<T>> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 异步获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="expireSeconds">有效时长，单位为秒。</param>
+    /// <param name="func">缓存不存在时用于异步生成值的委托。</param>
+    /// <returns>表示异步获取并且设置缓存的任务，任务结果为缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     Task<string> GetAndSetAsync(string key, int expireSeconds, Func<Task<string>> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 异步获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="expireSeconds">有效时长，单位为秒。</param>
+    /// <param name="func">缓存不存在时用于异步生成值的委托。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>表示异步获取并且设置缓存的任务，任务结果为缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     Task<T> GetAndSetAsync<T>(string key, int expireSeconds, Func<Task<T>> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 异步获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="expireTimeSpan">有效时长。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <returns>表示异步获取并且设置缓存的任务，任务结果为缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     Task<string> GetAndSetAsync(string key, TimeSpan expireTimeSpan, Func<Task<string>> func);
 
     /// <summary>
-    /// 获取并且设置缓存
+    /// 异步获取缓存值；缓存未命中时生成并写入新值。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <param name="key">缓存键。</param>
+    /// <param name="expireTimeSpan">有效时长。</param>
+    /// <param name="func">缓存未命中时用于生成并写入值的委托。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>表示异步获取并且设置缓存的任务，任务结果为缓存中已有的值，或缓存未命中时由值工厂生成并写入的新值。</returns>
     Task<T> GetAndSetAsync<T>(string key, TimeSpan expireTimeSpan, Func<Task<T>> func);
 }

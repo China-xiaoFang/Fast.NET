@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -25,14 +25,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 接口描述设置
+/// 接口描述设置。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribute
 {
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ApiDescriptionSettingsAttribute"/> 类的新实例。
     /// </summary>
     public ApiDescriptionSettingsAttribute()
     {
@@ -40,9 +40,9 @@ public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribu
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ApiDescriptionSettingsAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="enabled">是否启用</param>
+    /// <param name="enabled">是否启用该功能。</param>
     public ApiDescriptionSettingsAttribute(bool enabled)
     {
         IgnoreApi = !enabled;
@@ -50,9 +50,9 @@ public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribu
     }
 
     /// <summary>
-    /// 构造函数
+    /// 初始化 <see cref="ApiDescriptionSettingsAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="groups">分组列表</param>
+    /// <param name="groups">文档分组集合。</param>
     public ApiDescriptionSettingsAttribute(params string[] groups)
     {
         GroupName = string.Join("##", groups);
@@ -61,32 +61,32 @@ public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribu
     }
 
     /// <summary>
-    /// 自定义名称
+    /// 自定义名称。
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 模块名
+    /// 模块名。
     /// </summary>
     public string Module { get; set; }
 
     /// <summary>
-    /// 版本号
+    /// 版本号。
     /// </summary>
     public string Version { get; set; }
 
     /// <summary>
-    /// 分组
+    /// 分组。
     /// </summary>
     public string[] Groups { get; set; }
 
     /// <summary>
-    /// 排序
+    /// 排序。
     /// </summary>
     public int Order { get; set; }
 
     /// <summary>
-    /// 额外描述，支持 HTML
+    /// 额外描述，支持 HTML。
     /// </summary>
     public string Description { get; set; }
 }

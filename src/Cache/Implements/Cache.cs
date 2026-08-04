@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -27,7 +27,7 @@ using Microsoft.Extensions.Options;
 namespace Fast.Cache;
 
 /// <summary>
-/// <see cref="Cache"/> 默认缓存实现
+/// <see cref="Cache"/> 默认缓存实现。
 /// </summary>
 internal sealed class Cache : Cache<DefaultCacheContextLocator>, ICache
 {
@@ -37,31 +37,26 @@ internal sealed class Cache : Cache<DefaultCacheContextLocator>, ICache
 }
 
 /// <summary>
-/// <see cref="Cache{CacheContextLocator}"/> 缓存实现
+/// <see cref="Cache{CacheContextLocator}"/> 缓存实现。
 /// </summary>
+/// <typeparam name="CacheContextLocator">缓存上下文定位器类型，用于隔离不同缓存配置。</typeparam>
 internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDisposable
     where CacheContextLocator : ICacheContextLocator, new()
 {
     internal readonly IDisposable _optionsReloadToken;
 
     /// <summary>
-    /// 空值
+    /// 空值。
     /// </summary>
     internal const string _nullValue = "×Null×";
 
-    /// <summary>
-    /// 前缀
-    /// </summary>
+    /// <inheritdoc />
     public string Prefix { get; private set; }
 
-    /// <summary>
-    /// CSRedis 缓存客户端
-    /// </summary>
+    /// <inheritdoc />
     public CSRedisClient Client { get; private set; }
 
-    /// <summary>
-    /// 缓存上下文定位器
-    /// </summary>
+    /// <inheritdoc />
     public CacheContextLocator ContextLocator { get; }
 
     public Cache(IOptionsMonitor<RedisSettingsOptions> redisSettings)
@@ -76,18 +71,17 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     }
 
     /// <summary>
-    /// 创建/初始化服务
+    /// 创建/初始化服务。
     /// </summary>
+    /// <param name="redisSettings">redis Settings 配置。</param>
     private void Create(RedisSettingsOptions redisSettings)
     {
         Debugging.Info($"Creating cache, Service = {ContextLocator.ServiceName}......");
 
-        // 连接字符串
         string connectionStr;
 
         if (ContextLocator.ServiceName == "Default")
         {
-            // 组装连接字符串
             connectionStr =
                 $"{redisSettings.ServiceIp}:{redisSettings.Port ?? 6379},password={redisSettings.DbPwd},defaultDatabase={redisSettings.DbName},prefix={redisSettings.Prefix},poolsize={redisSettings.Poolsize},ssl={(redisSettings.SSL == true ? "true" : "false")}";
 
@@ -103,11 +97,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
                 throw new InvalidOperationException($"服务名称“{ContextLocator.ServiceName}”不存在于“RedisSetting”配置节点中！");
             }
 
-            // 组装连接字符串
             connectionStr =
                 $"{redisServiceSettings.ServiceIp ?? redisSettings.ServiceIp}:{redisServiceSettings.Port ?? redisSettings.Port ?? 6379},password={redisServiceSettings.DbPwd ?? redisSettings.DbPwd},defaultDatabase={redisServiceSettings.DbName ?? redisSettings.DbName},prefix={redisServiceSettings.Prefix ?? redisSettings.Prefix},poolsize={redisServiceSettings.Poolsize ?? redisSettings.Poolsize},ssl={((redisServiceSettings.SSL ?? redisSettings.SSL) == true ? "true" : "false")}";
 
-            Prefix = redisServiceSettings.Prefix;
+            Prefix = redisServiceSettings.Prefix ?? redisSettings.Prefix;
         }
 
         Client?.Dispose();
@@ -121,32 +114,19 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         Client?.Dispose();
     }
 
-    /// <summary>
-    /// 删除缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public long Del(params string[] key)
     {
         return Client.Del(key);
     }
 
-    /// <summary>
-    /// 删除缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<long> DelAsync(params string[] key)
     {
         return await Client.DelAsync(key);
     }
 
-    /// <summary>
-    /// 根据前缀删除缓存
-    /// 慎用
-    /// </summary>
-    /// <param name="pattern"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public long DelByPattern(string pattern)
     {
         if (string.IsNullOrWhiteSpace(pattern))
@@ -195,12 +175,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return totalDeleted;
     }
 
-    /// <summary>
-    /// 根据前缀删除缓存
-    /// 慎用
-    /// </summary>
-    /// <param name="pattern"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<long> DelByPatternAsync(string pattern)
     {
         if (string.IsNullOrWhiteSpace(pattern))
@@ -249,166 +224,93 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return totalDeleted;
     }
 
-    /// <summary>
-    /// 判断是否存在
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public bool Exists(string key)
     {
         return Client.Exists(key);
     }
 
-    /// <summary>
-    /// 判断是否存在
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<bool> ExistsAsync(string key)
     {
         return await Client.ExistsAsync(key);
     }
 
-    /// <summary>
-    /// 获取缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public string Get(string key)
     {
         return Client.Get(key);
     }
 
-    /// <summary>
-    /// 获取缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<string> GetAsync(string key)
     {
         return await Client.GetAsync(key);
     }
 
-    /// <summary>
-    /// 获取缓存
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public T Get<T>(string key)
     {
         return Client.Get<T>(key);
     }
 
-    /// <summary>
-    /// 获取缓存
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<T> GetAsync<T>(string key)
     {
         return await Client.GetAsync<T>(key);
     }
 
-    /// <summary>
-    /// 设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public bool Set(string key, object value)
     {
         return Client.Set(key, value);
     }
 
-    /// <summary>
-    /// 设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<bool> SetAsync(string key, object value)
     {
         return await Client.SetAsync(key, value);
     }
 
-    /// <summary>
-    /// 设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public bool Set(string key, object value, int expireSeconds)
     {
         return Client.Set(key, value, expireSeconds);
     }
 
-    /// <summary>
-    /// 设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<bool> SetAsync(string key, object value, int expireSeconds)
     {
         return await Client.SetAsync(key, value, expireSeconds);
     }
 
-    /// <summary>
-    /// 设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public bool Set(string key, object value, TimeSpan expireTimeSpan)
     {
         return Client.Set(key, value, expireTimeSpan);
     }
 
-    /// <summary>
-    /// 设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<bool> SetAsync(string key, object value, TimeSpan expireTimeSpan)
     {
         return await Client.SetAsync(key, value, expireTimeSpan);
     }
 
-    /// <summary>
-    /// 获取所有缓存Key
-    /// 慎用
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     public List<string> GetAllKeys()
     {
         var result = Client.Keys("*");
         return result.ToList();
     }
 
-    /// <summary>
-    /// 获取所有缓存Key
-    /// 慎用
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<List<string>> GetAllKeysAsync()
     {
         var result = await Client.KeysAsync("*");
         return result.ToList();
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public string GetAndSet(string key, Func<string> func)
     {
         var result = Client.Get(key);
@@ -431,7 +333,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -450,7 +352,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -465,12 +367,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<string> GetAndSetAsync(string key, Func<Task<string>> func)
     {
         var result = await Client.GetAsync(key);
@@ -495,7 +392,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -514,7 +411,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -529,13 +426,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public T GetAndSet<T>(string key, Func<T> func)
     {
         var value = Client.Get(key);
@@ -560,7 +451,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -579,7 +470,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -594,13 +485,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<T> GetAndSetAsync<T>(string key, Func<Task<T>> func)
     {
         var value = await Client.GetAsync(key);
@@ -632,7 +517,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -651,7 +536,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -666,13 +551,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public string GetAndSet(string key, int expireSeconds, Func<string> func)
     {
         var result = Client.Get(key);
@@ -695,7 +574,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -714,7 +593,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -729,13 +608,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<string> GetAndSetAsync(string key, int expireSeconds, Func<Task<string>> func)
     {
         var result = await Client.GetAsync(key);
@@ -760,7 +633,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -779,7 +652,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -794,14 +667,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public T GetAndSet<T>(string key, int expireSeconds, Func<T> func)
     {
         var value = Client.Get(key);
@@ -826,7 +692,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -845,7 +711,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -860,14 +726,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="expireSeconds">单位秒</param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<T> GetAndSetAsync<T>(string key, int expireSeconds, Func<Task<T>> func)
     {
         var value = await Client.GetAsync(key);
@@ -894,7 +753,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -913,7 +772,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -928,13 +787,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public string GetAndSet(string key, TimeSpan expireTimeSpan, Func<string> func)
     {
         var result = Client.Get(key);
@@ -957,7 +810,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -976,7 +829,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -991,13 +844,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<string> GetAndSetAsync(string key, TimeSpan expireTimeSpan, Func<Task<string>> func)
     {
         var result = await Client.GetAsync(key);
@@ -1022,7 +869,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -1041,7 +888,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -1056,14 +903,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public T GetAndSet<T>(string key, TimeSpan expireTimeSpan, Func<T> func)
     {
         var value = Client.Get(key);
@@ -1088,7 +928,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -1107,7 +947,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -1122,14 +962,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         return result;
     }
 
-    /// <summary>
-    /// 获取并且设置缓存
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="expireTimeSpan"></param>
-    /// <param name="func"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async Task<T> GetAndSetAsync<T>(string key, TimeSpan expireTimeSpan, Func<Task<T>> func)
     {
         var value = await Client.GetAsync(key);
@@ -1156,7 +989,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -1175,7 +1008,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 如果返回空，则默认写入_nullValue，缓存2小时，防止缓存击穿
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -1193,6 +1026,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <summary>
     /// 尝试读取缓存，并区分“缓存未命中”和“已缓存空值”。
     /// </summary>
+    /// <param name="key">缓存键。</param>
+    /// <param name="result">缓存值读取结果。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>成功取得目标值时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     private bool TryGetCachedValue<T>(string key, out T result)
     {
         var rawValue = Client.Get(key);
@@ -1209,6 +1046,10 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     /// <summary>
     /// 异步尝试读取缓存，并区分“缓存未命中”和“已缓存空值”。
     /// </summary>
+    /// <param name="key">缓存键。</param>
+    /// <param name="_">扩展方法接收者；该值不参与输出。</param>
+    /// <typeparam name="T">缓存值的类型。</typeparam>
+    /// <returns>表示异步尝试读取缓存，并区分“缓存未命中”和“已缓存空值”的任务，任务结果为尝试读取缓存，并区分“缓存未命中”和“已缓存空值”。</returns>
     private async Task<(bool Found, T Value)> TryGetCachedValueAsync<T>(string key, T _)
     {
         var rawValue = await Client.GetAsync(key)
@@ -1224,8 +1065,11 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     }
 
     /// <summary>
-    /// 检查对象或集合是否为 null、空字符串或空集合。
+    /// 检查对象或集合是否为 <see langword="null"/>、空字符串或空集合。
     /// </summary>
+    /// <param name="value">要检查的值。</param>
+    /// <typeparam name="T">要检查是否为空的值类型。</typeparam>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     private static bool IsEmpty<T>(T value)
     {
         if (value == null)

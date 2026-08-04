@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,16 +28,16 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="IServiceCollection"/> 统一返回 拓展类
+/// 为 <see cref="IServiceCollection"/> 提供统一返回扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 数据验证服务
+    /// 数据验证服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddDataValidation(this IServiceCollection services)
     {
         Debugging.Info("Registering data validation......");
@@ -64,10 +64,10 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 友好异常服务
+    /// 友好异常服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddFriendlyException(this IServiceCollection services)
     {
         Debugging.Info("Registering friendly exception......");
@@ -88,10 +88,10 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加统一返回服务
+    /// 添加统一返回服务。
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <returns><see cref="IServiceCollection"/></returns>
+    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddUnifyResult(this IServiceCollection services)
     {
         Debugging.Info("Registering unify result......");

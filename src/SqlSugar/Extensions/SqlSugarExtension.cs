@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Apache开源许可证
 // 
 // 版权所有 © 2018-Now 小方
@@ -28,16 +28,16 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="ISqlSugarClient"/> SqlSugar 拓展类
+/// 为 <see cref="ISqlSugarClient"/> 提供 SqlSugar 扩展方法。
 /// </summary>
 [SuppressSniffer]
 public static class SqlSugarExtension
 {
     /// <summary>
-    /// 获取SugarTable特性中的TableName
+    /// 获取 SugarTable 特性中的 TableName。
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>获取到的 SugarTable 特性中的 TableName。</returns>
     public static string GetSugarTableName(this Type type)
     {
         var sugarTable = type.GetCustomAttribute<SugarTable>(true);
@@ -50,26 +50,25 @@ public static class SqlSugarExtension
     }
 
     /// <summary>
-    /// 获取SugarTable特性
+    /// 获取 SugarTable 特性。
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <returns>获取到的 SugarTable 特性。</returns>
     public static SugarTable GetSugarTableAttribute(this Type type)
     {
         return type.GetCustomAttribute<SugarTable>(true);
     }
 
     /// <summary>
-    /// 转为DataTable
+    /// 转为 DataTable。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="list"></param>
-    /// <returns></returns>
+    /// <param name="list">要处理的集合。</param>
+    /// <typeparam name="T">数据表行对应的模型类型。</typeparam>
+    /// <returns>转为 DataTable 集合。</returns>
     public static List<DataTable> ToDataTable<T>(this List<T> list)
     {
         var result = new List<DataTable>();
 
-        // 判断是否为空
         if (list == null || !list.Any())
             return result;
 
@@ -80,7 +79,6 @@ public static class SqlSugarExtension
                 .GetType();
         }
 
-        // 获取所有属性
         var properties = type.GetProperties();
         foreach (var item in list)
         {
@@ -100,7 +98,7 @@ public static class SqlSugarExtension
                     colType = colType.GetGenericArguments()[0];
                 }
 
-                // 获取Sugar列特性
+                // 获取 Sugar 列特性
                 var sugarColumn = property.GetCustomAttribute<SugarColumn>(true);
 
                 // 判断忽略列
