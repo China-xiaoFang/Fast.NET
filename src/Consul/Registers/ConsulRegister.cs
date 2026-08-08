@@ -22,7 +22,6 @@
 
 using System.Reflection;
 using Consul;
-using Fast.IaaS;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -83,7 +82,8 @@ internal class ConsulRegister : IConsulRegister
         var registration = new AgentServiceRegistration
         {
             // 唯一 ID
-            ID = GuidUtil.GetGuid(),
+            ID = Guid.NewGuid()
+                .ToString("N"),
             // 服务名，
             Name = _webHostEnvironment.ApplicationName + $"{(string.IsNullOrEmpty(version) ? null : $"_v{version}")}",
             // 服务绑定 IP

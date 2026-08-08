@@ -43,7 +43,8 @@ public static class FileUtil
 
         using var sha256 = SHA256.Create();
         using var stream = File.OpenRead(filePath);
-        return CryptographyCompat.ToHexString(sha256.ComputeHash(stream))
+        return BitConverter.ToString(sha256.ComputeHash(stream))
+            .Replace("-", string.Empty)
             .ToLowerInvariant();
     }
 
@@ -67,7 +68,8 @@ public static class FileUtil
         var arrBytHashValue = osha1.ComputeHash(oFileStream);
 
         // 将哈希值转换为十六进制字符串，并去掉连字符（"-"），转换为小写
-        return CryptographyCompat.ToHexString(arrBytHashValue)
+        return BitConverter.ToString(arrBytHashValue)
+            .Replace("-", string.Empty)
             .ToLowerInvariant();
     }
 

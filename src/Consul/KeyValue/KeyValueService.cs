@@ -22,7 +22,6 @@
 
 using System.Text;
 using System.Text.Json;
-using Fast.NET.Core;
 
 namespace Fast.Consul;
 
@@ -49,12 +48,62 @@ internal class ConsulKeyValueResponseDto
 /// </summary>
 public class KeyValueService : IKeyValueService
 {
+    /// <summary>
+    /// Key/Value 请求共用的 HTTP 客户端。
+    /// </summary>
+    private static readonly HttpClient _httpClient = new() {Timeout = TimeSpan.FromSeconds(60)};
+
+    /// <summary>
+    /// Consul Key/Value 响应的 JSON 反序列化配置。
+    /// </summary>
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new() {PropertyNameCaseInsensitive = true};
+
+    /// <summary>
+    /// 向 Consul 发送 GET 请求并反序列化响应正文。
+    /// </summary>
+    /// <param name="requestUri">Consul Key/Value 请求地址。</param>
+    /// <typeparam name="T">响应正文反序列化后的类型。</typeparam>
+    /// <returns>反序列化后的响应内容。</returns>
+    private static async Task<T> Get<T>(string requestUri)
+    {
+        using var response = await _httpClient.GetAsync(requestUri)
+            .ConfigureAwait(false);
+        var responseContent = await response.Content.ReadAsStringAsync()
+            .ConfigureAwait(false);
+
+        // 优先读取响应正文，使异常能够保留 Consul 返回的具体错误信息。
+        if (!response.IsSuccessStatusCode)
+            throw new HttpRequestException(responseContent, null, response.StatusCode);
+
+        return JsonSerializer.Deserialize<T>(responseContent, _jsonSerializerOptions);
+    }
+
+    /// <summary>
+    /// 向 Consul 发送 PUT 请求并返回响应正文。
+    /// </summary>
+    /// <param name="requestUri">Consul Key/Value 请求地址。</param>
+    /// <param name="data">要写入 Consul 的原始 UTF-8 文本。</param>
+    /// <returns>Consul 返回的响应正文。</returns>
+    private static async Task<string> Put(string requestUri, string data)
+    {
+        using var content = data == null ? null : new StringContent(data, Encoding.UTF8, "application/json");
+        using var response = await _httpClient.PutAsync(requestUri, content)
+            .ConfigureAwait(false);
+        var responseContent = await response.Content.ReadAsStringAsync()
+            .ConfigureAwait(false);
+
+        // 与 GET 保持一致，失败响应直接携带 Consul 返回的正文。
+        if (!response.IsSuccessStatusCode)
+            throw new HttpRequestException(responseContent, null, response.StatusCode);
+
+        return responseContent;
+    }
+
     /// <inheritdoc />
     public async Task<T> GetKeyValue<T>(string settingPath, string dcName)
     {
         ValidatePath(settingPath, dcName);
-        var (result, _) =
-            await RemoteRequestUtil.GetAsync<List<ConsulKeyValueResponseDto>>(BuildKeyValueUrl(settingPath, dcName));
+        var result = await Get<List<ConsulKeyValueResponseDto>>(BuildKeyValueUrl(settingPath, dcName));
 
         if (result == null || result.Count == 0)
             throw new KeyNotFoundException("未找到指定 Consul 配置！");
@@ -68,8 +117,7 @@ public class KeyValueService : IKeyValueService
     public async Task<string> GetKeyValue(string settingPath, string dcName)
     {
         ValidatePath(settingPath, dcName);
-        var (result, _) =
-            await RemoteRequestUtil.GetAsync<List<ConsulKeyValueResponseDto>>(BuildKeyValueUrl(settingPath, dcName));
+        var result = await Get<List<ConsulKeyValueResponseDto>>(BuildKeyValueUrl(settingPath, dcName));
 
         if (result == null || result.Count == 0)
             throw new KeyNotFoundException("未找到指定 Consul 配置！");
@@ -83,7 +131,7 @@ public class KeyValueService : IKeyValueService
     public async Task<bool> EditKeyValue(string settingPath, string dcName, string data)
     {
         ValidatePath(settingPath, dcName);
-        var (responseContent, _) = await RemoteRequestUtil.PutAsync($"{BuildKeyValueUrl(settingPath, dcName)}&flags=0", data);
+        var responseContent = await Put($"{BuildKeyValueUrl(settingPath, dcName)}&flags=0", data);
 
         return bool.TryParse(responseContent, out var result) && result;
     }
