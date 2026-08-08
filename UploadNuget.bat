@@ -153,7 +153,7 @@ if /i "%RUN_MODE%"=="publish-one" (
 :SelectPublishMode
 echo.
 echo 请选择发布方式：
-echo [0] 只完成构建和打包，不发布
+echo [0] 结束发布（尚未发布时仅完成构建和打包）
 echo [1] 发布当前全部 NuGet 包
 echo [11-%MAX_PACKAGE_INDEX%] 发布上方列表中的单个包
 call :ReadNumericSelection
@@ -162,7 +162,11 @@ if errorlevel 1 (
     goto :SelectPublishMode
 )
 
-if "%UPLOAD_SELECTION%"=="0" goto :SkipPublish
+if "%UPLOAD_SELECTION%"=="0" (
+    if not "%SUCCESS_COUNT%"=="0" goto :PublishSummary
+    if not "%ERROR_COUNT%"=="0" goto :PublishSummary
+    goto :SkipPublish
+)
 if "%UPLOAD_SELECTION%"=="1" goto :PreparePublish
 
 call set "SELECTED_PACKAGE=%%PACKAGE_%UPLOAD_SELECTION%%%"
@@ -193,7 +197,14 @@ echo.
 
 if "%UPLOAD_SELECTION%"=="1" goto :PublishAllPackages
 call :PushPackage "%SELECTED_PACKAGE%"
-goto :PublishSummary
+if defined RUN_MODE goto :PublishSummary
+
+REM 交互模式发布单包后保留本次打包结果和 API Key，返回菜单继续选择其他包。
+echo.
+echo 单包发布流程已完成，可继续选择或重试其他包。
+set "UPLOAD_SELECTION="
+set "SELECTED_PACKAGE="
+goto :SelectPublishMode
 
 :PublishAllPackages
 REM 全量模式仅遍历本次识别出的当前版本包。
