@@ -107,6 +107,26 @@ public static class IServiceCollectionExtension
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
+
+                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行。
+                var onMessageReceived = options.Events.OnMessageReceived;
+                options.Events.OnMessageReceived = async context =>
+                {
+                    await onMessageReceived(context);
+
+                    if (!string.IsNullOrEmpty(context.Token) || !context.Request.Path.StartsWithSegments("/hubs"))
+                    {
+                        return;
+                    }
+
+                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求。
+                    var accessToken = context.Request.Query["access_token"]
+                        .ToString();
+                    if (!string.IsNullOrEmpty(accessToken))
+                    {
+                        context.Token = accessToken;
+                    }
+                };
             });
 
         return services;
@@ -134,6 +154,26 @@ public static class IServiceCollectionExtension
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
+
+                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行。
+                var onMessageReceived = options.Events.OnMessageReceived;
+                options.Events.OnMessageReceived = async context =>
+                {
+                    await onMessageReceived(context);
+
+                    if (!string.IsNullOrEmpty(context.Token) || !context.Request.Path.StartsWithSegments("/hubs"))
+                    {
+                        return;
+                    }
+
+                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求。
+                    var accessToken = context.Request.Query["access_token"]
+                        .ToString();
+                    if (!string.IsNullOrEmpty(accessToken))
+                    {
+                        context.Token = accessToken;
+                    }
+                };
             });
 
         return services;
@@ -183,6 +223,26 @@ public static class IServiceCollectionExtension
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
+
+                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行。
+                var onMessageReceived = options.Events.OnMessageReceived;
+                options.Events.OnMessageReceived = async context =>
+                {
+                    await onMessageReceived(context);
+
+                    if (!string.IsNullOrEmpty(context.Token) || !context.Request.Path.StartsWithSegments("/hubs"))
+                    {
+                        return;
+                    }
+
+                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求。
+                    var accessToken = context.Request.Query["access_token"]
+                        .ToString();
+                    if (!string.IsNullOrEmpty(accessToken))
+                    {
+                        context.Token = accessToken;
+                    }
+                };
             });
 
         return services;
@@ -228,6 +288,26 @@ public static class IServiceCollectionExtension
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
+
+                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行。
+                var onMessageReceived = options.Events.OnMessageReceived;
+                options.Events.OnMessageReceived = async context =>
+                {
+                    await onMessageReceived(context);
+
+                    if (!string.IsNullOrEmpty(context.Token) || !context.Request.Path.StartsWithSegments("/hubs"))
+                    {
+                        return;
+                    }
+
+                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求。
+                    var accessToken = context.Request.Query["access_token"]
+                        .ToString();
+                    if (!string.IsNullOrEmpty(accessToken))
+                    {
+                        context.Token = accessToken;
+                    }
+                };
             });
 
         return services;
