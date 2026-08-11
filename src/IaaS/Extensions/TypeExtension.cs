@@ -37,7 +37,7 @@ public static class TypeExtension
     /// <summary>
     /// 判断类型是否实现某个泛型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="generic">是否按泛型类型规则进行匹配。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool HasImplementedRawGeneric(this Type type, Type generic)
@@ -67,7 +67,7 @@ public static class TypeExtension
     /// <summary>
     /// 获取类型所在程序集名称。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>获取到的类型所在程序集名称。</returns>
     public static string GetAssemblyName(this Type type)
     {
@@ -88,7 +88,7 @@ public static class TypeExtension
     /// <summary>
     /// 判断是否是富基元类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsRichPrimitive(this Type type)
     {
@@ -115,7 +115,7 @@ public static class TypeExtension
     /// <summary>
     /// 判断是否是元组类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsValueTuple(this Type type)
     {
@@ -125,7 +125,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否是静态类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsStatic(this Type type)
     {
@@ -135,7 +135,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否是匿名类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsAnonymous(this Type type)
     {
@@ -152,7 +152,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否可实例化。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsInstantiable(this Type type)
     {
@@ -162,7 +162,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否派生自指定类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="fromType">from 类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsAlienAssignableTo(this Type type, Type fromType)
@@ -179,7 +179,7 @@ public static class TypeExtension
     /// 获取指定特性实例。
     /// </summary>
     /// <remarks>若特性不存在则返回 <see langword="null"/>。</remarks>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="inherit">是否在基类型中继续查找成员或特性。</param>
     /// <typeparam name="TAttribute">要查找的特性类型。</typeparam>
     /// <returns>获取到的指定特性实例。</returns>
@@ -194,7 +194,7 @@ public static class TypeExtension
     /// 检查类型是否定义了公开无参构造函数。
     /// </summary>
     /// <remarks>用于 <see cref="Activator.CreateInstance(Type)"/> 实例化。</remarks>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool HasDefinePublicParameterlessConstructor(this Type type)
     {
@@ -205,7 +205,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型和指定类型定义是否相等。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="compareType">compare 类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDefinitionEqual(this Type type, Type compareType)
@@ -225,7 +225,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型和指定继承类型是否兼容。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="inheritType">inherit 类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsCompatibilityTo(this Type type, Type inheritType)
@@ -247,7 +247,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否定义了指定方法。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="name">方法名称。</param>
     /// <param name="accessibilityBindingFlags">用于筛选成员可见性的绑定标志。</param>
     /// <param name="methodInfo">目标方法的反射元数据。</param>
@@ -270,7 +270,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否是整数类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsInteger(this Type type)
     {
@@ -294,7 +294,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否是小数类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDecimal(this Type type)
     {
@@ -311,7 +311,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否是数值类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsNumeric(this Type type)
     {
@@ -321,7 +321,7 @@ public static class TypeExtension
     /// <summary>
     /// 检查类型是否是字典类型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsDictionary(this Type type)
     {
@@ -372,7 +372,7 @@ public static class TypeExtension
     /// <summary>
     /// 获取类型自定义特性。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="inherit">是否在基类型中继续查找成员或特性。</param>
     /// <typeparam name="TAttribute">要查找的特性类型。</typeparam>
     /// <returns>获取到的类型自定义特性。</returns>

@@ -30,8 +30,8 @@ internal static class TypeExtension
     /// <summary>
     /// 判断类型是否实现某个泛型。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
-    /// <param name="generic"><see cref="Type"/>泛型类型。</param>
+    /// <param name="type">目标类型。</param>
+    /// <param name="generic">泛型类型。</param>
     /// <returns>目标类型自身、其基类型或接口匹配指定开放泛型时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool HasImplementedRawGeneric(this Type type, Type generic)
     {

@@ -99,10 +99,10 @@ public static partial class OpenApiUtil
     /// <summary>
     /// 生成声明导入。
     /// </summary>
-    /// <param name="hasWeb"><see cref="bool"/> 是否 Web 端。</param>
-    /// <param name="dirName"><see cref="string"/> 文件夹名称。</param>
-    /// <param name="refSchemas"><see cref="List{String}"/>引用声明。</param>
-    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明。</param>
+    /// <param name="hasWeb">是否为 Web 端。</param>
+    /// <param name="dirName">文件夹名称。</param>
+    /// <param name="refSchemas">引用声明。</param>
+    /// <param name="enumSchemas">枚举声明。</param>
     /// <returns>生成的声明导入。</returns>
     internal static (StringBuilder importSb, HashSet<string> refSchemas) GenerateSchemaImport(bool hasWeb, string dirName,
         HashSet<string> refSchemas, List<ComponentSchemaDto> enumSchemas)
@@ -154,8 +154,8 @@ public static partial class OpenApiUtil
     /// <summary>
     /// 生成 OpenAPI 文档声明文件。
     /// </summary>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档 DTO。</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <param name="openApiDocument">OpenAPI 文档。</param>
+    /// <param name="scriptLanguage">脚本语言。</param>
     /// <returns>表示异步生成 OpenAPI 文档声明文件的任务，任务结果为生成的 OpenAPI 文档声明文件集合。</returns>
     internal static async Task<List<ComponentSchemaDto>> GenerateOpenApiDocumentSchemaFile(OpenApiDocumentDto openApiDocument,
         ScriptLanguageEnum scriptLanguage)
@@ -303,13 +303,13 @@ public static partial class OpenApiUtil
     /// <summary>
     /// 写入 OpenAPI 文档声明文件。
     /// </summary>
-    /// <param name="hasWeb"><see cref="bool"/> 是否 Web 端。</param>
-    /// <param name="rootDir"><see cref="string"/> 根目录。</param>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档 DTO。</param>
-    /// <param name="schemaDto"><see cref="ComponentSchemaDto"/> 声明。</param>
-    /// <param name="dtoSchemas"><see cref="List{ComponentSchemaDto}"/> DTO 声明。</param>
-    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明。</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <param name="hasWeb">是否为 Web 端。</param>
+    /// <param name="rootDir">根目录。</param>
+    /// <param name="openApiDocument">OpenAPI 文档。</param>
+    /// <param name="schemaDto">声明。</param>
+    /// <param name="dtoSchemas">DTO 声明。</param>
+    /// <param name="enumSchemas">枚举声明。</param>
+    /// <param name="scriptLanguage">脚本语言。</param>
     /// <returns>表示异步写入 OpenAPI 文档声明文件的任务。</returns>
     internal static async Task WriteOpenApiDocumentSchemaFile(bool hasWeb, string rootDir, OpenApiDocumentDto openApiDocument,
         ComponentSchemaDto schemaDto, List<ComponentSchemaDto> dtoSchemas, List<ComponentSchemaDto> enumSchemas,

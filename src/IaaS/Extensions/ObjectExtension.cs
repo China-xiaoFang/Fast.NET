@@ -38,7 +38,7 @@ public static class ObjectExtension
     /// 将一个对象转换为指定类型。
     /// </summary>
     /// <param name="obj">要处理的对象。</param>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>将一个对象转换为指定类型。</returns>
     public static object ChangeType(this object obj, Type type)
     {

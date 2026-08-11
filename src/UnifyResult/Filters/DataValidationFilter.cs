@@ -41,7 +41,7 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     /// <summary>
     /// 初始化 <see cref="DataValidationFilter"/> 类的新实例。
     /// </summary>
-    /// <param name="options">当前组件使用的选项 <see cref="IOptions{ApiBehaviorOptions}"/>。</param>
+    /// <param name="options">当前组件使用的选项。</param>
     public DataValidationFilter(IOptions<ApiBehaviorOptions> options)
     {
         _apiBehaviorOptions = options.Value;
@@ -102,8 +102,8 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     /// <summary>
     /// 调用未处理的结果类型。
     /// </summary>
-    /// <param name="context">当前操作上下文 <see cref="ActionExecutingContext"/>。</param>
-    /// <param name="next">处理管道中的下一个委托 <see cref="ActionExecutionDelegate"/>。</param>
+    /// <param name="context">当前操作上下文。</param>
+    /// <param name="next">处理管道中的下一个委托。</param>
     /// <param name="actionDescriptor">当前控制器操作的描述信息。</param>
     /// <returns>表示异步调用未处理的结果类型的任务。</returns>
     private async Task CallUnHandleResult(ActionExecutingContext context, ActionExecutionDelegate next,
@@ -129,7 +129,7 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     /// <summary>
     /// 内部处理异常。
     /// </summary>
-    /// <param name="context">当前操作上下文 <see cref="ActionExecutingContext"/>。</param>
+    /// <param name="context">当前操作上下文。</param>
     /// <param name="actionDescriptor">当前控制器操作的描述信息。</param>
     /// <param name="errors">模型验证产生的错误集合。</param>
     /// <param name="resultContext">用于写入验证失败结果的过滤器上下文。</param>

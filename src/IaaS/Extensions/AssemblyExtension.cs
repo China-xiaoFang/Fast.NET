@@ -33,7 +33,7 @@ public static class AssemblyExtension
     /// <summary>
     /// 获取所有类型。
     /// </summary>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <param name="exported">是否只返回导出的类型。</param>
     /// <returns>获取到的所有类型集合。</returns>
     public static Type[] GetTypes(this Assembly assembly, bool exported)
@@ -44,7 +44,7 @@ public static class AssemblyExtension
     /// <summary>
     /// 获取程序集描述。
     /// </summary>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <returns>获取到的程序集描述。</returns>
     public static string GetDescription(this Assembly assembly)
     {
@@ -57,7 +57,7 @@ public static class AssemblyExtension
     /// <summary>
     /// 获取程序集版本。
     /// </summary>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <returns>获取到的程序集版本。</returns>
     public static Version GetVersion(this Assembly assembly)
     {
@@ -68,7 +68,7 @@ public static class AssemblyExtension
     /// <summary>
     /// 获取程序集名称。
     /// </summary>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <returns>获取到的程序集名称。</returns>
     public static string GetAssemblyName(this Assembly assembly)
     {
@@ -79,7 +79,7 @@ public static class AssemblyExtension
     /// <summary>
     /// 根据程序集和类型完整限定名获取运行时类型。
     /// </summary>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <param name="typeFullName">目标类型的完全限定名。</param>
     /// <returns>根据程序集和类型完整限定名获取运行时类型。</returns>
     public static Type GetType(Assembly assembly, string typeFullName)

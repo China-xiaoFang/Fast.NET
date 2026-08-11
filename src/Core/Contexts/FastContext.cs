@@ -94,7 +94,7 @@ public static class FastContext
     /// <summary>
     /// 获取请求生存周期的服务。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器。</param>
     /// <returns>获取到的请求生存周期的服务。</returns>
     public static object GetService(Type type, IServiceProvider serviceProvider = null)
@@ -118,7 +118,7 @@ public static class FastContext
     /// <summary>
     /// 获取请求生存周期的服务集合。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器。</param>
     /// <returns>获取到的请求生存周期的服务集合集合。</returns>
     public static IEnumerable<object> GetServices(Type type, IServiceProvider serviceProvider = null)
@@ -141,7 +141,7 @@ public static class FastContext
     /// <summary>
     /// 获取请求生存周期的服务。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器。</param>
     /// <returns>获取到的请求生存周期的服务。</returns>
     public static object GetRequiredService(Type type, IServiceProvider serviceProvider = null)

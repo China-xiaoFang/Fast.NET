@@ -33,8 +33,8 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加 System.Text.Json 序列化服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configureOptions">用于配置 <see cref="JsonOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configureOptions">JSON 配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSerialization(this IServiceCollection services,
         Action<JsonOptions> configureOptions = null)

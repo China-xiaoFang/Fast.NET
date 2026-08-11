@@ -163,7 +163,7 @@ public static class MAppContext
     /// <param name="serviceType">要查询的服务类型。</param>
     /// <param name="rootServices">应用根服务提供器。</param>
     /// <param name="internalServices">框架内部使用的服务注册集合。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>解析后的服务提供器。</returns>
     public static IServiceProvider GetServiceProvider(Type serviceType, IServiceProvider rootServices,
         IServiceCollection internalServices, HttpContext httpContext)
@@ -225,7 +225,7 @@ public static class MAppContext
     /// 获取当前请求 TraceId。
     /// </summary>
     /// <param name="rootServices">应用根服务提供器。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>获取到的当前请求 TraceId。</returns>
     public static string GetTraceId(IServiceProvider rootServices, HttpContext httpContext)
     {

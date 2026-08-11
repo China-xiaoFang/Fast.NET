@@ -37,7 +37,7 @@ internal class UnifyResultStatusCodesMiddleware
     /// <summary>
     /// 初始化 <see cref="UnifyResultStatusCodesMiddleware"/> 类的新实例。
     /// </summary>
-    /// <param name="next">处理管道中的下一个委托 <see cref="RequestDelegate"/>。</param>
+    /// <param name="next">处理管道中的下一个委托。</param>
     public UnifyResultStatusCodesMiddleware(RequestDelegate next)
     {
         _next = next;
@@ -46,7 +46,7 @@ internal class UnifyResultStatusCodesMiddleware
     /// <summary>
     /// 中间件执行方法。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>表示异步中间件执行方法的任务。</returns>
     public async Task InvokeAsync(HttpContext httpContext)
     {

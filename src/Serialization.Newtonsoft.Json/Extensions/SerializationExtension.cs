@@ -46,7 +46,7 @@ public static class SerializationExtension
     /// 将 JSON 文本反序列化为对象。
     /// </summary>
     /// <param name="json">要解析的 JSON 文本。</param>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>转换得到的对象。</returns>
     public static object ToObject(this string json, Type type)
     {
@@ -82,7 +82,7 @@ public static class SerializationExtension
     /// 将字典数据转换为对象。
     /// </summary>
     /// <param name="dictionary">要处理的字典。</param>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>转换得到的对象。</returns>
     public static object ToObject(this IDictionary<string, object> dictionary, Type type)
     {

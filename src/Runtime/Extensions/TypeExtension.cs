@@ -33,7 +33,7 @@ public static class TypeExtension
     /// <summary>
     /// 创建属性值设置器。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="propertyInfo">目标属性的反射元数据。</param>
     /// <returns>创建的属性值设置器。</returns>
     public static Action<object, object> CreatePropertySetter(this Type type, PropertyInfo propertyInfo)
@@ -80,7 +80,7 @@ public static class TypeExtension
     /// <summary>
     /// 创建字段值设置器。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="fieldInfo">目标字段的反射元数据。</param>
     /// <returns>创建的字段值设置器。</returns>
     public static Action<object, object> CreateFieldSetter(this Type type, FieldInfo fieldInfo)
@@ -122,7 +122,7 @@ public static class TypeExtension
     /// <summary>
     /// 创建属性值访问器。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="propertyInfo">目标属性的反射元数据。</param>
     /// <returns>创建的属性值访问器。</returns>
     public static Func<object, object> CreatePropertyGetter(this Type type, PropertyInfo propertyInfo)
@@ -164,7 +164,7 @@ public static class TypeExtension
     /// <summary>
     /// 创建字段值访问器。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <param name="fieldInfo">目标字段的反射元数据。</param>
     /// <returns>创建的字段值访问器。</returns>
     public static Func<object, object> CreateFieldGetter(this Type type, FieldInfo fieldInfo)

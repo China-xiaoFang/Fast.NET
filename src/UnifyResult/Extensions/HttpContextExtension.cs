@@ -32,7 +32,7 @@ internal static class HttpContextExtension
     /// <summary>
     /// 设置规范化响应时间戳。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="timestamp">要写入响应头的毫秒时间戳。</param>
     public static void UnifyResponseTimestamp(this HttpContext httpContext, long timestamp)
     {
@@ -42,7 +42,7 @@ internal static class HttpContextExtension
     /// <summary>
     /// 获取规范化响应时间戳。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>响应时间戳。</returns>
     public static long UnifyResponseTimestamp(this HttpContext httpContext)
     {
@@ -64,7 +64,7 @@ internal static class HttpContextExtension
     /// <summary>
     /// 判断是否是 WebSocket 请求。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>请求已升级为 WebSocket 或目标路径为 <c>/ws</c> 时返回 <see langword="true"/>。</returns>
     public static bool IsWebSocketRequest(this HttpContext httpContext)
     {
@@ -88,7 +88,7 @@ internal static class HttpContextExtension
     /// <summary>
     /// 获取终结点元数据中的指定特性。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="attributeType">要读取的特性类型。</param>
     /// <returns>当前终结点上匹配的特性实例；不存在时返回 <see langword="null"/>。</returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)

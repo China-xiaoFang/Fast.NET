@@ -49,7 +49,7 @@ public static class DynamicApplicationContext
     /// <summary>
     /// 是否是 API 控制器。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsApiController(Type type)
     {

@@ -33,7 +33,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 获取请求方式。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>获取到的请求方式。</returns>
     public static HttpRequestMethodEnum GetRequestMethod(this HttpContext httpContext)
     {

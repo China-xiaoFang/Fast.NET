@@ -37,7 +37,7 @@ public static class IApplicationBuilderExtension
     /// 启用 Body 重复读功能。
     /// </summary>
     /// <remarks>须在 app.UseRouting() 之前注册。</remarks>
-    /// <param name="app">要配置的应用管道构建器 <see cref="IApplicationBuilder"/>。</param>
+    /// <param name="app">要配置的应用管道。</param>
     /// <returns>返回 <paramref name="app"/>，便于链式调用。</returns>
     public static IApplicationBuilder EnableBuffering(this IApplicationBuilder app)
     {
@@ -52,7 +52,7 @@ public static class IApplicationBuilderExtension
     /// 启用集线器。
     /// </summary>
     /// <remarks>须在 app.UseRouting() 之后注册。</remarks>
-    /// <param name="app">要配置的应用管道构建器 <see cref="IApplicationBuilder"/>。</param>
+    /// <param name="app">要配置的应用管道。</param>
     /// <returns>返回 <paramref name="app"/>，便于链式调用。</returns>
     public static IApplicationBuilder UseMapHub(this IApplicationBuilder app)
     {

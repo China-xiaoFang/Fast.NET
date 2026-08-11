@@ -31,14 +31,14 @@ public interface IEventHandlerMonitor
     /// <summary>
     /// 事件处理程序执行前。
     /// </summary>
-    /// <param name="context">当前操作上下文 <see cref="EventHandlerExecutingContext"/>。</param>
+    /// <param name="context">当前事件处理上下文。</param>
     /// <returns>表示异步“事件处理程序执行前”操作的任务。</returns>
     Task OnExecutingAsync(EventHandlerExecutingContext context);
 
     /// <summary>
     /// 事件处理程序执行后。
     /// </summary>
-    /// <param name="context">当前操作上下文 <see cref="EventHandlerExecutedContext"/>。</param>
+    /// <param name="context">当前事件处理上下文。</param>
     /// <returns>表示异步“事件处理程序执行后”操作的任务。</returns>
     Task OnExecutedAsync(EventHandlerExecutedContext context);
 }

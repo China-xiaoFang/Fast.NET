@@ -35,7 +35,7 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加选项配置。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <param name="path">配置中对应的 Key。</param>
     /// <typeparam name="TOptions">配置选项类型。</typeparam>
     /// <returns>返回当前服务注册集合，便于链式调用。</returns>
@@ -76,7 +76,7 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 注册 Mvc 过滤器。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <param name="configure">额外的 MVC 配置操作。</param>
     /// <typeparam name="TFilter">要注册的 MVC 过滤器类型。</typeparam>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
@@ -96,7 +96,7 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 注册 Mvc 过滤器。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <param name="filter">要注册的 MVC 过滤器实例。</param>
     /// <param name="configure">额外的 MVC 配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>

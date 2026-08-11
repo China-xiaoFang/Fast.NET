@@ -161,13 +161,13 @@ public static partial class OpenApiUtil
     /// <summary>
     /// 生成 OpenAPI 文档资源。
     /// </summary>
-    /// <param name="apiDescriptionGroupCollectionProvider"><see cref="IApiDescriptionGroupCollectionProvider"/> 接口描述提供程序。</param>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档信息。</param>
-    /// <param name="rootDir"><see cref="string"/> 根目录。</param>
-    /// <param name="group"><see cref="string"/> 分组。</param>
-    /// <param name="uri"><see cref="Uri"/> 地址。</param>
-    /// <param name="hasWeb"><see cref="bool"/> 是否为 Web 端。</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <param name="apiDescriptionGroupCollectionProvider">接口描述提供程序。</param>
+    /// <param name="openApiDocument">OpenAPI 文档。</param>
+    /// <param name="rootDir">根目录。</param>
+    /// <param name="group">分组。</param>
+    /// <param name="uri">地址。</param>
+    /// <param name="hasWeb">是否为 Web 端。</param>
+    /// <param name="scriptLanguage">脚本语言。</param>
     /// <returns>表示异步生成 OpenAPI 文档资源的任务。</returns>
     internal static async Task GenerateOpenApi(IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider,
         OpenApiDocumentDto openApiDocument, string rootDir, string group, Uri uri, bool hasWeb, ScriptLanguageEnum scriptLanguage)

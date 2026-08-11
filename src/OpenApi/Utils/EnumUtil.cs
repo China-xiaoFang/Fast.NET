@@ -34,9 +34,9 @@ public static partial class OpenApiUtil
     /// <summary>
     /// 写入 OpenAPI 文档枚举文件。
     /// </summary>
-    /// <param name="rootDir"><see cref="string"/> 根目录。</param>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档 DTO。</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <param name="rootDir">根目录。</param>
+    /// <param name="openApiDocument">OpenAPI 文档。</param>
+    /// <param name="scriptLanguage">脚本语言。</param>
     /// <returns>表示异步写入 OpenAPI 文档枚举文件的任务，任务结果为写入 OpenAPI 文档枚举文件集合。</returns>
     internal static async Task<List<ComponentSchemaDto>> WriteOpenApiDocumentEnumFile(string rootDir,
         OpenApiDocumentDto openApiDocument, ScriptLanguageEnum scriptLanguage)

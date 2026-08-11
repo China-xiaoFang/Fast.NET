@@ -36,7 +36,7 @@ public static class SqlSugarExtension
     /// <summary>
     /// 获取 SugarTable 特性中的 TableName。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>获取到的 SugarTable 特性中的 TableName。</returns>
     public static string GetSugarTableName(this Type type)
     {
@@ -52,7 +52,7 @@ public static class SqlSugarExtension
     /// <summary>
     /// 获取 SugarTable 特性。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>获取到的 SugarTable 特性。</returns>
     public static SugarTable GetSugarTableAttribute(this Type type)
     {

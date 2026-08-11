@@ -36,7 +36,7 @@ public static class GzipCompressionExtension
     /// <summary>
     /// 添加 Gzip 压缩。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddGzipCompression(this IServiceCollection services)
     {
@@ -61,7 +61,7 @@ public static class GzipCompressionExtension
     /// <summary>
     /// 启用 Gzip 压缩。
     /// </summary>
-    /// <param name="app">要配置的应用管道构建器 <see cref="IApplicationBuilder"/>。</param>
+    /// <param name="app">要配置的应用管道。</param>
     /// <returns>返回 <paramref name="app"/>，便于链式调用。</returns>
     public static IApplicationBuilder UseGzipCompression(this IApplicationBuilder app)
     {

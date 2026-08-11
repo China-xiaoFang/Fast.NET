@@ -36,10 +36,10 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加 Swagger 服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <param name="section">配置节名称。</param>
-    /// <param name="configure">用于配置 <see cref="SwaggerGenOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="configure">Swagger 生成配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, IConfiguration configuration,
         string section = "SwaggerSettings", Action<SwaggerGenOptions> configure = null)
@@ -66,9 +66,9 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加 Swagger 服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="optionAction">用于配置 <see cref="SwaggerSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
-    /// <param name="configure">用于配置 <see cref="SwaggerGenOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="optionAction">Swagger 配置操作。</param>
+    /// <param name="configure">Swagger 生成配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services,
         Action<SwaggerSettingsOptions> optionAction, Action<SwaggerGenOptions> configure = null)

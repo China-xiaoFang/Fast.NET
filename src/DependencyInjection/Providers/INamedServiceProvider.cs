@@ -31,7 +31,7 @@ internal interface INamedServiceProvider<out TService> where TService : class
     /// <summary>
     /// 根据服务名称获取服务。
     /// </summary>
-    /// <param name="serviceName"><see cref="string"/> 服务名称。</param>
+    /// <param name="serviceName">服务名称。</param>
     /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/>。</typeparam>
     /// <returns>根据服务名称获取服务。</returns>
     TService GetService<ILifetime>(string serviceName) where ILifetime : IDependency;
@@ -39,7 +39,7 @@ internal interface INamedServiceProvider<out TService> where TService : class
     /// <summary>
     /// 根据服务名称获取服务。
     /// </summary>
-    /// <param name="serviceName"><see cref="string"/> 服务名称。</param>
+    /// <param name="serviceName">服务名称。</param>
     /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/>。</typeparam>
     /// <returns>根据服务名称获取服务。</returns>
     TService GetRequiredService<ILifetime>(string serviceName) where ILifetime : IDependency;

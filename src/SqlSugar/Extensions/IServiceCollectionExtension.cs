@@ -38,8 +38,8 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加雪花 ID。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：SnowflakeSettings。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
@@ -62,9 +62,9 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加雪花 ID。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
-    /// <param name="optionAction">用于配置 <see cref="SnowflakeSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
+    /// <param name="optionAction">雪花 ID 配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
         Action<SnowflakeSettingsOptions> optionAction)
@@ -85,8 +85,8 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 注册 SqlSugar 服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <param name="hostEnvironment">当前应用的宿主环境。</param>
     /// <param name="connectionSection">JSON 配置文件节点的 Key 默认值：ConnectionSettings。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
@@ -110,10 +110,10 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 注册 SqlSugar 服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <param name="hostEnvironment">当前应用的宿主环境。</param>
-    /// <param name="optionAction">用于配置 <see cref="ConnectionSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="optionAction">数据库连接配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration,
         IHostEnvironment hostEnvironment, Action<ConnectionSettingsOptions> optionAction)

@@ -191,12 +191,10 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
         catch (ObjectDisposedException)
         {
             // Dispose 与生产者并发时属于正常关闭流程。
-            return;
         }
         catch (InvalidOperationException)
         {
             // CompleteAdding 与生产者并发时属于正常关闭流程。
-            return;
         }
     }
 

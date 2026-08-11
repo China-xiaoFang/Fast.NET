@@ -33,7 +33,7 @@ internal static class ObjectExtension
     /// 将一个对象转换为指定类型。
     /// </summary>
     /// <param name="obj">待转换的对象。</param>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>转换后的对象。</returns>
     public static object ChangeType(this object obj, Type type)
     {

@@ -210,7 +210,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     /// <summary>
     /// 处理类类型参数（添加[FromBody] 特性）。
     /// </summary>
-    /// <param name="action">要执行的操作 <see cref="ActionModel"/>。</param>
+    /// <param name="action">要处理的操作模型。</param>
     private void ConfigureClassTypeParameter(ActionModel action)
     {
         // 没有参数无需处理
@@ -356,7 +356,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     /// <summary>
     /// 生成控制器路由模板。
     /// </summary>
-    /// <param name="controller">要生成路由的控制器模型 <see cref="ControllerModel"/>。</param>
+    /// <param name="controller">要生成路由的控制器模型。</param>
     /// <param name="apiDescriptionSettings">api Description Settings 配置。</param>
     /// <returns>生成的控制器路由模板。</returns>
     private static string GenerateControllerRouteTemplate(ControllerModel controller,
@@ -466,7 +466,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     /// <summary>
     /// 配置规范化结果类型。
     /// </summary>
-    /// <param name="action">要执行的操作 <see cref="ActionModel"/>。</param>
+    /// <param name="action">要处理的操作模型。</param>
     private static void ConfigureActionUnifyResultAttribute(ActionModel action)
     {
         // 判断是否手动添加了标注或跳过规范化处理

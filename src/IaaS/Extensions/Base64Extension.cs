@@ -136,7 +136,7 @@ public static class Base64Extension
     /// <summary>
     /// 添加随机字符串到 Base64 字符串。
     /// </summary>
-    /// <param name="base64Str"><see cref="string"/> Base64 字符串。</param>
+    /// <param name="base64Str">Base64 字符串。</param>
     /// <returns>添加随机字符串到 Base64 字符串。</returns>
     private static string InsertRandomStrToBase64Str(string base64Str)
     {
@@ -157,7 +157,7 @@ public static class Base64Extension
     /// <summary>
     /// 删除 Base64 字符串中的随机数。
     /// </summary>
-    /// <param name="input"><see cref="string"/> Base64 字符串。</param>
+    /// <param name="input">Base64 字符串。</param>
     /// <returns>删除 Base64 字符串中的随机数。</returns>
     private static string RemoveBase64StrRandomStr(string input)
     {

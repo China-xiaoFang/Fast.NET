@@ -184,12 +184,10 @@ internal sealed class FileLoggingWriter : IDisposable
         var currentFileNameOnly = Path.GetFileNameWithoutExtension(_fileName);
 
         // 解析日志文件名【递增】部分
-        var suffix = currentFileNameOnly != null
-                     && currentFileNameOnly.StartsWith(baseFileNameOnly, StringComparison.Ordinal)
+        var suffix = currentFileNameOnly != null && currentFileNameOnly.StartsWith(baseFileNameOnly, StringComparison.Ordinal)
             ? currentFileNameOnly[baseFileNameOnly.Length..]
             : null;
-        if (suffix?.Length > 0
-            && int.TryParse(suffix, NumberStyles.None, CultureInfo.InvariantCulture, out var parsedIndex))
+        if (suffix?.Length > 0 && int.TryParse(suffix, NumberStyles.None, CultureInfo.InvariantCulture, out var parsedIndex))
         {
             currentFileIndex = parsedIndex;
         }
@@ -213,7 +211,7 @@ internal sealed class FileLoggingWriter : IDisposable
     /// <summary>
     /// 打开文件。
     /// </summary>
-    /// <param name="append"><see cref="bool"/>追加还是覆盖。</param>
+    /// <param name="append">是否追加写入。</param>
     private void OpenFile(bool append)
     {
         try

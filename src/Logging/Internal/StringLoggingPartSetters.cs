@@ -89,7 +89,7 @@ public sealed partial class StringLoggingPart
     /// <summary>
     /// 设置异常对象。
     /// </summary>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <returns>设置异常对象。</returns>
     public StringLoggingPart SetException(Exception exception)
     {
@@ -127,7 +127,7 @@ public sealed partial class StringLoggingPart
     /// <summary>
     /// 配置日志上下文。
     /// </summary>
-    /// <param name="configure">用于配置 <see cref="LogContext"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="configure">日志上下文配置操作。</param>
     /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
     public StringLoggingPart ScopeContext(Action<LogContext> configure)
     {
@@ -142,7 +142,7 @@ public sealed partial class StringLoggingPart
     /// <summary>
     /// 配置日志上下文。
     /// </summary>
-    /// <param name="context">当前操作上下文 <see cref="LogContext"/>。</param>
+    /// <param name="context">当前日志上下文。</param>
     /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
     public StringLoggingPart ScopeContext(LogContext context)
     {

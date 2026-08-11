@@ -33,7 +33,7 @@ public static class IConfigurationExtension
     /// <summary>
     /// 加载后期配置。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <typeparam name="T">要执行后期配置的选项类型。</typeparam>
     /// <returns>加载后的后期配置。</returns>
     public static T LoadPostConfigure<T>(this T type) where T : IPostConfigure

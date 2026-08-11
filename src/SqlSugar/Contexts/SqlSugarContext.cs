@@ -124,8 +124,8 @@ public sealed class SqlSugarContext
     /// <summary>
     /// Entity Value 检测。
     /// </summary>
-    /// <param name="emptyList"><see cref="ICollection{T}"/> 空对象检测集合。</param>
-    /// <param name="entityInfo"><see cref="DataFilterModel"/> 实体信息。</param>
+    /// <param name="emptyList">空对象检测集合。</param>
+    /// <param name="entityInfo">实体信息。</param>
     /// <returns>检查通过时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     internal static bool EntityValueCheck(ICollection<object> emptyList, DataFilterModel entityInfo)
     {
@@ -143,10 +143,10 @@ public sealed class SqlSugarContext
     /// <summary>
     /// 设置 Entity Value。
     /// </summary>
-    /// <param name="fieldName"><see cref="string"/> 字段名称。</param>
-    /// <param name="emptyList"><see cref="ICollection{T}"/> 空对象检测集合。</param>
-    /// <param name="setValue"><see cref="string"/> 赋值。</param>
-    /// <param name="entityInfo"><see cref="DataFilterModel"/> 实体信息。</param>
+    /// <param name="fieldName">字段名称。</param>
+    /// <param name="emptyList">空对象检测集合。</param>
+    /// <param name="setValue">要设置的值。</param>
+    /// <param name="entityInfo">实体信息。</param>
     internal static void SetEntityValue(string fieldName, ICollection<object> emptyList, object setValue,
         DataFilterModel entityInfo)
     {

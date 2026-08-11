@@ -211,7 +211,7 @@ public static class JwtBearerUtil
     /// <summary>
     /// 获取 JWT Bearer Token。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="headerKey">承载令牌的请求头名称。</param>
     /// <param name="tokenPrefix">请求头中位于令牌之前的前缀。</param>
     /// <returns>获取到的 JWT Bearer Token。</returns>
@@ -388,7 +388,7 @@ public static class JwtBearerUtil
     /// <summary>
     /// 验证 Token。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="token">要解析或验证的令牌。</param>
     /// <param name="headerKey">承载令牌的请求头名称。</param>
     /// <param name="tokenPrefix">请求头中位于令牌之前的前缀。</param>
@@ -443,7 +443,7 @@ public static class JwtBearerUtil
     /// <summary>
     /// 通过过期 Token 和 刷新 Token 换取新的 Token。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="expiredToken">已过期但签名仍需验证的访问令牌。</param>
     /// <param name="refreshToken">刷新令牌。</param>
     /// <param name="expiredTime">令牌过期时间。</param>
@@ -461,7 +461,7 @@ public static class JwtBearerUtil
     /// <summary>
     /// 异步使用过期 Token 和刷新 Token 换取新的 Token。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="expiredToken">已过期但签名仍需验证的访问令牌。</param>
     /// <param name="refreshToken">刷新令牌。</param>
     /// <param name="expiredTime">令牌过期时间。</param>
@@ -542,7 +542,7 @@ public static class JwtBearerUtil
     /// <summary>
     /// 标记过期 Token。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="expiredToken">已过期但签名仍需验证的访问令牌。</param>
     public static void SetExpiredToken(HttpContext httpContext, string expiredToken)
     {
@@ -555,7 +555,7 @@ public static class JwtBearerUtil
     /// <summary>
     /// 异步标记失效 Token。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="expiredToken">已过期但签名仍需验证的访问令牌。</param>
     /// <returns>表示异步“异步标记失效 Token”操作的任务。</returns>
     public static async Task SetExpiredTokenAsync(HttpContext httpContext, string expiredToken)
@@ -590,7 +590,7 @@ public static class JwtBearerUtil
     /// 自动刷新 Token 信息。
     /// </summary>
     /// <param name="context">当前授权处理上下文。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="expiredTime">令牌过期时间。</param>
     /// <param name="tokenPrefix">请求头中位于令牌之前的前缀。</param>
     /// <param name="clockSkew">允许同一刷新 Token 重复提交的兼容容差（秒），默认 0（禁止重放）。</param>
@@ -607,8 +607,8 @@ public static class JwtBearerUtil
     /// <summary>
     /// 异步自动刷新 Token 信息。
     /// </summary>
-    /// <param name="context">当前操作上下文 <see cref="AuthorizationHandlerContext"/>。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="context">当前授权处理上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="expiredTime">令牌过期时间。</param>
     /// <param name="tokenPrefix">请求头中位于令牌之前的前缀。</param>
     /// <param name="clockSkew">令牌验证允许的时钟偏差。</param>

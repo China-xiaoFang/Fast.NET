@@ -35,7 +35,7 @@ public static class IMvcBuilderExtension
     /// <summary>
     /// 注册 Mvc 过滤器。
     /// </summary>
-    /// <param name="builder">要配置的应用构建器 <see cref="IMvcBuilder"/>。</param>
+    /// <param name="builder">要配置的应用构建器。</param>
     /// <param name="configure">额外的 MVC 配置操作。</param>
     /// <typeparam name="TFilter">要注册的 MVC 过滤器类型。</typeparam>
     /// <returns>返回当前 MVC 构建器，便于链式调用。</returns>

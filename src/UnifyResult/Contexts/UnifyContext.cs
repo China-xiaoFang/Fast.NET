@@ -66,7 +66,7 @@ public static class UnifyContext
     /// <param name="code">业务或枚举编码。</param>
     /// <param name="data">要处理或传输的数据。</param>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>处理 Restful 响应状态码。</returns>
     public static RestfulResult<object> HandleRestfulStatusCode(int code, object data, string message, HttpContext httpContext)
     {
@@ -125,7 +125,7 @@ public static class UnifyContext
     /// <param name="success">操作是否成功。</param>
     /// <param name="data">要处理或传输的数据。</param>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>获取到的规范化 RESTful 风格返回值。</returns>
     public static RestfulResult<object> GetRestfulResult(int code, bool success, object data, object message,
         HttpContext httpContext)
@@ -146,7 +146,7 @@ public static class UnifyContext
     /// <summary>
     /// 检查请求成功是否进行规范化处理。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="method">当前动作方法。</param>
     /// <param name="unifyResult">可用的规范化结果提供器；跳过处理时为 <see langword="null"/>。</param>
     /// <param name="isWebRequest">是否需要从请求服务中解析结果提供器。</param>
@@ -209,7 +209,7 @@ public static class UnifyContext
     /// <summary>
     /// 检查请求失败（验证失败、抛异常）是否进行规范化处理。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="method">发生验证失败或异常的动作方法。</param>
     /// <param name="unifyResult">可用的规范化结果提供器；跳过处理时为 <see langword="null"/>。</param>
     /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
@@ -251,7 +251,7 @@ public static class UnifyContext
     /// <summary>
     /// 检查请求响应数据是否进行规范化处理。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="method">当前动作方法。</param>
     /// <param name="unifyResponse">可用的规范化响应提供器；跳过处理时为 <see langword="null"/>。</param>
     /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
@@ -294,7 +294,7 @@ public static class UnifyContext
     /// <summary>
     /// 检查短路状态码（>=400）是否进行规范化处理。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="unifyResult">可用的规范化结果提供器；跳过处理时为 <see langword="null"/>。</param>
     /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     internal static bool CheckStatusCodeNonUnify(HttpContext httpContext, out IUnifyResultProvider unifyResult)

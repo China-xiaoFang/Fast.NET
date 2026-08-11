@@ -37,8 +37,8 @@ public struct LogMessage
     /// <param name="logLevel">日志级别。</param>
     /// <param name="eventId">日志事件标识。</param>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
-    /// <param name="context">当前操作上下文 <see cref="LogContext"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
+    /// <param name="context">当前日志上下文。</param>
     /// <param name="state">当前状态值。</param>
     /// <param name="logDateTime">日志记录时间。</param>
     /// <param name="threadId">thread 的唯一标识。</param>

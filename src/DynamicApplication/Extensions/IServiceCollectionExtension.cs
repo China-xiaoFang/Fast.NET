@@ -35,7 +35,7 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加动态 API 服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <param name="routePrefix">应用于生成路由的统一前缀。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddDynamicApplication(this IServiceCollection services, string routePrefix = null)

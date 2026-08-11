@@ -33,7 +33,7 @@ public static class UserFriendlyExceptionExtension
     /// <summary>
     /// 设置异常状态码。
     /// </summary>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="statusCode">HTTP 状态码。</param>
     /// <returns>设置异常状态码。</returns>
     public static UserFriendlyException StatusCode(this UserFriendlyException exception,
@@ -46,7 +46,7 @@ public static class UserFriendlyExceptionExtension
     /// <summary>
     /// 设置额外数据。
     /// </summary>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="data">要处理或传输的数据。</param>
     /// <returns>设置额外数据。</returns>
     public static UserFriendlyException WithData(this UserFriendlyException exception, object data)

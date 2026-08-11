@@ -39,7 +39,7 @@ public static class WebApplicationBuilderExtension
     /// <summary>
     /// 框架初始化。
     /// </summary>
-    /// <param name="builder">要配置的应用构建器 <see cref="WebApplicationBuilder"/>。</param>
+    /// <param name="builder">要配置的应用构建器。</param>
     /// <returns>返回 <paramref name="builder"/>，便于链式调用。</returns>
     public static WebApplicationBuilder Initialize(this WebApplicationBuilder builder)
     {
@@ -99,8 +99,8 @@ public static class WebApplicationBuilderExtension
     /// <summary>
     /// 配置 Application。
     /// </summary>
-    /// <param name="builder">要配置的应用构建器 <see cref="IWebHostBuilder"/>。</param>
-    /// <param name="hostBuilder">要配置的主机构建器 <see cref="IHostBuilder"/>。</param>
+    /// <param name="builder">要配置的应用构建器。</param>
+    /// <param name="hostBuilder">要配置的主机构建器。</param>
     private static void ConfigureApplication(IWebHostBuilder builder, IHostBuilder hostBuilder = null)
     {
         if (hostBuilder == null)
@@ -225,7 +225,7 @@ public static class WebApplicationBuilderExtension
     /// <summary>
     /// 添加 JSON 文件。
     /// </summary>
-    /// <param name="configurationBuilder">要添加配置源的配置构建器 <see cref="IConfigurationBuilder"/>。</param>
+    /// <param name="configurationBuilder">要添加配置源的配置构建器。</param>
     /// <param name="hostEnvironment">当前应用的宿主环境。</param>
     private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
     {

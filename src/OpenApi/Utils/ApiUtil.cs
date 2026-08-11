@@ -34,7 +34,7 @@ public static partial class OpenApiUtil
     /// <summary>
     /// 处理请求行为。
     /// </summary>
-    /// <param name="requestAction"><see cref="HttpRequestActionEnum"/> 请求行为。</param>
+    /// <param name="requestAction">请求行为。</param>
     /// <returns>处理请求行为。</returns>
     internal static string DisposeRequestAction(HttpRequestActionEnum requestAction)
     {
@@ -74,13 +74,13 @@ public static partial class OpenApiUtil
     /// <summary>
     /// 写入 OpenAPI 文档 API 文件。
     /// </summary>
-    /// <param name="rootDir"><see cref="string"/> 根目录。</param>
-    /// <param name="hasWeb"><see cref="bool"/> 是否为 Web 端。</param>
-    /// <param name="apiDescriptionGroupCollectionProvider"><see cref="IApiDescriptionGroupCollectionProvider"/> 接口描述提供程序。</param>
-    /// <param name="openApiDocument"><see cref="OpenApiDocumentDto"/> 文档 DTO。</param>
-    /// <param name="dtoSchemas"><see cref="List{ComponentSchemaDto}"/> DTO 声明。</param>
-    /// <param name="enumSchemas"><see cref="List{ComponentSchemaDto}"/> 枚举声明。</param>
-    /// <param name="scriptLanguage"><see cref="ScriptLanguageEnum"/> 脚本语言。</param>
+    /// <param name="rootDir">根目录。</param>
+    /// <param name="hasWeb">是否为 Web 端。</param>
+    /// <param name="apiDescriptionGroupCollectionProvider">接口描述提供程序。</param>
+    /// <param name="openApiDocument">OpenAPI 文档。</param>
+    /// <param name="dtoSchemas">DTO 声明。</param>
+    /// <param name="enumSchemas">枚举声明。</param>
+    /// <param name="scriptLanguage">脚本语言。</param>
     /// <returns>表示异步写入 OpenAPI 文档 API 文件的任务。</returns>
     internal static async Task WriteOpenApiDocumentApiFile(string rootDir, bool hasWeb,
         IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider, OpenApiDocumentDto openApiDocument,

@@ -39,8 +39,8 @@ public interface IJwtBearerHandle
     /// 框架将调用 <see cref="AuthorizeFailHandle"/>；该方法未提供响应时调用
     /// <see cref="AuthorizationHandlerContext.Fail()"/>。
     /// </remarks>
-    /// <param name="context">当前 <see cref="AuthorizationHandlerContext"/>。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="context">当前授权处理上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>授权通过时返回 <see langword="true"/>；返回 <see langword="false"/> 或抛出异常时进入失败处理。</returns>
     Task<bool> AuthorizeHandle(AuthorizationHandlerContext context, HttpContext httpContext);
 
@@ -51,8 +51,8 @@ public interface IJwtBearerHandle
     /// 返回非 <see langword="null"/> 数据时，框架以 HTTP 401 状态码写入该数据；返回
     /// <see langword="null"/> 时调用 <see cref="AuthorizationHandlerContext.Fail()"/>。
     /// </remarks>
-    /// <param name="context">当前 <see cref="AuthorizationHandlerContext"/>。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="context">当前授权处理上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="exception">身份验证检查抛出的异常；没有捕获到异常时为 <see langword="null"/>。</param>
     /// <returns>自定义响应数据；使用默认失败处理时返回 <see langword="null"/>。</returns>
     Task<object> AuthorizeFailHandle(AuthorizationHandlerContext context, HttpContext httpContext, Exception exception);
@@ -63,9 +63,9 @@ public interface IJwtBearerHandle
     /// <remarks>
     /// 返回 <see langword="false"/> 或抛出异常时，框架将调用 <see cref="PermissionFailHandle"/>。
     /// </remarks>
-    /// <param name="context">当前 <see cref="AuthorizationHandlerContext"/>。</param>
-    /// <param name="requirement">当前待验证的 <see cref="IAuthorizationRequirement"/>。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="context">当前授权处理上下文。</param>
+    /// <param name="requirement">当前待验证的授权要求。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>权限检查通过时返回 <see langword="true"/>；返回 <see langword="false"/> 或抛出异常时进入失败处理。</returns>
     Task<bool> PermissionHandle(AuthorizationHandlerContext context, IAuthorizationRequirement requirement,
         HttpContext httpContext);
@@ -77,9 +77,9 @@ public interface IJwtBearerHandle
     /// 返回非 <see langword="null"/> 数据时，框架以 HTTP 403 状态码写入该数据；返回
     /// <see langword="null"/> 时调用 <see cref="AuthorizationHandlerContext.Fail()"/>。
     /// </remarks>
-    /// <param name="context">当前 <see cref="AuthorizationHandlerContext"/>。</param>
-    /// <param name="requirement">验证失败的 <see cref="IAuthorizationRequirement"/>。</param>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="context">当前授权处理上下文。</param>
+    /// <param name="requirement">验证失败的授权要求。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="exception">权限检查抛出的异常；没有捕获到异常时为 <see langword="null"/>。</param>
     /// <returns>自定义响应数据；使用默认失败处理时返回 <see langword="null"/>。</returns>
     Task<object> PermissionFailHandle(AuthorizationHandlerContext context, IAuthorizationRequirement requirement,

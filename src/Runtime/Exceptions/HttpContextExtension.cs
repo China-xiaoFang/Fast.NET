@@ -65,7 +65,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 设置规范化响应时间戳。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="timestamp">时间戳。</param>
     public static void UnifyResponseTimestamp(this HttpContext httpContext, long timestamp)
     {
@@ -75,7 +75,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 获取规范化响应时间戳。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>获取到的规范化响应时间戳。</returns>
     public static long UnifyResponseTimestamp(this HttpContext httpContext)
     {
@@ -97,7 +97,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 判断是否是 WebSocket 请求。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public static bool IsWebSocketRequest(this HttpContext httpContext)
     {
@@ -107,7 +107,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 获取终结点元数据中的指定特性。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <typeparam name="TAttribute">要查找的特性类型。</typeparam>
     /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/>。</returns>
     public static TAttribute GetMetadata<TAttribute>(this HttpContext httpContext) where TAttribute : class
@@ -119,7 +119,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 获取终结点元数据中的指定特性。
     /// </summary>
-    /// <param name="metadata">当前元数据 <see cref="EndpointMetadataCollection"/>。</param>
+    /// <param name="metadata">当前元数据。</param>
     /// <param name="attributeType">要读取的特性类型。</param>
     /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/>。</returns>
     public static object GetMetadata(this EndpointMetadataCollection metadata, Type attributeType)
@@ -133,7 +133,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 获取终结点元数据中的指定特性。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="attributeType">要读取的特性类型。</param>
     /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/>。</returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)
@@ -145,7 +145,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 设置规范化文档自动登录。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="accessToken">访问令牌。</param>
     public static void SignInToSwagger(this HttpContext httpContext, string accessToken)
     {
@@ -159,7 +159,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 设置规范化文档退出登录。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     public static void SignOutToSwagger(this HttpContext httpContext)
     {
         if (httpContext != null)
@@ -171,7 +171,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 局域网 IPv4 地址。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>局域网 IPv4 地址。</returns>
     public static string LanIpv4(this HttpContext httpContext)
     {
@@ -193,7 +193,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 局域网 IPv6 地址。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>局域网 IPv6 地址。</returns>
     public static string LanIpv6(this HttpContext httpContext)
     {
@@ -209,7 +209,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 本机 IPv4 地址。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>本机 IPv4 地址。</returns>
     public static string LocalIpv4(this HttpContext httpContext)
     {
@@ -227,7 +227,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 本机 IPv6 地址。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>本机 IPv6 地址。</returns>
     public static string LocalIpv6(this HttpContext httpContext)
     {
@@ -238,7 +238,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 远程 IPv4 地址。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>远程 IPv4 地址。</returns>
     public static string RemoteIpv4(this HttpContext httpContext)
     {
@@ -286,7 +286,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 远程 IPv6 地址。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>远程 IPv6 地址。</returns>
     public static string RemoteIpv6(this HttpContext httpContext)
     {
@@ -320,7 +320,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 请求用户代理字符串（User-Agent）。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="userAgentHeaderKey">包含用户代理信息的请求头名称。</param>
     /// <returns>请求用户代理字符串（User-Agent）。</returns>
     public static string RequestUserAgent(this HttpContext httpContext, string userAgentHeaderKey = "User-Agent")
@@ -332,7 +332,7 @@ public static class HttpContextExtension
     /// 请求用户代理信息（User-Agent）。
     /// </summary>
     /// <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 <see langword="null"/>。</remarks>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>请求用户代理信息（User-Agent）。</returns>
     public static UserAgentInfo RequestUserAgentInfo(this HttpContext httpContext)
     {
@@ -416,7 +416,7 @@ public static class HttpContextExtension
     /// 远程 IPv4 地址信息。
     /// </summary>
     /// <remarks>自带内存缓存，缓存过期时间为 24 小时（注：需要注入内存缓存，如不注入，则默认不走缓存）。</remarks>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="ip">要的 IP 地址信息，默认为 <see langword="null"/>，如果为 <see langword="null"/>，默认获取当前远程的 IPv4 地址。</param>
     /// <returns>远程 IPv4 地址信息。</returns>
     public static WanNetIPInfo RemoteIpv4Info(this HttpContext httpContext, string ip = null)
@@ -431,7 +431,7 @@ public static class HttpContextExtension
     /// 远程 IPv4 地址信息。
     /// </summary>
     /// <remarks>自带内存缓存，缓存过期时间为 24 小时（注：需要注入内存缓存，如不注入，则默认不走缓存）。</remarks>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="ip">要的 IP 地址信息，默认为 <see langword="null"/>，如果为 <see langword="null"/>，默认获取当前远程的 IPv4 地址。</param>
     /// <returns>表示异步远程 IPv4 地址信息的任务，任务结果为远程 IPv4 地址信息。</returns>
     public static async Task<WanNetIPInfo> RemoteIpv4InfoAsync(this HttpContext httpContext, string ip = null)
@@ -506,7 +506,7 @@ public static class HttpContextExtension
     /// 获取远程 IPv4 地址信息。
     /// </summary>
     /// <remarks>无内存缓存，请谨慎调用。</remarks>
-    /// <param name="ip"><see cref="string"/> 要的 IP 地址信息。</param>
+    /// <param name="ip">IP 地址信息。</param>
     /// <param name="cancellationToken">取消令牌。</param>
     /// <returns>表示异步获取远程 IPv4 地址信息的任务，任务结果为获取到的远程 IPv4 地址信息。</returns>
     private static async Task<WanNetIPInfo> GetWanNetInfoAsync(string ip, CancellationToken cancellationToken)
@@ -629,7 +629,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 获取 控制器/Action 描述器。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>获取到的 控制器/Action 描述器。</returns>
     public static ControllerActionDescriptor GetControllerActionDescriptor(this HttpContext httpContext)
     {
@@ -641,7 +641,7 @@ public static class HttpContextExtension
     /// 读取 Body 内容。
     /// </summary>
     /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()。</remarks>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>表示异步读取 Body 内容的任务，任务结果为读取到的 Body 内容。</returns>
     public static async Task<string> ReadBodyContentAsync(this HttpContext httpContext)
     {
@@ -670,7 +670,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 完整请求地址。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <returns>完整请求地址。</returns>
     public static string RequestUrlAddress(this HttpContext httpContext)
     {
@@ -713,7 +713,7 @@ public static class HttpContextExtension
     /// <summary>
     /// 来源地址。
     /// </summary>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="refererHeaderKey">包含来源地址的请求头名称。</param>
     /// <returns>来源地址。</returns>
     public static string RefererUrlAddress(this HttpContext httpContext, string refererHeaderKey = "Referer")
@@ -736,7 +736,7 @@ public static class HttpContextExtension
     /// return200StatusCodes = [401, 403]
     /// adaptStatusCodes = [[401, 200], [403, 200]]
     /// </remarks>
-    /// <param name="httpContext">当前 <see cref="HttpContext"/> 请求上下文。</param>
+    /// <param name="httpContext">当前请求上下文。</param>
     /// <param name="statusCode">HTTP 状态码。</param>
     /// <param name="return200StatusCodes">设置返回 200 状态码列表。只支持 400+(404 除外) 状态码。</param>
     /// <param name="adaptStatusCodes">适配（篡改）状态码。只支持 400+(404 除外) 状态码。</param>

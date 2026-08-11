@@ -41,8 +41,8 @@ public static class IServiceCollectionExtension
     /// 添加 JwtBearer 设置。
     /// </summary>
     /// <remarks>适用于只使用工具类。</remarks>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services, IConfiguration configuration,
@@ -65,8 +65,8 @@ public static class IServiceCollectionExtension
     /// 添加 JwtBearer 设置。
     /// </summary>
     /// <remarks>适用于只使用工具类。</remarks>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="optionAction">用于配置 <see cref="JWTSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="optionAction">JWT 配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services,
         Action<JWTSettingsOptions> optionAction)
@@ -88,8 +88,8 @@ public static class IServiceCollectionExtension
     /// 添加 JwtBearer 授权。
     /// </summary>
     /// <remarks>适用于自定义验证。</remarks>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services, IConfiguration configuration,
@@ -136,8 +136,8 @@ public static class IServiceCollectionExtension
     /// 添加 JwtBearer 授权。
     /// </summary>
     /// <remarks>适用于自定义验证。</remarks>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="optionAction">用于配置 <see cref="JWTSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="optionAction">JWT 配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services,
         Action<JWTSettingsOptions> optionAction)
@@ -182,8 +182,8 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加 JwtBearer 服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearer(this IServiceCollection services, IConfiguration configuration,
@@ -251,8 +251,8 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加 JwtBearer 服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="optionAction">用于配置 <see cref="JWTSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="optionAction">JWT 配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddJwtBearer(this IServiceCollection services, Action<JWTSettingsOptions> optionAction)
     {

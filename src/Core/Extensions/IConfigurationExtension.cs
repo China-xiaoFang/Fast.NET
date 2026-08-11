@@ -33,7 +33,7 @@ public static class IConfigurationExtension
     /// <summary>
     /// 刷新配置对象。
     /// </summary>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <returns>刷新配置对象。</returns>
     public static IConfiguration Reload(this IConfiguration configuration)
     {

@@ -35,7 +35,7 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加 Mapster 映射服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddMapster(this IServiceCollection services)
     {

@@ -33,7 +33,7 @@ public static class FieldInfoExtension
     /// <summary>
     /// 获取字段特性。
     /// </summary>
-    /// <param name="field">目标 <see cref="FieldInfo"/>。</param>
+    /// <param name="field">目标字段。</param>
     /// <typeparam name="T">要读取的特性类型。</typeparam>
     /// <returns>获取到的字段特性。</returns>
     public static T GetDescriptionValue<T>(this FieldInfo field) where T : Attribute

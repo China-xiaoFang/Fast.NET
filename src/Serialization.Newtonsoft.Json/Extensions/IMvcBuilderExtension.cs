@@ -32,7 +32,7 @@ public static class IMvcBuilderExtension
     /// <summary>
     /// 添加 Newtonsoft.Json 序列化服务。
     /// </summary>
-    /// <param name="builder">要配置的应用构建器 <see cref="IMvcBuilder"/>。</param>
+    /// <param name="builder">要配置的应用构建器。</param>
     /// <returns>返回当前 MVC 构建器，便于链式调用。</returns>
     public static IMvcBuilder AddSerialization(this IMvcBuilder builder)
     {

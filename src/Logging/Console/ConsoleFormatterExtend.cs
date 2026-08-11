@@ -111,7 +111,7 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     /// <summary>
     /// 刷新日志格式化选项。
     /// </summary>
-    /// <param name="options">当前组件使用的选项 <see cref="ConsoleFormatterExtendOptions"/>。</param>
+    /// <param name="options">当前组件使用的选项。</param>
     private void ReloadFormatterOptions(ConsoleFormatterExtendOptions options)
     {
         _formatterOptions = options;

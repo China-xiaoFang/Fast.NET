@@ -31,7 +31,7 @@ public interface IEventFallbackPolicy
     /// <summary>
     /// 重试失败回调。
     /// </summary>
-    /// <param name="context">当前操作上下文 <see cref="EventHandlerExecutingContext"/>。</param>
+    /// <param name="context">当前事件处理上下文。</param>
     /// <param name="ex">触发当前处理流程的异常。</param>
     /// <returns>表示异步“重试失败回调”操作的任务。</returns>
     Task CallbackAsync(EventHandlerExecutingContext context, Exception ex);

@@ -37,7 +37,6 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-
 namespace Fast.Swagger;
 
 /// <summary>
@@ -260,7 +259,7 @@ public static class SwaggerDocumentBuilder
     /// Swagger UI 构建。
     /// </summary>
     /// <param name="swaggerUIOptions">Swagger UI 配置选项。</param>
-    /// <param name="configure">用于配置 <see cref="SwaggerUIOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="configure">Swagger UI 配置操作。</param>
     internal static void BuildUI(SwaggerUIOptions swaggerUIOptions, Action<SwaggerUIOptions> configure = null)
     {
         // 配置分组终点路由
@@ -676,7 +675,7 @@ public static class SwaggerDocumentBuilder
     /// <summary>
     /// 获取控制器分组列表。
     /// </summary>
-    /// <param name="type">目标 <see cref="Type"/>。</param>
+    /// <param name="type">目标类型。</param>
     /// <returns>获取到的控制器分组列表集合。</returns>
     public static IEnumerable<GroupExtraInfo> GetControllerGroups(Type type)
     {

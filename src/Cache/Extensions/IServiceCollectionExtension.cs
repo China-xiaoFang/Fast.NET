@@ -34,7 +34,7 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加缓存服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：RedisSettings。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddCache(this IServiceCollection services, string section = "RedisSettings")
@@ -62,8 +62,8 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加缓存服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="optionAction">用于配置 <see cref="RedisSettingsOptions"/> 集合的 <see cref="Action{T}"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="optionAction">Redis 配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddCache(this IServiceCollection services, Action<List<RedisSettingsOptions>> optionAction)
     {

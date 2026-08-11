@@ -39,7 +39,7 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 添加依赖注入服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
     {
@@ -157,7 +157,7 @@ public static class IServiceCollectionExtension
     /// <summary>
     /// 注册命名服务（接口多实现）。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
     /// <typeparam name="TDependency">要注册的依赖服务类型。</typeparam>
     private static void RegisterNamedService<TDependency>(IServiceCollection services) where TDependency : IDependency
     {

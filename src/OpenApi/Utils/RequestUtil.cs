@@ -50,7 +50,7 @@ public static partial class OpenApiUtil
     /// <summary>
     /// 获取 OpenAPI 文档信息。
     /// </summary>
-    /// <param name="documentUrl"><see cref="string"/> 文档地址。</param>
+    /// <param name="documentUrl">文档地址。</param>
     /// <param name="cancellationToken">取消令牌。</param>
     /// <returns>表示异步获取 OpenAPI 文档信息的任务，任务结果为获取到的 OpenAPI 文档信息。</returns>
     internal static async Task<OpenApiDocumentDto> GetOpenApiDocument(string documentUrl,

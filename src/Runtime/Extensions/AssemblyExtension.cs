@@ -36,7 +36,7 @@ public static class AssemblyExtension
     /// 获取入口运行库。
     /// </summary>
     /// <remarks>暂不支持独立/单文件发布。</remarks>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <returns>获取到的入口运行库集合。</returns>
     public static List<DependencyLibrary> GetEntryRuntimeLibraries(this Assembly assembly)
     {
@@ -121,7 +121,7 @@ public static class AssemblyExtension
     /// <summary>
     /// 解析当前宿主实际使用的依赖上下文文件。
     /// </summary>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <returns>解析后的当前宿主实际使用的依赖上下文文件。</returns>
     private static string ResolveDependencyContextPath(Assembly assembly)
     {
@@ -159,7 +159,7 @@ public static class AssemblyExtension
     /// 获取入口引用程序集。
     /// </summary>
     /// <remarks>暂不支持独立/单文件发布。</remarks>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <param name="dependencyLibraryList">应用依赖库集合。</param>
     /// <returns>获取到的入口引用程序集集合。</returns>
     public static List<Assembly> GetEntryReferencedAssembly(this Assembly assembly,
@@ -221,7 +221,7 @@ public static class AssemblyExtension
     /// 获取程序集中所有类型。
     /// </summary>
     /// <remarks>默认仅返回公开声明的类型；可通过筛选器进一步限制结果。</remarks>
-    /// <param name="assembly">目标 <see cref="Assembly"/>。</param>
+    /// <param name="assembly">目标程序集。</param>
     /// <param name="typeFilter">用于筛选程序集类型的委托。</param>
     /// <returns>获取到的程序集中所有类型集合。</returns>
     public static IEnumerable<Type> GetAssemblyTypes(this Assembly assembly, Func<Type, bool> typeFilter = null)

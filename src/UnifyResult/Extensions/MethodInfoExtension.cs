@@ -41,7 +41,7 @@ internal static class MethodInfoExtension
         return methodInfo.GetCustomAttribute<AsyncStateMachineAttribute>() != null
                || typeof(Task).IsAssignableFrom(returnType)
                || returnType == typeof(ValueTask)
-               || returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(ValueTask<>);
+               || (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(ValueTask<>));
     }
 
     /// <summary>

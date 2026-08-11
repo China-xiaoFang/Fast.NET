@@ -56,7 +56,7 @@ public static class Log
     /// 创建日志工厂。
     /// </summary>
     /// <remarks><see cref="ILoggerFactory"/> 实现了 <see cref="IDisposable"/> 接口，注意使用 `using` 控制。</remarks>
-    /// <param name="configure">用于配置 <see cref="ILoggingBuilder"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="configure">日志构建配置操作。</param>
     /// <returns>创建的日志工厂。</returns>
     public static ILoggerFactory CreateLoggerFactory(Action<ILoggingBuilder> configure = null)
     {
@@ -83,7 +83,7 @@ public static class Log
     /// <summary>
     /// 创建包含指定属性的日志作用域。
     /// </summary>
-    /// <param name="configure">用于配置 <see cref="LogContext"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="configure">日志上下文配置操作。</param>
     /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
     public static (ILogger logger, IDisposable scope) ScopeContext(Action<LogContext> configure)
     {
@@ -94,7 +94,7 @@ public static class Log
     /// <summary>
     /// 创建包含指定属性的日志作用域。
     /// </summary>
-    /// <param name="context">当前操作上下文 <see cref="LogContext"/>。</param>
+    /// <param name="context">当前日志上下文。</param>
     /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
     public static (ILogger logger, IDisposable scope) ScopeContext(LogContext context)
     {
@@ -134,7 +134,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Information(string message, Exception exception, params object[] args)
     {
@@ -150,7 +150,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Information(string message, EventId eventId, Exception exception, params object[] args)
     {
@@ -198,7 +198,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Information"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Information<TClass>(string message, Exception exception, params object[] args)
@@ -216,7 +216,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Information<TClass>(string message, EventId eventId, Exception exception, params object[] args)
@@ -262,7 +262,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Warning(string message, Exception exception, params object[] args)
     {
@@ -278,7 +278,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Warning(string message, EventId eventId, Exception exception, params object[] args)
     {
@@ -326,7 +326,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Warning"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Warning<TClass>(string message, Exception exception, params object[] args)
@@ -344,7 +344,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Warning<TClass>(string message, EventId eventId, Exception exception, params object[] args)
@@ -390,7 +390,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Error(string message, Exception exception, params object[] args)
     {
@@ -406,7 +406,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Error(string message, EventId eventId, Exception exception, params object[] args)
     {
@@ -454,7 +454,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Error"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Error<TClass>(string message, Exception exception, params object[] args)
@@ -472,7 +472,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Error<TClass>(string message, EventId eventId, Exception exception, params object[] args)
@@ -518,7 +518,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Debug(string message, Exception exception, params object[] args)
     {
@@ -534,7 +534,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Debug(string message, EventId eventId, Exception exception, params object[] args)
     {
@@ -582,7 +582,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Debug"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Debug<TClass>(string message, Exception exception, params object[] args)
@@ -600,7 +600,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Debug<TClass>(string message, EventId eventId, Exception exception, params object[] args)
@@ -646,7 +646,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Trace(string message, Exception exception, params object[] args)
     {
@@ -662,7 +662,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Trace(string message, EventId eventId, Exception exception, params object[] args)
     {
@@ -710,7 +710,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Trace"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Trace<TClass>(string message, Exception exception, params object[] args)
@@ -728,7 +728,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Trace<TClass>(string message, EventId eventId, Exception exception, params object[] args)
@@ -774,7 +774,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Critical(string message, Exception exception, params object[] args)
     {
@@ -790,7 +790,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     public static void Critical(string message, EventId eventId, Exception exception, params object[] args)
     {
@@ -838,7 +838,7 @@ public static class Log
     /// 写入 <see cref="LogLevel.Critical"/> 级别日志。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Critical<TClass>(string message, Exception exception, params object[] args)
@@ -856,7 +856,7 @@ public static class Log
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="eventId">日志事件标识。</param>
-    /// <param name="exception">要处理的 <see cref="Exception"/>。</param>
+    /// <param name="exception">要处理的异常。</param>
     /// <param name="args">格式化消息时使用的参数。</param>
     /// <typeparam name="TClass">要处理的对象类型。</typeparam>
     public static void Critical<TClass>(string message, EventId eventId, Exception exception, params object[] args)

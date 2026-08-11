@@ -115,7 +115,7 @@ public static class CorsAccessorExtension
     /// <summary>
     /// 添加跨域服务。
     /// </summary>
-    /// <param name="builder">要配置的应用构建器 <see cref="WebApplicationBuilder"/>。</param>
+    /// <param name="builder">要配置的应用构建器。</param>
     /// <returns>返回 <paramref name="builder"/>，便于链式调用。</returns>
     public static WebApplicationBuilder AddCorsAccessor(this WebApplicationBuilder builder)
     {
@@ -127,8 +127,8 @@ public static class CorsAccessorExtension
     /// <summary>
     /// 添加跨域服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="configuration">用于读取模块设置的 <see cref="IConfiguration"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="configuration">用于读取模块设置的配置。</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：CorsAccessorSettings。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddCorsAccessor(this IServiceCollection services, IConfiguration configuration,
@@ -160,8 +160,8 @@ public static class CorsAccessorExtension
     /// <summary>
     /// 添加跨域服务。
     /// </summary>
-    /// <param name="services">要添加服务的 <see cref="IServiceCollection"/>。</param>
-    /// <param name="optionAction">用于配置 <see cref="CorsAccessorSettingsOptions"/> 的 <see cref="Action{T}"/>。</param>
+    /// <param name="services">要添加服务的服务集合。</param>
+    /// <param name="optionAction">跨域访问配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddCorsAccessor(this IServiceCollection services,
         Action<CorsAccessorSettingsOptions> optionAction)
