@@ -41,6 +41,10 @@ builder.Services.AddSwaggerDocuments(builder.Configuration);
 
 顺序约束只有在模块之间存在实际依赖时才重要。最明确的一项是：`AddDynamicApplication()` 必须位于 MVC 控制器注册之后。
 
+## 依赖注入注册约定
+
+`AddDependencyInjection()` 会扫描实现 `ITransientDependency`、`IScopedDependency` 或 `ISingletonDependency` 的非抽象类。有业务接口时，服务按业务接口注册；仅实现生命周期标记接口时，服务按具体类型注册，可直接注入该实现类。
+
 ## 基础设施模块注意事项
 
 - `Fast.Cache`、`Fast.Consul` 和 `Fast.SqlSugar` 需要真实外部服务。验证时应使用隔离环境，不要在仓库检查流程中直接修改生产数据。

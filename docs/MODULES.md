@@ -41,6 +41,10 @@ builder.Services.AddSwaggerDocuments(builder.Configuration);
 
 Order matters only where modules have an actual dependency. The explicit requirement is that `AddDynamicApplication()` runs after MVC controller registration.
 
+## Dependency injection conventions
+
+`AddDependencyInjection()` scans non-abstract classes that implement `ITransientDependency`, `IScopedDependency`, or `ISingletonDependency`. Services that expose business interfaces are registered against those interfaces; services that only implement a lifetime marker are registered by their concrete type and can be injected directly.
+
 ## Infrastructure notes
 
 - `Fast.Cache`, `Fast.Consul`, and `Fast.SqlSugar` require real external services. Use an isolated environment for validation and never point repository checks at production data.

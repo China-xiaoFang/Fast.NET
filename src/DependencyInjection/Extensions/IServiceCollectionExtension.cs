@@ -100,8 +100,18 @@ public static class IServiceCollectionExtension
     private static void RegisterService(IServiceCollection services, Type dependencyType, Type type,
         IEnumerable<Type> canInjectInterfaces)
     {
+        // 立即执行接口筛选，避免重复枚举，并用于判断是否存在可注册的业务接口。
+        var interfaces = canInjectInterfaces.ToArray();
+
+        // 未实现业务接口时按具体类型注册，支持直接注入仅包含生命周期标记的实现类。
+        if (interfaces.Length == 0)
+        {
+            Register(services, dependencyType, type);
+            return;
+        }
+
         // 一个实现可同时暴露多个业务接口，并共享同一生命周期规则。
-        foreach (var inter in canInjectInterfaces)
+        foreach (var inter in interfaces)
         {
             Register(services, dependencyType, type, inter);
         }
