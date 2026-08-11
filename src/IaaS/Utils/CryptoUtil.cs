@@ -68,7 +68,7 @@ public static class CryptoUtil
     /// <summary>
     /// 密码加密载荷的协议与算法版本前缀。
     /// </summary>
-    private const string PASSWORD_ENCRYPTION_PREFIX = "FAST-AES-256-GCM-V2";
+    private const string PASSWORD_ENCRYPTION_PREFIX = "FAST-AES-256-GCM-V1";
 
     /// <summary>
     /// PBKDF2 密码哈希的协议与算法版本前缀。

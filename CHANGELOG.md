@@ -21,7 +21,8 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 
 - Updated `MiniExcel` to 1.45.0, `SQLitePCLRaw.bundle_e_sqlite3` to 3.0.5, and `Swashbuckle.AspNetCore` to 10.2.3.
 - Migrated `Fast.Swagger` custom filters and security registration to the Microsoft.OpenApi 2.x API required by Swashbuckle 10.
-- Incremented package versions: `Fast.Cache` 3.5.27, `Fast.Consul` 3.5.2, `Fast.NET.Core` 3.5.29, `Fast.DependencyInjection` 3.5.23, `Fast.DynamicApplication` 3.5.29, `Fast.EventBus` 3.5.22, `Fast.IaaS` 3.5.18, `Fast.JwtBearer` 3.5.32, `Fast.Logging` 3.5.25, `Fast.Mapster` 3.5.21, `Fast.OpenApi` 3.5.26, `Fast.Runtime` 3.5.24, `Fast.Serialization.Newtonsoft.Json` 3.5.21, `Fast.Serialization.System.Text.Json` 3.5.16, `Fast.SqlSugar` 3.5.59, `Fast.Swagger` 3.5.28, and `Fast.UnifyResult` 3.5.27.
+- Established `FAST-AES-256-GCM-V1` as the initial cross-language password-based AES payload for `Fast.IaaS`.
+- Incremented package versions: `Fast.Cache` 3.5.27, `Fast.Consul` 3.5.2, `Fast.NET.Core` 3.5.29, `Fast.DependencyInjection` 3.5.23, `Fast.DynamicApplication` 3.5.29, `Fast.EventBus` 3.5.22, `Fast.IaaS` 3.5.20, `Fast.JwtBearer` 3.5.32, `Fast.Logging` 3.5.25, `Fast.Mapster` 3.5.21, `Fast.OpenApi` 3.5.26, `Fast.Runtime` 3.5.24, `Fast.Serialization.Newtonsoft.Json` 3.5.21, `Fast.Serialization.System.Text.Json` 3.5.16, `Fast.SqlSugar` 3.5.59, `Fast.Swagger` 3.5.28, and `Fast.UnifyResult` 3.5.27.
 - Incremented `I18nTranslateTool` to 1.0.1 and moved its `MiniExcel` version into central package management.
 
 ### Fixed
