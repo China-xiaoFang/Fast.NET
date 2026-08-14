@@ -537,7 +537,7 @@ public static class SwaggerDocumentBuilder
         // 生成安全定义
         foreach (var securityDefinition in Penetrates.SwaggerSettings.SecurityDefinitions)
         {
-            // ID 必须定义
+            // 必须定义Id。
             if (string.IsNullOrWhiteSpace(securityDefinition.Id))
                 continue;
 

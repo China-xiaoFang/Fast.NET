@@ -61,7 +61,7 @@ public interface IBaseRecordEntity : IDatabaseEntity
     string Ip { get; set; }
 
     /// <summary>
-    /// 部门 ID。
+    /// 部门Id。
     /// </summary>
     long? DepartmentId { get; set; }
 
@@ -71,7 +71,7 @@ public interface IBaseRecordEntity : IDatabaseEntity
     string DepartmentName { get; set; }
 
     /// <summary>
-    /// 创建者用户 ID。
+    /// 创建者用户Id。
     /// </summary>
     long? CreatedUserId { get; set; }
 

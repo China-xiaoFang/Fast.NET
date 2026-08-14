@@ -59,7 +59,7 @@ internal sealed class EventSubscribeOperateSource : IEventSource
     internal MethodInfo HandlerMethod { get; set; }
 
     /// <summary>
-    /// 实际事件 ID。
+    /// 实际事件Id。
     /// </summary>
     internal string SubscribeEventId { get; set; }
 

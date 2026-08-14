@@ -36,7 +36,7 @@ namespace Fast.SqlSugar;
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加雪花 ID。
+    /// 添加雪花Id。
     /// </summary>
     /// <param name="services">要添加服务的服务集合。</param>
     /// <param name="configuration">用于读取模块设置的配置。</param>
@@ -53,18 +53,18 @@ public static class IServiceCollectionExtension
             .Get<SnowflakeSettingsOptions>()
             .LoadPostConfigure();
 
-        // 每个实例必须使用不同的雪花算法 Worker ID，避免生成重复 ID。
+        // 每个实例必须使用不同的雪花算法 WorkerId，避免生成重复Id。
         YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings.WorkerId ?? 1});
 
         return services;
     }
 
     /// <summary>
-    /// 添加雪花 ID。
+    /// 添加雪花Id。
     /// </summary>
     /// <param name="services">要添加服务的服务集合。</param>
     /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="optionAction">雪花 ID 配置操作。</param>
+    /// <param name="optionAction">雪花Id配置操作。</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
     public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
         Action<SnowflakeSettingsOptions> optionAction)
@@ -76,7 +76,7 @@ public static class IServiceCollectionExtension
         var snowflakeSettings = new SnowflakeSettingsOptions();
         optionAction.Invoke(snowflakeSettings);
 
-        // 每个实例必须使用不同的雪花算法 Worker ID，避免生成重复 ID。
+        // 每个实例必须使用不同的雪花算法 WorkerId，避免生成重复Id。
         YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings.WorkerId ?? 1});
 
         return services;

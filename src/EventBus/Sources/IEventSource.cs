@@ -29,7 +29,7 @@ namespace Fast.EventBus;
 public interface IEventSource
 {
     /// <summary>
-    /// 事件 ID。
+    /// 事件Id。
     /// </summary>
     string EventId { get; }
 

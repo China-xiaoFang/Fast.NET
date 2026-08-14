@@ -27,20 +27,20 @@ namespace Fast.EventBus;
 /// <summary>
 /// 事件处理程序包装类。
 /// </summary>
-/// <remarks>主要用于主机服务启动时将所有处理程序和事件 ID 进行包装绑定。</remarks>
+/// <remarks>主要用于主机服务启动时将所有处理程序和事件Id进行包装绑定。</remarks>
 internal sealed class EventHandlerWrapper
 {
     /// <summary>
     /// 初始化类的新实例。
     /// </summary>
-    /// <param name="eventId">事件 ID。</param>
+    /// <param name="eventId">事件Id。</param>
     internal EventHandlerWrapper(string eventId)
     {
         EventId = eventId;
     }
 
     /// <summary>
-    /// 事件 ID。
+    /// 事件Id。
     /// </summary>
     internal string EventId { get; set; }
 

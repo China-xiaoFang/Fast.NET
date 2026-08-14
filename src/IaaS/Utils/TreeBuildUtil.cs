@@ -35,7 +35,7 @@ public class TreeBuildUtil<TEntity, TProperty> where TEntity : ITreeNode<TProper
     where TProperty : struct, IComparable, IConvertible, IFormattable
 {
     /// <summary>
-    /// 顶级节点的父节点 ID(默认 0)。
+    /// 顶级节点的父节点Id（默认值为 0）。
     /// </summary>
     private TProperty _rootParentId;
 

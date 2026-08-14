@@ -70,31 +70,31 @@ public partial interface ISqlSugarRepository<TEntity>
     Task<int> InsertAsync(IEnumerable<TEntity> entities);
 
     /// <summary>
-    /// 新增一条记录返回自增 ID。
+    /// 新增一条记录返回自增Id。
     /// </summary>
     /// <param name="entity">要处理的实体。</param>
-    /// <returns>新增一条记录返回自增 ID。</returns>
+    /// <returns>新增一条记录返回自增Id。</returns>
     int InsertReturnIdentity(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回自增 ID。
+    /// 新增一条记录返回自增Id。
     /// </summary>
     /// <param name="entity">要处理的实体。</param>
-    /// <returns>表示异步新增一条记录返回自增 ID 的任务，任务结果为新增一条记录返回自增 ID。</returns>
+    /// <returns>表示异步新增一条记录返回自增Id的任务，任务结果为新增一条记录返回自增Id。</returns>
     Task<int> InsertReturnIdentityAsync(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回 Long 类型的自增 ID。
+    /// 新增一条记录返回 Long 类型的自增Id。
     /// </summary>
     /// <param name="entity">要处理的实体。</param>
-    /// <returns>新增一条记录返回 Long 类型的自增 ID。</returns>
+    /// <returns>新增一条记录返回 Long 类型的自增Id。</returns>
     long ExecuteReturnBigIdentity(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回 Long 类型的自增 ID。
+    /// 新增一条记录返回 Long 类型的自增Id。
     /// </summary>
     /// <param name="entity">要处理的实体。</param>
-    /// <returns>表示异步新增一条记录返回 Long 类型的自增 ID 的任务，任务结果为新增一条记录返回 Long 类型的自增 ID。</returns>
+    /// <returns>表示异步新增一条记录返回 Long 类型的自增Id的任务，任务结果为新增一条记录返回 Long 类型的自增Id。</returns>
     Task<long> ExecuteReturnBigIdentityAsync(TEntity entity);
 
     /// <summary>

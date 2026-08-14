@@ -37,7 +37,7 @@ public sealed class SqlSugarContext
     public static ConnectionSettingsOptions ConnectionSettings { get; internal set; }
 
     /// <summary>
-    /// 雪花 ID 配置。
+    /// 雪花Id配置。
     /// </summary>
     public static SnowflakeSettingsOptions SnowflakeSettings { get; internal set; }
 

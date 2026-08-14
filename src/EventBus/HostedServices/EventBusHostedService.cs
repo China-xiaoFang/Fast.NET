@@ -101,7 +101,7 @@ internal sealed class EventBusHostedService : BackgroundService
                 var handler = (Func<EventHandlerExecutingContext, Task>) eventHandlerMethod.CreateDelegate(
                     typeof(Func<EventHandlerExecutingContext, Task>), eventSubscriber);
 
-                // 处理同一个事件处理程序支持多个事件 ID 情况
+                // 处理同一个事件处理程序支持多个事件Id的情况
                 var eventSubscribeAttributes = eventHandlerMethod.GetCustomAttributes<EventSubscribeAttribute>(false);
 
                 // 逐条包装并添加到 _eventHandlers 集合中
@@ -170,7 +170,7 @@ internal sealed class EventBusHostedService : BackgroundService
             return;
         }
 
-        // 查找事件 ID 匹配的事件处理程序
+        // 查找事件Id匹配的事件处理程序
         var eventHandlersThatShouldRun = _eventHandlers.Where(t => t.Key.ShouldRun(eventSource.EventId))
             .OrderByDescending(u => u.Value.Order)
             .Select(u => u.Key)
@@ -349,10 +349,10 @@ internal sealed class EventBusHostedService : BackgroundService
     /// <param name="subscribeOperateSource">描述订阅者新增或移除操作的事件源。</param>
     private void ManageEventSubscribers(EventSubscribeOperateSource subscribeOperateSource)
     {
-        // 获取实际订阅事件 ID
+        // 获取实际订阅事件Id
         var eventId = subscribeOperateSource.SubscribeEventId;
 
-        // 确保事件订阅 ID 和传入的特性 EventId 一致
+        // 确保事件订阅Id与传入特性的 EventId 一致
         if (subscribeOperateSource.Attribute != null && subscribeOperateSource.Attribute.EventId != eventId)
             throw new InvalidOperationException(
                 "Ensure that the <eventId> is consistent with the <EventId> attribute of the EventSubscribeAttribute object.");
@@ -381,7 +381,7 @@ internal sealed class EventBusHostedService : BackgroundService
         // 处理动态删除
         else if (subscribeOperateSource.Operate == EventSubscribeOperates.Remove)
         {
-            // 删除所有匹配事件 ID 的处理程序
+            // 删除所有匹配事件Id的处理程序
             foreach (var wrapper in _eventHandlers.Keys)
             {
                 if (wrapper.EventId != eventId)

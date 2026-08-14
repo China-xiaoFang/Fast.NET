@@ -54,11 +54,11 @@ public static class NumberUtil
     private const int MIN_LEN = 6;
 
     /// <summary>
-    /// ID 转为 Base32 Crockford 字符串。
+    /// 将Id转换为 Base32 Crockford 字符串。
     /// </summary>
-    /// <param name="id">要编码的 ID。</param>
+    /// <param name="id">要编码的Id。</param>
     /// <param name="maxLength">目标长度。</param>
-    /// <returns>ID 转为 Base32 Crockford 字符串。</returns>
+    /// <returns>转换后的 Base32 Crockford 字符串。</returns>
     public static string IdToCodeByLong(long id, int maxLength = 12)
     {
         var chars = new List<char>();

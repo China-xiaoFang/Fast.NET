@@ -29,7 +29,7 @@ namespace Fast.SqlSugar;
 public interface IBaseEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 部门 ID。
+    /// 部门Id。
     /// </summary>
     long? DepartmentId { get; set; }
 
@@ -39,7 +39,7 @@ public interface IBaseEntity : IDatabaseEntity
     string DepartmentName { get; set; }
 
     /// <summary>
-    /// 创建者用户 ID。
+    /// 创建者用户Id。
     /// </summary>
     long? CreatedUserId { get; set; }
 
@@ -54,7 +54,7 @@ public interface IBaseEntity : IDatabaseEntity
     DateTime? CreatedTime { get; set; }
 
     /// <summary>
-    /// 更新者用户 ID。
+    /// 更新者用户Id。
     /// </summary>
     long? UpdatedUserId { get; set; }
 

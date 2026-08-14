@@ -65,10 +65,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 设置事件 ID。
+    /// 设置事件Id。
     /// </summary>
     /// <param name="eventId">日志事件标识。</param>
-    /// <returns>设置事件 ID。</returns>
+    /// <returns>设置事件Id。</returns>
     public StringLoggingPart SetEventId(EventId eventId)
     {
         EventId = eventId;

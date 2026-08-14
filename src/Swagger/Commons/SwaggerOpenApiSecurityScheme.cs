@@ -38,7 +38,7 @@ public sealed class SwaggerOpenApiSecurityScheme : OpenApiSecurityScheme
     }
 
     /// <summary>
-    /// 唯一 ID。
+    /// 唯一Id。
     /// </summary>
     public string Id { get; set; }
 

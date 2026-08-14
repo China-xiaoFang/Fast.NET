@@ -26,13 +26,13 @@ using Fast.Runtime;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 雪花 ID 配置。
+/// 雪花Id配置。
 /// </summary>
 [SuppressSniffer]
 public class SnowflakeSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 工作 ID。
+    /// 工作Id。
     /// </summary>
     [Required]
     public ushort? WorkerId { get; set; }

@@ -71,7 +71,7 @@ public struct LogMessage
     public LogLevel LogLevel { get; }
 
     /// <summary>
-    /// 事件 ID。
+    /// 事件Id。
     /// </summary>
     public EventId? EventId { get; }
 
@@ -97,7 +97,7 @@ public struct LogMessage
     public DateTime LogDateTime { get; }
 
     /// <summary>
-    /// 线程 ID。
+    /// 线程Id。
     /// </summary>
     public int ThreadId { get; }
 
@@ -107,7 +107,7 @@ public struct LogMessage
     public bool UseUtcTimestamp { get; }
 
     /// <summary>
-    /// 请求/跟踪 ID。
+    /// 请求/跟踪Id。
     /// </summary>
     public string TraceId { get; }
 

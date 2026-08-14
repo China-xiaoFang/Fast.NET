@@ -57,10 +57,10 @@ public static class VerificationUtil
     private const int CODE_LEN = 6;
 
     /// <summary>
-    /// ID 转换为邀请码。
+    /// 将Id转换为邀请码。
     /// </summary>
     /// <param name="id">唯一标识。</param>
-    /// <returns>ID 转换为邀请码。</returns>
+    /// <returns>转换后的邀请码。</returns>
     public static string IdToCodeByLong(long id)
     {
         if (id < 0)
@@ -69,7 +69,7 @@ public static class VerificationUtil
         var buf = new char[BASE_LEN];
         var charPos = BASE_LEN;
 
-        // ID 超出字符表范围时取模，使结果稳定映射到有效索引。
+        // Id超出字符表范围时取模，使结果稳定映射到有效索引。
         while (id / BASE_LEN > 0)
         {
             var index = (int) (id % BASE_LEN);
@@ -99,10 +99,10 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 邀请码解析出 ID,基本操作思路恰好与 idToCode 反向操作。
+    /// 从邀请码解析Id。
     /// </summary>
     /// <param name="code">业务或枚举编码。</param>
-    /// <returns>邀请码解析出 ID,基本操作思路恰好与 idToCode 反向操作。</returns>
+    /// <returns>解析得到的Id。</returns>
     public static long CodeToIdByLong(string code)
     {
         if (string.IsNullOrWhiteSpace(code))
@@ -128,10 +128,10 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// ID 转换为邀请码。
+    /// 将Id转换为邀请码。
     /// </summary>
     /// <param name="id">唯一标识。</param>
-    /// <returns>ID 转换为邀请码。</returns>
+    /// <returns>转换后的邀请码。</returns>
     public static string IdToCodeByInt(int id)
     {
         if (id < 0)
@@ -140,7 +140,7 @@ public static class VerificationUtil
         var buf = new char[BASE_LEN];
         var charPos = BASE_LEN;
 
-        // ID 超出字符表范围时取模，使结果稳定映射到有效索引。
+        // Id超出字符表范围时取模，使结果稳定映射到有效索引。
         while (id / BASE_LEN > 0)
         {
             var index = id % BASE_LEN;
@@ -170,10 +170,10 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 邀请码解析出 ID,基本操作思路恰好与 idToCode 反向操作。
+    /// 从邀请码解析Id。
     /// </summary>
     /// <param name="code">业务或枚举编码。</param>
-    /// <returns>邀请码解析出 ID,基本操作思路恰好与 idToCode 反向操作。</returns>
+    /// <returns>解析得到的Id。</returns>
     public static int CodeToIdByInt(string code)
     {
         if (string.IsNullOrWhiteSpace(code))
@@ -208,7 +208,7 @@ public static class VerificationUtil
         var lowerCase = new StringBuilder();
         var number = new StringBuilder();
 
-        // 编码表的顺序参与 ID 编解码，绝不能为了展示而原地排序。
+        // 编码表的顺序参与Id编解码，绝不能为了展示而原地排序。
         var sortedBase = (char[]) BASE.Clone();
         Array.Sort(sortedBase);
         foreach (var item in sortedBase)

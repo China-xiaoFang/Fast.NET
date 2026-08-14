@@ -312,7 +312,7 @@ public static class SugarEntityFilter
                     // 主键，这里一条记录只会匹配一次
                     if (!entityInfo.EntityColumnInfo.IsIdentity && entityInfo.EntityColumnInfo.IsPrimarykey)
                     {
-                        // 赋值雪花 ID（long）
+                        // 赋值雪花Id（long）
                         if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
                         {
                             if (SqlSugarContext.EntityValueCheck([null, 0L], entityInfo))
@@ -338,7 +338,7 @@ public static class SugarEntityFilter
 
                     if (sqlSugarEntityHandler != null)
                     {
-                        // 部门 ID
+                        // 部门Id
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentId), [null, 0L],
                             sqlSugarEntityHandler.AssignDepartmentId(), entityInfo);
 
@@ -346,7 +346,7 @@ public static class SugarEntityFilter
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.DepartmentName), [null, ""],
                             sqlSugarEntityHandler.AssignDepartmentName(), entityInfo);
 
-                        // 创建者 ID
+                        // 创建者Id
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserId), [null, 0L],
                             sqlSugarEntityHandler.AssignUserId(), entityInfo);
 
@@ -354,7 +354,7 @@ public static class SugarEntityFilter
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.CreatedUserName), [null, ""],
                             sqlSugarEntityHandler.AssignUserName(), entityInfo);
 
-                        // 租户 ID
+                        // 租户Id
                         SqlSugarContext.SetEntityValue(nameof(IBaseTEntity.TenantId), [null, 0L],
                             sqlSugarEntityHandler.AssignTenantId() ?? 0L, entityInfo);
                     }
@@ -367,7 +367,7 @@ public static class SugarEntityFilter
 
                     if (sqlSugarEntityHandler != null)
                     {
-                        // 更新者 ID
+                        // 更新者Id
                         SqlSugarContext.SetEntityValue(nameof(IBaseEntity.UpdatedUserId), null,
                             sqlSugarEntityHandler.AssignUserId(), entityInfo);
 

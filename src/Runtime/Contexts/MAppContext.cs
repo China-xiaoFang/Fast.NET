@@ -213,16 +213,16 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 获取当前线程 ID。
+    /// 获取当前线程Id。
     /// </summary>
-    /// <returns>获取到的当前线程 ID。</returns>
+    /// <returns>获取到的当前线程Id。</returns>
     public static int GetThreadId()
     {
         return Environment.CurrentManagedThreadId;
     }
 
     /// <summary>
-    /// 获取当前请求 TraceId。
+    /// 获取当前请求的 TraceId。
     /// </summary>
     /// <param name="rootServices">应用根服务提供器。</param>
     /// <param name="httpContext">当前请求上下文。</param>

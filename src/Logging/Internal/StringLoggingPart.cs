@@ -55,7 +55,7 @@ public sealed partial class StringLoggingPart
     public object[] Args { get; private set; }
 
     /// <summary>
-    /// 事件 ID。
+    /// 事件Id。
     /// </summary>
     public EventId? EventId { get; private set; }
 

@@ -27,7 +27,7 @@ namespace Fast.EventBus;
 /// </summary>
 /// <remarks>
 /// <para>作用于 <see cref="IEventSubscriber"/> 实现类实例方法。</para>
-/// <para>支持多个事件 ID 触发同一个事件处理程序。</para>
+/// <para>支持多个事件Id触发同一个事件处理程序。</para>
 /// </remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
@@ -53,7 +53,7 @@ public sealed class EventSubscribeAttribute : Attribute
     }
 
     /// <summary>
-    /// 事件 ID。
+    /// 事件Id。
     /// </summary>
     public string EventId { get; set; }
 

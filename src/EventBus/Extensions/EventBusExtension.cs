@@ -31,10 +31,10 @@ namespace Fast.EventBus;
 public static class EventBusExtension
 {
     /// <summary>
-    /// 将事件枚举 ID 转换成字符串对象。
+    /// 将事件枚举Id转换成字符串对象。
     /// </summary>
     /// <param name="em">要转换为事件标识字符串的枚举值。</param>
-    /// <returns>将事件枚举 ID 转换成字符串对象。</returns>
+    /// <returns>将事件枚举Id转换成字符串对象。</returns>
     public static string EventBusToString(this Enum em)
     {
         var enumType = em.GetType();

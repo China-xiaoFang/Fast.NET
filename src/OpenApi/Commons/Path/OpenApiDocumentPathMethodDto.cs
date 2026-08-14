@@ -39,7 +39,7 @@ public class OpenApiDocumentPathMethodDto
     public string Summary { get; set; }
 
     /// <summary>
-    /// 操作 ID。
+    /// 操作Id。
     /// </summary>
     public string OperationId { get; set; }
 

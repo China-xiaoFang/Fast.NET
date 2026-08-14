@@ -42,7 +42,7 @@ public sealed class SchemaIdAttribute : Attribute
     /// 初始化类的新实例。
     /// </summary>
     /// <param name="schemaId">schema 的唯一标识。</param>
-    /// <param name="replace">替换默认 Schema ID 的自定义值。</param>
+    /// <param name="replace">替换默认 SchemaId 的自定义值。</param>
     public SchemaIdAttribute(string schemaId, bool replace)
     {
         SchemaId = schemaId;

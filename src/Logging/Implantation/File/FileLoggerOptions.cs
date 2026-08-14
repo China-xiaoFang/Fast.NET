@@ -96,7 +96,7 @@ internal sealed class FileLoggerOptions
     public bool IncludeScopes { get; set; } = true;
 
     /// <summary>
-    /// 显示跟踪/请求 ID。
+    /// 显示跟踪/请求Id。
     /// </summary>
     public bool WithTraceId { get; set; } = false;
 

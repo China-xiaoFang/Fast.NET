@@ -38,6 +38,6 @@ UploadNuget.bat publish-all
 UploadNuget.bat publish-one Fast.Cache
 ```
 
-`publish-all` 会依次构建、打包并发布当前全部 17 个包。`publish-one` 会完成构建和打包，但只发布指定包 ID。不带参数运行 `UploadNuget.bat` 时，会显示构建配置和包选择菜单。任何发布模式都会先展示发布范围，并要求输入精确的 `PUBLISH`，之后才调用 `dotnet nuget push`。
+`publish-all` 会依次构建、打包并发布当前全部 17 个包。`publish-one` 会完成构建和打包，但只发布指定包Id。不带参数运行 `UploadNuget.bat` 时，会显示构建配置和包选择菜单。任何发布模式都会先展示发布范围，并要求输入精确的 `PUBLISH`，之后才调用 `dotnet nuget push`。
 
 不要把 API Key 写入仓库、脚本、日志、命令历史或 Issue。发布完成后清除当前进程中的环境变量，并在 NuGet.org 检查包元数据、README、依赖和符号包状态。

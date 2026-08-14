@@ -116,15 +116,15 @@ public interface ISqlSugarEntityHandler
     bool IsAdmin();
 
     /// <summary>
-    /// 获取新实体使用的租户 ID。
+    /// 获取新实体使用的租户Id。
     /// </summary>
-    /// <returns>租户 ID；无法确定时返回 <see langword="null"/>。</returns>
+    /// <returns>租户Id；无法确定时返回 <see langword="null"/>。</returns>
     long? AssignTenantId();
 
     /// <summary>
-    /// 获取新实体使用的部门 ID。
+    /// 获取新实体使用的部门Id。
     /// </summary>
-    /// <returns>部门 ID；无法确定时返回 <see langword="null"/>。</returns>
+    /// <returns>部门Id；无法确定时返回 <see langword="null"/>。</returns>
     long? AssignDepartmentId();
 
     /// <summary>
@@ -134,9 +134,9 @@ public interface ISqlSugarEntityHandler
     string AssignDepartmentName();
 
     /// <summary>
-    /// 获取新实体使用的用户 ID。
+    /// 获取新实体使用的用户Id。
     /// </summary>
-    /// <returns>用户 ID；无法确定时返回 <see langword="null"/>。</returns>
+    /// <returns>用户Id；无法确定时返回 <see langword="null"/>。</returns>
     long? AssignUserId();
 
     /// <summary>

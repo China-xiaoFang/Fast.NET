@@ -64,7 +64,7 @@ public static class LoggerFormatter
         // 输出日志类别
         writer.WriteString("logName", logMsg.LogName);
 
-        // 输出日志事件 ID
+        // 输出日志事件Id
         if (logMsg.EventId != null)
         {
             writer.WriteNumber("eventId", logMsg.EventId.Value.Id);
@@ -73,13 +73,13 @@ public static class LoggerFormatter
         // 输出日志消息
         writer.WriteString("message", logMsg.Message);
 
-        // 输出日志所在线程 ID
+        // 输出日志所在线程Id
         writer.WriteNumber("threadId", logMsg.ThreadId);
 
         // 输出是否使用 UTC 时间戳
         writer.WriteBoolean("useUtcTimestamp", logMsg.UseUtcTimestamp);
 
-        // 输出请求 TraceId
+        // 输出请求的 TraceId
         writer.WriteString("traceId", logMsg.TraceId);
 
         // 输出异常信息

@@ -79,7 +79,7 @@ internal sealed class ConsulRegister : IConsulRegister
 
         var registration = new AgentServiceRegistration
         {
-            // 唯一 ID
+            // 唯一Id
             ID = Guid.NewGuid()
                 .ToString("N"),
             // 服务名，

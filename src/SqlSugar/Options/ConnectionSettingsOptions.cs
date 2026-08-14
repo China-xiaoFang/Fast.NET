@@ -31,7 +31,7 @@ namespace Fast.SqlSugar;
 public class ConnectionSettingsOptions : DbConnectionInfo
 {
     /// <summary>
-    /// SqlSugarClient 连接 ID。
+    /// SqlSugarClient 连接Id。
     /// </summary>
     [SugarColumn(IsIgnore = true)]
     public string ConnectionId { get; set; }

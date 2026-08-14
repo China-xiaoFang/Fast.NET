@@ -64,7 +64,7 @@ internal sealed class ConsoleFormatterExtendOptions : ConsoleFormatterOptions
     }
 
     /// <summary>
-    /// 显示跟踪/请求 ID。
+    /// 显示跟踪/请求Id。
     /// </summary>
     public bool WithTraceId { get; set; } = false;
 

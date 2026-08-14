@@ -29,7 +29,7 @@ namespace Fast.SqlSugar;
 public interface IBaseTEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 租户 ID。
+    /// 租户Id。
     /// </summary>
     long TenantId { get; set; }
 }
