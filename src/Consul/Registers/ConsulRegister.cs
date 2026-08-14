@@ -29,9 +29,7 @@ using Microsoft.Extensions.Options;
 
 namespace Fast.Consul;
 
-/// <summary>
-/// Consul 服务注册。
-/// </summary>
+/// <inheritdoc cref="IConsulRegister" />
 internal sealed class ConsulRegister : IConsulRegister
 {
     private readonly IServer _server;

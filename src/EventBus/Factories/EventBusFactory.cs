@@ -24,9 +24,7 @@ using System.Reflection;
 
 namespace Fast.EventBus;
 
-/// <summary>
-/// 事件总线工厂默认实现。
-/// </summary>
+/// <inheritdoc cref="IEventBusFactory" />
 internal sealed class EventBusFactory : IEventBusFactory
 {
     /// <summary>

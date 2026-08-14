@@ -23,7 +23,7 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 - Updated ASP.NET Core package references to 8.0.30, 9.0.19, and 10.0.11 for their corresponding target frameworks.
 - Migrated `Fast.Swagger` custom filters and security registration to the Microsoft.OpenApi 2.x API required by Swashbuckle 10.
 - Established `FAST-AES-256-GCM-V1` as the initial cross-language password-based AES payload for `Fast.IaaS`.
-- Simplified XML parameter documentation by removing type references already conveyed by method signatures while retaining links to related APIs and constraints.
+- Simplified XML documentation by removing type references already conveyed by signatures, inheriting existing implementation contracts, and retaining links to related APIs and constraints.
 - Marked internal leaf implementations and JSON converters as sealed where inheritance is not supported.
 - Incremented package versions: `Fast.Cache` 3.5.29, `Fast.Consul` 3.5.5, `Fast.NET.Core` 3.5.31, `Fast.DependencyInjection` 3.5.25, `Fast.DynamicApplication` 3.5.31, `Fast.EventBus` 3.5.24, `Fast.IaaS` 3.5.22, `Fast.JwtBearer` 3.5.34, `Fast.Logging` 3.5.27, `Fast.Mapster` 3.5.23, `Fast.OpenApi` 3.5.28, `Fast.Runtime` 3.5.26, `Fast.Serialization.Newtonsoft.Json` 3.5.23, `Fast.Serialization.System.Text.Json` 3.5.18, `Fast.SqlSugar` 3.5.61, `Fast.Swagger` 3.5.30, and `Fast.UnifyResult` 3.5.29.
 - Incremented `I18nTranslateTool` to 1.0.1 and moved its `MiniExcel` version into central package management.

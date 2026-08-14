@@ -26,9 +26,7 @@ using Microsoft.Extensions.Options;
 
 namespace Fast.Cache;
 
-/// <summary>
-/// 默认缓存实现。
-/// </summary>
+/// <inheritdoc cref="ICache" />
 internal sealed class Cache : Cache<DefaultCacheContextLocator>, ICache
 {
     public Cache(IOptionsMonitor<RedisSettingsOptions> redisSettings) : base(redisSettings)
@@ -36,10 +34,7 @@ internal sealed class Cache : Cache<DefaultCacheContextLocator>, ICache
     }
 }
 
-/// <summary>
-/// 缓存实现。
-/// </summary>
-/// <typeparam name="CacheContextLocator">缓存上下文定位器类型，用于隔离不同缓存配置。</typeparam>
+/// <inheritdoc cref="ICache{CacheContextLocator}" />
 internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDisposable
     where CacheContextLocator : ICacheContextLocator, new()
 {

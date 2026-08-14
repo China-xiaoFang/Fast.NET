@@ -43,9 +43,7 @@ internal sealed class ConsulKeyValueResponseDto
     public long ModifyIndex { get; set; }
 }
 
-/// <summary>
-/// Key/Value 服务。
-/// </summary>
+/// <inheritdoc cref="IKeyValueService" />
 public class KeyValueService : IKeyValueService
 {
     /// <summary>

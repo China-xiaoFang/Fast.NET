@@ -25,7 +25,7 @@ using System.Reflection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// 事件总线工厂接口。
+/// 事件总线工厂。
 /// </summary>
 [SuppressSniffer]
 public interface IEventBusFactory

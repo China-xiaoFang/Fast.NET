@@ -23,7 +23,7 @@
 namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulRegister"/> Consul 服务注册。
+/// Consul 服务注册。
 /// </summary>
 internal interface IConsulRegister
 {
