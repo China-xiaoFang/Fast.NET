@@ -30,7 +30,7 @@ using Microsoft.Extensions.Hosting;
 namespace Fast.Consul;
 
 /// <summary>
-/// 应用启动时自动注册中间件。
+/// 应用启动时自动注册中间件
 /// </summary>
 internal sealed class ConsulStartupFilter : IStartupFilter
 {
@@ -54,7 +54,7 @@ internal sealed class ConsulStartupFilter : IStartupFilter
                 // 获取 IHostApplicationLifetime 实例
                 var hostApplicationLifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
 
-                // IServerAddressesFeature 仅在应用启动完成后可用；同时必须观察注册任务的异常。
+                // IServerAddressesFeature 仅在应用启动完成后可用；同时必须观察注册任务的异常
                 hostApplicationLifetime.ApplicationStarted.Register(() =>
                 {
                     var registerTask = app.ApplicationServices.GetService<IConsulRegister>()
@@ -70,7 +70,7 @@ internal sealed class ConsulStartupFilter : IStartupFilter
                 });
             }
 
-            // 无论 Consul 是否启用，都必须继续配置应用管道。
+            // 无论 Consul 是否启用，都必须继续配置应用管道
             action(app);
         };
     }

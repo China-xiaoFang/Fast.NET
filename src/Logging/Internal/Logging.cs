@@ -23,7 +23,7 @@
 namespace Fast.Logging;
 
 /// <summary>
-/// 字符串日志扩展默认分类名。
+/// 字符串日志扩展默认分类名
 /// </summary>
 internal sealed class StringLogging
 {

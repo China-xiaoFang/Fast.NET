@@ -25,12 +25,12 @@ using System.Collections.Generic;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 序号工具类。
+/// 序号工具类
 /// </summary>
 public static class NumberUtil
 {
     /// <summary>
-    /// 自定义进制所用的编码，大写和数字(初始 36 位)，但去掉 3 位相似：O,0,I，去掉一个补位：A;最终只留(26+10)-(3+1)=32 位。
+    /// 自定义进制所用的编码，大写和数字(初始 36 位)，但去掉 3 位相似：O,0,I，去掉一个补位：A;最终只留(26+10)-(3+1)=32 位
     /// </summary>
     private static readonly char[] BASE =
     {
@@ -39,26 +39,26 @@ public static class NumberUtil
     };
 
     /// <summary>
-    /// A 补位字符，不能与自定义重复。
+    /// A 补位字符，不能与自定义重复
     /// </summary>
     private static readonly char SUFFIX_CHAR = 'A';
 
     /// <summary>
-    /// 进制长度。
+    /// 进制长度
     /// </summary>
     private static readonly int BASE_LEN = BASE.Length;
 
     /// <summary>
-    /// 最小长度。
+    /// 最小长度
     /// </summary>
     private const int MIN_LEN = 6;
 
     /// <summary>
-    /// 将Id转换为 Base32 Crockford 字符串。
+    /// 将Id转换为 Base32 Crockford 字符串
     /// </summary>
-    /// <param name="id">要编码的Id。</param>
-    /// <param name="maxLength">目标长度。</param>
-    /// <returns>转换后的 Base32 Crockford 字符串。</returns>
+    /// <param name="id">要编码的Id</param>
+    /// <param name="maxLength">目标长度</param>
+    /// <returns>转换后的 Base32 Crockford 字符串</returns>
     public static string IdToCodeByLong(long id, int maxLength = 12)
     {
         var chars = new List<char>();

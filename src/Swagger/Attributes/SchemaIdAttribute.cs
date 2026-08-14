@@ -23,26 +23,26 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// 解决规范化文档 SchemaId 冲突问题。
+/// 解决规范化文档 SchemaId 冲突问题
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class SchemaIdAttribute : Attribute
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="schemaId">schema 的唯一标识。</param>
+    /// <param name="schemaId">schema 的唯一标识</param>
     public SchemaIdAttribute(string schemaId)
     {
         SchemaId = schemaId;
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="schemaId">schema 的唯一标识。</param>
-    /// <param name="replace">替换默认 SchemaId 的自定义值。</param>
+    /// <param name="schemaId">schema 的唯一标识</param>
+    /// <param name="replace">替换默认 SchemaId 的自定义值</param>
     public SchemaIdAttribute(string schemaId, bool replace)
     {
         SchemaId = schemaId;
@@ -50,13 +50,13 @@ public sealed class SchemaIdAttribute : Attribute
     }
 
     /// <summary>
-    /// 自定义 SchemaId。
+    /// 自定义 SchemaId
     /// </summary>
     public string SchemaId { get; set; }
 
     /// <summary>
-    /// 完全覆盖。
+    /// 完全覆盖
     /// </summary>
-    /// <remarks>默认在头部叠加，设置 <see langword="true"/> 之后，将直接使用 <see cref="SchemaId"/>。</remarks>
+    /// <remarks>默认在头部叠加，设置 <see langword="true"/> 之后，将直接使用 <see cref="SchemaId"/></remarks>
     public bool Replace { get; set; }
 }

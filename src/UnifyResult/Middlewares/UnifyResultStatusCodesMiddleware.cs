@@ -25,29 +25,29 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 状态码中间件。
+/// 状态码中间件
 /// </summary>
 internal sealed class UnifyResultStatusCodesMiddleware
 {
     /// <summary>
-    /// 请求委托。
+    /// 请求委托
     /// </summary>
     private readonly RequestDelegate _next;
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="next">处理管道中的下一个委托。</param>
+    /// <param name="next">处理管道中的下一个委托</param>
     public UnifyResultStatusCodesMiddleware(RequestDelegate next)
     {
         _next = next;
     }
 
     /// <summary>
-    /// 中间件执行方法。
+    /// 中间件执行方法
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <returns>表示异步中间件执行方法的任务。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <returns>表示异步中间件执行方法的任务</returns>
     public async Task InvokeAsync(HttpContext httpContext)
     {
         await _next(httpContext);

@@ -25,18 +25,18 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档路由内容 DTO。
+/// OpenAPI 文档路由内容 DTO
 /// </summary>
 public class OpenApiDocumentPathMethodContentDto
 {
     /// <summary>
-    /// JSON 格式。
+    /// JSON 格式
     /// </summary>
     [JsonPropertyName("application/json")]
     public OpenApiDocumentPathMethodContentSchemaDto Json { get; set; }
 
     /// <summary>
-    /// 表单格式。
+    /// 表单格式
     /// </summary>
     [JsonPropertyName("multipart/form-data")]
     public OpenApiDocumentPathMethodContentSchemaDto FormData { get; set; }

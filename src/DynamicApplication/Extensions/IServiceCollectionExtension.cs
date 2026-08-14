@@ -27,17 +27,17 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加动态 API 服务。
+    /// 添加动态 API 服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="routePrefix">应用于生成路由的统一前缀。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="routePrefix">应用于生成路由的统一前缀</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddDynamicApplication(this IServiceCollection services, string routePrefix = null)
     {
         Debugging.Info("Registering dynamic application......");

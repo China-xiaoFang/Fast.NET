@@ -25,42 +25,42 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档声明属性 DTO。
+/// OpenAPI 文档声明属性 DTO
 /// </summary>
 public class OpenApiDocumentSchemaPropertyDto
 {
     /// <summary>
-    /// 类型。
+    /// 类型
     /// </summary>
     public string Type { get; set; }
 
     /// <summary>
-    /// 格式。
+    /// 格式
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// 可为空。
+    /// 可为空
     /// </summary>
     public bool Nullable { get; set; }
 
     /// <summary>
-    /// 只读。
+    /// 只读
     /// </summary>
     public bool ReadOnly { get; set; }
 
     /// <summary>
-    /// 描述。
+    /// 描述
     /// </summary>
     public string Description { get; set; }
 
     /// <summary>
-    /// 声明项。
+    /// 声明项
     /// </summary>
     public OpenApiDocumentSchemaPropertyDto Items { get; set; }
 
     /// <summary>
-    /// 引用。
+    /// 引用
     /// </summary>
     [JsonPropertyName("$ref")]
     public string Ref { get; set; }

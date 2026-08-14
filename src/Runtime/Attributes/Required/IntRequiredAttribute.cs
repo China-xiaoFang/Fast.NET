@@ -25,19 +25,19 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// 验证 <see cref="int"/> 类型属性必填。
+/// 验证 <see cref="int"/> 类型属性必填
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class IntRequiredAttribute : ValidationAttribute
 {
     /// <summary>
-    /// 允许零。
+    /// 允许零
     /// </summary>
     public bool AllowZero { get; set; } = false;
 
     /// <summary>
-    /// 允许负数。
+    /// 允许负数
     /// </summary>
     public bool AllowNegative { get; set; } = false;
 

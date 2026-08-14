@@ -27,20 +27,20 @@ using System.Linq.Expressions;
 namespace System.Linq;
 
 /// <summary>
-/// IEnumerable 扩展。
+/// IEnumerable 扩展
 /// </summary>
 [SuppressSniffer]
 public static class IEnumerableExtension
 {
     /// <summary>
-    /// 根据条件成立再构建 OrderBy 排序。
+    /// 根据条件成立再构建 OrderBy 排序
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="condition">决定是否应用当前操作的条件。</param>
-    /// <param name="keySelector">用于生成排序键的委托。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <typeparam name="TKey">泛型类型。</typeparam>
-    /// <returns>根据条件成立再构建 OrderBy 排序。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="condition">决定是否应用当前操作的条件</param>
+    /// <param name="keySelector">用于生成排序键的委托</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <typeparam name="TKey">泛型类型</typeparam>
+    /// <returns>根据条件成立再构建 OrderBy 排序</returns>
     public static IQueryable<TSource> OrderBy<TSource, TKey>(this IQueryable<TSource> sources, bool condition,
         Expression<Func<TSource, TKey>> keySelector)
     {
@@ -48,14 +48,14 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 根据条件成立再构建 OrderByDescending 排序。
+    /// 根据条件成立再构建 OrderByDescending 排序
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="condition">决定是否应用当前操作的条件。</param>
-    /// <param name="keySelector">用于生成排序键的委托。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <typeparam name="TKey">泛型类型。</typeparam>
-    /// <returns>根据条件成立再构建 OrderByDescending 排序。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="condition">决定是否应用当前操作的条件</param>
+    /// <param name="keySelector">用于生成排序键的委托</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <typeparam name="TKey">泛型类型</typeparam>
+    /// <returns>根据条件成立再构建 OrderByDescending 排序</returns>
     public static IQueryable<TSource> OrderByDescending<TSource, TKey>(this IQueryable<TSource> sources, bool condition,
         Expression<Func<TSource, TKey>> keySelector)
     {
@@ -63,13 +63,13 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 根据条件成立再构建 Where 查询。
+    /// 根据条件成立再构建 Where 查询
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="condition">决定是否应用当前操作的条件。</param>
-    /// <param name="expression">要组合或执行的表达式。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <returns>根据条件成立再构建 Where 查询。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="condition">决定是否应用当前操作的条件</param>
+    /// <param name="expression">要组合或执行的表达式</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <returns>根据条件成立再构建 Where 查询</returns>
     public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources, bool condition,
         Expression<Func<TSource, bool>> expression)
     {
@@ -77,13 +77,13 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 根据条件成立再构建 Where 查询，支持索引器。
+    /// 根据条件成立再构建 Where 查询，支持索引器
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="condition">决定是否应用当前操作的条件。</param>
-    /// <param name="expression">要组合或执行的表达式。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <returns>根据条件成立再构建 Where 查询，支持索引器。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="condition">决定是否应用当前操作的条件</param>
+    /// <param name="expression">要组合或执行的表达式</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <returns>根据条件成立再构建 Where 查询，支持索引器</returns>
     public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources, bool condition,
         Expression<Func<TSource, int, bool>> expression)
     {
@@ -91,12 +91,12 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 与操作合并多个表达式。
+    /// 与操作合并多个表达式
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="expressions">要组合的表达式集合。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <returns>与操作合并多个表达式。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="expressions">要组合的表达式集合</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <returns>与操作合并多个表达式</returns>
     public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources,
         params Expression<Func<TSource, bool>>[] expressions)
     {
@@ -115,12 +115,12 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 与操作合并多个表达式，支持索引器。
+    /// 与操作合并多个表达式，支持索引器
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="expressions">要组合的表达式集合。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <returns>与操作合并多个表达式，支持索引器。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="expressions">要组合的表达式集合</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <returns>与操作合并多个表达式，支持索引器</returns>
     public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources,
         params Expression<Func<TSource, int, bool>>[] expressions)
     {
@@ -139,12 +139,12 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 根据条件成立再构建 WhereOr 查询。
+    /// 根据条件成立再构建 WhereOr 查询
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="conditionExpressions">按条件参与组合的表达式集合。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <returns>根据条件成立再构建 WhereOr 查询。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="conditionExpressions">按条件参与组合的表达式集合</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <returns>根据条件成立再构建 WhereOr 查询</returns>
     public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources,
         params (bool condition, Expression<Func<TSource, bool>> expression)[] conditionExpressions)
     {
@@ -159,12 +159,12 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 根据条件成立再构建 WhereOr 查询，支持索引器。
+    /// 根据条件成立再构建 WhereOr 查询，支持索引器
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="conditionExpressions">按条件参与组合的表达式集合。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <returns>根据条件成立再构建 WhereOr 查询，支持索引器。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="conditionExpressions">按条件参与组合的表达式集合</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <returns>根据条件成立再构建 WhereOr 查询，支持索引器</returns>
     public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources,
         params (bool condition, Expression<Func<TSource, int, bool>> expression)[] conditionExpressions)
     {
@@ -179,13 +179,13 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 根据条件成立再构建 Where 查询。
+    /// 根据条件成立再构建 Where 查询
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="condition">决定是否应用当前操作的条件。</param>
-    /// <param name="expression">要组合或执行的表达式。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <returns>根据条件成立再构建 Where 查询集合。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="condition">决定是否应用当前操作的条件</param>
+    /// <param name="expression">要组合或执行的表达式</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <returns>根据条件成立再构建 Where 查询集合</returns>
     public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> sources, bool condition,
         Func<TSource, bool> expression)
     {
@@ -193,13 +193,13 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// 根据条件成立再构建 Where 查询，支持索引器。
+    /// 根据条件成立再构建 Where 查询，支持索引器
     /// </summary>
-    /// <param name="sources">要查询或组合的源序列。</param>
-    /// <param name="condition">决定是否应用当前操作的条件。</param>
-    /// <param name="expression">要组合或执行的表达式。</param>
-    /// <typeparam name="TSource">源对象类型。</typeparam>
-    /// <returns>根据条件成立再构建 Where 查询，支持索引器集合。</returns>
+    /// <param name="sources">要查询或组合的源序列</param>
+    /// <param name="condition">决定是否应用当前操作的条件</param>
+    /// <param name="expression">要组合或执行的表达式</param>
+    /// <typeparam name="TSource">源对象类型</typeparam>
+    /// <returns>根据条件成立再构建 Where 查询，支持索引器集合</returns>
     public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> sources, bool condition,
         Func<TSource, int, bool> expression)
     {

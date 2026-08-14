@@ -27,13 +27,13 @@ using Microsoft.AspNetCore.Http;
 namespace System;
 
 /// <summary>
-/// 用户友好异常。
+/// 用户友好异常
 /// </summary>
 [SuppressSniffer]
 public class UserFriendlyException : Exception
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
     public UserFriendlyException() : base("Bad Request")
     {
@@ -41,19 +41,19 @@ public class UserFriendlyException : Exception
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="message">要记录或返回的消息。</param>
+    /// <param name="message">要记录或返回的消息</param>
     public UserFriendlyException(string message) : base(message ?? "Bad Request")
     {
         ErrorMessage = message;
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="errorCode">用于标识错误类型的错误码。</param>
+    /// <param name="message">要记录或返回的消息</param>
+    /// <param name="errorCode">用于标识错误类型的错误码</param>
     public UserFriendlyException(string message, object errorCode) : base(message ?? "Bad Request")
     {
         ErrorMessage = message;
@@ -61,21 +61,21 @@ public class UserFriendlyException : Exception
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="innerException">导致当前异常的内部异常。</param>
+    /// <param name="message">要记录或返回的消息</param>
+    /// <param name="innerException">导致当前异常的内部异常</param>
     public UserFriendlyException(string message, Exception innerException) : base(message ?? "Bad Request", innerException)
     {
         ErrorMessage = message;
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="errorCode">用于标识错误类型的错误码。</param>
-    /// <param name="innerException">导致当前异常的内部异常。</param>
+    /// <param name="message">要记录或返回的消息</param>
+    /// <param name="errorCode">用于标识错误类型的错误码</param>
+    /// <param name="innerException">导致当前异常的内部异常</param>
     public UserFriendlyException(string message, object errorCode, Exception innerException) : base(message ?? "Bad Request",
         innerException)
     {
@@ -84,32 +84,32 @@ public class UserFriendlyException : Exception
     }
 
     /// <summary>
-    /// 错误码。
+    /// 错误码
     /// </summary>
     public object ErrorCode { get; set; }
 
     /// <summary>
-    /// 原始错误码（未被覆盖的 <see cref="ErrorCode"/>）。
+    /// 原始错误码（未被覆盖的 <see cref="ErrorCode"/>）
     /// </summary>
     public object OriginErrorCode { get; set; }
 
     /// <summary>
-    /// 错误消息（支持 Object 对象）。
+    /// 错误消息（支持 Object 对象）
     /// </summary>
     public object ErrorMessage { get; set; }
 
     /// <summary>
-    /// 状态码。
+    /// 状态码
     /// </summary>
     public int StatusCode { get; set; } = StatusCodes.Status400BadRequest;
 
     /// <summary>
-    /// 是否是数据验证异常。
+    /// 是否是数据验证异常
     /// </summary>
     public bool ValidationException { get; set; } = false;
 
     /// <summary>
-    /// 额外数据。
+    /// 额外数据
     /// </summary>
     public new object Data { get; set; }
 }

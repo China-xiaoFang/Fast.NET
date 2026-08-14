@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SqlSugar 插入仓储实现。
+/// SqlSugar 插入仓储实现
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity>
 {

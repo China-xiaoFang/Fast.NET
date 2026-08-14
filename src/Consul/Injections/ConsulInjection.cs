@@ -28,17 +28,17 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Fast.Consul;
 
 /// <summary>
-/// Consul 服务注册扩展。
+/// Consul 服务注册扩展
 /// </summary>
 public static class ConsulServiceCollectionExtensions
 {
     /// <summary>
-    /// 注册 Consul 服务发现、健康检查和键值服务。
+    /// 注册 Consul 服务发现、健康检查和键值服务
     /// </summary>
-    /// <param name="services">服务注册集合。</param>
-    /// <param name="configuration">应用配置。</param>
-    /// <param name="section">配置节点名称。</param>
-    /// <returns>返回当前服务注册集合，便于链式调用。</returns>
+    /// <param name="services">服务注册集合</param>
+    /// <param name="configuration">应用配置</param>
+    /// <param name="section">配置节点名称</param>
+    /// <returns>返回当前服务注册集合，便于链式调用</returns>
     public static IServiceCollection AddFastConsul(this IServiceCollection services, IConfiguration configuration,
         string section = "ConsulSettings")
     {

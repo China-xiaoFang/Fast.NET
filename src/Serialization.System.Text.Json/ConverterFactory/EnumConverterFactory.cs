@@ -26,7 +26,7 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// Enum 类型 JSON 转换工厂。
+/// Enum 类型 JSON 转换工厂
 /// </summary>
 internal sealed class EnumConverterFactory : JsonConverterFactory
 {
@@ -45,7 +45,7 @@ internal sealed class EnumConverterFactory : JsonConverterFactory
 }
 
 /// <summary>
-/// Enum 类型 JSON 转换工厂。
+/// Enum 类型 JSON 转换工厂
 /// </summary>
 internal sealed class NullableEnumConverterFactory : JsonConverterFactory
 {

@@ -25,13 +25,13 @@ using Microsoft.OpenApi;
 namespace Fast.Swagger;
 
 /// <summary>
-/// 安全定义需求子项。
+/// 安全定义需求子项
 /// </summary>
 [SuppressSniffer]
 public sealed class SwaggerOpenApiSecurityRequirementItem
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
     public SwaggerOpenApiSecurityRequirementItem()
     {
@@ -39,12 +39,12 @@ public sealed class SwaggerOpenApiSecurityRequirementItem
     }
 
     /// <summary>
-    /// 安全 Schema。
+    /// 安全 Schema
     /// </summary>
     public OpenApiSecurityScheme Scheme { get; set; }
 
     /// <summary>
-    /// 权限。
+    /// 权限
     /// </summary>
     public string[] Accesses { get; set; }
 }

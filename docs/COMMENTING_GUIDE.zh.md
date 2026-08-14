@@ -14,7 +14,7 @@
 - 调用方需要处理的明确异常使用 `<exception>`；高开销、并发、安全和平台限制使用 `<remarks>`。
 - 实现成员已有完整接口或基类契约时使用 `<inheritdoc />`，避免维护两份说明。
 - 注释提及与代码对应的标识符时，保持代码中的大小写和后缀形式，例如 `UserId`、`用户Id`、`租户Id`，不写成 `UserID`、`用户 ID`。
-- XML 文档的说明文本使用完整句末标点，中文统一使用全角标点；普通实现注释中的完整句子使用标点，简短标签可以省略。
+- XML 文档标签（包括 `<returns>`）、类型注释和普通 `//` 单行注释不使用末尾标点，统一删除末尾的 `。！？；：，、…,.!?;:`；括号、方括号、分隔线及许可证头部单行注释保持原样。
 
 错误示例：
 
@@ -27,11 +27,11 @@ bool Set(string key, object value);
 
 ```csharp
 /// <summary>
-/// 写入指定键的缓存值。
+/// 写入指定键的缓存值
 /// </summary>
-/// <param name="key">缓存键。</param>
-/// <param name="value">要写入缓存的值。</param>
-/// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+/// <param name="key">缓存键</param>
+/// <param name="value">要写入缓存的值</param>
+/// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
 bool Set(string key, object value);
 ```
 

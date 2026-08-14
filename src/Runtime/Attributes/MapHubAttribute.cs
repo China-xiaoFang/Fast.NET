@@ -25,21 +25,21 @@
 namespace System;
 
 /// <summary>
-/// 集线器配置特征。
+/// 集线器配置特征
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class MapHubAttribute : Attribute
 {
     /// <summary>
-    /// 配置终点路由地址。
+    /// 配置终点路由地址
     /// </summary>
     public string Pattern { get; set; }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="pattern">用于匹配目标项的模式。</param>
+    /// <param name="pattern">用于匹配目标项的模式</param>
     public MapHubAttribute(string pattern)
     {
         Pattern = pattern;

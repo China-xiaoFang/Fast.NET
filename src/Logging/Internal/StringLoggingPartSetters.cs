@@ -25,15 +25,15 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 构建字符串日志部分类。
+/// 构建字符串日志部分类
 /// </summary>
 public sealed partial class StringLoggingPart
 {
     /// <summary>
-    /// 设置消息。
+    /// 设置消息
     /// </summary>
-    /// <param name="message">要记录或返回的消息。</param>
-    /// <returns>设置消息。</returns>
+    /// <param name="message">要记录或返回的消息</param>
+    /// <returns>设置消息</returns>
     public StringLoggingPart SetMessage(string message)
     {
         if (message != null)
@@ -42,10 +42,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 设置日志级别。
+    /// 设置日志级别
     /// </summary>
-    /// <param name="level">日志级别。</param>
-    /// <returns>设置日志级别。</returns>
+    /// <param name="level">日志级别</param>
+    /// <returns>设置日志级别</returns>
     public StringLoggingPart SetLevel(LogLevel level)
     {
         Level = level;
@@ -53,10 +53,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 设置消息格式化参数。
+    /// 设置消息格式化参数
     /// </summary>
-    /// <param name="args">格式化消息时使用的参数。</param>
-    /// <returns>设置消息格式化参数。</returns>
+    /// <param name="args">格式化消息时使用的参数</param>
+    /// <returns>设置消息格式化参数</returns>
     public StringLoggingPart SetArgs(params object[] args)
     {
         if (args != null && args.Length > 0)
@@ -65,10 +65,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 设置事件Id。
+    /// 设置事件Id
     /// </summary>
-    /// <param name="eventId">日志事件标识。</param>
-    /// <returns>设置事件Id。</returns>
+    /// <param name="eventId">日志事件标识</param>
+    /// <returns>设置事件Id</returns>
     public StringLoggingPart SetEventId(EventId eventId)
     {
         EventId = eventId;
@@ -76,10 +76,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 设置日志分类。
+    /// 设置日志分类
     /// </summary>
-    /// <typeparam name="TClass">要处理的对象类型。</typeparam>
-    /// <returns>设置日志分类。</returns>
+    /// <typeparam name="TClass">要处理的对象类型</typeparam>
+    /// <returns>设置日志分类</returns>
     public StringLoggingPart SetCategory<TClass>()
     {
         CategoryType = typeof(TClass);
@@ -87,10 +87,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 设置异常对象。
+    /// 设置异常对象
     /// </summary>
-    /// <param name="exception">要处理的异常。</param>
-    /// <returns>设置异常对象。</returns>
+    /// <param name="exception">要处理的异常</param>
+    /// <returns>设置异常对象</returns>
     public StringLoggingPart SetException(Exception exception)
     {
         if (exception != null)
@@ -99,10 +99,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 设置日志服务作用域。
+    /// 设置日志服务作用域
     /// </summary>
-    /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器。</param>
-    /// <returns>设置日志服务作用域。</returns>
+    /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器</param>
+    /// <returns>设置日志服务作用域</returns>
     public StringLoggingPart SetLoggerScoped(IServiceProvider serviceProvider)
     {
         if (serviceProvider != null)
@@ -111,10 +111,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 配置日志上下文。
+    /// 配置日志上下文
     /// </summary>
-    /// <param name="properties">要写入上下文的属性集合。</param>
-    /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
+    /// <param name="properties">要写入上下文的属性集合</param>
+    /// <returns>日志记录器以及用于结束作用域的释放句柄</returns>
     public StringLoggingPart ScopeContext(IDictionary<object, object> properties)
     {
         if (properties == null)
@@ -125,10 +125,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 配置日志上下文。
+    /// 配置日志上下文
     /// </summary>
-    /// <param name="configure">日志上下文配置操作。</param>
-    /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
+    /// <param name="configure">日志上下文配置操作</param>
+    /// <returns>日志记录器以及用于结束作用域的释放句柄</returns>
     public StringLoggingPart ScopeContext(Action<LogContext> configure)
     {
         var logContext = new LogContext();
@@ -140,10 +140,10 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 配置日志上下文。
+    /// 配置日志上下文
     /// </summary>
-    /// <param name="context">当前日志上下文。</param>
-    /// <returns>日志记录器以及用于结束作用域的释放句柄。</returns>
+    /// <param name="context">当前日志上下文</param>
+    /// <returns>日志记录器以及用于结束作用域的释放句柄</returns>
     public StringLoggingPart ScopeContext(LogContext context)
     {
         if (context == null)

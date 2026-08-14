@@ -23,7 +23,7 @@
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// 瞬时服务注册依赖。
+/// 瞬时服务注册依赖
 /// </summary>
 [SuppressSniffer]
 public interface ITransientDependency : IDependency

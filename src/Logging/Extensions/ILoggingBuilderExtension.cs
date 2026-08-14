@@ -26,15 +26,15 @@ using Microsoft.Extensions.Logging.Console;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="ILoggingBuilder"/> 扩展。
+/// <see cref="ILoggingBuilder"/> 扩展
 /// </summary>
 internal static class ILoggingBuilderExtension
 {
     /// <summary>
-    /// 添加控制台默认格式化器。
+    /// 添加控制台默认格式化器
     /// </summary>
-    /// <param name="builder">日志服务构建器。</param>
-    /// <returns>添加控制台默认格式化器。</returns>
+    /// <param name="builder">日志服务构建器</param>
+    /// <returns>添加控制台默认格式化器</returns>
     internal static ILoggingBuilder AddConsoleFormatter(this ILoggingBuilder builder)
     {
         builder.AddConsole(options => { options.FormatterName = Penetrates.ConsoleFormatterName; })

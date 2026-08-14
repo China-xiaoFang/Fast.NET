@@ -23,7 +23,7 @@
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 动态 API 应用依赖接口。
+/// 动态 API 应用依赖接口
 /// </summary>
 [SuppressSniffer]
 public interface IDynamicApplication

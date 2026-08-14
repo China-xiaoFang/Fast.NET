@@ -25,19 +25,19 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// 验证 <see cref="string"/> 类型属性必填。
+/// 验证 <see cref="string"/> 类型属性必填
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class StringRequiredAttribute : ValidationAttribute
 {
     /// <summary>
-    /// 允许空字符串。
+    /// 允许空字符串
     /// </summary>
     public bool AllowEmptyString { get; set; } = false;
 
     /// <summary>
-    /// 允许前后空格。
+    /// 允许前后空格
     /// </summary>
     public bool AllowWhitespace { get; set; } = true;
 

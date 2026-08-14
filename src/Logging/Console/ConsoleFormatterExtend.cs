@@ -28,29 +28,29 @@ using Microsoft.Extensions.Options;
 namespace Fast.Logging;
 
 /// <summary>
-/// 控制台默认格式化程序扩展。
+/// 控制台默认格式化程序扩展
 /// </summary>
 internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
 {
     /// <summary>
-    /// 日志格式化选项刷新 Token。
+    /// 日志格式化选项刷新 Token
     /// </summary>
     private readonly IDisposable _formatOptionsReloadToken;
 
     /// <summary>
-    /// 日志格式化配置选项。
+    /// 日志格式化配置选项
     /// </summary>
     private ConsoleFormatterExtendOptions _formatterOptions;
 
     /// <summary>
-    /// 是否启用控制台颜色。
+    /// 是否启用控制台颜色
     /// </summary>
     private bool _disableColors;
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="formatterOptions">formatter Options 配置。</param>
+    /// <param name="formatterOptions">formatter Options 配置</param>
     public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions) : base(Penetrates
         .ConsoleFormatterName)
     {
@@ -109,9 +109,9 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     }
 
     /// <summary>
-    /// 刷新日志格式化选项。
+    /// 刷新日志格式化选项
     /// </summary>
-    /// <param name="options">当前组件使用的选项。</param>
+    /// <param name="options">当前组件使用的选项</param>
     private void ReloadFormatterOptions(ConsoleFormatterExtendOptions options)
     {
         _formatterOptions = options;

@@ -23,23 +23,23 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// 配置规范化文档 OperationId 问题。
+/// 配置规范化文档 OperationId 问题
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class OperationIdAttribute : Attribute
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="operationId">operation 的唯一标识。</param>
+    /// <param name="operationId">operation 的唯一标识</param>
     public OperationIdAttribute(string operationId)
     {
         OperationId = operationId;
     }
 
     /// <summary>
-    /// 自定义 OperationId。
+    /// 自定义 OperationId
     /// </summary>
     public string OperationId { get; set; }
 }

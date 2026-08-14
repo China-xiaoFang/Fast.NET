@@ -23,19 +23,19 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// 基于内存通道事件发布者（默认实现）。
+/// 基于内存通道事件发布者（默认实现）
 /// </summary>
 internal sealed class ChannelEventPublisher : IEventPublisher
 {
     /// <summary>
-    /// 事件源存储器。
+    /// 事件源存储器
     /// </summary>
     private readonly IEventSourceStorer _eventSourceStorer;
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventSourceStorer">事件源存储器。</param>
+    /// <param name="eventSourceStorer">事件源存储器</param>
     public ChannelEventPublisher(IEventSourceStorer eventSourceStorer)
     {
         _eventSourceStorer = eventSourceStorer;
@@ -56,7 +56,7 @@ internal sealed class ChannelEventPublisher : IEventPublisher
         if (delay < 0)
             throw new ArgumentOutOfRangeException(nameof(delay), "延迟时间不能为负数。");
 
-        // 必须等待延迟与入队完成，确保取消和写入异常能够由调用方观察到。
+        // 必须等待延迟与入队完成，确保取消和写入异常能够由调用方观察到
         await Task.Delay(TimeSpan.FromMilliseconds(delay), eventSource.CancellationToken);
 
         await _eventSourceStorer.WriteAsync(eventSource, eventSource.CancellationToken);

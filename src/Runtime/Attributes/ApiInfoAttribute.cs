@@ -25,26 +25,26 @@
 namespace System;
 
 /// <summary>
-/// 接口信息。
+/// 接口信息
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method)]
 public class ApiInfoAttribute : Attribute
 {
     /// <summary>
-    /// 接口名称。
+    /// 接口名称
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 操作方式。
+    /// 操作方式
     /// </summary>
     public HttpRequestActionEnum Action { get; set; }
 
     /// <summary>
-    /// 接口信息。
+    /// 接口信息
     /// </summary>
-    /// <param name="name">接口名称。</param>
+    /// <param name="name">接口名称</param>
     public ApiInfoAttribute(string name)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -52,10 +52,10 @@ public class ApiInfoAttribute : Attribute
     }
 
     /// <summary>
-    /// 接口信息。
+    /// 接口信息
     /// </summary>
-    /// <param name="name">接口名称。</param>
-    /// <param name="action">HttpRequestActionEnum 操作方式。</param>
+    /// <param name="name">接口名称</param>
+    /// <param name="action">HttpRequestActionEnum 操作方式</param>
     public ApiInfoAttribute(string name, HttpRequestActionEnum action)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));

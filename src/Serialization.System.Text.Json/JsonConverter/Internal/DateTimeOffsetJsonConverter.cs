@@ -27,17 +27,17 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// DateTimeOffset 类型 JSON 返回处理。
+/// DateTimeOffset 类型 JSON 返回处理
 /// </summary>
 internal sealed class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 {
     /// <summary>
-    /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
+    /// 格式化 默认：yyyy-MM-dd HH:mm:ss
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// 是否将输出时间转换为本地时区。
+    /// 是否将输出时间转换为本地时区
     /// </summary>
     public bool Localized { get; private set; }
 
@@ -52,10 +52,10 @@ internal sealed class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="format">格式字符串。</param>
-    /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区。</param>
+    /// <param name="format">格式字符串</param>
+    /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区</param>
     public DateTimeOffsetJsonConverter(string format, bool outputToLocalDateTime)
     {
         Format = format;
@@ -144,17 +144,17 @@ internal sealed class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset
 }
 
 /// <summary>
-/// DateTimeOffset? 类型 JSON 返回处理。
+/// DateTimeOffset? 类型 JSON 返回处理
 /// </summary>
 internal sealed class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset?>
 {
     /// <summary>
-    /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
+    /// 格式化 默认：yyyy-MM-dd HH:mm:ss
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// 是否将输出时间转换为本地时区。
+    /// 是否将输出时间转换为本地时区
     /// </summary>
     public bool Localized { get; private set; }
 
@@ -169,10 +169,10 @@ internal sealed class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTi
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="format">格式字符串。</param>
-    /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区。</param>
+    /// <param name="format">格式字符串</param>
+    /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区</param>
     public NullableDateTimeOffsetJsonConverter(string format, bool outputToLocalDateTime)
     {
         Format = format;

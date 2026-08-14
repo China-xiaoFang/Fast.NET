@@ -25,39 +25,39 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档 DTO。
+/// OpenAPI 文档 DTO
 /// </summary>
 public class OpenApiDocumentDto
 {
     /// <summary>
-    /// 地址。
+    /// 地址
     /// </summary>
     /// <remarks><see href="http://127.0.0.1:38080/swagger/All Groups/swagger.json"/></remarks>
     public string Url { get; set; }
 
     /// <summary>
-    /// OpenAPI 版本。
+    /// OpenAPI 版本
     /// </summary>
     [JsonPropertyName("openapi")]
     public string OpenApi { get; set; }
 
     /// <summary>
-    /// 文档信息。
+    /// 文档信息
     /// </summary>
     public OpenApiDocumentInfoDto Info { get; set; }
 
     /// <summary>
-    /// 路由。
+    /// 路由
     /// </summary>
     public IDictionary<string, OpenApiDocumentPathDto> Paths { get; set; }
 
     /// <summary>
-    /// 组件。
+    /// 组件
     /// </summary>
     public OpenApiDocumentComponentDto Components { get; set; }
 
     /// <summary>
-    /// 模块。
+    /// 模块
     /// </summary>
     public List<OpenApiDocumentTagDto> Tags { get; set; }
 }

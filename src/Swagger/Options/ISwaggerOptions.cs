@@ -27,26 +27,26 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 namespace Fast.Swagger;
 
 /// <summary>
-/// Swagger 配置。
+/// Swagger 配置
 /// </summary>
 [SuppressSniffer]
 public interface ISwaggerOptions
 {
     /// <summary>
-    /// 配置 Swagger 生成器。
+    /// 配置 Swagger 生成器
     /// </summary>
-    /// <returns>配置 Swagger 生成器。</returns>
+    /// <returns>配置 Swagger 生成器</returns>
     Action<SwaggerGenOptions> SwaggerGen();
 
     /// <summary>
-    /// 配置 Swagger 全局参数。
+    /// 配置 Swagger 全局参数
     /// </summary>
-    /// <returns>配置 Swagger 全局参数。</returns>
+    /// <returns>配置 Swagger 全局参数</returns>
     Action<SwaggerOptions> Swagger();
 
     /// <summary>
-    /// 配置 Swagger UI 全局参数。
+    /// 配置 Swagger UI 全局参数
     /// </summary>
-    /// <returns>配置 Swagger UI 全局参数。</returns>
+    /// <returns>配置 Swagger UI 全局参数</returns>
     Action<SwaggerUIOptions> SwaggerUI();
 }

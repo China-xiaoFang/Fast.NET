@@ -23,12 +23,12 @@
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// 常量，公共方法配置类。
+/// 常量，公共方法配置类
 /// </summary>
 internal static class Penetrates
 {
     /// <summary>
-    /// JWT 配置。
+    /// JWT 配置
     /// </summary>
     internal static JWTSettingsOptions JWTSettings { get; set; }
 }

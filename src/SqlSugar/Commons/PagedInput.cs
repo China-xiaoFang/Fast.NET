@@ -23,49 +23,49 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SqlSugar 统一分页输入。
+/// SqlSugar 统一分页输入
 /// </summary>
 [SuppressSniffer]
 public class PagedInput
 {
     /// <summary>
-    /// 当前页面索引值，默认为 1。
+    /// 当前页面索引值，默认为 1
     /// </summary>
     public virtual int PageIndex { get; set; } = 1;
 
     /// <summary>
-    /// 页码容量。
+    /// 页码容量
     /// </summary>
     public virtual int PageSize { get; set; } = 20;
 
     /// <summary>
-    /// 搜索值。
+    /// 搜索值
     /// </summary>
     public virtual string SearchValue { get; set; }
 
     /// <summary>
-    /// 搜索时间。
+    /// 搜索时间
     /// </summary>
     public virtual IList<DateTime?> SearchTimeList { get; set; } = [];
 
     /// <summary>
-    /// 搜索集合。
+    /// 搜索集合
     /// </summary>
     public virtual PagedSearchInput[] SearchList { get; set; } = [];
 
     /// <summary>
-    /// 排序集合。
+    /// 排序集合
     /// </summary>
     public virtual PagedSortInput[] SortList { get; set; } = [];
 
     /// <summary>
-    /// 启用分页。
+    /// 启用分页
     /// </summary>
-    /// <remarks>默认启用。</remarks>
+    /// <remarks>默认启用</remarks>
     public virtual bool EnablePaged { get; set; } = true;
 
     /// <summary>
-    /// 是否可以使用默认排序。
+    /// 是否可以使用默认排序
     /// </summary>
     public bool IsOrderBy => SortList is not {Length: > 0};
 }

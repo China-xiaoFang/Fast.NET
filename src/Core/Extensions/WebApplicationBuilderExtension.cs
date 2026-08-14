@@ -31,16 +31,16 @@ using Microsoft.Extensions.Hosting;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// 为 <see cref="WebApplicationBuilder"/> 提供扩展方法。
+/// 为 <see cref="WebApplicationBuilder"/> 提供扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class WebApplicationBuilderExtension
 {
     /// <summary>
-    /// 框架初始化。
+    /// 框架初始化
     /// </summary>
-    /// <param name="builder">要配置的应用构建器。</param>
-    /// <returns>返回 <paramref name="builder"/>，便于链式调用。</returns>
+    /// <param name="builder">要配置的应用构建器</param>
+    /// <returns>返回 <paramref name="builder"/>，便于链式调用</returns>
     public static WebApplicationBuilder Initialize(this WebApplicationBuilder builder)
     {
         // 运行控制台输出
@@ -97,10 +97,10 @@ public static class WebApplicationBuilderExtension
     }
 
     /// <summary>
-    /// 配置 Application。
+    /// 配置 Application
     /// </summary>
-    /// <param name="builder">要配置的应用构建器。</param>
-    /// <param name="hostBuilder">要配置的主机构建器。</param>
+    /// <param name="builder">要配置的应用构建器</param>
+    /// <param name="hostBuilder">要配置的主机构建器</param>
     private static void ConfigureApplication(IWebHostBuilder builder, IHostBuilder hostBuilder = null)
     {
         if (hostBuilder == null)
@@ -187,7 +187,7 @@ public static class WebApplicationBuilderExtension
             services.AddTransient(typeof(IStartupFilter), typeof(CoreStartupFilter));
 
             Debugging.Info("Registering forwarded headers......");
-            // 信任代理转发的客户端地址和协议；部署端仍需限制可信代理边界。
+            // 信任代理转发的客户端地址和协议；部署端仍需限制可信代理边界
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -204,18 +204,18 @@ public static class WebApplicationBuilderExtension
     }
 
     /// <summary>
-    /// 默认配置文件扫描目录。
+    /// 默认配置文件扫描目录
     /// </summary>
     private static IEnumerable<string> InternalConfigurationScanDirectories =>
         new[] {"AppConfig", "AppSettings", "JsonConfig", "Config", "Settings"};
 
     /// <summary>
-    /// 排除的配置文件前缀。
+    /// 排除的配置文件前缀
     /// </summary>
     private static readonly string[] excludeJsonPrefixArr = {"appsettings", "bundleconfig", "compilerconfig"};
 
     /// <summary>
-    /// 排除运行时 JSON 后缀。
+    /// 排除运行时 JSON 后缀
     /// </summary>
     private static readonly string[] runtimeJsonSuffixArr =
     {
@@ -223,10 +223,10 @@ public static class WebApplicationBuilderExtension
     };
 
     /// <summary>
-    /// 添加 JSON 文件。
+    /// 添加 JSON 文件
     /// </summary>
-    /// <param name="configurationBuilder">要添加配置源的配置构建器。</param>
-    /// <param name="hostEnvironment">当前应用的宿主环境。</param>
+    /// <param name="configurationBuilder">要添加配置源的配置构建器</param>
+    /// <param name="hostEnvironment">当前应用的宿主环境</param>
     private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
     {
         // 获取根配置
@@ -283,10 +283,10 @@ public static class WebApplicationBuilderExtension
     }
 
     /// <summary>
-    /// 对配置文件名进行分组。
+    /// 对配置文件名进行分组
     /// </summary>
-    /// <param name="configFiles">要按名称分组的配置文件集合。</param>
-    /// <returns>对配置文件名进行分组集合。</returns>
+    /// <param name="configFiles">要按名称分组的配置文件集合</param>
+    /// <returns>对配置文件名进行分组集合</returns>
     private static IEnumerable<IGrouping<string, string>> SplitConfigFileNameToGroups(IEnumerable<string> configFiles)
     {
         // 分组

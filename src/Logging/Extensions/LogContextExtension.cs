@@ -23,18 +23,18 @@
 namespace Fast.Logging;
 
 /// <summary>
-/// LogContext 扩展。
+/// LogContext 扩展
 /// </summary>
 [SuppressSniffer]
 public static class LogContextExtension
 {
     /// <summary>
-    /// 设置上下文数据。
+    /// 设置上下文数据
     /// </summary>
-    /// <param name="logContext">当前日志上下文。</param>
-    /// <param name="key">日志上下文属性键。</param>
-    /// <param name="value">要写入日志上下文的属性值。</param>
-    /// <returns>设置上下文数据。</returns>
+    /// <param name="logContext">当前日志上下文</param>
+    /// <param name="key">日志上下文属性键</param>
+    /// <param name="value">要写入日志上下文的属性值</param>
+    /// <returns>设置上下文数据</returns>
     public static LogContext Set(this LogContext logContext, object key, object value)
     {
         if (logContext == null || key == null)
@@ -49,11 +49,11 @@ public static class LogContextExtension
     }
 
     /// <summary>
-    /// 批量设置上下文数据。
+    /// 批量设置上下文数据
     /// </summary>
-    /// <param name="logContext">当前日志上下文。</param>
-    /// <param name="properties">要写入上下文的属性集合。</param>
-    /// <returns>批量设置上下文数据。</returns>
+    /// <param name="logContext">当前日志上下文</param>
+    /// <param name="properties">要写入上下文的属性集合</param>
+    /// <returns>批量设置上下文数据</returns>
     public static LogContext SetRange(this LogContext logContext, IDictionary<object, object> properties)
     {
         if (logContext == null || properties == null || properties.Count == 0)
@@ -68,11 +68,11 @@ public static class LogContextExtension
     }
 
     /// <summary>
-    /// 获取上下文数据。
+    /// 获取上下文数据
     /// </summary>
-    /// <param name="logContext">当前日志上下文。</param>
-    /// <param name="key">日志上下文属性键。</param>
-    /// <returns>获取到的上下文数据。</returns>
+    /// <param name="logContext">当前日志上下文</param>
+    /// <param name="key">日志上下文属性键</param>
+    /// <returns>获取到的上下文数据</returns>
     public static object Get(this LogContext logContext, object key)
     {
         if (logContext == null || key == null || logContext.Properties == null || logContext.Properties.Count == 0)
@@ -83,12 +83,12 @@ public static class LogContextExtension
     }
 
     /// <summary>
-    /// 获取上下文数据。
+    /// 获取上下文数据
     /// </summary>
-    /// <param name="logContext">当前日志上下文。</param>
-    /// <param name="key">日志上下文属性键。</param>
-    /// <typeparam name="T">上下文属性值的目标类型。</typeparam>
-    /// <returns>获取到的上下文数据。</returns>
+    /// <param name="logContext">当前日志上下文</param>
+    /// <param name="key">日志上下文属性键</param>
+    /// <typeparam name="T">上下文属性值的目标类型</typeparam>
+    /// <returns>获取到的上下文数据</returns>
     public static object Get<T>(this LogContext logContext, object key)
     {
         var value = logContext.Get(key);

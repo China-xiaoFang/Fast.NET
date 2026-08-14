@@ -26,19 +26,19 @@ using Microsoft.Extensions.Options;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// 授权策略提供器。
+/// 授权策略提供器
 /// </summary>
 internal sealed class AppAuthorizationPolicyProvider : IAuthorizationPolicyProvider
 {
     /// <summary>
-    /// 默认回退策略。
+    /// 默认回退策略
     /// </summary>
     public DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="options">当前组件使用的选项。</param>
+    /// <param name="options">当前组件使用的选项</param>
     public AppAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options)
     {
         FallbackPolicyProvider = new DefaultAuthorizationPolicyProvider(options);

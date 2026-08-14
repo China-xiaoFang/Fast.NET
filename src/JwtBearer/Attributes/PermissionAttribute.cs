@@ -25,19 +25,19 @@
 namespace Microsoft.AspNetCore.Authorization;
 
 /// <summary>
-/// 权限。
+/// 权限
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class PermissionAttribute : Attribute
 {
     /// <summary>
-    /// 权限标识集合。
+    /// 权限标识集合
     /// </summary>
     public List<string> TagList { get; set; }
 
     /// <summary>
-    /// 权限。
+    /// 权限
     /// </summary>
     public PermissionAttribute()
     {
@@ -45,9 +45,9 @@ public class PermissionAttribute : Attribute
     }
 
     /// <summary>
-    /// 权限。
+    /// 权限
     /// </summary>
-    /// <param name="tagList">权限匹配使用的标签集合。</param>
+    /// <param name="tagList">权限匹配使用的标签集合</param>
     public PermissionAttribute(params string[] tagList)
     {
         TagList = tagList.ToList();

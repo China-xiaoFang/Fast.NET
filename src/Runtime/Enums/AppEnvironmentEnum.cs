@@ -27,170 +27,170 @@ using System.ComponentModel;
 namespace System;
 
 /// <summary>
-/// App 运行环境枚举。
+/// App 运行环境枚举
 /// </summary>
 [Flags]
 [FastEnum("App运行环境枚举")]
 public enum AppEnvironmentEnum : long
 {
     /// <summary>
-    /// Web。
+    /// Web
     /// </summary>
     [Description("Web")]
     Web = 1,
 
     /// <summary>
-    /// Windows。
+    /// Windows
     /// </summary>
     [Description("Windows")]
     Windows = 2,
 
     /// <summary>
-    /// Mac。
+    /// Mac
     /// </summary>
     [Description("Mac")]
     Mac = 4,
 
     /// <summary>
-    /// Linux。
+    /// Linux
     /// </summary>
     [Description("Linux")]
     Linux = 8,
 
     /// <summary>
-    /// Android。
+    /// Android
     /// </summary>
     [Description("Android")]
     Android = 32,
 
     /// <summary>
-    /// IOS。
+    /// IOS
     /// </summary>
     [Description("IOS")]
     IOS = 64,
 
     /// <summary>
-    /// 快应用。
+    /// 快应用
     /// </summary>
     [Description("快应用")]
     QuickApp = 128,
 
     /// <summary>
-    /// 微信小程序。
+    /// 微信小程序
     /// </summary>
     [Description("微信小程序")]
     WeChatMiniProgram = 256,
 
     /// <summary>
-    /// 微信公众号。
+    /// 微信公众号
     /// </summary>
     [Description("微信公众号")]
     WeChatOfficialAccount = 512,
 
     /// <summary>
-    /// 微信服务号。
+    /// 微信服务号
     /// </summary>
     [Description("微信服务号")]
     WeChatServiceAccount = 1024,
 
     /// <summary>
-    /// 微信开放平台。
+    /// 微信开放平台
     /// </summary>
     [Description("微信开放平台")]
     WeChatOpenPlatform = 2048,
 
     /// <summary>
-    /// 企业微信。
+    /// 企业微信
     /// </summary>
     [Description("企业微信")]
     WorkWeChat = 4096,
 
     /// <summary>
-    /// 支付宝小程序。
+    /// 支付宝小程序
     /// </summary>
     [Description("支付宝小程序")]
     AlipayMiniProgram = 8192,
 
     /// <summary>
-    /// 抖音小程序。
+    /// 抖音小程序
     /// </summary>
     [Description("抖音小程序")]
     TiktokMiniProgram = 16384,
 
     /// <summary>
-    /// 钉钉小程序。
+    /// 钉钉小程序
     /// </summary>
     [Description("钉钉小程序")]
     DingTalkMiniProgram = 32768,
 
     /// <summary>
-    /// 飞书小程序。
+    /// 飞书小程序
     /// </summary>
     [Description("飞书小程序")]
     FeiShuMiniProgram = 65536,
 
     /// <summary>
-    /// QQ 小程序。
+    /// QQ 小程序
     /// </summary>
     [Description("QQ小程序")]
     QQMiniProgram = 131072,
 
     /// <summary>
-    /// 百度小程序。
+    /// 百度小程序
     /// </summary>
     [Description("百度小程序")]
     BaiduMiniProgram = 262144,
 
     /// <summary>
-    /// 快手小程序。
+    /// 快手小程序
     /// </summary>
     [Description("快手小程序")]
     KuaiShouMiniProgram = 524288,
 
     /// <summary>
-    /// 小红书小程序。
+    /// 小红书小程序
     /// </summary>
     [Description("小红书小程序")]
     XiaoHongShuMiniProgram = 1048576,
 
     /// <summary>
-    /// 京东小程序。
+    /// 京东小程序
     /// </summary>
     [Description("京东小程序")]
     JDMiniProgram = 2097152,
 
     /// <summary>
-    /// API。
+    /// API
     /// </summary>
     [Description("Api")]
     Api = 2147483648,
 
     /// <summary>
-    /// 其他。
+    /// 其他
     /// </summary>
     [Description("其他")]
     Other = 4294967296,
 
     /// <summary>
-    /// 桌面端。
+    /// 桌面端
     /// </summary>
     [Description("桌面端")]
     Desktop = Windows | Mac | Linux,
 
     /// <summary>
-    /// 移动端。
+    /// 移动端
     /// </summary>
     [Description("移动端")]
     Mobile = Android | IOS,
 
     /// <summary>
-    /// 移动端（三端）。
+    /// 移动端（三端）
     /// </summary>
     [Description("移动端（三端）")]
     MobileThree = Android | IOS | MiniProgram,
 
     /// <summary>
-    /// 小程序。
+    /// 小程序
     /// </summary>
     [Description("小程序")]
     MiniProgram = QuickApp

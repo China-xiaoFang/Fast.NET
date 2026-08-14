@@ -28,14 +28,14 @@ namespace Fast.EventBus;
 internal sealed class EventBusFactory : IEventBusFactory
 {
     /// <summary>
-    /// 事件源存储器。
+    /// 事件源存储器
     /// </summary>
     private readonly IEventSourceStorer _eventSourceStorer;
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventSourceStorer">事件源存储器。</param>
+    /// <param name="eventSourceStorer">事件源存储器</param>
     public EventBusFactory(IEventSourceStorer eventSourceStorer)
     {
         _eventSourceStorer = eventSourceStorer;

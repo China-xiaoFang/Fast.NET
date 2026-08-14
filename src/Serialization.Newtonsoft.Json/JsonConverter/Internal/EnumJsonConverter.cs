@@ -26,7 +26,7 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// Enum 类型 JSON 返回处理。
+/// Enum 类型 JSON 返回处理
 /// </summary>
 internal sealed class EnumJsonConverter : JsonConverter
 {
@@ -41,7 +41,7 @@ internal sealed class EnumJsonConverter : JsonConverter
             var enumType = value.GetType();
             var underlyingType = Nullable.GetUnderlyingType(enumType) ?? enumType;
 
-            // 按枚举底层类型的 TypeCode 分派数值转换逻辑。
+            // 按枚举底层类型的 TypeCode 分派数值转换逻辑
             var typeCode = Type.GetTypeCode(underlyingType);
 
             // 判断是否为 long 类型
@@ -59,7 +59,7 @@ internal sealed class EnumJsonConverter : JsonConverter
     /// <inheritdoc />
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-        // 前端传入的 Enum 类型可能为 String 类型，或者 Number 类型。
+        // 前端传入的 Enum 类型可能为 String 类型，或者 Number 类型
         if (reader.TokenType == JsonToken.Null)
             return null;
 
@@ -76,7 +76,7 @@ internal sealed class EnumJsonConverter : JsonConverter
         }
         else if (reader.TokenType == JsonToken.Integer)
         {
-            // 按枚举底层类型的 TypeCode 分派数值转换逻辑。
+            // 按枚举底层类型的 TypeCode 分派数值转换逻辑
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (Type.GetTypeCode(underlyingType))
             {
@@ -100,7 +100,7 @@ internal sealed class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
                     if (value == 0)
                     {
                         return null;
@@ -127,7 +127,7 @@ internal sealed class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
                     if (value == 0)
                     {
                         return null;
@@ -154,7 +154,7 @@ internal sealed class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
                     if (value == 0)
                     {
                         return null;
@@ -181,7 +181,7 @@ internal sealed class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
                     if (value == 0)
                     {
                         return null;
@@ -208,7 +208,7 @@ internal sealed class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
                     if (value == 0)
                     {
                         return null;
@@ -235,7 +235,7 @@ internal sealed class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
                     if (value == 0)
                     {
                         return null;
@@ -262,7 +262,7 @@ internal sealed class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
                     if (value == 0)
                     {
                         return null;
@@ -289,7 +289,7 @@ internal sealed class EnumJsonConverter : JsonConverter
                         return Enum.ToObject(underlyingType, value);
                     }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理。
+                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
                     if (value == 0)
                     {
                         return null;

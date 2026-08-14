@@ -25,32 +25,32 @@ using System.ComponentModel.DataAnnotations;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SqlSugar 统一分页搜索输入。
+/// SqlSugar 统一分页搜索输入
 /// </summary>
 [SuppressSniffer]
 public class PagedSearchInput
 {
     /// <summary>
-    /// 搜索字段英文。
+    /// 搜索字段英文
     /// </summary>
-    /// <remarks>主要字段，用于生成查询语句。</remarks>
+    /// <remarks>主要字段，用于生成查询语句</remarks>
     [StringRequired(ErrorMessage = "搜索字段不能为空")]
     public virtual string EnField { get; set; }
 
     /// <summary>
-    /// 搜索字段中文。
+    /// 搜索字段中文
     /// </summary>
-    /// <remarks>次要字段，用于提示。</remarks>
+    /// <remarks>次要字段，用于提示</remarks>
     public virtual string ChField { get; set; }
 
     /// <summary>
-    /// 搜索值。
+    /// 搜索值
     /// </summary>
     public virtual string Value { get; set; }
 
     /// <summary>
-    /// 搜索类型。
+    /// 搜索类型
     /// </summary>
-    /// <remarks>默认模糊匹配。</remarks>
+    /// <remarks>默认模糊匹配</remarks>
     public virtual PagedSearchTypeEnum Type { get; set; } = PagedSearchTypeEnum.Like;
 }

@@ -23,33 +23,33 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SqlSugar 实体信息。
+/// SqlSugar 实体信息
 /// </summary>
 [SuppressSniffer]
 public sealed class SqlSugarEntityInfo
 {
     /// <summary>
-    /// 数据库表名称。
+    /// 数据库表名称
     /// </summary>
     public string TableName { get; set; }
 
     /// <summary>
-    /// 数据库表描述。
+    /// 数据库表描述
     /// </summary>
     public string TableDescription { get; set; }
 
     /// <summary>
-    /// 实体类型。
+    /// 实体类型
     /// </summary>
     public Type EntityType { get; set; }
 
     /// <summary>
-    /// 是否分表。
+    /// 是否分表
     /// </summary>
     public bool IsSplitTable { get; set; }
 
     /// <summary>
-    /// <see cref="SugarDbTypeAttribute"/> 特性的 Type 属性。
+    /// <see cref="SugarDbTypeAttribute"/> 特性的 Type 属性
     /// </summary>
     public object SugarDbType { get; set; }
 }

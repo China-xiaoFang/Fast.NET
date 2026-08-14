@@ -32,19 +32,19 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加 JwtBearer 设置。
+    /// 添加 JwtBearer 设置
     /// </summary>
-    /// <remarks>适用于只使用工具类。</remarks>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <remarks>适用于只使用工具类</remarks>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services, IConfiguration configuration,
         string section = "JWTSettings")
     {
@@ -54,20 +54,20 @@ public static class IServiceCollectionExtension
             .Get<JWTSettingsOptions>()
             .LoadPostConfigure();
 
-        // 未配置 Redis 等 IDistributedCache 实现时提供进程内回退。
-        // AddDistributedMemoryCache 使用 TryAdd 注册，不会覆盖用户已经配置的缓存实现。
+        // 未配置 Redis 等 IDistributedCache 实现时提供进程内回退
+        // AddDistributedMemoryCache 使用 TryAdd 注册，不会覆盖用户已经配置的缓存实现
         services.AddDistributedMemoryCache();
 
         return services;
     }
 
     /// <summary>
-    /// 添加 JwtBearer 设置。
+    /// 添加 JwtBearer 设置
     /// </summary>
-    /// <remarks>适用于只使用工具类。</remarks>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="optionAction">JWT 配置操作。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <remarks>适用于只使用工具类</remarks>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="optionAction">JWT 配置操作</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services,
         Action<JWTSettingsOptions> optionAction)
     {
@@ -78,20 +78,20 @@ public static class IServiceCollectionExtension
 
         Penetrates.JWTSettings = jwtSettings.LoadPostConfigure();
 
-        // 未配置 Redis 等 IDistributedCache 实现时提供进程内回退。
+        // 未配置 Redis 等 IDistributedCache 实现时提供进程内回退
         services.AddDistributedMemoryCache();
 
         return services;
     }
 
     /// <summary>
-    /// 添加 JwtBearer 授权。
+    /// 添加 JwtBearer 授权
     /// </summary>
-    /// <remarks>适用于自定义验证。</remarks>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <remarks>适用于自定义验证</remarks>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services, IConfiguration configuration,
         string section = "JWTSettings")
     {
@@ -108,7 +108,7 @@ public static class IServiceCollectionExtension
             {
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
 
-                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行。
+                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行
                 var onMessageReceived = options.Events.OnMessageReceived;
                 options.Events.OnMessageReceived = async context =>
                 {
@@ -119,7 +119,7 @@ public static class IServiceCollectionExtension
                         return;
                     }
 
-                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求。
+                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求
                     var accessToken = context.Request.Query["access_token"]
                         .ToString();
                     if (!string.IsNullOrEmpty(accessToken))
@@ -133,12 +133,12 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加 JwtBearer 授权。
+    /// 添加 JwtBearer 授权
     /// </summary>
-    /// <remarks>适用于自定义验证。</remarks>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="optionAction">JWT 配置操作。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <remarks>适用于自定义验证</remarks>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="optionAction">JWT 配置操作</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services,
         Action<JWTSettingsOptions> optionAction)
     {
@@ -155,7 +155,7 @@ public static class IServiceCollectionExtension
             {
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
 
-                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行。
+                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行
                 var onMessageReceived = options.Events.OnMessageReceived;
                 options.Events.OnMessageReceived = async context =>
                 {
@@ -166,7 +166,7 @@ public static class IServiceCollectionExtension
                         return;
                     }
 
-                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求。
+                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求
                     var accessToken = context.Request.Query["access_token"]
                         .ToString();
                     if (!string.IsNullOrEmpty(accessToken))
@@ -180,12 +180,12 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加 JwtBearer 服务。
+    /// 添加 JwtBearer 服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddJwtBearer(this IServiceCollection services, IConfiguration configuration,
         string section = "JWTSettings")
     {
@@ -193,13 +193,13 @@ public static class IServiceCollectionExtension
 
         services.AddJwtBearerSetting(configuration, section);
 
-        // 解析当前请求使用的 JWT 验证处理器。
+        // 解析当前请求使用的 JWT 验证处理器
         var jwtBearerHandle =
             MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
 
         if (jwtBearerHandle != null)
         {
-            // JWT 验证处理器按请求作用域解析，避免跨请求共享状态。
+            // JWT 验证处理器按请求作用域解析，避免跨请求共享状态
             services.AddScoped(typeof(IJwtBearerHandle), jwtBearerHandle);
         }
 
@@ -209,7 +209,7 @@ public static class IServiceCollectionExtension
         // 注册策略授权处理程序
         services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
 
-        // 未显式标记匿名访问的端点统一要求授权。
+        // 未显式标记匿名访问的端点统一要求授权
         if (Penetrates.JWTSettings.Enable.HasValue && Penetrates.JWTSettings.Enable.Value)
         {
             services.Configure<MvcOptions>(options => { options.Filters.Add(new AuthorizeFilter()); });
@@ -224,7 +224,7 @@ public static class IServiceCollectionExtension
             {
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
 
-                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行。
+                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行
                 var onMessageReceived = options.Events.OnMessageReceived;
                 options.Events.OnMessageReceived = async context =>
                 {
@@ -235,7 +235,7 @@ public static class IServiceCollectionExtension
                         return;
                     }
 
-                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求。
+                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求
                     var accessToken = context.Request.Query["access_token"]
                         .ToString();
                     if (!string.IsNullOrEmpty(accessToken))
@@ -249,22 +249,22 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加 JwtBearer 服务。
+    /// 添加 JwtBearer 服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="optionAction">JWT 配置操作。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="optionAction">JWT 配置操作</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddJwtBearer(this IServiceCollection services, Action<JWTSettingsOptions> optionAction)
     {
         services.AddJwtBearerSetting(optionAction);
 
-        // 解析当前请求使用的 JWT 验证处理器。
+        // 解析当前请求使用的 JWT 验证处理器
         var jwtBearerHandle =
             MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
 
         if (jwtBearerHandle != null)
         {
-            // JWT 验证处理器按请求作用域解析，避免跨请求共享状态。
+            // JWT 验证处理器按请求作用域解析，避免跨请求共享状态
             services.AddScoped(typeof(IJwtBearerHandle), jwtBearerHandle);
         }
 
@@ -274,7 +274,7 @@ public static class IServiceCollectionExtension
         // 注册策略授权处理程序
         services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
 
-        // 未显式标记匿名访问的端点统一要求授权。
+        // 未显式标记匿名访问的端点统一要求授权
         if (Penetrates.JWTSettings.Enable.HasValue && Penetrates.JWTSettings.Enable.Value)
         {
             services.Configure<MvcOptions>(options => { options.Filters.Add(new AuthorizeFilter()); });
@@ -289,7 +289,7 @@ public static class IServiceCollectionExtension
             {
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
 
-                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行。
+                // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行
                 var onMessageReceived = options.Events.OnMessageReceived;
                 options.Events.OnMessageReceived = async context =>
                 {
@@ -300,7 +300,7 @@ public static class IServiceCollectionExtension
                         return;
                     }
 
-                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求。
+                    // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求
                     var accessToken = context.Request.Query["access_token"]
                         .ToString();
                     if (!string.IsNullOrEmpty(accessToken))

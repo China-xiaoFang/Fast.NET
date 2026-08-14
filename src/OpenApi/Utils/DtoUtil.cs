@@ -25,16 +25,16 @@ using System.Text;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI DTO 工具类。
+/// OpenAPI DTO 工具类
 /// </summary>
 public static partial class OpenApiUtil
 {
     /// <summary>
-    /// 处理声明引用 key。
+    /// 处理声明引用 key
     /// </summary>
-    /// <param name="refKey">OpenAPI 架构引用键。</param>
-    /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合。</param>
-    /// <returns>处理声明引用 key。</returns>
+    /// <param name="refKey">OpenAPI 架构引用键</param>
+    /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合</param>
+    /// <returns>处理声明引用 key</returns>
     internal static string DisposeSchemaRefKey(string refKey, HashSet<string> refSchemas = null)
     {
         // 获取 $ref 最后一个/后的 Name
@@ -86,10 +86,10 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 处理基础类型。
+    /// 处理基础类型
     /// </summary>
-    /// <param name="refKey">OpenAPI 架构引用键。</param>
-    /// <returns>处理基础类型。</returns>
+    /// <param name="refKey">OpenAPI 架构引用键</param>
+    /// <returns>处理基础类型</returns>
     internal static string DisposeBaseType(string refKey)
     {
         var baseTypeMapping = Penetrates.OpenApiSettings.BaseTypeMappings.FirstOrDefault(f => f.Key == refKey);
@@ -97,13 +97,13 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 生成声明导入。
+    /// 生成声明导入
     /// </summary>
-    /// <param name="hasWeb">是否为 Web 端。</param>
-    /// <param name="dirName">文件夹名称。</param>
-    /// <param name="refSchemas">引用声明。</param>
-    /// <param name="enumSchemas">枚举声明。</param>
-    /// <returns>生成的声明导入。</returns>
+    /// <param name="hasWeb">是否为 Web 端</param>
+    /// <param name="dirName">文件夹名称</param>
+    /// <param name="refSchemas">引用声明</param>
+    /// <param name="enumSchemas">枚举声明</param>
+    /// <returns>生成的声明导入</returns>
     internal static (StringBuilder importSb, HashSet<string> refSchemas) GenerateSchemaImport(bool hasWeb, string dirName,
         HashSet<string> refSchemas, List<ComponentSchemaDto> enumSchemas)
     {
@@ -152,11 +152,11 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 生成 OpenAPI 文档声明文件。
+    /// 生成 OpenAPI 文档声明文件
     /// </summary>
-    /// <param name="openApiDocument">OpenAPI 文档。</param>
-    /// <param name="scriptLanguage">脚本语言。</param>
-    /// <returns>表示异步生成 OpenAPI 文档声明文件的任务，任务结果为生成的 OpenAPI 文档声明文件集合。</returns>
+    /// <param name="openApiDocument">OpenAPI 文档</param>
+    /// <param name="scriptLanguage">脚本语言</param>
+    /// <returns>表示异步生成 OpenAPI 文档声明文件的任务，任务结果为生成的 OpenAPI 文档声明文件集合</returns>
     internal static async Task<List<ComponentSchemaDto>> GenerateOpenApiDocumentSchemaFile(OpenApiDocumentDto openApiDocument,
         ScriptLanguageEnum scriptLanguage)
     {
@@ -165,7 +165,7 @@ public static partial class OpenApiUtil
 
         var result = new List<ComponentSchemaDto>();
 
-        // JavaScript 版本不生成 TypeScript 类型声明。
+        // JavaScript 版本不生成 TypeScript 类型声明
         if (scriptLanguage == ScriptLanguageEnum.JavaScript)
             return result;
 
@@ -301,21 +301,21 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 写入 OpenAPI 文档声明文件。
+    /// 写入 OpenAPI 文档声明文件
     /// </summary>
-    /// <param name="hasWeb">是否为 Web 端。</param>
-    /// <param name="rootDir">根目录。</param>
-    /// <param name="openApiDocument">OpenAPI 文档。</param>
-    /// <param name="schemaDto">声明。</param>
-    /// <param name="dtoSchemas">DTO 声明。</param>
-    /// <param name="enumSchemas">枚举声明。</param>
-    /// <param name="scriptLanguage">脚本语言。</param>
-    /// <returns>表示异步写入 OpenAPI 文档声明文件的任务。</returns>
+    /// <param name="hasWeb">是否为 Web 端</param>
+    /// <param name="rootDir">根目录</param>
+    /// <param name="openApiDocument">OpenAPI 文档</param>
+    /// <param name="schemaDto">声明</param>
+    /// <param name="dtoSchemas">DTO 声明</param>
+    /// <param name="enumSchemas">枚举声明</param>
+    /// <param name="scriptLanguage">脚本语言</param>
+    /// <returns>表示异步写入 OpenAPI 文档声明文件的任务</returns>
     internal static async Task WriteOpenApiDocumentSchemaFile(bool hasWeb, string rootDir, OpenApiDocumentDto openApiDocument,
         ComponentSchemaDto schemaDto, List<ComponentSchemaDto> dtoSchemas, List<ComponentSchemaDto> enumSchemas,
         ScriptLanguageEnum scriptLanguage)
     {
-        // JavaScript 版本不生成 TypeScript 类型声明。
+        // JavaScript 版本不生成 TypeScript 类型声明
         if (scriptLanguage == ScriptLanguageEnum.JavaScript)
             return;
 

@@ -25,54 +25,54 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 验证信息元数据。
+/// 验证信息元数据
 /// </summary>
 [SuppressSniffer]
 public sealed class ValidationMetadata
 {
     /// <summary>
-    /// 验证结果。
+    /// 验证结果
     /// </summary>
-    /// <remarks>返回字典或字符串类型。</remarks>
+    /// <remarks>返回字典或字符串类型</remarks>
     public object ValidationResult { get; set; }
 
     /// <summary>
-    /// 异常消息。
+    /// 异常消息
     /// </summary>
     public string Message { get; set; }
 
     /// <summary>
-    /// 验证状态。
+    /// 验证状态
     /// </summary>
     public ModelStateDictionary ModelState { get; set; }
 
     /// <summary>
-    /// 错误码。
+    /// 错误码
     /// </summary>
     public object ErrorCode { get; set; }
 
     /// <summary>
-    /// 原始错误码（未被覆盖的 <see cref="ErrorCode"/>）。
+    /// 原始错误码（未被覆盖的 <see cref="ErrorCode"/>）
     /// </summary>
     public object OriginErrorCode { get; set; }
 
     /// <summary>
-    /// 状态码。
+    /// 状态码
     /// </summary>
     public int? StatusCode { get; set; }
 
     /// <summary>
-    /// 首个错误属性。
+    /// 首个错误属性
     /// </summary>
     public string FirstErrorProperty { get; set; }
 
     /// <summary>
-    /// 首个错误消息。
+    /// 首个错误消息
     /// </summary>
     public string FirstErrorMessage { get; set; }
 
     /// <summary>
-    /// 额外数据。
+    /// 额外数据
     /// </summary>
     public object Data { get; set; }
 }

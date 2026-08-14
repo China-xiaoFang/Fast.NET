@@ -25,17 +25,17 @@ using System.Reflection;
 namespace Fast.Swagger;
 
 /// <summary>
-/// 为 <see cref="MethodInfo"/> 提供扩展方法。
+/// 为 <see cref="MethodInfo"/> 提供扩展方法
 /// </summary>
 internal static class MethodInfoExtension
 {
     /// <summary>
-    /// 查找方法指定特性，如果没找到则继续查找声明类。
+    /// 查找方法指定特性，如果没找到则继续查找声明类
     /// </summary>
-    /// <param name="methodInfo">目标方法的反射元数据。</param>
-    /// <param name="inherit">是否在基类型中继续查找成员或特性。</param>
-    /// <typeparam name="TAttribute">要查找的特性类型。</typeparam>
-    /// <returns>查找方法指定特性，如果没找到则继续查找声明类。</returns>
+    /// <param name="methodInfo">目标方法的反射元数据</param>
+    /// <param name="inherit">是否在基类型中继续查找成员或特性</param>
+    /// <typeparam name="TAttribute">要查找的特性类型</typeparam>
+    /// <returns>查找方法指定特性，如果没找到则继续查找声明类</returns>
     public static TAttribute GetFoundAttribute<TAttribute>(this MethodInfo methodInfo, bool inherit) where TAttribute : Attribute
     {
         var declaringType = methodInfo.DeclaringType;
@@ -47,7 +47,7 @@ internal static class MethodInfoExtension
             return methodInfo.GetCustomAttribute<TAttribute>(inherit);
         }
 
-        // 方法未声明特性时，继续检查其声明类型。
+        // 方法未声明特性时，继续检查其声明类型
         if (declaringType == null)
         {
             return null;

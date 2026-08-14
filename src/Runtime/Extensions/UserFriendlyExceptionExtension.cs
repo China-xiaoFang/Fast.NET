@@ -25,17 +25,17 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.Runtime;
 
 /// <summary>
-/// 为 <see cref="UserFriendlyException"/> 提供扩展方法。
+/// 为 <see cref="UserFriendlyException"/> 提供扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class UserFriendlyExceptionExtension
 {
     /// <summary>
-    /// 设置异常状态码。
+    /// 设置异常状态码
     /// </summary>
-    /// <param name="exception">要处理的异常。</param>
-    /// <param name="statusCode">HTTP 状态码。</param>
-    /// <returns>设置异常状态码。</returns>
+    /// <param name="exception">要处理的异常</param>
+    /// <param name="statusCode">HTTP 状态码</param>
+    /// <returns>设置异常状态码</returns>
     public static UserFriendlyException StatusCode(this UserFriendlyException exception,
         int statusCode = StatusCodes.Status400BadRequest)
     {
@@ -44,11 +44,11 @@ public static class UserFriendlyExceptionExtension
     }
 
     /// <summary>
-    /// 设置额外数据。
+    /// 设置额外数据
     /// </summary>
-    /// <param name="exception">要处理的异常。</param>
-    /// <param name="data">要处理或传输的数据。</param>
-    /// <returns>设置额外数据。</returns>
+    /// <param name="exception">要处理的异常</param>
+    /// <param name="data">要处理或传输的数据</param>
+    /// <returns>设置额外数据</returns>
     public static UserFriendlyException WithData(this UserFriendlyException exception, object data)
     {
         exception.Data = data;

@@ -26,15 +26,15 @@ using System.Runtime.CompilerServices;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 为 <see cref="MethodInfo"/> 提供扩展方法。
+/// 为 <see cref="MethodInfo"/> 提供扩展方法
 /// </summary>
 internal static class MethodInfoExtension
 {
     /// <summary>
-    /// 判断方法是否是异步。
+    /// 判断方法是否是异步
     /// </summary>
-    /// <param name="methodInfo">要检查的方法。</param>
-    /// <returns>方法由异步状态机生成或返回任务类型时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="methodInfo">要检查的方法</param>
+    /// <returns>方法由异步状态机生成或返回任务类型时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool IsAsync(this MethodInfo methodInfo)
     {
         var returnType = methodInfo.ReturnType;
@@ -45,10 +45,10 @@ internal static class MethodInfoExtension
     }
 
     /// <summary>
-    /// 获取方法真实返回类型。
+    /// 获取方法真实返回类型
     /// </summary>
-    /// <param name="methodInfo">目标方法。</param>
-    /// <returns>同步方法的声明返回类型；任务方法返回其任务结果类型。</returns>
+    /// <param name="methodInfo">目标方法</param>
+    /// <returns>同步方法的声明返回类型；任务方法返回其任务结果类型</returns>
     public static Type GetRealReturnType(this MethodInfo methodInfo)
     {
         var isAsyncMethod = methodInfo.IsAsync();

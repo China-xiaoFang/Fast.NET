@@ -26,59 +26,59 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 文件日志记录器提供程序。
+/// 文件日志记录器提供程序
 /// </summary>
-/// <remarks>实现遵循 Microsoft.Extensions.Logging 自定义日志提供器约定。</remarks>
+/// <remarks>实现遵循 Microsoft.Extensions.Logging 自定义日志提供器约定</remarks>
 [ProviderAlias("File")]
 internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScope
 {
     /// <summary>
-    /// 存储多日志分类日志记录器。
+    /// 存储多日志分类日志记录器
     /// </summary>
     private readonly ConcurrentDictionary<string, FileLogger> _fileLoggers = new();
 
     /// <summary>
-    /// 日志消息队列（线程安全）。
+    /// 日志消息队列（线程安全）
     /// </summary>
     private readonly BlockingCollection<LogMessage> _logMessageQueue = new(1024);
 
     /// <summary>
-    /// 日志作用域提供器。
+    /// 日志作用域提供器
     /// </summary>
     private IExternalScopeProvider _scopeProvider;
 
     /// <summary>
-    /// 记录日志所有滚动文件名。
+    /// 记录日志所有滚动文件名
     /// </summary>
-    /// <remarks>只有 MaxRollingFiles 和 FileSizeLimitBytes 大于 0 有效。</remarks>
+    /// <remarks>只有 MaxRollingFiles 和 FileSizeLimitBytes 大于 0 有效</remarks>
     internal readonly ConcurrentDictionary<string, FileInfo> _rollingFileNames = new();
 
     /// <summary>
-    /// 文件日志写入器。
+    /// 文件日志写入器
     /// </summary>
     private readonly FileLoggingWriter _fileLoggingWriter;
 
     /// <summary>
-    /// 长时间运行的后台任务。
+    /// 长时间运行的后台任务
     /// </summary>
-    /// <remarks>实现不间断写入。</remarks>
+    /// <remarks>实现不间断写入</remarks>
     private readonly Task _processQueueTask;
 
     /// <summary>
-    /// 是否已经释放。
+    /// 是否已经释放
     /// </summary>
     private int _disposed;
 
     /// <summary>
-    /// 当前队列饱和周期是否已输出警告。
+    /// 当前队列饱和周期是否已输出警告
     /// </summary>
     private int _queueFullWarningEmitted;
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="fileName">日志文件名。</param>
-    /// <param name="fileLoggerOptions">文件日志记录器配置选项。</param>
+    /// <param name="fileName">日志文件名</param>
+    /// <param name="fileLoggerOptions">文件日志记录器配置选项</param>
     public FileLoggerProvider(string fileName, FileLoggerOptions fileLoggerOptions)
     {
         // 支持文件名嵌入系统环境变量，格式为：%SystemDrive%，%SystemRoot%，处理 Windows 和 Linux 路径分隔符不一致问题
@@ -96,17 +96,17 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
     }
 
     /// <summary>
-    /// 文件名。
+    /// 文件名
     /// </summary>
     internal string FileName;
 
     /// <summary>
-    /// 文件日志记录器配置选项。
+    /// 文件日志记录器配置选项
     /// </summary>
     internal FileLoggerOptions LoggerOptions { get; private set; }
 
     /// <summary>
-    /// 日志作用域提供器。
+    /// 日志作用域提供器
     /// </summary>
     internal IExternalScopeProvider ScopeProvider
     {
@@ -140,7 +140,7 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
 
         try
         {
-            // CompleteAdding 会让消费循环在排空队列后自然结束；等待完成可避免关闭文件时仍有后台写入。
+            // CompleteAdding 会让消费循环在排空队列后自然结束；等待完成可避免关闭文件时仍有后台写入
             _processQueueTask.GetAwaiter()
                 .GetResult();
         }
@@ -163,9 +163,9 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
     }
 
     /// <summary>
-    /// 将日志消息写入队列中等待后台任务出队写入文件。
+    /// 将日志消息写入队列中等待后台任务出队写入文件
     /// </summary>
-    /// <param name="logMsg">日志消息。</param>
+    /// <param name="logMsg">日志消息</param>
     internal void WriteToQueue(LogMessage logMsg)
     {
         if (Volatile.Read(ref _disposed) != 0)
@@ -173,33 +173,33 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
 
         try
         {
-            // 只有队列可持续入队才写入。
+            // 只有队列可持续入队才写入
             if (_logMessageQueue.IsAddingCompleted)
                 return;
 
-            // 使用 TryAdd 非阻塞写入，避免后台任务异常退出时队列满导致调用方线程永久阻塞。
+            // 使用 TryAdd 非阻塞写入，避免后台任务异常退出时队列满导致调用方线程永久阻塞
             if (_logMessageQueue.TryAdd(logMsg))
             {
                 Volatile.Write(ref _queueFullWarningEmitted, 0);
                 return;
             }
 
-            // 每个连续饱和周期只输出一次，既暴露日志丢弃，又避免持续写满标准错误流。
+            // 每个连续饱和周期只输出一次，既暴露日志丢弃，又避免持续写满标准错误流
             if (Interlocked.Exchange(ref _queueFullWarningEmitted, 1) == 0)
                 Console.Error.WriteLine("[Fast.Logging] Log queue is full; new log messages are being dropped.");
         }
         catch (ObjectDisposedException)
         {
-            // Dispose 与生产者并发时属于正常关闭流程。
+            // Dispose 与生产者并发时属于正常关闭流程
         }
         catch (InvalidOperationException)
         {
-            // CompleteAdding 与生产者并发时属于正常关闭流程。
+            // CompleteAdding 与生产者并发时属于正常关闭流程
         }
     }
 
     /// <summary>
-    /// 将日志消息写入文件中。
+    /// 将日志消息写入文件中
     /// </summary>
     private void ProcessQueue()
     {
@@ -211,7 +211,7 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
             }
             catch (Exception ex)
             {
-                // 保持消费线程继续运行，同时把无法写入文件的事实暴露给宿主诊断通道。
+                // 保持消费线程继续运行，同时把无法写入文件的事实暴露给宿主诊断通道
                 Console.Error.WriteLine($"[Fast.Logging] Failed to write log file '{FileName}': {ex.Message}");
             }
         }

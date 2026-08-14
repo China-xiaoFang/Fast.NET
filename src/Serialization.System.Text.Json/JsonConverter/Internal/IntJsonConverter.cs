@@ -26,14 +26,14 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// int 类型 JSON 返回处理。
+/// int 类型 JSON 返回处理
 /// </summary>
 internal sealed class IntJsonConverter : JsonConverter<int>
 {
     /// <inheritdoc />
     public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 同时接受 JSON 字符串和数字令牌。
+        // 同时接受 JSON 字符串和数字令牌
         return reader.TokenType == JsonTokenType.String
             ? int.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture)
             : reader.GetInt32();
@@ -47,14 +47,14 @@ internal sealed class IntJsonConverter : JsonConverter<int>
 }
 
 /// <summary>
-/// int? 类型 JSON 返回处理。
+/// int? 类型 JSON 返回处理
 /// </summary>
 internal sealed class NullableIntJsonConverter : JsonConverter<int?>
 {
     /// <inheritdoc />
     public override int? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理。
+        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理
         if (reader.TokenType != JsonTokenType.String)
             return reader.GetInt32();
 

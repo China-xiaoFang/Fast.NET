@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// EventBusService 日志扩展默认分类名。
+/// EventBusService 日志扩展默认分类名
 /// </summary>
 internal sealed class EventBusService
 {

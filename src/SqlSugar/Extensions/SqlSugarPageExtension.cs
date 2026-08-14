@@ -26,19 +26,19 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 为 <see cref="ISugarQueryable{T}"/> 提供 ISugarQueryable 分页扩展方法。
+/// 为 <see cref="ISugarQueryable{T}"/> 提供 ISugarQueryable 分页扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class SqlSugarPageExtension
 {
     /// <summary>
-    /// 分页转换类型。
+    /// 分页转换类型
     /// </summary>
-    /// <param name="pagedResult">要写入数据的分页结果。</param>
-    /// <param name="selectExpression">用于分页转换类型的表达式。</param>
-    /// <typeparam name="TEntity">实体类型。</typeparam>
-    /// <typeparam name="TResult">操作结果类型。</typeparam>
-    /// <returns>分页转换类型。</returns>
+    /// <param name="pagedResult">要写入数据的分页结果</param>
+    /// <param name="selectExpression">用于分页转换类型的表达式</param>
+    /// <typeparam name="TEntity">实体类型</typeparam>
+    /// <typeparam name="TResult">操作结果类型</typeparam>
+    /// <returns>分页转换类型</returns>
     public static PagedResult<TResult> ToPagedData<TEntity, TResult>(this PagedResult<TEntity> pagedResult,
         Func<TEntity, TResult> selectExpression)
     {
@@ -56,10 +56,10 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// SqlSugar 分页扩展。
+    /// SqlSugar 分页扩展
     /// </summary>
     /// <remarks>
-    /// 多表查询（LeftJoin/Join）场景需注意：分页统计依赖 MergeTable，建议在分页前进行结构收敛：
+    /// 多表查询（LeftJoin/Join）场景需注意：分页统计依赖 MergeTable，建议在分页前进行结构收敛
     /// <code>
     /// .Select((t1, t2) => new { ... }).MergeTable()
     /// </code>
@@ -67,12 +67,12 @@ public static class SqlSugarPageExtension
     /// <code>
     /// .SelectMergeTable((t1, t2) => new { ... })
     /// </code>
-    /// 未使用 MergeTable 可能导致总数统计异常或结果不准确。
+    /// 未使用 MergeTable 可能导致总数统计异常或结果不准确
     /// </remarks>
-    /// <param name="queryable">要继续构建的查询对象。</param>
-    /// <param name="input">PagedInput 通用 SqlSugar 分页输入。</param>
-    /// <typeparam name="TEntity">实体类型。</typeparam>
-    /// <returns>SqlSugar 分页扩展。</returns>
+    /// <param name="queryable">要继续构建的查询对象</param>
+    /// <param name="input">PagedInput 通用 SqlSugar 分页输入</param>
+    /// <typeparam name="TEntity">实体类型</typeparam>
+    /// <returns>SqlSugar 分页扩展</returns>
     public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
     {
         return queryable.SugarPaged(input)
@@ -81,10 +81,10 @@ public static class SqlSugarPageExtension
 
 
     /// <summary>
-    /// SqlSugar 分页扩展。
+    /// SqlSugar 分页扩展
     /// </summary>
     /// <remarks>
-    /// 多表查询（LeftJoin/Join）场景需注意：分页统计依赖 MergeTable，建议在分页前进行结构收敛：
+    /// 多表查询（LeftJoin/Join）场景需注意：分页统计依赖 MergeTable，建议在分页前进行结构收敛
     /// <code>
     /// .Select((t1, t2) => new { ... }).MergeTable()
     /// </code>
@@ -92,12 +92,12 @@ public static class SqlSugarPageExtension
     /// <code>
     /// .SelectMergeTable((t1, t2) => new { ... })
     /// </code>
-    /// 未使用 MergeTable 可能导致总数统计异常或结果不准确。
+    /// 未使用 MergeTable 可能导致总数统计异常或结果不准确
     /// </remarks>
-    /// <param name="queryable">要继续构建的查询对象。</param>
-    /// <param name="input">PagedInput 通用 SqlSugar 分页输入。</param>
-    /// <typeparam name="TEntity">实体类型。</typeparam>
-    /// <returns>表示异步 SqlSugar 分页扩展的任务，任务结果为 SqlSugar 分页扩展。</returns>
+    /// <param name="queryable">要继续构建的查询对象</param>
+    /// <param name="input">PagedInput 通用 SqlSugar 分页输入</param>
+    /// <typeparam name="TEntity">实体类型</typeparam>
+    /// <returns>表示异步 SqlSugar 分页扩展的任务，任务结果为 SqlSugar 分页扩展</returns>
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         PagedInput input)
     {
@@ -106,14 +106,14 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// SqlSugar 分页扩展。
+    /// SqlSugar 分页扩展
     /// </summary>
-    /// <param name="queryable">要继续构建的查询对象。</param>
-    /// <param name="pageIndex">页码，从 1 开始。</param>
-    /// <param name="pageSize">每页记录数。</param>
-    /// <param name="enablePaged">是否启用分页查询。</param>
-    /// <typeparam name="TEntity">实体类型。</typeparam>
-    /// <returns>SqlSugar 分页扩展。</returns>
+    /// <param name="queryable">要继续构建的查询对象</param>
+    /// <param name="pageIndex">页码，从 1 开始</param>
+    /// <param name="pageSize">每页记录数</param>
+    /// <param name="enablePaged">是否启用分页查询</param>
+    /// <typeparam name="TEntity">实体类型</typeparam>
+    /// <returns>SqlSugar 分页扩展</returns>
     public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, int pageIndex,
         int pageSize = 20, bool enablePaged = true)
     {
@@ -157,14 +157,14 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// SqlSugar 分页扩展。
+    /// SqlSugar 分页扩展
     /// </summary>
-    /// <param name="queryable">要继续构建的查询对象。</param>
-    /// <param name="pageIndex">页码，从 1 开始。</param>
-    /// <param name="pageSize">每页记录数。</param>
-    /// <param name="enablePaged">是否启用分页查询。</param>
-    /// <typeparam name="TEntity">实体类型。</typeparam>
-    /// <returns>表示异步 SqlSugar 分页扩展的任务，任务结果为 SqlSugar 分页扩展。</returns>
+    /// <param name="queryable">要继续构建的查询对象</param>
+    /// <param name="pageIndex">页码，从 1 开始</param>
+    /// <param name="pageSize">每页记录数</param>
+    /// <param name="enablePaged">是否启用分页查询</param>
+    /// <typeparam name="TEntity">实体类型</typeparam>
+    /// <returns>表示异步 SqlSugar 分页扩展的任务，任务结果为 SqlSugar 分页扩展</returns>
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         int pageIndex, int pageSize = 20, bool enablePaged = true)
     {
@@ -208,13 +208,13 @@ public static class SqlSugarPageExtension
     }
 
     /// <summary>
-    /// Sugar 统一分页处理。
+    /// Sugar 统一分页处理
     /// </summary>
-    /// <remarks>支持多库。</remarks>
-    /// <param name="queryable">要继续构建的查询对象。</param>
-    /// <param name="input">方法的输入数据。</param>
-    /// <typeparam name="TEntity">实体类型。</typeparam>
-    /// <returns>Sugar 统一分页处理。</returns>
+    /// <remarks>支持多库</remarks>
+    /// <param name="queryable">要继续构建的查询对象</param>
+    /// <param name="input">方法的输入数据</param>
+    /// <typeparam name="TEntity">实体类型</typeparam>
+    /// <returns>Sugar 统一分页处理</returns>
     public static ISugarQueryable<TEntity> SugarPaged<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
     {
         // 这里必须要判断，字段是否存在于 TEntity 中，不然会执行到 Db 层面的报错

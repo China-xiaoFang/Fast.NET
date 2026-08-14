@@ -30,23 +30,23 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// 提供跨域处理扩展方法。
+/// 提供跨域处理扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class CorsAccessorExtension
 {
     /// <summary>
-    /// 默认跨域导出响应头 Key。
+    /// 默认跨域导出响应头 Key
     /// </summary>
-    /// <remarks>解决 ajax，XMLHttpRequest，axios 不能获取请求头问题。</remarks>
+    /// <remarks>解决 ajax，XMLHttpRequest，axios 不能获取请求头问题</remarks>
     private static readonly string[] _defaultExposedHeaders = {"access-token", "x-access-token"};
 
     /// <summary>
-    /// 设置跨域策略。
+    /// 设置跨域策略
     /// </summary>
-    /// <param name="builder">要配置的跨域策略构建器。</param>
-    /// <param name="corsAccessorSettings">允许的来源、请求头、方法及凭据配置。</param>
-    /// <param name="isMiddleware">是否为应用中间件阶段生成策略。</param>
+    /// <param name="builder">要配置的跨域策略构建器</param>
+    /// <param name="corsAccessorSettings">允许的来源、请求头、方法及凭据配置</param>
+    /// <param name="isMiddleware">是否为应用中间件阶段生成策略</param>
     internal static void SetCorsPolicy(CorsPolicyBuilder builder, CorsAccessorSettingsOptions corsAccessorSettings,
         bool isMiddleware = false)
     {
@@ -113,10 +113,10 @@ public static class CorsAccessorExtension
     }
 
     /// <summary>
-    /// 添加跨域服务。
+    /// 添加跨域服务
     /// </summary>
-    /// <param name="builder">要配置的应用构建器。</param>
-    /// <returns>返回 <paramref name="builder"/>，便于链式调用。</returns>
+    /// <param name="builder">要配置的应用构建器</param>
+    /// <returns>返回 <paramref name="builder"/>，便于链式调用</returns>
     public static WebApplicationBuilder AddCorsAccessor(this WebApplicationBuilder builder)
     {
         builder.Services.AddCorsAccessor(builder.Configuration);
@@ -125,12 +125,12 @@ public static class CorsAccessorExtension
     }
 
     /// <summary>
-    /// 添加跨域服务。
+    /// 添加跨域服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="section">JSON 配置文件节点的 Key 默认值：CorsAccessorSettings。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：CorsAccessorSettings</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddCorsAccessor(this IServiceCollection services, IConfiguration configuration,
         string section = "CorsAccessorSettings")
     {
@@ -158,11 +158,11 @@ public static class CorsAccessorExtension
     }
 
     /// <summary>
-    /// 添加跨域服务。
+    /// 添加跨域服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="optionAction">跨域访问配置操作。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="optionAction">跨域访问配置操作</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddCorsAccessor(this IServiceCollection services,
         Action<CorsAccessorSettingsOptions> optionAction)
     {

@@ -26,16 +26,16 @@ using System.Text.Json;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// JSON 工具类。
+/// JSON 工具类
 /// </summary>
 [SuppressSniffer]
 public static class JsonUtils
 {
     /// <summary>
-    /// 读取 JSON 文件。
+    /// 读取 JSON 文件
     /// </summary>
-    /// <param name="path">目标路径。</param>
-    /// <returns>读取到的 JSON 文件。</returns>
+    /// <param name="path">目标路径</param>
+    /// <returns>读取到的 JSON 文件</returns>
     public static IDictionary<string, string> ReadJsonFile(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
@@ -47,15 +47,15 @@ public static class JsonUtils
         using var streamReader = new StreamReader(path);
         var json = streamReader.ReadToEnd();
 
-        // 将 JSON 文本解析为节点树。
+        // 将 JSON 文本解析为节点树
         return ParseJson(json);
     }
 
     /// <summary>
-    /// 解析 JSON 字符串。
+    /// 解析 JSON 字符串
     /// </summary>
-    /// <param name="json">要解析的 JSON 文本。</param>
-    /// <returns>解析后的 JSON 字符串。</returns>
+    /// <param name="json">要解析的 JSON 文本</param>
+    /// <returns>解析后的 JSON 字符串</returns>
     public static IDictionary<string, string> ParseJson(string json)
     {
         var options = new JsonDocumentOptions {AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip};
@@ -71,11 +71,11 @@ public static class JsonUtils
     }
 
     /// <summary>
-    /// 递归访问 JSON 节点并将叶子值写入扁平化字典。
+    /// 递归访问 JSON 节点并将叶子值写入扁平化字典
     /// </summary>
-    /// <param name="root">当前 JSON 节点。</param>
-    /// <param name="dictionary">用于保存扁平化结果的字典。</param>
-    /// <param name="currentPath">当前节点的路径。</param>
+    /// <param name="root">当前 JSON 节点</param>
+    /// <param name="dictionary">用于保存扁平化结果的字典</param>
+    /// <param name="currentPath">当前节点的路径</param>
     private static void VisitJsonElement(JsonElement root, IDictionary<string, string> dictionary, string currentPath = "")
     {
         // 判断是否为对象

@@ -25,71 +25,71 @@ using System.Text.Json.Serialization;
 namespace Fast.EventBus;
 
 /// <summary>
-/// 内存通道事件源（事件承载对象）。
+/// 内存通道事件源（事件承载对象）
 /// </summary>
 [SuppressSniffer]
 public sealed class ChannelEventSource : IEventSource
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
     public ChannelEventSource()
     {
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="eventId">日志事件标识</param>
     public ChannelEventSource(string eventId)
     {
         EventId = eventId;
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventId">日志事件标识。</param>
-    /// <param name="payload">要写入令牌的载荷。</param>
+    /// <param name="eventId">日志事件标识</param>
+    /// <param name="payload">要写入令牌的载荷</param>
     public ChannelEventSource(string eventId, object payload) : this(eventId)
     {
         Payload = payload;
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventId">日志事件标识。</param>
-    /// <param name="payload">要写入令牌的载荷。</param>
-    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
+    /// <param name="eventId">日志事件标识</param>
+    /// <param name="payload">要写入令牌的载荷</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌</param>
     public ChannelEventSource(string eventId, object payload, CancellationToken cancellationToken) : this(eventId, payload)
     {
         CancellationToken = cancellationToken;
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventId">日志事件标识。</param>
+    /// <param name="eventId">日志事件标识</param>
     public ChannelEventSource(Enum eventId) : this(eventId.EventBusToString())
     {
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventId">日志事件标识。</param>
-    /// <param name="payload">要写入令牌的载荷。</param>
+    /// <param name="eventId">日志事件标识</param>
+    /// <param name="payload">要写入令牌的载荷</param>
     public ChannelEventSource(Enum eventId, object payload) : this(eventId.EventBusToString(), payload)
     {
     }
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventId">日志事件标识。</param>
-    /// <param name="payload">要写入令牌的载荷。</param>
-    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
+    /// <param name="eventId">日志事件标识</param>
+    /// <param name="payload">要写入令牌的载荷</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌</param>
     public ChannelEventSource(Enum eventId, object payload, CancellationToken cancellationToken) : this(
         eventId.EventBusToString(), payload, cancellationToken)
     {

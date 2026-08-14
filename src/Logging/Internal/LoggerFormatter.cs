@@ -25,13 +25,13 @@ using System.Text.Json;
 namespace Fast.Logging;
 
 /// <summary>
-/// 日志格式化静态类。
+/// 日志格式化静态类
 /// </summary>
 [SuppressSniffer]
 public static class LoggerFormatter
 {
     /// <summary>
-    /// JSON 输出格式化。
+    /// JSON 输出格式化
     /// </summary>
     public static readonly Func<LogMessage, string> Json = logMsg =>
     {
@@ -39,7 +39,7 @@ public static class LoggerFormatter
     };
 
     /// <summary>
-    /// JSON 输出格式化。
+    /// JSON 输出格式化
     /// </summary>
     public static readonly Func<LogMessage, string> JsonIndented = logMsg =>
     {
@@ -47,10 +47,10 @@ public static class LoggerFormatter
     };
 
     /// <summary>
-    /// 写入 JSON。
+    /// 写入 JSON
     /// </summary>
-    /// <param name="logMsg">要格式化或输出的日志消息。</param>
-    /// <param name="writer">目标 JSON 写入器。</param>
+    /// <param name="logMsg">要格式化或输出的日志消息</param>
+    /// <param name="writer">目标 JSON 写入器</param>
     private static void WriteJson(LogMessage logMsg, Utf8JsonWriter writer)
     {
         writer.WriteStartObject();

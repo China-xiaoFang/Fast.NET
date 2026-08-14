@@ -26,7 +26,7 @@ using System.Text.RegularExpressions;
 namespace Fast.Logging;
 
 /// <summary>
-/// 模板静态类。
+/// 模板静态类
 /// </summary>
 internal static class TP
 {
@@ -37,17 +37,17 @@ internal static class TP
     }
 
     /// <summary>
-    /// 模板正则表达式对象。
+    /// 模板正则表达式对象
     /// </summary>
     private static readonly Lazy<Regex> _lazyRegex = new(() => new Regex(@"^##(?<prop>.*)?##[:：]?\s*(?<content>[\s\S]*)"));
 
     /// <summary>
-    /// 生成规范日志模板。
+    /// 生成规范日志模板
     /// </summary>
-    /// <param name="title">标题。</param>
-    /// <param name="description">描述。</param>
-    /// <param name="items">列表项，如果以 ##xxx## 开头，自动生成 xxx: 属性。</param>
-    /// <returns>带标题、描述和列表项的文本日志模板。</returns>
+    /// <param name="title">标题</param>
+    /// <param name="description">描述</param>
+    /// <param name="items">列表项，如果以 ##xxx## 开头，自动生成 xxx: 属性</param>
+    /// <returns>带标题、描述和列表项的文本日志模板</returns>
     public static string Wrapper(string title, string description, params string[] items)
     {
         var stringBuilder = new StringBuilder();
@@ -104,12 +104,12 @@ internal static class TP
     }
 
     /// <summary>
-    /// 矩形包裹。
+    /// 矩形包裹
     /// </summary>
-    /// <param name="lines">多行消息。</param>
-    /// <param name="align">对齐方式，-1/左对齐；0/居中对其；1/右对齐。</param>
-    /// <param name="pad">间隙。</param>
-    /// <returns>按指定宽度和对齐方式绘制的矩形文本。</returns>
+    /// <param name="lines">多行消息</param>
+    /// <param name="align">对齐方式，-1/左对齐；0/居中对其；1/右对齐</param>
+    /// <param name="pad">间隙</param>
+    /// <returns>按指定宽度和对齐方式绘制的矩形文本</returns>
     public static string WrapperRectangle(string[] lines, int align = 0, int pad = 20)
     {
         // 计算矩形框的宽度，取所有字符串中最长的长度，再乘以 2
@@ -157,11 +157,11 @@ internal static class TP
     }
 
     /// <summary>
-    /// 等宽文字对齐。
+    /// 等宽文字对齐
     /// </summary>
-    /// <param name="str">要处理的字符串。</param>
-    /// <param name="totalByteCount">填充后应达到的总字节数。</param>
-    /// <returns>等宽文字对齐。</returns>
+    /// <param name="str">要处理的字符串</param>
+    /// <param name="totalByteCount">填充后应达到的总字节数</param>
+    /// <returns>等宽文字对齐</returns>
     private static string PadRight(string str, int totalByteCount)
     {
         var coding = Encoding.GetEncoding("gbk");
@@ -178,10 +178,10 @@ internal static class TP
     }
 
     /// <summary>
-    /// 获取字符串长度。
+    /// 获取字符串长度
     /// </summary>
-    /// <param name="str">字符串。</param>
-    /// <returns>字符串长度。</returns>
+    /// <param name="str">字符串</param>
+    /// <returns>字符串长度</returns>
     public static int GetLength(string str)
     {
         var coding = Encoding.GetEncoding("gbk");

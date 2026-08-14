@@ -28,15 +28,15 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SugarExternalServices 工具类。
+/// SugarExternalServices 工具类
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 目前只验证了 SQL Server 和 MySql。
+    /// 目前只验证了 SQL Server 和 MySql
     /// </summary>
-    /// <param name="dbType">数据库类型。</param>
-    /// <returns>目前只验证了 SQL Server 和 MySql。</returns>
+    /// <param name="dbType">数据库类型</param>
+    /// <returns>目前只验证了 SQL Server 和 MySql</returns>
     internal static ConfigureExternalServices GetSugarExternalServices(DbType dbType)
     {
         var externalServices = new ConfigureExternalServices

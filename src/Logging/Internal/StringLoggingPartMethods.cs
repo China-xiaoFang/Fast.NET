@@ -26,12 +26,12 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 构建字符串日志部分类。
+/// 构建字符串日志部分类
 /// </summary>
 public sealed partial class StringLoggingPart
 {
     /// <summary>
-    /// Information。
+    /// Information
     /// </summary>
     public void LogInformation()
     {
@@ -40,7 +40,7 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// Warning。
+    /// Warning
     /// </summary>
     public void LogWarning()
     {
@@ -49,7 +49,7 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// Error。
+    /// Error
     /// </summary>
     public void LogError()
     {
@@ -58,7 +58,7 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// Debug。
+    /// Debug
     /// </summary>
     public void LogDebug()
     {
@@ -67,7 +67,7 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// Trace。
+    /// Trace
     /// </summary>
     public void LogTrace()
     {
@@ -76,7 +76,7 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// Critical。
+    /// Critical
     /// </summary>
     public void LogCritical()
     {
@@ -85,7 +85,7 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 按当前日志级别、事件和异常配置写入日志。
+    /// 按当前日志级别、事件和异常配置写入日志
     /// </summary>
     public void Log()
     {
@@ -127,9 +127,9 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 获取日志实例。
+    /// 获取日志实例
     /// </summary>
-    /// <returns>获取到的日志实例。</returns>
+    /// <returns>获取到的日志实例</returns>
     internal (ILogger, ILoggerFactory, bool) GetLogger()
     {
         // 解析日志分类名
@@ -167,9 +167,9 @@ public sealed partial class StringLoggingPart
     }
 
     /// <summary>
-    /// 创建待释放的日志工厂。
+    /// 创建待释放的日志工厂
     /// </summary>
-    /// <returns>创建的待释放的日志工厂。</returns>
+    /// <returns>创建的待释放的日志工厂</returns>
     private static ILoggerFactory CreateDisposeLoggerFactory()
     {
         return LoggerFactory.Create(builder => { builder.AddConsoleFormatter(); });

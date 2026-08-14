@@ -28,12 +28,12 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Fast.Swagger;
 
 /// <summary>
-/// 修正 规范化文档 Enum 提示。
+/// 修正 规范化文档 Enum 提示
 /// </summary>
 internal sealed class EnumSchemaFilter : ISchemaFilter
 {
     /// <summary>
-    /// 中文正则表达式。
+    /// 中文正则表达式
     /// </summary>
     private const string CHINESE_PATTERN = @"[\u4e00-\u9fa5]";
 
@@ -67,7 +67,7 @@ internal sealed class EnumSchemaFilter : ISchemaFilter
             {
                 var numValue = value.ChangeType(enumValueType);
 
-                // Microsoft.OpenAPI 2.x 使用 JsonNode 表示枚举值。
+                // Microsoft.OpenAPI 2.x 使用 JsonNode 表示枚举值
                 model.Enum?.Add(!convertToNumber ? JsonValue.Create(value.ToString()) : JsonNode.Parse($"{numValue}"));
             }
 

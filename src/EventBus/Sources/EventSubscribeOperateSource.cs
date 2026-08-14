@@ -26,7 +26,7 @@ using System.Text.Json.Serialization;
 namespace Fast.EventBus;
 
 /// <summary>
-/// 事件总线订阅管理事件源。
+/// 事件总线订阅管理事件源
 /// </summary>
 internal sealed class EventSubscribeOperateSource : IEventSource
 {
@@ -44,27 +44,27 @@ internal sealed class EventSubscribeOperateSource : IEventSource
     public CancellationToken CancellationToken { get; set; }
 
     /// <summary>
-    /// 事件处理程序。
+    /// 事件处理程序
     /// </summary>
     internal Func<EventHandlerExecutingContext, Task> Handler { get; set; }
 
     /// <summary>
-    /// 订阅特性。
+    /// 订阅特性
     /// </summary>
     internal EventSubscribeAttribute Attribute { get; set; }
 
     /// <summary>
-    /// 触发的方法。
+    /// 触发的方法
     /// </summary>
     internal MethodInfo HandlerMethod { get; set; }
 
     /// <summary>
-    /// 实际事件Id。
+    /// 实际事件Id
     /// </summary>
     internal string SubscribeEventId { get; set; }
 
     /// <summary>
-    /// 事件订阅器操作选项。
+    /// 事件订阅器操作选项
     /// </summary>
     internal EventSubscribeOperates Operate { get; set; }
 }

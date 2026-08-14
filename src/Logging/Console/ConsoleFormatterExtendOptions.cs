@@ -26,12 +26,12 @@ using Microsoft.Extensions.Logging.Console;
 namespace Fast.Logging;
 
 /// <summary>
-/// 控制台默认格式化选项扩展。
+/// 控制台默认格式化选项扩展
 /// </summary>
 internal sealed class ConsoleFormatterExtendOptions : ConsoleFormatterOptions
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
     public ConsoleFormatterExtendOptions()
     {
@@ -40,22 +40,22 @@ internal sealed class ConsoleFormatterExtendOptions : ConsoleFormatterOptions
     }
 
     /// <summary>
-    /// 控制是否启用颜色。
+    /// 控制是否启用颜色
     /// </summary>
     public LoggerColorBehavior ColorBehavior { get; set; }
 
     /// <summary>
-    /// 自定义日志消息格式化程序。
+    /// 自定义日志消息格式化程序
     /// </summary>
     public Func<LogMessage, string> MessageFormat { get; set; }
 
     /// <summary>
-    /// 日期格式化。
+    /// 日期格式化
     /// </summary>
     public string DateFormat { get; set; } = "yyyy-MM-dd HH:mm:ss.fffffff zzz dddd";
 
     /// <summary>
-    /// 自定义格式化日志处理程序。
+    /// 自定义格式化日志处理程序
     /// </summary>
     public Action<LogMessage, IExternalScopeProvider, TextWriter, string, ConsoleFormatterExtendOptions> WriteHandler
     {
@@ -64,12 +64,12 @@ internal sealed class ConsoleFormatterExtendOptions : ConsoleFormatterOptions
     }
 
     /// <summary>
-    /// 显示跟踪/请求Id。
+    /// 显示跟踪/请求Id
     /// </summary>
     public bool WithTraceId { get; set; } = false;
 
     /// <summary>
-    /// 显示堆栈框架（程序集和方法签名）。
+    /// 显示堆栈框架（程序集和方法签名）
     /// </summary>
     public bool WithStackFrame { get; set; } = false;
 }

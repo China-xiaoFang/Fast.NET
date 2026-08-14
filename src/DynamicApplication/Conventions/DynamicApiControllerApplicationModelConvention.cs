@@ -32,22 +32,22 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 动态接口控制器应用模型转换器。
+/// 动态接口控制器应用模型转换器
 /// </summary>
 internal sealed class DynamicApiControllerApplicationModelConvention : IApplicationModelConvention
 {
     /// <summary>
-    /// 带版本的名称正则表达式。
+    /// 带版本的名称正则表达式
     /// </summary>
     private readonly Regex _nameVersionRegex = new("V(?<version>[0-9_]+$)");
 
     /// <summary>
-    /// 服务集合。
+    /// 服务集合
     /// </summary>
     private readonly IServiceCollection _services;
 
     /// <summary>
-    /// 模板正则表达式。
+    /// 模板正则表达式
     /// </summary>
     private const string commonTemplatePattern = @"\{(?<p>.+?)\}";
 
@@ -94,10 +94,10 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 配置控制器。
+    /// 配置控制器
     /// </summary>
-    /// <param name="controller">控制器模型。</param>
-    /// <param name="controllerApiDescriptionSettings">接口描述配置。</param>
+    /// <param name="controller">控制器模型</param>
+    /// <param name="controllerApiDescriptionSettings">接口描述配置</param>
     private void ConfigureController(ControllerModel controller, ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
     {
         // 配置控制器名称
@@ -115,7 +115,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             .SelectMany(u => u.Where(i => i.ActionMethod.ReflectedType?.Name != i.ActionMethod.DeclaringType?.Name))
             .ToList();
 
-        // [ApiController] 会启用 MVC 的绑定源推断，后续路由构建需避免重复指定绑定来源。
+        // [ApiController] 会启用 MVC 的绑定源推断，后续路由构建需避免重复指定绑定来源
         var hasApiControllerAttribute = controller.Attributes.Any(u => u.GetType() == typeof(ApiControllerAttribute));
 
         foreach (var action in actions)
@@ -137,10 +137,10 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 配置控制器名称。
+    /// 配置控制器名称
     /// </summary>
-    /// <param name="controller">控制器模型。</param>
-    /// <param name="controllerApiDescriptionSettings">接口描述配置。</param>
+    /// <param name="controller">控制器模型</param>
+    /// <param name="controllerApiDescriptionSettings">接口描述配置</param>
     private void ConfigureControllerName(ControllerModel controller,
         ApiDescriptionSettingsAttribute controllerApiDescriptionSettings)
     {
@@ -149,12 +149,12 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 配置动作方法。
+    /// 配置动作方法
     /// </summary>
-    /// <param name="action">控制器模型。</param>
-    /// <param name="apiDescriptionSettings">接口描述配置。</param>
-    /// <param name="controllerApiDescriptionSettings">控制器接口描述配置。</param>
-    /// <param name="hasApiControllerAttribute">是否贴有 ApiController 特性。</param>
+    /// <param name="action">控制器模型</param>
+    /// <param name="apiDescriptionSettings">接口描述配置</param>
+    /// <param name="controllerApiDescriptionSettings">控制器接口描述配置</param>
+    /// <param name="hasApiControllerAttribute">是否贴有 ApiController 特性</param>
     private void ConfigureAction(ActionModel action, ApiDescriptionSettingsAttribute apiDescriptionSettings,
         ApiDescriptionSettingsAttribute controllerApiDescriptionSettings, bool hasApiControllerAttribute)
     {
@@ -175,19 +175,19 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 配置动作方法接口可见性。
+    /// 配置动作方法接口可见性
     /// </summary>
-    /// <param name="action">动作方法模型。</param>
+    /// <param name="action">动作方法模型</param>
     private static void ConfigureActionApiExplorer(ActionModel action)
     {
         action.ApiExplorer.IsVisible ??= true;
     }
 
     /// <summary>
-    /// 配置动作方法名称。
+    /// 配置动作方法名称
     /// </summary>
-    /// <param name="action">动作方法模型。</param>
-    /// <param name="apiDescriptionSettings">接口描述配置。</param>
+    /// <param name="action">动作方法模型</param>
+    /// <param name="apiDescriptionSettings">接口描述配置</param>
     private void ConfigureActionName(ActionModel action, ApiDescriptionSettingsAttribute apiDescriptionSettings)
     {
         // 判断是否贴有 [ActionName]
@@ -208,9 +208,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 处理类类型参数（添加[FromBody] 特性）。
+    /// 处理类类型参数（添加[FromBody] 特性）
     /// </summary>
-    /// <param name="action">要处理的操作模型。</param>
+    /// <param name="action">要处理的操作模型</param>
     private void ConfigureClassTypeParameter(ActionModel action)
     {
         // 没有参数无需处理
@@ -233,7 +233,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
             if (typeof(IFormFile).IsAssignableFrom(parameterType) || typeof(IFormFileCollection).IsAssignableFrom(parameterType))
                 continue;
 
-            // 未显式标注绑定来源的已注册接口应从 DI 解析，而不是误判为请求正文模型。
+            // 未显式标注绑定来源的已注册接口应从 DI 解析，而不是误判为请求正文模型
             if (parameterType.IsInterface
                 && !parameterModel.Attributes.Any(u => u is IBindingSourceMetadata)
                 && _services.Any(s => s.ServiceType.Name == parameterType.Name))
@@ -247,12 +247,12 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 配置动作方法路由特性。
+    /// 配置动作方法路由特性
     /// </summary>
-    /// <param name="action">动作方法模型。</param>
-    /// <param name="apiDescriptionSettings">接口描述配置。</param>
-    /// <param name="controllerApiDescriptionSettings">控制器接口描述配置。</param>
-    /// <param name="hasApiControllerAttribute">控制器是否标记 <see cref="ApiControllerAttribute"/>。</param>
+    /// <param name="action">动作方法模型</param>
+    /// <param name="apiDescriptionSettings">接口描述配置</param>
+    /// <param name="controllerApiDescriptionSettings">控制器接口描述配置</param>
+    /// <param name="hasApiControllerAttribute">控制器是否标记 <see cref="ApiControllerAttribute"/></param>
     private static void ConfigureActionRouteAttribute(ActionModel action, ApiDescriptionSettingsAttribute apiDescriptionSettings,
         ApiDescriptionSettingsAttribute controllerApiDescriptionSettings, bool hasApiControllerAttribute)
     {
@@ -354,11 +354,11 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 生成控制器路由模板。
+    /// 生成控制器路由模板
     /// </summary>
-    /// <param name="controller">要生成路由的控制器模型。</param>
-    /// <param name="apiDescriptionSettings">api Description Settings 配置。</param>
-    /// <returns>生成的控制器路由模板。</returns>
+    /// <param name="controller">要生成路由的控制器模型</param>
+    /// <param name="apiDescriptionSettings">api Description Settings 配置</param>
+    /// <returns>生成的控制器路由模板</returns>
     private static string GenerateControllerRouteTemplate(ControllerModel controller,
         ApiDescriptionSettingsAttribute apiDescriptionSettings)
     {
@@ -377,11 +377,11 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 生成参数路由模板（非引用类型）。
+    /// 生成参数路由模板（非引用类型）
     /// </summary>
-    /// <param name="action">动作方法模型。</param>
-    /// <param name="hasApiControllerAttribute">控制器是否标记 <see cref="ApiControllerAttribute"/>。</param>
-    /// <returns>生成的参数路由模板（非引用类型）集合。</returns>
+    /// <param name="action">动作方法模型</param>
+    /// <param name="hasApiControllerAttribute">控制器是否标记 <see cref="ApiControllerAttribute"/></param>
+    /// <returns>生成的参数路由模板（非引用类型）集合</returns>
     private static IList<string> GenerateParameterRouteTemplates(ActionModel action, bool hasApiControllerAttribute)
     {
         // 如果没有参数，则跳过
@@ -423,7 +423,7 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
                 continue;
             }
 
-            // 启用 [ApiController] 时由 MVC 的绑定源推断规则处理，无需再次把参数写入路由模板。
+            // 启用 [ApiController] 时由 MVC 的绑定源推断规则处理，无需再次把参数写入路由模板
             if (hasApiControllerAttribute)
                 continue;
         }
@@ -432,12 +432,12 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 配置控制器和动作方法名称。
+    /// 配置控制器和动作方法名称
     /// </summary>
-    /// <param name="apiDescriptionSettings">接口描述配置。</param>
-    /// <param name="originalName">控制器或动作方法的原始名称。</param>
-    /// <param name="actionName">针对 [ActionName] 特性和 [HttpMethod] 特性处理。</param>
-    /// <returns>配置控制器和动作方法名称。</returns>
+    /// <param name="apiDescriptionSettings">接口描述配置</param>
+    /// <param name="originalName">控制器或动作方法的原始名称</param>
+    /// <param name="actionName">针对 [ActionName] 特性和 [HttpMethod] 特性处理</param>
+    /// <returns>配置控制器和动作方法名称</returns>
     private string ConfigureControllerAndActionName(ApiDescriptionSettingsAttribute apiDescriptionSettings, string originalName,
         string actionName = null)
     {
@@ -464,9 +464,9 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 配置规范化结果类型。
+    /// 配置规范化结果类型
     /// </summary>
-    /// <param name="action">要处理的操作模型。</param>
+    /// <param name="action">要处理的操作模型</param>
     private static void ConfigureActionUnifyResultAttribute(ActionModel action)
     {
         // 判断是否手动添加了标注或跳过规范化处理
@@ -489,10 +489,10 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 解析名称中的版本号。
+    /// 解析名称中的版本号
     /// </summary>
-    /// <param name="name">名称。</param>
-    /// <returns>名称和版本号。</returns>
+    /// <param name="name">名称</param>
+    /// <returns>名称和版本号</returns>
     private (string name, string version) ResolveNameVersion(string name)
     {
         if (!_nameVersionRegex.IsMatch(name))
@@ -505,10 +505,10 @@ internal sealed class DynamicApiControllerApplicationModelConvention : IApplicat
     }
 
     /// <summary>
-    /// 处理路由模板重复参数。
+    /// 处理路由模板重复参数
     /// </summary>
-    /// <param name="template">要检查并消除重复项的路由模板。</param>
-    /// <returns>处理路由模板重复参数。</returns>
+    /// <param name="template">要检查并消除重复项的路由模板</param>
+    /// <returns>处理路由模板重复参数</returns>
     private static string HandleRouteTemplateRepeat(string template)
     {
         var isStartDiagonal = template.StartsWith("/");

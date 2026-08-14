@@ -30,7 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// 授权策略执行程序。
+/// 授权策略执行程序
 /// </summary>
 internal sealed class AppAuthorizationHandler : IAuthorizationHandler
 {

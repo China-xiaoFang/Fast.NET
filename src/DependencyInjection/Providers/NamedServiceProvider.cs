@@ -25,20 +25,20 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// 命名服务提供器默认实现。
+/// 命名服务提供器默认实现
 /// </summary>
-/// <typeparam name="TService">目标服务接口。</typeparam>
+/// <typeparam name="TService">目标服务接口</typeparam>
 internal sealed class NamedServiceProvider<TService> : INamedServiceProvider<TService> where TService : class
 {
     /// <summary>
-    /// 服务提供器。
+    /// 服务提供器
     /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// 初始化命名服务提供器。
+    /// 初始化命名服务提供器
     /// </summary>
-    /// <param name="serviceProvider">用于解析命名服务工厂的服务提供器。</param>
+    /// <param name="serviceProvider">用于解析命名服务工厂的服务提供器</param>
     public NamedServiceProvider(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;

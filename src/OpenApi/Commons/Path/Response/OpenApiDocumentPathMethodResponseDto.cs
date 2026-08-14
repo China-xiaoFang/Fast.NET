@@ -25,17 +25,17 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档路由响应 DTO。
+/// OpenAPI 文档路由响应 DTO
 /// </summary>
 public class OpenApiDocumentPathMethodResponseDto
 {
     /// <summary>
-    /// 描述。
+    /// 描述
     /// </summary>
     public string Description { get; set; }
 
     /// <summary>
-    /// 响应码 200 内容。
+    /// 响应码 200 内容
     /// </summary>
     [JsonPropertyName("200")]
     public OpenApiDocumentPathMethodResponseContentDto Code200 { get; set; }

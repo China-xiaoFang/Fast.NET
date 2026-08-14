@@ -64,14 +64,14 @@ internal sealed class ConsulRegister : IConsulRegister
         if (startupUri.Host is "0.0.0.0" or "::" or "[::]")
             throw new InvalidOperationException("应用监听的是通配地址，无法直接注册到 Consul；请配置 ConsulSettings:ServiceAddress。");
 
-        // 服务名携带入口程序集版本，便于不同版本在 Consul 中并行注册。
+        // 服务名携带入口程序集版本，便于不同版本在 Consul 中并行注册
         var version = Assembly.GetEntryAssembly()
             ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
             ?.InformationalVersion;
 
         var versionArr = version?.Split('.');
 
-        // Consul 服务版本统一到 major.minor.patch，忽略第四段副修订版本号。
+        // Consul 服务版本统一到 major.minor.patch，忽略第四段副修订版本号
         if (versionArr?.Length >= 4)
         {
             version = $"{versionArr[0]}.{versionArr[1]}.{versionArr[2]}";
@@ -82,7 +82,7 @@ internal sealed class ConsulRegister : IConsulRegister
             // 唯一Id
             ID = Guid.NewGuid()
                 .ToString("N"),
-            // 服务名，
+            // 服务名
             Name = _webHostEnvironment.ApplicationName + $"{(string.IsNullOrEmpty(version) ? null : $"_v{version}")}",
             // 服务绑定 IP
             Address = startupUri.Host,

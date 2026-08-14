@@ -27,15 +27,15 @@ using System.Security.Cryptography;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 文件工具类。
+/// 文件工具类
 /// </summary>
 public static class FileUtil
 {
     /// <summary>
-    /// 获取文件的 SHA-256 哈希值。
+    /// 获取文件的 SHA-256 哈希值
     /// </summary>
-    /// <param name="filePath">file Path 路径。</param>
-    /// <returns>获取到的文件的 SHA-256 哈希值。</returns>
+    /// <param name="filePath">file Path 路径</param>
+    /// <returns>获取到的文件的 SHA-256 哈希值</returns>
     public static string GetFileSHA256(string filePath)
     {
         if (string.IsNullOrWhiteSpace(filePath))
@@ -49,10 +49,10 @@ public static class FileUtil
     }
 
     /// <summary>
-    /// 获取文件的 SHA1 哈希值。
+    /// 获取文件的 SHA1 哈希值
     /// </summary>
-    /// <param name="filePath">file Path 路径。</param>
-    /// <returns>由小写字母组成的 SHA1 哈希值字符串。</returns>
+    /// <param name="filePath">file Path 路径</param>
+    /// <returns>由小写字母组成的 SHA1 哈希值字符串</returns>
     public static string GetFileSHA1(string filePath)
     {
         if (string.IsNullOrWhiteSpace(filePath))
@@ -74,10 +74,10 @@ public static class FileUtil
     }
 
     /// <summary>
-    /// 复制文件。
+    /// 复制文件
     /// </summary>
-    /// <param name="fromPath">from Path 路径。</param>
-    /// <param name="toPath">to Path 路径。</param>
+    /// <param name="fromPath">from Path 路径</param>
+    /// <param name="toPath">to Path 路径</param>
     public static void CopyFile(string fromPath, string toPath)
     {
         if (!File.Exists(fromPath))
@@ -94,9 +94,9 @@ public static class FileUtil
     }
 
     /// <summary>
-    /// 尝试创建文件夹。
+    /// 尝试创建文件夹
     /// </summary>
-    /// <param name="path">路径。</param>
+    /// <param name="path">路径</param>
     public static void TryCreateDirectory(string path)
     {
         var destinationDirectory = Path.GetDirectoryName(path);

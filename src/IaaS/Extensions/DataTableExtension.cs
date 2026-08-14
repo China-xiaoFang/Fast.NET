@@ -27,16 +27,16 @@ using System.Data;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 为 <see cref="DataTable"/> 提供扩展方法。
+/// 为 <see cref="DataTable"/> 提供扩展方法
 /// </summary>
 public static class DataTableExtension
 {
     /// <summary>
-    /// 转换为 DataTable。
+    /// 转换为 DataTable
     /// </summary>
-    /// <param name="data">要处理或传输的数据。</param>
-    /// <typeparam name="T">数据表行对应的模型类型。</typeparam>
-    /// <returns>转换后的为 DataTable。</returns>
+    /// <param name="data">要处理或传输的数据</param>
+    /// <typeparam name="T">数据表行对应的模型类型</typeparam>
+    /// <returns>转换后的为 DataTable</returns>
     public static DataTable ToDataTable<T>(this IEnumerable<T> data)
     {
         var dataTable = new DataTable();
@@ -67,11 +67,11 @@ public static class DataTableExtension
     }
 
     /// <summary>
-    /// DataTable To List。
+    /// DataTable To List
     /// </summary>
-    /// <param name="dataTable">要转换的数据表。</param>
-    /// <typeparam name="T">数据表行对应的模型类型。</typeparam>
-    /// <returns>DataTable To List 集合。</returns>
+    /// <param name="dataTable">要转换的数据表</param>
+    /// <typeparam name="T">数据表行对应的模型类型</typeparam>
+    /// <returns>DataTable To List 集合</returns>
     public static List<T> ToList<T>(this DataTable dataTable) where T : new()
     {
         var list = new List<T>();

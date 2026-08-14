@@ -29,26 +29,26 @@ using Microsoft.Extensions.Options;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 数据验证拦截器。
+/// 数据验证拦截器
 /// </summary>
 internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
 {
     /// <summary>
-    /// API 行为配置选项。
+    /// API 行为配置选项
     /// </summary>
     private readonly ApiBehaviorOptions _apiBehaviorOptions;
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="options">当前组件使用的选项。</param>
+    /// <param name="options">当前组件使用的选项</param>
     public DataValidationFilter(IOptions<ApiBehaviorOptions> options)
     {
         _apiBehaviorOptions = options.Value;
     }
 
     /// <summary>
-    /// 过滤器排序。
+    /// 过滤器排序
     /// </summary>
     private const int FilterOrder = -1000;
 
@@ -100,12 +100,12 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     }
 
     /// <summary>
-    /// 调用未处理的结果类型。
+    /// 调用未处理的结果类型
     /// </summary>
-    /// <param name="context">当前操作上下文。</param>
-    /// <param name="next">处理管道中的下一个委托。</param>
-    /// <param name="actionDescriptor">当前控制器操作的描述信息。</param>
-    /// <returns>表示异步调用未处理的结果类型的任务。</returns>
+    /// <param name="context">当前操作上下文</param>
+    /// <param name="next">处理管道中的下一个委托</param>
+    /// <param name="actionDescriptor">当前控制器操作的描述信息</param>
+    /// <returns>表示异步调用未处理的结果类型的任务</returns>
     private async Task CallUnHandleResult(ActionExecutingContext context, ActionExecutionDelegate next,
         ControllerActionDescriptor actionDescriptor)
     {
@@ -127,14 +127,14 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     }
 
     /// <summary>
-    /// 内部处理异常。
+    /// 内部处理异常
     /// </summary>
-    /// <param name="context">当前操作上下文。</param>
-    /// <param name="actionDescriptor">当前控制器操作的描述信息。</param>
-    /// <param name="errors">模型验证产生的错误集合。</param>
-    /// <param name="resultContext">用于写入验证失败结果的过滤器上下文。</param>
-    /// <param name="userFriendlyException">根据验证错误构造的用户友好异常。</param>
-    /// <returns>返回 <see langword="false"/> 表示结果没有处理。</returns>
+    /// <param name="context">当前操作上下文</param>
+    /// <param name="actionDescriptor">当前控制器操作的描述信息</param>
+    /// <param name="errors">模型验证产生的错误集合</param>
+    /// <param name="resultContext">用于写入验证失败结果的过滤器上下文</param>
+    /// <param name="userFriendlyException">根据验证错误构造的用户友好异常</param>
+    /// <returns>返回 <see langword="false"/> 表示结果没有处理</returns>
     private async Task<bool> HandleValidation(ActionExecutingContext context, ControllerActionDescriptor actionDescriptor,
         object errors, ActionExecutedContext resultContext = null, UserFriendlyException userFriendlyException = null)
     {

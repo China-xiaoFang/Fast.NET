@@ -29,20 +29,20 @@ using System.Linq;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 为 <see cref="Convert"/> 提供转换扩展方法。
+/// 为 <see cref="Convert"/> 提供转换扩展方法
 /// </summary>
 public static class ConvertExtension
 {
     #region 转换为long
 
     /// <summary>
-    /// 将 String 类型 转换为 Long 类型。
+    /// 将 String 类型 转换为 Long 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">异常默认值，默认为 0L。</param>
-    /// <returns>将 String 类型 转换为 Long 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">异常默认值，默认为 0L</param>
+    /// <returns>将 String 类型 转换为 Long 类型</returns>
     public static long ParseToLong(this string value, bool isThrow = true, long defaultValue = 0L)
     {
         if (isThrow)
@@ -69,14 +69,14 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将 Enum 类型 转换为 Long 类型。
+    /// 将 Enum 类型 转换为 Long 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的枚举值为空。</exception>
-    /// <param name="value">枚举值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">异常默认值，默认为 0L。</param>
-    /// <typeparam name="TEnum">枚举类型。</typeparam>
-    /// <returns>将 Enum 类型 转换为 Long 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的枚举值为空</exception>
+    /// <param name="value">枚举值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">异常默认值，默认为 0L</param>
+    /// <typeparam name="TEnum">枚举类型</typeparam>
+    /// <returns>将 Enum 类型 转换为 Long 类型</returns>
     public static long ParseToLong<TEnum>(this TEnum value, bool isThrow = true, long defaultValue = 0L)
         where TEnum : struct, Enum
     {
@@ -99,14 +99,14 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将 可空的 Enum 类型 转换为 Long 类型。
+    /// 将 可空的 Enum 类型 转换为 Long 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的枚举值为空。</exception>
-    /// <param name="value">枚举值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">异常默认值，默认为 0L。</param>
-    /// <typeparam name="TEnum">枚举类型。</typeparam>
-    /// <returns>将 可空的 Enum 类型 转换为 Long 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的枚举值为空</exception>
+    /// <param name="value">枚举值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">异常默认值，默认为 0L</param>
+    /// <typeparam name="TEnum">枚举类型</typeparam>
+    /// <returns>将 可空的 Enum 类型 转换为 Long 类型</returns>
     public static long ParseToLong<TEnum>(this TEnum? value, bool isThrow = true, long defaultValue = 0L)
         where TEnum : struct, Enum
     {
@@ -133,13 +133,13 @@ public static class ConvertExtension
     #region 转换为int
 
     /// <summary>
-    /// 将 String 类型 转换为 Int 类型。
+    /// 将 String 类型 转换为 Int 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">操作无法产生结果时使用的默认值。</param>
-    /// <returns>将 String 类型 转换为 Int 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">操作无法产生结果时使用的默认值</param>
+    /// <returns>将 String 类型 转换为 Int 类型</returns>
     public static int ParseToInt(this string value, bool isThrow = true, int defaultValue = 0)
     {
         if (isThrow)
@@ -166,14 +166,14 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将 Enum 类型 转换为 Int 类型。
+    /// 将 Enum 类型 转换为 Int 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的枚举值为空。</exception>
-    /// <param name="value">枚举值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">操作无法产生结果时使用的默认值。</param>
-    /// <typeparam name="TEnum">枚举类型。</typeparam>
-    /// <returns>将 Enum 类型 转换为 Int 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的枚举值为空</exception>
+    /// <param name="value">枚举值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">操作无法产生结果时使用的默认值</param>
+    /// <typeparam name="TEnum">枚举类型</typeparam>
+    /// <returns>将 Enum 类型 转换为 Int 类型</returns>
     public static int ParseToInt<TEnum>(this TEnum value, bool isThrow = true, int defaultValue = 0) where TEnum : struct, Enum
     {
         if (isThrow)
@@ -195,14 +195,14 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将 可空的 Enum 类型 转换为 Int 类型。
+    /// 将 可空的 Enum 类型 转换为 Int 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的枚举值为空。</exception>
-    /// <param name="value">枚举值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">操作无法产生结果时使用的默认值。</param>
-    /// <typeparam name="TEnum">枚举类型。</typeparam>
-    /// <returns>将 可空的 Enum 类型 转换为 Int 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的枚举值为空</exception>
+    /// <param name="value">枚举值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">操作无法产生结果时使用的默认值</param>
+    /// <typeparam name="TEnum">枚举类型</typeparam>
+    /// <returns>将 可空的 Enum 类型 转换为 Int 类型</returns>
     public static int ParseToInt<TEnum>(this TEnum? value, bool isThrow = true, int defaultValue = 0) where TEnum : struct, Enum
     {
         if (isThrow)
@@ -228,13 +228,13 @@ public static class ConvertExtension
     #region 转换为short
 
     /// <summary>
-    /// 将 String 类型 转换为 Short 类型。
+    /// 将 String 类型 转换为 Short 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">short 异常默认值，默认为 0。</param>
-    /// <returns>将 String 类型 转换为 Short 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">short 异常默认值，默认为 0</param>
+    /// <returns>将 String 类型 转换为 Short 类型</returns>
     public static short ParseToShort(this string value, bool isThrow = true, short defaultValue = 0)
     {
         if (isThrow)
@@ -265,13 +265,13 @@ public static class ConvertExtension
     #region 转换为decimal
 
     /// <summary>
-    /// 将 String 类型 转换为 Decimal 类型。
+    /// 将 String 类型 转换为 Decimal 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">decimal 异常默认值，默认为 0M。</param>
-    /// <returns>将 String 类型 转换为 Decimal 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">decimal 异常默认值，默认为 0M</param>
+    /// <returns>将 String 类型 转换为 Decimal 类型</returns>
     public static decimal ParseToDecimal(this string value, bool isThrow = true, decimal defaultValue = 0M)
     {
         if (isThrow)
@@ -302,13 +302,13 @@ public static class ConvertExtension
     #region 转化为bool
 
     /// <summary>
-    /// 将 String 类型 转换为 Bool 类型。
+    /// 将 String 类型 转换为 Bool 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">异常默认值，默认为 <see langword="false"/>。</param>
-    /// <returns>解析得到的布尔值；禁用异常且输入无效时返回 <paramref name="defaultValue"/>。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">异常默认值，默认为 <see langword="false"/></param>
+    /// <returns>解析得到的布尔值；禁用异常且输入无效时返回 <paramref name="defaultValue"/></returns>
     public static bool ParseToBool(this string value, bool isThrow = true, bool defaultValue = false)
     {
         if (isThrow)
@@ -339,13 +339,13 @@ public static class ConvertExtension
     #region 转换为float
 
     /// <summary>
-    /// 将 String 类型 转换为 Float 类型。
+    /// 将 String 类型 转换为 Float 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">float 异常默认值，默认为 0F。</param>
-    /// <returns>将 String 类型 转换为 Float 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">float 异常默认值，默认为 0F</param>
+    /// <returns>将 String 类型 转换为 Float 类型</returns>
     public static float ParseToFloat(this string value, bool isThrow = true, float defaultValue = 0F)
     {
         if (isThrow)
@@ -376,13 +376,13 @@ public static class ConvertExtension
     #region 转换为double
 
     /// <summary>
-    /// 将 String 类型 转换为 Float 类型。
+    /// 将 String 类型 转换为 Float 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">double 异常默认值，默认为 0D。</param>
-    /// <returns>将 String 类型 转换为 Float 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">double 异常默认值，默认为 0D</param>
+    /// <returns>将 String 类型 转换为 Float 类型</returns>
     public static double ParseToDouble(this string value, bool isThrow = true, double defaultValue = 0D)
     {
         if (isThrow)
@@ -413,13 +413,13 @@ public static class ConvertExtension
     #region 转换为Guid
 
     /// <summary>
-    /// 将 String 类型 转换为 Guid 类型。
+    /// 将 String 类型 转换为 Guid 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">Guid 异常默认值，默认为 Guid.Empty。</param>
-    /// <returns>将 String 类型 转换为 Guid 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">Guid 异常默认值，默认为 Guid.Empty</param>
+    /// <returns>将 String 类型 转换为 Guid 类型</returns>
     public static Guid ParseToGuid(this string value, bool isThrow = true, Guid? defaultValue = null)
     {
         if (isThrow)
@@ -460,13 +460,13 @@ public static class ConvertExtension
     #region 转换为DateTime
 
     /// <summary>
-    /// 将 String 类型 转换为 DateTime 类型。
+    /// 将 String 类型 转换为 DateTime 类型
     /// </summary>
-    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串。</exception>
-    /// <param name="value">要转换的值。</param>
-    /// <param name="isThrow">处理失败时是否抛出异常。</param>
-    /// <param name="defaultValue">DateTime 异常默认值，默认为 DateTime.MinValue。</param>
-    /// <returns>将 String 类型 转换为 DateTime 类型。</returns>
+    /// <exception cref="ArgumentNullException">传入的值为空或者空字符串</exception>
+    /// <param name="value">要转换的值</param>
+    /// <param name="isThrow">处理失败时是否抛出异常</param>
+    /// <param name="defaultValue">DateTime 异常默认值，默认为 DateTime.MinValue</param>
+    /// <returns>将 String 类型 转换为 DateTime 类型</returns>
     public static DateTime ParseToDateTime(this string value, bool isThrow = true, DateTime defaultValue = default)
     {
         if (isThrow)
@@ -609,10 +609,10 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将 DateTimeOffset 转换成本地 DateTime。
+    /// 将 DateTimeOffset 转换成本地 DateTime
     /// </summary>
-    /// <param name="dateTime">要处理的日期时间。</param>
-    /// <returns>将 DateTimeOffset 转换成本地 DateTime。</returns>
+    /// <param name="dateTime">要处理的日期时间</param>
+    /// <returns>将 DateTimeOffset 转换成本地 DateTime</returns>
     public static DateTime ParseToDateTime(this DateTimeOffset dateTime)
     {
         if (dateTime.Offset.Equals(TimeSpan.Zero))
@@ -630,40 +630,40 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将 DateTimeOffset? 转换成本地 DateTime?
+    /// 将 DateTimeOffset? 转换成本地 DateTime
     /// </summary>
-    /// <param name="dateTime">要处理的日期时间。</param>
-    /// <returns>将 DateTimeOffset? 转换成本地 DateTime?。</returns>
+    /// <param name="dateTime">要处理的日期时间</param>
+    /// <returns>将 DateTimeOffset? 转换成本地 DateTime</returns>
     public static DateTime? ParseToDateTime(this DateTimeOffset? dateTime)
     {
         return dateTime?.ParseToDateTime();
     }
 
     /// <summary>
-    /// 将 DateTime 转换成 DateTimeOffset。
+    /// 将 DateTime 转换成 DateTimeOffset
     /// </summary>
-    /// <param name="dateTime">要处理的日期时间。</param>
-    /// <returns>将 DateTime 转换成 DateTimeOffset。</returns>
+    /// <param name="dateTime">要处理的日期时间</param>
+    /// <returns>将 DateTime 转换成 DateTimeOffset</returns>
     public static DateTimeOffset ParseToDateTimeOffset(this DateTime dateTime)
     {
         return DateTime.SpecifyKind(dateTime, DateTimeKind.Local);
     }
 
     /// <summary>
-    /// 将 DateTime? 转换成 DateTimeOffset?
+    /// 将 DateTime? 转换成 DateTimeOffset
     /// </summary>
-    /// <param name="dateTime">要处理的日期时间。</param>
-    /// <returns>将 DateTime? 转换成 DateTimeOffset?。</returns>
+    /// <param name="dateTime">要处理的日期时间</param>
+    /// <returns>将 DateTime? 转换成 DateTimeOffset</returns>
     public static DateTimeOffset? ParseToDateTimeOffset(this DateTime? dateTime)
     {
         return dateTime?.ParseToDateTimeOffset();
     }
 
     /// <summary>
-    /// 将毫秒时间戳转换为 DateTime，若转换失败，则返回日期最小值。不抛出异常。
+    /// 将毫秒时间戳转换为 DateTime，若转换失败，则返回日期最小值。不抛出异常
     /// </summary>
-    /// <param name="timeStamps">时间戳集合。</param>
-    /// <returns>将毫秒时间戳转换为 DateTime，若转换失败，则返回日期最小值。不抛出异常。</returns>
+    /// <param name="timeStamps">时间戳集合</param>
+    /// <returns>将毫秒时间戳转换为 DateTime，若转换失败，则返回日期最小值。不抛出异常</returns>
     public static DateTime ParseToDateTime_Milliseconds(this long timeStamps)
     {
         try
@@ -678,11 +678,11 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将毫秒时间戳转换为 DateTime，若转换失败，则返回默认值。
+    /// 将毫秒时间戳转换为 DateTime，若转换失败，则返回默认值
     /// </summary>
-    /// <param name="timeStamps">时间戳集合。</param>
-    /// <param name="defaultValue">时间戳为 0 或转换失败时返回的默认值。</param>
-    /// <returns>将毫秒时间戳转换为 DateTime，若转换失败，则返回默认值。</returns>
+    /// <param name="timeStamps">时间戳集合</param>
+    /// <param name="defaultValue">时间戳为 0 或转换失败时返回的默认值</param>
+    /// <returns>将毫秒时间戳转换为 DateTime，若转换失败，则返回默认值</returns>
     public static DateTime ParseToDateTime_Milliseconds(this long timeStamps, DateTime? defaultValue)
     {
         try
@@ -697,10 +697,10 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将秒时间戳转换为 DateTime，若转换失败，则返回日期最小值。不抛出异常。
+    /// 将秒时间戳转换为 DateTime，若转换失败，则返回日期最小值。不抛出异常
     /// </summary>
-    /// <param name="timeStamps">时间戳集合。</param>
-    /// <returns>将秒时间戳转换为 DateTime，若转换失败，则返回日期最小值。不抛出异常。</returns>
+    /// <param name="timeStamps">时间戳集合</param>
+    /// <returns>将秒时间戳转换为 DateTime，若转换失败，则返回日期最小值。不抛出异常</returns>
     public static DateTime ParseToDateTime_Seconds(this long timeStamps)
     {
         try
@@ -715,11 +715,11 @@ public static class ConvertExtension
     }
 
     /// <summary>
-    /// 将秒时间戳转换为 DateTime，若转换失败，则返回默认值。
+    /// 将秒时间戳转换为 DateTime，若转换失败，则返回默认值
     /// </summary>
-    /// <param name="timeStamps">时间戳集合。</param>
-    /// <param name="defaultValue">时间戳为 0 或转换失败时返回的默认值。</param>
-    /// <returns>将秒时间戳转换为 DateTime，若转换失败，则返回默认值。</returns>
+    /// <param name="timeStamps">时间戳集合</param>
+    /// <param name="defaultValue">时间戳为 0 或转换失败时返回的默认值</param>
+    /// <returns>将秒时间戳转换为 DateTime，若转换失败，则返回默认值</returns>
     public static DateTime ParseToDateTime_Seconds(this long timeStamps, DateTime? defaultValue)
     {
         try
@@ -738,10 +738,10 @@ public static class ConvertExtension
     #region 转换为ToUnixTime
 
     /// <summary>
-    /// 将 DateTime 转为 UnixTime。
+    /// 将 DateTime 转为 UnixTime
     /// </summary>
-    /// <param name="dateTime">要处理的日期时间。</param>
-    /// <returns>将 DateTime 转为 UnixTime。</returns>
+    /// <param name="dateTime">要处理的日期时间</param>
+    /// <returns>将 DateTime 转为 UnixTime</returns>
     public static long ParseToUnixTime(this DateTime dateTime)
     {
         var startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
@@ -753,11 +753,11 @@ public static class ConvertExtension
     #region 强制转换类型
 
     /// <summary>
-    /// 强制转换类型。
+    /// 强制转换类型
     /// </summary>
-    /// <param name="source">源对象。</param>
-    /// <typeparam name="TResult">操作结果类型。</typeparam>
-    /// <returns>强制转换类型集合。</returns>
+    /// <param name="source">源对象</param>
+    /// <typeparam name="TResult">操作结果类型</typeparam>
+    /// <returns>强制转换类型集合</returns>
     public static IEnumerable<TResult> CastSuper<TResult>(this IEnumerable source)
     {
         return

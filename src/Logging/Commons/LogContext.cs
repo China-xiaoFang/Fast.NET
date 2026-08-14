@@ -23,20 +23,20 @@
 namespace Fast.Logging;
 
 /// <summary>
-/// 日志上下文。
+/// 日志上下文
 /// </summary>
 [SuppressSniffer]
 public sealed class LogContext
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
     public LogContext()
     {
     }
 
     /// <summary>
-    /// 日志上下文数据。
+    /// 日志上下文数据
     /// </summary>
     public IDictionary<object, object> Properties { get; set; }
 }

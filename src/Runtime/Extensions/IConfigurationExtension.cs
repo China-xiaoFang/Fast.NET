@@ -25,17 +25,17 @@ using Microsoft.Extensions.Configuration;
 namespace Fast.Runtime;
 
 /// <summary>
-/// 为 <see cref="IConfiguration"/> 提供扩展方法。
+/// 为 <see cref="IConfiguration"/> 提供扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IConfigurationExtension
 {
     /// <summary>
-    /// 加载后期配置。
+    /// 加载后期配置
     /// </summary>
-    /// <param name="type">目标类型。</param>
-    /// <typeparam name="T">要执行后期配置的选项类型。</typeparam>
-    /// <returns>加载后的后期配置。</returns>
+    /// <param name="type">目标类型</param>
+    /// <typeparam name="T">要执行后期配置的选项类型</typeparam>
+    /// <returns>加载后的后期配置</returns>
     public static T LoadPostConfigure<T>(this T type) where T : IPostConfigure
     {
         // 空值判断

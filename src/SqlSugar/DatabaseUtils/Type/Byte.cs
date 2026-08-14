@@ -25,15 +25,15 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 数据库字段类型映射工具类。
+/// 数据库字段类型映射工具类
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 设置 <see cref="byte"/> 类型。
+    /// 设置 <see cref="byte"/> 类型
     /// </summary>
-    /// <param name="dbType">数据库类型。</param>
-    /// <param name="columnInfo">要补充数据库类型信息的实体列元数据。</param>
+    /// <param name="dbType">数据库类型</param>
+    /// <param name="columnInfo">要补充数据库类型信息的实体列元数据</param>
     internal static void SetDbTypeByte(DbType dbType, EntityColumnInfo columnInfo)
     {
         switch (dbType)

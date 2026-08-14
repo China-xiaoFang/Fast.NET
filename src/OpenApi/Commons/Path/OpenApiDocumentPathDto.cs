@@ -23,22 +23,22 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档路由 DTO。
+/// OpenAPI 文档路由 DTO
 /// </summary>
 public class OpenApiDocumentPathDto
 {
     /// <summary>
-    /// Get 请求。
+    /// Get 请求
     /// </summary>
     public OpenApiDocumentPathMethodDto Get { get; set; }
 
     /// <summary>
-    /// Post 请求。
+    /// Post 请求
     /// </summary>
     public OpenApiDocumentPathMethodDto Post { get; set; }
 
     /// <summary>
-    /// 请求方法。
+    /// 请求方法
     /// </summary>
     public OpenApiDocumentPathMethodDto Method
     {
@@ -53,7 +53,7 @@ public class OpenApiDocumentPathDto
     }
 
     /// <summary>
-    /// 请求方式。
+    /// 请求方式
     /// </summary>
     public HttpRequestMethodEnum RequestMethod
     {
@@ -68,7 +68,7 @@ public class OpenApiDocumentPathDto
     }
 
     /// <summary>
-    /// 模块。
+    /// 模块
     /// </summary>
     public string Tag
     {

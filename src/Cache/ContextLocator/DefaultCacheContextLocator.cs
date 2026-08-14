@@ -23,7 +23,7 @@
 namespace Fast.Cache;
 
 /// <summary>
-/// 默认缓存上下文定位器。
+/// 默认缓存上下文定位器
 /// </summary>
 [SuppressSniffer]
 public class DefaultCacheContextLocator : ICacheContextLocator

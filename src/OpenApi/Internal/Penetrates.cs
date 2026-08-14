@@ -23,12 +23,12 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// 常量，公共方法配置类。
+/// 常量，公共方法配置类
 /// </summary>
 internal static class Penetrates
 {
     /// <summary>
-    /// OpenAPI 配置。
+    /// OpenAPI 配置
     /// </summary>
     internal static OpenApiSettingsOptions OpenApiSettings { get; set; }
 }

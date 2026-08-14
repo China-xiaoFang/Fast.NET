@@ -23,23 +23,23 @@
 namespace Fast.Runtime;
 
 /// <summary>
-/// 用户代理信息。
+/// 用户代理信息
 /// </summary>
 [SuppressSniffer]
 public class UserAgentInfo
 {
     /// <summary>
-    /// 设备。
+    /// 设备
     /// </summary>
     public string Device { get; set; }
 
     /// <summary>
-    /// 操作系统（版本）。
+    /// 操作系统（版本）
     /// </summary>
     public string OS { get; set; }
 
     /// <summary>
-    /// 浏览器（版本）。
+    /// 浏览器（版本）
     /// </summary>
     public string Browser { get; set; }
 }

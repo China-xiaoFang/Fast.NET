@@ -26,12 +26,12 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// decimal 类型 JSON 返回处理。
+/// decimal 类型 JSON 返回处理
 /// </summary>
 internal sealed class DecimalJsonConverter : JsonConverter<decimal>
 {
     /// <summary>
-    /// 小数点位数。
+    /// 小数点位数
     /// </summary>
     public int? Places { get; set; }
 
@@ -48,7 +48,7 @@ internal sealed class DecimalJsonConverter : JsonConverter<decimal>
     /// <inheritdoc />
     public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 同时接受 JSON 字符串和数字令牌。
+        // 同时接受 JSON 字符串和数字令牌
         return reader.TokenType == JsonTokenType.String
             ? decimal.Parse(reader.GetString(), System.Globalization.CultureInfo.InvariantCulture)
             : reader.GetDecimal();
@@ -62,12 +62,12 @@ internal sealed class DecimalJsonConverter : JsonConverter<decimal>
 }
 
 /// <summary>
-/// decimal? 类型 JSON 返回处理。
+/// decimal? 类型 JSON 返回处理
 /// </summary>
 internal sealed class NullableDecimalJsonConverter : JsonConverter<decimal?>
 {
     /// <summary>
-    /// 小数点位数。
+    /// 小数点位数
     /// </summary>
     public int? Places { get; set; }
 
@@ -84,7 +84,7 @@ internal sealed class NullableDecimalJsonConverter : JsonConverter<decimal?>
     /// <inheritdoc />
     public override decimal? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理。
+        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理
         if (reader.TokenType != JsonTokenType.String)
             return reader.GetDecimal();
 

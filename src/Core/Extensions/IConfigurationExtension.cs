@@ -25,16 +25,16 @@ using Microsoft.Extensions.Configuration;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// 为 <see cref="IConfiguration"/> 提供扩展方法。
+/// 为 <see cref="IConfiguration"/> 提供扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IConfigurationExtension
 {
     /// <summary>
-    /// 刷新配置对象。
+    /// 刷新配置对象
     /// </summary>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <returns>刷新配置对象。</returns>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <returns>刷新配置对象</returns>
     public static IConfiguration Reload(this IConfiguration configuration)
     {
         if (FastContext.RootServices == null)

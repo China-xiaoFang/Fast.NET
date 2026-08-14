@@ -25,15 +25,15 @@ using System.Text;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 为 <see cref="string"/> 提供扩展方法。
+/// 为 <see cref="string"/> 提供扩展方法
 /// </summary>
 internal static class StringExtension
 {
     /// <summary>
-    /// 字符串首字母小写。
+    /// 字符串首字母小写
     /// </summary>
-    /// <param name="str">要转换的字符串。</param>
-    /// <returns>首字母小写后的字符串；输入为空时返回原值。</returns>
+    /// <param name="str">要转换的字符串</param>
+    /// <returns>首字母小写后的字符串；输入为空时返回原值</returns>
     public static string FirstCharToLower(this string str)
     {
         if (string.IsNullOrWhiteSpace(str))

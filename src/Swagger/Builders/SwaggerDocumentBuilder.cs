@@ -40,33 +40,33 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 namespace Fast.Swagger;
 
 /// <summary>
-/// 规范化文档构建器。
+/// 规范化文档构建器
 /// </summary>
 [SuppressSniffer]
 public static class SwaggerDocumentBuilder
 {
     /// <summary>
-    /// 所有分组默认的组名 Key。
+    /// 所有分组默认的组名 Key
     /// </summary>
     private const string AllGroupsKey = "All Groups";
 
     /// <summary>
-    /// 分组信息。
+    /// 分组信息
     /// </summary>
     private static readonly IEnumerable<GroupExtraInfo> DocumentGroupExtras;
 
     /// <summary>
-    /// 带排序的分组名。
+    /// 带排序的分组名
     /// </summary>
     private static readonly Regex _groupOrderRegex;
 
     /// <summary>
-    /// 文档分组列表。
+    /// 文档分组列表
     /// </summary>
     public static readonly IEnumerable<string> DocumentGroups;
 
     /// <summary>
-    /// 初始化静态数据。
+    /// 初始化静态数据
     /// </summary>
     static SwaggerDocumentBuilder()
     {
@@ -86,11 +86,11 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 检查方法是否在分组中。
+    /// 检查方法是否在分组中
     /// </summary>
-    /// <param name="currentGroup">当前正在处理的文档分组。</param>
-    /// <param name="apiDescription">当前 API 的描述信息。</param>
-    /// <returns>API 应包含在当前文档分组中时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="currentGroup">当前正在处理的文档分组</param>
+    /// <param name="apiDescription">当前 API 的描述信息</param>
+    /// <returns>API 应包含在当前文档分组中时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool CheckApiDescriptionInCurrentGroup(string currentGroup, ApiDescription apiDescription)
     {
         if (!apiDescription.TryGetMethodInfo(out var method))
@@ -118,9 +118,9 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 获取所有的规范化分组信息。
+    /// 获取所有的规范化分组信息
     /// </summary>
-    /// <returns>获取到的所有的规范化分组信息集合。</returns>
+    /// <returns>获取到的所有的规范化分组信息集合</returns>
     public static List<SwaggerOpenApiInfo> GetOpenApiGroups()
     {
         var openApiGroups = new List<SwaggerOpenApiInfo>();
@@ -133,15 +133,15 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 获取分组信息缓存集合。
+    /// 获取分组信息缓存集合
     /// </summary>
     private static readonly ConcurrentDictionary<string, SwaggerOpenApiInfo> GetGroupOpenApiInfoCached;
 
     /// <summary>
-    /// 获取分组配置信息。
+    /// 获取分组配置信息
     /// </summary>
-    /// <param name="group">文档分组名称。</param>
-    /// <returns>获取到的分组配置信息。</returns>
+    /// <param name="group">文档分组名称</param>
+    /// <returns>获取到的分组配置信息</returns>
     public static SwaggerOpenApiInfo GetGroupOpenApiInfo(string group)
     {
         return GetGroupOpenApiInfoCached.GetOrAdd(group, Function);
@@ -173,10 +173,10 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 构建 Swagger 全局配置。
+    /// 构建 Swagger 全局配置
     /// </summary>
-    /// <param name="swaggerOptions">Swagger 全局配置。</param>
-    /// <param name="configure">额外的 Swagger 配置操作。</param>
+    /// <param name="swaggerOptions">Swagger 全局配置</param>
+    /// <param name="configure">额外的 Swagger 配置操作</param>
     internal static void Build(SwaggerOptions swaggerOptions, Action<SwaggerOptions> configure = null)
     {
         // 配置生成的 OpenAPI 规范版本
@@ -208,10 +208,10 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// Swagger 生成器构建。
+    /// Swagger 生成器构建
     /// </summary>
-    /// <param name="swaggerGenOptions">Swagger 生成器配置。</param>
-    /// <param name="configure">自定义配置。</param>
+    /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
+    /// <param name="configure">自定义配置</param>
     internal static void BuildGen(SwaggerGenOptions swaggerGenOptions, Action<SwaggerGenOptions> configure = null)
     {
         // 创建分组文档
@@ -256,10 +256,10 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// Swagger UI 构建。
+    /// Swagger UI 构建
     /// </summary>
-    /// <param name="swaggerUIOptions">Swagger UI 配置选项。</param>
-    /// <param name="configure">Swagger UI 配置操作。</param>
+    /// <param name="swaggerUIOptions">Swagger UI 配置选项</param>
+    /// <param name="configure">Swagger UI 配置操作</param>
     internal static void BuildUI(SwaggerUIOptions swaggerUIOptions, Action<SwaggerUIOptions> configure = null)
     {
         // 配置分组终点路由
@@ -277,16 +277,16 @@ public static class SwaggerDocumentBuilder
         // 自定义 Swagger 首页
         CustomizeIndex(swaggerUIOptions);
 
-        // 配置多语言错误响应和自动登录令牌处理。
+        // 配置多语言错误响应和自动登录令牌处理
         AddDefaultInterceptor(swaggerUIOptions);
 
         configure?.Invoke(swaggerUIOptions);
     }
 
     /// <summary>
-    /// 创建分组文档。
+    /// 创建分组文档
     /// </summary>
-    /// <param name="swaggerGenOptions">Swagger 生成器对象。</param>
+    /// <param name="swaggerGenOptions">Swagger 生成器对象</param>
     private static void CreateSwaggerDocs(SwaggerGenOptions swaggerGenOptions)
     {
         foreach (var group in DocumentGroups)
@@ -297,27 +297,27 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 加载分组控制器和动作方法列表。
+    /// 加载分组控制器和动作方法列表
     /// </summary>
-    /// <param name="swaggerGenOptions">Swagger 生成器配置。</param>
+    /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
     private static void LoadGroupControllerWithActions(SwaggerGenOptions swaggerGenOptions)
     {
         swaggerGenOptions.DocInclusionPredicate(CheckApiDescriptionInCurrentGroup);
     }
 
     /// <summary>
-    /// 配置标签。
+    /// 配置标签
     /// </summary>
-    /// <param name="swaggerGenOptions">swagger Gen Options 配置。</param>
+    /// <param name="swaggerGenOptions">swagger Gen Options 配置</param>
     private static void ConfigureTagsAction(SwaggerGenOptions swaggerGenOptions)
     {
         swaggerGenOptions.TagActionsBy(apiDescription => { return new[] {GetActionTag(apiDescription)}; });
     }
 
     /// <summary>
-    /// 配置 Action 排序。
+    /// 配置 Action 排序
     /// </summary>
-    /// <param name="swaggerGenOptions">swagger Gen Options 配置。</param>
+    /// <param name="swaggerGenOptions">swagger Gen Options 配置</param>
     private static void ConfigureActionSequence(SwaggerGenOptions swaggerGenOptions)
     {
         swaggerGenOptions.OrderActionsBy(apiDesc =>
@@ -334,9 +334,9 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 配置 Swagger OperationIds。
+    /// 配置 Swagger OperationIds
     /// </summary>
-    /// <param name="swaggerGenOptions">Swagger 生成器配置。</param>
+    /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
     private static void ConfigureOperationIds(SwaggerGenOptions swaggerGenOptions)
     {
         swaggerGenOptions.CustomOperationIds(apiDescription =>
@@ -362,9 +362,9 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 配置 Swagger SchemaIds。
+    /// 配置 Swagger SchemaIds
     /// </summary>
-    /// <param name="swaggerGenOptions">Swagger 生成器配置。</param>
+    /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
     private static void ConfigureSchemaIds(SwaggerGenOptions swaggerGenOptions)
     {
         static string DefaultSchemaIdSelector(Type modelType)
@@ -402,9 +402,9 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 加载注释描述文件。
+    /// 加载注释描述文件
     /// </summary>
-    /// <param name="swaggerGenOptions">Swagger 生成器配置。</param>
+    /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
     private static void LoadXmlComments(SwaggerGenOptions swaggerGenOptions)
     {
         var xmlComments = Penetrates.SwaggerSettings.XmlComments;
@@ -449,7 +449,7 @@ public static class SwaggerDocumentBuilder
 
                         // 处理隐式实现接口的注释
                         // 注释格式：M:Fast.NET.Application.TestInheritdoc.Fast.NET#Application#ITestInheritdoc#Abc(System.String)
-                        // 匹配格式：[A-Z]:[a-zA-Z_@\.]+\.
+                        // 匹配格式：[A-Z]:[a-zA-Z_@\.]+\
                         // 处理逻辑：直接替换匹配为空，然后讲 # 替换为 . 查找即可
                         if (memberName.Contains('#'))
                         {
@@ -500,12 +500,12 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 生成 Inheritdoc cref 属性。
+    /// 生成 Inheritdoc cref 属性
     /// </summary>
-    /// <param name="xmlDoc">用于生成继承引用的 XML 文档节点。</param>
-    /// <param name="memberName">XML 文档成员名称。</param>
-    /// <param name="className">声明该成员的类型名称。</param>
-    /// <returns>生成的 Inheritdoc cref 属性。</returns>
+    /// <param name="xmlDoc">用于生成继承引用的 XML 文档节点</param>
+    /// <param name="memberName">XML 文档成员名称</param>
+    /// <param name="className">声明该成员的类型名称</param>
+    /// <returns>生成的 Inheritdoc cref 属性</returns>
     private static string GenerateInheritdocCref(XDocument xmlDoc, string memberName, string className)
     {
         var classElement = xmlDoc.XPathSelectElements($"/doc/members/member[@name='{"T" + className}' and @_ref_]")
@@ -523,9 +523,9 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 配置授权。
+    /// 配置授权
     /// </summary>
-    /// <param name="swaggerGenOptions">Swagger 生成器配置。</param>
+    /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
     private static void ConfigureSecurities(SwaggerGenOptions swaggerGenOptions)
     {
         // 判断是否启用了授权
@@ -537,7 +537,7 @@ public static class SwaggerDocumentBuilder
         // 生成安全定义
         foreach (var securityDefinition in Penetrates.SwaggerSettings.SecurityDefinitions)
         {
-            // 必须定义Id。
+            // 必须定义Id
             if (string.IsNullOrWhiteSpace(securityDefinition.Id))
                 continue;
 
@@ -547,7 +547,7 @@ public static class SwaggerDocumentBuilder
 
             var securityRequirement = securityDefinition.Requirement;
 
-            // Microsoft.OpenAPI 2.x 通过方案标识创建安全方案引用。
+            // Microsoft.OpenAPI 2.x 通过方案标识创建安全方案引用
             if (securityRequirement?.Scheme is not null)
             {
                 var schemeReference = new OpenApiSecuritySchemeReference(securityDefinition.Id);
@@ -557,15 +557,15 @@ public static class SwaggerDocumentBuilder
 
         if (openApiSecurityRequirement.Count > 0)
         {
-            // Swashbuckle 10 通过文档回调注册安全需求。
+            // Swashbuckle 10 通过文档回调注册安全需求
             swaggerGenOptions.AddSecurityRequirement(_ => openApiSecurityRequirement);
         }
     }
 
     /// <summary>
-    /// 配置分组终点路由。
+    /// 配置分组终点路由
     /// </summary>
-    /// <param name="swaggerUIOptions">Swagger UI 配置选项。</param>
+    /// <param name="swaggerUIOptions">Swagger UI 配置选项</param>
     private static void CreateGroupEndpoint(SwaggerUIOptions swaggerUIOptions)
     {
         foreach (var group in DocumentGroups)
@@ -577,9 +577,9 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 自定义 Swagger 首页。
+    /// 自定义 Swagger 首页
     /// </summary>
-    /// <param name="swaggerUIOptions">Swagger UI 配置选项。</param>
+    /// <param name="swaggerUIOptions">Swagger UI 配置选项</param>
     private static void CustomizeIndex(SwaggerUIOptions swaggerUIOptions)
     {
         var thisType = typeof(SwaggerDocumentBuilder);
@@ -611,20 +611,20 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 添加默认请求/响应拦截器。
+    /// 添加默认请求/响应拦截器
     /// </summary>
-    /// <param name="swaggerUIOptions">Swagger UI 配置选项。</param>
+    /// <param name="swaggerUIOptions">Swagger UI 配置选项</param>
     private static void AddDefaultInterceptor(SwaggerUIOptions swaggerUIOptions)
     {
-        // 配置多语言错误响应和自动登录令牌处理。
+        // 配置多语言错误响应和自动登录令牌处理
         swaggerUIOptions.UseRequestInterceptor("function(request) { return defaultRequestInterceptor(request); }");
         swaggerUIOptions.UseResponseInterceptor("function(response) { return defaultResponseInterceptor(response); }");
     }
 
     /// <summary>
-    /// 读取所有分组信息。
+    /// 读取所有分组信息
     /// </summary>
-    /// <returns>读取到的所有分组信息集合。</returns>
+    /// <returns>读取到的所有分组信息集合</returns>
     private static IEnumerable<string> ReadGroups()
     {
         // 获取所有的控制器和动作方法
@@ -668,15 +668,15 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 获取控制器组缓存集合。
+    /// 获取控制器组缓存集合
     /// </summary>
     private static readonly ConcurrentDictionary<Type, IEnumerable<GroupExtraInfo>> GetControllerGroupsCached;
 
     /// <summary>
-    /// 获取控制器分组列表。
+    /// 获取控制器分组列表
     /// </summary>
-    /// <param name="type">目标类型。</param>
-    /// <returns>获取到的控制器分组列表集合。</returns>
+    /// <param name="type">目标类型</param>
+    /// <returns>获取到的控制器分组列表集合</returns>
     public static IEnumerable<GroupExtraInfo> GetControllerGroups(Type type)
     {
         return GetControllerGroupsCached.GetOrAdd(type, Function);
@@ -703,15 +703,15 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// <see cref="GetActionGroups(MethodInfo)"/> 缓存集合。
+    /// <see cref="GetActionGroups(MethodInfo)"/> 缓存集合
     /// </summary>
     private static readonly ConcurrentDictionary<MethodInfo, IEnumerable<GroupExtraInfo>> GetActionGroupsCached;
 
     /// <summary>
-    /// 获取动作方法分组列表。
+    /// 获取动作方法分组列表
     /// </summary>
-    /// <param name="method">目标方法。</param>
-    /// <returns>获取到的动作方法分组列表集合。</returns>
+    /// <param name="method">目标方法</param>
+    /// <returns>获取到的动作方法分组列表集合</returns>
     public static IEnumerable<GroupExtraInfo> GetActionGroups(MethodInfo method)
     {
         return GetActionGroupsCached.GetOrAdd(method, Function);
@@ -738,15 +738,15 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// <see cref="GetActionTag(ApiDescription)"/> 缓存集合。
+    /// <see cref="GetActionTag(ApiDescription)"/> 缓存集合
     /// </summary>
     private static readonly ConcurrentDictionary<ControllerActionDescriptor, string> GetControllerTagCached;
 
     /// <summary>
-    /// 获取控制器标签。
+    /// 获取控制器标签
     /// </summary>
-    /// <param name="controllerActionDescriptor">当前控制器操作的描述信息。</param>
-    /// <returns>获取到的控制器标签。</returns>
+    /// <param name="controllerActionDescriptor">当前控制器操作的描述信息</param>
+    /// <returns>获取到的控制器标签</returns>
     public static string GetControllerTag(ControllerActionDescriptor controllerActionDescriptor)
     {
         return GetControllerTagCached.GetOrAdd(controllerActionDescriptor, Function);
@@ -763,15 +763,15 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// <see cref="GetActionTag(ApiDescription)"/> 缓存集合。
+    /// <see cref="GetActionTag(ApiDescription)"/> 缓存集合
     /// </summary>
     private static readonly ConcurrentDictionary<ApiDescription, string> GetActionTagCached;
 
     /// <summary>
-    /// 获取动作方法标签。
+    /// 获取动作方法标签
     /// </summary>
-    /// <param name="apiDescription">当前 API 的描述信息。</param>
-    /// <returns>获取到的动作方法标签。</returns>
+    /// <param name="apiDescription">当前 API 的描述信息</param>
+    /// <returns>获取到的动作方法标签</returns>
     public static string GetActionTag(ApiDescription apiDescription)
     {
         return GetActionTagCached.GetOrAdd(apiDescription, Function);
@@ -793,11 +793,11 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 是否是动作方法。
+    /// 是否是动作方法
     /// </summary>
-    /// <param name="method">目标方法。</param>
-    /// <param name="ReflectedType">Reflected 类型。</param>
-    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="method">目标方法</param>
+    /// <param name="ReflectedType">Reflected 类型</param>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool IsApiAction(MethodInfo method, Type ReflectedType)
     {
         // 不是非公开、抽象、静态、泛型方法
@@ -812,10 +812,10 @@ public static class SwaggerDocumentBuilder
     }
 
     /// <summary>
-    /// 解析分组附加信息。
+    /// 解析分组附加信息
     /// </summary>
-    /// <param name="group">分组名。</param>
-    /// <returns>解析后的分组附加信息。</returns>
+    /// <param name="group">分组名</param>
+    /// <returns>解析后的分组附加信息</returns>
     private static GroupExtraInfo ResolveGroupExtraInfo(string group)
     {
         string realGroup;

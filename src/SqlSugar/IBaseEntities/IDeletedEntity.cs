@@ -23,13 +23,13 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 软删除实体接口。
+/// 软删除实体接口
 /// </summary>
 [SuppressSniffer]
 public interface IDeletedEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 软删除标识。
+    /// 软删除标识
     /// </summary>
     bool IsDeleted { get; set; }
 }

@@ -26,32 +26,32 @@ using System.Collections;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 树基类。
+/// 树基类
 /// </summary>
-/// <typeparam name="TProperty">属性值类型。</typeparam>
+/// <typeparam name="TProperty">属性值类型</typeparam>
 public interface ITreeNode<out TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable
 {
     /// <summary>
-    /// 获取节点 id。
+    /// 获取节点 id
     /// </summary>
-    /// <returns>获取到的节点 id。</returns>
+    /// <returns>获取到的节点 id</returns>
     TProperty GetId();
 
     /// <summary>
-    /// 获取节点父 id。
+    /// 获取节点父 id
     /// </summary>
-    /// <returns>获取到的节点父 id。</returns>
+    /// <returns>获取到的节点父 id</returns>
     TProperty GetPid();
 
     /// <summary>
-    /// 获取排序字段。
+    /// 获取排序字段
     /// </summary>
-    /// <returns>获取到的排序字段。</returns>
+    /// <returns>获取到的排序字段</returns>
     TProperty GetSort();
 
     /// <summary>
-    /// 设置 Children。
+    /// 设置 Children
     /// </summary>
-    /// <param name="children">当前节点的直接子节点集合。</param>
+    /// <param name="children">当前节点的直接子节点集合</param>
     void SetChildren(IList children);
 }

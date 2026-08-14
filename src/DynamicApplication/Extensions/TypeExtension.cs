@@ -23,15 +23,15 @@
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 为 <see cref="Type"/> 提供扩展方法。
+/// 为 <see cref="Type"/> 提供扩展方法
 /// </summary>
 internal static class TypeExtension
 {
     /// <summary>
-    /// 判断是否是富基元类型。
+    /// 判断是否是富基元类型
     /// </summary>
-    /// <param name="type">要检查的类型。</param>
-    /// <returns>类型可直接从路由、查询字符串等文本来源绑定时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="type">要检查的类型</param>
+    /// <returns>类型可直接从路由、查询字符串等文本来源绑定时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool IsRichPrimitive(this Type type)
     {
         if (type == null)
@@ -40,13 +40,13 @@ internal static class TypeExtension
         if (type.IsValueTuple())
             return false;
 
-        // 数组需要按元素类型生成架构，不能仅按数组对象本身判断。
+        // 数组需要按元素类型生成架构，不能仅按数组对象本身判断
         if (type.IsArray)
             return type.GetElementType()
                        ?.IsRichPrimitive()
                    == true;
 
-        // 基元、值类型和字符串可直接映射，无需展开成员。
+        // 基元、值类型和字符串可直接映射，无需展开成员
         if (type.IsPrimitive || type.IsValueType || type == typeof(string))
             return true;
 
@@ -58,10 +58,10 @@ internal static class TypeExtension
     }
 
     /// <summary>
-    /// 判断是否是元组类型。
+    /// 判断是否是元组类型
     /// </summary>
-    /// <param name="type">要检查的类型。</param>
-    /// <returns>类型为 <see cref="ValueTuple"/> 或其泛型形式时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="type">要检查的类型</param>
+    /// <returns>类型为 <see cref="ValueTuple"/> 或其泛型形式时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool IsValueTuple(this Type type)
     {
         return type.Namespace == "System" && type.Name.Contains("ValueTuple`");

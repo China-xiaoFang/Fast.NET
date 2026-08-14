@@ -25,16 +25,16 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 连接字符串工具类。
+/// 连接字符串工具类
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 得到数据库连接字符串。
+    /// 得到数据库连接字符串
     /// </summary>
-    /// <param name="dbType">数据库类型。</param>
-    /// <param name="dbInfo">数据库连接与类型信息。</param>
-    /// <returns>得到数据库连接字符串。</returns>
+    /// <param name="dbType">数据库类型</param>
+    /// <param name="dbInfo">数据库连接与类型信息</param>
+    /// <returns>得到数据库连接字符串</returns>
     public static string GetConnectionStr(DbType dbType, DbConnectionInfo dbInfo)
     {
         string connectionStr;

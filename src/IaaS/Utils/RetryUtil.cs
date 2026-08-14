@@ -28,20 +28,20 @@ using System.Threading.Tasks;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 重试静态类。
+/// 重试静态类
 /// </summary>
 public sealed class RetryUtil
 {
     /// <summary>
-    /// 重试有异常的方法，还可以指定特定异常。
+    /// 重试有异常的方法，还可以指定特定异常
     /// </summary>
-    /// <param name="action">要执行的操作委托。</param>
-    /// <param name="numRetries">最大重试次数。</param>
-    /// <param name="retryTimeout">两次重试之间的等待时间。</param>
-    /// <param name="finalThrow">重试耗尽后要抛出的异常工厂。</param>
-    /// <param name="exceptionTypes">允许触发重试的异常类型集合。</param>
-    /// <param name="fallbackPolicy">重试耗尽后使用的降级策略。</param>
-    /// <param name="retryAction">每次失败后执行的重试回调。</param>
+    /// <param name="action">要执行的操作委托</param>
+    /// <param name="numRetries">最大重试次数</param>
+    /// <param name="retryTimeout">两次重试之间的等待时间</param>
+    /// <param name="finalThrow">重试耗尽后要抛出的异常工厂</param>
+    /// <param name="exceptionTypes">允许触发重试的异常类型集合</param>
+    /// <param name="fallbackPolicy">重试耗尽后使用的降级策略</param>
+    /// <param name="retryAction">每次失败后执行的重试回调</param>
     public static void Invoke(Action action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
         Type[] exceptionTypes = null, Action<Exception> fallbackPolicy = null, Action<int, int> retryAction = null)
     {
@@ -66,17 +66,17 @@ public sealed class RetryUtil
     }
 
     /// <summary>
-    /// 重试有异常的方法，还可以指定特定异常。
+    /// 重试有异常的方法，还可以指定特定异常
     /// </summary>
-    /// <param name="action">要执行的操作委托。</param>
-    /// <param name="numRetries">最大重试次数。</param>
-    /// <param name="retryTimeout">两次重试之间的等待时间。</param>
-    /// <param name="finalThrow">重试耗尽后要抛出的异常工厂。</param>
-    /// <param name="exceptionTypes">允许触发重试的异常类型集合。</param>
-    /// <param name="fallbackPolicy">重试耗尽后使用的降级策略。</param>
-    /// <param name="retryAction">每次失败后执行的重试回调。</param>
-    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
-    /// <returns>表示异步“重试有异常的方法，还可以指定特定异常”操作的任务。</returns>
+    /// <param name="action">要执行的操作委托</param>
+    /// <param name="numRetries">最大重试次数</param>
+    /// <param name="retryTimeout">两次重试之间的等待时间</param>
+    /// <param name="finalThrow">重试耗尽后要抛出的异常工厂</param>
+    /// <param name="exceptionTypes">允许触发重试的异常类型集合</param>
+    /// <param name="fallbackPolicy">重试耗尽后使用的降级策略</param>
+    /// <param name="retryAction">每次失败后执行的重试回调</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌</param>
+    /// <returns>表示异步“重试有异常的方法，还可以指定特定异常”操作的任务</returns>
     public static async Task InvokeAsync(Func<Task> action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
         Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Func<int, int, Task> retryAction = null,
         CancellationToken cancellationToken = default)
@@ -84,7 +84,7 @@ public sealed class RetryUtil
         if (action == null)
             throw new ArgumentNullException(nameof(action));
 
-        // 未配置重试次数时只执行一次，不进入重试循环。
+        // 未配置重试次数时只执行一次，不进入重试循环
         if (numRetries <= 0)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -114,7 +114,7 @@ public sealed class RetryUtil
                                            && !exceptionTypes.Where(u => u != null)
                                                .Any(u => u.IsAssignableFrom(ex.GetType()));
 
-                // 重试耗尽或异常类型不匹配时统一执行失败回调。
+                // 重试耗尽或异常类型不匹配时统一执行失败回调
                 if (retriesExhausted || cannotRetryException)
                 {
                     if (fallbackPolicy != null)
@@ -136,7 +136,7 @@ public sealed class RetryUtil
                         .ConfigureAwait(false);
                 }
 
-                // 仅对允许重试的异常等待指定间隔后重试。
+                // 仅对允许重试的异常等待指定间隔后重试
                 if (retryTimeout > 0)
                 {
                     await Task.Delay(retryTimeout, cancellationToken)

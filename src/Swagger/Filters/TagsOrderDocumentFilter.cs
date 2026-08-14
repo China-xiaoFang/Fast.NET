@@ -27,7 +27,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Fast.Swagger;
 
 /// <summary>
-/// 标签文档排序/注释拦截器。
+/// 标签文档排序/注释拦截器
 /// </summary>
 internal sealed class TagsOrderDocumentFilter : IDocumentFilter
 {
@@ -46,7 +46,7 @@ internal sealed class TagsOrderDocumentFilter : IDocumentFilter
                     ?.Description
             });
 
-        // Microsoft.OpenAPI 2.x 的 Tags 属性使用集合类型。
+        // Microsoft.OpenAPI 2.x 的 Tags 属性使用集合类型
         swaggerDoc.Tags = new HashSet<OpenApiTag>(orderedTags);
     }
 }

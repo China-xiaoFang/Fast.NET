@@ -23,13 +23,13 @@
 namespace Fast.Consul;
 
 /// <summary>
-/// Consul 服务注册。
+/// Consul 服务注册
 /// </summary>
 internal interface IConsulRegister
 {
     /// <summary>
-    /// 服务注册。
+    /// 服务注册
     /// </summary>
-    /// <returns>表示异步服务注册的任务。</returns>
+    /// <returns>表示异步服务注册的任务</returns>
     Task ConsulRegisterAsync();
 }

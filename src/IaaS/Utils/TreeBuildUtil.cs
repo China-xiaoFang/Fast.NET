@@ -27,32 +27,32 @@ using System.Linq;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等。
+/// 递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等
 /// </summary>
-/// <typeparam name="TEntity">实体类型。</typeparam>
-/// <typeparam name="TProperty">属性值类型。</typeparam>
+/// <typeparam name="TEntity">实体类型</typeparam>
+/// <typeparam name="TProperty">属性值类型</typeparam>
 public class TreeBuildUtil<TEntity, TProperty> where TEntity : ITreeNode<TProperty>
     where TProperty : struct, IComparable, IConvertible, IFormattable
 {
     /// <summary>
-    /// 顶级节点的父节点Id（默认值为 0）。
+    /// 顶级节点的父节点Id（默认值为 0）
     /// </summary>
     private TProperty _rootParentId;
 
     /// <summary>
-    /// 设置构建树时使用的根节点父级标识。
+    /// 设置构建树时使用的根节点父级标识
     /// </summary>
-    /// <param name="rootParentId">顶级节点应匹配的父级标识；默认为 default。</param>
+    /// <param name="rootParentId">顶级节点应匹配的父级标识；默认为 default</param>
     public void SetRootParentId(TProperty rootParentId)
     {
         _rootParentId = rootParentId;
     }
 
     /// <summary>
-    /// 构造树节点。
+    /// 构造树节点
     /// </summary>
-    /// <param name="nodes">要构建为树的节点集合。</param>
-    /// <returns>构造树节点集合。</returns>
+    /// <param name="nodes">要构建为树的节点集合</param>
+    /// <returns>构造树节点集合</returns>
     public List<TEntity> Build(List<TEntity> nodes)
     {
         var result = nodes.Where(i => i.GetPid()
@@ -64,10 +64,10 @@ public class TreeBuildUtil<TEntity, TProperty> where TEntity : ITreeNode<TProper
     }
 
     /// <summary>
-    /// 构造子节点集合。
+    /// 构造子节点集合
     /// </summary>
-    /// <param name="totalNodes">参与构建树结构的全部节点。</param>
-    /// <param name="node">当前正在挂接子节点的树节点。</param>
+    /// <param name="totalNodes">参与构建树结构的全部节点</param>
+    /// <param name="node">当前正在挂接子节点的树节点</param>
     private void BuildChildNodes(List<TEntity> totalNodes, TEntity node)
     {
         var nodeSubList = totalNodes.Where(i => i.GetPid()

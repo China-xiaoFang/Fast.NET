@@ -23,24 +23,24 @@
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// 命名服务提供器。
+/// 命名服务提供器
 /// </summary>
-/// <typeparam name="TService">目标服务接口。</typeparam>
+/// <typeparam name="TService">目标服务接口</typeparam>
 internal interface INamedServiceProvider<out TService> where TService : class
 {
     /// <summary>
-    /// 根据服务名称获取服务。
+    /// 根据服务名称获取服务
     /// </summary>
-    /// <param name="serviceName">服务名称。</param>
-    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/>。</typeparam>
-    /// <returns>根据服务名称获取服务。</returns>
+    /// <param name="serviceName">服务名称</param>
+    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/></typeparam>
+    /// <returns>根据服务名称获取服务</returns>
     TService GetService<ILifetime>(string serviceName) where ILifetime : IDependency;
 
     /// <summary>
-    /// 根据服务名称获取服务。
+    /// 根据服务名称获取服务
     /// </summary>
-    /// <param name="serviceName">服务名称。</param>
-    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/>。</typeparam>
-    /// <returns>根据服务名称获取服务。</returns>
+    /// <param name="serviceName">服务名称</param>
+    /// <typeparam name="ILifetime">服务生存周期接口，<see cref="ITransientDependency"/>，<see cref="IScopedDependency"/>，<see cref="IScopedDependency"/></typeparam>
+    /// <returns>根据服务名称获取服务</returns>
     TService GetRequiredService<ILifetime>(string serviceName) where ILifetime : IDependency;
 }

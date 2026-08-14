@@ -26,7 +26,7 @@ using Microsoft.AspNetCore.Hosting;
 namespace Fast.Logging;
 
 /// <summary>
-/// 应用启动时自动注册中间件。
+/// 应用启动时自动注册中间件
 /// </summary>
 internal sealed class LoggingStartupFilter : IStartupFilter
 {

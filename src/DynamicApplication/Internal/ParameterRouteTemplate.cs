@@ -23,12 +23,12 @@
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// 参数路由模板。
+/// 参数路由模板
 /// </summary>
 internal sealed class ParameterRouteTemplate
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
     internal ParameterRouteTemplate()
     {
@@ -39,22 +39,22 @@ internal sealed class ParameterRouteTemplate
     }
 
     /// <summary>
-    /// 控制器之前的参数。
+    /// 控制器之前的参数
     /// </summary>
     public IList<string> ControllerStartTemplates { get; set; }
 
     /// <summary>
-    /// 控制器之后的参数。
+    /// 控制器之后的参数
     /// </summary>
     public IList<string> ControllerEndTemplates { get; set; }
 
     /// <summary>
-    /// 行为之前的参数。
+    /// 行为之前的参数
     /// </summary>
     public IList<string> ActionStartTemplates { get; set; }
 
     /// <summary>
-    /// 行为之后的参数。
+    /// 行为之后的参数
     /// </summary>
     public IList<string> ActionEndTemplates { get; set; }
 }

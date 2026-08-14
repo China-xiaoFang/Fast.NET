@@ -25,20 +25,20 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// 验证 <see cref="DateTime"/> 类型属性必填。
+/// 验证 <see cref="DateTime"/> 类型属性必填
 /// </summary>
-/// <remarks>默认必须在 1949-10-01 ~ 2099-12-31 之间。</remarks>
+/// <remarks>默认必须在 1949-10-01 ~ 2099-12-31 之间</remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class DateTimeRequiredAttribute : ValidationAttribute
 {
     /// <summary>
-    /// 最小值。
+    /// 最小值
     /// </summary>
     public DateTime MinValue { get; set; } = new(1949, 10, 01, 00, 00, 00);
 
     /// <summary>
-    /// 最大值。
+    /// 最大值
     /// </summary>
     public DateTime MaxValue { get; set; } = new(2099, 12, 31, 23, 59, 59);
 

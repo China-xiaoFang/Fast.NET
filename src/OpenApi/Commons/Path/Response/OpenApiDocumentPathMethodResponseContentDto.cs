@@ -23,17 +23,17 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档路由响应内容 DTO。
+/// OpenAPI 文档路由响应内容 DTO
 /// </summary>
 public class OpenApiDocumentPathMethodResponseContentDto
 {
     /// <summary>
-    /// 描述。
+    /// 描述
     /// </summary>
     public string Description { get; set; }
 
     /// <summary>
-    /// 内容。
+    /// 内容
     /// </summary>
     public OpenApiDocumentPathMethodContentDto Content { get; set; }
 }

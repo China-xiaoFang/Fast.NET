@@ -26,17 +26,17 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.Cache;
 
 /// <summary>
-/// 为 <see cref="IServiceCollection"/> 提供缓存扩展方法。
+/// 为 <see cref="IServiceCollection"/> 提供缓存扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加缓存服务。
+    /// 添加缓存服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="section">JSON 配置文件节点的 Key 默认值：RedisSettings。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：RedisSettings</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddCache(this IServiceCollection services, string section = "RedisSettings")
     {
         services.AddConfigurableOptions<RedisSettingsOptions>(section);
@@ -60,11 +60,11 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 添加缓存服务。
+    /// 添加缓存服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="optionAction">Redis 配置操作。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="optionAction">Redis 配置操作</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddCache(this IServiceCollection services, Action<List<RedisSettingsOptions>> optionAction)
     {
         services.Configure(optionAction);

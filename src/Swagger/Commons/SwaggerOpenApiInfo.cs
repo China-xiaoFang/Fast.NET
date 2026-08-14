@@ -25,13 +25,13 @@ using Microsoft.OpenApi;
 namespace Fast.Swagger;
 
 /// <summary>
-/// Swagger 文档开放接口信息。
+/// Swagger 文档开放接口信息
 /// </summary>
 [SuppressSniffer]
 public sealed class SwaggerOpenApiInfo : OpenApiInfo
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
     public SwaggerOpenApiInfo()
     {
@@ -39,12 +39,12 @@ public sealed class SwaggerOpenApiInfo : OpenApiInfo
     }
 
     /// <summary>
-    /// 分组私有字段。
+    /// 分组私有字段
     /// </summary>
     private string _group;
 
     /// <summary>
-    /// 所属组。
+    /// 所属组
     /// </summary>
     public string Group
     {
@@ -52,23 +52,23 @@ public sealed class SwaggerOpenApiInfo : OpenApiInfo
         set
         {
             _group = value;
-            //Title ??= string.Join(' ', _group.SplitCamelCase());
+            //Title ??= string.Join(' ', _group.SplitCamelCase())
             Title ??= _group;
         }
     }
 
     /// <summary>
-    /// 排序。
+    /// 排序
     /// </summary>
     public int? Order { get; set; }
 
     /// <summary>
-    /// 是否可见。
+    /// 是否可见
     /// </summary>
     public bool? Visible { get; set; }
 
     /// <summary>
-    /// 路由模板。
+    /// 路由模板
     /// </summary>
     public string RouteTemplate { get; internal set; }
 }

@@ -26,17 +26,17 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 工具类。
+/// OpenAPI 工具类
 /// </summary>
 public static partial class OpenApiUtil
 {
     /// <summary>
-    /// 生成 OpenAPI 文档资源。
+    /// 生成 OpenAPI 文档资源
     /// </summary>
-    /// <param name="address">目标服务地址。</param>
-    /// <param name="apiDescriptionGroupCollectionProvider">用于读取所有 API 描述分组的提供器。</param>
-    /// <param name="groupList">文档分组集合。</param>
-    /// <returns>表示异步“生成 OpenAPI 文档资源”操作的任务。</returns>
+    /// <param name="address">目标服务地址</param>
+    /// <param name="apiDescriptionGroupCollectionProvider">用于读取所有 API 描述分组的提供器</param>
+    /// <param name="groupList">文档分组集合</param>
+    /// <returns>表示异步“生成 OpenAPI 文档资源”操作的任务</returns>
     public static async Task GenerateOpenApi(string address,
         IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider, List<string> groupList = null)
     {
@@ -68,7 +68,7 @@ public static partial class OpenApiUtil
                 Console.WriteLine(logSb.ToString());
             }
 
-            // 复制调用方集合，避免为补充默认分组而意外修改外部状态。
+            // 复制调用方集合，避免为补充默认分组而意外修改外部状态
             var groups = groupList?.ToList() ?? ["All Groups"];
             // 增加默认分组
             if (!groups.Contains("Default", StringComparer.Ordinal))
@@ -159,16 +159,16 @@ public static partial class OpenApiUtil
     }
 
     /// <summary>
-    /// 生成 OpenAPI 文档资源。
+    /// 生成 OpenAPI 文档资源
     /// </summary>
-    /// <param name="apiDescriptionGroupCollectionProvider">接口描述提供程序。</param>
-    /// <param name="openApiDocument">OpenAPI 文档。</param>
-    /// <param name="rootDir">根目录。</param>
-    /// <param name="group">分组。</param>
-    /// <param name="uri">地址。</param>
-    /// <param name="hasWeb">是否为 Web 端。</param>
-    /// <param name="scriptLanguage">脚本语言。</param>
-    /// <returns>表示异步生成 OpenAPI 文档资源的任务。</returns>
+    /// <param name="apiDescriptionGroupCollectionProvider">接口描述提供程序</param>
+    /// <param name="openApiDocument">OpenAPI 文档</param>
+    /// <param name="rootDir">根目录</param>
+    /// <param name="group">分组</param>
+    /// <param name="uri">地址</param>
+    /// <param name="hasWeb">是否为 Web 端</param>
+    /// <param name="scriptLanguage">脚本语言</param>
+    /// <returns>表示异步生成 OpenAPI 文档资源的任务</returns>
     internal static async Task GenerateOpenApi(IApiDescriptionGroupCollectionProvider apiDescriptionGroupCollectionProvider,
         OpenApiDocumentDto openApiDocument, string rootDir, string group, Uri uri, bool hasWeb, ScriptLanguageEnum scriptLanguage)
     {

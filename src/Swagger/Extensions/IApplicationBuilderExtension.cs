@@ -27,18 +27,18 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 namespace Fast.Swagger;
 
 /// <summary>
-/// 为 <see cref="IApplicationBuilder"/> 提供 Swagger 扩展方法。
+/// 为 <see cref="IApplicationBuilder"/> 提供 Swagger 扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IApplicationBuilderExtension
 {
     /// <summary>
-    /// 启用 Swagger。
+    /// 启用 Swagger
     /// </summary>
-    /// <param name="app">要配置的应用管道。</param>
-    /// <param name="configure">Swagger 配置操作。</param>
-    /// <param name="configureUI">Swagger UI 配置操作。</param>
-    /// <returns>返回当前应用管道构建器，便于链式调用。</returns>
+    /// <param name="app">要配置的应用管道</param>
+    /// <param name="configure">Swagger 配置操作</param>
+    /// <param name="configureUI">Swagger UI 配置操作</param>
+    /// <returns>返回当前应用管道构建器，便于链式调用</returns>
     public static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app, Action<SwaggerOptions> configure = null,
         Action<SwaggerUIOptions> configureUI = null)
     {

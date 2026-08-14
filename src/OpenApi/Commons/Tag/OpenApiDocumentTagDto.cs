@@ -23,17 +23,17 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档模块 DTO。
+/// OpenAPI 文档模块 DTO
 /// </summary>
 public class OpenApiDocumentTagDto
 {
     /// <summary>
-    /// 模块名称。
+    /// 模块名称
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// 描述。
+    /// 描述
     /// </summary>
     public string Description { get; set; }
 }

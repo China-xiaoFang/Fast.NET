@@ -25,57 +25,57 @@ using System.Reflection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// 事件处理程序包装类。
+/// 事件处理程序包装类
 /// </summary>
-/// <remarks>主要用于主机服务启动时将所有处理程序和事件Id进行包装绑定。</remarks>
+/// <remarks>主要用于主机服务启动时将所有处理程序和事件Id进行包装绑定</remarks>
 internal sealed class EventHandlerWrapper
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventId">事件Id。</param>
+    /// <param name="eventId">事件Id</param>
     internal EventHandlerWrapper(string eventId)
     {
         EventId = eventId;
     }
 
     /// <summary>
-    /// 事件Id。
+    /// 事件Id
     /// </summary>
     internal string EventId { get; set; }
 
     /// <summary>
-    /// 事件处理程序。
+    /// 事件处理程序
     /// </summary>
     internal Func<EventHandlerExecutingContext, Task> Handler { get; set; }
 
     /// <summary>
-    /// 触发的方法。
+    /// 触发的方法
     /// </summary>
     internal MethodInfo HandlerMethod { get; set; }
 
     /// <summary>
-    /// 订阅特性。
+    /// 订阅特性
     /// </summary>
     internal EventSubscribeAttribute Attribute { get; set; }
 
     /// <summary>
-    /// 是否启用执行完成触发 GC 回收。
+    /// 是否启用执行完成触发 GC 回收
     /// </summary>
     public bool GCCollect { get; set; }
 
     /// <summary>
-    /// 排序。
+    /// 排序
     /// </summary>
-    /// <remarks>数值越大的先执行。</remarks>
+    /// <remarks>数值越大的先执行</remarks>
     public int Order { get; set; } = 0;
 
     /// <summary>
-    /// 是否符合条件执行处理程序。
+    /// 是否符合条件执行处理程序
     /// </summary>
-    /// <remarks>支持正则表达式。</remarks>
-    /// <param name="eventId">待匹配的事件标识。</param>
-    /// <returns>事件标识满足处理器订阅条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <remarks>支持正则表达式</remarks>
+    /// <param name="eventId">待匹配的事件标识</param>
+    /// <returns>事件标识满足处理器订阅条件时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     internal bool ShouldRun(string eventId)
     {
         return EventId == eventId;

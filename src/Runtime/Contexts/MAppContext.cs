@@ -34,51 +34,51 @@ using Microsoft.Extensions.DependencyInjection;
 namespace System;
 
 /// <summary>
-/// Microsoft App 上下文。
+/// Microsoft App 上下文
 /// </summary>
 [SuppressSniffer]
 public static class MAppContext
 {
     /// <summary>
-    /// 入口程序集版本号。
+    /// 入口程序集版本号
     /// </summary>
     public static readonly string AssemblyVersion;
 
     /// <summary>
-    /// 应用运行库。
+    /// 应用运行库
     /// </summary>
     public static readonly IEnumerable<DependencyLibrary> RuntimeLibraries;
 
     /// <summary>
-    /// 应用有效程序集。
+    /// 应用有效程序集
     /// </summary>
     public static readonly IEnumerable<Assembly> Assemblies;
 
     /// <summary>
-    /// 应用本地引用项目有效程序集。
+    /// 应用本地引用项目有效程序集
     /// </summary>
     public static readonly IEnumerable<Assembly> ProjectAssemblies;
 
     /// <summary>
-    /// 有效程序集类型。
+    /// 有效程序集类型
     /// </summary>
-    /// <remarks>所有公共的类型。</remarks>
+    /// <remarks>所有公共的类型</remarks>
     public static readonly IEnumerable<Type> Types;
 
     /// <summary>
-    /// 有效程序集类型。
+    /// 有效程序集类型
     /// </summary>
-    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型。</remarks>
+    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型</remarks>
     public static readonly IEnumerable<Type> EffectiveTypes;
 
     /// <summary>
-    /// 本地引用项目有效程序集类型。
+    /// 本地引用项目有效程序集类型
     /// </summary>
-    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型。</remarks>
+    /// <remarks>排除使用了 <see cref="SuppressSnifferAttribute"/> 特性的类型</remarks>
     public static readonly IEnumerable<Type> ProjectEffectiveTypes;
 
     /// <summary>
-    /// 未托管的对象集合。
+    /// 未托管的对象集合
     /// </summary>
     public static ConcurrentBag<IDisposable> UnmanagedObjects { get; private set; }
 
@@ -121,12 +121,12 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 处理获取对象异常问题。
+    /// 处理获取对象异常问题
     /// </summary>
-    /// <param name="action">要执行的操作委托。</param>
-    /// <param name="defaultValue">操作无法产生结果时使用的默认值。</param>
-    /// <typeparam name="T">操作返回的引用类型。</typeparam>
-    /// <returns>处理获取对象异常问题。</returns>
+    /// <param name="action">要执行的操作委托</param>
+    /// <param name="defaultValue">操作无法产生结果时使用的默认值</param>
+    /// <typeparam name="T">操作返回的引用类型</typeparam>
+    /// <returns>处理获取对象异常问题</returns>
     public static T CatchOrDefault<T>(Func<T> action, T defaultValue = null) where T : class
     {
         try
@@ -140,10 +140,10 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 获取选项名称。
+    /// 获取选项名称
     /// </summary>
-    /// <typeparam name="TOptions">配置选项类型。</typeparam>
-    /// <returns>获取到的选项名称。</returns>
+    /// <typeparam name="TOptions">配置选项类型</typeparam>
+    /// <returns>获取到的选项名称</returns>
     public static string GetOptionName<TOptions>() where TOptions : class, new()
     {
         // 默认后缀
@@ -158,13 +158,13 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 解析服务提供器。
+    /// 解析服务提供器
     /// </summary>
-    /// <param name="serviceType">要查询的服务类型。</param>
-    /// <param name="rootServices">应用根服务提供器。</param>
-    /// <param name="internalServices">框架内部使用的服务注册集合。</param>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <returns>解析后的服务提供器。</returns>
+    /// <param name="serviceType">要查询的服务类型</param>
+    /// <param name="rootServices">应用根服务提供器</param>
+    /// <param name="internalServices">框架内部使用的服务注册集合</param>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <returns>解析后的服务提供器</returns>
     public static IServiceProvider GetServiceProvider(Type serviceType, IServiceProvider rootServices,
         IServiceCollection internalServices, HttpContext httpContext)
     {
@@ -194,11 +194,11 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 获取当前程序启动 Uri 信息。
+    /// 获取当前程序启动 Uri 信息
     /// </summary>
-    /// <remarks>默认获取第一个地址，可能为空，请勿在程序启动过程中使用。</remarks>
-    /// <param name="server">目标服务实例。</param>
-    /// <returns>获取到的当前程序启动 Uri 信息。</returns>
+    /// <remarks>默认获取第一个地址，可能为空，请勿在程序启动过程中使用</remarks>
+    /// <param name="server">目标服务实例</param>
+    /// <returns>获取到的当前程序启动 Uri 信息</returns>
     public static Uri GetCurrentStartupUri(IServer server)
     {
         var addresses = server?.Features.Get<IServerAddressesFeature>()
@@ -213,30 +213,30 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 获取当前线程Id。
+    /// 获取当前线程Id
     /// </summary>
-    /// <returns>获取到的当前线程Id。</returns>
+    /// <returns>获取到的当前线程Id</returns>
     public static int GetThreadId()
     {
         return Environment.CurrentManagedThreadId;
     }
 
     /// <summary>
-    /// 获取当前请求的 TraceId。
+    /// 获取当前请求的 TraceId
     /// </summary>
-    /// <param name="rootServices">应用根服务提供器。</param>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <returns>获取到的当前请求 TraceId。</returns>
+    /// <param name="rootServices">应用根服务提供器</param>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <returns>获取到的当前请求 TraceId</returns>
     public static string GetTraceId(IServiceProvider rootServices, HttpContext httpContext)
     {
         return Activity.Current?.Id ?? (rootServices == null ? null : httpContext?.TraceIdentifier);
     }
 
     /// <summary>
-    /// 获取一段代码执行耗时。
+    /// 获取一段代码执行耗时
     /// </summary>
-    /// <param name="action">要执行的操作委托。</param>
-    /// <returns>获取到的一段代码执行耗时。</returns>
+    /// <param name="action">要执行的操作委托</param>
+    /// <returns>获取到的一段代码执行耗时</returns>
     public static long GetExecutionTime(Action action)
     {
         if (action == null)
@@ -250,10 +250,10 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 添加未托管的对象。
+    /// 添加未托管的对象
     /// </summary>
-    /// <param name="dsp">用于解析动态服务的服务提供器。</param>
-    /// <exception cref="ArgumentNullException"><paramref name="dsp"/> 为 <see langword="null"/>。</exception>
+    /// <param name="dsp">用于解析动态服务的服务提供器</param>
+    /// <exception cref="ArgumentNullException"><paramref name="dsp"/> 为 <see langword="null"/></exception>
     public static void AddUnmanagedObjects(IDisposable dsp)
     {
         ArgumentNullException.ThrowIfNull(dsp);
@@ -261,11 +261,11 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 释放所有未托管的对象。
+    /// 释放所有未托管的对象
     /// </summary>
     public static void DisposeUnmanagedObjects()
     {
-        // 逐个移除后再释放，避免 Clear() 丢弃遍历期间并发加入但尚未释放的对象。
+        // 逐个移除后再释放，避免 Clear() 丢弃遍历期间并发加入但尚未释放的对象
         while (UnmanagedObjects.TryTake(out var dsp))
         {
             dsp.Dispose();

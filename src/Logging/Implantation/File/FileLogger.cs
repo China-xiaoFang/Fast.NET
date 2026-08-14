@@ -25,31 +25,31 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 文件日志记录器。
+/// 文件日志记录器
 /// </summary>
-/// <remarks>实现遵循 Microsoft.Extensions.Logging 自定义日志提供器约定。</remarks>
+/// <remarks>实现遵循 Microsoft.Extensions.Logging 自定义日志提供器约定</remarks>
 internal sealed class FileLogger : ILogger
 {
     /// <summary>
-    /// 记录器类别名称。
+    /// 记录器类别名称
     /// </summary>
     private readonly string _logName;
 
     /// <summary>
-    /// 文件日志记录器提供器。
+    /// 文件日志记录器提供器
     /// </summary>
     private readonly FileLoggerProvider _fileLoggerProvider;
 
     /// <summary>
-    /// 日志配置选项。
+    /// 日志配置选项
     /// </summary>
     private readonly FileLoggerOptions _options;
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="logName">记录器类别名称。</param>
-    /// <param name="fileLoggerProvider">文件日志记录器提供器。</param>
+    /// <param name="logName">记录器类别名称</param>
+    /// <param name="fileLoggerProvider">文件日志记录器提供器</param>
     public FileLogger(string logName, FileLoggerProvider fileLoggerProvider)
     {
         _logName = logName;

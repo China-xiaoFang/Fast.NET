@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SqlSugar 分页搜索列。
+/// SqlSugar 分页搜索列
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property)]

@@ -25,23 +25,23 @@ using System;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 枚举项。
+/// 枚举项
 /// </summary>
-/// <typeparam name="TProperty">Value 属性类型。</typeparam>
+/// <typeparam name="TProperty">Value 属性类型</typeparam>
 public class EnumItem<TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable
 {
     /// <summary>
-    /// 枚举的描述。
+    /// 枚举的描述
     /// </summary>
     public string Describe { set; get; }
 
     /// <summary>
-    /// 枚举名称。
+    /// 枚举名称
     /// </summary>
     public string Name { set; get; }
 
     /// <summary>
-    /// 枚举对象的值。
+    /// 枚举对象的值
     /// </summary>
     public TProperty Value { set; get; }
 }

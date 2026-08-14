@@ -26,30 +26,30 @@ using System.Linq.Expressions;
 namespace System.Linq;
 
 /// <summary>
-/// 处理 Lambda 参数不一致问题。
+/// 处理 Lambda 参数不一致问题
 /// </summary>
 internal sealed class ParameterReplaceExpressionVisitor : ExpressionVisitor
 {
     /// <summary>
-    /// 参数表达式映射集合。
+    /// 参数表达式映射集合
     /// </summary>
     private readonly Dictionary<ParameterExpression, ParameterExpression> parameterExpressionSetter;
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="parameterExpressionSetter">参数表达式映射集合。</param>
+    /// <param name="parameterExpressionSetter">参数表达式映射集合</param>
     public ParameterReplaceExpressionVisitor(Dictionary<ParameterExpression, ParameterExpression> parameterExpressionSetter)
     {
         this.parameterExpressionSetter = parameterExpressionSetter ?? new Dictionary<ParameterExpression, ParameterExpression>();
     }
 
     /// <summary>
-    /// 替换表达式参数。
+    /// 替换表达式参数
     /// </summary>
-    /// <param name="parameterExpressionSetter">参数表达式映射集合。</param>
-    /// <param name="expression">表达式。</param>
-    /// <returns>新的表达式。</returns>
+    /// <param name="parameterExpressionSetter">参数表达式映射集合</param>
+    /// <param name="expression">表达式</param>
+    /// <returns>新的表达式</returns>
     public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> parameterExpressionSetter,
         Expression expression)
     {

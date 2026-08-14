@@ -27,58 +27,58 @@ using System.ComponentModel;
 namespace System;
 
 /// <summary>
-/// 环境类型枚举。
+/// 环境类型枚举
 /// </summary>
 [Flags]
 [FastEnum("环境类型枚举")]
 public enum EnvironmentTypeEnum : byte
 {
     /// <summary>
-    /// Production 生产环境。
+    /// Production 生产环境
     /// </summary>
-    /// <remarks>生产，正式环境。</remarks>
+    /// <remarks>生产，正式环境</remarks>
     [Description("生产环境")]
     Production = 1,
 
     /// <summary>
-    /// Development 开发环境。
+    /// Development 开发环境
     /// </summary>
-    /// <remarks>本地，开发环境。</remarks>
+    /// <remarks>本地，开发环境</remarks>
     [Description("开发环境")]
     Development = 2,
 
     /// <summary>
-    /// Test 测试环境。
+    /// Test 测试环境
     /// </summary>
-    /// <remarks>测试环境，功能测试，验证新功能或修复问题。</remarks>
+    /// <remarks>测试环境，功能测试，验证新功能或修复问题</remarks>
     [Description("测试环境")]
     Test = 4,
 
     /// <summary>
-    /// UAT 测试验收环境。
+    /// UAT 测试验收环境
     /// </summary>
-    /// <remarks>测试验收环境，用于测试是否符合需求和预期。</remarks>
+    /// <remarks>测试验收环境，用于测试是否符合需求和预期</remarks>
     [Description("测试验收环境")]
     UAT = 8,
 
     /// <summary>
-    /// PreProduction 预生产环境。
+    /// PreProduction 预生产环境
     /// </summary>
-    /// <remarks>预生产环境，用于最后的测试和验证。</remarks>
+    /// <remarks>预生产环境，用于最后的测试和验证</remarks>
     [Description("预生产环境")]
     PreProduction = 16,
 
     /// <summary>
-    /// GrayDeployment 灰度环境。
+    /// GrayDeployment 灰度环境
     /// </summary>
-    /// <remarks>灰度环境，用于部署新版本到生产环境之前进行有限范围的测试和验收的环境。</remarks>
+    /// <remarks>灰度环境，用于部署新版本到生产环境之前进行有限范围的测试和验收的环境</remarks>
     [Description("灰度环境")]
     GrayDeployment = 32,
 
     /// <summary>
-    /// StressTest 压测环境。
+    /// StressTest 压测环境
     /// </summary>
-    /// <remarks>压测环境，用于压力测试的环境。</remarks>
+    /// <remarks>压测环境，用于压力测试的环境</remarks>
     [Description("压测环境")]
     StressTest = 64
 }

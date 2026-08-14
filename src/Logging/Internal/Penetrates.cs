@@ -27,39 +27,39 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 常量、公共方法配置类。
+/// 常量、公共方法配置类
 /// </summary>
 internal static class Penetrates
 {
     /// <summary>
-    /// 应用服务。
+    /// 应用服务
     /// </summary>
     internal static IServiceCollection InternalServices;
 
     /// <summary>
-    /// 根服务。
+    /// 根服务
     /// </summary>
     internal static IServiceProvider RootServices;
 
     /// <summary>
-    /// 请求上下文。
+    /// 请求上下文
     /// </summary>
     internal static HttpContext HttpContext =>
         MAppContext.CatchOrDefault(() => RootServices?.GetService<IHttpContextAccessor>()
             ?.HttpContext);
 
     /// <summary>
-    /// 控制台默认格式化程序名称。
+    /// 控制台默认格式化程序名称
     /// </summary>
     internal const string ConsoleFormatterName = "console-format";
 
     /// <summary>
-    /// 设置日志上下文。
+    /// 设置日志上下文
     /// </summary>
-    /// <param name="scopeProvider">用于读取当前日志作用域的提供器。</param>
-    /// <param name="logMsg">要格式化或输出的日志消息。</param>
-    /// <param name="includeScopes">是否在日志中包含作用域信息。</param>
-    /// <returns>设置日志上下文。</returns>
+    /// <param name="scopeProvider">用于读取当前日志作用域的提供器</param>
+    /// <param name="logMsg">要格式化或输出的日志消息</param>
+    /// <param name="includeScopes">是否在日志中包含作用域信息</param>
+    /// <returns>设置日志上下文</returns>
     internal static LogMessage SetLogContext(IExternalScopeProvider scopeProvider, LogMessage logMsg, bool includeScopes)
     {
         if (includeScopes && scopeProvider != null)

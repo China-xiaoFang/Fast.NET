@@ -28,16 +28,16 @@ using System.Text.Json;
 namespace Fast.Runtime;
 
 /// <summary>
-/// 为 <see cref="Assembly"/> 提供扩展方法。
+/// 为 <see cref="Assembly"/> 提供扩展方法
 /// </summary>
 public static class AssemblyExtension
 {
     /// <summary>
-    /// 获取入口运行库。
+    /// 获取入口运行库
     /// </summary>
-    /// <remarks>暂不支持独立/单文件发布。</remarks>
-    /// <param name="assembly">目标程序集。</param>
-    /// <returns>获取到的入口运行库集合。</returns>
+    /// <remarks>暂不支持独立/单文件发布</remarks>
+    /// <param name="assembly">目标程序集</param>
+    /// <returns>获取到的入口运行库集合</returns>
     public static List<DependencyLibrary> GetEntryRuntimeLibraries(this Assembly assembly)
     {
         var depsJsonFilePath = ResolveDependencyContextPath(assembly);
@@ -119,10 +119,10 @@ public static class AssemblyExtension
     }
 
     /// <summary>
-    /// 解析当前宿主实际使用的依赖上下文文件。
+    /// 解析当前宿主实际使用的依赖上下文文件
     /// </summary>
-    /// <param name="assembly">目标程序集。</param>
-    /// <returns>解析后的当前宿主实际使用的依赖上下文文件。</returns>
+    /// <param name="assembly">目标程序集</param>
+    /// <returns>解析后的当前宿主实际使用的依赖上下文文件</returns>
     private static string ResolveDependencyContextPath(Assembly assembly)
     {
         if (!string.IsNullOrWhiteSpace(assembly?.Location))
@@ -132,7 +132,7 @@ public static class AssemblyExtension
                 return assemblyDepsFile;
         }
 
-        // 测试宿主和插件宿主的入口程序集可能位于 SDK 目录，实际应用的 deps 文件由宿主上下文提供。
+        // 测试宿主和插件宿主的入口程序集可能位于 SDK 目录，实际应用的 deps 文件由宿主上下文提供
         var contextDepsFiles = AppContext.GetData("APP_CONTEXT_DEPS_FILES") as string;
         if (!string.IsNullOrWhiteSpace(contextDepsFiles))
         {
@@ -156,12 +156,12 @@ public static class AssemblyExtension
     }
 
     /// <summary>
-    /// 获取入口引用程序集。
+    /// 获取入口引用程序集
     /// </summary>
-    /// <remarks>暂不支持独立/单文件发布。</remarks>
-    /// <param name="assembly">目标程序集。</param>
-    /// <param name="dependencyLibraryList">应用依赖库集合。</param>
-    /// <returns>获取到的入口引用程序集集合。</returns>
+    /// <remarks>暂不支持独立/单文件发布</remarks>
+    /// <param name="assembly">目标程序集</param>
+    /// <param name="dependencyLibraryList">应用依赖库集合</param>
+    /// <returns>获取到的入口引用程序集集合</returns>
     public static List<Assembly> GetEntryReferencedAssembly(this Assembly assembly,
         List<DependencyLibrary> dependencyLibraryList = null)
     {
@@ -187,7 +187,7 @@ public static class AssemblyExtension
                 (wh.Type == "project" && !excludeAssemblyNames.Any(a => wh.Name.EndsWith(a))) || wh.Type == "package")
             .Select(sl =>
             {
-                // .deps.json 同时包含应用依赖和仅供运行时使用的库；不可加载的条目会被跳过。
+                // .deps.json 同时包含应用依赖和仅供运行时使用的库；不可加载的条目会被跳过
                 var loadedAssembly = loadedAssemblies.FirstOrDefault(f => f.GetName()
                                                                               ?.Name?.Equals(sl.FileName,
                                                                                   StringComparison.OrdinalIgnoreCase)
@@ -218,12 +218,12 @@ public static class AssemblyExtension
     }
 
     /// <summary>
-    /// 获取程序集中所有类型。
+    /// 获取程序集中所有类型
     /// </summary>
-    /// <remarks>默认仅返回公开声明的类型；可通过筛选器进一步限制结果。</remarks>
-    /// <param name="assembly">目标程序集。</param>
-    /// <param name="typeFilter">用于筛选程序集类型的委托。</param>
-    /// <returns>获取到的程序集中所有类型集合。</returns>
+    /// <remarks>默认仅返回公开声明的类型；可通过筛选器进一步限制结果</remarks>
+    /// <param name="assembly">目标程序集</param>
+    /// <param name="typeFilter">用于筛选程序集类型的委托</param>
+    /// <returns>获取到的程序集中所有类型集合</returns>
     public static IEnumerable<Type> GetAssemblyTypes(this Assembly assembly, Func<Type, bool> typeFilter = null)
     {
         var types = Array.Empty<Type>();

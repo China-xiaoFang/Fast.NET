@@ -25,16 +25,16 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// 为 <see cref="HttpContext"/> 提供扩展方法。
+/// 为 <see cref="HttpContext"/> 提供扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class HttpContextExtension
 {
     /// <summary>
-    /// 获取请求方式。
+    /// 获取请求方式
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <returns>获取到的请求方式。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <returns>获取到的请求方式</returns>
     public static HttpRequestMethodEnum GetRequestMethod(this HttpContext httpContext)
     {
         return httpContext.Request.Method switch

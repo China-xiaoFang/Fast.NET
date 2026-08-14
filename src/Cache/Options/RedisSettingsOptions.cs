@@ -25,48 +25,48 @@ using Fast.Runtime;
 namespace Fast.Cache;
 
 /// <summary>
-/// Redis 连接字符串配置。
+/// Redis 连接字符串配置
 /// </summary>
 [SuppressSniffer]
 public class RedisSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 服务器 Ip 地址。
+    /// 服务器 Ip 地址
     /// </summary>
     public string ServiceIp { get; set; }
 
     /// <summary>
-    /// 端口号。
+    /// 端口号
     /// </summary>
     public int? Port { get; set; }
 
     /// <summary>
-    /// 默认库。
+    /// 默认库
     /// </summary>
     public int? DbName { get; set; }
 
     /// <summary>
-    /// 密码。
+    /// 密码
     /// </summary>
     public string DbPwd { get; set; }
 
     /// <summary>
-    /// 前缀。
+    /// 前缀
     /// </summary>
     public string Prefix { get; set; }
 
     /// <summary>
-    /// 连接池大小。
+    /// 连接池大小
     /// </summary>
     public int? Poolsize { get; set; }
 
     /// <summary>
-    /// SSL 加密连接。
+    /// SSL 加密连接
     /// </summary>
     public bool? SSL { get; set; }
 
     /// <summary>
-    /// 服务。
+    /// 服务
     /// </summary>
     public List<RedisServiceSettingsOptions> Services { get; set; }
 
@@ -83,13 +83,13 @@ public class RedisSettingsOptions : IPostConfigure
 }
 
 /// <summary>
-/// Redis 连接字符串服务配置。
+/// Redis 连接字符串服务配置
 /// </summary>
 [SuppressSniffer]
 public class RedisServiceSettingsOptions : RedisSettingsOptions
 {
     /// <summary>
-    /// 服务名称。
+    /// 服务名称
     /// </summary>
     public string ServiceName { get; set; }
 }

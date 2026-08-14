@@ -25,14 +25,14 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 行版本实体接口。
+/// 行版本实体接口
 /// </summary>
-/// <remarks>仅单条实体更新会触发行版本检查，冲突时抛出 <see cref="VersionExceptions"/>。</remarks>
+/// <remarks>仅单条实体更新会触发行版本检查，冲突时抛出 <see cref="VersionExceptions"/></remarks>
 [SuppressSniffer]
 public interface IUpdateVersion : IDatabaseEntity
 {
     /// <summary>
-    /// 更新版本控制字段。
+    /// 更新版本控制字段
     /// </summary>
     long RowVersion { get; set; }
 }

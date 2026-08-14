@@ -28,33 +28,33 @@ using System.Runtime.InteropServices;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// 系统机器工具类。
+/// 系统机器工具类
 /// </summary>
 [SuppressSniffer]
 public static class MachineUtil
 {
     /// <summary>
-    /// 是否为 Unix/Linux 操作系统。
+    /// 是否为 Unix/Linux 操作系统
     /// </summary>
-    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool IsUnix()
     {
         return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
     }
 
     /// <summary>
-    /// 是否为 MacOS 操作系统。
+    /// 是否为 MacOS 操作系统
     /// </summary>
-    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool IsMacOS()
     {
         return RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
     }
 
     /// <summary>
-    /// 获取当前操作系统的版本描述。
+    /// 获取当前操作系统的版本描述
     /// </summary>
-    /// <returns>macOS 或 Linux 的发行版本；Windows 返回运行时提供的操作系统描述。</returns>
+    /// <returns>macOS 或 Linux 的发行版本；Windows 返回运行时提供的操作系统描述</returns>
     public static string GetOSDescription()
     {
         if (IsMacOS())
@@ -82,9 +82,9 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取系统启动时间。
+    /// 获取系统启动时间
     /// </summary>
-    /// <returns>获取到的系统启动时间。</returns>
+    /// <returns>获取到的系统启动时间</returns>
     public static DateTime GetSystemStartTime()
     {
         if (IsMacOS())
@@ -129,10 +129,10 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取系统运行时间描述。
+    /// 获取系统运行时间描述
     /// </summary>
-    /// <param name="format">输出格式化，默认：“00 天 00 时 00 分 00 秒”。</param>
-    /// <returns>获取到的系统运行时间描述。</returns>
+    /// <param name="format">输出格式化，默认：“00 天 00 时 00 分 00 秒”</param>
+    /// <returns>获取到的系统运行时间描述</returns>
     public static string GetSystemRunTimes(string format = "dd\\ \\天\\ hh\\ \\时\\ mm\\ \\分\\ ss\\ \\秒")
     {
         var dateTime = DateTime.Now;
@@ -145,9 +145,9 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取当前进程启动时间。
+    /// 获取当前进程启动时间
     /// </summary>
-    /// <returns>获取到的当前进程启动时间。</returns>
+    /// <returns>获取到的当前进程启动时间</returns>
     public static DateTime GetProgramStartTime()
     {
         try
@@ -163,10 +163,10 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取当前进程运行时间描述。
+    /// 获取当前进程运行时间描述
     /// </summary>
-    /// <param name="format">输出格式化，默认：“00 天 00 时 00 分 00 秒”。</param>
-    /// <returns>获取到的当前进程运行时间描述。</returns>
+    /// <param name="format">输出格式化，默认：“00 天 00 时 00 分 00 秒”</param>
+    /// <returns>获取到的当前进程运行时间描述</returns>
     public static string GetProgramRunTimes(string format = "dd\\ \\天\\ hh\\ \\时\\ mm\\ \\分\\ ss\\ \\秒")
     {
         var dateTime = DateTime.Now;
@@ -179,9 +179,9 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取操作系统 CPU 使用率。
+    /// 获取操作系统 CPU 使用率
     /// </summary>
-    /// <returns>获取到的操作系统 CPU 使用率集合。</returns>
+    /// <returns>获取到的操作系统 CPU 使用率集合</returns>
     public static List<decimal> GetSystemCpuRate()
     {
         var rates = new List<decimal>();
@@ -233,10 +233,10 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 在指定采样间隔内计算当前进程的 CPU 使用率。
+    /// 在指定采样间隔内计算当前进程的 CPU 使用率
     /// </summary>
-    /// <param name="sleep">采样间隔，单位为毫秒；默认值为 500。</param>
-    /// <returns>表示异步采样的任务，任务结果为按逻辑处理器数量归一化后的 CPU 使用百分比。</returns>
+    /// <param name="sleep">采样间隔，单位为毫秒；默认值为 500</param>
+    /// <returns>表示异步采样的任务，任务结果为按逻辑处理器数量归一化后的 CPU 使用百分比</returns>
     public static async Task<decimal> GetProgramCpuUsage(int sleep = 500)
     {
         // 获取当前进程对象
@@ -287,9 +287,9 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取操作系统内存信息，单位(MB)。
+    /// 获取操作系统内存信息，单位(MB)
     /// </summary>
-    /// <returns>total：总内存 used：已用内存 free：可用内存。</returns>
+    /// <returns>total：总内存 used：已用内存 free：可用内存</returns>
     public static (decimal total, decimal used, decimal free) GetSystemRamInfo()
     {
         decimal total = 0;
@@ -362,9 +362,9 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取当前进程内存信息，单位(MB)。
+    /// 获取当前进程内存信息，单位(MB)
     /// </summary>
-    /// <returns>working：RAM 物理内存 peakWorking：最大 RAM 物理内存 virtualMemory：虚拟内存 peakVirtualMemory：最大虚拟内存 pagedMemory：分页内存 peakPagedMemory：最大分页内存。</returns>
+    /// <returns>working：RAM 物理内存 peakWorking：最大 RAM 物理内存 virtualMemory：虚拟内存 peakVirtualMemory：最大虚拟内存 pagedMemory：分页内存 peakPagedMemory：最大分页内存</returns>
     public static (decimal working, decimal peakWorking, decimal virtualMemory, decimal peakVirtualMemory, decimal pagedMemory,
         decimal peakPagedMemory) GetProgramMemoryInfo()
     {
@@ -459,9 +459,9 @@ public static class MachineUtil
     }
 
     /// <summary>
-    /// 获取硬盘信息。
+    /// 获取硬盘信息
     /// </summary>
-    /// <returns>获取到的硬盘信息集合。</returns>
+    /// <returns>获取到的硬盘信息集合</returns>
     public static List<DiskInfo> GetDiskInfos()
     {
         var diskInfos = new List<DiskInfo>();

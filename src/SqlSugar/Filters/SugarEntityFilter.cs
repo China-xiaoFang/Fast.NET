@@ -27,20 +27,20 @@ using Yitter.IdGenerator;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// Sugar 实体过滤器。
+/// Sugar 实体过滤器
 /// </summary>
 [SuppressSniffer]
 public static class SugarEntityFilter
 {
     /// <summary>
-    /// 加载 Sugar AOP。
+    /// 加载 Sugar AOP
     /// </summary>
-    /// <param name="isDevelopment">当前环境是否为开发环境。</param>
-    /// <param name="_db">当前仓储使用的 SqlSugar 客户端。</param>
-    /// <param name="sugarSqlExecMaxSeconds">SQL 执行耗时告警阈值，单位为秒。</param>
-    /// <param name="diffLog">是否记录数据变更前后的差异。</param>
-    /// <param name="disableAop">是否禁用 SqlSugar AOP 回调。</param>
-    /// <param name="sqlSugarEntityHandler">实体保存前后的扩展处理器。</param>
+    /// <param name="isDevelopment">当前环境是否为开发环境</param>
+    /// <param name="_db">当前仓储使用的 SqlSugar 客户端</param>
+    /// <param name="sugarSqlExecMaxSeconds">SQL 执行耗时告警阈值，单位为秒</param>
+    /// <param name="diffLog">是否记录数据变更前后的差异</param>
+    /// <param name="disableAop">是否禁用 SqlSugar AOP 回调</param>
+    /// <param name="sqlSugarEntityHandler">实体保存前后的扩展处理器</param>
     public static void LoadSugarAop(bool isDevelopment, ISqlSugarClient _db, int? sugarSqlExecMaxSeconds = null,
         bool diffLog = false, bool disableAop = true, ISqlSugarEntityHandler sqlSugarEntityHandler = null)
     {
@@ -77,7 +77,7 @@ public static class SugarEntityFilter
             {
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
-                // 将已执行的 SQL 及耗时交给自定义处理器。
+                // 将已执行的 SQL 及耗时交给自定义处理器
                 try
                 {
                     sqlSugarEntityHandler.ExecuteAsync(rawSql, pars, _db.Ado.SqlExecutionTime, handleSql)
@@ -108,7 +108,7 @@ public static class SugarEntityFilter
                 }
             }
 
-            // 仅在 SQL 耗时超过配置阈值时触发超时处理。
+            // 仅在 SQL 耗时超过配置阈值时触发超时处理
             if (_db.Ado.SqlExecutionTime.TotalSeconds > sugarSqlExecMaxSeconds)
             {
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
@@ -141,7 +141,7 @@ public static class SugarEntityFilter
 
                 if (!disableAop && sqlSugarEntityHandler != null)
                 {
-                    // 将超时 SQL 和调用位置交给自定义处理器。
+                    // 将超时 SQL 和调用位置交给自定义处理器
                     try
                     {
                         sqlSugarEntityHandler.ExecuteTimeoutAsync(fileName, fileLine, firstMethodName, rawSql, pars,
@@ -199,7 +199,7 @@ public static class SugarEntityFilter
                         var tableName = firstData?.TableName;
                         var tableDescription = firstData?.TableDescription;
 
-                        // 将数据变更前后的差异交给自定义处理器。
+                        // 将数据变更前后的差异交给自定义处理器
                         try
                         {
                             sqlSugarEntityHandler.ExecuteDiffLogAsync(diff.DiffType, tableName, tableDescription,
@@ -270,7 +270,7 @@ public static class SugarEntityFilter
 
             if (!disableAop && sqlSugarEntityHandler != null)
             {
-                // 将 SQL 异常和调用位置交给自定义处理器。
+                // 将 SQL 异常和调用位置交给自定义处理器
                 try
                 {
                     sqlSugarEntityHandler.ExecuteErrorAsync(fileName, fileLine, firstMethodName, exp.Sql, param, handleSql, exp)
@@ -302,7 +302,7 @@ public static class SugarEntityFilter
             }
         };
 
-        // 在 SqlSugar 写入实体字段前统一填充框架约定字段。
+        // 在 SqlSugar 写入实体字段前统一填充框架约定字段
         _db.Aop.DataExecuting = (_, entityInfo) =>
         {
             switch (entityInfo.OperationType)
@@ -384,10 +384,10 @@ public static class SugarEntityFilter
     }
 
     /// <summary>
-    /// 加载 Sugar 过滤器。
+    /// 加载 Sugar 过滤器
     /// </summary>
-    /// <param name="_db">当前仓储使用的 SqlSugar 客户端。</param>
-    /// <param name="sqlSugarEntityHandler">实体保存前后的扩展处理器。</param>
+    /// <param name="_db">当前仓储使用的 SqlSugar 客户端</param>
+    /// <param name="sqlSugarEntityHandler">实体保存前后的扩展处理器</param>
     public static void LoadSugarFilter(ISqlSugarClient _db, ISqlSugarEntityHandler sqlSugarEntityHandler)
     {
         if (sqlSugarEntityHandler != null)

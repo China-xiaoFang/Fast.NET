@@ -26,28 +26,28 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SqlSugar 上下文。
+/// SqlSugar 上下文
 /// </summary>
 [SuppressSniffer]
 public sealed class SqlSugarContext
 {
     /// <summary>
-    /// 连接字符串配置。
+    /// 连接字符串配置
     /// </summary>
     public static ConnectionSettingsOptions ConnectionSettings { get; internal set; }
 
     /// <summary>
-    /// 雪花Id配置。
+    /// 雪花Id配置
     /// </summary>
     public static SnowflakeSettingsOptions SnowflakeSettings { get; internal set; }
 
     /// <summary>
-    /// 最大不分页大小限制。
+    /// 最大不分页大小限制
     /// </summary>
     public static int MaxNotPageSize { get; set; }
 
     /// <summary>
-    /// SqlSugar 实体集合。
+    /// SqlSugar 实体集合
     /// </summary>
     public static readonly List<SqlSugarEntityInfo> SqlSugarEntityList;
 
@@ -79,10 +79,10 @@ public sealed class SqlSugarContext
     }
 
     /// <summary>
-    /// 获取连接配置。
+    /// 获取连接配置
     /// </summary>
-    /// <param name="connectionSettings">connection Settings 配置。</param>
-    /// <returns>获取到的连接配置。</returns>
+    /// <param name="connectionSettings">connection Settings 配置</param>
+    /// <returns>获取到的连接配置</returns>
     public static ConnectionConfig GetConnectionConfig(ConnectionSettingsOptions connectionSettings)
     {
         // 得到连接字符串
@@ -111,7 +111,7 @@ public sealed class SqlSugarContext
             ConfigId = connectionSettings.ConnectionId,
             ConnectionString = connectionStr,
             DbType = connectionSettings.DbType!.Value,
-            // 每次操作完成后释放连接，避免作用域仓储长期占用连接。
+            // 每次操作完成后释放连接，避免作用域仓储长期占用连接
             IsAutoCloseConnection = true,
             // 从特性读取主键和自增列信息
             InitKeyType = InitKeyType.Attribute,
@@ -122,11 +122,11 @@ public sealed class SqlSugarContext
     }
 
     /// <summary>
-    /// Entity Value 检测。
+    /// Entity Value 检测
     /// </summary>
-    /// <param name="emptyList">空对象检测集合。</param>
-    /// <param name="entityInfo">实体信息。</param>
-    /// <returns>检查通过时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="emptyList">空对象检测集合</param>
+    /// <param name="entityInfo">实体信息</param>
+    /// <returns>检查通过时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     internal static bool EntityValueCheck(ICollection<object> emptyList, DataFilterModel entityInfo)
     {
         try
@@ -141,12 +141,12 @@ public sealed class SqlSugarContext
     }
 
     /// <summary>
-    /// 设置 Entity Value。
+    /// 设置 Entity Value
     /// </summary>
-    /// <param name="fieldName">字段名称。</param>
-    /// <param name="emptyList">空对象检测集合。</param>
-    /// <param name="setValue">要设置的值。</param>
-    /// <param name="entityInfo">实体信息。</param>
+    /// <param name="fieldName">字段名称</param>
+    /// <param name="emptyList">空对象检测集合</param>
+    /// <param name="setValue">要设置的值</param>
+    /// <param name="entityInfo">实体信息</param>
     internal static void SetEntityValue(string fieldName, ICollection<object> emptyList, object setValue,
         DataFilterModel entityInfo)
     {

@@ -30,7 +30,7 @@ using Microsoft.Extensions.Options;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 规范化 RESTful 风格返回值。
+/// 规范化 RESTful 风格返回值
 /// </summary>
 internal sealed class RestfulResultProvider : IUnifyResultProvider
 {

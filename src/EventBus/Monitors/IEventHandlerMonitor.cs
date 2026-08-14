@@ -23,22 +23,22 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// 事件处理程序监视器。
+/// 事件处理程序监视器
 /// </summary>
 [SuppressSniffer]
 public interface IEventHandlerMonitor
 {
     /// <summary>
-    /// 事件处理程序执行前。
+    /// 事件处理程序执行前
     /// </summary>
-    /// <param name="context">当前事件处理上下文。</param>
-    /// <returns>表示异步“事件处理程序执行前”操作的任务。</returns>
+    /// <param name="context">当前事件处理上下文</param>
+    /// <returns>表示异步“事件处理程序执行前”操作的任务</returns>
     Task OnExecutingAsync(EventHandlerExecutingContext context);
 
     /// <summary>
-    /// 事件处理程序执行后。
+    /// 事件处理程序执行后
     /// </summary>
-    /// <param name="context">当前事件处理上下文。</param>
-    /// <returns>表示异步“事件处理程序执行后”操作的任务。</returns>
+    /// <param name="context">当前事件处理上下文</param>
+    /// <returns>表示异步“事件处理程序执行后”操作的任务</returns>
     Task OnExecutedAsync(EventHandlerExecutedContext context);
 }

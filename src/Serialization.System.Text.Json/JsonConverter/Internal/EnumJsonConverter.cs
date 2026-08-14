@@ -26,15 +26,15 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// Enum 类型 JSON 返回处理。
+/// Enum 类型 JSON 返回处理
 /// </summary>
-/// <typeparam name="T">序列化或转换后的对象类型。</typeparam>
+/// <typeparam name="T">序列化或转换后的对象类型</typeparam>
 internal sealed class EnumJsonConverter<T> : JsonConverter<T> where T : struct, Enum
 {
     /// <inheritdoc />
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 同时接受枚举名称和底层数值。
+        // 同时接受枚举名称和底层数值
         if (reader.TokenType == JsonTokenType.String)
         {
             var enumValueStr = reader.GetString();
@@ -45,7 +45,7 @@ internal sealed class EnumJsonConverter<T> : JsonConverter<T> where T : struct, 
         }
         else if (reader.TokenType == JsonTokenType.Number)
         {
-            // 按枚举底层类型的 TypeCode 分派数值转换逻辑。
+            // 按枚举底层类型的 TypeCode 分派数值转换逻辑
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (Type.GetTypeCode(typeToConvert))
             {
@@ -81,15 +81,15 @@ internal sealed class EnumJsonConverter<T> : JsonConverter<T> where T : struct, 
 }
 
 /// <summary>
-/// Enum? 类型 JSON 返回处理。
+/// Enum? 类型 JSON 返回处理
 /// </summary>
-/// <typeparam name="T">序列化或转换后的对象类型。</typeparam>
+/// <typeparam name="T">序列化或转换后的对象类型</typeparam>
 internal sealed class NullableEnumJsonConverter<T> : JsonConverter<T?> where T : struct, Enum
 {
     /// <inheritdoc />
     public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 同时接受枚举名称和底层数值；空字符串按 null 处理。
+        // 同时接受枚举名称和底层数值；空字符串按 null 处理
         if (reader.TokenType == JsonTokenType.Null)
         {
             return null;
@@ -106,7 +106,7 @@ internal sealed class NullableEnumJsonConverter<T> : JsonConverter<T?> where T :
         }
         else if (reader.TokenType == JsonTokenType.Number)
         {
-            // 按枚举底层类型的 TypeCode 分派数值转换逻辑。
+            // 按枚举底层类型的 TypeCode 分派数值转换逻辑
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (Type.GetTypeCode(underlyingType))
             {

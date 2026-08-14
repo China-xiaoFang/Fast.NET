@@ -28,17 +28,17 @@ using System.Linq.Expressions;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 为 <see cref="EnumExtension"/> 提供 GroupBy 扩展方法。
+/// 为 <see cref="EnumExtension"/> 提供 GroupBy 扩展方法
 /// </summary>
 public static class GroupByExtension
 {
     /// <summary>
-    /// 多个 GroupBy。
+    /// 多个 GroupBy
     /// </summary>
-    /// <param name="source">源对象。</param>
-    /// <param name="groupByProperties">参与分组的属性名称集合。</param>
-    /// <typeparam name="TKey">键类型。</typeparam>
-    /// <returns>多个 GroupBy 集合。</returns>
+    /// <param name="source">源对象</param>
+    /// <param name="groupByProperties">参与分组的属性名称集合</param>
+    /// <typeparam name="TKey">键类型</typeparam>
+    /// <returns>多个 GroupBy 集合</returns>
     public static IEnumerable<IGrouping<string, TKey>> GroupByMultiple<TKey>(this IEnumerable<TKey> source,
         params Expression<Func<TKey, object>>[] groupByProperties)
     {

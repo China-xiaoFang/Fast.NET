@@ -28,16 +28,16 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 为 <see cref="ISqlSugarClient"/> 提供 SqlSugar 扩展方法。
+/// 为 <see cref="ISqlSugarClient"/> 提供 SqlSugar 扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class SqlSugarExtension
 {
     /// <summary>
-    /// 获取 SugarTable 特性中的 TableName。
+    /// 获取 SugarTable 特性中的 TableName
     /// </summary>
-    /// <param name="type">目标类型。</param>
-    /// <returns>获取到的 SugarTable 特性中的 TableName。</returns>
+    /// <param name="type">目标类型</param>
+    /// <returns>获取到的 SugarTable 特性中的 TableName</returns>
     public static string GetSugarTableName(this Type type)
     {
         var sugarTable = type.GetCustomAttribute<SugarTable>(true);
@@ -50,21 +50,21 @@ public static class SqlSugarExtension
     }
 
     /// <summary>
-    /// 获取 SugarTable 特性。
+    /// 获取 SugarTable 特性
     /// </summary>
-    /// <param name="type">目标类型。</param>
-    /// <returns>获取到的 SugarTable 特性。</returns>
+    /// <param name="type">目标类型</param>
+    /// <returns>获取到的 SugarTable 特性</returns>
     public static SugarTable GetSugarTableAttribute(this Type type)
     {
         return type.GetCustomAttribute<SugarTable>(true);
     }
 
     /// <summary>
-    /// 转为 DataTable。
+    /// 转为 DataTable
     /// </summary>
-    /// <param name="list">要处理的集合。</param>
-    /// <typeparam name="T">数据表行对应的模型类型。</typeparam>
-    /// <returns>转为 DataTable 集合。</returns>
+    /// <param name="list">要处理的集合</param>
+    /// <typeparam name="T">数据表行对应的模型类型</typeparam>
+    /// <returns>转为 DataTable 集合</returns>
     public static List<DataTable> ToDataTable<T>(this List<T> list)
     {
         var result = new List<DataTable>();

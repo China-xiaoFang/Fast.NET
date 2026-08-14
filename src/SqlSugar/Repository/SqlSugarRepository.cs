@@ -28,21 +28,21 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SqlSugar 仓储实现。
+/// SqlSugar 仓储实现
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepository<TEntity>
     where TEntity : class, new()
 {
     /// <summary>
-    /// 服务提供器。
+    /// 服务提供器
     /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// SqlSugar 仓储实现。
+    /// SqlSugar 仓储实现
     /// </summary>
-    /// <param name="hostEnvironment">当前应用的宿主环境。</param>
-    /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器。</param>
+    /// <param name="hostEnvironment">当前应用的宿主环境</param>
+    /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器</param>
     public SqlSugarRepository(IHostEnvironment hostEnvironment, IServiceProvider serviceProvider) : base(
         SqlSugarContext.GetConnectionConfig(SqlSugarContext.ConnectionSettings))
     {
@@ -65,7 +65,7 @@ internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISql
         var sqlSugarEntityHandler = _serviceProvider.GetService<ISqlSugarEntityHandler>();
 
         // 获取新的连接字符串
-        // DI 构造函数不能声明为 async；这里显式解包异步结果，避免 .Result 将真实异常包装成 AggregateException。
+        // DI 构造函数不能声明为 async；这里显式解包异步结果，避免 .Result 将真实异常包装成 AggregateException
         var connectionSettings = sqlSugarEntityHandler?.GetConnectionSettings<TEntity>(Context, sugarDbTypeAttribute, entityType)
             .ConfigureAwait(false)
             .GetAwaiter()
@@ -95,7 +95,7 @@ internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISql
     public bool IsSplitTable { get; }
 
     /// <summary>
-    /// 实体集合。
+    /// 实体集合
     /// </summary>
     public ISugarQueryable<TEntity> Entities => Queryable<TEntity>();
 

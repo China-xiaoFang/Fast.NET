@@ -23,12 +23,12 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档路由内容声明 DTO。
+/// OpenAPI 文档路由内容声明 DTO
 /// </summary>
 public class OpenApiDocumentPathMethodContentSchemaDto
 {
     /// <summary>
-    /// 声明。
+    /// 声明
     /// </summary>
     public OpenApiDocumentSchemaPropertyDto Schema { get; set; }
 }

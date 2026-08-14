@@ -23,7 +23,7 @@
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// 作用域服务注册依赖。
+/// 作用域服务注册依赖
 /// </summary>
 [SuppressSniffer]
 public interface IScopedDependency : IDependency

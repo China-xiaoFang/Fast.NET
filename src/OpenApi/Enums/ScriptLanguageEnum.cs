@@ -25,18 +25,18 @@ using System.ComponentModel;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// 脚本语言枚举。
+/// 脚本语言枚举
 /// </summary>
 public enum ScriptLanguageEnum : byte
 {
     /// <summary>
-    /// JavaScript。
+    /// JavaScript
     /// </summary>
     [Description("JavaScript")]
     JavaScript = 1,
 
     /// <summary>
-    /// TypeScript。
+    /// TypeScript
     /// </summary>
     [Description("TypeScript")]
     TypeScript = 2

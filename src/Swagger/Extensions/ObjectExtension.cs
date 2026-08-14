@@ -25,16 +25,16 @@ using System.ComponentModel;
 namespace Fast.Swagger;
 
 /// <summary>
-/// 为 <see cref="object"/> 提供扩展方法。
+/// 为 <see cref="object"/> 提供扩展方法
 /// </summary>
 internal static class ObjectExtension
 {
     /// <summary>
-    /// 将一个对象转换为指定类型。
+    /// 将一个对象转换为指定类型
     /// </summary>
-    /// <param name="obj">待转换的对象。</param>
-    /// <param name="type">目标类型。</param>
-    /// <returns>转换后的对象。</returns>
+    /// <param name="obj">待转换的对象</param>
+    /// <param name="type">目标类型</param>
+    /// <returns>转换后的对象</returns>
     public static object ChangeType(this object obj, Type type)
     {
         if (type == null)
@@ -64,13 +64,13 @@ internal static class ObjectExtension
                 return null;
             return Enum.Parse(underlyingType ?? type, obj.ToString());
         }
-        // 将 DateTime 按配置的时区规则转换为 DateTimeOffset。
+        // 将 DateTime 按配置的时区规则转换为 DateTimeOffset
 
         if (obj is DateTime dateTime && (underlyingType ?? type) == typeof(DateTimeOffset))
         {
             return DateTime.SpecifyKind(dateTime, DateTimeKind.Local);
         }
-        // 将 DateTimeOffset 按配置的时区规则转换为 DateTime。
+        // 将 DateTimeOffset 按配置的时区规则转换为 DateTime
 
         if (obj is DateTimeOffset dateTimeOffset && (underlyingType ?? type) == typeof(DateTime))
         {

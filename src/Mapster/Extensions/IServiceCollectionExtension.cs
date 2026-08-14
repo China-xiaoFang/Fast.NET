@@ -27,16 +27,16 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.Mapster;
 
 /// <summary>
-/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加 Mapster 映射服务。
+    /// 添加 Mapster 映射服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddMapster(this IServiceCollection services)
     {
         Debugging.Info("Registering mapster......");

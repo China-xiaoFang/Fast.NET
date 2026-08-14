@@ -41,7 +41,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     internal readonly IDisposable _optionsReloadToken;
 
     /// <summary>
-    /// 空值。
+    /// 空值
     /// </summary>
     internal const string _nullValue = "×Null×";
 
@@ -66,9 +66,9 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     }
 
     /// <summary>
-    /// 创建/初始化服务。
+    /// 创建/初始化服务
     /// </summary>
-    /// <param name="redisSettings">redis Settings 配置。</param>
+    /// <param name="redisSettings">redis Settings 配置</param>
     private void Create(RedisSettingsOptions redisSettings)
     {
         Debugging.Info($"Creating cache, Service = {ContextLocator.ServiceName}......");
@@ -102,7 +102,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
         Client = new CSRedisClient(connectionStr);
     }
 
-    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources</summary>
     public void Dispose()
     {
         _optionsReloadToken?.Dispose();
@@ -322,13 +322,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     if (TryGetCachedValue(key, out result))
                         return result;
 
                     result = func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -347,7 +347,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -379,7 +379,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     var cachedValue = await TryGetCachedValueAsync(key, result)
                         .ConfigureAwait(false);
                     if (cachedValue.Found)
@@ -387,7 +387,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -406,7 +406,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -440,13 +440,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     if (TryGetCachedValue(key, out result))
                         return result;
 
                     result = func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -465,7 +465,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -504,7 +504,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     var cachedValue = await TryGetCachedValueAsync(key, result)
                         .ConfigureAwait(false);
                     if (cachedValue.Found)
@@ -512,7 +512,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -531,7 +531,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -563,13 +563,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     if (TryGetCachedValue(key, out result))
                         return result;
 
                     result = func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -588,7 +588,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -620,7 +620,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     var cachedValue = await TryGetCachedValueAsync(key, result)
                         .ConfigureAwait(false);
                     if (cachedValue.Found)
@@ -628,7 +628,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -647,7 +647,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -681,13 +681,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     if (TryGetCachedValue(key, out result))
                         return result;
 
                     result = func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -706,7 +706,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -740,7 +740,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     var cachedValue = await TryGetCachedValueAsync(key, result)
                         .ConfigureAwait(false);
                     if (cachedValue.Found)
@@ -748,7 +748,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -767,7 +767,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -799,13 +799,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     if (TryGetCachedValue(key, out result))
                         return result;
 
                     result = func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -824,7 +824,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -856,7 +856,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     var cachedValue = await TryGetCachedValueAsync(key, result)
                         .ConfigureAwait(false);
                     if (cachedValue.Found)
@@ -864,7 +864,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -883,7 +883,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -917,13 +917,13 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     if (TryGetCachedValue(key, out result))
                         return result;
 
                     result = func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -942,7 +942,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     Client.Set(key, _nullValue, TimeSpan.FromHours(2));
@@ -976,7 +976,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 try
                 {
-                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查。
+                    // 等待锁期间其他实例可能已经回填缓存，进入临界区后必须再次检查
                     var cachedValue = await TryGetCachedValueAsync(key, result)
                         .ConfigureAwait(false);
                     if (cachedValue.Found)
@@ -984,7 +984,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
 
                     result = await func.Invoke();
 
-                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                    // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                     if (IsEmpty(result))
                     {
                         await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -1003,7 +1003,7 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
             {
                 result = await func.Invoke();
 
-                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透。
+                // 缓存未命中时写入 _nullValue 空值哨兵并保留 2 小时，避免缓存穿透
                 if (IsEmpty(result))
                 {
                     await Client.SetAsync(key, _nullValue, TimeSpan.FromHours(2));
@@ -1019,12 +1019,12 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     }
 
     /// <summary>
-    /// 尝试读取缓存，并区分“缓存未命中”和“已缓存空值”。
+    /// 尝试读取缓存，并区分“缓存未命中”和“已缓存空值”
     /// </summary>
-    /// <param name="key">缓存键。</param>
-    /// <param name="result">缓存值读取结果。</param>
-    /// <typeparam name="T">缓存值的类型。</typeparam>
-    /// <returns>成功取得目标值时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="key">缓存键</param>
+    /// <param name="result">缓存值读取结果</param>
+    /// <typeparam name="T">缓存值的类型</typeparam>
+    /// <returns>成功取得目标值时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     private bool TryGetCachedValue<T>(string key, out T result)
     {
         var rawValue = Client.Get(key);
@@ -1039,12 +1039,12 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     }
 
     /// <summary>
-    /// 异步尝试读取缓存，并区分“缓存未命中”和“已缓存空值”。
+    /// 异步尝试读取缓存，并区分“缓存未命中”和“已缓存空值”
     /// </summary>
-    /// <param name="key">缓存键。</param>
-    /// <param name="_">扩展方法接收者；该值不参与输出。</param>
-    /// <typeparam name="T">缓存值的类型。</typeparam>
-    /// <returns>表示异步尝试读取缓存，并区分“缓存未命中”和“已缓存空值”的任务，任务结果为尝试读取缓存，并区分“缓存未命中”和“已缓存空值”。</returns>
+    /// <param name="key">缓存键</param>
+    /// <param name="_">扩展方法接收者；该值不参与输出</param>
+    /// <typeparam name="T">缓存值的类型</typeparam>
+    /// <returns>表示异步尝试读取缓存，并区分“缓存未命中”和“已缓存空值”的任务，任务结果为尝试读取缓存，并区分“缓存未命中”和“已缓存空值”</returns>
     private async Task<(bool Found, T Value)> TryGetCachedValueAsync<T>(string key, T _)
     {
         var rawValue = await Client.GetAsync(key)
@@ -1060,11 +1060,11 @@ internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDispos
     }
 
     /// <summary>
-    /// 检查对象或集合是否为 <see langword="null"/>、空字符串或空集合。
+    /// 检查对象或集合是否为 <see langword="null"/>、空字符串或空集合
     /// </summary>
-    /// <param name="value">要检查的值。</param>
-    /// <typeparam name="T">要检查是否为空的值类型。</typeparam>
-    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="value">要检查的值</param>
+    /// <typeparam name="T">要检查是否为空的值类型</typeparam>
+    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     private static bool IsEmpty<T>(T value)
     {
         if (value == null)

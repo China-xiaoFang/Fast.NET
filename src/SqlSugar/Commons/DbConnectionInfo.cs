@@ -26,50 +26,50 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 数据库连接信息。
+/// 数据库连接信息
 /// </summary>
 [SuppressSniffer]
 public class DbConnectionInfo : IPostConfigure
 {
     /// <summary>
-    /// 服务器 Ip 地址。
+    /// 服务器 Ip 地址
     /// </summary>
     [SugarColumn(ColumnDescription = "服务器Ip地址", Length = 15, IsNullable = true)]
     public virtual string ServiceIp { get; set; }
 
     /// <summary>
-    /// 端口号。
+    /// 端口号
     /// </summary>
     /// <remarks>
-    /// <para>MySql：3306。</para>
-    /// <para>SqlServer：1433。</para>
-    /// <para>Oracle：1521。</para>
-    /// <para>PostgreSQL：5432。</para>
-    /// <para>MongoDb：27017。</para>
+    /// <para>MySql：3306</para>
+    /// <para>SqlServer：1433</para>
+    /// <para>Oracle：1521</para>
+    /// <para>PostgreSQL：5432</para>
+    /// <para>MongoDb：27017</para>
     /// </remarks>
     [SugarColumn(ColumnDescription = "端口号", IsNullable = true)]
     public virtual int? Port { get; set; }
 
     /// <summary>
-    /// 数据库名称。
+    /// 数据库名称
     /// </summary>
     [SugarColumn(ColumnDescription = "数据库名称", Length = 50, IsNullable = false)]
     public virtual string DbName { get; set; }
 
     /// <summary>
-    /// 数据库用户。
+    /// 数据库用户
     /// </summary>
     [SugarColumn(ColumnDescription = "数据库用户", Length = 10, IsNullable = true)]
     public virtual string DbUser { get; set; }
 
     /// <summary>
-    /// 数据库密码。
+    /// 数据库密码
     /// </summary>
     [SugarColumn(ColumnDescription = "数据库密码", Length = 20, IsNullable = true)]
     public virtual string DbPwd { get; set; }
 
     /// <summary>
-    /// 自定义连接字符串。
+    /// 自定义连接字符串
     /// </summary>
     [SugarColumn(ColumnDescription = "自定义连接字符串", Length = 100, IsNullable = true)]
     public virtual string CustomConnectionStr { get; set; }

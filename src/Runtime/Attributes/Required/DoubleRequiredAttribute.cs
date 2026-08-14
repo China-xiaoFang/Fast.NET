@@ -25,19 +25,19 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// 验证 <see cref="double"/> 类型属性必填。
+/// 验证 <see cref="double"/> 类型属性必填
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class DoubleRequiredAttribute : ValidationAttribute
 {
     /// <summary>
-    /// 允许零。
+    /// 允许零
     /// </summary>
     public bool AllowZero { get; set; } = true;
 
     /// <summary>
-    /// 允许负数。
+    /// 允许负数
     /// </summary>
     public bool AllowNegative { get; set; } = false;
 

@@ -23,12 +23,12 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// OpenAPI 文档组件 DTO。
+/// OpenAPI 文档组件 DTO
 /// </summary>
 public class OpenApiDocumentComponentDto
 {
     /// <summary>
-    /// 声明。
+    /// 声明
     /// </summary>
     public IDictionary<string, OpenApiDocumentComponentSchemaDto> Schemas { get; set; }
 }

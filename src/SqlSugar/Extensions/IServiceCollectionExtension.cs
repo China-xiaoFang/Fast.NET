@@ -30,18 +30,18 @@ using Yitter.IdGenerator;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加雪花Id。
+    /// 添加雪花Id
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="section">JSON 配置文件节点的 Key 默认值：SnowflakeSettings。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <param name="section">JSON 配置文件节点的 Key 默认值：SnowflakeSettings</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
         string section = "SnowflakeSettings")
     {
@@ -53,19 +53,19 @@ public static class IServiceCollectionExtension
             .Get<SnowflakeSettingsOptions>()
             .LoadPostConfigure();
 
-        // 每个实例必须使用不同的雪花算法 WorkerId，避免生成重复Id。
+        // 每个实例必须使用不同的雪花算法 WorkerId，避免生成重复Id
         YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings.WorkerId ?? 1});
 
         return services;
     }
 
     /// <summary>
-    /// 添加雪花Id。
+    /// 添加雪花Id
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="optionAction">雪花Id配置操作。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <param name="optionAction">雪花Id配置操作</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddSnowflake(this IServiceCollection services, IConfiguration configuration,
         Action<SnowflakeSettingsOptions> optionAction)
     {
@@ -76,20 +76,20 @@ public static class IServiceCollectionExtension
         var snowflakeSettings = new SnowflakeSettingsOptions();
         optionAction.Invoke(snowflakeSettings);
 
-        // 每个实例必须使用不同的雪花算法 WorkerId，避免生成重复Id。
+        // 每个实例必须使用不同的雪花算法 WorkerId，避免生成重复Id
         YitIdHelper.SetIdGenerator(new IdGeneratorOptions {WorkerId = SqlSugarContext.SnowflakeSettings.WorkerId ?? 1});
 
         return services;
     }
 
     /// <summary>
-    /// 注册 SqlSugar 服务。
+    /// 注册 SqlSugar 服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="hostEnvironment">当前应用的宿主环境。</param>
-    /// <param name="connectionSection">JSON 配置文件节点的 Key 默认值：ConnectionSettings。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <param name="hostEnvironment">当前应用的宿主环境</param>
+    /// <param name="connectionSection">JSON 配置文件节点的 Key 默认值：ConnectionSettings</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration,
         IHostEnvironment hostEnvironment, string connectionSection = "ConnectionSettings")
     {
@@ -108,13 +108,13 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 注册 SqlSugar 服务。
+    /// 注册 SqlSugar 服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <param name="configuration">用于读取模块设置的配置。</param>
-    /// <param name="hostEnvironment">当前应用的宿主环境。</param>
-    /// <param name="optionAction">数据库连接配置操作。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <param name="configuration">用于读取模块设置的配置</param>
+    /// <param name="hostEnvironment">当前应用的宿主环境</param>
+    /// <param name="optionAction">数据库连接配置操作</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration,
         IHostEnvironment hostEnvironment, Action<ConnectionSettingsOptions> optionAction)
     {
@@ -133,10 +133,10 @@ public static class IServiceCollectionExtension
     }
 
     /// <summary>
-    /// 注册 SqlSugar 服务。
+    /// 注册 SqlSugar 服务
     /// </summary>
-    /// <param name="services">服务注册集合。</param>
-    /// <param name="hostEnvironment">当前应用的宿主环境。</param>
+    /// <param name="services">服务注册集合</param>
+    /// <param name="hostEnvironment">当前应用的宿主环境</param>
     private static void AddSqlSugar(this IServiceCollection services, IHostEnvironment hostEnvironment)
     {
         // 查找 Sugar 实体处理程序提供者
@@ -148,7 +148,7 @@ public static class IServiceCollectionExtension
             services.AddScoped(typeof(ISqlSugarEntityHandler), iSqlSugarEntityHandlerType);
         }
 
-        // 同时注册具体类型，支持调用方不经 ISqlSugarClient 接口直接解析客户端。
+        // 同时注册具体类型，支持调用方不经 ISqlSugarClient 接口直接解析客户端
         services.AddScoped<ISqlSugarClient>(serviceProvider =>
         {
             // 获取 Sugar 实体处理 接口的实现类

@@ -25,18 +25,18 @@ using System.Reflection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// 事件处理程序上下文。
+/// 事件处理程序上下文
 /// </summary>
 [SuppressSniffer]
 public abstract class EventHandlerContext
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="eventSource">事件源（事件承载对象）。</param>
-    /// <param name="properties">共享上下文数据。</param>
-    /// <param name="handlerMethod">触发的方法。</param>
-    /// <param name="attribute">订阅特性。</param>
+    /// <param name="eventSource">事件源（事件承载对象）</param>
+    /// <param name="properties">共享上下文数据</param>
+    /// <param name="handlerMethod">触发的方法</param>
+    /// <param name="attribute">订阅特性</param>
     internal EventHandlerContext(IEventSource eventSource, IDictionary<object, object> properties, MethodInfo handlerMethod,
         EventSubscribeAttribute attribute)
     {
@@ -47,24 +47,24 @@ public abstract class EventHandlerContext
     }
 
     /// <summary>
-    /// 事件源（事件承载对象）。
+    /// 事件源（事件承载对象）
     /// </summary>
     public IEventSource Source { get; }
 
     /// <summary>
-    /// 共享上下文数据。
+    /// 共享上下文数据
     /// </summary>
     public IDictionary<object, object> Properties { get; set; }
 
     /// <summary>
-    /// 触发的方法。
+    /// 触发的方法
     /// </summary>
-    /// <remarks>如果是动态订阅，可能为 <see langword="null"/>。</remarks>
+    /// <remarks>如果是动态订阅，可能为 <see langword="null"/></remarks>
     public MethodInfo HandlerMethod { get; }
 
     /// <summary>
-    /// 订阅特性。
+    /// 订阅特性
     /// </summary>
-    /// <remarks><remarks>如果是动态订阅，可能为 <see langword="null"/></remarks>。</remarks>
+    /// <remarks><remarks>如果是动态订阅，可能为 <see langword="null"/></remarks></remarks>
     public EventSubscribeAttribute Attribute { get; }
 }

@@ -26,18 +26,18 @@ using System.Linq.Expressions;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 为 <see cref="Expression"/> 提供扩展方法。
+/// 为 <see cref="Expression"/> 提供扩展方法
 /// </summary>
 public static class LinqExpressionExtension
 {
     /// <summary>
-    /// 解析表达式属性名称。
+    /// 解析表达式属性名称
     /// </summary>
-    /// <exception cref="ArgumentException">Expression is not valid for property selection.</exception>
-    /// <param name="propertySelector">用于选择目标属性的表达式。</param>
-    /// <typeparam name="T">表达式参数所表示的对象类型。</typeparam>
-    /// <typeparam name="TProperty">属性值类型。</typeparam>
-    /// <returns>解析后的表达式属性名称。</returns>
+    /// <exception cref="ArgumentException">Expression is not valid for property selection</exception>
+    /// <param name="propertySelector">用于选择目标属性的表达式</param>
+    /// <typeparam name="T">表达式参数所表示的对象类型</typeparam>
+    /// <typeparam name="TProperty">属性值类型</typeparam>
+    /// <returns>解析后的表达式属性名称</returns>
     public static string GetPropertyName<T, TProperty>(this Expression<Func<T, TProperty>> propertySelector)
     {
         return propertySelector.Body switch
@@ -53,12 +53,12 @@ public static class LinqExpressionExtension
     }
 
     /// <summary>
-    /// 解析表达式属性名称。
+    /// 解析表达式属性名称
     /// </summary>
-    /// <exception cref="ArgumentException">Invalid property selection.</exception>
-    /// <param name="memberExpression">用于解析表达式属性名称的表达式。</param>
-    /// <typeparam name="T">表达式参数所表示的对象类型。</typeparam>
-    /// <returns>解析后的表达式属性名称。</returns>
+    /// <exception cref="ArgumentException">Invalid property selection</exception>
+    /// <param name="memberExpression">用于解析表达式属性名称的表达式</param>
+    /// <typeparam name="T">表达式参数所表示的对象类型</typeparam>
+    /// <returns>解析后的表达式属性名称</returns>
     public static string GetPropertyName<T>(MemberExpression memberExpression)
     {
         if (memberExpression is null)

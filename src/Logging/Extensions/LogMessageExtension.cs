@@ -27,18 +27,18 @@ using System.Text.Json;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="LogMessage"/> 扩展。
+/// <see cref="LogMessage"/> 扩展
 /// </summary>
 [SuppressSniffer]
 public static class LogMessageExtension
 {
     /// <summary>
-    /// 高性能创建 JSON 对象字符串。
+    /// 高性能创建 JSON 对象字符串
     /// </summary>
-    /// <param name="_">扩展方法接收者；该值不参与输出。</param>
-    /// <param name="writeAction">向 JSON 写入器填充属性的委托。</param>
-    /// <param name="writeIndented">是否格式化输出 JSON。</param>
-    /// <returns>高性能创建 JSON 对象字符串。</returns>
+    /// <param name="_">扩展方法接收者；该值不参与输出</param>
+    /// <param name="writeAction">向 JSON 写入器填充属性的委托</param>
+    /// <param name="writeIndented">是否格式化输出 JSON</param>
+    /// <returns>高性能创建 JSON 对象字符串</returns>
     public static string Write(this LogMessage _, Action<Utf8JsonWriter> writeAction, bool writeIndented = false)
     {
         using var stream = new MemoryStream();
@@ -56,12 +56,12 @@ public static class LogMessageExtension
     }
 
     /// <summary>
-    /// 高性能创建 JSON 数组字符串。
+    /// 高性能创建 JSON 数组字符串
     /// </summary>
-    /// <param name="logMsg">要格式化或输出的日志消息。</param>
-    /// <param name="writeAction">向 JSON 写入器填充属性的委托。</param>
-    /// <param name="writeIndented">是否格式化输出 JSON。</param>
-    /// <returns>高性能创建 JSON 数组字符串。</returns>
+    /// <param name="logMsg">要格式化或输出的日志消息</param>
+    /// <param name="writeAction">向 JSON 写入器填充属性的委托</param>
+    /// <param name="writeIndented">是否格式化输出 JSON</param>
+    /// <returns>高性能创建 JSON 数组字符串</returns>
     public static string WriteArray(this LogMessage logMsg, Action<Utf8JsonWriter> writeAction, bool writeIndented = false)
     {
         return logMsg.Write(writer =>

@@ -26,7 +26,7 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// Long 类型 JSON 返回处理。
+/// Long 类型 JSON 返回处理
 /// </summary>
 internal sealed class LongJsonConverter : JsonConverter<long>
 {
@@ -40,7 +40,7 @@ internal sealed class LongJsonConverter : JsonConverter<long>
     public override long ReadJson(JsonReader reader, Type objectType, long existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
-        // 同时接受 JSON 字符串和数字令牌。
+        // 同时接受 JSON 字符串和数字令牌
         if (reader.TokenType == JsonToken.String)
         {
             var jToken = JToken.ReadFrom(reader);
@@ -53,7 +53,7 @@ internal sealed class LongJsonConverter : JsonConverter<long>
 }
 
 /// <summary>
-/// Long? 类型 JSON 返回处理。
+/// Long? 类型 JSON 返回处理
 /// </summary>
 internal sealed class NullableLongJsonConverter : JsonConverter<long?>
 {
@@ -73,7 +73,7 @@ internal sealed class NullableLongJsonConverter : JsonConverter<long?>
         if (reader.TokenType == JsonToken.Null)
             return null;
 
-        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理。
+        // 同时接受 JSON 字符串和数字令牌；空字符串按 null 处理
         if (reader.TokenType != JsonToken.String)
             return Convert.ToInt64(reader.Value);
 

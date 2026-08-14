@@ -23,12 +23,12 @@
 namespace Fast.Consul;
 
 /// <summary>
-/// 常量，公共方法配置类。
+/// 常量，公共方法配置类
 /// </summary>
 internal static class Penetrates
 {
     /// <summary>
-    /// Consul 配置。
+    /// Consul 配置
     /// </summary>
     internal static ConsulSettingsOptions ConsulSettings { get; set; }
 }

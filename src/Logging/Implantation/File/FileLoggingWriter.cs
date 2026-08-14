@@ -26,59 +26,59 @@ using System.Text;
 namespace Fast.Logging;
 
 /// <summary>
-/// 文件日志写入器。
+/// 文件日志写入器
 /// </summary>
 internal sealed class FileLoggingWriter : IDisposable
 {
     /// <summary>
-    /// 文件日志记录器提供程序。
+    /// 文件日志记录器提供程序
     /// </summary>
     private readonly FileLoggerProvider _fileLoggerProvider;
 
     /// <summary>
-    /// 日志配置选项。
+    /// 日志配置选项
     /// </summary>
     private readonly FileLoggerOptions _options;
 
     /// <summary>
-    /// 日志文件名。
+    /// 日志文件名
     /// </summary>
     private string _fileName;
 
     /// <summary>
-    /// 文件流。
+    /// 文件流
     /// </summary>
     private FileStream _fileStream;
 
     /// <summary>
-    /// 文本写入器。
+    /// 文本写入器
     /// </summary>
     private StreamWriter _textWriter;
 
     /// <summary>
-    /// 缓存上次返回的基本日志文件名，避免重复解析。
+    /// 缓存上次返回的基本日志文件名，避免重复解析
     /// </summary>
     private string __LastBaseFileName;
 
     /// <summary>
-    /// 判断是否启动滚动日志功能。
+    /// 判断是否启动滚动日志功能
     /// </summary>
     private readonly bool _isEnabledRollingFiles;
 
     /// <summary>
-    /// 上次尝试重新打开文件的时间（UTC），用于控制重试冷却。
+    /// 上次尝试重新打开文件的时间（UTC），用于控制重试冷却
     /// </summary>
     private DateTime _lastReopenAttempt = DateTime.MinValue;
 
     /// <summary>
-    /// 重新打开文件的最小间隔时间（5 秒），避免在持续失败时频繁重试导致性能损耗。
+    /// 重新打开文件的最小间隔时间（5 秒），避免在持续失败时频繁重试导致性能损耗
     /// </summary>
     private static readonly TimeSpan _reopenInterval = TimeSpan.FromSeconds(5);
 
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="fileLoggerProvider">文件日志记录器提供程序。</param>
+    /// <param name="fileLoggerProvider">文件日志记录器提供程序</param>
     internal FileLoggingWriter(FileLoggerProvider fileLoggerProvider)
     {
         _fileLoggerProvider = fileLoggerProvider;
@@ -102,9 +102,9 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 获取日志基础文件名。
+    /// 获取日志基础文件名
     /// </summary>
-    /// <returns>日志文件名。</returns>
+    /// <returns>日志文件名</returns>
     private string GetBaseFileName()
     {
         var fileName = _fileLoggerProvider.FileName;
@@ -117,7 +117,7 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 解析当前写入日志的文件名。
+    /// 解析当前写入日志的文件名
     /// </summary>
     private void GetCurrentFileName()
     {
@@ -163,10 +163,10 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 获取下一个匹配的日志文件名。
+    /// 获取下一个匹配的日志文件名
     /// </summary>
-    /// <remarks>只有配置了 <see cref="FileLoggerOptions.FileSizeLimitBytes"/> 或 <see cref="FileLoggerOptions.FileNameRule"/> 或 <see cref="FileLoggerOptions.MaxRollingFiles"/> 有效。</remarks>
-    /// <returns>新的文件名。</returns>
+    /// <remarks>只有配置了 <see cref="FileLoggerOptions.FileSizeLimitBytes"/> 或 <see cref="FileLoggerOptions.FileNameRule"/> 或 <see cref="FileLoggerOptions.MaxRollingFiles"/> 有效</remarks>
+    /// <returns>新的文件名</returns>
     private string GetNextFileName()
     {
         // 获取日志基础文件名
@@ -209,9 +209,9 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 打开文件。
+    /// 打开文件
     /// </summary>
-    /// <param name="append">是否追加写入。</param>
+    /// <param name="append">是否追加写入</param>
     private void OpenFile(bool append)
     {
         try
@@ -273,7 +273,7 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 判断是否需要创建新文件写入。
+    /// 判断是否需要创建新文件写入
     /// </summary>
     private void CheckForNewLogFile()
     {
@@ -331,9 +331,9 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 删除超出滚动日志限制的文件。
+    /// 删除超出滚动日志限制的文件
     /// </summary>
-    /// <param name="fileInfo">正在检查保留策略的日志文件。</param>
+    /// <param name="fileInfo">正在检查保留策略的日志文件</param>
     private void DropFilesIfOverLimit(FileInfo fileInfo)
     {
         // 判断是否启用滚动文件功能
@@ -360,7 +360,7 @@ internal sealed class FileLoggingWriter : IDisposable
                 if (!removeSucceed)
                     continue;
 
-                // 当前方法本来就在专用日志线程执行，无需再创建无法观察异常的后台任务。
+                // 当前方法本来就在专用日志线程执行，无需再创建无法观察异常的后台任务
                 try
                 {
                     if (File.Exists(rollingFile.Key))
@@ -379,10 +379,10 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 写入文件。
+    /// 写入文件
     /// </summary>
-    /// <param name="logMsg">日志消息。</param>
-    /// <param name="flush">写入后是否立即刷新缓冲区。</param>
+    /// <param name="logMsg">日志消息</param>
+    /// <param name="flush">写入后是否立即刷新缓冲区</param>
     internal void Write(LogMessage logMsg, bool flush)
     {
         // 如果文本写入器为空，尝试重新打开文件（支持从构造函数失败或文件轮转失败中恢复）
@@ -406,7 +406,7 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 尝试重新打开日志文件（带有冷却时间以避免频繁重试）。
+    /// 尝试重新打开日志文件（带有冷却时间以避免频繁重试）
     /// </summary>
     private void TryReopenFile()
     {
@@ -428,7 +428,7 @@ internal sealed class FileLoggingWriter : IDisposable
     }
 
     /// <summary>
-    /// 关闭文本写入器并释放。
+    /// 关闭文本写入器并释放
     /// </summary>
     internal void Close()
     {

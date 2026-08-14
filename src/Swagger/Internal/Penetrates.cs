@@ -23,12 +23,12 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// 常量，公共方法配置类。
+/// 常量，公共方法配置类
 /// </summary>
 internal static class Penetrates
 {
     /// <summary>
-    /// 规范化文档配置。
+    /// 规范化文档配置
     /// </summary>
     internal static SwaggerSettingsOptions SwaggerSettings { get; set; }
 }

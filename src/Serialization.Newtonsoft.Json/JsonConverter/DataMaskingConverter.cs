@@ -25,75 +25,75 @@ using Newtonsoft.Json;
 namespace Fast.Serialization;
 
 /// <summary>
-/// 数据脱敏类型枚举。
+/// 数据脱敏类型枚举
 /// </summary>
 public enum DataMaskingTypeEnum
 {
     /// <summary>
-    /// 姓名。
+    /// 姓名
     /// </summary>
     Name,
 
     /// <summary>
-    /// 姓名（保留首尾）。
+    /// 姓名（保留首尾）
     /// </summary>
     NameKeepLast,
 
     /// <summary>
-    /// 账号。
+    /// 账号
     /// </summary>
     Account,
 
     /// <summary>
-    /// 手机号。
+    /// 手机号
     /// </summary>
     Mobile,
 
     /// <summary>
-    /// 身份证。
+    /// 身份证
     /// </summary>
     IdCard,
 
     /// <summary>
-    /// 邮箱。
+    /// 邮箱
     /// </summary>
     Email,
 
     /// <summary>
-    /// 银行卡。
+    /// 银行卡
     /// </summary>
     BankCard,
 
     /// <summary>
-    /// 地址。
+    /// 地址
     /// </summary>
     Address,
 
     /// <summary>
-    /// 车牌号。
+    /// 车牌号
     /// </summary>
     CarNumber,
 
     /// <summary>
-    /// IP 地址。
+    /// IP 地址
     /// </summary>
     Ip
 }
 
 /// <summary>
-/// JSON 返回数据脱敏处理。
+/// JSON 返回数据脱敏处理
 /// </summary>
 public class DataMaskingConverter : JsonConverter<string>
 {
     /// <summary>
-    /// 数据脱敏类型。
+    /// 数据脱敏类型
     /// </summary>
     public DataMaskingTypeEnum MaskingType { get; set; }
 
     /// <summary>
-    /// JSON 返回数据脱敏处理。
+    /// JSON 返回数据脱敏处理
     /// </summary>
-    /// <param name="maskingType">数据脱敏方式。</param>
+    /// <param name="maskingType">数据脱敏方式</param>
     public DataMaskingConverter(DataMaskingTypeEnum maskingType)
     {
         MaskingType = maskingType;

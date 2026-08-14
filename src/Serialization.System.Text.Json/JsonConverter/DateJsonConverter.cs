@@ -27,17 +27,17 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// DateTime 类型 JSON 返回日期处理。
+/// DateTime 类型 JSON 返回日期处理
 /// </summary>
 public class DateJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
-    /// 日期格式化 <para>默认：yyyy-MM-dd</para>。
+    /// 日期格式化 <para>默认：yyyy-MM-dd</para>
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// DateTime 类型 JSON 返回日期处理。
+    /// DateTime 类型 JSON 返回日期处理
     /// </summary>
     public DateJsonConverter()
     {
@@ -45,9 +45,9 @@ public class DateJsonConverter : JsonConverter<DateTime>
     }
 
     /// <summary>
-    /// DateTime 类型 JSON 返回日期处理。
+    /// DateTime 类型 JSON 返回日期处理
     /// </summary>
-    /// <param name="format">日期格式化。</param>
+    /// <param name="format">日期格式化</param>
     public DateJsonConverter(string format)
     {
         Format = format;
@@ -99,17 +99,17 @@ public class DateJsonConverter : JsonConverter<DateTime>
 }
 
 /// <summary>
-/// DateTime? 类型 JSON 返回日期处理。
+/// DateTime? 类型 JSON 返回日期处理
 /// </summary>
 public class NullableDateJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
-    /// 日期格式化 <para>默认：yyyy-MM-dd</para>。
+    /// 日期格式化 <para>默认：yyyy-MM-dd</para>
     /// </summary>
     public string Format { get; set; }
 
     /// <summary>
-    /// DateTime? 类型 JSON 返回日期处理。
+    /// DateTime? 类型 JSON 返回日期处理
     /// </summary>
     public NullableDateJsonConverter()
     {
@@ -117,9 +117,9 @@ public class NullableDateJsonConverter : JsonConverter<DateTime?>
     }
 
     /// <summary>
-    /// DateTime? 类型 JSON 返回日期处理。
+    /// DateTime? 类型 JSON 返回日期处理
     /// </summary>
-    /// <param name="format">日期格式化。</param>
+    /// <param name="format">日期格式化</param>
     public NullableDateJsonConverter(string format)
     {
         Format = format;

@@ -23,7 +23,7 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 跳过验证。
+/// 跳过验证
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]

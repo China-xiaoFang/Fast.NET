@@ -27,26 +27,26 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 日志上下文。
+/// 日志上下文
 /// </summary>
 [SuppressSniffer]
 public static class LoggingContext
 {
     /// <summary>
-    /// 异常分隔符。
+    /// 异常分隔符
     /// </summary>
     private const string EXCEPTION_SEPARATOR = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
 
     /// <summary>
-    /// 输出标准日志消息。
+    /// 输出标准日志消息
     /// </summary>
-    /// <param name="logMsg">要格式化或输出的日志消息。</param>
-    /// <param name="dateFormat">日期时间格式字符串。</param>
-    /// <param name="isConsole">日志是否写入控制台。</param>
-    /// <param name="disableColors">是否禁用控制台日志颜色。</param>
-    /// <param name="withTraceId">with Trace 的唯一标识。</param>
-    /// <param name="withStackFrame">是否在日志中包含调用堆栈位置。</param>
-    /// <returns>输出标准日志消息。</returns>
+    /// <param name="logMsg">要格式化或输出的日志消息</param>
+    /// <param name="dateFormat">日期时间格式字符串</param>
+    /// <param name="isConsole">日志是否写入控制台</param>
+    /// <param name="disableColors">是否禁用控制台日志颜色</param>
+    /// <param name="withTraceId">with Trace 的唯一标识</param>
+    /// <param name="withStackFrame">是否在日志中包含调用堆栈位置</param>
+    /// <returns>输出标准日志消息</returns>
     public static string OutputStandardMessage(LogMessage logMsg, string dateFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz dddd",
         bool isConsole = false, bool disableColors = true, bool withTraceId = false, bool withStackFrame = false)
     {
@@ -107,7 +107,7 @@ public static class LoggingContext
             }
         }
 
-        // 消息颜色和前缀对齐在同一步完成，避免 ANSI 控制符影响缩进计算。
+        // 消息颜色和前缀对齐在同一步完成，避免 ANSI 控制符影响缩进计算
         _ = AppendWithColor(formatString, PadLeftAlign(logMsg.Message),
             disableConsoleColor ? new ConsoleColors(null, null) : logLevelMessageColors);
 
@@ -127,10 +127,10 @@ public static class LoggingContext
     }
 
     /// <summary>
-    /// 将日志内容进行对齐。
+    /// 将日志内容进行对齐
     /// </summary>
-    /// <param name="message">要记录或返回的消息。</param>
-    /// <returns>将日志内容进行对齐。</returns>
+    /// <param name="message">要记录或返回的消息</param>
+    /// <returns>将日志内容进行对齐</returns>
     private static string PadLeftAlign(string message)
     {
         var newMessage = string.Join(Environment.NewLine, message
@@ -141,10 +141,10 @@ public static class LoggingContext
     }
 
     /// <summary>
-    /// 获取日志级别短名称。
+    /// 获取日志级别短名称
     /// </summary>
-    /// <param name="logLevel">日志级别。</param>
-    /// <returns>获取到的日志级别短名称。</returns>
+    /// <param name="logLevel">日志级别</param>
+    /// <returns>获取到的日志级别短名称</returns>
     public static string GetLogLevelString(LogLevel logLevel)
     {
         return logLevel switch
@@ -160,12 +160,12 @@ public static class LoggingContext
     }
 
     /// <summary>
-    /// 扩展 StringBuilder 增加带颜色写入。
+    /// 扩展 StringBuilder 增加带颜色写入
     /// </summary>
-    /// <param name="formatString">要写入的复合格式字符串。</param>
-    /// <param name="message">要记录或返回的消息。</param>
-    /// <param name="colors">写入文本时使用的前景色和背景色。</param>
-    /// <returns>扩展 StringBuilder 增加带颜色写入。</returns>
+    /// <param name="formatString">要写入的复合格式字符串</param>
+    /// <param name="message">要记录或返回的消息</param>
+    /// <param name="colors">写入文本时使用的前景色和背景色</param>
+    /// <returns>扩展 StringBuilder 增加带颜色写入</returns>
     private static StringBuilder AppendWithColor(StringBuilder formatString, string message, ConsoleColors colors)
     {
         formatString ??= new StringBuilder();
@@ -186,10 +186,10 @@ public static class LoggingContext
     }
 
     /// <summary>
-    /// 输出控制台字体颜色 UniCode 码。
+    /// 输出控制台字体颜色 UniCode 码
     /// </summary>
-    /// <param name="color">要转换为 ANSI 转义序列的控制台颜色。</param>
-    /// <returns>输出控制台字体颜色 UniCode 码。</returns>
+    /// <param name="color">要转换为 ANSI 转义序列的控制台颜色</param>
+    /// <returns>输出控制台字体颜色 UniCode 码</returns>
     private static string GetForegroundColorEscapeCode(ConsoleColor color)
     {
         return color switch
@@ -215,10 +215,10 @@ public static class LoggingContext
     }
 
     /// <summary>
-    /// 输出控制台背景颜色 UniCode 码。
+    /// 输出控制台背景颜色 UniCode 码
     /// </summary>
-    /// <param name="color">要转换为 ANSI 转义序列的控制台颜色。</param>
-    /// <returns>输出控制台背景颜色 UniCode 码。</returns>
+    /// <param name="color">要转换为 ANSI 转义序列的控制台颜色</param>
+    /// <returns>输出控制台背景颜色 UniCode 码</returns>
     private static string GetBackgroundColorEscapeCode(ConsoleColor color)
     {
         return color switch
@@ -236,11 +236,11 @@ public static class LoggingContext
     }
 
     /// <summary>
-    /// 获取控制台日志级别对应的颜色。
+    /// 获取控制台日志级别对应的颜色
     /// </summary>
-    /// <param name="logLevel">日志级别。</param>
-    /// <param name="disableColors">是否禁用控制台日志颜色。</param>
-    /// <returns>获取到的控制台日志级别对应的颜色。</returns>
+    /// <param name="logLevel">日志级别</param>
+    /// <param name="disableColors">是否禁用控制台日志颜色</param>
+    /// <returns>获取到的控制台日志级别对应的颜色</returns>
     private static ConsoleColors GetLogLevelConsoleColors(LogLevel logLevel, bool disableColors = false)
     {
         if (disableColors)
@@ -261,11 +261,11 @@ public static class LoggingContext
     }
 
     /// <summary>
-    /// 获取控制台日志级别消息对应的颜色。
+    /// 获取控制台日志级别消息对应的颜色
     /// </summary>
-    /// <param name="logLevel">日志级别。</param>
-    /// <param name="disableColors">是否禁用控制台日志颜色。</param>
-    /// <returns>获取到的控制台日志级别消息对应的颜色。</returns>
+    /// <param name="logLevel">日志级别</param>
+    /// <param name="disableColors">是否禁用控制台日志颜色</param>
+    /// <returns>获取到的控制台日志级别消息对应的颜色</returns>
     private static ConsoleColors GetLogLevelMessageConsoleColors(LogLevel logLevel, bool disableColors = false)
     {
         if (disableColors)

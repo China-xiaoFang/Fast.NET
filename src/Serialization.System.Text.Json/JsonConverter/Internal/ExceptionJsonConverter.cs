@@ -26,9 +26,9 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// Exception 类型 JSON 返回处理。
+/// Exception 类型 JSON 返回处理
 /// </summary>
-/// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作。</remarks>
+/// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作</remarks>
 internal sealed class ExceptionJsonConverter : JsonConverter<Exception>
 {
     /// <inheritdoc />
@@ -40,26 +40,26 @@ internal sealed class ExceptionJsonConverter : JsonConverter<Exception>
     /// <inheritdoc />
     public override Exception Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        // 异常对象只允许序列化输出，不支持从外部数据重建。
+        // 异常对象只允许序列化输出，不支持从外部数据重建
         throw new NotSupportedException("Deserializing exceptions is not allowed.");
     }
 
     /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, Exception value, JsonSerializerOptions options)
     {
-        // 默认仅输出 Message、Source、StackTrace 和 InnerException。
+        // 默认仅输出 Message、Source、StackTrace 和 InnerException
         var writeNameArr = new[]
         {
             nameof(Exception.Message), nameof(Exception.Source), nameof(Exception.StackTrace),
             nameof(Exception.InnerException)
         };
-        // TargetSite 含有不可安全序列化的反射信息，因此从输出属性中排除。
+        // TargetSite 含有不可安全序列化的反射信息，因此从输出属性中排除
         var serializableProperties = value.GetType()
             .GetProperties()
             .Select(sl => new {sl.Name, Value = sl.GetValue(value)})
             .Where(wh => writeNameArr.Contains(wh.Name));
 
-        // 启用 JsonIgnoreCondition.WhenWritingNull 时跳过值为 null 的属性。
+        // 启用 JsonIgnoreCondition.WhenWritingNull 时跳过值为 null 的属性
         if (options.DefaultIgnoreCondition == JsonIgnoreCondition.WhenWritingNull)
         {
             serializableProperties = serializableProperties.Where(wh => wh.Value != null);

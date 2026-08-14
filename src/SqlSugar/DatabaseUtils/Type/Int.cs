@@ -25,15 +25,15 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 数据库字段类型映射工具类。
+/// 数据库字段类型映射工具类
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {
     /// <summary>
-    /// 设置 <see cref="int"/> 类型。
+    /// 设置 <see cref="int"/> 类型
     /// </summary>
-    /// <param name="dbType">数据库类型。</param>
-    /// <param name="columnInfo">要补充数据库类型信息的实体列元数据。</param>
+    /// <param name="dbType">数据库类型</param>
+    /// <param name="columnInfo">要补充数据库类型信息的实体列元数据</param>
     internal static void SetDbTypeInt(DbType dbType, EntityColumnInfo columnInfo)
     {
         switch (dbType)
@@ -99,7 +99,7 @@ public partial class SqlSugarDatabaseUtil
                 columnInfo.DataType = "integer";
                 break;
 
-            // 其余兼容分支覆盖 DM、Oscar、Kdbndp、DB2、HANA 和 ODBC。
+            // 其余兼容分支覆盖 DM、Oscar、Kdbndp、DB2、HANA 和 ODBC
             case DbType.Dm:
             case DbType.Oscar:
             case DbType.Kdbndp:
@@ -114,7 +114,7 @@ public partial class SqlSugarDatabaseUtil
                 columnInfo.DataType = "int";
                 break;
 
-            // TDengine 不原生支持 Int32，避免生成该列类型。
+            // TDengine 不原生支持 Int32，避免生成该列类型
             case DbType.TDengine:
                 throw new SqlSugarException("TDengine 不支持 int 类型，请使用 long 或 float 替代。");
 

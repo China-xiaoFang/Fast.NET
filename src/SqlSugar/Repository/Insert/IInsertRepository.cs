@@ -23,91 +23,91 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// SqlSugar 插入仓储接口。
+/// SqlSugar 插入仓储接口
 /// </summary>
 public partial interface ISqlSugarRepository<TEntity>
 {
     /// <summary>
-    /// 新增一条记录。
+    /// 新增一条记录
     /// </summary>
-    /// <param name="entity">要处理的实体。</param>
-    /// <returns>新增一条记录。</returns>
+    /// <param name="entity">要处理的实体</param>
+    /// <returns>新增一条记录</returns>
     int Insert(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录。
+    /// 新增一条记录
     /// </summary>
-    /// <param name="entity">要处理的实体。</param>
-    /// <returns>表示异步新增一条记录的任务，任务结果为新增一条记录。</returns>
+    /// <param name="entity">要处理的实体</param>
+    /// <returns>表示异步新增一条记录的任务，任务结果为新增一条记录</returns>
     Task<int> InsertAsync(TEntity entity);
 
     /// <summary>
-    /// 新增多条记录。
+    /// 新增多条记录
     /// </summary>
-    /// <param name="entities">要批量处理的实体集合。</param>
-    /// <returns>新增多条记录。</returns>
+    /// <param name="entities">要批量处理的实体集合</param>
+    /// <returns>新增多条记录</returns>
     int Insert(params TEntity[] entities);
 
     /// <summary>
-    /// 新增多条记录。
+    /// 新增多条记录
     /// </summary>
-    /// <param name="entities">要批量处理的实体集合。</param>
-    /// <returns>表示异步新增多条记录的任务，任务结果为新增多条记录。</returns>
+    /// <param name="entities">要批量处理的实体集合</param>
+    /// <returns>表示异步新增多条记录的任务，任务结果为新增多条记录</returns>
     Task<int> InsertAsync(params TEntity[] entities);
 
     /// <summary>
-    /// 新增多条记录。
+    /// 新增多条记录
     /// </summary>
-    /// <param name="entities">要批量处理的实体集合。</param>
-    /// <returns>新增多条记录。</returns>
+    /// <param name="entities">要批量处理的实体集合</param>
+    /// <returns>新增多条记录</returns>
     int Insert(IEnumerable<TEntity> entities);
 
     /// <summary>
-    /// 新增多条记录。
+    /// 新增多条记录
     /// </summary>
-    /// <param name="entities">要批量处理的实体集合。</param>
-    /// <returns>表示异步新增多条记录的任务，任务结果为新增多条记录。</returns>
+    /// <param name="entities">要批量处理的实体集合</param>
+    /// <returns>表示异步新增多条记录的任务，任务结果为新增多条记录</returns>
     Task<int> InsertAsync(IEnumerable<TEntity> entities);
 
     /// <summary>
-    /// 新增一条记录返回自增Id。
+    /// 新增一条记录返回自增Id
     /// </summary>
-    /// <param name="entity">要处理的实体。</param>
-    /// <returns>新增一条记录返回自增Id。</returns>
+    /// <param name="entity">要处理的实体</param>
+    /// <returns>新增一条记录返回自增Id</returns>
     int InsertReturnIdentity(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回自增Id。
+    /// 新增一条记录返回自增Id
     /// </summary>
-    /// <param name="entity">要处理的实体。</param>
-    /// <returns>表示异步新增一条记录返回自增Id的任务，任务结果为新增一条记录返回自增Id。</returns>
+    /// <param name="entity">要处理的实体</param>
+    /// <returns>表示异步新增一条记录返回自增Id的任务，任务结果为新增一条记录返回自增Id</returns>
     Task<int> InsertReturnIdentityAsync(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回 Long 类型的自增Id。
+    /// 新增一条记录返回 Long 类型的自增Id
     /// </summary>
-    /// <param name="entity">要处理的实体。</param>
-    /// <returns>新增一条记录返回 Long 类型的自增Id。</returns>
+    /// <param name="entity">要处理的实体</param>
+    /// <returns>新增一条记录返回 Long 类型的自增Id</returns>
     long ExecuteReturnBigIdentity(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回 Long 类型的自增Id。
+    /// 新增一条记录返回 Long 类型的自增Id
     /// </summary>
-    /// <param name="entity">要处理的实体。</param>
-    /// <returns>表示异步新增一条记录返回 Long 类型的自增Id的任务，任务结果为新增一条记录返回 Long 类型的自增Id。</returns>
+    /// <param name="entity">要处理的实体</param>
+    /// <returns>表示异步新增一条记录返回 Long 类型的自增Id的任务，任务结果为新增一条记录返回 Long 类型的自增Id</returns>
     Task<long> ExecuteReturnBigIdentityAsync(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回新增的数据。
+    /// 新增一条记录返回新增的数据
     /// </summary>
-    /// <param name="entity">要处理的实体。</param>
-    /// <returns>新增一条记录返回新增的数据。</returns>
+    /// <param name="entity">要处理的实体</param>
+    /// <returns>新增一条记录返回新增的数据</returns>
     TEntity InsertReturnEntity(TEntity entity);
 
     /// <summary>
-    /// 新增一条记录返回新增的数据。
+    /// 新增一条记录返回新增的数据
     /// </summary>
-    /// <param name="entity">要处理的实体。</param>
-    /// <returns>表示异步新增一条记录返回新增的数据的任务，任务结果为新增一条记录返回新增的数据。</returns>
+    /// <param name="entity">要处理的实体</param>
+    /// <returns>表示异步新增一条记录返回新增的数据的任务，任务结果为新增一条记录返回新增的数据</returns>
     Task<TEntity> InsertReturnEntityAsync(TEntity entity);
 }

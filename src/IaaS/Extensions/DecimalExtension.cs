@@ -25,15 +25,15 @@ using System;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 为 <see cref="decimal"/> 提供扩展方法。
+/// 为 <see cref="decimal"/> 提供扩展方法
 /// </summary>
 public static class DecimalExtension
 {
     /// <summary>
-    /// 得到百分比。
+    /// 得到百分比
     /// </summary>
-    /// <param name="data">要处理或传输的数据。</param>
-    /// <returns>得到百分比。</returns>
+    /// <param name="data">要处理或传输的数据</param>
+    /// <returns>得到百分比</returns>
     public static string GetPercentage(this decimal data)
     {
         var result = data * 100;
@@ -41,11 +41,11 @@ public static class DecimalExtension
     }
 
     /// <summary>
-    /// 得到百分比。
+    /// 得到百分比
     /// </summary>
-    /// <param name="num1">参与计算的第一个数值。</param>
-    /// <param name="num2">参与计算的第二个数值。</param>
-    /// <returns>得到百分比。</returns>
+    /// <param name="num1">参与计算的第一个数值</param>
+    /// <param name="num2">参与计算的第二个数值</param>
+    /// <returns>得到百分比</returns>
     public static string GetPercentage(this decimal num1, decimal num2)
     {
         var result = num2 == 0 ? 0 : Math.Round(num1 / num2, 4);
@@ -53,11 +53,11 @@ public static class DecimalExtension
     }
 
     /// <summary>
-    /// 获取 decimal，小数点后面有几位就保留几位。
+    /// 获取 decimal，小数点后面有几位就保留几位
     /// </summary>
-    /// <param name="data">要处理或传输的数据。</param>
-    /// <param name="places">保留的小数位数。</param>
-    /// <returns>获取到的 decimal，小数点后面有几位就保留几位。</returns>
+    /// <param name="data">要处理或传输的数据</param>
+    /// <param name="places">保留的小数位数</param>
+    /// <returns>获取到的 decimal，小数点后面有几位就保留几位</returns>
     public static decimal GetDecimal(this decimal data, int? places = null)
     {
         if (places == null)

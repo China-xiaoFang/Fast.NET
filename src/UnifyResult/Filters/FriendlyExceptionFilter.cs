@@ -30,7 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 友好异常拦截器。
+/// 友好异常拦截器
 /// </summary>
 internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
 {

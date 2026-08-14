@@ -23,13 +23,13 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 租户 Entity 基类接口。
+/// 租户 Entity 基类接口
 /// </summary>
 [SuppressSniffer]
 public interface IBaseTEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 租户Id。
+    /// 租户Id
     /// </summary>
     long TenantId { get; set; }
 }

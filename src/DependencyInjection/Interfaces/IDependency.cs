@@ -23,7 +23,7 @@
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// 依赖关系接口。
+/// 依赖关系接口
 /// </summary>
 [SuppressSniffer]
 public interface IDependency

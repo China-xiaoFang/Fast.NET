@@ -28,7 +28,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Fast.Swagger;
 
 /// <summary>
-/// 规范化文档自定义更多功能。
+/// 规范化文档自定义更多功能
 /// </summary>
 internal sealed class ApiActionFilter : IOperationFilter
 {

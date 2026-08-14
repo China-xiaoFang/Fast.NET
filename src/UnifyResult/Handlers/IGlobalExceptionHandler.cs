@@ -25,16 +25,16 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 全局异常处理。
+/// 全局异常处理
 /// </summary>
 public interface IGlobalExceptionHandler
 {
     /// <summary>
-    /// 异常拦截。
+    /// 异常拦截
     /// </summary>
-    /// <param name="context">当前异常处理上下文。</param>
-    /// <param name="isUserFriendlyException">是否将异常作为可直接展示给用户的异常处理。</param>
-    /// <param name="isValidationException">是否将异常作为参数验证异常处理。</param>
-    /// <returns>表示异步“异常拦截”操作的任务。</returns>
+    /// <param name="context">当前异常处理上下文</param>
+    /// <param name="isUserFriendlyException">是否将异常作为可直接展示给用户的异常处理</param>
+    /// <param name="isValidationException">是否将异常作为参数验证异常处理</param>
+    /// <returns>表示异步“异常拦截”操作的任务</returns>
     Task OnExceptionAsync(ExceptionContext context, bool isUserFriendlyException, bool isValidationException);
 }

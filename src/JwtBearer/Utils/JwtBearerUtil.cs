@@ -40,7 +40,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// JwtBearer 工具类。
+/// JwtBearer 工具类
 /// </summary>
 public static class JwtBearerUtil
 {
@@ -49,7 +49,7 @@ public static class JwtBearerUtil
     private const int RefreshTokenLockCount = 64;
 
     /// <summary>
-    /// JWT 载荷序列化配置。
+    /// JWT 载荷序列化配置
     /// </summary>
     private static readonly JsonSerializerOptions _payloadSerializerOptions = new()
     {
@@ -57,15 +57,15 @@ public static class JwtBearerUtil
     };
 
     /// <summary>
-    /// 避免同一进程内的并发请求同时消费同一个 RefreshToken。
-    /// 多实例部署仍需依赖支持原子操作的共享缓存实现。
+    /// 避免同一进程内的并发请求同时消费同一个 RefreshToken
+    /// 多实例部署仍需依赖支持原子操作的共享缓存实现
     /// </summary>
     private static readonly SemaphoreSlim[] _refreshTokenLocks = Enumerable.Range(0, RefreshTokenLockCount)
         .Select(_ => new SemaphoreSlim(1, 1))
         .ToArray();
 
     /// <summary>
-    /// 日期类型的 Claim 类型。
+    /// 日期类型的 Claim 类型
     /// </summary>
     public static readonly string[] DateTypeClaimTypes =
     [
@@ -73,15 +73,15 @@ public static class JwtBearerUtil
     ];
 
     /// <summary>
-    /// 刷新 Token 身份标识。
+    /// 刷新 Token 身份标识
     /// </summary>
     public static readonly string[] RefreshTokenClaims = ["f", "e", "s", "l", "k"];
 
     /// <summary>
-    /// 生成 Token 验证参数。
+    /// 生成 Token 验证参数
     /// </summary>
-    /// <param name="jwtSettings">JWT 签发与验证配置。</param>
-    /// <returns>生成的 Token 验证参数。</returns>
+    /// <param name="jwtSettings">JWT 签发与验证配置</param>
+    /// <returns>生成的 Token 验证参数</returns>
     public static TokenValidationParameters CreateTokenValidationParameters(JWTSettingsOptions jwtSettings)
     {
         ArgumentNullException.ThrowIfNull(jwtSettings);
@@ -107,7 +107,7 @@ public static class JwtBearerUtil
             ValidateLifetime = jwtSettings.ValidateLifetime ?? true,
             // 过期时间容错值
             ClockSkew = TimeSpan.FromSeconds(jwtSettings.ClockSkew ?? 5),
-            // 只接受配置的算法，避免同一密钥被其他 JWT 算法复用。
+            // 只接受配置的算法，避免同一密钥被其他 JWT 算法复用
             ValidAlgorithms = new[] {algorithm},
             RequireSignedTokens = true,
             RequireExpirationTime = true
@@ -115,11 +115,11 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 生成 Token。
+    /// 生成 Token
     /// </summary>
-    /// <param name="payload">要写入令牌的载荷。</param>
-    /// <param name="expiredTime">令牌过期时间。</param>
-    /// <returns>生成的 Token。</returns>
+    /// <param name="payload">要写入令牌的载荷</param>
+    /// <param name="expiredTime">令牌过期时间</param>
+    /// <returns>生成的 Token</returns>
     public static string GenerateToken(IDictionary<string, object> payload, long? expiredTime = null)
     {
         ArgumentNullException.ThrowIfNull(payload);
@@ -169,10 +169,10 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 生成刷新 Token。
+    /// 生成刷新 Token
     /// </summary>
-    /// <param name="accessToken">访问令牌。</param>
-    /// <returns>生成的刷新 Token。</returns>
+    /// <param name="accessToken">访问令牌</param>
+    /// <returns>生成的刷新 Token</returns>
     public static string GenerateRefreshToken(string accessToken)
     {
         if (string.IsNullOrWhiteSpace(accessToken))
@@ -209,12 +209,12 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 获取 JWT Bearer Token。
+    /// 获取 JWT Bearer Token
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="headerKey">承载令牌的请求头名称。</param>
-    /// <param name="tokenPrefix">请求头中位于令牌之前的前缀。</param>
-    /// <returns>获取到的 JWT Bearer Token。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="headerKey">承载令牌的请求头名称</param>
+    /// <param name="tokenPrefix">请求头中位于令牌之前的前缀</param>
+    /// <returns>获取到的 JWT Bearer Token</returns>
     public static string GetJwtBearerToken(HttpContext httpContext, string headerKey = "Authorization",
         string tokenPrefix = "Bearer ")
     {
@@ -237,11 +237,11 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 生成不包含 Token 明文的缓存键，避免缓存监控和诊断信息泄露凭据。
+    /// 生成不包含 Token 明文的缓存键，避免缓存监控和诊断信息泄露凭据
     /// </summary>
-    /// <param name="cacheKeyPrefix">令牌缓存键使用的前缀。</param>
-    /// <param name="token">要解析或验证的令牌。</param>
-    /// <returns>生成的不包含 Token 明文的缓存键，避免缓存监控和诊断信息泄露凭据。</returns>
+    /// <param name="cacheKeyPrefix">令牌缓存键使用的前缀</param>
+    /// <param name="token">要解析或验证的令牌</param>
+    /// <returns>生成的不包含 Token 明文的缓存键，避免缓存监控和诊断信息泄露凭据</returns>
     private static string CreateTokenCacheKey(string cacheKeyPrefix, string token)
     {
         var tokenHash = SHA256.HashData(Encoding.UTF8.GetBytes(token));
@@ -249,13 +249,13 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 使用哈希缓存键读取 Token 状态。
+    /// 使用哈希缓存键读取 Token 状态
     /// </summary>
-    /// <param name="distributedCache">用于保存令牌状态的分布式缓存。</param>
-    /// <param name="cacheKeyPrefix">令牌缓存键使用的前缀。</param>
-    /// <param name="token">要解析或验证的令牌。</param>
-    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
-    /// <returns>表示异步使用哈希缓存键读取 Token 状态的任务，任务结果为使用哈希缓存键读取 Token 状态。</returns>
+    /// <param name="distributedCache">用于保存令牌状态的分布式缓存</param>
+    /// <param name="cacheKeyPrefix">令牌缓存键使用的前缀</param>
+    /// <param name="token">要解析或验证的令牌</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌</param>
+    /// <returns>表示异步使用哈希缓存键读取 Token 状态的任务，任务结果为使用哈希缓存键读取 Token 状态</returns>
     private static async Task<string> GetTokenCacheValueAsync(IDistributedCache distributedCache, string cacheKeyPrefix,
         string token, CancellationToken cancellationToken = default)
     {
@@ -264,14 +264,14 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 消费 RefreshToken，防止同一个令牌被重复换取新令牌。
+    /// 消费 RefreshToken，防止同一个令牌被重复换取新令牌
     /// </summary>
-    /// <param name="distributedCache">用于保存令牌状态的分布式缓存。</param>
-    /// <param name="refreshToken">刷新令牌。</param>
-    /// <param name="absoluteExpiration">缓存项的绝对过期时间。</param>
-    /// <param name="reuseLeewaySeconds">刷新令牌并发复用的宽限时长，单位为秒。</param>
-    /// <param name="cancellationToken">用于取消异步操作的令牌。</param>
-    /// <returns>成功取得目标值时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="distributedCache">用于保存令牌状态的分布式缓存</param>
+    /// <param name="refreshToken">刷新令牌</param>
+    /// <param name="absoluteExpiration">缓存项的绝对过期时间</param>
+    /// <param name="reuseLeewaySeconds">刷新令牌并发复用的宽限时长，单位为秒</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌</param>
+    /// <returns>成功取得目标值时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     private static async Task<bool> TryConsumeRefreshTokenAsync(IDistributedCache distributedCache, string refreshToken,
         DateTimeOffset absoluteExpiration, long reuseLeewaySeconds, CancellationToken cancellationToken = default)
     {
@@ -292,7 +292,7 @@ public static class JwtBearerUtil
                 .ConfigureAwait(false);
             if (!string.IsNullOrWhiteSpace(cachedValue))
             {
-                // 默认不允许重放；仅保留显式传入容差值时的兼容行为。
+                // 默认不允许重放；仅保留显式传入容差值时的兼容行为
                 if (reuseLeewaySeconds <= 0 || !long.TryParse(cachedValue, out var refreshTicks))
                     return false;
 
@@ -313,10 +313,10 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 验证 Token。
+    /// 验证 Token
     /// </summary>
-    /// <param name="accessToken">访问令牌。</param>
-    /// <returns>验证 Token。</returns>
+    /// <param name="accessToken">访问令牌</param>
+    /// <returns>验证 Token</returns>
     public static (bool IsValid, JsonWebToken Token, TokenValidationResult validationResult) Validate(string accessToken)
     {
         return ValidateAsync(accessToken)
@@ -326,10 +326,10 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 异步验证 Token。
+    /// 异步验证 Token
     /// </summary>
-    /// <param name="accessToken">访问令牌。</param>
-    /// <returns>表示异步验证 Token 的任务，任务结果为验证 Token。</returns>
+    /// <param name="accessToken">访问令牌</param>
+    /// <returns>表示异步验证 Token 的任务，任务结果为验证 Token</returns>
     public static async Task<(bool IsValid, JsonWebToken Token, TokenValidationResult validationResult)> ValidateAsync(
         string accessToken)
     {
@@ -344,17 +344,17 @@ public static class JwtBearerUtil
         }
         catch (Exception)
         {
-            // 保持工具方法原有契约：格式、配置或签名错误均通过 IsValid=false 返回。
+            // 保持工具方法原有契约：格式、配置或签名错误均通过 IsValid=false 返回
             return (false, null, null);
         }
     }
 
     /// <summary>
-    /// 使用指定参数验证 Token。
+    /// 使用指定参数验证 Token
     /// </summary>
-    /// <param name="accessToken">访问令牌。</param>
-    /// <param name="validationParameters">令牌签名和声明验证参数。</param>
-    /// <returns>表示异步使用指定参数验证 Token 的任务，任务结果为使用指定参数验证 Token。</returns>
+    /// <param name="accessToken">访问令牌</param>
+    /// <param name="validationParameters">令牌签名和声明验证参数</param>
+    /// <returns>表示异步使用指定参数验证 Token 的任务，任务结果为使用指定参数验证 Token</returns>
     private static async Task<(bool IsValid, JsonWebToken Token, TokenValidationResult validationResult)> ValidateAsync(
         string accessToken, TokenValidationParameters validationParameters)
     {
@@ -369,12 +369,12 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 兼容不同 IdentityModel 版本的 Token 验证 API。
+    /// 兼容不同 IdentityModel 版本的 Token 验证 API
     /// </summary>
-    /// <param name="tokenHandler">用于读取并验证令牌的处理器。</param>
-    /// <param name="accessToken">访问令牌。</param>
-    /// <param name="validationParameters">令牌签名和声明验证参数。</param>
-    /// <returns>表示异步兼容不同 IdentityModel 版本的 Token 验证 API 的任务，任务结果为兼容不同 IdentityModel 版本的 Token 验证 API。</returns>
+    /// <param name="tokenHandler">用于读取并验证令牌的处理器</param>
+    /// <param name="accessToken">访问令牌</param>
+    /// <param name="validationParameters">令牌签名和声明验证参数</param>
+    /// <returns>表示异步兼容不同 IdentityModel 版本的 Token 验证 API 的任务，任务结果为兼容不同 IdentityModel 版本的 Token 验证 API</returns>
     private static Task<TokenValidationResult> ValidateTokenAsync(JsonWebTokenHandler tokenHandler, string accessToken,
         TokenValidationParameters validationParameters)
     {
@@ -386,13 +386,13 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 验证 Token。
+    /// 验证 Token
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="token">要解析或验证的令牌。</param>
-    /// <param name="headerKey">承载令牌的请求头名称。</param>
-    /// <param name="tokenPrefix">请求头中位于令牌之前的前缀。</param>
-    /// <returns>请求中存在且验证通过的访问令牌返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="token">要解析或验证的令牌</param>
+    /// <param name="headerKey">承载令牌的请求头名称</param>
+    /// <param name="tokenPrefix">请求头中位于令牌之前的前缀</param>
+    /// <returns>请求中存在且验证通过的访问令牌返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool ValidateJwtBearerToken(DefaultHttpContext httpContext, out JsonWebToken token,
         string headerKey = "Authorization", string tokenPrefix = "Bearer ")
     {
@@ -412,10 +412,10 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 读取 Token，不含验证。
+    /// 读取 Token，不含验证
     /// </summary>
-    /// <param name="accessToken">访问令牌。</param>
-    /// <returns>读取到的 Token，不含验证。</returns>
+    /// <param name="accessToken">访问令牌</param>
+    /// <returns>读取到的 Token，不含验证</returns>
     public static JsonWebToken ReadJwtToken(string accessToken)
     {
         var tokenHandler = new JsonWebTokenHandler();
@@ -428,11 +428,11 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 读取 Token。
+    /// 读取 Token
     /// </summary>
-    /// <remarks>仅解析令牌，不会验证签名、签发方或有效期；安全决策请使用 <see cref="Validate"/>。</remarks>
-    /// <param name="accessToken">访问令牌。</param>
-    /// <returns>读取到的 Token。</returns>
+    /// <remarks>仅解析令牌，不会验证签名、签发方或有效期；安全决策请使用 <see cref="Validate"/></remarks>
+    /// <param name="accessToken">访问令牌</param>
+    /// <returns>读取到的 Token</returns>
     public static JwtSecurityToken SecurityReadJwtToken(string accessToken)
     {
         var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
@@ -441,14 +441,14 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 通过过期 Token 和 刷新 Token 换取新的 Token。
+    /// 通过过期 Token 和 刷新 Token 换取新的 Token
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="expiredToken">已过期但签名仍需验证的访问令牌。</param>
-    /// <param name="refreshToken">刷新令牌。</param>
-    /// <param name="expiredTime">令牌过期时间。</param>
-    /// <param name="clockSkew">令牌验证允许的时钟偏差。</param>
-    /// <returns>通过过期 Token 和 刷新 Token 换取新的 Token。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="expiredToken">已过期但签名仍需验证的访问令牌</param>
+    /// <param name="refreshToken">刷新令牌</param>
+    /// <param name="expiredTime">令牌过期时间</param>
+    /// <param name="clockSkew">令牌验证允许的时钟偏差</param>
+    /// <returns>通过过期 Token 和 刷新 Token 换取新的 Token</returns>
     public static string Exchange(HttpContext httpContext, string expiredToken, string refreshToken, long? expiredTime = null,
         long? clockSkew = null)
     {
@@ -459,14 +459,14 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 异步使用过期 Token 和刷新 Token 换取新的 Token。
+    /// 异步使用过期 Token 和刷新 Token 换取新的 Token
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="expiredToken">已过期但签名仍需验证的访问令牌。</param>
-    /// <param name="refreshToken">刷新令牌。</param>
-    /// <param name="expiredTime">令牌过期时间。</param>
-    /// <param name="clockSkew">令牌验证允许的时钟偏差。</param>
-    /// <returns>表示异步使用过期 Token 和刷新 Token 换取新的 Token 的任务，任务结果为使用过期 Token 和刷新 Token 换取新的 Token。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="expiredToken">已过期但签名仍需验证的访问令牌</param>
+    /// <param name="refreshToken">刷新令牌</param>
+    /// <param name="expiredTime">令牌过期时间</param>
+    /// <param name="clockSkew">令牌验证允许的时钟偏差</param>
+    /// <returns>表示异步使用过期 Token 和刷新 Token 换取新的 Token 的任务，任务结果为使用过期 Token 和刷新 Token 换取新的 Token</returns>
     public static async Task<string> ExchangeAsync(HttpContext httpContext, string expiredToken, string refreshToken,
         long? expiredTime = null, long? clockSkew = null)
     {
@@ -476,8 +476,8 @@ public static class JwtBearerUtil
             || string.IsNullOrWhiteSpace(refreshToken))
             return null;
 
-        // 原访问令牌必须签名、签发方和接收方均有效，仅在此处临时忽略生命周期。
-        // 不能直接把普通 Validate=false 当作“已过期”，否则被篡改或伪造的令牌也会进入刷新流程。
+        // 原访问令牌必须签名、签发方和接收方均有效，仅在此处临时忽略生命周期
+        // 不能直接把普通 Validate=false 当作“已过期”，否则被篡改或伪造的令牌也会进入刷新流程
         var expiredValidationParameters = CreateTokenValidationParameters(Penetrates.JWTSettings);
         expiredValidationParameters.ValidateLifetime = false;
         var (isExpiredTokenAuthentic, expiredTokenObj, _) = await ValidateAsync(expiredToken, expiredValidationParameters)
@@ -516,7 +516,7 @@ public static class JwtBearerUtil
         var distributedCache = httpContext.RequestServices.GetService<IDistributedCache>();
         if (distributedCache == null)
         {
-            // 默认安全失败：没有共享状态就无法识别 RefreshToken 重放。
+            // 默认安全失败：没有共享状态就无法识别 RefreshToken 重放
             if (Penetrates.JWTSettings.RequireRefreshTokenCache == true)
                 return null;
         }
@@ -528,7 +528,7 @@ public static class JwtBearerUtil
             return null;
         }
 
-        // 上面已完成签名验证，此时才可以读取原令牌载荷并签发新令牌。
+        // 上面已完成签名验证，此时才可以读取原令牌载荷并签发新令牌
         var payload = SecurityReadJwtToken(expiredToken)
             .Payload;
         foreach (var innerKey in DateTypeClaimTypes)
@@ -540,10 +540,10 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 标记过期 Token。
+    /// 标记过期 Token
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="expiredToken">已过期但签名仍需验证的访问令牌。</param>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="expiredToken">已过期但签名仍需验证的访问令牌</param>
     public static void SetExpiredToken(HttpContext httpContext, string expiredToken)
     {
         SetExpiredTokenAsync(httpContext, expiredToken)
@@ -553,11 +553,11 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 异步标记失效 Token。
+    /// 异步标记失效 Token
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="expiredToken">已过期但签名仍需验证的访问令牌。</param>
-    /// <returns>表示异步“异步标记失效 Token”操作的任务。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="expiredToken">已过期但签名仍需验证的访问令牌</param>
+    /// <returns>表示异步“异步标记失效 Token”操作的任务</returns>
     public static async Task SetExpiredTokenAsync(HttpContext httpContext, string expiredToken)
     {
         if (string.IsNullOrEmpty(expiredToken))
@@ -587,14 +587,14 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 自动刷新 Token 信息。
+    /// 自动刷新 Token 信息
     /// </summary>
-    /// <param name="context">当前授权处理上下文。</param>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="expiredTime">令牌过期时间。</param>
-    /// <param name="tokenPrefix">请求头中位于令牌之前的前缀。</param>
-    /// <param name="clockSkew">允许同一刷新 Token 重复提交的兼容容差（秒），默认 0（禁止重放）。</param>
-    /// <returns>成功签发并写入新令牌时返回 <see langword="true"/>；无需刷新或刷新失败时返回 <see langword="false"/>。</returns>
+    /// <param name="context">当前授权处理上下文</param>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="expiredTime">令牌过期时间</param>
+    /// <param name="tokenPrefix">请求头中位于令牌之前的前缀</param>
+    /// <param name="clockSkew">允许同一刷新 Token 重复提交的兼容容差（秒），默认 0（禁止重放）</param>
+    /// <returns>成功签发并写入新令牌时返回 <see langword="true"/>；无需刷新或刷新失败时返回 <see langword="false"/></returns>
     public static bool AutoRefreshToken(AuthorizationHandlerContext context, HttpContext httpContext, long? expiredTime = null,
         string tokenPrefix = "Bearer ", long? clockSkew = null)
     {
@@ -605,14 +605,14 @@ public static class JwtBearerUtil
     }
 
     /// <summary>
-    /// 异步自动刷新 Token 信息。
+    /// 异步自动刷新 Token 信息
     /// </summary>
-    /// <param name="context">当前授权处理上下文。</param>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="expiredTime">令牌过期时间。</param>
-    /// <param name="tokenPrefix">请求头中位于令牌之前的前缀。</param>
-    /// <param name="clockSkew">令牌验证允许的时钟偏差。</param>
-    /// <returns>成功签发并写入新令牌时返回 <see langword="true"/>；无需刷新或刷新失败时返回 <see langword="false"/>。</returns>
+    /// <param name="context">当前授权处理上下文</param>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="expiredTime">令牌过期时间</param>
+    /// <param name="tokenPrefix">请求头中位于令牌之前的前缀</param>
+    /// <param name="clockSkew">令牌验证允许的时钟偏差</param>
+    /// <returns>成功签发并写入新令牌时返回 <see langword="true"/>；无需刷新或刷新失败时返回 <see langword="false"/></returns>
     public static async Task<bool> AutoRefreshTokenAsync(AuthorizationHandlerContext context, HttpContext httpContext,
         long? expiredTime = null, string tokenPrefix = "Bearer ", long? clockSkew = null)
     {
@@ -684,8 +684,8 @@ public static class JwtBearerUtil
         claimIdentity.AddClaims(claims);
         var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
 
-        // JWT Bearer 是无状态认证，不支持 SignInAsync。这里只更新当前请求身份，
-        // 新 Token 已通过响应头返回，由客户端在后续请求中携带。
+        // JWT Bearer 是无状态认证，不支持 SignInAsync。这里只更新当前请求身份
+        // 新 Token 已通过响应头返回，由客户端在后续请求中携带
         httpContext.User = claimsPrincipal;
 
         string accessTokenKey = "access-token",
@@ -697,7 +697,7 @@ public static class JwtBearerUtil
         // 返回新的 刷新 Token
         httpContext.Response.Headers[xAccessTokenKey] = GenerateRefreshToken(newAccessToken);
 
-        // 包含凭据的响应禁止被浏览器、代理或网关缓存。
+        // 包含凭据的响应禁止被浏览器、代理或网关缓存
         httpContext.Response.Headers["Cache-Control"] = "no-store";
         httpContext.Response.Headers["Pragma"] = "no-cache";
 

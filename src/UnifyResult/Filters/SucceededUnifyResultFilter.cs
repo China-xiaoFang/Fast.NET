@@ -29,12 +29,12 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 规范化结构（请求成功）过滤器。
+/// 规范化结构（请求成功）过滤器
 /// </summary>
 internal sealed class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
 {
     /// <summary>
-    /// 过滤器排序。
+    /// 过滤器排序
     /// </summary>
     private const int FilterOrder = 8888;
 

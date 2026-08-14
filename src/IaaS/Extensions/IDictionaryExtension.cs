@@ -28,17 +28,17 @@ using System.Xml;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 为 <see cref="IDictionary{TKey,TValue}"/> 提供扩展方法。
+/// 为 <see cref="IDictionary{TKey,TValue}"/> 提供扩展方法
 /// </summary>
 public static class IDictionaryExtension
 {
     /// <summary>
-    /// 将一个字典转化为 QueryString。
+    /// 将一个字典转化为 QueryString
     /// </summary>
-    /// <param name="dict">要处理的字典。</param>
-    /// <param name="urlEncode">是否对生成的查询字符串执行 URL 编码。</param>
-    /// <param name="isToLower">是否将名称的首字母转换为小写。</param>
-    /// <returns>将一个字典转化为 QueryString。</returns>
+    /// <param name="dict">要处理的字典</param>
+    /// <param name="urlEncode">是否对生成的查询字符串执行 URL 编码</param>
+    /// <param name="isToLower">是否将名称的首字母转换为小写</param>
+    /// <returns>将一个字典转化为 QueryString</returns>
     public static string ToQueryString(this IDictionary<string, string> dict, bool urlEncode = true, bool isToLower = false)
     {
         return string.Join("&",
@@ -47,9 +47,9 @@ public static class IDictionaryExtension
     }
 
     /// <summary>
-    /// 移除空值项。
+    /// 移除空值项
     /// </summary>
-    /// <param name="dict">IDictionary{TKey,TValue}。</param>
+    /// <param name="dict">IDictionary{TKey,TValue}</param>
     public static void RemoveEmptyValueItems(this IDictionary<string, string> dict)
     {
         dict.Where(item => string.IsNullOrEmpty(item.Value))
@@ -59,13 +59,13 @@ public static class IDictionaryExtension
     }
 
     /// <summary>
-    /// 添加或更新。
+    /// 添加或更新
     /// </summary>
-    /// <param name="dictionary">IDictionary{TKey, TValue}。</param>
-    /// <param name="key">字典键。</param>
-    /// <param name="value">要添加或替换的字典值。</param>
-    /// <typeparam name="TKey">字典键类型。</typeparam>
-    /// <typeparam name="TValue">字典值类型。</typeparam>
+    /// <param name="dictionary">IDictionary{TKey, TValue}</param>
+    /// <param name="key">字典键</param>
+    /// <param name="value">要添加或替换的字典值</param>
+    /// <typeparam name="TKey">字典键类型</typeparam>
+    /// <typeparam name="TValue">字典值类型</typeparam>
     public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, List<TValue>> dictionary, TKey key, TValue value)
         where TKey : notnull
     {
@@ -84,12 +84,12 @@ public static class IDictionaryExtension
     }
 
     /// <summary>
-    /// 添加或更新。
+    /// 添加或更新
     /// </summary>
-    /// <param name="dictionary">IDictionary{TKey, TValue}。</param>
-    /// <param name="concatDictionary">要与当前字典合并的数据。</param>
-    /// <typeparam name="TKey">字典键类型。</typeparam>
-    /// <typeparam name="TValue">字典值类型。</typeparam>
+    /// <param name="dictionary">IDictionary{TKey, TValue}</param>
+    /// <param name="concatDictionary">要与当前字典合并的数据</param>
+    /// <typeparam name="TKey">字典键类型</typeparam>
+    /// <typeparam name="TValue">字典值类型</typeparam>
     public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, List<TValue>> dictionary,
         IDictionary<TKey, List<TValue>> concatDictionary) where TKey : notnull
     {
@@ -111,12 +111,12 @@ public static class IDictionaryExtension
     }
 
     /// <summary>
-    /// 添加或更新。
+    /// 添加或更新
     /// </summary>
-    /// <param name="dictionary">IDictionary{TKey, TValue}。</param>
-    /// <param name="concatDictionary">要与当前字典合并的数据。</param>
-    /// <typeparam name="TKey">字典键类型。</typeparam>
-    /// <typeparam name="TValue">字典值类型。</typeparam>
+    /// <param name="dictionary">IDictionary{TKey, TValue}</param>
+    /// <param name="concatDictionary">要与当前字典合并的数据</param>
+    /// <typeparam name="TKey">字典键类型</typeparam>
+    /// <typeparam name="TValue">字典值类型</typeparam>
     public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
         IDictionary<TKey, TValue> concatDictionary) where TKey : notnull
     {
@@ -132,12 +132,12 @@ public static class IDictionaryExtension
     }
 
     /// <summary>
-    /// 合并两个字典。
+    /// 合并两个字典
     /// </summary>
-    /// <param name="dic">IDictionary{TKey,TValue}字典。</param>
-    /// <param name="newDic">IDictionary{TKey,TValue}新字典。</param>
-    /// <typeparam name="T">字典值的类型。</typeparam>
-    /// <returns>IDictionary{TKey,TValue}。</returns>
+    /// <param name="dic">IDictionary{TKey,TValue}字典</param>
+    /// <param name="newDic">IDictionary{TKey,TValue}新字典</param>
+    /// <typeparam name="T">字典值的类型</typeparam>
+    /// <returns>IDictionary{TKey,TValue}</returns>
     public static IDictionary<string, T> AddOrUpdate<T>(this IDictionary<string, T> dic, IDictionary<string, T> newDic)
     {
         foreach (var key in newDic.Keys)
@@ -157,10 +157,10 @@ public static class IDictionaryExtension
 
 
     /// <summary>
-    /// 将 Dic 字典转换成字符串。
+    /// 将 Dic 字典转换成字符串
     /// </summary>
-    /// <param name="dic">IDictionary{TKey,TValue}。</param>
-    /// <returns>将 Dic 字典转换成字符串。</returns>
+    /// <param name="dic">IDictionary{TKey,TValue}</param>
+    /// <returns>将 Dic 字典转换成字符串</returns>
     public static string DicToXmlStr(this IDictionary<string, object> dic)
     {
         var xml = "<xml>";
@@ -177,10 +177,10 @@ public static class IDictionaryExtension
     }
 
     /// <summary>
-    /// 将字符串转换为 Dic 字典。
+    /// 将字符串转换为 Dic 字典
     /// </summary>
-    /// <param name="xml">要解析的 XML 文本。</param>
-    /// <returns>IDictionary{TKey,TValue}。</returns>
+    /// <param name="xml">要解析的 XML 文本</param>
+    /// <returns>IDictionary{TKey,TValue}</returns>
     public static IDictionary<string, object> XmlStrToDic(this string xml)
     {
         if (string.IsNullOrWhiteSpace(xml))
@@ -206,10 +206,10 @@ public static class IDictionaryExtension
     }
 
     /// <summary>
-    /// 将 Dic 字典转换成字符串。
+    /// 将 Dic 字典转换成字符串
     /// </summary>
-    /// <param name="dic">IDictionary{TKey,TValue}。</param>
-    /// <returns>将 Dic 字典转换成字符串。</returns>
+    /// <param name="dic">IDictionary{TKey,TValue}</param>
+    /// <returns>将 Dic 字典转换成字符串</returns>
     public static string SortDicToXmlStr(this SortedDictionary<string, object> dic)
     {
         var xml = "<xml>";
@@ -226,10 +226,10 @@ public static class IDictionaryExtension
     }
 
     /// <summary>
-    /// 将字符串转换为 Dic 字典。
+    /// 将字符串转换为 Dic 字典
     /// </summary>
-    /// <param name="xml">要解析的 XML 文本。</param>
-    /// <returns>SortedDictionary{TKey,TValue}。</returns>
+    /// <param name="xml">要解析的 XML 文本</param>
+    /// <returns>SortedDictionary{TKey,TValue}</returns>
     public static SortedDictionary<string, object> XmlStrToSortDic(this string xml)
     {
         if (string.IsNullOrWhiteSpace(xml))

@@ -25,25 +25,25 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// 为 <see cref="HttpContext"/> 提供扩展方法。
+/// 为 <see cref="HttpContext"/> 提供扩展方法
 /// </summary>
 internal static class HttpContextExtension
 {
     /// <summary>
-    /// 设置规范化响应时间戳。
+    /// 设置规范化响应时间戳
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="timestamp">要写入响应头的毫秒时间戳。</param>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="timestamp">要写入响应头的毫秒时间戳</param>
     public static void UnifyResponseTimestamp(this HttpContext httpContext, long timestamp)
     {
         httpContext?.Response.Headers.TryAdd(nameof(Fast) + "-NET-Timestamp", $"{timestamp}");
     }
 
     /// <summary>
-    /// 获取规范化响应时间戳。
+    /// 获取规范化响应时间戳
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <returns>响应时间戳。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <returns>响应时间戳</returns>
     public static long UnifyResponseTimestamp(this HttpContext httpContext)
     {
         var timestampStr = httpContext?.Response.Headers[nameof(Fast) + "-NET-Timestamp"];
@@ -52,7 +52,7 @@ internal static class HttpContextExtension
         {
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
-            // 将请求开始时间写入响应头，供耗时统计复用。
+            // 将请求开始时间写入响应头，供耗时统计复用
             httpContext.UnifyResponseTimestamp(timestamp);
 
             return timestamp;
@@ -62,21 +62,21 @@ internal static class HttpContextExtension
     }
 
     /// <summary>
-    /// 判断是否是 WebSocket 请求。
+    /// 判断是否是 WebSocket 请求
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <returns>请求已升级为 WebSocket 或目标路径为 <c>/ws</c> 时返回 <see langword="true"/>。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <returns>请求已升级为 WebSocket 或目标路径为 <c>/ws</c> 时返回 <see langword="true"/></returns>
     public static bool IsWebSocketRequest(this HttpContext httpContext)
     {
         return httpContext.WebSockets.IsWebSocketRequest || httpContext.Request.Path == "/ws";
     }
 
     /// <summary>
-    /// 获取终结点元数据中的指定特性。
+    /// 获取终结点元数据中的指定特性
     /// </summary>
-    /// <param name="metadata">终结点元数据集合。</param>
-    /// <param name="attributeType">要读取的特性类型。</param>
-    /// <returns>匹配的特性实例；不存在时返回 <see langword="null"/>。</returns>
+    /// <param name="metadata">终结点元数据集合</param>
+    /// <param name="attributeType">要读取的特性类型</param>
+    /// <returns>匹配的特性实例；不存在时返回 <see langword="null"/></returns>
     public static object GetMetadata(this EndpointMetadataCollection metadata, Type attributeType)
     {
         return metadata?.GetType()
@@ -86,11 +86,11 @@ internal static class HttpContextExtension
     }
 
     /// <summary>
-    /// 获取终结点元数据中的指定特性。
+    /// 获取终结点元数据中的指定特性
     /// </summary>
-    /// <param name="httpContext">当前请求上下文。</param>
-    /// <param name="attributeType">要读取的特性类型。</param>
-    /// <returns>当前终结点上匹配的特性实例；不存在时返回 <see langword="null"/>。</returns>
+    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="attributeType">要读取的特性类型</param>
+    /// <returns>当前终结点上匹配的特性实例；不存在时返回 <see langword="null"/></returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)
     {
         return httpContext.GetEndpoint()

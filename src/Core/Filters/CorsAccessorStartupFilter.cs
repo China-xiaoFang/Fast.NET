@@ -28,7 +28,7 @@ using Microsoft.Extensions.Options;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// 应用启动时自动注册中间件。
+/// 应用启动时自动注册中间件
 /// </summary>
 internal sealed class CorsAccessorStartupFilter : IStartupFilter
 {

@@ -25,21 +25,21 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// 验证 <see cref="Enum"/> 类型属性必填。
+/// 验证 <see cref="Enum"/> 类型属性必填
 /// </summary>
-/// <remarks>默认验证当前值是否在枚举值中，如果需要验证其余的逻辑，请自行验证。</remarks>
+/// <remarks>默认验证当前值是否在枚举值中，如果需要验证其余的逻辑，请自行验证</remarks>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class EnumRequiredAttribute : ValidationAttribute
 {
     /// <summary>
-    /// 允许零。
+    /// 允许零
     /// </summary>
-    /// <remarks>常用于默认的枚举值为 None = 0，但是不允许选择的问题。</remarks>
+    /// <remarks>常用于默认的枚举值为 None = 0，但是不允许选择的问题</remarks>
     public bool AllowZero { get; set; } = false;
 
     /// <summary>
-    /// Flag 枚举。
+    /// Flag 枚举
     /// </summary>
     public bool FlagEnum { get; set; } = false;
 

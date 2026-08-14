@@ -27,12 +27,12 @@ using System.Text;
 namespace Fast.IaaS;
 
 /// <summary>
-/// 验证工具类。
+/// 验证工具类
 /// </summary>
 public static class VerificationUtil
 {
     /// <summary>
-    /// 自定义进制所用的编码，大小写和数字(初始 62 位)，但去掉 7 位相似：O/o/0,I/i/1/l，去掉一个补位：A;最终只留(26+26+10)-(7+1)=54 位。
+    /// 自定义进制所用的编码，大小写和数字(初始 62 位)，但去掉 7 位相似：O/o/0,I/i/1/l，去掉一个补位：A;最终只留(26+26+10)-(7+1)=54 位
     /// </summary>
     private static readonly char[] BASE =
     {
@@ -42,25 +42,25 @@ public static class VerificationUtil
     };
 
     /// <summary>
-    /// A 补位字符，不能与自定义重复。
+    /// A 补位字符，不能与自定义重复
     /// </summary>
     private static readonly char SUFFIX_CHAR = 'A';
 
     /// <summary>
-    /// 进制长度。
+    /// 进制长度
     /// </summary>
     private static readonly int BASE_LEN = BASE.Length;
 
     /// <summary>
-    /// 生成邀请码最小长度。
+    /// 生成邀请码最小长度
     /// </summary>
     private const int CODE_LEN = 6;
 
     /// <summary>
-    /// 将Id转换为邀请码。
+    /// 将Id转换为邀请码
     /// </summary>
-    /// <param name="id">唯一标识。</param>
-    /// <returns>转换后的邀请码。</returns>
+    /// <param name="id">唯一标识</param>
+    /// <returns>转换后的邀请码</returns>
     public static string IdToCodeByLong(long id)
     {
         if (id < 0)
@@ -69,7 +69,7 @@ public static class VerificationUtil
         var buf = new char[BASE_LEN];
         var charPos = BASE_LEN;
 
-        // Id超出字符表范围时取模，使结果稳定映射到有效索引。
+        // Id超出字符表范围时取模，使结果稳定映射到有效索引
         while (id / BASE_LEN > 0)
         {
             var index = (int) (id % BASE_LEN);
@@ -81,13 +81,13 @@ public static class VerificationUtil
         // 将字符数组转化为字符串
         var result = new string(buf, charPos, BASE_LEN - charPos);
 
-        // 长度不足时使用随机字符补齐到目标长度。
+        // 长度不足时使用随机字符补齐到目标长度
         var len = result.Length;
         if (len >= CODE_LEN)
             return result;
         var sb = new StringBuilder();
         sb.Append(SUFFIX_CHAR);
-        // 扣除后缀占位符本身，计算仍需补齐的字符数。
+        // 扣除后缀占位符本身，计算仍需补齐的字符数
         for (var i = 0; i < CODE_LEN - len - 1; i++)
         {
             sb.Append(BASE[RandomNumberGenerator.GetInt32(BASE_LEN)]);
@@ -99,10 +99,10 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 从邀请码解析Id。
+    /// 从邀请码解析Id
     /// </summary>
-    /// <param name="code">业务或枚举编码。</param>
-    /// <returns>解析得到的Id。</returns>
+    /// <param name="code">业务或枚举编码</param>
+    /// <returns>解析得到的Id</returns>
     public static long CodeToIdByLong(string code)
     {
         if (string.IsNullOrWhiteSpace(code))
@@ -128,10 +128,10 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 将Id转换为邀请码。
+    /// 将Id转换为邀请码
     /// </summary>
-    /// <param name="id">唯一标识。</param>
-    /// <returns>转换后的邀请码。</returns>
+    /// <param name="id">唯一标识</param>
+    /// <returns>转换后的邀请码</returns>
     public static string IdToCodeByInt(int id)
     {
         if (id < 0)
@@ -140,7 +140,7 @@ public static class VerificationUtil
         var buf = new char[BASE_LEN];
         var charPos = BASE_LEN;
 
-        // Id超出字符表范围时取模，使结果稳定映射到有效索引。
+        // Id超出字符表范围时取模，使结果稳定映射到有效索引
         while (id / BASE_LEN > 0)
         {
             var index = id % BASE_LEN;
@@ -152,13 +152,13 @@ public static class VerificationUtil
         // 将字符数组转化为字符串
         var result = new string(buf, charPos, BASE_LEN - charPos);
 
-        // 长度不足时使用随机字符补齐到目标长度。
+        // 长度不足时使用随机字符补齐到目标长度
         var len = result.Length;
         if (len >= CODE_LEN)
             return result;
         var sb = new StringBuilder();
         sb.Append(SUFFIX_CHAR);
-        // 扣除后缀占位符本身，计算仍需补齐的字符数。
+        // 扣除后缀占位符本身，计算仍需补齐的字符数
         for (var i = 0; i < CODE_LEN - len - 1; i++)
         {
             sb.Append(BASE[RandomNumberGenerator.GetInt32(BASE_LEN)]);
@@ -170,10 +170,10 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 从邀请码解析Id。
+    /// 从邀请码解析Id
     /// </summary>
-    /// <param name="code">业务或枚举编码。</param>
-    /// <returns>解析得到的Id。</returns>
+    /// <param name="code">业务或枚举编码</param>
+    /// <returns>解析得到的Id</returns>
     public static int CodeToIdByInt(string code)
     {
         if (string.IsNullOrWhiteSpace(code))
@@ -199,16 +199,16 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 显示用于进制编码的所有字符串。
+    /// 显示用于进制编码的所有字符串
     /// </summary>
-    /// <returns>显示用于进制编码的所有字符串。</returns>
+    /// <returns>显示用于进制编码的所有字符串</returns>
     public static string PrintBase()
     {
         var upperCase = new StringBuilder();
         var lowerCase = new StringBuilder();
         var number = new StringBuilder();
 
-        // 编码表的顺序参与Id编解码，绝不能为了展示而原地排序。
+        // 编码表的顺序参与Id编解码，绝不能为了展示而原地排序
         var sortedBase = (char[]) BASE.Clone();
         Array.Sort(sortedBase);
         foreach (var item in sortedBase)
@@ -231,10 +231,10 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 生成数字验证码。
+    /// 生成数字验证码
     /// </summary>
-    /// <param name="len">目标长度。</param>
-    /// <returns>生成的数字验证码。</returns>
+    /// <param name="len">目标长度</param>
+    /// <returns>生成的数字验证码</returns>
     public static string GenNumVerCode(int len = CODE_LEN)
     {
         if (len <= 0)
@@ -251,10 +251,10 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 生成字符串验证码。
+    /// 生成字符串验证码
     /// </summary>
-    /// <param name="len">目标长度。</param>
-    /// <returns>生成的字符串验证码。</returns>
+    /// <param name="len">目标长度</param>
+    /// <returns>生成的字符串验证码</returns>
     public static string GenStrVerCode(int len = CODE_LEN)
     {
         if (len <= 0)
@@ -273,12 +273,12 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 生成随机数。
+    /// 生成随机数
     /// </summary>
-    /// <param name="minVal">允许的最小值。</param>
-    /// <param name="maxVal">允许的最大值。</param>
-    /// <param name="isInclude">边界值是否包含在有效范围内。</param>
-    /// <returns>生成的随机数。</returns>
+    /// <param name="minVal">允许的最小值</param>
+    /// <param name="maxVal">允许的最大值</param>
+    /// <param name="isInclude">边界值是否包含在有效范围内</param>
+    /// <returns>生成的随机数</returns>
     public static int GenRandomNum(int minVal, int maxVal, bool isInclude = false)
     {
         if (isInclude ? maxVal < minVal : maxVal <= minVal)
@@ -288,18 +288,18 @@ public static class VerificationUtil
     }
 
     /// <summary>
-    /// 生成包含上下边界的安全随机整数。
+    /// 生成包含上下边界的安全随机整数
     /// </summary>
-    /// <param name="minValue">生成随机数时允许的最小值。</param>
-    /// <param name="maxValue">生成随机数时不包含的上限值。</param>
-    /// <returns>生成的包含上下边界的安全随机整数。</returns>
+    /// <param name="minValue">生成随机数时允许的最小值</param>
+    /// <param name="maxValue">生成随机数时不包含的上限值</param>
+    /// <returns>生成的包含上下边界的安全随机整数</returns>
     private static int GetRandomInt32(int minValue, int maxValue)
     {
         var range = (ulong) ((long) maxValue - minValue + 1);
         const ulong sampleSpace = 1UL << 32;
         var limit = sampleSpace - sampleSpace % range;
 
-        // 舍弃不能被区间长度整除的尾部样本，避免取模造成某些数字概率偏高。
+        // 舍弃不能被区间长度整除的尾部样本，避免取模造成某些数字概率偏高
         Span<byte> bytes = stackalloc byte[sizeof(uint)];
         uint sample;
         do

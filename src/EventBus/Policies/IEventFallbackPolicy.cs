@@ -23,16 +23,16 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// 事件重试失败回调服务。
+/// 事件重试失败回调服务
 /// </summary>
 [SuppressSniffer]
 public interface IEventFallbackPolicy
 {
     /// <summary>
-    /// 重试失败回调。
+    /// 重试失败回调
     /// </summary>
-    /// <param name="context">当前事件处理上下文。</param>
-    /// <param name="ex">触发当前处理流程的异常。</param>
-    /// <returns>表示异步“重试失败回调”操作的任务。</returns>
+    /// <param name="context">当前事件处理上下文</param>
+    /// <param name="ex">触发当前处理流程的异常</param>
+    /// <returns>表示异步“重试失败回调”操作的任务</returns>
     Task CallbackAsync(EventHandlerExecutingContext context, Exception ex);
 }

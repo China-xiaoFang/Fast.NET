@@ -26,17 +26,17 @@ using System.Text;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// 系统 Shell 工具类。
+/// 系统 Shell 工具类
 /// </summary>
 [SuppressSniffer]
 public static class ShellUtil
 {
     /// <summary>
-    /// Linux Bash 命令。
+    /// Linux Bash 命令
     /// </summary>
-    /// <param name="command">要执行的命令文本。</param>
-    /// <param name="timeout">超时时间，单位为毫秒。</param>
-    /// <returns>Linux Bash 命令。</returns>
+    /// <param name="command">要执行的命令文本</param>
+    /// <param name="timeout">超时时间，单位为毫秒</param>
+    /// <returns>Linux Bash 命令</returns>
     public static string Bash(string command, int timeout = 0)
     {
         var escapedArgs = command.Replace("\"", "\\\"");
@@ -78,7 +78,7 @@ public static class ShellUtil
                 }
                 catch
                 {
-                    // 进程可能在 WaitForExit 超时后自行退出，此时无需重复终止。
+                    // 进程可能在 WaitForExit 超时后自行退出，此时无需重复终止
                 }
 
                 throw new TimeoutException("命令执行超时");
@@ -99,12 +99,12 @@ public static class ShellUtil
     }
 
     /// <summary>
-    /// Windows Cmd 命令。
+    /// Windows Cmd 命令
     /// </summary>
-    /// <param name="command">要执行的命令文本。</param>
-    /// <param name="args">格式化消息时使用的参数。</param>
-    /// <param name="timeout">超时时间，单位为毫秒。</param>
-    /// <returns>Windows Cmd 命令。</returns>
+    /// <param name="command">要执行的命令文本</param>
+    /// <param name="args">格式化消息时使用的参数</param>
+    /// <param name="timeout">超时时间，单位为毫秒</param>
+    /// <returns>Windows Cmd 命令</returns>
     public static string Cmd(string command, string args = null, int timeout = 0)
     {
         using var process = new Process();
@@ -145,7 +145,7 @@ public static class ShellUtil
                 }
                 catch
                 {
-                    // 进程可能在 WaitForExit 超时后自行退出，此时无需重复终止。
+                    // 进程可能在 WaitForExit 超时后自行退出，此时无需重复终止
                 }
 
                 throw new TimeoutException("命令执行超时");

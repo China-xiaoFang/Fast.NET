@@ -23,48 +23,48 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// Entity 基类接口。
+/// Entity 基类接口
 /// </summary>
 [SuppressSniffer]
 public interface IBaseEntity : IDatabaseEntity
 {
     /// <summary>
-    /// 部门Id。
+    /// 部门Id
     /// </summary>
     long? DepartmentId { get; set; }
 
     /// <summary>
-    /// 部门名称。
+    /// 部门名称
     /// </summary>
     string DepartmentName { get; set; }
 
     /// <summary>
-    /// 创建者用户Id。
+    /// 创建者用户Id
     /// </summary>
     long? CreatedUserId { get; set; }
 
     /// <summary>
-    /// 创建者用户名称。
+    /// 创建者用户名称
     /// </summary>
     string CreatedUserName { get; set; }
 
     /// <summary>
-    /// 创建时间。
+    /// 创建时间
     /// </summary>
     DateTime? CreatedTime { get; set; }
 
     /// <summary>
-    /// 更新者用户Id。
+    /// 更新者用户Id
     /// </summary>
     long? UpdatedUserId { get; set; }
 
     /// <summary>
-    /// 更新者用户名称。
+    /// 更新者用户名称
     /// </summary>
     string UpdatedUserName { get; set; }
 
     /// <summary>
-    /// 更新时间。
+    /// 更新时间
     /// </summary>
     DateTime? UpdatedTime { get; set; }
 }

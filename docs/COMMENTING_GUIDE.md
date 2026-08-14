@@ -14,7 +14,7 @@ Every `public` or `protected` API and every interface member must use C# XML doc
 - Use `<exception>` for exceptions callers are expected to handle and `<remarks>` for cost, concurrency, security, or platform constraints.
 - Use `<inheritdoc />` when an implementation already has a complete interface or base-class contract.
 - Preserve identifier casing and suffixes when comments refer to code names, for example `UserId`, `用户Id`, and `租户Id`, rather than `UserID` or `用户 ID`.
-- End XML documentation prose with appropriate punctuation. Complete implementation-comment sentences also use punctuation, while short labels may omit it.
+- Do not end XML documentation tags (including `<returns>`), type comments, or ordinary `//` comments with `。！？；：，、…,.!?;:`. Preserve parentheses, brackets, separators, and single-line license headers.
 
 Bad:
 
@@ -27,11 +27,11 @@ Preferred:
 
 ```csharp
 /// <summary>
-/// Stores a value under the specified cache key.
+/// Stores a value under the specified cache key
 /// </summary>
-/// <param name="key">The cache key.</param>
-/// <param name="value">The value to store.</param>
-/// <returns><see langword="true"/> when the value is stored successfully; otherwise <see langword="false"/>.</returns>
+/// <param name="key">The cache key</param>
+/// <param name="value">The value to store</param>
+/// <returns><see langword="true"/> when the value is stored successfully; otherwise <see langword="false"/></returns>
 bool Set(string key, object value);
 ```
 

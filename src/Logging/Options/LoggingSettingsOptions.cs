@@ -26,28 +26,28 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// 日志配置选项。
+/// 日志配置选项
 /// </summary>
 [SuppressSniffer]
 public class LoggingSettingsOptions : IPostConfigure
 {
     /// <summary>
-    /// 文件格式字符串。
+    /// 文件格式字符串
     /// </summary>
     public string FileFormat { get; set; }
 
     /// <summary>
-    /// 文件大小限制（字节）。
+    /// 文件大小限制（字节）
     /// </summary>
     public int? FileSizeLimit { get; set; }
 
     /// <summary>
-    /// 最小日志级别。
+    /// 最小日志级别
     /// </summary>
     public LogLevel? MiniLogLevel { get; set; }
 
     /// <summary>
-    /// 启用 <see cref="LogLevel.Critical"/> 级别日志。
+    /// 启用 <see cref="LogLevel.Critical"/> 级别日志
     /// </summary>
     public bool? EnableCritical { get; set; }
 

@@ -23,15 +23,15 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// 为 <see cref="Convert"/> 提供转换扩展方法。
+/// 为 <see cref="Convert"/> 提供转换扩展方法
 /// </summary>
 internal static class ConvertExtension
 {
     /// <summary>
-    /// 将 DateTimeOffset 转换成本地 DateTime。
+    /// 将 DateTimeOffset 转换成本地 DateTime
     /// </summary>
-    /// <param name="dateTime">要转换的日期时间偏移值。</param>
-    /// <returns>将 DateTimeOffset 转换成本地 DateTime。</returns>
+    /// <param name="dateTime">要转换的日期时间偏移值</param>
+    /// <returns>将 DateTimeOffset 转换成本地 DateTime</returns>
     public static DateTime ParseToDateTime(this DateTimeOffset dateTime)
     {
         if (dateTime.Offset.Equals(TimeSpan.Zero))

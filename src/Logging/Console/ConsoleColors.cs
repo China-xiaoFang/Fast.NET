@@ -23,15 +23,15 @@
 namespace Fast.Logging;
 
 /// <summary>
-/// 控制台颜色结构。
+/// 控制台颜色结构
 /// </summary>
 internal readonly struct ConsoleColors
 {
     /// <summary>
-    /// 初始化类的新实例。
+    /// 初始化类的新实例
     /// </summary>
-    /// <param name="foreground">控制台前景色。</param>
-    /// <param name="background">控制台背景色。</param>
+    /// <param name="foreground">控制台前景色</param>
+    /// <param name="background">控制台背景色</param>
     public ConsoleColors(ConsoleColor? foreground, ConsoleColor? background)
     {
         Foreground = foreground;
@@ -39,12 +39,12 @@ internal readonly struct ConsoleColors
     }
 
     /// <summary>
-    /// 前景色。
+    /// 前景色
     /// </summary>
     public ConsoleColor? Foreground { get; }
 
     /// <summary>
-    /// 背景色。
+    /// 背景色
     /// </summary>
     public ConsoleColor? Background { get; }
 }

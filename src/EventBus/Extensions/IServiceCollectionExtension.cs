@@ -25,16 +25,16 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法。
+/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 添加事件总线服务。
+    /// 添加事件总线服务
     /// </summary>
-    /// <param name="services">要添加服务的服务集合。</param>
-    /// <returns>返回 <paramref name="services"/>，便于链式调用。</returns>
+    /// <param name="services">要添加服务的服务集合</param>
+    /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
     public static IServiceCollection AddEventBus(this IServiceCollection services)
     {
         Debugging.Info("Registering event bus......");
@@ -80,7 +80,7 @@ public static class IServiceCollectionExtension
                 typeof(IEventFallbackPolicy).IsAssignableFrom(f) && f is {IsInterface: false, IsAbstract: false})
             .ToList();
 
-        // 特性保存的是具体策略类型，因此必须同时按具体类型注册，否则运行时按 Type 解析始终得到 null。
+        // 特性保存的是具体策略类型，因此必须同时按具体类型注册，否则运行时按 Type 解析始终得到 null
         foreach (var fallbackPolicyType in iEventFallbackPolicyTypes)
         {
             services.AddSingleton(fallbackPolicyType);

@@ -25,7 +25,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// 租户 Entity 基类。
+/// 租户 Entity 基类
 /// </summary>
 [SuppressSniffer]
 public class BaseTEntity : BaseEntity, IBaseTEntity
