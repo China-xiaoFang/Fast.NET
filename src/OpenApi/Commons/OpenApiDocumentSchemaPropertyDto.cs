@@ -25,7 +25,7 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentSchemaPropertyDto"/> OpenAPI 文档声明属性 DTO。
+/// OpenAPI 文档声明属性 DTO。
 /// </summary>
 public class OpenApiDocumentSchemaPropertyDto
 {

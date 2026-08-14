@@ -26,7 +26,7 @@ using System.Text.Json.Serialization;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventSubscribeOperateSource"/> 事件总线订阅管理事件源。
+/// 事件总线订阅管理事件源。
 /// </summary>
 internal sealed class EventSubscribeOperateSource : IEventSource
 {

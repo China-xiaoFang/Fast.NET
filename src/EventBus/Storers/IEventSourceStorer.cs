@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventSourceStorer"/> 事件源存储器。
+/// 事件源存储器。
 /// </summary>
 /// <remarks>
 /// <para>顾名思义，这里指的是事件消息存储中心，提供读写能力。</para>

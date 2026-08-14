@@ -25,7 +25,7 @@ using System.Linq.Expressions;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="ISqlSugarRepository{TEntity}"/> SqlSugar 删除仓储接口。
+/// SqlSugar 删除仓储接口。
 /// </summary>
 public partial interface ISqlSugarRepository<TEntity>
 {

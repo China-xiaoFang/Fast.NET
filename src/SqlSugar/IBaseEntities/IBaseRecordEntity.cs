@@ -25,7 +25,7 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IBaseRecordEntity"/> 自增主键记录 Entity 基类接口。
+/// 自增主键记录 Entity 基类接口。
 /// </summary>
 [SuppressSniffer]
 public interface IBaseRecordEntity : IDatabaseEntity

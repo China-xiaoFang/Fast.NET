@@ -25,7 +25,7 @@ using System.ComponentModel;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="ScriptLanguageEnum"/> 脚本语言枚举。
+/// 脚本语言枚举。
 /// </summary>
 public enum ScriptLanguageEnum : byte
 {

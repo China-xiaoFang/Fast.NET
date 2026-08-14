@@ -26,9 +26,9 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="IntJsonConverter"/> int 类型 JSON 返回处理。
+/// int 类型 JSON 返回处理。
 /// </summary>
-internal class IntJsonConverter : JsonConverter<int>
+internal sealed class IntJsonConverter : JsonConverter<int>
 {
     /// <inheritdoc />
     public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -47,9 +47,9 @@ internal class IntJsonConverter : JsonConverter<int>
 }
 
 /// <summary>
-/// <see cref="NullableIntJsonConverter"/> int? 类型 JSON 返回处理。
+/// int? 类型 JSON 返回处理。
 /// </summary>
-internal class NullableIntJsonConverter : JsonConverter<int?>
+internal sealed class NullableIntJsonConverter : JsonConverter<int?>
 {
     /// <inheritdoc />
     public override int? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventSubscribeAttribute"/> 事件处理程序特性。
+/// 事件处理程序特性。
 /// </summary>
 /// <remarks>
 /// <para>作用于 <see cref="IEventSubscriber"/> 实现类实例方法。</para>
@@ -34,7 +34,7 @@ namespace Fast.EventBus;
 public sealed class EventSubscribeAttribute : Attribute
 {
     /// <summary>
-    /// 初始化 <see cref="EventSubscribeAttribute"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <remarks>只支持事件类型和 Enum 类型。</remarks>
     /// <param name="eventId">日志事件标识。</param>

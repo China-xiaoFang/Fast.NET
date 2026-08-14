@@ -23,7 +23,7 @@
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="UserAgentInfo"/> 用户代理信息。
+/// 用户代理信息。
 /// </summary>
 [SuppressSniffer]
 public class UserAgentInfo

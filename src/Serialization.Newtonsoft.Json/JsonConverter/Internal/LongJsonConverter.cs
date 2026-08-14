@@ -26,9 +26,9 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="LongJsonConverter"/> Long 类型 JSON 返回处理。
+/// Long 类型 JSON 返回处理。
 /// </summary>
-internal class LongJsonConverter : JsonConverter<long>
+internal sealed class LongJsonConverter : JsonConverter<long>
 {
     /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, long value, JsonSerializer serializer)
@@ -53,9 +53,9 @@ internal class LongJsonConverter : JsonConverter<long>
 }
 
 /// <summary>
-/// <see cref="NullableLongJsonConverter"/> Long? 类型 JSON 返回处理。
+/// Long? 类型 JSON 返回处理。
 /// </summary>
-internal class NullableLongJsonConverter : JsonConverter<long?>
+internal sealed class NullableLongJsonConverter : JsonConverter<long?>
 {
     /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, long? value, JsonSerializer serializer)

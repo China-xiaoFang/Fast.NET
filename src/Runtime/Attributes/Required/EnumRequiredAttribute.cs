@@ -25,7 +25,7 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// <see cref="EnumRequiredAttribute"/> 验证 <see cref="Enum"/> 类型属性必填。
+/// 验证 <see cref="Enum"/> 类型属性必填。
 /// </summary>
 /// <remarks>默认验证当前值是否在枚举值中，如果需要验证其余的逻辑，请自行验证。</remarks>
 [SuppressSniffer]

@@ -25,7 +25,7 @@ using Fast.Runtime;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiSettingsOptions"/> OpenAPI 配置。
+/// OpenAPI 配置。
 /// </summary>
 [SuppressSniffer]
 public class OpenApiSettingsOptions : IPostConfigure
@@ -260,7 +260,7 @@ public class OpenApiSettingsOptions : IPostConfigure
 }
 
 /// <summary>
-/// <see cref="OpenApiImportSchemaMappingSettingsOptions"/> OpenAPI 导入声明映射配置。
+/// OpenAPI 导入声明映射配置。
 /// </summary>
 [SuppressSniffer]
 public class OpenApiImportSchemaMappingSettingsOptions
@@ -288,7 +288,7 @@ public class OpenApiImportSchemaMappingSettingsOptions
 }
 
 /// <summary>
-/// <see cref="OpenApiImportTypeMappingSettingsOptions"/> OpenAPI 导入类型映射配置。
+/// OpenAPI 导入类型映射配置。
 /// </summary>
 [SuppressSniffer]
 public class OpenApiImportTypeMappingSettingsOptions

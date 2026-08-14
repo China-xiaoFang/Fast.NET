@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IBaseEntity"/> Entity 基类接口。
+/// Entity 基类接口。
 /// </summary>
 [SuppressSniffer]
 public interface IBaseEntity : IDatabaseEntity

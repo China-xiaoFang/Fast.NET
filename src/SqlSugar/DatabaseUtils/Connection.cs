@@ -25,7 +25,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarDatabaseUtil"/> 连接字符串工具类。
+/// 连接字符串工具类。
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {

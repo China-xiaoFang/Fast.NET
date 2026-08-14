@@ -26,7 +26,7 @@ using Fast.Runtime;
 namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulSettingsOptions"/> Consul 配置选项。
+/// Consul 配置选项。
 /// </summary>
 public sealed class ConsulSettingsOptions : IPostConfigure
 {

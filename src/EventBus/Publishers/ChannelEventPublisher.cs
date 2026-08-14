@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="ChannelEventPublisher"/> 基于内存通道事件发布者（默认实现）。
+/// 基于内存通道事件发布者（默认实现）。
 /// </summary>
 internal sealed class ChannelEventPublisher : IEventPublisher
 {
@@ -33,7 +33,7 @@ internal sealed class ChannelEventPublisher : IEventPublisher
     private readonly IEventSourceStorer _eventSourceStorer;
 
     /// <summary>
-    /// 初始化 <see cref="ChannelEventPublisher"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventSourceStorer">事件源存储器。</param>
     public ChannelEventPublisher(IEventSourceStorer eventSourceStorer)

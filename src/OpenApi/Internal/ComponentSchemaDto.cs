@@ -25,9 +25,9 @@ using System.Text;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="ComponentSchemaDto"/> OpenAPI 文档组件声明 DTO。
+/// OpenAPI 文档组件声明 DTO。
 /// </summary>
-internal class ComponentSchemaDto
+internal sealed class ComponentSchemaDto
 {
     /// <summary>
     /// 名称。

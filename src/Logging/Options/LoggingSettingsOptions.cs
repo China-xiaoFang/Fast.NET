@@ -26,7 +26,7 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="LoggingSettingsOptions"/> 日志配置选项。
+/// 日志配置选项。
 /// </summary>
 [SuppressSniffer]
 public class LoggingSettingsOptions : IPostConfigure

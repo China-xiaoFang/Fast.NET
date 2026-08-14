@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarEntityInfo"/> SqlSugar 实体信息。
+/// SqlSugar 实体信息。
 /// </summary>
 [SuppressSniffer]
 public sealed class SqlSugarEntityInfo

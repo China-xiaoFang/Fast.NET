@@ -25,9 +25,9 @@ using System.Reflection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventBusFactory"/> 事件总线工厂默认实现。
+/// 事件总线工厂默认实现。
 /// </summary>
-internal class EventBusFactory : IEventBusFactory
+internal sealed class EventBusFactory : IEventBusFactory
 {
     /// <summary>
     /// 事件源存储器。
@@ -35,7 +35,7 @@ internal class EventBusFactory : IEventBusFactory
     private readonly IEventSourceStorer _eventSourceStorer;
 
     /// <summary>
-    /// 初始化 <see cref="EventBusFactory"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventSourceStorer">事件源存储器。</param>
     public EventBusFactory(IEventSourceStorer eventSourceStorer)

@@ -26,7 +26,7 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DataMaskingTypeEnum"/> 数据脱敏类型枚举。
+/// 数据脱敏类型枚举。
 /// </summary>
 public enum DataMaskingTypeEnum
 {
@@ -82,7 +82,7 @@ public enum DataMaskingTypeEnum
 }
 
 /// <summary>
-/// <see cref="DataMaskingConverter"/> JSON 返回数据脱敏处理。
+/// JSON 返回数据脱敏处理。
 /// </summary>
 public class DataMaskingConverter : JsonConverter<string>
 {
@@ -92,7 +92,7 @@ public class DataMaskingConverter : JsonConverter<string>
     public DataMaskingTypeEnum MaskingType { get; set; }
 
     /// <summary>
-    /// <see cref="DataMaskingConverter"/> JSON 返回数据脱敏处理。
+    /// JSON 返回数据脱敏处理。
     /// </summary>
     /// <param name="maskingType">数据脱敏方式。</param>
     public DataMaskingConverter(DataMaskingTypeEnum maskingType)

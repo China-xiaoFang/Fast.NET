@@ -28,7 +28,7 @@ namespace Fast.Logging;
 /// 文件日志记录器。
 /// </summary>
 /// <remarks>实现遵循 Microsoft.Extensions.Logging 自定义日志提供器约定。</remarks>
-internal class FileLogger : ILogger
+internal sealed class FileLogger : ILogger
 {
     /// <summary>
     /// 记录器类别名称。
@@ -46,7 +46,7 @@ internal class FileLogger : ILogger
     private readonly FileLoggerOptions _options;
 
     /// <summary>
-    /// 初始化 <see cref="FileLogger"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="logName">记录器类别名称。</param>
     /// <param name="fileLoggerProvider">文件日志记录器提供器。</param>

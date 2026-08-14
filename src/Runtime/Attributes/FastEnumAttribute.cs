@@ -25,7 +25,7 @@
 namespace System;
 
 /// <summary>
-/// <see cref="FastEnumAttribute"/> 枚举特性。
+/// 枚举特性。
 /// </summary>
 /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
 [SuppressSniffer]
@@ -48,7 +48,7 @@ public class FastEnumAttribute : Attribute
     public string Remark { get; set; }
 
     /// <summary>
-    /// <see cref="FastEnumAttribute"/> 枚举特性。
+    /// 枚举特性。
     /// </summary>
     /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
     public FastEnumAttribute()
@@ -56,7 +56,7 @@ public class FastEnumAttribute : Attribute
     }
 
     /// <summary>
-    /// <see cref="FastEnumAttribute"/> 枚举特性。
+    /// 枚举特性。
     /// </summary>
     /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
     /// <param name="chName">中文显示名称。</param>
@@ -70,7 +70,7 @@ public class FastEnumAttribute : Attribute
     }
 
     /// <summary>
-    /// <see cref="FastEnumAttribute"/> 枚举特性。
+    /// 枚举特性。
     /// </summary>
     /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
     /// <param name="chName">中文显示名称。</param>
@@ -82,7 +82,7 @@ public class FastEnumAttribute : Attribute
     }
 
     /// <summary>
-    /// <see cref="FastEnumAttribute"/> 枚举特性。
+    /// 枚举特性。
     /// </summary>
     /// <remarks>用于区分是否可以写入枚举字典的特性。</remarks>
     /// <param name="chName">中文显示名称。</param>

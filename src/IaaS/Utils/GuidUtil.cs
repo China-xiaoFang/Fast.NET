@@ -26,7 +26,7 @@ using System.Linq;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="GuidUtil"/> Guid 工具类。
+/// Guid 工具类。
 /// </summary>
 public static class GuidUtil
 {

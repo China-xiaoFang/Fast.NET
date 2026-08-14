@@ -32,7 +32,7 @@ namespace Fast.DynamicApplication;
 internal sealed class TextPlainMediaTypeFormatter : TextInputFormatter
 {
     /// <summary>
-    /// 初始化 <see cref="TextPlainMediaTypeFormatter"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     public TextPlainMediaTypeFormatter()
     {

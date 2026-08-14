@@ -27,7 +27,7 @@ using System.ComponentModel;
 namespace System;
 
 /// <summary>
-/// <see cref="HttpRequestActionEnum"/> HTTP 请求行为枚举。
+/// HTTP 请求行为枚举。
 /// </summary>
 [FastEnum("Http请求行为枚举")]
 public enum HttpRequestActionEnum

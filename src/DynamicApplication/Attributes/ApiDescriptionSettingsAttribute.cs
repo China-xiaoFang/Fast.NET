@@ -32,7 +32,7 @@ namespace Fast.DynamicApplication;
 public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribute
 {
     /// <summary>
-    /// 初始化 <see cref="ApiDescriptionSettingsAttribute"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     public ApiDescriptionSettingsAttribute()
     {
@@ -40,7 +40,7 @@ public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribu
     }
 
     /// <summary>
-    /// 初始化 <see cref="ApiDescriptionSettingsAttribute"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="enabled">是否启用该功能。</param>
     public ApiDescriptionSettingsAttribute(bool enabled)
@@ -50,7 +50,7 @@ public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribu
     }
 
     /// <summary>
-    /// 初始化 <see cref="ApiDescriptionSettingsAttribute"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="groups">文档分组集合。</param>
     public ApiDescriptionSettingsAttribute(params string[] groups)

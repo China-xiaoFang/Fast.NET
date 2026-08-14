@@ -32,7 +32,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// <see cref="DynamicApiControllerApplicationModelConvention"/> 动态接口控制器应用模型转换器。
+/// 动态接口控制器应用模型转换器。
 /// </summary>
 internal sealed class DynamicApiControllerApplicationModelConvention : IApplicationModelConvention
 {

@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="JsonContext"/> Newtonsoft.Json 序列化上下文。
+/// Newtonsoft.Json 序列化上下文。
 /// </summary>
 public static class JsonContext
 {

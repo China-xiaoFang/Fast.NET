@@ -25,7 +25,7 @@ using System;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="GlobalConstant"/> 常用常量。
+/// 常用常量。
 /// </summary>
 public static class GlobalConstant
 {

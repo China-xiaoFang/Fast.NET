@@ -29,7 +29,7 @@ using Microsoft.Extensions.Options;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="DataValidationFilter"/> 数据验证拦截器。
+/// 数据验证拦截器。
 /// </summary>
 internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
 {
@@ -39,7 +39,7 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     private readonly ApiBehaviorOptions _apiBehaviorOptions;
 
     /// <summary>
-    /// 初始化 <see cref="DataValidationFilter"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="options">当前组件使用的选项。</param>
     public DataValidationFilter(IOptions<ApiBehaviorOptions> options)

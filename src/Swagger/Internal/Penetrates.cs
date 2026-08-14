@@ -23,7 +23,7 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="Penetrates"/> 常量，公共方法配置类。
+/// 常量，公共方法配置类。
 /// </summary>
 internal static class Penetrates
 {

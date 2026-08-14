@@ -25,7 +25,7 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// <see cref="IntRequiredAttribute"/> 验证 <see cref="int"/> 类型属性必填。
+/// 验证 <see cref="int"/> 类型属性必填。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]

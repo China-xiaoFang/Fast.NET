@@ -36,7 +36,7 @@ internal sealed class AppAuthorizationPolicyProvider : IAuthorizationPolicyProvi
     public DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
 
     /// <summary>
-    /// 初始化 <see cref="AppAuthorizationPolicyProvider"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="options">当前组件使用的选项。</param>
     public AppAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options)

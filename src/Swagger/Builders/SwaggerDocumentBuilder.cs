@@ -40,7 +40,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="SwaggerDocumentBuilder"/> 规范化文档构建器。
+/// 规范化文档构建器。
 /// </summary>
 [SuppressSniffer]
 public static class SwaggerDocumentBuilder
@@ -66,7 +66,7 @@ public static class SwaggerDocumentBuilder
     public static readonly IEnumerable<string> DocumentGroups;
 
     /// <summary>
-    /// 初始化 <see cref="SwaggerDocumentBuilder"/> 类型的静态数据。
+    /// 初始化静态数据。
     /// </summary>
     static SwaggerDocumentBuilder()
     {

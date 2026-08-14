@@ -25,7 +25,7 @@ using System;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="DateTimeUtil"/> DateTime 工具类。
+/// DateTime 工具类。
 /// </summary>
 public static class DateTimeUtil
 {

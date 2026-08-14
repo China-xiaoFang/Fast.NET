@@ -27,7 +27,7 @@ using System.ComponentModel;
 namespace System;
 
 /// <summary>
-/// <see cref="HttpRequestMethodEnum"/> HTTP 请求方式枚举。
+/// HTTP 请求方式枚举。
 /// </summary>
 [FastEnum("Http请求方式枚举")]
 public enum HttpRequestMethodEnum

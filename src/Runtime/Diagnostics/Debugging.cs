@@ -27,7 +27,7 @@ using System.Diagnostics;
 namespace System;
 
 /// <summary>
-/// <see cref="Debugging"/> 向事件管理器中输出事件信息。
+/// 向事件管理器中输出事件信息。
 /// </summary>
 [SuppressSniffer]
 public static class Debugging

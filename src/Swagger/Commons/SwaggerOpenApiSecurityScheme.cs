@@ -25,13 +25,13 @@ using Microsoft.OpenApi;
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="SwaggerOpenApiSecurityScheme"/> Swagger 文档安全配置。
+/// Swagger 文档安全配置。
 /// </summary>
 [SuppressSniffer]
 public sealed class SwaggerOpenApiSecurityScheme : OpenApiSecurityScheme
 {
     /// <summary>
-    /// 初始化 <see cref="SwaggerOpenApiSecurityScheme"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     public SwaggerOpenApiSecurityScheme()
     {

@@ -27,7 +27,7 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="LoggingContext"/> 日志上下文。
+/// 日志上下文。
 /// </summary>
 [SuppressSniffer]
 public static class LoggingContext

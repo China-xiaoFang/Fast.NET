@@ -26,9 +26,9 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DoubleJsonConverter"/> double 类型 JSON 返回处理。
+/// double 类型 JSON 返回处理。
 /// </summary>
-internal class DoubleJsonConverter : JsonConverter<double>
+internal sealed class DoubleJsonConverter : JsonConverter<double>
 {
     /// <summary>
     /// 小数点位数。
@@ -68,9 +68,9 @@ internal class DoubleJsonConverter : JsonConverter<double>
 }
 
 /// <summary>
-/// <see cref="NullableDoubleJsonConverter"/> double? 类型 JSON 返回处理。
+/// double? 类型 JSON 返回处理。
 /// </summary>
-internal class NullableDoubleJsonConverter : JsonConverter<double?>
+internal sealed class NullableDoubleJsonConverter : JsonConverter<double?>
 {
     /// <summary>
     /// 小数点位数。

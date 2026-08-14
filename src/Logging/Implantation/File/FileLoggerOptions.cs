@@ -25,9 +25,9 @@ using Microsoft.Extensions.Logging;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="FileLoggerOptions"/> 文件日志记录器配置选项。
+/// 文件日志记录器配置选项。
 /// </summary>
-internal class FileLoggerOptions
+internal sealed class FileLoggerOptions
 {
     /// <summary>
     /// 控制每一个日志文件最大存储大小，默认无限制，单位是 B，也就是 1024 才等于 1KB。

@@ -25,20 +25,20 @@ using System.Text.Json.Serialization;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="ChannelEventSource"/> 内存通道事件源（事件承载对象）。
+/// 内存通道事件源（事件承载对象）。
 /// </summary>
 [SuppressSniffer]
 public sealed class ChannelEventSource : IEventSource
 {
     /// <summary>
-    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     public ChannelEventSource()
     {
     }
 
     /// <summary>
-    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventId">日志事件标识。</param>
     public ChannelEventSource(string eventId)
@@ -47,7 +47,7 @@ public sealed class ChannelEventSource : IEventSource
     }
 
     /// <summary>
-    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventId">日志事件标识。</param>
     /// <param name="payload">要写入令牌的载荷。</param>
@@ -57,7 +57,7 @@ public sealed class ChannelEventSource : IEventSource
     }
 
     /// <summary>
-    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventId">日志事件标识。</param>
     /// <param name="payload">要写入令牌的载荷。</param>
@@ -68,7 +68,7 @@ public sealed class ChannelEventSource : IEventSource
     }
 
     /// <summary>
-    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventId">日志事件标识。</param>
     public ChannelEventSource(Enum eventId) : this(eventId.EventBusToString())
@@ -76,7 +76,7 @@ public sealed class ChannelEventSource : IEventSource
     }
 
     /// <summary>
-    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventId">日志事件标识。</param>
     /// <param name="payload">要写入令牌的载荷。</param>
@@ -85,7 +85,7 @@ public sealed class ChannelEventSource : IEventSource
     }
 
     /// <summary>
-    /// 初始化 <see cref="ChannelEventSource"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventId">日志事件标识。</param>
     /// <param name="payload">要写入令牌的载荷。</param>

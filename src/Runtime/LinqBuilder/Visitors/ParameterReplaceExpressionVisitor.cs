@@ -36,7 +36,7 @@ internal sealed class ParameterReplaceExpressionVisitor : ExpressionVisitor
     private readonly Dictionary<ParameterExpression, ParameterExpression> parameterExpressionSetter;
 
     /// <summary>
-    /// 初始化 <see cref="ParameterReplaceExpressionVisitor"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="parameterExpressionSetter">参数表达式映射集合。</param>
     public ParameterReplaceExpressionVisitor(Dictionary<ParameterExpression, ParameterExpression> parameterExpressionSetter)

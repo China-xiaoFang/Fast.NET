@@ -25,7 +25,7 @@ using Fast.Runtime;
 namespace Fast.Cache;
 
 /// <summary>
-/// <see cref="RedisSettingsOptions"/> Redis 连接字符串配置。
+/// Redis 连接字符串配置。
 /// </summary>
 [SuppressSniffer]
 public class RedisSettingsOptions : IPostConfigure
@@ -83,7 +83,7 @@ public class RedisSettingsOptions : IPostConfigure
 }
 
 /// <summary>
-/// <see cref="RedisServiceSettingsOptions"/> Redis 连接字符串服务配置。
+/// Redis 连接字符串服务配置。
 /// </summary>
 [SuppressSniffer]
 public class RedisServiceSettingsOptions : RedisSettingsOptions

@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventFallbackPolicy"/> 事件重试失败回调服务。
+/// 事件重试失败回调服务。
 /// </summary>
 [SuppressSniffer]
 public interface IEventFallbackPolicy

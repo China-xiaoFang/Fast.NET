@@ -26,7 +26,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarContext"/> SqlSugar 上下文。
+/// SqlSugar 上下文。
 /// </summary>
 [SuppressSniffer]
 public sealed class SqlSugarContext

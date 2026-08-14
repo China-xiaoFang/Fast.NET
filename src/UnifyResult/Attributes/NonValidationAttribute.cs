@@ -23,7 +23,7 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="NonValidationAttribute"/> 跳过验证。
+/// 跳过验证。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]

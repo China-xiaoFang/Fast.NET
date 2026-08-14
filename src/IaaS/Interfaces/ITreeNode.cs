@@ -26,7 +26,7 @@ using System.Collections;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="ITreeNode{TProperty}"/> 树基类。
+/// 树基类。
 /// </summary>
 /// <typeparam name="TProperty">属性值类型。</typeparam>
 public interface ITreeNode<out TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable

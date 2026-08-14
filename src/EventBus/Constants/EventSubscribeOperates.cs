@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventSubscribeOperates"/> 事件订阅器操作选项。
+/// 事件订阅器操作选项。
 /// </summary>
 /// <remarks>控制动态新增/删除事件订阅器。</remarks>
 internal enum EventSubscribeOperates

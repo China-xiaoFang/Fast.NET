@@ -23,7 +23,7 @@
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="DiskInfo"/> 磁盘信息。
+/// 磁盘信息。
 /// </summary>
 [SuppressSniffer]
 public class DiskInfo

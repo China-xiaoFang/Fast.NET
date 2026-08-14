@@ -25,7 +25,7 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// <see cref="DateTimeRequiredAttribute"/> 验证 <see cref="DateTime"/> 类型属性必填。
+/// 验证 <see cref="DateTime"/> 类型属性必填。
 /// </summary>
 /// <remarks>默认必须在 1949-10-01 ~ 2099-12-31 之间。</remarks>
 [SuppressSniffer]

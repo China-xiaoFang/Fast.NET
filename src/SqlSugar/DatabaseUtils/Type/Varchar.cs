@@ -26,7 +26,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarDatabaseUtil"/> 数据库字段类型映射工具类。
+/// 数据库字段类型映射工具类。
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {

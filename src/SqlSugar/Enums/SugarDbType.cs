@@ -25,7 +25,7 @@ using System.ComponentModel;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SugarDbType"/> Sugar 数据库类型枚举。
+/// Sugar 数据库类型枚举。
 /// </summary>
 [FastEnum("Sugar数据库类型枚举")]
 public enum SugarDbType

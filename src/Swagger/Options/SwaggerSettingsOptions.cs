@@ -28,7 +28,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="SwaggerSettingsOptions"/> Swagger 配置选项。
+/// Swagger 配置选项。
 /// </summary>
 [SuppressSniffer]
 public sealed class SwaggerSettingsOptions : IPostConfigure

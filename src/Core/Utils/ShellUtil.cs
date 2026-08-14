@@ -26,7 +26,7 @@ using System.Text;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="ShellUtil"/> 系统 Shell 工具类。
+/// 系统 Shell 工具类。
 /// </summary>
 [SuppressSniffer]
 public static class ShellUtil

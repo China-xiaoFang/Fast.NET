@@ -25,7 +25,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedSortInput"/> SqlSugar 统一分页排序输入。
+/// SqlSugar 统一分页排序输入。
 /// </summary>
 [SuppressSniffer]
 public class PagedSortInput

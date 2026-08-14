@@ -28,10 +28,10 @@ namespace Fast.Logging;
 /// <summary>
 /// 控制台默认格式化选项扩展。
 /// </summary>
-internal class ConsoleFormatterExtendOptions : ConsoleFormatterOptions
+internal sealed class ConsoleFormatterExtendOptions : ConsoleFormatterOptions
 {
     /// <summary>
-    /// 初始化 <see cref="ConsoleFormatterExtendOptions"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     public ConsoleFormatterExtendOptions()
     {

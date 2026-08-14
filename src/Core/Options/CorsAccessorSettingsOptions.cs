@@ -26,7 +26,7 @@ using Fast.Runtime;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="CorsAccessorSettingsOptions"/> 跨域配置选项。
+/// 跨域配置选项。
 /// </summary>
 [SuppressSniffer]
 public sealed class CorsAccessorSettingsOptions : IPostConfigure

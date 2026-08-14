@@ -30,7 +30,7 @@ namespace Fast.Swagger;
 /// <summary>
 /// 修正 规范化文档 Enum 提示。
 /// </summary>
-internal class EnumSchemaFilter : ISchemaFilter
+internal sealed class EnumSchemaFilter : ISchemaFilter
 {
     /// <summary>
     /// 中文正则表达式。

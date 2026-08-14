@@ -23,7 +23,7 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentPathMethodRequestBodyDto"/> OpenAPI 文档路由请求体 DTO。
+/// OpenAPI 文档路由请求体 DTO。
 /// </summary>
 public class OpenApiDocumentPathMethodRequestBodyDto
 {

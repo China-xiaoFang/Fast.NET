@@ -25,7 +25,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SlaveConnectionInfo"/> 从库连接信息。
+/// 从库连接信息。
 /// </summary>
 [SuppressSniffer]
 public class SlaveConnectionInfo : DbConnectionInfo

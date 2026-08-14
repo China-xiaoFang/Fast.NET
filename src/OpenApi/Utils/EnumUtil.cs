@@ -27,7 +27,7 @@ using System.Text;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiUtil"/> OpenAPI 枚举工具类。
+/// OpenAPI 枚举工具类。
 /// </summary>
 public static partial class OpenApiUtil
 {

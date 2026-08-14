@@ -23,7 +23,7 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="GroupExtraInfo"/> 分组附加信息。
+/// 分组附加信息。
 /// </summary>
 [SuppressSniffer]
 public sealed class GroupExtraInfo

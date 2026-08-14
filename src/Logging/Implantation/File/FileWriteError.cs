@@ -25,10 +25,10 @@ namespace Fast.Logging;
 /// <summary>
 /// 文件写入错误信息上下文。
 /// </summary>
-internal class FileWriteError
+internal sealed class FileWriteError
 {
     /// <summary>
-    /// 初始化 <see cref="FileWriteError"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="currentFileName">当前日志文件名。</param>
     /// <param name="exception">异常对象。</param>

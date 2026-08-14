@@ -27,7 +27,7 @@ using System.Security.Cryptography;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="FileUtil"/> 文件工具类。
+/// 文件工具类。
 /// </summary>
 public static class FileUtil
 {

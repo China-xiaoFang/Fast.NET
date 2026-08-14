@@ -26,7 +26,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="IUnifyResponseProvider"/> 规范化响应数据提供器。
+/// 规范化响应数据提供器。
 /// </summary>
 public interface IUnifyResponseProvider
 {

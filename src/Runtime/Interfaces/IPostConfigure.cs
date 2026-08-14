@@ -23,7 +23,7 @@
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="IPostConfigure"/> 后期配置接口。
+/// 后期配置接口。
 /// </summary>
 /// <remarks>用于补充无法在构造函数或选项绑定阶段完成的默认配置。</remarks>
 [SuppressSniffer]

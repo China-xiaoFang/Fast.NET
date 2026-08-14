@@ -76,7 +76,7 @@ internal sealed class FileLoggingWriter : IDisposable
     private static readonly TimeSpan _reopenInterval = TimeSpan.FromSeconds(5);
 
     /// <summary>
-    /// 初始化 <see cref="FileLoggingWriter"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="fileLoggerProvider">文件日志记录器提供程序。</param>
     internal FileLoggingWriter(FileLoggerProvider fileLoggerProvider)

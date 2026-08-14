@@ -23,12 +23,12 @@
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// <see cref="ParameterRouteTemplate"/> 参数路由模板。
+/// 参数路由模板。
 /// </summary>
-internal class ParameterRouteTemplate
+internal sealed class ParameterRouteTemplate
 {
     /// <summary>
-    /// 初始化 <see cref="ParameterRouteTemplate"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     internal ParameterRouteTemplate()
     {

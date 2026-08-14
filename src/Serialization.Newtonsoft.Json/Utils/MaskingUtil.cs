@@ -23,7 +23,7 @@
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="MaskingUtil"/> 数据脱敏工具类。
+/// 数据脱敏工具类。
 /// </summary>
 internal static class MaskingUtil
 {

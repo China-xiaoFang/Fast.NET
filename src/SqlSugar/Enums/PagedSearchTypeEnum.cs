@@ -25,7 +25,7 @@ using System.ComponentModel;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedSearchTypeEnum"/> 分页搜索类型枚举。
+/// 分页搜索类型枚举。
 /// </summary>
 [FastEnum("分页搜索类型枚举")]
 public enum PagedSearchTypeEnum : byte

@@ -25,7 +25,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedSearchInput"/> SqlSugar 统一分页搜索输入。
+/// SqlSugar 统一分页搜索输入。
 /// </summary>
 [SuppressSniffer]
 public class PagedSearchInput

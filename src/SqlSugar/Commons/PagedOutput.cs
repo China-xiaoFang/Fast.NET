@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedOutput"/> SqlSugar 统一分页输出。
+/// SqlSugar 统一分页输出。
 /// </summary>
 [SuppressSniffer]
 public class PagedOutput

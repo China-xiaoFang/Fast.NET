@@ -25,7 +25,7 @@
 namespace System;
 
 /// <summary>
-/// <see cref="SuppressSnifferAttribute"/> 不被扫描和发现的特性。
+/// 不被扫描和发现的特性。
 /// </summary>
 /// <remarks>用于程序集扫描类型或方法时候。</remarks>
 [SuppressSniffer]

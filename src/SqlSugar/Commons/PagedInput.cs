@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedInput"/> SqlSugar 统一分页输入。
+/// SqlSugar 统一分页输入。
 /// </summary>
 [SuppressSniffer]
 public class PagedInput

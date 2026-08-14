@@ -23,7 +23,7 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentPathDto"/> OpenAPI 文档路由 DTO。
+/// OpenAPI 文档路由 DTO。
 /// </summary>
 public class OpenApiDocumentPathDto
 {

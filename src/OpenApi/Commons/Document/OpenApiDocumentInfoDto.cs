@@ -23,7 +23,7 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentInfoDto"/> OpenAPI 文档信息 DTO。
+/// OpenAPI 文档信息 DTO。
 /// </summary>
 public class OpenApiDocumentInfoDto
 {

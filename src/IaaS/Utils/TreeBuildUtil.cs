@@ -27,7 +27,7 @@ using System.Linq;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="TreeBuildUtil{TEntity, TProperty}"/> 递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等。
+/// 递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等。
 /// </summary>
 /// <typeparam name="TEntity">实体类型。</typeparam>
 /// <typeparam name="TProperty">属性值类型。</typeparam>

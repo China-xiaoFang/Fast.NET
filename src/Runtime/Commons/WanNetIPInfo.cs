@@ -23,7 +23,7 @@
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="WanNetIPInfo"/> 公网 IP 信息。
+/// 公网 IP 信息。
 /// </summary>
 [SuppressSniffer]
 public class WanNetIPInfo

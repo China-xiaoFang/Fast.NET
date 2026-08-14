@@ -23,7 +23,7 @@
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// <see cref="AllowForbiddenAttribute"/> 允许无权限访问(403)。
+/// 允许无权限访问(403)。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]

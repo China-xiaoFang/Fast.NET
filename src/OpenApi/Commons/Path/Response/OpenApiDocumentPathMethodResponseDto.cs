@@ -25,7 +25,7 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentPathMethodResponseDto"/> OpenAPI 文档路由响应 DTO。
+/// OpenAPI 文档路由响应 DTO。
 /// </summary>
 public class OpenApiDocumentPathMethodResponseDto
 {

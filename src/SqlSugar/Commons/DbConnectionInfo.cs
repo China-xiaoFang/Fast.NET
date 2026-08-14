@@ -26,7 +26,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="DbConnectionInfo"/> 数据库连接信息。
+/// 数据库连接信息。
 /// </summary>
 [SuppressSniffer]
 public class DbConnectionInfo : IPostConfigure

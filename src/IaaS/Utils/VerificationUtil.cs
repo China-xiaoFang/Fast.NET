@@ -27,7 +27,7 @@ using System.Text;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="VerificationUtil"/> 验证工具类。
+/// 验证工具类。
 /// </summary>
 public static class VerificationUtil
 {

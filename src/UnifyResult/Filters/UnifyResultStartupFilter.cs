@@ -26,9 +26,9 @@ using Microsoft.AspNetCore.Hosting;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="UnifyResultStartupFilter"/> 应用启动时自动注册中间件。
+/// 应用启动时自动注册中间件。
 /// </summary>
-internal class UnifyResultStartupFilter : IStartupFilter
+internal sealed class UnifyResultStartupFilter : IStartupFilter
 {
     /// <inheritdoc />
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)

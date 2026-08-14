@@ -26,7 +26,7 @@ using System.Linq;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="MaskingUtil"/> 数据脱敏工具类。
+/// 数据脱敏工具类。
 /// </summary>
 public static class MaskingUtil
 {

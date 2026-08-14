@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="MachineUtil"/> 系统机器工具类。
+/// 系统机器工具类。
 /// </summary>
 [SuppressSniffer]
 public static class MachineUtil

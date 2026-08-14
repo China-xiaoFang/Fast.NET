@@ -23,14 +23,14 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="OperationIdAttribute"/> 配置规范化文档 OperationId 问题。
+/// 配置规范化文档 OperationId 问题。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class OperationIdAttribute : Attribute
 {
     /// <summary>
-    /// 初始化 <see cref="OperationIdAttribute"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="operationId">operation 的唯一标识。</param>
     public OperationIdAttribute(string operationId)

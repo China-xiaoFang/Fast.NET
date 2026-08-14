@@ -25,7 +25,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="UpdateVersionInput"/> 行版本更新输入。
+/// 行版本更新输入。
 /// </summary>
 [SuppressSniffer]
 public class UpdateVersionInput

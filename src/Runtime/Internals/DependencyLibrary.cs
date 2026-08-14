@@ -23,7 +23,7 @@
 namespace Fast.Runtime;
 
 /// <summary>
-/// <see cref="DependencyLibrary"/> .deps.json 文件中 libraries 节点的 Model。
+/// .deps.json 文件中 libraries 节点的 Model。
 /// </summary>
 public class DependencyLibrary
 {

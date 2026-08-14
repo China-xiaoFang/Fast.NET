@@ -27,7 +27,7 @@ using System.ComponentModel;
 namespace System;
 
 /// <summary>
-/// <see cref="EnvironmentTypeEnum"/> 环境类型枚举。
+/// 环境类型枚举。
 /// </summary>
 [Flags]
 [FastEnum("环境类型枚举")]

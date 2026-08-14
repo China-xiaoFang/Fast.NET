@@ -32,7 +32,7 @@ namespace Fast.JwtBearer;
 /// <summary>
 /// 授权策略执行程序。
 /// </summary>
-internal class AppAuthorizationHandler : IAuthorizationHandler
+internal sealed class AppAuthorizationHandler : IAuthorizationHandler
 {
     /// <inheritdoc />
     public async Task HandleAsync(AuthorizationHandlerContext context)

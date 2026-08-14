@@ -31,7 +31,7 @@ namespace Fast.JwtBearer;
 public sealed class AppAuthorizeRequirement : IAuthorizationRequirement
 {
     /// <summary>
-    /// 初始化 <see cref="AppAuthorizeRequirement"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="policies">授权策略名称集合。</param>
     public AppAuthorizeRequirement(params string[] policies)

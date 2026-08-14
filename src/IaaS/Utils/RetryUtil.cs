@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="RetryUtil"/> 重试静态类。
+/// 重试静态类。
 /// </summary>
 public sealed class RetryUtil
 {

@@ -28,7 +28,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="BaseRecordEntity"/> 记录 Entity 基类。
+/// 记录 Entity 基类。
 /// </summary>
 [SuppressSniffer]
 public class BaseRecordEntity : IBaseRecordEntity

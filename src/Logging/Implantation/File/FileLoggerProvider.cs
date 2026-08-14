@@ -75,7 +75,7 @@ internal sealed class FileLoggerProvider : ILoggerProvider, ISupportExternalScop
     private int _queueFullWarningEmitted;
 
     /// <summary>
-    /// 初始化 <see cref="FileLoggerProvider"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="fileName">日志文件名。</param>
     /// <param name="fileLoggerOptions">文件日志记录器配置选项。</param>

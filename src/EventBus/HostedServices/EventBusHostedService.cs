@@ -29,7 +29,7 @@ using Microsoft.Extensions.Logging;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventBusHostedService"/> 事件总线后台主机服务。
+/// 事件总线后台主机服务。
 /// </summary>
 internal sealed class EventBusHostedService : BackgroundService
 {
@@ -69,7 +69,7 @@ internal sealed class EventBusHostedService : BackgroundService
     private long _lastGCCollectTicks;
 
     /// <summary>
-    /// 初始化 <see cref="EventBusHostedService"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="logger">日志对象。</param>
     /// <param name="serviceProvider">服务提供器。</param>

@@ -25,7 +25,7 @@ using System.ComponentModel;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// <see cref="JwtBearerAlgorithmEnum"/> JwtBearer 加密算法。
+/// JwtBearer 加密算法。
 /// </summary>
 [FastEnum("JwtBearer 加密算法")]
 public enum JwtBearerAlgorithmEnum : byte

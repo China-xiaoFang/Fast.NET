@@ -25,7 +25,7 @@ using System.Threading.Channels;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="ChannelEventSourceStorer"/> 内存通道事件源存储器（默认实现）。
+/// 内存通道事件源存储器（默认实现）。
 /// </summary>
 /// <remarks>
 /// <para>顾名思义，这里指的是事件消息存储中心，提供读写能力。</para>
@@ -39,7 +39,7 @@ internal sealed class ChannelEventSourceStorer : IEventSourceStorer
     private readonly Channel<IEventSource> _channel;
 
     /// <summary>
-    /// 初始化 <see cref="ChannelEventSourceStorer"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="capacity">管道最多能够处理多少消息，超过该容量进入等待写入。</param>
     public ChannelEventSourceStorer(int capacity)

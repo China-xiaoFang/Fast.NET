@@ -28,7 +28,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 仓储实现。
+/// SqlSugar 仓储实现。
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISqlSugarRepository<TEntity>
     where TEntity : class, new()
@@ -39,7 +39,7 @@ internal sealed partial class SqlSugarRepository<TEntity> : SqlSugarClient, ISql
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 仓储实现。
+    /// SqlSugar 仓储实现。
     /// </summary>
     /// <param name="hostEnvironment">当前应用的宿主环境。</param>
     /// <param name="serviceProvider">用于解析服务的服务提供器；为 <see langword="null"/> 时使用当前请求或根服务提供器。</param>

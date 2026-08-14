@@ -25,7 +25,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="ValidationMetadata"/> 验证信息元数据。
+/// 验证信息元数据。
 /// </summary>
 [SuppressSniffer]
 public sealed class ValidationMetadata

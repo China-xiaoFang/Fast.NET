@@ -48,7 +48,7 @@ internal sealed class ConsoleFormatterExtend : ConsoleFormatter, IDisposable
     private bool _disableColors;
 
     /// <summary>
-    /// 初始化 <see cref="ConsoleFormatterExtend"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="formatterOptions">formatter Options 配置。</param>
     public ConsoleFormatterExtend(IOptionsMonitor<ConsoleFormatterExtendOptions> formatterOptions) : base(Penetrates

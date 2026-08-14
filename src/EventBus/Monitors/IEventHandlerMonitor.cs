@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventHandlerMonitor"/> 事件处理程序监视器。
+/// 事件处理程序监视器。
 /// </summary>
 [SuppressSniffer]
 public interface IEventHandlerMonitor

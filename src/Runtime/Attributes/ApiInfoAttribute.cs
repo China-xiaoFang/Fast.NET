@@ -25,7 +25,7 @@
 namespace System;
 
 /// <summary>
-/// <see cref="ApiInfoAttribute"/> 接口信息。
+/// 接口信息。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method)]
@@ -42,7 +42,7 @@ public class ApiInfoAttribute : Attribute
     public HttpRequestActionEnum Action { get; set; }
 
     /// <summary>
-    /// <see cref="ApiInfoAttribute"/> 接口信息。
+    /// 接口信息。
     /// </summary>
     /// <param name="name">接口名称。</param>
     public ApiInfoAttribute(string name)
@@ -52,7 +52,7 @@ public class ApiInfoAttribute : Attribute
     }
 
     /// <summary>
-    /// <see cref="ApiInfoAttribute"/> 接口信息。
+    /// 接口信息。
     /// </summary>
     /// <param name="name">接口名称。</param>
     /// <param name="action">HttpRequestActionEnum 操作方式。</param>

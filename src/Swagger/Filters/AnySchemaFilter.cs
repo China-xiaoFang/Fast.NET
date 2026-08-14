@@ -29,7 +29,7 @@ namespace Fast.Swagger;
 /// 修正 规范化文档 object schema，统一显示为 any。
 /// </summary>
 /// <remarks>相关 issue：https://github.com/swagger-api/swagger-codegen-generators/issues/692。</remarks>
-internal class AnySchemaFilter : ISchemaFilter
+internal sealed class AnySchemaFilter : ISchemaFilter
 {
     /// <inheritdoc />
     public void Apply(IOpenApiSchema schema, SchemaFilterContext context)

@@ -28,7 +28,7 @@ namespace Fast.Logging;
 internal readonly struct ConsoleColors
 {
     /// <summary>
-    /// 初始化 <see cref="ConsoleColors"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="foreground">控制台前景色。</param>
     /// <param name="background">控制台背景色。</param>

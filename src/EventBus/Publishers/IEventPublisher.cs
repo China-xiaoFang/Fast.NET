@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventPublisher"/> 事件发布服务依赖接口。
+/// 事件发布服务依赖接口。
 /// </summary>
 [SuppressSniffer]
 public interface IEventPublisher

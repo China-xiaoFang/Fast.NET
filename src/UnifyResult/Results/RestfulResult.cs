@@ -23,7 +23,7 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="RestfulResult{T}"/> RESTful 风格返回格式。
+/// RESTful 风格返回格式。
 /// </summary>
 /// <typeparam name="T">该类型处理的值类型。</typeparam>
 [SuppressSniffer]

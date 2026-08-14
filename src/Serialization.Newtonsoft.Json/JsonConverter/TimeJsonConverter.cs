@@ -27,7 +27,7 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="TimeJsonConverter"/> DateTime 类型 JSON 返回时间处理。
+/// DateTime 类型 JSON 返回时间处理。
 /// </summary>
 public class TimeJsonConverter : JsonConverter<DateTime>
 {
@@ -37,7 +37,7 @@ public class TimeJsonConverter : JsonConverter<DateTime>
     public string Format { get; set; }
 
     /// <summary>
-    /// <see cref="TimeJsonConverter"/> DateTime 类型 JSON 返回时间处理。
+    /// DateTime 类型 JSON 返回时间处理。
     /// </summary>
     public TimeJsonConverter()
     {
@@ -45,7 +45,7 @@ public class TimeJsonConverter : JsonConverter<DateTime>
     }
 
     /// <summary>
-    /// <see cref="TimeJsonConverter"/> DateTime 类型 JSON 返回时间处理。
+    /// DateTime 类型 JSON 返回时间处理。
     /// </summary>
     /// <param name="format">日期格式化 默认：HH:mm:ss。</param>
     public TimeJsonConverter(string format)
@@ -102,7 +102,7 @@ public class TimeJsonConverter : JsonConverter<DateTime>
 }
 
 /// <summary>
-/// <see cref="NullableTimeJsonConverter"/> DateTime? 类型 JSON 返回时间处理。
+/// DateTime? 类型 JSON 返回时间处理。
 /// </summary>
 public class NullableTimeJsonConverter : JsonConverter<DateTime?>
 {
@@ -112,7 +112,7 @@ public class NullableTimeJsonConverter : JsonConverter<DateTime?>
     public string Format { get; set; }
 
     /// <summary>
-    /// <see cref="NullableTimeJsonConverter"/> DateTime? 类型 JSON 返回时间处理。
+    /// DateTime? 类型 JSON 返回时间处理。
     /// </summary>
     public NullableTimeJsonConverter()
     {
@@ -120,7 +120,7 @@ public class NullableTimeJsonConverter : JsonConverter<DateTime?>
     }
 
     /// <summary>
-    /// <see cref="NullableTimeJsonConverter"/> DateTime? 类型 JSON 返回时间处理。
+    /// DateTime? 类型 JSON 返回时间处理。
     /// </summary>
     /// <param name="format">日期格式化 默认：HH:mm:ss。</param>
     public NullableTimeJsonConverter(string format)

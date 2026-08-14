@@ -26,9 +26,9 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="EnumConverterFactory"/> Enum 类型 JSON 转换工厂。
+/// Enum 类型 JSON 转换工厂。
 /// </summary>
-internal class EnumConverterFactory : JsonConverterFactory
+internal sealed class EnumConverterFactory : JsonConverterFactory
 {
     /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert)
@@ -45,9 +45,9 @@ internal class EnumConverterFactory : JsonConverterFactory
 }
 
 /// <summary>
-/// <see cref="NullableEnumConverterFactory"/> Enum 类型 JSON 转换工厂。
+/// Enum 类型 JSON 转换工厂。
 /// </summary>
-internal class NullableEnumConverterFactory : JsonConverterFactory
+internal sealed class NullableEnumConverterFactory : JsonConverterFactory
 {
     /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert)

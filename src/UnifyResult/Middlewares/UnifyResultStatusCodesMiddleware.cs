@@ -25,9 +25,9 @@ using Microsoft.AspNetCore.Http;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="UnifyResultStatusCodesMiddleware"/> 状态码中间件。
+/// 状态码中间件。
 /// </summary>
-internal class UnifyResultStatusCodesMiddleware
+internal sealed class UnifyResultStatusCodesMiddleware
 {
     /// <summary>
     /// 请求委托。
@@ -35,7 +35,7 @@ internal class UnifyResultStatusCodesMiddleware
     private readonly RequestDelegate _next;
 
     /// <summary>
-    /// 初始化 <see cref="UnifyResultStatusCodesMiddleware"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="next">处理管道中的下一个委托。</param>
     public UnifyResultStatusCodesMiddleware(RequestDelegate next)

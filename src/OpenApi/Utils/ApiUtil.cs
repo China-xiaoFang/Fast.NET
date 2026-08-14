@@ -27,7 +27,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiUtil"/> OpenAPI API 工具类。
+/// OpenAPI API 工具类。
 /// </summary>
 public static partial class OpenApiUtil
 {

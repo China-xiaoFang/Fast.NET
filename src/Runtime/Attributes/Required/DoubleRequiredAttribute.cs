@@ -25,7 +25,7 @@
 namespace System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// <see cref="DoubleRequiredAttribute"/> 验证 <see cref="double"/> 类型属性必填。
+/// 验证 <see cref="double"/> 类型属性必填。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]

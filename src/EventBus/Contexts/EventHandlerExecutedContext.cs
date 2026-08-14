@@ -25,13 +25,13 @@ using System.Reflection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventHandlerExecutedContext"/> 事件处理程序执行后上下文。
+/// 事件处理程序执行后上下文。
 /// </summary>
 [SuppressSniffer]
 public sealed class EventHandlerExecutedContext : EventHandlerContext
 {
     /// <summary>
-    /// 初始化 <see cref="EventHandlerExecutedContext"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventSource">事件源（事件承载对象）。</param>
     /// <param name="properties">共享上下文数据。</param>

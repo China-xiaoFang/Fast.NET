@@ -29,7 +29,7 @@ namespace Fast.Swagger;
 /// <summary>
 /// 标签文档排序/注释拦截器。
 /// </summary>
-internal class TagsOrderDocumentFilter : IDocumentFilter
+internal sealed class TagsOrderDocumentFilter : IDocumentFilter
 {
     /// <inheritdoc />
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)

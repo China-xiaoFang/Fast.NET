@@ -30,9 +30,9 @@ using Microsoft.Extensions.Hosting;
 namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulStartupFilter"/> 应用启动时自动注册中间件。
+/// 应用启动时自动注册中间件。
 /// </summary>
-internal class ConsulStartupFilter : IStartupFilter
+internal sealed class ConsulStartupFilter : IStartupFilter
 {
     /// <inheritdoc />
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> action)

@@ -25,7 +25,7 @@ using Fast.Runtime;
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// <see cref="JWTSettingsOptions"/> JWT 配置。
+/// JWT 配置。
 /// </summary>
 [SuppressSniffer]
 public sealed class JWTSettingsOptions : IPostConfigure

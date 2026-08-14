@@ -30,7 +30,7 @@ namespace Fast.Swagger;
 /// <summary>
 /// 规范化文档自定义更多功能。
 /// </summary>
-internal class ApiActionFilter : IOperationFilter
+internal sealed class ApiActionFilter : IOperationFilter
 {
     /// <inheritdoc />
     public void Apply(OpenApiOperation operation, OperationFilterContext context)

@@ -25,7 +25,7 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentDto"/> OpenAPI 文档 DTO。
+/// OpenAPI 文档 DTO。
 /// </summary>
 public class OpenApiDocumentDto
 {

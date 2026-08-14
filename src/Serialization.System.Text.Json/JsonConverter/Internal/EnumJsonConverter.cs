@@ -26,10 +26,10 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="EnumJsonConverter{T}"/> Enum 类型 JSON 返回处理。
+/// Enum 类型 JSON 返回处理。
 /// </summary>
 /// <typeparam name="T">序列化或转换后的对象类型。</typeparam>
-internal class EnumJsonConverter<T> : JsonConverter<T> where T : struct, Enum
+internal sealed class EnumJsonConverter<T> : JsonConverter<T> where T : struct, Enum
 {
     /// <inheritdoc />
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -81,10 +81,10 @@ internal class EnumJsonConverter<T> : JsonConverter<T> where T : struct, Enum
 }
 
 /// <summary>
-/// <see cref="NullableEnumJsonConverter{T}"/> Enum? 类型 JSON 返回处理。
+/// Enum? 类型 JSON 返回处理。
 /// </summary>
 /// <typeparam name="T">序列化或转换后的对象类型。</typeparam>
-internal class NullableEnumJsonConverter<T> : JsonConverter<T?> where T : struct, Enum
+internal sealed class NullableEnumJsonConverter<T> : JsonConverter<T?> where T : struct, Enum
 {
     /// <inheritdoc />
     public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

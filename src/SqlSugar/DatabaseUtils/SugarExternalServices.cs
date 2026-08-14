@@ -28,7 +28,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarDatabaseUtil"/> SugarExternalServices 工具类。
+/// SugarExternalServices 工具类。
 /// </summary>
 public partial class SqlSugarDatabaseUtil
 {

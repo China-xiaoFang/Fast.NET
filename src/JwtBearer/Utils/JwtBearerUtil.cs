@@ -40,7 +40,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// <see cref="JwtBearerUtil"/> JwtBearer 工具类。
+/// JwtBearer 工具类。
 /// </summary>
 public static class JwtBearerUtil
 {

@@ -25,13 +25,13 @@ using System.Reflection;
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="EventHandlerWrapper"/> 事件处理程序包装类。
+/// 事件处理程序包装类。
 /// </summary>
 /// <remarks>主要用于主机服务启动时将所有处理程序和事件 ID 进行包装绑定。</remarks>
 internal sealed class EventHandlerWrapper
 {
     /// <summary>
-    /// 初始化 <see cref="EventHandlerWrapper"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="eventId">事件 ID。</param>
     internal EventHandlerWrapper(string eventId)

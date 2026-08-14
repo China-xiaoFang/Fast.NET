@@ -25,7 +25,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="IUpdateVersion"/> 行版本实体接口。
+/// 行版本实体接口。
 /// </summary>
 /// <remarks>仅单条实体更新会触发行版本检查，冲突时抛出 <see cref="VersionExceptions"/>。</remarks>
 [SuppressSniffer]

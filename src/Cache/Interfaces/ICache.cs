@@ -25,14 +25,14 @@ using CSRedis;
 namespace Fast.Cache;
 
 /// <summary>
-/// <see cref="ICache"/> 默认缓存服务接口。
+/// 默认缓存服务接口。
 /// </summary>
 public interface ICache : ICache<DefaultCacheContextLocator>
 {
 }
 
 /// <summary>
-/// <see cref="ICache{CacheContextLocator}"/> 缓存服务接口。
+/// 缓存服务接口。
 /// </summary>
 /// <typeparam name="CacheContextLocator">缓存上下文定位器类型，用于隔离不同缓存配置。</typeparam>
 public interface ICache<out CacheContextLocator> where CacheContextLocator : ICacheContextLocator, new()

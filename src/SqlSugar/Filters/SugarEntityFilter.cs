@@ -27,7 +27,7 @@ using Yitter.IdGenerator;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SugarEntityFilter"/> Sugar 实体过滤器。
+/// Sugar 实体过滤器。
 /// </summary>
 [SuppressSniffer]
 public static class SugarEntityFilter

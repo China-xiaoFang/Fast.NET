@@ -34,7 +34,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace System;
 
 /// <summary>
-/// <see cref="MAppContext"/> Microsoft App 上下文。
+/// Microsoft App 上下文。
 /// </summary>
 [SuppressSniffer]
 public static class MAppContext

@@ -25,7 +25,7 @@ using System.Collections.Generic;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="NumberUtil"/> 序号工具类。
+/// 序号工具类。
 /// </summary>
 public static class NumberUtil
 {

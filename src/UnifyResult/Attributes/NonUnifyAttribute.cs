@@ -23,7 +23,7 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="NonUnifyAttribute"/> 禁止规范化处理。
+/// 禁止规范化处理。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]

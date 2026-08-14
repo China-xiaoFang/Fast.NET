@@ -23,14 +23,14 @@
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="SchemaIdAttribute"/> 解决规范化文档 SchemaId 冲突问题。
+/// 解决规范化文档 SchemaId 冲突问题。
 /// </summary>
 [SuppressSniffer]
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class SchemaIdAttribute : Attribute
 {
     /// <summary>
-    /// 初始化 <see cref="SchemaIdAttribute"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="schemaId">schema 的唯一标识。</param>
     public SchemaIdAttribute(string schemaId)
@@ -39,7 +39,7 @@ public sealed class SchemaIdAttribute : Attribute
     }
 
     /// <summary>
-    /// 初始化 <see cref="SchemaIdAttribute"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="schemaId">schema 的唯一标识。</param>
     /// <param name="replace">替换默认 Schema ID 的自定义值。</param>

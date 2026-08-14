@@ -23,7 +23,7 @@
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="PagedResult{TResult}"/> SqlSugar 统一分页返回结果类。
+/// SqlSugar 统一分页返回结果类。
 /// </summary>
 /// <typeparam name="TResult">操作结果类型。</typeparam>
 [SuppressSniffer]

@@ -26,7 +26,7 @@ using Fast.Runtime;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SnowflakeSettingsOptions"/> 雪花 ID 配置。
+/// 雪花 ID 配置。
 /// </summary>
 [SuppressSniffer]
 public class SnowflakeSettingsOptions : IPostConfigure

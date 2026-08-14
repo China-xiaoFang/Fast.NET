@@ -25,7 +25,7 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentPathMethodContentDto"/> OpenAPI 文档路由内容 DTO。
+/// OpenAPI 文档路由内容 DTO。
 /// </summary>
 public class OpenApiDocumentPathMethodContentDto
 {

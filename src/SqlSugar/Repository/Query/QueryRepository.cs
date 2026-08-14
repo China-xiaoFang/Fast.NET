@@ -26,7 +26,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 查询仓储实现。
+/// SqlSugar 查询仓储实现。
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity>
 {

@@ -23,7 +23,7 @@
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiDocumentComponentDto"/> OpenAPI 文档组件 DTO。
+/// OpenAPI 文档组件 DTO。
 /// </summary>
 public class OpenApiDocumentComponentDto
 {

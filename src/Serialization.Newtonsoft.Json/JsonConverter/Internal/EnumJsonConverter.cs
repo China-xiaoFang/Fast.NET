@@ -26,9 +26,9 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="EnumJsonConverter"/> Enum 类型 JSON 返回处理。
+/// Enum 类型 JSON 返回处理。
 /// </summary>
-internal class EnumJsonConverter : JsonConverter
+internal sealed class EnumJsonConverter : JsonConverter
 {
     /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

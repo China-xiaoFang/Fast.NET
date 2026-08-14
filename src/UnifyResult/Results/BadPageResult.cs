@@ -27,7 +27,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="BadPageResult"/> 错误页面。
+/// 错误页面。
 /// </summary>
 [SuppressSniffer]
 public class BadPageResult : StatusCodeResult

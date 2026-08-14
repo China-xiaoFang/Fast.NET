@@ -25,7 +25,7 @@ using System.Linq.Expressions;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="SqlSugarRepository{TEntity}"/> SqlSugar 删除仓储实现。
+/// SqlSugar 删除仓储实现。
 /// </summary>
 internal sealed partial class SqlSugarRepository<TEntity>
 {

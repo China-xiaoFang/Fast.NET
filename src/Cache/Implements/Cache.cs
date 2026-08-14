@@ -27,7 +27,7 @@ using Microsoft.Extensions.Options;
 namespace Fast.Cache;
 
 /// <summary>
-/// <see cref="Cache"/> 默认缓存实现。
+/// 默认缓存实现。
 /// </summary>
 internal sealed class Cache : Cache<DefaultCacheContextLocator>, ICache
 {
@@ -37,7 +37,7 @@ internal sealed class Cache : Cache<DefaultCacheContextLocator>, ICache
 }
 
 /// <summary>
-/// <see cref="Cache{CacheContextLocator}"/> 缓存实现。
+/// 缓存实现。
 /// </summary>
 /// <typeparam name="CacheContextLocator">缓存上下文定位器类型，用于隔离不同缓存配置。</typeparam>
 internal class Cache<CacheContextLocator> : ICache<CacheContextLocator>, IDisposable

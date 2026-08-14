@@ -26,9 +26,9 @@ using System.Text.Json;
 namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulKeyValueResponseDto"/> Consul Key/Value 响应 DTO。
+/// Consul Key/Value 响应 DTO。
 /// </summary>
-internal class ConsulKeyValueResponseDto
+internal sealed class ConsulKeyValueResponseDto
 {
     public int LockIndex { get; set; }
 
@@ -44,7 +44,7 @@ internal class ConsulKeyValueResponseDto
 }
 
 /// <summary>
-/// <see cref="KeyValueService"/> Key/Value 服务。
+/// Key/Value 服务。
 /// </summary>
 public class KeyValueService : IKeyValueService
 {

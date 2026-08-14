@@ -29,7 +29,7 @@ using System.Text.Json.Serialization;
 namespace Fast.OpenApi;
 
 /// <summary>
-/// <see cref="OpenApiUtil"/> OpenAPI 请求工具类。
+/// OpenAPI 请求工具类。
 /// </summary>
 public static partial class OpenApiUtil
 {

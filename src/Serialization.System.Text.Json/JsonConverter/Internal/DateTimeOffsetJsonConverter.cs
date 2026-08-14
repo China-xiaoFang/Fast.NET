@@ -27,9 +27,9 @@ using System.Text.Json.Serialization;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DateTimeOffsetJsonConverter"/> DateTimeOffset 类型 JSON 返回处理。
+/// DateTimeOffset 类型 JSON 返回处理。
 /// </summary>
-internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
+internal sealed class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 {
     /// <summary>
     /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
@@ -52,7 +52,7 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
     }
 
     /// <summary>
-    /// 初始化 <see cref="DateTimeOffsetJsonConverter"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="format">格式字符串。</param>
     /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区。</param>
@@ -144,9 +144,9 @@ internal class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 }
 
 /// <summary>
-/// <see cref="NullableDateTimeOffsetJsonConverter"/> DateTimeOffset? 类型 JSON 返回处理。
+/// DateTimeOffset? 类型 JSON 返回处理。
 /// </summary>
-internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset?>
+internal sealed class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset?>
 {
     /// <summary>
     /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
@@ -169,7 +169,7 @@ internal class NullableDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffse
     }
 
     /// <summary>
-    /// 初始化 <see cref="NullableDateTimeOffsetJsonConverter"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="format">格式字符串。</param>
     /// <param name="outputToLocalDateTime">是否将输出时间转换为本地时区。</param>

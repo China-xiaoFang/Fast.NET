@@ -32,7 +32,7 @@ using Microsoft.Extensions.Options;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="FastContext"/> App 上下文。
+/// App 上下文。
 /// </summary>
 [SuppressSniffer]
 public static class FastContext

@@ -28,7 +28,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="JsonContext"/> System.Text.Json 序列化上下文。
+/// System.Text.Json 序列化上下文。
 /// </summary>
 public static class JsonContext
 {

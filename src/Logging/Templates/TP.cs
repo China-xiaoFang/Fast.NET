@@ -26,7 +26,7 @@ using System.Text.RegularExpressions;
 namespace Fast.Logging;
 
 /// <summary>
-/// <see cref="TP"/> 模板静态类。
+/// 模板静态类。
 /// </summary>
 internal static class TP
 {

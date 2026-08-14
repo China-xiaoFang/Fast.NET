@@ -26,7 +26,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fast.DynamicApplication;
 
 /// <summary>
-/// <see cref="DynamicApplicationContext"/> Dynamic Application 上下文。
+/// Dynamic Application 上下文。
 /// </summary>
 [SuppressSniffer]
 public static class DynamicApplicationContext

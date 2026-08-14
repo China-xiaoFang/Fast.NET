@@ -25,10 +25,10 @@ using Newtonsoft.Json;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="ExceptionJsonConverter"/> Exception 类型 JSON 返回处理。
+/// Exception 类型 JSON 返回处理。
 /// </summary>
 /// <remarks>解决 <see cref="Exception"/> 类型不能被正常序列化和反序列化操作。</remarks>
-internal class ExceptionJsonConverter : JsonConverter<Exception>
+internal sealed class ExceptionJsonConverter : JsonConverter<Exception>
 {
     /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, Exception value, JsonSerializer serializer)

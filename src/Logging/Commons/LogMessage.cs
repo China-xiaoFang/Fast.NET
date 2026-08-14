@@ -31,7 +31,7 @@ namespace Fast.Logging;
 public struct LogMessage
 {
     /// <summary>
-    /// 初始化 <see cref="LogMessage"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="logName">日志分类名称。</param>
     /// <param name="logLevel">日志级别。</param>

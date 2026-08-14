@@ -25,7 +25,7 @@ using System;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="CoordinateUtil"/> 坐标工具类。
+/// 坐标工具类。
 /// </summary>
 /// <remarks>
 /// <para>WGS-84：全球标准坐标系，常用于 GPS 定位。</para>

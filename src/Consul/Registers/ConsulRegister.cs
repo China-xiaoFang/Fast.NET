@@ -30,9 +30,9 @@ using Microsoft.Extensions.Options;
 namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="ConsulRegister"/> Consul 服务注册。
+/// Consul 服务注册。
 /// </summary>
-internal class ConsulRegister : IConsulRegister
+internal sealed class ConsulRegister : IConsulRegister
 {
     private readonly IServer _server;
     private readonly IWebHostEnvironment _webHostEnvironment;

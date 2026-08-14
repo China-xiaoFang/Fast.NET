@@ -27,9 +27,9 @@ using Newtonsoft.Json.Linq;
 namespace Fast.Serialization;
 
 /// <summary>
-/// <see cref="DateTimeJsonConverter"/> DateTime 类型 JSON 返回处理。
+/// DateTime 类型 JSON 返回处理。
 /// </summary>
-internal class DateTimeJsonConverter : JsonConverter<DateTime>
+internal sealed class DateTimeJsonConverter : JsonConverter<DateTime>
 {
     /// <summary>
     /// 格式化 默认：yyyy-MM-dd HH:mm:ss。
@@ -114,9 +114,9 @@ internal class DateTimeJsonConverter : JsonConverter<DateTime>
 }
 
 /// <summary>
-/// <see cref="NullableDateTimeJsonConverter"/> DateTime? 类型 JSON 返回处理。
+/// DateTime? 类型 JSON 返回处理。
 /// </summary>
-internal class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
+internal sealed class NullableDateTimeJsonConverter : JsonConverter<DateTime?>
 {
     /// <summary>
     /// 格式化 默认：yyyy-MM-dd HH:mm:ss。

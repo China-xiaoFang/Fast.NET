@@ -23,7 +23,7 @@
 namespace Fast.Consul;
 
 /// <summary>
-/// <see cref="IKeyValueService"/> Key/Value 服务接口。
+/// Key/Value 服务接口。
 /// </summary>
 public interface IKeyValueService
 {

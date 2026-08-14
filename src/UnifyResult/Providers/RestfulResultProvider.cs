@@ -30,9 +30,9 @@ using Microsoft.Extensions.Options;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="RestfulResultProvider"/> 规范化 RESTful 风格返回值。
+/// 规范化 RESTful 风格返回值。
 /// </summary>
-internal class RestfulResultProvider : IUnifyResultProvider
+internal sealed class RestfulResultProvider : IUnifyResultProvider
 {
     /// <inheritdoc />
     public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata, int? statusCode = null,

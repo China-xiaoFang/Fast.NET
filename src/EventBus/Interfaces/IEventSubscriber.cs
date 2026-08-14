@@ -23,7 +23,7 @@
 namespace Fast.EventBus;
 
 /// <summary>
-/// <see cref="IEventSubscriber"/> 事件订阅者依赖接口。
+/// 事件订阅者依赖接口。
 /// </summary>
 /// <remarks>
 /// <para>可自定义事件处理方法，但须符合 <see cref="Func{EventSubscribeExecutingContext, Task}"/> 签名。</para>

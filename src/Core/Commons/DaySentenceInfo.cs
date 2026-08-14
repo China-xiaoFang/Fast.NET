@@ -25,7 +25,7 @@ using System.Text.Json.Serialization;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="DaySentenceInfo"/> 每日一句信息。
+/// 每日一句信息。
 /// </summary>
 [SuppressSniffer]
 public class DaySentenceInfo

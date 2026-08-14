@@ -23,7 +23,7 @@
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="ExceptionMetadata"/> 异常元数据。
+/// 异常元数据。
 /// </summary>
 [SuppressSniffer]
 public sealed class ExceptionMetadata

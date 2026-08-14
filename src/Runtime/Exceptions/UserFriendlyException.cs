@@ -27,13 +27,13 @@ using Microsoft.AspNetCore.Http;
 namespace System;
 
 /// <summary>
-/// <see cref="UserFriendlyException"/> 用户友好异常。
+/// 用户友好异常。
 /// </summary>
 [SuppressSniffer]
 public class UserFriendlyException : Exception
 {
     /// <summary>
-    /// 初始化 <see cref="UserFriendlyException"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     public UserFriendlyException() : base("Bad Request")
     {
@@ -41,7 +41,7 @@ public class UserFriendlyException : Exception
     }
 
     /// <summary>
-    /// 初始化 <see cref="UserFriendlyException"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     public UserFriendlyException(string message) : base(message ?? "Bad Request")
@@ -50,7 +50,7 @@ public class UserFriendlyException : Exception
     }
 
     /// <summary>
-    /// 初始化 <see cref="UserFriendlyException"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="errorCode">用于标识错误类型的错误码。</param>
@@ -61,7 +61,7 @@ public class UserFriendlyException : Exception
     }
 
     /// <summary>
-    /// 初始化 <see cref="UserFriendlyException"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="innerException">导致当前异常的内部异常。</param>
@@ -71,7 +71,7 @@ public class UserFriendlyException : Exception
     }
 
     /// <summary>
-    /// 初始化 <see cref="UserFriendlyException"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     /// <param name="message">要记录或返回的消息。</param>
     /// <param name="errorCode">用于标识错误类型的错误码。</param>

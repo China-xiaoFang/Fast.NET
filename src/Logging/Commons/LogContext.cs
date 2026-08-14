@@ -29,7 +29,7 @@ namespace Fast.Logging;
 public sealed class LogContext
 {
     /// <summary>
-    /// 初始化 <see cref="LogContext"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     public LogContext()
     {

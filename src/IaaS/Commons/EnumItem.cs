@@ -25,7 +25,7 @@ using System;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="EnumItem{TProperty}"/> 枚举项。
+/// 枚举项。
 /// </summary>
 /// <typeparam name="TProperty">Value 属性类型。</typeparam>
 public class EnumItem<TProperty> where TProperty : struct, IComparable, IConvertible, IFormattable

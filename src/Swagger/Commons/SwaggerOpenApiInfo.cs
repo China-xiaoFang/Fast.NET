@@ -25,13 +25,13 @@ using Microsoft.OpenApi;
 namespace Fast.Swagger;
 
 /// <summary>
-/// <see cref="SwaggerOpenApiInfo"/> Swagger 文档开放接口信息。
+/// Swagger 文档开放接口信息。
 /// </summary>
 [SuppressSniffer]
 public sealed class SwaggerOpenApiInfo : OpenApiInfo
 {
     /// <summary>
-    /// 初始化 <see cref="SwaggerOpenApiInfo"/> 类的新实例。
+    /// 初始化类的新实例。
     /// </summary>
     public SwaggerOpenApiInfo()
     {

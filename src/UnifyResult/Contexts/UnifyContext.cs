@@ -40,7 +40,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.UnifyResult;
 
 /// <summary>
-/// <see cref="UnifyContext"/> 规范化结果上下文。
+/// 规范化结果上下文。
 /// </summary>
 [SuppressSniffer]
 public static class UnifyContext

@@ -26,7 +26,7 @@ using System.Text.Json;
 namespace Fast.NET.Core;
 
 /// <summary>
-/// <see cref="JsonUtils"/> JSON 工具类。
+/// JSON 工具类。
 /// </summary>
 [SuppressSniffer]
 public static class JsonUtils

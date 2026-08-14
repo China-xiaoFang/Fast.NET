@@ -25,7 +25,7 @@ using SqlSugar;
 namespace Fast.SqlSugar;
 
 /// <summary>
-/// <see cref="ConnectionSettingsOptions"/> 连接字符串配置。
+/// 连接字符串配置。
 /// </summary>
 [SuppressSniffer]
 public class ConnectionSettingsOptions : DbConnectionInfo

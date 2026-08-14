@@ -27,7 +27,7 @@ using System.ComponentModel;
 namespace System;
 
 /// <summary>
-/// <see cref="AppEnvironmentEnum"/> App 运行环境枚举。
+/// App 运行环境枚举。
 /// </summary>
 [Flags]
 [FastEnum("App运行环境枚举")]

@@ -25,10 +25,10 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Fast.DependencyInjection;
 
 /// <summary>
-/// <see cref="NamedServiceProvider{TService}"/> 命名服务提供器默认实现。
+/// 命名服务提供器默认实现。
 /// </summary>
 /// <typeparam name="TService">目标服务接口。</typeparam>
-internal class NamedServiceProvider<TService> : INamedServiceProvider<TService> where TService : class
+internal sealed class NamedServiceProvider<TService> : INamedServiceProvider<TService> where TService : class
 {
     /// <summary>
     /// 服务提供器。

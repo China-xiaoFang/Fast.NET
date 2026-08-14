@@ -31,7 +31,7 @@ using System.Text;
 namespace Fast.IaaS;
 
 /// <summary>
-/// <see cref="CryptoUtil"/> 加密解密工具类。
+/// 加密解密工具类。
 /// </summary>
 public static class CryptoUtil
 {
@@ -101,7 +101,7 @@ public static class CryptoUtil
     private static readonly byte[] P521_OID = {0x2B, 0x81, 0x04, 0x00, 0x23};
 
     /// <summary>
-    /// <see cref="PemKeyPair"/> 使用 PKCS#8 私钥和 SubjectPublicKeyInfo 公钥表示的 PEM 密钥对。
+    /// 使用 PKCS#8 私钥和 SubjectPublicKeyInfo 公钥表示的 PEM 密钥对。
     /// </summary>
     public sealed class PemKeyPair
     {
