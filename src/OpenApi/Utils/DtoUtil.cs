@@ -103,14 +103,16 @@ public static partial class OpenApiUtil
     /// <param name="dirName">文件夹名称</param>
     /// <param name="refSchemas">引用声明</param>
     /// <param name="enumSchemas">枚举声明</param>
-    /// <returns>生成的声明导入</returns>
-    internal static (StringBuilder importSb, HashSet<string> refSchemas) GenerateSchemaImport(bool hasWeb, string dirName,
+    /// <returns>生成的外部声明导入、本地声明导入和本地引用声明</returns>
+    internal static (List<string> externalImports, List<string> schemaImports, HashSet<string> refSchemas) GenerateSchemaImport(
+        bool hasWeb, string dirName,
         HashSet<string> refSchemas, List<ComponentSchemaDto> enumSchemas)
     {
         if (refSchemas == null || refSchemas.Count == 0)
-            return (null, []);
+            return ([], [], []);
 
-        var schemaImport = new StringBuilder();
+        var externalImports = new List<string>();
+        var schemaImports = new List<string>();
         var newRefSchemas = new HashSet<string>();
 
         var schemaMapping = Penetrates.OpenApiSettings.ImportSchemaMappings.Where(wh => refSchemas.Contains(wh.Name))
@@ -119,36 +121,31 @@ public static partial class OpenApiUtil
         {
             var schemaMappingGroup = schemaMapping.GroupBy(gb => hasWeb ? gb.WebImportPath : gb.MobileImportPath)
                 .ToList();
-            foreach (var item in schemaMappingGroup)
+            foreach (var item in schemaMappingGroup.OrderBy(ob => ob.Key, StringComparer.OrdinalIgnoreCase))
             {
                 if (!string.IsNullOrWhiteSpace(item.Key))
                 {
-                    schemaImport.AppendLine($$"""
-                                              import { {{string.Join(", ", item.Select(sl => sl.Name))}} } from "{{item.Key}}";
-                                              """);
+                    var importNames = string.Join(", ", item.OrderBy(ob => ob.Name, StringComparer.OrdinalIgnoreCase)
+                        .Select(sl => $"type {sl.Name}"));
+                    externalImports.Add($$"""import { {{importNames}} } from "{{item.Key}}";""");
                 }
             }
         }
 
-        foreach (var refSchema in refSchemas)
+        foreach (var refSchema in refSchemas.Where(wh => schemaMapping.All(a => a.Name != wh))
+                     .Where(wh => enumSchemas.All(a => a.Name != wh))
+                     .OrderBy(ob => ob, StringComparer.OrdinalIgnoreCase))
         {
-            if (schemaMapping.Any(a => a.Name == refSchema))
-                continue;
-
-            var enumSchema = enumSchemas.SingleOrDefault(s => s.Name == refSchema);
-            if (enumSchema != null)
-            {
-                schemaImport.AppendLine(enumSchema.ImportPath);
-                continue;
-            }
-
-            schemaImport.AppendLine($$"""
-                                      import { {{refSchema}} } from "./{{dirName}}/{{refSchema}}";
-                                      """);
+            var importPath = string.IsNullOrWhiteSpace(dirName) ? $"./{refSchema}" : $"./{dirName}/{refSchema}";
+            schemaImports.Add($$"""import { type {{refSchema}} } from "{{importPath}}";""");
             newRefSchemas.Add(refSchema);
         }
 
-        return (schemaImport, newRefSchemas);
+        schemaImports.AddRange(enumSchemas.Where(wh => refSchemas.Contains(wh.Name))
+            .OrderBy(ob => ob.Name, StringComparer.OrdinalIgnoreCase)
+            .Select(sl => sl.ImportPath));
+
+        return (externalImports, schemaImports, newRefSchemas);
     }
 
     /// <summary>
@@ -255,7 +252,10 @@ public static partial class OpenApiUtil
                             property.Value.Items.Ref != null
                                 ? DisposeSchemaRefKey(property.Value.Items.Ref, schemaDto.RefSchemas)
                                 : DisposeBaseType(property.Value.Items.Type);
-                        schemaDto.Content.Append($"Array<{propertyRefKey}>;");
+                        schemaDto.Content.Append(propertyRefKey.Contains(" | ", StringComparison.Ordinal) ||
+                                                 propertyRefKey.Contains(" & ", StringComparison.Ordinal)
+                            ? $"({propertyRefKey})[];"
+                            : $"{propertyRefKey}[];");
                     }
                     else
                     {
@@ -325,61 +325,24 @@ public static partial class OpenApiUtil
             var refSchemas = schemaDto.RefSchemas.Where(wh => wh != schemaDto.Name)
                 .ToList();
 
-            var schemaImport = new StringBuilder();
-
-            var schemaMapping = Penetrates.OpenApiSettings.ImportSchemaMappings.Where(wh => refSchemas.Contains(wh.Name))
+            var (externalImports, schemaImports, newRefSchemas) = GenerateSchemaImport(hasWeb, null, refSchemas.ToHashSet(),
+                enumSchemas);
+            var imports = externalImports.Concat(schemaImports)
                 .ToList();
-            if (schemaMapping.Count != 0)
-            {
-                var schemaMappingGroup = schemaMapping.GroupBy(gb => hasWeb ? gb.WebImportPath : gb.MobileImportPath)
-                    .ToList();
-                foreach (var item in schemaMappingGroup)
-                {
-                    if (!string.IsNullOrWhiteSpace(item.Key))
-                    {
-                        schemaImport.AppendLine($$"""
-                                                  import { {{string.Join(", ", item.Select(sl => sl.Name))}} } from "{{item.Key}}";
-                                                  """);
-                    }
-                }
-            }
+            var content = imports.Count > 0
+                ? $"""
+                   {string.Join(Environment.NewLine, imports)}
 
-            foreach (var refSchema in refSchemas)
-            {
-                if (schemaMapping.Any(a => a.Name == refSchema))
-                    continue;
+                   {schemaDto.Content}
+                   """
+                : $"{schemaDto.Content}";
 
-                var enumSchema = enumSchemas.SingleOrDefault(s => s.Name == refSchema);
-                if (enumSchema != null)
-                {
-                    schemaImport.AppendLine(enumSchema.ImportPath);
-                    continue;
-                }
-
-                schemaImport.AppendLine($$"""
-                                          import { {{refSchema}} } from "./{{refSchema}}";
-                                          """);
-            }
-
-            if (schemaImport.Length > 0)
-                await File.WriteAllTextAsync(Path.Combine(rootDir, $"{schemaDto.Name}.ts"), $"""
-                     {schemaImport}
-                     {schemaDto.Content}
-                     """);
-            else
-                await File.WriteAllTextAsync(Path.Combine(rootDir, $"{schemaDto.Name}.ts"), $"{schemaDto.Content}");
+            await File.WriteAllTextAsync(Path.Combine(rootDir, $"{schemaDto.Name}.ts"), FormatScriptContent(content));
 
 
             // 处理引用文件
-            foreach (var refSchema in refSchemas)
+            foreach (var refSchema in newRefSchemas)
             {
-                if (schemaMapping.Any(a => a.Name == refSchema))
-                    continue;
-
-                // 判断是否为枚举声明
-                if (enumSchemas.Any(a => a.Name == refSchema))
-                    continue;
-
                 // 从声明集合中查找
                 var childrenSchemaDto = dtoSchemas.Single(s => s.Name == refSchema);
                 await WriteOpenApiDocumentSchemaFile(hasWeb, rootDir, openApiDocument, childrenSchemaDto, dtoSchemas, enumSchemas,

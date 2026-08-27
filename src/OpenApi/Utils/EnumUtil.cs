@@ -138,14 +138,14 @@ public static partial class OpenApiUtil
                 switch (scriptLanguage)
                 {
                     case ScriptLanguageEnum.JavaScript:
-                        await File.WriteAllTextAsync(Path.Combine(rootDir, $"{enumType.Name}.js"), $$"""
+                        await File.WriteAllTextAsync(Path.Combine(rootDir, $"{enumType.Name}.js"), FormatScriptContent($$"""
                               /**
                                * {{schemaDescription}}
                                */
                               export const {{enumType.Name}} = {
                               {{enumDetail}}
                               };
-                              """.Replace("\r\n", "\n"));
+                              """));
 
                         result.Add(new ComponentSchemaDto
                         {
@@ -154,7 +154,7 @@ public static partial class OpenApiUtil
                         });
                         break;
                     case ScriptLanguageEnum.TypeScript:
-                        await File.WriteAllTextAsync(Path.Combine(rootDir, $"{enumType.Name}.ts"), $$"""
+                        await File.WriteAllTextAsync(Path.Combine(rootDir, $"{enumType.Name}.ts"), FormatScriptContent($$"""
                               /**
                                * {{schemaDescription}}
                                */
@@ -162,12 +162,12 @@ public static partial class OpenApiUtil
                               {{enumDetail}}
                               }
 
-                              """.Replace("\r\n", "\n"));
+                              """));
 
                         result.Add(new ComponentSchemaDto
                         {
                             Name = enumType.Name,
-                            ImportPath = $$"""import { {{enumType.Name}} } from "@/api/enums/{{enumType.Name}}";"""
+                            ImportPath = $$"""import { type {{enumType.Name}} } from "@/api/enums/{{enumType.Name}}";"""
                         });
                         break;
                     default:

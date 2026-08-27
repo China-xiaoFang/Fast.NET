@@ -366,7 +366,7 @@ public static partial class OpenApiUtil
                 switch (scriptLanguage)
                 {
                     case ScriptLanguageEnum.JavaScript:
-                        await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.js"), $$"""
+                        await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.js"), FormatScriptContent($$"""
                               import { axiosUtil } from "@fast-china/axios";
 
                               /**
@@ -376,11 +376,12 @@ public static partial class OpenApiUtil
                               {{contentSb}}
                               };
 
-                              """.Replace("\r\n", "\n"));
+                              """));
                         break;
                     case ScriptLanguageEnum.TypeScript:
                         // 生成 import
-                        var (schemaImport, newRefSchemas) = GenerateSchemaImport(hasWeb, "models", refSchemas, enumSchemas);
+                        var (externalImports, schemaImports, newRefSchemas) = GenerateSchemaImport(hasWeb, "models", refSchemas,
+                            enumSchemas);
                         if (newRefSchemas.Count > 0)
                         {
                             // 创建 model 文件
@@ -396,34 +397,19 @@ public static partial class OpenApiUtil
                             }
                         }
 
-                        if (schemaImport?.Length > 0)
-                        {
-                            await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.ts"), $$"""
-                                  import { axiosUtil } from "@fast-china/axios";
-                                  {{schemaImport}}
-                                  /**
-                                   * {{tagDescription}}Api
-                                   */
-                                  export const {{tagName}}Api = {
-                                  {{contentSb}}
-                                  };
+                        var imports = new List<string>(externalImports) { "import { axiosUtil } from \"@fast-china/axios\";" };
+                        imports.AddRange(schemaImports);
+                        await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.ts"), FormatScriptContent($$"""
+                              {{string.Join(Environment.NewLine, imports)}}
 
-                                  """.Replace("\r\n", "\n"));
-                        }
-                        else
-                        {
-                            await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.ts"), $$"""
-                                  import { axiosUtil } from "@fast-china/axios";
+                              /**
+                               * {{tagDescription}}Api
+                               */
+                              export const {{tagName}}Api = {
+                              {{contentSb}}
+                              };
 
-                                  /**
-                                   * {{tagDescription}}Api
-                                   */
-                                  export const {{tagName}}Api = {
-                                  {{contentSb}}
-                                  };
-
-                                  """.Replace("\r\n", "\n"));
-                        }
+                              """));
 
                         break;
                     default:
@@ -454,5 +440,18 @@ public static partial class OpenApiUtil
                 logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
             Console.WriteLine(logSb.ToString());
         }
+    }
+
+    /// <summary>
+    /// 格式化生成的脚本内容
+    /// </summary>
+    /// <param name="content">脚本内容</param>
+    /// <returns>使用 Tab 缩进和 LF 换行符的脚本内容</returns>
+    internal static string FormatScriptContent(string content)
+    {
+        var normalizedContent = content.Replace("\r\n", "\n")
+            .Replace('\r', '\n');
+        return Regex.Replace(normalizedContent, @"(?m)^(?: {2})+",
+            match => new string('\t', match.Value.Length / 2));
     }
 }
