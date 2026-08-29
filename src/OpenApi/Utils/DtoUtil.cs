@@ -93,7 +93,7 @@ public static partial class OpenApiUtil
     internal static string DisposeBaseType(string refKey)
     {
         var baseTypeMapping = Penetrates.OpenApiSettings.BaseTypeMappings.FirstOrDefault(f => f.Key == refKey);
-        return baseTypeMapping.Value ?? "any";
+        return baseTypeMapping.Value ?? "unknown";
     }
 
     /// <summary>
@@ -105,8 +105,7 @@ public static partial class OpenApiUtil
     /// <param name="enumSchemas">枚举声明</param>
     /// <returns>生成的外部声明导入、本地声明导入和本地引用声明</returns>
     internal static (List<string> externalImports, List<string> schemaImports, HashSet<string> refSchemas) GenerateSchemaImport(
-        bool hasWeb, string dirName,
-        HashSet<string> refSchemas, List<ComponentSchemaDto> enumSchemas)
+        bool hasWeb, string dirName, HashSet<string> refSchemas, List<ComponentSchemaDto> enumSchemas)
     {
         if (refSchemas == null || refSchemas.Count == 0)
             return ([], [], []);
@@ -125,9 +124,9 @@ public static partial class OpenApiUtil
             {
                 if (!string.IsNullOrWhiteSpace(item.Key))
                 {
-                    var importNames = string.Join(", ", item.OrderBy(ob => ob.Name, StringComparer.OrdinalIgnoreCase)
-                        .Select(sl => $"type {sl.Name}"));
-                    externalImports.Add($$"""import { {{importNames}} } from "{{item.Key}}";""");
+                    var importNames = string.Join(", ", item.OrderBy(ob => ob.Name, StringComparer.Ordinal)
+                        .Select(sl => sl.Name));
+                    externalImports.Add($$"""import type { {{importNames}} } from "{{item.Key}}";""");
                 }
             }
         }
@@ -137,7 +136,7 @@ public static partial class OpenApiUtil
                      .OrderBy(ob => ob, StringComparer.OrdinalIgnoreCase))
         {
             var importPath = string.IsNullOrWhiteSpace(dirName) ? $"./{refSchema}" : $"./{dirName}/{refSchema}";
-            schemaImports.Add($$"""import { type {{refSchema}} } from "{{importPath}}";""");
+            schemaImports.Add($$"""import type { {{refSchema}} } from "{{importPath}}";""");
             newRefSchemas.Add(refSchema);
         }
 
@@ -252,10 +251,11 @@ public static partial class OpenApiUtil
                             property.Value.Items.Ref != null
                                 ? DisposeSchemaRefKey(property.Value.Items.Ref, schemaDto.RefSchemas)
                                 : DisposeBaseType(property.Value.Items.Type);
-                        schemaDto.Content.Append(propertyRefKey.Contains(" | ", StringComparison.Ordinal) ||
-                                                 propertyRefKey.Contains(" & ", StringComparison.Ordinal)
-                            ? $"({propertyRefKey})[];"
-                            : $"{propertyRefKey}[];");
+                        schemaDto.Content.Append(
+                            propertyRefKey.Contains(" | ", StringComparison.Ordinal)
+                            || propertyRefKey.Contains(" & ", StringComparison.Ordinal)
+                                ? $"({propertyRefKey})[];"
+                                : $"{propertyRefKey}[];");
                     }
                     else
                     {

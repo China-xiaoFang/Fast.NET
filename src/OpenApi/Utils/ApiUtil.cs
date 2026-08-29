@@ -271,10 +271,15 @@ public static partial class OpenApiUtil
                         }
                     }
 
-                    contentSb.Append("""
-                                     ) {
-                                         return axiosUtil.request
-                                     """);
+                    contentSb.Append(scriptLanguage == ScriptLanguageEnum.TypeScript
+                        ? $$"""
+                            ): Promise<{{(string.IsNullOrWhiteSpace(responseType) ? "unknown" : responseType)}}> {
+                                return axiosUtil.request
+                            """
+                        : """
+                          ) {
+                              return axiosUtil.request
+                          """);
 
                     if (!string.IsNullOrWhiteSpace(responseType) && scriptLanguage == ScriptLanguageEnum.TypeScript)
                     {
@@ -397,7 +402,8 @@ public static partial class OpenApiUtil
                             }
                         }
 
-                        var imports = new List<string>(externalImports) { "import { axiosUtil } from \"@fast-china/axios\";" };
+                        var imports = new List<string> {"import { axiosUtil } from \"@fast-china/axios\";"};
+                        imports.AddRange(externalImports);
                         imports.AddRange(schemaImports);
                         await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.ts"), FormatScriptContent($$"""
                               {{string.Join(Environment.NewLine, imports)}}
@@ -451,7 +457,6 @@ public static partial class OpenApiUtil
     {
         var normalizedContent = content.Replace("\r\n", "\n")
             .Replace('\r', '\n');
-        return Regex.Replace(normalizedContent, @"(?m)^(?: {2})+",
-            match => new string('\t', match.Value.Length / 2));
+        return Regex.Replace(normalizedContent, @"(?m)^(?: {2})+", match => new string('\t', match.Value.Length / 2));
     }
 }

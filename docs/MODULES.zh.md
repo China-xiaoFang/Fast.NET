@@ -17,12 +17,14 @@ Fast.NET 由 17 个可独立发布的 NuGet 包组成。除 `Fast.IaaS` 外，�
 | `Fast.JwtBearer` | JWT Bearer 认证、授权和令牌工具 | `services.AddJwtBearer()` | `JWTSettings` |
 | `Fast.Logging` | 控制台与文件日志扩展 | `services.AddLoggingService()` | `Logging:Fast`；文件目录必须可写 |
 | `Fast.Mapster` | Mapster 注册与对象映射 | `services.AddMapster()` | Mapster 10 |
-| `Fast.OpenApi` | OpenAPI DTO、Schema 和辅助工具 | `services.AddOpenApi()` | `OpenApiSettings` |
+| `Fast.OpenApi` | OpenAPI DTO 与 JavaScript/TypeScript 客户端生成 | `services.AddOpenApi()` | `OpenApiSettings` |
 | `Fast.Serialization.System.Text.Json` | System.Text.Json 统一选项、转换器和脱敏 | `services.AddSerialization()` | 与 Newtonsoft.Json 模块通常二选一 |
 | `Fast.Serialization.Newtonsoft.Json` | Newtonsoft.Json 统一选项、转换器和脱敏 | `services.AddSerialization()`、MVC 扩展 | 与 System.Text.Json 模块通常二选一 |
 | `Fast.SqlSugar` | SqlSugar、多数据库配置、仓储和分页 | `services.AddSqlSugar()`、`AddSnowflake()` | `ConnectionSettings`、`SnowflakeSettings`；需要数据库 |
 | `Fast.Swagger` | Swagger 文档、分组、安全定义和 UI | `AddSwaggerDocuments()`、`UseSwaggerDocuments()` | `SwaggerSettings` |
 | `Fast.UnifyResult` | 统一响应、模型验证和友好异常 | `services.AddUnifyResult()` | 面向 MVC/控制器应用 |
+
+`Fast.OpenApi` 生成的 TypeScript 客户端使用独立的 `import type`、显式 `Promise<T>` 返回类型，并将缺少明确 Schema 的值映射为 `unknown`，兼容 `verbatimModuleSyntax` 与当前 Fast ESLint Config 规则。
 
 ## 推荐注册顺序
 

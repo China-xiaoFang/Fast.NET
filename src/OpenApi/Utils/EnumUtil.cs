@@ -167,7 +167,7 @@ public static partial class OpenApiUtil
                         result.Add(new ComponentSchemaDto
                         {
                             Name = enumType.Name,
-                            ImportPath = $$"""import { type {{enumType.Name}} } from "@/api/enums/{{enumType.Name}}";"""
+                            ImportPath = $$"""import type { {{enumType.Name}} } from "@/api/enums/{{enumType.Name}}";"""
                         });
                         break;
                     default:

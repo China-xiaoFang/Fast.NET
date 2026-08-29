@@ -176,12 +176,14 @@ flowchart TB
 | [`Fast.JwtBearer`](https://www.nuget.org/packages/Fast.JwtBearer) | JWT Bearer 配置、认证与授权辅助 | .NET 8–10 | [`src/JwtBearer`](src/JwtBearer) |
 | [`Fast.Logging`](https://www.nuget.org/packages/Fast.Logging) | 控制台与文件日志扩展 | .NET 8–10 | [`src/Logging`](src/Logging) |
 | [`Fast.Mapster`](https://www.nuget.org/packages/Fast.Mapster) | Mapster 对象映射集成 | .NET 8–10 | [`src/Mapster`](src/Mapster) |
-| [`Fast.OpenApi`](https://www.nuget.org/packages/Fast.OpenApi) | OpenAPI 模型、Schema 与类型转换工具 | .NET 8–10 | [`src/OpenApi`](src/OpenApi) |
+| [`Fast.OpenApi`](https://www.nuget.org/packages/Fast.OpenApi) | OpenAPI 模型与 JavaScript/TypeScript 客户端生成 | .NET 8–10 | [`src/OpenApi`](src/OpenApi) |
 | [`Fast.Serialization.System.Text.Json`](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | System.Text.Json 配置、转换器与数据脱敏 | .NET 8–10 | [`src/Serialization.System.Text.Json`](src/Serialization.System.Text.Json) |
 | [`Fast.Serialization.Newtonsoft.Json`](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Newtonsoft.Json 配置、转换器与数据脱敏 | .NET 8–10 | [`src/Serialization.Newtonsoft.Json`](src/Serialization.Newtonsoft.Json) |
 | [`Fast.SqlSugar`](https://www.nuget.org/packages/Fast.SqlSugar) | SqlSugar、多数据库配置、仓储与分页模型 | .NET 8–10 | [`src/SqlSugar`](src/SqlSugar) |
 | [`Fast.Swagger`](https://www.nuget.org/packages/Fast.Swagger) | Swagger 文档、分组、安全定义与过滤器 | .NET 8–10 | [`src/Swagger`](src/Swagger) |
 | [`Fast.UnifyResult`](https://www.nuget.org/packages/Fast.UnifyResult) | RESTful 统一响应、异常处理与数据验证 | .NET 8–10 | [`src/UnifyResult`](src/UnifyResult) |
+
+`Fast.OpenApi` 生成的 TypeScript 客户端使用独立的 `import type`、显式 `Promise<T>` 返回类型，并将缺少明确 Schema 的值映射为 `unknown`，可直接配合 `verbatimModuleSyntax` 与当前 Fast ESLint Config 规则使用。
 
 ## 仓库结构
 

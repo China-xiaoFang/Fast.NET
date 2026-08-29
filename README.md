@@ -176,12 +176,14 @@ This diagram presents the responsibility layers. See the [architecture guide](do
 | [`Fast.JwtBearer`](https://www.nuget.org/packages/Fast.JwtBearer) | JWT Bearer configuration, authentication, and authorization helpers | .NET 8–10 | [`src/JwtBearer`](src/JwtBearer) |
 | [`Fast.Logging`](https://www.nuget.org/packages/Fast.Logging) | Console and file logging extensions | .NET 8–10 | [`src/Logging`](src/Logging) |
 | [`Fast.Mapster`](https://www.nuget.org/packages/Fast.Mapster) | Mapster object-mapping integration | .NET 8–10 | [`src/Mapster`](src/Mapster) |
-| [`Fast.OpenApi`](https://www.nuget.org/packages/Fast.OpenApi) | OpenAPI models, schemas, and type-conversion utilities | .NET 8–10 | [`src/OpenApi`](src/OpenApi) |
+| [`Fast.OpenApi`](https://www.nuget.org/packages/Fast.OpenApi) | OpenAPI models and JavaScript/TypeScript client generation | .NET 8–10 | [`src/OpenApi`](src/OpenApi) |
 | [`Fast.Serialization.System.Text.Json`](https://www.nuget.org/packages/Fast.Serialization.System.Text.Json) | System.Text.Json configuration, converters, and data masking | .NET 8–10 | [`src/Serialization.System.Text.Json`](src/Serialization.System.Text.Json) |
 | [`Fast.Serialization.Newtonsoft.Json`](https://www.nuget.org/packages/Fast.Serialization.Newtonsoft.Json) | Newtonsoft.Json configuration, converters, and data masking | .NET 8–10 | [`src/Serialization.Newtonsoft.Json`](src/Serialization.Newtonsoft.Json) |
 | [`Fast.SqlSugar`](https://www.nuget.org/packages/Fast.SqlSugar) | SqlSugar integration, multi-database settings, repositories, and paging models | .NET 8–10 | [`src/SqlSugar`](src/SqlSugar) |
 | [`Fast.Swagger`](https://www.nuget.org/packages/Fast.Swagger) | Swagger documents, grouping, security definitions, and filters | .NET 8–10 | [`src/Swagger`](src/Swagger) |
 | [`Fast.UnifyResult`](https://www.nuget.org/packages/Fast.UnifyResult) | RESTful unified responses, exception handling, and validation | .NET 8–10 | [`src/UnifyResult`](src/UnifyResult) |
+
+`Fast.OpenApi` generates TypeScript clients with separate `import type` declarations, explicit `Promise<T>` return types, and `unknown` for values without a concrete schema, making the output compatible with `verbatimModuleSyntax` and the current Fast ESLint Config rules.
 
 ## Repository layout
 

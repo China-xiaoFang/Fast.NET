@@ -158,11 +158,11 @@ public class OpenApiSettingsOptions : IPostConfigure
             },
             new OpenApiImportTypeMappingSettingsOptions
             {
-                Name = "List_IDictionary_StringObject", MappingName = "Record<string, any>[]"
+                Name = "List_IDictionary_StringObject", MappingName = "Record<string, unknown>[]"
             },
             new OpenApiImportTypeMappingSettingsOptions
             {
-                Name = "List_Dictionary_StringObject", MappingName = "Record<string, any>[]"
+                Name = "List_Dictionary_StringObject", MappingName = "Record<string, unknown>[]"
             },
             new OpenApiImportTypeMappingSettingsOptions
             {
@@ -183,8 +183,14 @@ public class OpenApiSettingsOptions : IPostConfigure
                 Name = "IDictionary_StringInt32", MappingName = "Record<string, number>"
             },
             new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_StringInt32", MappingName = "Record<string, number>"},
-            new OpenApiImportTypeMappingSettingsOptions {Name = "IDictionary_StringObject", MappingName = "Record<string, any>"},
-            new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_StringObject", MappingName = "Record<string, any>"},
+            new OpenApiImportTypeMappingSettingsOptions
+            {
+                Name = "IDictionary_StringObject", MappingName = "Record<string, unknown>"
+            },
+            new OpenApiImportTypeMappingSettingsOptions
+            {
+                Name = "Dictionary_StringObject", MappingName = "Record<string, unknown>"
+            },
             new OpenApiImportTypeMappingSettingsOptions
             {
                 Name = "IDictionary_StringString", MappingName = "Record<string, string>"
@@ -225,7 +231,7 @@ public class OpenApiSettingsOptions : IPostConfigure
             {"Nullable_Integer", "number | null"},
             {"Nullable_Boolean", "boolean | null"},
             {"Nullable_String", "string | null"},
-            {"Nullable_Object", "any | null"},
+            {"Nullable_Object", "unknown | null"},
             {"List_Int64", "number[]"},
             {"List_Int32", "number[]"},
             {"List_Decimal", "number[]"},
@@ -234,7 +240,7 @@ public class OpenApiSettingsOptions : IPostConfigure
             {"List_Integer", "number[]"},
             {"List_Boolean", "boolean[]"},
             {"List_String", "string[]"},
-            {"List_Object", "any[]"},
+            {"List_Object", "unknown[]"},
             {"Int64", "number"},
             {"Int32", "number"},
             {"Boolean", "boolean"},
@@ -254,7 +260,7 @@ public class OpenApiSettingsOptions : IPostConfigure
             {"uuid", "string"},
             {"byte", "string"},
             {"binary", "Blob"},
-            {"object", "any"}
+            {"object", "unknown"}
         };
     }
 }

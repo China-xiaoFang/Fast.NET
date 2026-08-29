@@ -17,12 +17,14 @@ Fast.NET consists of 17 independently published NuGet packages. The primary modu
 | `Fast.JwtBearer` | JWT Bearer authentication, authorization, and token helpers | `services.AddJwtBearer()` | `JWTSettings` |
 | `Fast.Logging` | Console and file logging extensions | `services.AddLoggingService()` | `Logging:Fast`; file path must be writable |
 | `Fast.Mapster` | Mapster registration and mapping | `services.AddMapster()` | Mapster 10 |
-| `Fast.OpenApi` | OpenAPI DTOs, schemas, and utilities | `services.AddOpenApi()` | `OpenApiSettings` |
+| `Fast.OpenApi` | OpenAPI DTO and JavaScript/TypeScript client generation | `services.AddOpenApi()` | `OpenApiSettings` |
 | `Fast.Serialization.System.Text.Json` | Shared System.Text.Json options, converters, and masking | `services.AddSerialization()` | Usually choose one serialization module |
 | `Fast.Serialization.Newtonsoft.Json` | Shared Newtonsoft.Json options, converters, and masking | `services.AddSerialization()` and MVC extension | Usually choose one serialization module |
 | `Fast.SqlSugar` | SqlSugar integration, multi-database settings, repositories, and paging | `services.AddSqlSugar()`, `AddSnowflake()` | `ConnectionSettings`, `SnowflakeSettings`; requires a database |
 | `Fast.Swagger` | Swagger documents, grouping, security definitions, and UI | `AddSwaggerDocuments()`, `UseSwaggerDocuments()` | `SwaggerSettings` |
 | `Fast.UnifyResult` | Unified responses, model validation, and friendly exceptions | `services.AddUnifyResult()` | Designed for MVC/controller applications |
+
+`Fast.OpenApi` generates TypeScript clients with separate `import type` declarations, explicit `Promise<T>` return types, and `unknown` for values without a concrete schema, compatible with `verbatimModuleSyntax` and the current Fast ESLint Config rules.
 
 ## Recommended registration order
 
