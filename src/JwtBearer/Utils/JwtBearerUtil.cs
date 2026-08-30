@@ -29,6 +29,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
@@ -638,6 +639,15 @@ public static class JwtBearerUtil
             {
                 // 读取 Token
                 var accessToken = GetJwtBearerToken(httpContext, tokenPrefix: tokenPrefix);
+                if (string.IsNullOrWhiteSpace(accessToken)
+                    && httpContext.GetEndpoint()
+                        ?.Metadata.GetMetadata<HubMetadata>()
+                    != null)
+                {
+                    accessToken = httpContext.Request.Query["access_token"]
+                        .ToString();
+                }
+
                 if (string.IsNullOrWhiteSpace(accessToken))
                     return false;
 

@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.JwtBearer;
@@ -38,9 +39,13 @@ internal sealed class AppAuthorizationHandler : IAuthorizationHandler
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
         var filterContext = context.Resource as AuthorizationFilterContext;
-        var httpContext = filterContext?.HttpContext;
+        var hubInvocationContext = context.Resource as HubInvocationContext;
+        var httpContext = filterContext?.HttpContext
+                          ?? context.Resource as HttpContext ?? hubInvocationContext?.Context.GetHttpContext();
+
         // 获取 JWT 处理类
-        var jwtBearerHandle = httpContext?.RequestServices.GetService<IJwtBearerHandle>();
+        var jwtBearerHandle = (hubInvocationContext?.ServiceProvider ?? httpContext?.RequestServices)
+            ?.GetService<IJwtBearerHandle>();
 
         // 自动刷新 Token 逻辑
         if (!await JwtBearerUtil.AutoRefreshTokenAsync(context, httpContext))
