@@ -25,14 +25,14 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 - Established `FAST-AES-256-GCM-V1` as the initial cross-language password-based AES payload for `Fast.IaaS`.
 - Simplified XML documentation by removing type references already conveyed by signatures, inheriting existing implementation contracts, and retaining links to related APIs and constraints.
 - Marked internal leaf implementations and JSON converters as sealed where inheritance is not supported.
-- Incremented package versions: `Fast.Cache` 3.5.29, `Fast.Consul` 3.5.5, `Fast.NET.Core` 3.5.31, `Fast.DependencyInjection` 3.5.25, `Fast.DynamicApplication` 3.5.31, `Fast.EventBus` 3.5.24, `Fast.IaaS` 3.5.22, `Fast.JwtBearer` 3.5.34, `Fast.Logging` 3.5.27, `Fast.Mapster` 3.5.23, `Fast.OpenApi` 3.5.31, `Fast.Runtime` 3.5.26, `Fast.Serialization.Newtonsoft.Json` 3.5.23, `Fast.Serialization.System.Text.Json` 3.5.18, `Fast.SqlSugar` 3.5.61, `Fast.Swagger` 3.5.30, and `Fast.UnifyResult` 3.5.29.
+- Incremented package versions: `Fast.Cache` 3.5.29, `Fast.Consul` 3.5.5, `Fast.NET.Core` 3.5.31, `Fast.DependencyInjection` 3.5.25, `Fast.DynamicApplication` 3.5.31, `Fast.EventBus` 3.5.24, `Fast.IaaS` 3.5.22, `Fast.JwtBearer` 3.5.36, `Fast.Logging` 3.5.27, `Fast.Mapster` 3.5.23, `Fast.OpenApi` 3.5.31, `Fast.Runtime` 3.5.26, `Fast.Serialization.Newtonsoft.Json` 3.5.23, `Fast.Serialization.System.Text.Json` 3.5.18, `Fast.SqlSugar` 3.5.61, `Fast.Swagger` 3.5.30, and `Fast.UnifyResult` 3.5.29.
 - Incremented `I18nTranslateTool` to 1.0.1 and moved its `MiniExcel` version into central package management.
 
 ### Fixed
 
 - `Fast.OpenApi` TypeScript clients now emit separate type imports in rule-compliant order, explicit `Promise<T>` return types, and `unknown` for unspecified schemas to satisfy the current Fast ESLint Config rules.
 - `Fast.DependencyInjection` now registers marked concrete services that do not expose a business interface.
-- `Fast.JwtBearer` now accepts the standard `access_token` query parameter for SignalR hub endpoints under `/hubs` while preserving custom token extraction logic.
+- `Fast.JwtBearer` now accepts the standard `access_token` query parameter for SignalR hub endpoints regardless of their route prefix while preserving custom token extraction logic.
 - Dynamic application discovery no longer inserts duplicate MVC application parts.
 - Runtime dependency discovery now works under test and plugin hosts whose entry assembly has no adjacent `.deps.json` file.
 - `Fast.Runtime` disposable cleanup now drains the concurrent collection without forcing a full garbage collection or discarding objects added during cleanup.

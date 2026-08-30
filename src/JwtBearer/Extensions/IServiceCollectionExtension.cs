@@ -23,8 +23,10 @@
 using Fast.Runtime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -114,7 +116,10 @@ public static class IServiceCollectionExtension
                 {
                     await onMessageReceived(context);
 
-                    if (!string.IsNullOrEmpty(context.Token) || !context.Request.Path.StartsWithSegments("/hubs"))
+                    if (!string.IsNullOrEmpty(context.Token)
+                        || context.HttpContext.GetEndpoint()
+                            ?.Metadata.GetMetadata<HubMetadata>()
+                        == null)
                     {
                         return;
                     }
@@ -161,7 +166,10 @@ public static class IServiceCollectionExtension
                 {
                     await onMessageReceived(context);
 
-                    if (!string.IsNullOrEmpty(context.Token) || !context.Request.Path.StartsWithSegments("/hubs"))
+                    if (!string.IsNullOrEmpty(context.Token)
+                        || context.HttpContext.GetEndpoint()
+                            ?.Metadata.GetMetadata<HubMetadata>()
+                        == null)
                     {
                         return;
                     }
@@ -230,7 +238,10 @@ public static class IServiceCollectionExtension
                 {
                     await onMessageReceived(context);
 
-                    if (!string.IsNullOrEmpty(context.Token) || !context.Request.Path.StartsWithSegments("/hubs"))
+                    if (!string.IsNullOrEmpty(context.Token)
+                        || context.HttpContext.GetEndpoint()
+                            ?.Metadata.GetMetadata<HubMetadata>()
+                        == null)
                     {
                         return;
                     }
@@ -295,7 +306,10 @@ public static class IServiceCollectionExtension
                 {
                     await onMessageReceived(context);
 
-                    if (!string.IsNullOrEmpty(context.Token) || !context.Request.Path.StartsWithSegments("/hubs"))
+                    if (!string.IsNullOrEmpty(context.Token)
+                        || context.HttpContext.GetEndpoint()
+                            ?.Metadata.GetMetadata<HubMetadata>()
+                        == null)
                     {
                         return;
                     }
