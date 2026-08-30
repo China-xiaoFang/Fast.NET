@@ -21,7 +21,6 @@
 // ------------------------------------------------------------------------
 
 using System.Globalization;
-using Fast.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -54,7 +53,7 @@ internal sealed class CoreStartupFilter : IStartupFilter
             app.Use(async (context, next) =>
             {
                 // 处理 WebSocket 请求
-                if (context.IsWebSocketRequest())
+                if (context.WebSockets.IsWebSocketRequest)
                 {
                     await next.Invoke();
                 }

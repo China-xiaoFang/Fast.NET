@@ -59,7 +59,7 @@ internal sealed class DataValidationFilter : IAsyncActionFilter, IOrderedFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         // 排除 WebSocket 请求处理
-        if (context.HttpContext.IsWebSocketRequest())
+        if (context.HttpContext.WebSockets.IsWebSocketRequest)
         {
             await next();
             return;

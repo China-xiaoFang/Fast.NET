@@ -108,7 +108,7 @@ public class BadPageResult : StatusCodeResult
     public override void ExecuteResult(ActionContext context)
     {
         // 如果 Response 已经完成输出或 WebSocket 请求，则禁止写入
-        if (context.HttpContext.IsWebSocketRequest() || context.HttpContext.Response.HasStarted)
+        if (context.HttpContext.WebSockets.IsWebSocketRequest || context.HttpContext.Response.HasStarted)
         {
             return;
         }

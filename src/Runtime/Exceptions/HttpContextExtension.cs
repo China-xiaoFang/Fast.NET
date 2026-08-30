@@ -95,16 +95,6 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 判断是否是 WebSocket 请求
-    /// </summary>
-    /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
-    public static bool IsWebSocketRequest(this HttpContext httpContext)
-    {
-        return httpContext.WebSockets.IsWebSocketRequest || httpContext.Request.Path == "/ws";
-    }
-
-    /// <summary>
     /// 获取终结点元数据中的指定特性
     /// </summary>
     /// <param name="httpContext">当前请求上下文</param>

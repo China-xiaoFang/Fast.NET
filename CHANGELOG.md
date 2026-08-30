@@ -19,13 +19,13 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 
 ### Changed
 
-- Updated `MiniExcel` to 1.45.0, `SQLitePCLRaw.bundle_e_sqlite3` to 3.0.5, `SqlSugarCore` to 5.1.4.217, and `Swashbuckle.AspNetCore` to 10.2.3.
+- Updated `Mapster` and `Mapster.DependencyInjection` to 10.0.12, `MiniExcel` to 1.45.0, `SQLitePCLRaw.bundle_e_sqlite3` to 3.0.5, `SqlSugarCore` to 5.1.4.217, and `Swashbuckle.AspNetCore` to 10.2.3.
 - Updated ASP.NET Core package references to 8.0.30, 9.0.19, and 10.0.11 for their corresponding target frameworks.
 - Migrated `Fast.Swagger` custom filters and security registration to the Microsoft.OpenApi 2.x API required by Swashbuckle 10.
 - Established `FAST-AES-256-GCM-V1` as the initial cross-language password-based AES payload for `Fast.IaaS`.
 - Simplified XML documentation by removing type references already conveyed by signatures, inheriting existing implementation contracts, and retaining links to related APIs and constraints.
 - Marked internal leaf implementations and JSON converters as sealed where inheritance is not supported.
-- Incremented package versions: `Fast.Cache` 3.5.29, `Fast.Consul` 3.5.5, `Fast.NET.Core` 3.5.31, `Fast.DependencyInjection` 3.5.25, `Fast.DynamicApplication` 3.5.31, `Fast.EventBus` 3.5.24, `Fast.IaaS` 3.5.22, `Fast.JwtBearer` 3.5.37, `Fast.Logging` 3.5.27, `Fast.Mapster` 3.5.23, `Fast.OpenApi` 3.5.31, `Fast.Runtime` 3.5.26, `Fast.Serialization.Newtonsoft.Json` 3.5.23, `Fast.Serialization.System.Text.Json` 3.5.18, `Fast.SqlSugar` 3.5.61, `Fast.Swagger` 3.5.30, and `Fast.UnifyResult` 3.5.29.
+- Incremented package versions: `Fast.Cache` 3.5.31, `Fast.Consul` 3.5.7, `Fast.NET.Core` 3.5.33, `Fast.DependencyInjection` 3.5.27, `Fast.DynamicApplication` 3.5.33, `Fast.EventBus` 3.5.26, `Fast.IaaS` 3.5.24, `Fast.JwtBearer` 3.5.38, `Fast.Logging` 3.5.29, `Fast.Mapster` 3.5.25, `Fast.OpenApi` 3.5.32, `Fast.Runtime` 3.5.28, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.63, `Fast.Swagger` 3.5.32, and `Fast.UnifyResult` 3.5.31.
 - Incremented `I18nTranslateTool` to 1.0.1 and moved its `MiniExcel` version into central package management.
 
 ### Fixed
@@ -33,6 +33,7 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 - `Fast.OpenApi` TypeScript clients now emit separate type imports in rule-compliant order, explicit `Promise<T>` return types, and `unknown` for unspecified schemas to satisfy the current Fast ESLint Config rules.
 - `Fast.DependencyInjection` now registers marked concrete services that do not expose a business interface.
 - `Fast.JwtBearer` now accepts the standard `access_token` query parameter regardless of a SignalR hub's route prefix, preserves custom token extraction, and resolves the HTTP context during endpoint and hub-method authorization.
+- WebSocket detection now relies on ASP.NET Core's WebSocket feature instead of treating every request to `/ws` as a WebSocket request.
 - Dynamic application discovery no longer inserts duplicate MVC application parts.
 - Runtime dependency discovery now works under test and plugin hosts whose entry assembly has no adjacent `.deps.json` file.
 - `Fast.Runtime` disposable cleanup now drains the concurrent collection without forcing a full garbage collection or discarding objects added during cleanup.

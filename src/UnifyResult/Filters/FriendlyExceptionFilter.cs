@@ -61,7 +61,7 @@ internal sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
         }
 
         // 排除 WebStock 请求处理
-        if (context.HttpContext.IsWebSocketRequest())
+        if (context.HttpContext.WebSockets.IsWebSocketRequest)
         {
             return;
         }

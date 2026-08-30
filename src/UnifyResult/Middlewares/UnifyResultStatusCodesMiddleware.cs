@@ -53,7 +53,9 @@ internal sealed class UnifyResultStatusCodesMiddleware
         await _next(httpContext);
 
         // 只有请求错误（短路状态码）和非 WebSocket 才支持规范化处理
-        if (httpContext.IsWebSocketRequest() || httpContext.Response.StatusCode < 400 || httpContext.Response.StatusCode == 404)
+        if (httpContext.WebSockets.IsWebSocketRequest
+            || httpContext.Response.StatusCode < 400
+            || httpContext.Response.StatusCode == 404)
         {
             return;
         }
