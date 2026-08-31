@@ -151,8 +151,7 @@ public static partial class OpenApiUtil
                     var apiAction = DisposeRequestAction(apiActionEnum);
 
                     // 响应数据类型
-                    var responseType = DisposeSchemaRefKey(apiInfo.Method.Responses?.Code200?.Content?.Json?.Schema?.Ref,
-                        refSchemas);
+                    var responseType = DisposeSchemaType(apiInfo.Method.Responses?.Code200?.Content?.Json?.Schema, refSchemas);
 
                     var methodInfo = apiInfo.Method;
 
@@ -177,14 +176,9 @@ public static partial class OpenApiUtil
                     {
                         requestDataType = "FormData";
                     }
-                    else if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Ref != null)
+                    else if (methodInfo?.RequestBody?.Content?.Json?.Schema != null)
                     {
-                        requestDataType = DisposeSchemaRefKey(methodInfo.RequestBody.Content.Json.Schema.Ref, refSchemas);
-                    }
-                    // 判断是否为数组引用类型
-                    else if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Items?.Ref != null)
-                    {
-                        requestDataType = DisposeSchemaRefKey(methodInfo.RequestBody.Content.Json.Schema.Items.Ref, refSchemas);
+                        requestDataType = DisposeSchemaType(methodInfo.RequestBody.Content.Json.Schema, refSchemas);
                     }
 
                     if (methodInfo?.Parameters != null)
@@ -199,16 +193,8 @@ public static partial class OpenApiUtil
                                     requestParam += $"{parameter.Name}, ";
                                     break;
                                 case ScriptLanguageEnum.TypeScript:
-                                    if (parameter?.Schema?.Ref != null)
-                                    {
-                                        var schemaRefKey = DisposeSchemaRefKey(parameter.Schema.Ref, refSchemas);
-                                        requestParam += $"{parameter.Name}: {schemaRefKey}, ";
-                                    }
-                                    else
-                                    {
-                                        var baseType = DisposeBaseType(parameter?.Schema?.Type);
-                                        requestParam += $"{parameter.Name}: {baseType}, ";
-                                    }
+                                    var parameterType = DisposeSchemaType(parameter?.Schema, refSchemas) ?? "unknown";
+                                    requestParam += $"{parameter.Name}: {parameterType}, ";
 
                                     break;
                                 default:
@@ -258,11 +244,6 @@ public static partial class OpenApiUtil
                                 else
                                 {
                                     contentSb.Append($"data: {requestDataType}");
-                                }
-
-                                if (methodInfo?.RequestBody?.Content?.Json?.Schema?.Type == "array")
-                                {
-                                    contentSb.Append("[]");
                                 }
 
                                 break;

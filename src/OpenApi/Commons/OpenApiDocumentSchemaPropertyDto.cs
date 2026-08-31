@@ -20,6 +20,7 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Fast.OpenApi;
@@ -58,6 +59,38 @@ public class OpenApiDocumentSchemaPropertyDto
     /// 声明项
     /// </summary>
     public OpenApiDocumentSchemaPropertyDto Items { get; set; }
+
+    /// <summary>
+    /// 对象属性定义。
+    /// </summary>
+    public IDictionary<string, OpenApiDocumentSchemaPropertyDto> Properties { get; set; }
+
+    /// <summary>
+    /// 必填属性名称。
+    /// </summary>
+    public HashSet<string> Required { get; set; }
+
+    /// <summary>
+    /// 附加属性定义。
+    /// </summary>
+    /// <remarks>OpenAPI 允许该值为布尔值或架构对象，因此保留原始 JSON 结构。</remarks>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public JsonElement AdditionalProperties { get; set; }
+
+    /// <summary>
+    /// 全部匹配的组合架构。
+    /// </summary>
+    public List<OpenApiDocumentSchemaPropertyDto> AllOf { get; set; }
+
+    /// <summary>
+    /// 任一匹配的组合架构。
+    /// </summary>
+    public List<OpenApiDocumentSchemaPropertyDto> AnyOf { get; set; }
+
+    /// <summary>
+    /// 唯一匹配的组合架构。
+    /// </summary>
+    public List<OpenApiDocumentSchemaPropertyDto> OneOf { get; set; }
 
     /// <summary>
     /// 引用

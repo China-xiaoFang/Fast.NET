@@ -21,6 +21,7 @@
 // ------------------------------------------------------------------------
 
 using System.Text;
+using System.Text.Json;
 
 namespace Fast.OpenApi;
 
@@ -41,48 +42,7 @@ public static partial class OpenApiUtil
         refKey = refKey?.Split("/")
             .LastOrDefault();
 
-        if (string.IsNullOrWhiteSpace(refKey))
-            return null;
-
-        // 判断是否存在导入声明类型
-        if (Penetrates.OpenApiSettings.ImportTypeMappings.Any(a => refKey.StartsWith(a.Name, StringComparison.Ordinal)))
-        {
-            // 导入声明类型
-            foreach (var typeMapping in Penetrates.OpenApiSettings.ImportTypeMappings.Where(wh =>
-                         refKey.StartsWith(wh.Name, StringComparison.Ordinal)))
-            {
-                // 截取字符串
-                refKey = refKey[typeMapping.Name.Length..];
-
-                // 判断是否为基础类型
-                var baseTypeMapping = Penetrates.OpenApiSettings.BaseTypeMappings.FirstOrDefault(f => f.Key == refKey);
-                if (baseTypeMapping.Value != null)
-                    refKey = baseTypeMapping.Value;
-                else if (!Penetrates.OpenApiSettings.ImportTypeMappings.Any(a =>
-                             refKey.StartsWith(a.Name, StringComparison.Ordinal)))
-                {
-                    if (!string.IsNullOrWhiteSpace(refKey))
-                    {
-                        // 最后一个不是基类则添加引用
-                        refSchemas?.Add(refKey);
-                    }
-                }
-
-                // 填充字符串
-                refKey = string.Format(System.Globalization.CultureInfo.InvariantCulture, typeMapping.MappingName, refKey);
-
-                // 判断是否存在引用声明
-                if (typeMapping.RefSchema?.Count > 0)
-                    refSchemas?.UnionWith(typeMapping.RefSchema);
-            }
-        }
-        else
-        {
-            // 不存在，直接添加引用
-            refSchemas?.Add(refKey);
-        }
-
-        return string.IsNullOrWhiteSpace(refKey) ? null : refKey;
+        return DisposeSchemaRefName(refKey, refSchemas);
     }
 
     /// <summary>
@@ -92,8 +52,214 @@ public static partial class OpenApiUtil
     /// <returns>处理基础类型</returns>
     internal static string DisposeBaseType(string refKey)
     {
-        var baseTypeMapping = Penetrates.OpenApiSettings.BaseTypeMappings.FirstOrDefault(f => f.Key == refKey);
-        return baseTypeMapping.Value ?? "unknown";
+        return FindBaseTypeMapping(refKey) ?? "unknown";
+    }
+
+    /// <summary>
+    /// 处理 OpenAPI 架构类型。
+    /// </summary>
+    /// <param name="schema">OpenAPI 架构。</param>
+    /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合。</param>
+    /// <returns>TypeScript 类型；架构为空时返回 <see langword="null"/>。</returns>
+    internal static string DisposeSchemaType(OpenApiDocumentSchemaPropertyDto schema, HashSet<string> refSchemas = null)
+    {
+        if (schema == null)
+            return null;
+
+        string schemaType;
+        if (!string.IsNullOrWhiteSpace(schema.Ref))
+        {
+            schemaType = DisposeSchemaRefKey(schema.Ref, refSchemas);
+        }
+        else if (schema.OneOf?.Count > 0)
+        {
+            schemaType = DisposeCompositeSchemaType(schema.OneOf, " | ", refSchemas);
+        }
+        else if (schema.AnyOf?.Count > 0)
+        {
+            schemaType = DisposeCompositeSchemaType(schema.AnyOf, " | ", refSchemas);
+        }
+        else if (schema.AllOf?.Count > 0)
+        {
+            schemaType = DisposeCompositeSchemaType(schema.AllOf, " & ", refSchemas);
+        }
+        else if (string.Equals(schema.Type, "array", StringComparison.OrdinalIgnoreCase))
+        {
+            var itemType = DisposeSchemaType(schema.Items, refSchemas) ?? "unknown";
+            schemaType = itemType.Contains(" | ", StringComparison.Ordinal) || itemType.Contains(" & ", StringComparison.Ordinal)
+                ? $"({itemType})[]"
+                : $"{itemType}[]";
+        }
+        else if (TryDisposeAdditionalProperties(schema.AdditionalProperties, refSchemas, out var additionalPropertiesType))
+        {
+            schemaType = $"Record<string, {additionalPropertiesType}>";
+        }
+        else if (schema.Properties?.Count > 0)
+        {
+            var propertyTypes = schema.Properties.Select(property =>
+            {
+                var propertyName = JsonSerializer.Serialize(property.Key);
+                var optional = schema.Required?.Contains(property.Key) == true ? "" : "?";
+                var propertyType = DisposeSchemaType(property.Value, refSchemas) ?? "unknown";
+                return $"{propertyName}{optional}: {propertyType};";
+            });
+            schemaType = $"{{ {string.Join(" ", propertyTypes)} }}";
+        }
+        else
+        {
+            schemaType = FindBaseTypeMapping(schema.Format) ?? DisposeBaseType(schema.Type);
+        }
+
+        if (string.IsNullOrWhiteSpace(schemaType))
+            return null;
+
+        if (schema.Nullable
+            && !schemaType.Split('|', StringSplitOptions.TrimEntries)
+                .Contains("null", StringComparer.Ordinal))
+        {
+            schemaType += " | null";
+        }
+
+        return schemaType;
+    }
+
+    /// <summary>
+    /// 将组件架构转换为通用属性架构。
+    /// </summary>
+    /// <param name="schema">组件架构。</param>
+    /// <returns>通用属性架构。</returns>
+    private static OpenApiDocumentSchemaPropertyDto ConvertSchema(OpenApiDocumentComponentSchemaDto schema)
+    {
+        return new OpenApiDocumentSchemaPropertyDto
+        {
+            Type = schema.Type,
+            Format = schema.Format,
+            Nullable = schema.Nullable,
+            Ref = schema.Ref,
+            Items = schema.Items,
+            Properties = schema.Properties,
+            Required = schema.Required,
+            AdditionalProperties = schema.AdditionalPropertiesSchema,
+            AllOf = schema.AllOf,
+            AnyOf = schema.AnyOf,
+            OneOf = schema.OneOf
+        };
+    }
+
+    /// <summary>
+    /// 递归处理架构引用名称。
+    /// </summary>
+    /// <param name="refName">架构引用名称。</param>
+    /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合。</param>
+    /// <returns>TypeScript 类型。</returns>
+    private static string DisposeSchemaRefName(string refName, HashSet<string> refSchemas)
+    {
+        if (string.IsNullOrWhiteSpace(refName))
+            return null;
+
+        var baseType = FindBaseTypeMapping(refName);
+        if (baseType != null)
+            return baseType;
+
+        var typeMapping =
+            Penetrates.OpenApiSettings.ImportTypeMappings.FirstOrDefault(mapping =>
+                refName.StartsWith(mapping.Name, StringComparison.Ordinal));
+        if (typeMapping == null)
+        {
+            refSchemas?.Add(refName);
+            return refName;
+        }
+
+        var remainingName = refName[typeMapping.Name.Length..];
+        var remainingType = DisposeSchemaRefName(remainingName, refSchemas);
+        if (typeMapping.RefSchema?.Count > 0)
+            refSchemas?.UnionWith(typeMapping.RefSchema);
+
+        string result;
+        if (typeMapping.MappingName == "{0}[]"
+            && (remainingType?.Contains(" | ", StringComparison.Ordinal) == true
+                || remainingType?.Contains(" & ", StringComparison.Ordinal) == true))
+        {
+            result = $"({remainingType})[]";
+        }
+        else if (typeMapping.MappingName == "readonly {0}[]"
+                 && (remainingType?.Contains(" | ", StringComparison.Ordinal) == true
+                     || remainingType?.Contains(" & ", StringComparison.Ordinal) == true))
+        {
+            result = $"readonly ({remainingType})[]";
+        }
+        else
+        {
+            result = string.Format(System.Globalization.CultureInfo.InvariantCulture, typeMapping.MappingName,
+                remainingType ?? string.Empty);
+        }
+
+        return string.IsNullOrWhiteSpace(result) ? null : result;
+    }
+
+    /// <summary>
+    /// 查找基础类型映射。
+    /// </summary>
+    /// <param name="typeName">类型名称或 OpenAPI 格式。</param>
+    /// <returns>TypeScript 类型；未找到时返回 <see langword="null"/>。</returns>
+    private static string FindBaseTypeMapping(string typeName)
+    {
+        if (string.IsNullOrWhiteSpace(typeName))
+            return null;
+
+        return Penetrates.OpenApiSettings.BaseTypeMappings.FirstOrDefault(mapping =>
+                string.Equals(mapping.Key, typeName, StringComparison.OrdinalIgnoreCase))
+            .Value;
+    }
+
+    /// <summary>
+    /// 处理组合架构类型。
+    /// </summary>
+    /// <param name="schemas">组合架构。</param>
+    /// <param name="separator">TypeScript 类型分隔符。</param>
+    /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合。</param>
+    /// <returns>TypeScript 组合类型。</returns>
+    private static string DisposeCompositeSchemaType(IEnumerable<OpenApiDocumentSchemaPropertyDto> schemas, string separator,
+        HashSet<string> refSchemas)
+    {
+        var schemaTypes = schemas.Select(schema => DisposeSchemaType(schema, refSchemas))
+            .Where(type => !string.IsNullOrWhiteSpace(type))
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+        if (schemaTypes.Count == 0)
+            return "unknown";
+
+        return string.Join(separator,
+            schemaTypes.Select(type =>
+                (separator == " & " && type.Contains(" | ", StringComparison.Ordinal))
+                || (separator == " | " && type.Contains(" & ", StringComparison.Ordinal))
+                    ? $"({type})"
+                    : type));
+    }
+
+    /// <summary>
+    /// 处理附加属性架构。
+    /// </summary>
+    /// <param name="additionalProperties">附加属性原始定义。</param>
+    /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合。</param>
+    /// <param name="type">附加属性的 TypeScript 类型。</param>
+    /// <returns>存在附加属性定义时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+    private static bool TryDisposeAdditionalProperties(JsonElement additionalProperties, HashSet<string> refSchemas,
+        out string type)
+    {
+        type = null;
+        switch (additionalProperties.ValueKind)
+        {
+            case JsonValueKind.True:
+                type = "unknown";
+                return true;
+            case JsonValueKind.Object:
+                var schema = additionalProperties.Deserialize<OpenApiDocumentSchemaPropertyDto>(_openApiSerializerOptions);
+                type = DisposeSchemaType(schema, refSchemas) ?? "unknown";
+                return true;
+            default:
+                return false;
+        }
     }
 
     /// <summary>
@@ -156,7 +322,7 @@ public static partial class OpenApiUtil
     internal static async Task<List<ComponentSchemaDto>> GenerateOpenApiDocumentSchemaFile(OpenApiDocumentDto openApiDocument,
         ScriptLanguageEnum scriptLanguage)
     {
-        if (openApiDocument.Components.Schemas == null)
+        if (openApiDocument.Components?.Schemas == null)
             return null;
 
         var result = new List<ComponentSchemaDto>();
@@ -174,6 +340,9 @@ public static partial class OpenApiUtil
             foreach (var dtoSchema in dtoSchemas)
             {
                 if (string.IsNullOrWhiteSpace(dtoSchema.Key))
+                    continue;
+
+                if (dtoSchema.Value == null)
                     continue;
 
                 if (result.Any(a => a.Name == dtoSchema.Key))
@@ -201,6 +370,33 @@ public static partial class OpenApiUtil
 
                 var schemaDescription = dtoSchema.Value.Description?.Replace("\r\n", "\r\n * ");
 
+                var properties = dtoSchema.Value.Properties ?? new Dictionary<string, OpenApiDocumentSchemaPropertyDto>();
+                var componentSchema = ConvertSchema(dtoSchema.Value);
+                var generateTypeAlias = properties.Count == 0
+                                        && (!string.IsNullOrWhiteSpace(componentSchema.Ref)
+                                            || componentSchema.Items != null
+                                            || componentSchema.AllOf?.Count > 0
+                                            || componentSchema.AnyOf?.Count > 0
+                                            || componentSchema.OneOf?.Count > 0
+                                            || componentSchema.AdditionalProperties.ValueKind is JsonValueKind.True
+                                                or JsonValueKind.Object
+                                            || !string.IsNullOrWhiteSpace(componentSchema.Type)
+                                            && !string.Equals(componentSchema.Type, "unknown",
+                                                StringComparison.OrdinalIgnoreCase));
+                if (generateTypeAlias)
+                {
+                    var schemaType = DisposeSchemaType(componentSchema, schemaDto.RefSchemas) ?? "unknown";
+                    schemaDto.Content.Append($"""
+                                              /**
+                                               * {schemaDescription}
+                                               */
+                                              export type {dtoSchema.Key} = {schemaType};
+
+                                              """);
+                    result.Add(schemaDto);
+                    continue;
+                }
+
                 schemaDto.Content.Append($"""
                                           /**
                                            * {schemaDescription}
@@ -209,8 +405,7 @@ public static partial class OpenApiUtil
                                           """);
 
                 // 判断是否存在分页
-                var hasPaged =
-                    Penetrates.OpenApiSettings.PagedSchemaProperties.All(a => dtoSchema.Value.Properties.ContainsKey(a));
+                var hasPaged = Penetrates.OpenApiSettings.PagedSchemaProperties.All(properties.ContainsKey);
                 if (hasPaged)
                 {
                     schemaDto.Content.Append(" extends PagedInput ");
@@ -220,7 +415,7 @@ public static partial class OpenApiUtil
                 schemaDto.Content.Append(" {");
 
                 // 属性
-                foreach (var property in dtoSchema.Value.Properties)
+                foreach (var property in properties)
                 {
                     // 判断是否为分页属性
                     if (Penetrates.OpenApiSettings.PagedSchemaProperties.Contains(property.Key))
@@ -238,30 +433,8 @@ public static partial class OpenApiUtil
                                                 {(property.Value.ReadOnly ? "readonly " : "")}{property.Key}?: 
                                               """);
 
-                    // 判断是否为引用属性
-                    if (property.Value.Ref != null)
-                    {
-                        var propertyRefKey = DisposeSchemaRefKey(property.Value.Ref, schemaDto.RefSchemas);
-                        schemaDto.Content.Append($"{propertyRefKey};");
-                    }
-                    else if (property.Value.Type == "array")
-                    {
-                        var propertyRefKey =
-                            // 判断是否为引用类型数组
-                            property.Value.Items.Ref != null
-                                ? DisposeSchemaRefKey(property.Value.Items.Ref, schemaDto.RefSchemas)
-                                : DisposeBaseType(property.Value.Items.Type);
-                        schemaDto.Content.Append(
-                            propertyRefKey.Contains(" | ", StringComparison.Ordinal)
-                            || propertyRefKey.Contains(" & ", StringComparison.Ordinal)
-                                ? $"({propertyRefKey})[];"
-                                : $"{propertyRefKey}[];");
-                    }
-                    else
-                    {
-                        var propertyRefKey = DisposeBaseType(property.Value.Format ?? property.Value.Type);
-                        schemaDto.Content.Append($"{propertyRefKey};");
-                    }
+                    var propertyType = DisposeSchemaType(property.Value, schemaDto.RefSchemas) ?? "unknown";
+                    schemaDto.Content.Append($"{propertyType};");
                 }
 
                 schemaDto.Content.Append(Environment.NewLine);

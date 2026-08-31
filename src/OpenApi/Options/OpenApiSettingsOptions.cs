@@ -200,7 +200,33 @@ public class OpenApiSettingsOptions : IPostConfigure
                 Name = "Dictionary_StringString", MappingName = "Record<string, string>"
             },
             new OpenApiImportTypeMappingSettingsOptions {Name = "IDictionary_StringList_", MappingName = "Record<string, {0}[]>"},
-            new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_StringList_", MappingName = "Record<string, {0}[]>"}
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_StringList_", MappingName = "Record<string, {0}[]>"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "IDictionary_String", MappingName = "Record<string, {0}>"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_String", MappingName = "Record<string, {0}>"},
+            new OpenApiImportTypeMappingSettingsOptions
+            {
+                Name = "IReadOnlyDictionary_String", MappingName = "Readonly<Record<string, {0}>>"
+            },
+            new OpenApiImportTypeMappingSettingsOptions
+            {
+                Name = "ReadOnlyDictionary_String", MappingName = "Readonly<Record<string, {0}>>"
+            },
+            new OpenApiImportTypeMappingSettingsOptions {Name = "SortedDictionary_String", MappingName = "Record<string, {0}>"},
+            new OpenApiImportTypeMappingSettingsOptions
+            {
+                Name = "ConcurrentDictionary_String", MappingName = "Record<string, {0}>"
+            },
+            new OpenApiImportTypeMappingSettingsOptions {Name = "IEnumerable_", MappingName = "{0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "ICollection_", MappingName = "{0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "IReadOnlyCollection_", MappingName = "readonly {0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "IReadOnlyList_", MappingName = "readonly {0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Collection_", MappingName = "{0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "ObservableCollection_", MappingName = "{0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "HashSet_", MappingName = "{0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "ISet_", MappingName = "{0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Queue_", MappingName = "{0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Stack_", MappingName = "{0}[]"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Nullable_", MappingName = "{0} | null"}
         ];
         IgnoreSchemas ??= [];
         PagedSchemaProperties ??=
@@ -241,16 +267,47 @@ public class OpenApiSettingsOptions : IPostConfigure
             {"List_Boolean", "boolean[]"},
             {"List_String", "string[]"},
             {"List_Object", "unknown[]"},
+            {"SByte", "number"},
+            {"Byte", "number"},
+            {"Int16", "number"},
             {"Int64", "number"},
             {"Int32", "number"},
+            {"UInt16", "number"},
+            {"UInt32", "number"},
+            {"UInt64", "number"},
+            {"Single", "number"},
+            {"Double", "number"},
+            {"Decimal", "number"},
             {"Boolean", "boolean"},
             {"String", "string"},
+            {"Char", "string"},
+            {"Guid", "string"},
+            {"Uri", "string"},
+            {"DateTime", "string"},
+            {"DateTimeOffset", "string"},
+            {"DateOnly", "string"},
+            {"TimeOnly", "string"},
+            {"TimeSpan", "string"},
+            {"Object", "unknown"},
             {"string", "string"},
-            {"date-time", "Date"},
+            {"date-time", "string"},
             {"date", "string"},
             {"time", "string"},
+            {"duration", "string"},
+            {"uri", "string"},
+            {"uri-reference", "string"},
+            {"email", "string"},
+            {"hostname", "string"},
+            {"ipv4", "string"},
+            {"ipv6", "string"},
+            {"password", "string"},
+            {"regex", "string"},
             {"int64", "number"},
             {"int32", "number"},
+            {"int16", "number"},
+            {"uint16", "number"},
+            {"uint32", "number"},
+            {"uint64", "number"},
             {"decimal", "number"},
             {"double", "number"},
             {"float", "number"},
