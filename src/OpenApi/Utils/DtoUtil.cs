@@ -113,13 +113,6 @@ public static partial class OpenApiUtil
         if (string.IsNullOrWhiteSpace(schemaType))
             return null;
 
-        if (schema.Nullable
-            && !schemaType.Split('|', StringSplitOptions.TrimEntries)
-                .Contains("null", StringComparer.Ordinal))
-        {
-            schemaType += " | null";
-        }
-
         return schemaType;
     }
 
@@ -222,8 +215,9 @@ public static partial class OpenApiUtil
     private static string DisposeCompositeSchemaType(IEnumerable<OpenApiDocumentSchemaPropertyDto> schemas, string separator,
         HashSet<string> refSchemas)
     {
-        var schemaTypes = schemas.Select(schema => DisposeSchemaType(schema, refSchemas))
-            .Where(type => !string.IsNullOrWhiteSpace(type))
+        var schemaTypes = schemas.Where(schema => !string.Equals(schema.Type, "null", StringComparison.OrdinalIgnoreCase))
+            .Select(schema => DisposeSchemaType(schema, refSchemas))
+            .Where(type => !string.IsNullOrWhiteSpace(type) && type != "null")
             .Distinct(StringComparer.Ordinal)
             .ToList();
         if (schemaTypes.Count == 0)

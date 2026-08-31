@@ -226,7 +226,7 @@ public class OpenApiSettingsOptions : IPostConfigure
             new OpenApiImportTypeMappingSettingsOptions {Name = "ISet_", MappingName = "{0}[]"},
             new OpenApiImportTypeMappingSettingsOptions {Name = "Queue_", MappingName = "{0}[]"},
             new OpenApiImportTypeMappingSettingsOptions {Name = "Stack_", MappingName = "{0}[]"},
-            new OpenApiImportTypeMappingSettingsOptions {Name = "Nullable_", MappingName = "{0} | null"}
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Nullable_", MappingName = "{0}"}
         ];
         IgnoreSchemas ??= [];
         PagedSchemaProperties ??=
@@ -241,23 +241,23 @@ public class OpenApiSettingsOptions : IPostConfigure
         ];
         BaseTypeMappings ??= new Dictionary<string, string>
         {
-            {"List_Nullable_Int64", "number[] | null"},
-            {"List_Nullable_Int32", "number[] | null"},
-            {"List_Nullable_Decimal", "number[] | null"},
-            {"List_Nullable_Double", "number[] | null"},
-            {"List_Nullable_Float", "number[] | null"},
-            {"List_Nullable_Integer", "number[] | null"},
-            {"List_Nullable_Boolean", "boolean[] | null"},
-            {"List_Nullable_String", "string[] | null"},
-            {"Nullable_Int64", "number | null"},
-            {"Nullable_Int32", "number | null"},
-            {"Nullable_Decimal", "number | null"},
-            {"Nullable_Double", "number | null"},
-            {"Nullable_Float", "number | null"},
-            {"Nullable_Integer", "number | null"},
-            {"Nullable_Boolean", "boolean | null"},
-            {"Nullable_String", "string | null"},
-            {"Nullable_Object", "unknown | null"},
+            {"List_Nullable_Int64", "number[]"},
+            {"List_Nullable_Int32", "number[]"},
+            {"List_Nullable_Decimal", "number[]"},
+            {"List_Nullable_Double", "number[]"},
+            {"List_Nullable_Float", "number[]"},
+            {"List_Nullable_Integer", "number[]"},
+            {"List_Nullable_Boolean", "boolean[]"},
+            {"List_Nullable_String", "string[]"},
+            {"Nullable_Int64", "number"},
+            {"Nullable_Int32", "number"},
+            {"Nullable_Decimal", "number"},
+            {"Nullable_Double", "number"},
+            {"Nullable_Float", "number"},
+            {"Nullable_Integer", "number"},
+            {"Nullable_Boolean", "boolean"},
+            {"Nullable_String", "string"},
+            {"Nullable_Object", "unknown"},
             {"List_Int64", "number[]"},
             {"List_Int32", "number[]"},
             {"List_Decimal", "number[]"},

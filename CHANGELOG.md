@@ -25,7 +25,7 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 - Established `FAST-AES-256-GCM-V1` as the initial cross-language password-based AES payload for `Fast.IaaS`.
 - Simplified XML documentation by removing type references already conveyed by signatures, inheriting existing implementation contracts, and retaining links to related APIs and constraints.
 - Marked internal leaf implementations and JSON converters as sealed where inheritance is not supported.
-- Incremented package versions: `Fast.Cache` 3.5.31, `Fast.Consul` 3.5.7, `Fast.NET.Core` 3.5.33, `Fast.DependencyInjection` 3.5.27, `Fast.DynamicApplication` 3.5.33, `Fast.EventBus` 3.5.26, `Fast.IaaS` 3.5.24, `Fast.JwtBearer` 3.5.38, `Fast.Logging` 3.5.29, `Fast.Mapster` 3.5.25, `Fast.OpenApi` 3.5.33, `Fast.Runtime` 3.5.28, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.63, `Fast.Swagger` 3.5.32, and `Fast.UnifyResult` 3.5.31.
+- Incremented package versions: `Fast.Cache` 3.5.31, `Fast.Consul` 3.5.7, `Fast.NET.Core` 3.5.33, `Fast.DependencyInjection` 3.5.27, `Fast.DynamicApplication` 3.5.33, `Fast.EventBus` 3.5.26, `Fast.IaaS` 3.5.24, `Fast.JwtBearer` 3.5.38, `Fast.Logging` 3.5.29, `Fast.Mapster` 3.5.25, `Fast.OpenApi` 3.5.34, `Fast.Runtime` 3.5.28, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.63, `Fast.Swagger` 3.5.32, and `Fast.UnifyResult` 3.5.31.
 - Incremented `I18nTranslateTool` to 1.0.1 and moved its `MiniExcel` version into central package management.
 
 ### Fixed
@@ -34,7 +34,7 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 - `Fast.DependencyInjection` now registers marked concrete services that do not expose a business interface.
 - `Fast.JwtBearer` now accepts the standard `access_token` query parameter regardless of a SignalR hub's route prefix, preserves custom token extraction, and resolves the HTTP context during endpoint and hub-method authorization.
 - WebSocket detection now relies on ASP.NET Core's WebSocket feature instead of treating every request to `/ws` as a WebSocket request.
-- `Fast.OpenApi` now resolves duration, dictionary, collection, nullable, nested, and composed OpenAPI schemas to concrete TypeScript types instead of falling back to `unknown`.
+- `Fast.OpenApi` now resolves duration, dictionary, collection, nested, and composed OpenAPI schemas to concrete TypeScript types and unwraps nullable schemas without emitting explicit `| null` unions.
 - Dynamic application discovery no longer inserts duplicate MVC application parts.
 - Runtime dependency discovery now works under test and plugin hosts whose entry assembly has no adjacent `.deps.json` file.
 - `Fast.Runtime` disposable cleanup now drains the concurrent collection without forcing a full garbage collection or discarding objects added during cleanup.
