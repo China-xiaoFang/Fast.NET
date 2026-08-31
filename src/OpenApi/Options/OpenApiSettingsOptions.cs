@@ -142,11 +142,11 @@ public class OpenApiSettingsOptions : IPostConfigure
             },
             new OpenApiImportTypeMappingSettingsOptions
             {
-                Name = "List_IDictionary_StringInt64", MappingName = "Record<string, number>[]"
+                Name = "List_IDictionary_StringInt64", MappingName = "Record<string, string>[]"
             },
             new OpenApiImportTypeMappingSettingsOptions
             {
-                Name = "List_Dictionary_StringInt64", MappingName = "Record<string, number>[]"
+                Name = "List_Dictionary_StringInt64", MappingName = "Record<string, string>[]"
             },
             new OpenApiImportTypeMappingSettingsOptions
             {
@@ -175,9 +175,9 @@ public class OpenApiSettingsOptions : IPostConfigure
             new OpenApiImportTypeMappingSettingsOptions {Name = "List_", MappingName = "{0}[]"},
             new OpenApiImportTypeMappingSettingsOptions
             {
-                Name = "IDictionary_StringInt64", MappingName = "Record<string, number>"
+                Name = "IDictionary_StringInt64", MappingName = "Record<string, string>"
             },
-            new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_StringInt64", MappingName = "Record<string, number>"},
+            new OpenApiImportTypeMappingSettingsOptions {Name = "Dictionary_StringInt64", MappingName = "Record<string, string>"},
             new OpenApiImportTypeMappingSettingsOptions
             {
                 Name = "IDictionary_StringInt32", MappingName = "Record<string, number>"
@@ -241,7 +241,7 @@ public class OpenApiSettingsOptions : IPostConfigure
         ];
         BaseTypeMappings ??= new Dictionary<string, string>
         {
-            {"List_Nullable_Int64", "number[]"},
+            {"List_Nullable_Int64", "string[]"},
             {"List_Nullable_Int32", "number[]"},
             {"List_Nullable_Decimal", "number[]"},
             {"List_Nullable_Double", "number[]"},
@@ -249,7 +249,7 @@ public class OpenApiSettingsOptions : IPostConfigure
             {"List_Nullable_Integer", "number[]"},
             {"List_Nullable_Boolean", "boolean[]"},
             {"List_Nullable_String", "string[]"},
-            {"Nullable_Int64", "number"},
+            {"Nullable_Int64", "string"},
             {"Nullable_Int32", "number"},
             {"Nullable_Decimal", "number"},
             {"Nullable_Double", "number"},
@@ -258,7 +258,7 @@ public class OpenApiSettingsOptions : IPostConfigure
             {"Nullable_Boolean", "boolean"},
             {"Nullable_String", "string"},
             {"Nullable_Object", "unknown"},
-            {"List_Int64", "number[]"},
+            {"List_Int64", "string[]"},
             {"List_Int32", "number[]"},
             {"List_Decimal", "number[]"},
             {"List_Double", "number[]"},
@@ -270,7 +270,7 @@ public class OpenApiSettingsOptions : IPostConfigure
             {"SByte", "number"},
             {"Byte", "number"},
             {"Int16", "number"},
-            {"Int64", "number"},
+            {"Int64", "string"},
             {"Int32", "number"},
             {"UInt16", "number"},
             {"UInt32", "number"},
@@ -302,7 +302,8 @@ public class OpenApiSettingsOptions : IPostConfigure
             {"ipv6", "string"},
             {"password", "string"},
             {"regex", "string"},
-            {"int64", "number"},
+            {"int64", "string"},
+            {"long", "string"},
             {"int32", "number"},
             {"int16", "number"},
             {"uint16", "number"},
