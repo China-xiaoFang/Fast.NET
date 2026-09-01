@@ -183,7 +183,7 @@ This diagram presents the responsibility layers. See the [architecture guide](do
 | [`Fast.Swagger`](https://www.nuget.org/packages/Fast.Swagger) | Swagger documents, grouping, security definitions, and filters | .NET 8–10 | [`src/Swagger`](src/Swagger) |
 | [`Fast.UnifyResult`](https://www.nuget.org/packages/Fast.UnifyResult) | RESTful unified responses, exception handling, and validation | .NET 8–10 | [`src/UnifyResult`](src/UnifyResult) |
 
-`Fast.OpenApi` generates TypeScript clients with separate `import type` declarations, explicit `Promise<T>` return types, and `unknown` for values without a concrete schema, making the output compatible with `verbatimModuleSyntax` and the current Fast ESLint Config rules.
+`Fast.OpenApi` generates TypeScript clients with separate `import type` declarations, explicit `Promise<T>` return types, and `unknown` for values without a concrete schema, making the output compatible with `verbatimModuleSyntax` and the current Fast ESLint Config rules. Generated Web and mobile multipart upload methods also expose an optional Axios `onUploadProgress` callback.
 
 ## Repository layout
 

@@ -24,7 +24,7 @@ Fast.NET consists of 17 independently published NuGet packages. The primary modu
 | `Fast.Swagger` | Swagger documents, grouping, security definitions, and UI | `AddSwaggerDocuments()`, `UseSwaggerDocuments()` | `SwaggerSettings` |
 | `Fast.UnifyResult` | Unified responses, model validation, and friendly exceptions | `services.AddUnifyResult()` | Designed for MVC/controller applications |
 
-`Fast.OpenApi` generates TypeScript clients with separate `import type` declarations, explicit `Promise<T>` return types, and `unknown` for values without a concrete schema, compatible with `verbatimModuleSyntax` and the current Fast ESLint Config rules.
+`Fast.OpenApi` generates TypeScript clients with separate `import type` declarations, explicit `Promise<T>` return types, and `unknown` for values without a concrete schema, compatible with `verbatimModuleSyntax` and the current Fast ESLint Config rules. Generated Web and mobile multipart upload methods also expose an optional Axios `onUploadProgress` callback.
 
 ## Recommended registration order
 

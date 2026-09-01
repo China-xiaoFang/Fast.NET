@@ -24,7 +24,7 @@ Fast.NET 由 17 个可独立发布的 NuGet 包组成。除 `Fast.IaaS` 外，�
 | `Fast.Swagger` | Swagger 文档、分组、安全定义和 UI | `AddSwaggerDocuments()`、`UseSwaggerDocuments()` | `SwaggerSettings` |
 | `Fast.UnifyResult` | 统一响应、模型验证和友好异常 | `services.AddUnifyResult()` | 面向 MVC/控制器应用 |
 
-`Fast.OpenApi` 生成的 TypeScript 客户端使用独立的 `import type`、显式 `Promise<T>` 返回类型，并将缺少明确 Schema 的值映射为 `unknown`，兼容 `verbatimModuleSyntax` 与当前 Fast ESLint Config 规则。
+`Fast.OpenApi` 生成的 TypeScript 客户端使用独立的 `import type`、显式 `Promise<T>` 返回类型，并将缺少明确 Schema 的值映射为 `unknown`，兼容 `verbatimModuleSyntax` 与当前 Fast ESLint Config 规则。生成的 Web 端与移动端 multipart 上传方法还会暴露可选的 Axios `onUploadProgress` 回调。
 
 ## 推荐注册顺序
 

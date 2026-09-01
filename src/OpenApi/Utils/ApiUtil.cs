@@ -125,6 +125,8 @@ public static partial class OpenApiUtil
                 var contentSb = new StringBuilder();
                 // 引用声明
                 var refSchemas = new HashSet<string>();
+                // 仅在当前模块包含上传接口时生成 Axios 上传进度类型导入。
+                var hasUpload = false;
 
                 for (var i = 0; i < curPaths.Count; i++)
                 {
@@ -154,6 +156,12 @@ public static partial class OpenApiUtil
                     var responseType = DisposeSchemaType(apiInfo.Method.Responses?.Code200?.Content?.Json?.Schema, refSchemas);
 
                     var methodInfo = apiInfo.Method;
+                    var isFormData = methodInfo?.RequestBody?.Content?.FormData != null;
+                    var isMobileUpload = !hasWeb && isFormData;
+                    if (isFormData)
+                    {
+                        hasUpload = true;
+                    }
 
                     // 获取接口名称（注释）
                     var apiSummary = apiInfoAttribute?.Name ?? methodInfo.Summary;
@@ -172,7 +180,7 @@ public static partial class OpenApiUtil
                     // 请求体类型
                     var requestDataType = "";
 
-                    if (methodInfo?.RequestBody?.Content?.FormData != null)
+                    if (isFormData)
                     {
                         requestDataType = "FormData";
                     }
@@ -224,7 +232,7 @@ public static partial class OpenApiUtil
                         switch (scriptLanguage)
                         {
                             case ScriptLanguageEnum.JavaScript:
-                                if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
+                                if (isMobileUpload)
                                 {
                                     // 移动端使用 filePath 参数，并按字符串处理
                                     contentSb.Append("filePath");
@@ -236,7 +244,7 @@ public static partial class OpenApiUtil
 
                                 break;
                             case ScriptLanguageEnum.TypeScript:
-                                if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
+                                if (isMobileUpload)
                                 {
                                     // 移动端使用 filePath 参数，并按字符串处理
                                     contentSb.Append("filePath: string");
@@ -249,6 +257,13 @@ public static partial class OpenApiUtil
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(scriptLanguage), scriptLanguage, null);
+                        }
+
+                        if (isFormData)
+                        {
+                            contentSb.Append(scriptLanguage == ScriptLanguageEnum.TypeScript
+                                ? ", onUploadProgress?: (progressEvent: AxiosProgressEvent) => void"
+                                : ", onUploadProgress");
                         }
                     }
 
@@ -273,7 +288,7 @@ public static partial class OpenApiUtil
                                        """);
                     contentSb.Append(Environment.NewLine);
 
-                    if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
+                    if (isMobileUpload)
                     {
                         // 移动端默认使用 upload
                         contentSb.Append("""
@@ -301,7 +316,7 @@ public static partial class OpenApiUtil
 
                     if (!string.IsNullOrWhiteSpace(requestDataType))
                     {
-                        if (!hasWeb && methodInfo?.RequestBody?.Content?.FormData != null)
+                        if (isMobileUpload)
                         {
                             // 移动端使用 filePath 参数，并按字符串处理
                             contentSb.Append("""
@@ -314,6 +329,12 @@ public static partial class OpenApiUtil
                         else
                         {
                             contentSb.Append("      data,");
+                            contentSb.Append(Environment.NewLine);
+                        }
+
+                        if (isFormData)
+                        {
+                            contentSb.Append("      onUploadProgress,");
                             contentSb.Append(Environment.NewLine);
                         }
                     }
@@ -384,6 +405,11 @@ public static partial class OpenApiUtil
                         }
 
                         var imports = new List<string> {"import { axiosUtil } from \"@fast-china/axios\";"};
+                        if (hasUpload)
+                        {
+                            imports.Add("import type { AxiosProgressEvent } from \"axios\";");
+                        }
+
                         imports.AddRange(externalImports);
                         imports.AddRange(schemaImports);
                         await File.WriteAllTextAsync(Path.Combine(apiFileDir, "index.ts"), FormatScriptContent($$"""
