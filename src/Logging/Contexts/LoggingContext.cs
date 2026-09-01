@@ -177,9 +177,9 @@ public static class LoggingContext
 
         formatString.Append(message);
 
-        if (colors.Background.HasValue)
-            formatString.Append("\u001b[39m\u001b[22m");
         if (colors.Foreground.HasValue)
+            formatString.Append("\u001b[39m\u001b[22m");
+        if (colors.Background.HasValue)
             formatString.Append("\u001b[49m");
 
         return formatString;

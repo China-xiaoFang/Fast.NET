@@ -93,6 +93,8 @@ public static class WebApplicationBuilderExtension
         sb.Append(Environment.NewLine);
         sb.Append("期待您的PR，让.NET更好！");
         sb.Append(Environment.NewLine);
+        if (useColor)
+            sb.Append("\u001b[39m\u001b[22m\u001b[49m");
         Console.WriteLine(sb.ToString());
     }
 
