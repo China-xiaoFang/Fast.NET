@@ -30,6 +30,7 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 
 ### Fixed
 
+- Fast.IaaS tree building now supports partial node sets whose parent nodes are not included and uses parent lookups to avoid repeated collection scans during recursive construction.
 - Console color output now restores foreground and background state after startup banners and independently colored log segments.
 - `Fast.OpenApi` Web and mobile upload clients now expose an optional Axios `onUploadProgress` callback and forward it to the corresponding adapter.
 - `Fast.OpenApi` TypeScript clients now emit separate type imports in rule-compliant order, explicit `Promise<T>` return types, and `unknown` for unspecified schemas to satisfy the current Fast ESLint Config rules.

@@ -55,26 +55,43 @@ public class TreeBuildUtil<TEntity, TProperty> where TEntity : ITreeNode<TProper
     /// <returns>构造树节点集合</returns>
     public List<TEntity> Build(List<TEntity> nodes)
     {
-        var result = nodes.Where(i => i.GetPid()
-                .Equals(_rootParentId))
+        if (nodes == null || nodes.Count == 0)
+        {
+            return [];
+        }
+
+        // 当前集合中的全部节点Id
+        var nodeIds = nodes.Select(sl => sl.GetId())
+            .ToHashSet();
+
+        // 按父节点Id建立索引，避免递归过程中重复遍历全部节点
+        var nodeLookup = nodes.ToLookup(node => node.GetPid());
+
+        /*
+         * 根节点满足以下任一条件：
+         * 1.ParentId 等于指定的根节点父级标识
+         * 2.ParentId 对应的父节点不在当前集合中
+         */
+        var result = nodes.Where(wh => wh.GetPid()
+                                           .Equals(_rootParentId)
+                                       || !nodeIds.Contains(wh.GetPid()))
             .OrderBy(ob => ob.GetSort())
             .ToList();
-        result.ForEach(u => BuildChildNodes(nodes, u));
+        result.ForEach(u => BuildChildNodes(nodeLookup, u));
         return result;
     }
 
     /// <summary>
     /// 构造子节点集合
     /// </summary>
-    /// <param name="totalNodes">参与构建树结构的全部节点</param>
+    /// <param name="nodeLookup">按父节点Id分组的节点集合</param>
     /// <param name="node">当前正在挂接子节点的树节点</param>
-    private void BuildChildNodes(List<TEntity> totalNodes, TEntity node)
+    private void BuildChildNodes(ILookup<TProperty, TEntity> nodeLookup, TEntity node)
     {
-        var nodeSubList = totalNodes.Where(i => i.GetPid()
-                .Equals(node.GetId()))
+        var nodeSubList = nodeLookup[node.GetId()]
             .OrderBy(ob => ob.GetSort())
             .ToList();
-        nodeSubList.ForEach(u => BuildChildNodes(totalNodes, u));
+        nodeSubList.ForEach(u => BuildChildNodes(nodeLookup, u));
         node.SetChildren(nodeSubList);
     }
 }
