@@ -42,12 +42,12 @@ UploadNuget.bat publish-one Fast.Cache
 
 ## Publish results
 
-The script checks both the NuGet exit code and diagnostic output. With `--skip-duplicate`, an existing package can return exit code 0, so that code alone does not count as a successful publication. The script sets `DOTNET_CLI_UI_LANGUAGE=zh-CN` within its local scope for Simplified Chinese diagnostics and restores the caller's setting on exit. Classification recognizes both Chinese and English success, duplicate-package, warning, and error diagnostics. Unlocalized content, such as HTTP methods and status names, may remain in English.
+The script checks both the NuGet exit code and diagnostic output. With `--skip-duplicate`, an existing package can return exit code 0, so that code alone does not count as a successful publication. The script scopes `DOTNET_CLI_UI_LANGUAGE=zh-CN` to its process. When PowerShell is available, it forces redirected NuGet output to UTF-8, classifies Chinese and English success, duplicate-package, warning, and error diagnostics, then converts the log to CMD CP936 for display. When PowerShell is unavailable, NuGet writes directly to the console; a nonzero exit code is a failure, while a zero exit code is conservatively reported as a warning because the detailed result cannot be classified reliably.
 
 | Result | Color | Meaning |
 | --- | --- | --- |
 | Success | Green | Exit code 0 with an explicit publication confirmation and no warnings, errors, or duplicate messages |
-| Already exists, skipped | Yellow | Exit code 0 with only existing versions skipped; excluded from the success count |
+| Already exists, skipped | Dark gray | Exit code 0 with only existing versions skipped; excluded from the success count |
 | Warning | Yellow | A warning, mixed success and skips across the package and its symbols, or an unconfirmed overall result |
 | Failure | Red | A nonzero exit code or an error diagnostic, even if the command returns 0 |
 

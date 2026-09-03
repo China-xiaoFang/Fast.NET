@@ -28,6 +28,8 @@ This release updates 15 SDK packages, including the dependency versions of modul
 
 `Fast.OpenApi` generates TypeScript clients with separate `import type` declarations and explicit `Promise<T>` return types. Actions returning non-generic `Task` or `ValueTask` use `Promise<void>`. `Download` and `Export` actions retain their response: Web clients use `AxiosResponse<Blob>`, while mobile clients allow `AxiosResponse<Blob | ArrayBuffer | string>` for browser blobs, binary buffers, or native temporary file paths. Their `autoDownloadFile` parameter defaults to `true`; set it to `false` to receive the file response without requesting automatic saving. Other values without a concrete schema remain `unknown`. The output is compatible with `verbatimModuleSyntax` and the current Fast ESLint Config rules. Generated Web and mobile multipart upload methods also expose an optional Axios `onUploadProgress` callback.
 
+`Fast.IaaS` 3.5.27 formats exact `TimeSpan` boundaries correctly through `ToDescription()`: one minute is `01分00秒`, one hour is `01时00分00秒`, and one day is `01天00时00分00秒`.
+
 ## Recommended registration order
 
 ```csharp
@@ -60,7 +62,7 @@ MAppContext.ConsoleWrite(e =>
 
 The callback receives a `Fast.Runtime.ConsoleWriter` with `ForegroundColor`, `BackgroundColor`, `Write`, `WriteLine`, and `ResetColor()`. The writer captures both colors on entry and restores them in `finally`; `ResetColor()` restores the same colors within the callback. Callbacks sharing an output stream execute serially and support nesting. Callbacks must complete synchronously, and callback or write exceptions propagate to the caller. When `Console.IsOutputRedirected` is `true`, color assignments are ignored and only text is written, without generated ANSI color codes.
 
-Startup banners in `Fast.NET.Core` and direct diagnostics in Runtime, OpenApi, and SqlSugar use this entry point for Windows CMD, PowerShell, Windows Terminal, and Linux terminals. `Fast.IaaS` 3.5.26 remains a standalone `netstandard2.1` package and uses its internal writer in `src/IaaS/Internals/ConsoleWriter.cs` without a Runtime dependency.
+Startup banners in `Fast.NET.Core` and direct diagnostics in Runtime, OpenApi, and SqlSugar use this entry point for Windows CMD, PowerShell, Windows Terminal, and Linux terminals. `Fast.IaaS` 3.5.27 remains a standalone `netstandard2.1` package and uses its internal writer in `src/IaaS/Internals/ConsoleWriter.cs` without a Runtime dependency.
 
 In `Fast.NET.Core` 3.5.36, `builder.Initialize()` prints application and host information before the ASCII logo. Application names and versions come from the entry assembly; framework versions come from the Core assembly. Both display the informational version with any `+` build metadata removed alongside the assembly version; unavailable names or versions use `Unknown`. The environment name comes from `builder.Environment`, and the startup timestamp is the local time when the banner is written (`yyyy-MM-dd HH:mm:ss`).
 

@@ -37,15 +37,15 @@ public static class TimeSpanExtension
     public static string ToDescription(this TimeSpan timeSpan)
     {
         var formatStr = "ss\\秒";
-        if (timeSpan.TotalDays > 1)
+        if (timeSpan.TotalDays >= 1)
         {
             formatStr = "dd\\天hh\\时mm\\分" + formatStr;
         }
-        else if (timeSpan.TotalHours > 1)
+        else if (timeSpan.TotalHours >= 1)
         {
             formatStr = "hh\\时mm\\分" + formatStr;
         }
-        else if (timeSpan.TotalMinutes > 1)
+        else if (timeSpan.TotalMinutes >= 1)
         {
             formatStr = "mm\\分" + formatStr;
         }

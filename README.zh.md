@@ -119,6 +119,8 @@ app.Run();
 
 `Fast.NET.Core` 3.5.36 扩展 `builder.Initialize()` 启动横幅，展示应用与框架版本、.NET 运行时、运行环境、主机、操作系统、系统与进程架构以及本地启动时间。版本来源和颜色说明见上述模块手册。
 
+`Fast.IaaS` 3.5.27 修复 `TimeSpanExtension.ToDescription()` 在恰好一分钟、一小时和一天时丢失对应单位的问题，避免向较小单位回绕后显示为零。
+
 本次发布同步更新 15 个 SDK 包，两个序列化包沿用原版本。引用 `Fast.Runtime` 的模块要求 3.5.29 或更高版本；升级时请按 [CHANGELOG](CHANGELOG.md) 中的版本清单同步更新已安装的模块。
 
 各模块的默认配置节点和可选参数以对应源码中的 `*SettingsOptions` 与扩展方法 XML 文档为准。

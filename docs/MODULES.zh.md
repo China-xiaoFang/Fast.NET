@@ -28,6 +28,8 @@ Fast.NET 由 17 个可独立发布的 NuGet 包组成。除 `Fast.IaaS` 外，�
 
 `Fast.OpenApi` 生成的 TypeScript 客户端使用独立的 `import type` 和显式 `Promise<T>` 返回类型。返回非泛型 `Task` 或 `ValueTask` 的接口映射为 `Promise<void>`。`Download`、`Export` 接口保留文件响应：Web 端使用 `AxiosResponse<Blob>`，移动端使用 `AxiosResponse<Blob | ArrayBuffer | string>`，兼容浏览器 Blob、二进制缓冲区和原生临时文件路径。`autoDownloadFile` 参数默认值为 `true`；传入 `false` 时仅返回文件响应，不请求自动保存。其他缺少明确 Schema 的值仍映射为 `unknown`。生成结果兼容 `verbatimModuleSyntax` 与当前 Fast ESLint Config 规则。生成的 Web 端与移动端 multipart 上传方法还会暴露可选的 Axios `onUploadProgress` 回调。
 
+`Fast.IaaS` 3.5.27 修复 `ToDescription()` 的整数时间边界：一分钟输出 `01分00秒`，一小时输出 `01时00分00秒`，一天输出 `01天00时00分00秒`。
+
 ## 推荐注册顺序
 
 ```csharp
@@ -60,7 +62,7 @@ MAppContext.ConsoleWrite(e =>
 
 回调接收 `Fast.Runtime.ConsoleWriter`，支持 `ForegroundColor`、`BackgroundColor`、`Write`、`WriteLine` 和 `ResetColor()`。写入器自动记录进入回调时的前景色和背景色，并在 `finally` 中恢复；`ResetColor()` 可在回调中提前恢复这组颜色。同一输出流上的回调串行执行，也支持嵌套调用；回调必须同步完成，回调或写入异常继续向调用方传播。`Console.IsOutputRedirected` 为 `true` 时忽略颜色设置，仅输出文本，不生成 ANSI 颜色码。
 
-`Fast.NET.Core` 的启动横幅及 Runtime、OpenApi、SqlSugar 的直接诊断输出均使用此入口，适配 Windows CMD、PowerShell、Windows Terminal 和 Linux 终端。`Fast.IaaS` 3.5.26 继续面向 `netstandard2.1`，使用 `src/IaaS/Internals/ConsoleWriter.cs` 中的内部写入器，保持独立包兼容性，不引入 Runtime 依赖。
+`Fast.NET.Core` 的启动横幅及 Runtime、OpenApi、SqlSugar 的直接诊断输出均使用此入口，适配 Windows CMD、PowerShell、Windows Terminal 和 Linux 终端。`Fast.IaaS` 3.5.27 继续面向 `netstandard2.1`，使用 `src/IaaS/Internals/ConsoleWriter.cs` 中的内部写入器，保持独立包兼容性，不引入 Runtime 依赖。
 
 `Fast.NET.Core` 3.5.36 中，`builder.Initialize()` 在 ASCII Logo 前输出应用及宿主信息。应用名称和版本取自入口程序集，框架版本取自 Core 程序集；两者均同时显示去除 `+` 构建元数据后的信息版本与程序集版本，无法获取的名称或版本使用 `Unknown`。运行环境取自 `builder.Environment`，启动时间为输出横幅时的本地时间，格式为 `yyyy-MM-dd HH:mm:ss`。
 

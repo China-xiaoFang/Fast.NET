@@ -119,6 +119,8 @@ app.Run();
 
 `Fast.NET.Core` 3.5.36 expands the `builder.Initialize()` startup banner with application and framework versions, .NET runtime, environment, host, operating system, architectures, and local startup time. See the module guide above for version sources and colors.
 
+`Fast.IaaS` 3.5.27 fixes `TimeSpanExtension.ToDescription()` at exact one-minute, one-hour, and one-day boundaries, preserving the corresponding unit instead of rolling it down to zero in the next smaller unit.
+
 This release updates 15 SDK packages; the two serialization packages retain their existing versions. Modules that reference `Fast.Runtime` require 3.5.29 or later; upgrade installed modules together using the versions in [CHANGELOG](CHANGELOG.md).
 
 For each module's default configuration section and optional parameters, see its `*SettingsOptions` types and extension method XML documentation.
