@@ -12,6 +12,7 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 
 ### Added
 
+- `Fast.Runtime` 3.5.29 adds `MAppContext.ConsoleWrite` with a `ConsoleWriter` callback for segmented text and color output, automatic foreground/background restoration, serialized synchronous callbacks, and nested writes. `Fast.IaaS` includes an internal writer while retaining its standalone `netstandard2.1` target.
 - Central NuGet dependency management through `Directory.Packages.props`.
 - GitHub CI for restore, dependency auditing, build, packaging, and artifact upload.
 - A single Windows entry point for build, pack, optional all-package publishing, and optional single-package publishing.
@@ -19,19 +20,21 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 
 ### Changed
 
-- Updated `Mapster` and `Mapster.DependencyInjection` to 10.0.12, `MiniExcel` to 1.45.0, `SQLitePCLRaw.bundle_e_sqlite3` to 3.0.5, `SqlSugarCore` to 5.1.4.217, and `Swashbuckle.AspNetCore` to 10.2.3.
+- Updated `Mapster` and `Mapster.DependencyInjection` to 10.0.12, `MiniExcel` to 1.45.0, `SQLitePCLRaw.bundle_e_sqlite3` to 3.0.5, `SqlSugarCore` to 5.1.4.218, and `Swashbuckle.AspNetCore` to 10.2.3.
 - Updated ASP.NET Core package references to 8.0.30, 9.0.19, and 10.0.11 for their corresponding target frameworks.
 - Migrated `Fast.Swagger` custom filters and security registration to the Microsoft.OpenApi 2.x API required by Swashbuckle 10.
 - Established `FAST-AES-256-GCM-V1` as the initial cross-language password-based AES payload for `Fast.IaaS`.
 - Simplified XML documentation by removing type references already conveyed by signatures, inheriting existing implementation contracts, and retaining links to related APIs and constraints.
 - Marked internal leaf implementations and JSON converters as sealed where inheritance is not supported.
-- Incremented package versions: `Fast.Cache` 3.5.31, `Fast.Consul` 3.5.7, `Fast.NET.Core` 3.5.34, `Fast.DependencyInjection` 3.5.27, `Fast.DynamicApplication` 3.5.33, `Fast.EventBus` 3.5.26, `Fast.IaaS` 3.5.24, `Fast.JwtBearer` 3.5.38, `Fast.Logging` 3.5.30, `Fast.Mapster` 3.5.25, `Fast.OpenApi` 3.5.36, `Fast.Runtime` 3.5.28, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.63, `Fast.Swagger` 3.5.32, and `Fast.UnifyResult` 3.5.31.
+- Incremented 15 SDK package versions; the two serialization packages retain their existing versions. Current package versions: `Fast.Cache` 3.5.32, `Fast.Consul` 3.5.8, `Fast.NET.Core` 3.5.35, `Fast.DependencyInjection` 3.5.28, `Fast.DynamicApplication` 3.5.34, `Fast.EventBus` 3.5.27, `Fast.IaaS` 3.5.26, `Fast.JwtBearer` 3.5.39, `Fast.Logging` 3.5.31, `Fast.Mapster` 3.5.26, `Fast.OpenApi` 3.5.37, `Fast.Runtime` 3.5.29, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.64, `Fast.Swagger` 3.5.33, and `Fast.UnifyResult` 3.5.32.
+- Packages referencing `Fast.Runtime` now require 3.5.29 or later. Upgrade installed Fast.NET modules to the versions listed above together to keep transitive dependencies aligned.
 - Incremented `I18nTranslateTool` to 1.0.1 and moved its `MiniExcel` version into central package management.
 
 ### Fixed
 
+- Replaced bare ANSI output in startup banners and direct diagnostics across `Fast.NET.Core` 3.5.35, `Fast.Runtime` 3.5.29, `Fast.OpenApi` 3.5.37, `Fast.SqlSugar` 3.5.64, and `Fast.IaaS` 3.5.26 with `ConsoleWriter`. Banner wording, the ASCII logo, and color meanings are preserved, redirected output remains plain text, and colors are restored even when output fails. The existing `Fast.Logging` formatter and `ConsoleLoggerProvider` pipeline are unchanged.
 - Fast.IaaS tree building now supports partial node sets whose parent nodes are not included and uses parent lookups to avoid repeated collection scans during recursive construction.
-- Console color output now restores foreground and background state after startup banners and independently colored log segments.
+- `Fast.Logging` now restores foreground and background state after independently colored log segments.
 - `Fast.OpenApi` Web and mobile upload clients now expose an optional Axios `onUploadProgress` callback and forward it to the corresponding adapter.
 - `Fast.OpenApi` TypeScript clients now emit separate type imports in rule-compliant order, explicit `Promise<T>` return types, and `unknown` for unspecified schemas to satisfy the current Fast ESLint Config rules.
 - `Fast.DependencyInjection` now registers marked concrete services that do not expose a business interface.

@@ -22,7 +22,6 @@
 
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Text;
 using System.Text.Json;
 
 namespace Fast.Runtime;
@@ -234,23 +233,17 @@ public static class AssemblyExtension
         }
         catch
         {
-            var useColor = !Console.IsOutputRedirected;
-            var logSb = new StringBuilder();
-            if (useColor)
-                logSb.Append("\u001b[41m\u001b[30m");
-            logSb.Append("fail");
-            if (useColor)
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-            logSb.Append(": ");
-            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-            logSb.Append(Environment.NewLine);
-            if (useColor)
-                logSb.Append("\u001b[41m\u001b[30m");
-            logSb.Append("      ");
-            logSb.Append($"Error load `{assembly.FullName}` assembly.");
-            if (useColor)
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-            Console.WriteLine(logSb.ToString());
+            MAppContext.ConsoleWrite(console =>
+            {
+                console.BackgroundColor = ConsoleColor.DarkRed;
+                console.ForegroundColor = ConsoleColor.Black;
+                console.Write("fail");
+                console.ResetColor();
+                console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                console.BackgroundColor = ConsoleColor.DarkRed;
+                console.ForegroundColor = ConsoleColor.Black;
+                console.WriteLine($"      Error load `{assembly.FullName}` assembly.");
+            });
         }
 
         return types.Where(wh => wh.IsPublic && (typeFilter == null || typeFilter(wh)));

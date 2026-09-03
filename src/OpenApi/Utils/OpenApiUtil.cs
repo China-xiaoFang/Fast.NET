@@ -20,7 +20,6 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using System.Text;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Fast.OpenApi;
@@ -49,23 +48,17 @@ public static partial class OpenApiUtil
         try
         {
             {
-                var useColor = !Console.IsOutputRedirected;
-                var logSb = new StringBuilder();
-                if (useColor)
-                    logSb.Append("\u001b[40m\u001b[1m\u001b[32m");
-                logSb.Append("info");
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                logSb.Append(": ");
-                logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                logSb.Append(Environment.NewLine);
-                if (useColor)
-                    logSb.Append("\u001b[40m\u001b[90m");
-                logSb.Append("      ");
-                logSb.Append("开始生成 Open Api 文件...");
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                Console.WriteLine(logSb.ToString());
+                MAppContext.ConsoleWrite(console =>
+                {
+                    console.BackgroundColor = ConsoleColor.Black;
+                    console.ForegroundColor = ConsoleColor.Green;
+                    console.Write("info");
+                    console.ResetColor();
+                    console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                    console.BackgroundColor = ConsoleColor.Black;
+                    console.ForegroundColor = ConsoleColor.DarkGray;
+                    console.WriteLine("      开始生成 Open Api 文件...");
+                });
             }
 
             // 复制调用方集合，避免为补充默认分组而意外修改外部状态
@@ -113,47 +106,33 @@ public static partial class OpenApiUtil
             }
 
             {
-                var useColor = !Console.IsOutputRedirected;
-                var logSb = new StringBuilder();
-                if (useColor)
-                    logSb.Append("\u001b[40m\u001b[1m\u001b[32m");
-                logSb.Append("info");
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                logSb.Append(": ");
-                logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                logSb.Append(Environment.NewLine);
-                if (useColor)
-                    logSb.Append("\u001b[40m\u001b[90m");
-                logSb.Append("      ");
-                logSb.Append("生成 Open Api 文件成功。");
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                Console.WriteLine(logSb.ToString());
+                MAppContext.ConsoleWrite(console =>
+                {
+                    console.BackgroundColor = ConsoleColor.Black;
+                    console.ForegroundColor = ConsoleColor.Green;
+                    console.Write("info");
+                    console.ResetColor();
+                    console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                    console.BackgroundColor = ConsoleColor.Black;
+                    console.ForegroundColor = ConsoleColor.DarkGray;
+                    console.WriteLine("      生成 Open Api 文件成功。");
+                });
             }
         }
         catch (Exception ex)
         {
-            var useColor = !Console.IsOutputRedirected;
-            var logSb = new StringBuilder();
-            if (useColor)
-                logSb.Append("\u001b[41m\u001b[30m");
-            logSb.Append("fail");
-            if (useColor)
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-            logSb.Append(": ");
-            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-            logSb.Append(Environment.NewLine);
-            if (useColor)
-                logSb.Append("\u001b[41m\u001b[30m");
-            logSb.Append("      ");
-            logSb.Append("生成 Open Api 文件失败...");
-            logSb.Append(Environment.NewLine);
-            logSb.Append("      ");
-            logSb.Append($"{ex}");
-            if (useColor)
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-            Console.WriteLine(logSb.ToString());
+            MAppContext.ConsoleWrite(console =>
+            {
+                console.BackgroundColor = ConsoleColor.DarkRed;
+                console.ForegroundColor = ConsoleColor.Black;
+                console.Write("fail");
+                console.ResetColor();
+                console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                console.BackgroundColor = ConsoleColor.DarkRed;
+                console.ForegroundColor = ConsoleColor.Black;
+                console.WriteLine("      生成 Open Api 文件失败...");
+                console.WriteLine($"      {ex}");
+            });
             throw;
         }
     }

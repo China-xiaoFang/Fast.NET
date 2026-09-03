@@ -20,7 +20,6 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
-using System.Text;
 using SqlSugar;
 using Yitter.IdGenerator;
 
@@ -51,26 +50,18 @@ public static class SugarEntityFilter
             {
                 var handleSql = UtilMethods.GetSqlString(_db.CurrentConnectionConfig.DbType, rawSql, pars);
 
-                var useColor = !Console.IsOutputRedirected;
-                var logSb = new StringBuilder();
-                if (useColor)
-                    logSb.Append("\u001b[40m\u001b[90m");
-                logSb.Append("fsql");
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                logSb.Append(": ");
-                logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                logSb.Append(Environment.NewLine);
-                if (useColor)
-                    logSb.Append("\u001b[40m\u001b[90m");
-                logSb.Append("      ");
-                logSb.Append($"Time: {_db.Ado.SqlExecutionTime}");
-                logSb.Append(Environment.NewLine);
-                logSb.Append("      ");
-                logSb.Append(handleSql);
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                Console.WriteLine(logSb.ToString());
+                MAppContext.ConsoleWrite(console =>
+                {
+                    console.BackgroundColor = ConsoleColor.Black;
+                    console.ForegroundColor = ConsoleColor.DarkGray;
+                    console.Write("fsql");
+                    console.ResetColor();
+                    console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                    console.BackgroundColor = ConsoleColor.Black;
+                    console.ForegroundColor = ConsoleColor.DarkGray;
+                    console.WriteLine($"      Time: {_db.Ado.SqlExecutionTime}");
+                    console.WriteLine($"      {handleSql}");
+                });
             }
 
             if (!disableAop && sqlSugarEntityHandler != null)
@@ -86,25 +77,18 @@ public static class SugarEntityFilter
                 }
                 catch (Exception ex)
                 {
-                    var useColor = !Console.IsOutputRedirected;
-                    var logSb = new StringBuilder();
-                    if (useColor)
-                        logSb.Append("\u001b[41m\u001b[30m");
-                    logSb.Append("fsql");
-                    if (useColor)
-                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                    logSb.Append(": ");
-                    logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                    logSb.Append(Environment.NewLine);
-                    if (useColor)
-                        logSb.Append("\u001b[41m\u001b[30m");
-                    logSb.Append("      ");
-                    logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteAsync] method error.");
-                    logSb.Append(Environment.NewLine);
-                    logSb.Append(ex);
-                    if (useColor)
-                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                    Console.WriteLine(logSb.ToString());
+                    MAppContext.ConsoleWrite(console =>
+                    {
+                        console.BackgroundColor = ConsoleColor.DarkRed;
+                        console.ForegroundColor = ConsoleColor.Black;
+                        console.Write("fsql");
+                        console.ResetColor();
+                        console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                        console.BackgroundColor = ConsoleColor.DarkRed;
+                        console.ForegroundColor = ConsoleColor.Black;
+                        console.WriteLine("      Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteAsync] method error.");
+                        console.WriteLine(ex);
+                    });
                 }
             }
 
@@ -121,23 +105,17 @@ public static class SugarEntityFilter
                     $"Sql执行时间超过 {sugarSqlExecMaxSeconds} 秒，建议优化。{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}{Environment.NewLine}SqlExecutionTime：{_db.Ado.SqlExecutionTime}";
 
                 // 控制台输出
-                var useColor = !Console.IsOutputRedirected;
-                var logSb = new StringBuilder();
-                if (useColor)
-                    logSb.Append("\u001b[40m\u001b[1m\u001b[33m");
-                logSb.Append("fsql");
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                logSb.Append(": ");
-                logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                logSb.Append(Environment.NewLine);
-                if (useColor)
-                    logSb.Append("\u001b[40m\u001b[1m\u001b[33m");
-                logSb.Append("      ");
-                logSb.Append(message);
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                Console.WriteLine(logSb.ToString());
+                MAppContext.ConsoleWrite(console =>
+                {
+                    console.BackgroundColor = ConsoleColor.Black;
+                    console.ForegroundColor = ConsoleColor.Yellow;
+                    console.Write("fsql");
+                    console.ResetColor();
+                    console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                    console.BackgroundColor = ConsoleColor.Black;
+                    console.ForegroundColor = ConsoleColor.Yellow;
+                    console.WriteLine($"      {message}");
+                });
 
                 if (!disableAop && sqlSugarEntityHandler != null)
                 {
@@ -151,24 +129,19 @@ public static class SugarEntityFilter
                     }
                     catch (Exception ex)
                     {
-                        var _logSb = new StringBuilder();
-                        if (useColor)
-                            _logSb.Append("\u001b[41m\u001b[30m");
-                        _logSb.Append("fsql");
-                        if (useColor)
-                            _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                        _logSb.Append(": ");
-                        _logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                        _logSb.Append(Environment.NewLine);
-                        if (useColor)
-                            _logSb.Append("\u001b[41m\u001b[30m");
-                        logSb.Append("      ");
-                        _logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteTimeoutAsync] method error.");
-                        _logSb.Append(Environment.NewLine);
-                        _logSb.Append(ex);
-                        if (useColor)
-                            _logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                        Console.WriteLine(_logSb.ToString());
+                        MAppContext.ConsoleWrite(console =>
+                        {
+                            console.BackgroundColor = ConsoleColor.DarkRed;
+                            console.ForegroundColor = ConsoleColor.Black;
+                            console.Write("fsql");
+                            console.ResetColor();
+                            console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                            console.BackgroundColor = ConsoleColor.DarkRed;
+                            console.ForegroundColor = ConsoleColor.Black;
+                            console.WriteLine(
+                                "      Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteTimeoutAsync] method error.");
+                            console.WriteLine(ex);
+                        });
                     }
                 }
             }
@@ -211,25 +184,19 @@ public static class SugarEntityFilter
                         }
                         catch (Exception ex)
                         {
-                            var useColor = !Console.IsOutputRedirected;
-                            var logSb = new StringBuilder();
-                            if (useColor)
-                                logSb.Append("\u001b[41m\u001b[30m");
-                            logSb.Append("fsql");
-                            if (useColor)
-                                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                            logSb.Append(": ");
-                            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                            logSb.Append(Environment.NewLine);
-                            if (useColor)
-                                logSb.Append("\u001b[41m\u001b[30m");
-                            logSb.Append("      ");
-                            logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteDiffLogAsync] method error.");
-                            logSb.Append(Environment.NewLine);
-                            logSb.Append(ex);
-                            if (useColor)
-                                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                            Console.WriteLine(logSb.ToString());
+                            MAppContext.ConsoleWrite(console =>
+                            {
+                                console.BackgroundColor = ConsoleColor.DarkRed;
+                                console.ForegroundColor = ConsoleColor.Black;
+                                console.Write("fsql");
+                                console.ResetColor();
+                                console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                                console.BackgroundColor = ConsoleColor.DarkRed;
+                                console.ForegroundColor = ConsoleColor.Black;
+                                console.WriteLine(
+                                    "      Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteDiffLogAsync] method error.");
+                                console.WriteLine(ex);
+                            });
                         }
                     }
                 }
@@ -248,24 +215,18 @@ public static class SugarEntityFilter
 
             if (isDevelopment)
             {
-                var useColor = !Console.IsOutputRedirected;
-                var logSb = new StringBuilder();
-                if (useColor)
-                    logSb.Append("\u001b[41m\u001b[30m");
-                logSb.Append("fsql");
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                logSb.Append(": ");
-                logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                logSb.Append(Environment.NewLine);
-                if (useColor)
-                    logSb.Append("\u001b[41m\u001b[30m");
-                logSb.Append("      ");
-                logSb.Append(
-                    $"Sql 执行异常{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}");
-                if (useColor)
-                    logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                Console.WriteLine(logSb.ToString());
+                MAppContext.ConsoleWrite(console =>
+                {
+                    console.BackgroundColor = ConsoleColor.DarkRed;
+                    console.ForegroundColor = ConsoleColor.Black;
+                    console.Write("fsql");
+                    console.ResetColor();
+                    console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                    console.BackgroundColor = ConsoleColor.DarkRed;
+                    console.ForegroundColor = ConsoleColor.Black;
+                    console.WriteLine(
+                        $"      Sql 执行异常{Environment.NewLine}FileName：{fileName}{Environment.NewLine}FileLine：{fileLine}{Environment.NewLine}FirstMethodName：{firstMethodName}{Environment.NewLine}Sql：{handleSql}");
+                });
             }
 
             if (!disableAop && sqlSugarEntityHandler != null)
@@ -279,25 +240,18 @@ public static class SugarEntityFilter
                 }
                 catch (Exception ex)
                 {
-                    var useColor = !Console.IsOutputRedirected;
-                    var logSb = new StringBuilder();
-                    if (useColor)
-                        logSb.Append("\u001b[41m\u001b[30m");
-                    logSb.Append("fsql");
-                    if (useColor)
-                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                    logSb.Append(": ");
-                    logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                    logSb.Append(Environment.NewLine);
-                    if (useColor)
-                        logSb.Append("\u001b[41m\u001b[30m");
-                    logSb.Append("      ");
-                    logSb.Append("Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteErrorAsync] method error.");
-                    logSb.Append(Environment.NewLine);
-                    logSb.Append(ex);
-                    if (useColor)
-                        logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-                    Console.WriteLine(logSb.ToString());
+                    MAppContext.ConsoleWrite(console =>
+                    {
+                        console.BackgroundColor = ConsoleColor.DarkRed;
+                        console.ForegroundColor = ConsoleColor.Black;
+                        console.Write("fsql");
+                        console.ResetColor();
+                        console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                        console.BackgroundColor = ConsoleColor.DarkRed;
+                        console.ForegroundColor = ConsoleColor.Black;
+                        console.WriteLine("      Exec [Fast.SqlSugar.ISqlSugarEntityHandler].[ExecuteErrorAsync] method error.");
+                        console.WriteLine(ex);
+                    });
                 }
             }
         };

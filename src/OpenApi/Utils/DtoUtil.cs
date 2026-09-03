@@ -374,9 +374,9 @@ public static partial class OpenApiUtil
                                             || componentSchema.OneOf?.Count > 0
                                             || componentSchema.AdditionalProperties.ValueKind is JsonValueKind.True
                                                 or JsonValueKind.Object
-                                            || !string.IsNullOrWhiteSpace(componentSchema.Type)
-                                            && !string.Equals(componentSchema.Type, "unknown",
-                                                StringComparison.OrdinalIgnoreCase));
+                                            || (!string.IsNullOrWhiteSpace(componentSchema.Type)
+                                                && !string.Equals(componentSchema.Type, "unknown",
+                                                    StringComparison.OrdinalIgnoreCase)));
                 if (generateTypeAlias)
                 {
                     var schemaType = DisposeSchemaType(componentSchema, schemaDto.RefSchemas) ?? "unknown";
@@ -440,26 +440,18 @@ public static partial class OpenApiUtil
         }
         catch (Exception ex)
         {
-            var useColor = !Console.IsOutputRedirected;
-            var logSb = new StringBuilder();
-            if (useColor)
-                logSb.Append("\u001b[41m\u001b[30m");
-            logSb.Append("fail");
-            if (useColor)
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-            logSb.Append(": ");
-            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-            logSb.Append(Environment.NewLine);
-            if (useColor)
-                logSb.Append("\u001b[41m\u001b[30m");
-            logSb.Append("      ");
-            logSb.Append($"生成 {openApiDocument.Url} {scriptLanguage.ToString()} 声明文件失败...");
-            logSb.Append(Environment.NewLine);
-            logSb.Append("      ");
-            logSb.Append($"{ex}");
-            if (useColor)
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-            Console.WriteLine(logSb.ToString());
+            MAppContext.ConsoleWrite(console =>
+            {
+                console.BackgroundColor = ConsoleColor.DarkRed;
+                console.ForegroundColor = ConsoleColor.Black;
+                console.Write("fail");
+                console.ResetColor();
+                console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                console.BackgroundColor = ConsoleColor.DarkRed;
+                console.ForegroundColor = ConsoleColor.Black;
+                console.WriteLine($"      生成 {openApiDocument.Url} {scriptLanguage.ToString()} 声明文件失败...");
+                console.WriteLine($"      {ex}");
+            });
         }
 
         await Task.CompletedTask;
@@ -518,26 +510,18 @@ public static partial class OpenApiUtil
         }
         catch (Exception ex)
         {
-            var useColor = !Console.IsOutputRedirected;
-            var logSb = new StringBuilder();
-            if (useColor)
-                logSb.Append("\u001b[41m\u001b[30m");
-            logSb.Append("fail");
-            if (useColor)
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-            logSb.Append(": ");
-            logSb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-            logSb.Append(Environment.NewLine);
-            if (useColor)
-                logSb.Append("\u001b[41m\u001b[30m");
-            logSb.Append("      ");
-            logSb.Append($"写入 {openApiDocument.Url} {scriptLanguage.ToString()} 声明文件失败...");
-            logSb.Append(Environment.NewLine);
-            logSb.Append("      ");
-            logSb.Append($"{ex}");
-            if (useColor)
-                logSb.Append("\u001b[39m\u001b[22m\u001b[49m");
-            Console.WriteLine(logSb.ToString());
+            MAppContext.ConsoleWrite(console =>
+            {
+                console.BackgroundColor = ConsoleColor.DarkRed;
+                console.ForegroundColor = ConsoleColor.Black;
+                console.Write("fail");
+                console.ResetColor();
+                console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                console.BackgroundColor = ConsoleColor.DarkRed;
+                console.ForegroundColor = ConsoleColor.Black;
+                console.WriteLine($"      写入 {openApiDocument.Url} {scriptLanguage.ToString()} 声明文件失败...");
+                console.WriteLine($"      {ex}");
+            });
         }
     }
 }

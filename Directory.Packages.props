@@ -12,7 +12,7 @@
         <PackageVersion Include="MiniExcel" Version="1.45.0" />
         <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.5" />
-        <PackageVersion Include="SqlSugarCore" Version="5.1.4.217" />
+        <PackageVersion Include="SqlSugarCore" Version="5.1.4.218" />
         <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.3" />
         <PackageVersion Include="UAParser" Version="3.1.47" />
         <PackageVersion Include="Yitter.IdGenerator" Version="1.0.14" />

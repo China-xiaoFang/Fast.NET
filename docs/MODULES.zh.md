@@ -4,6 +4,8 @@
 
 Fast.NET 由 17 个可独立发布的 NuGet 包组成。除 `Fast.IaaS` 外，主要模块面向 .NET 8、.NET 9 和 .NET 10；`Fast.IaaS` 面向 .NET Standard 2.1。
 
+本次发布同步更新 15 个 SDK 包，并更新引用 `Fast.Runtime` 3.5.29 的模块依赖版本；两个序列化包沿用原版本。升级时请按 [CHANGELOG](../CHANGELOG.md) 中的包版本清单同步更新已安装的模块。
+
 | 包 | 用途 | 主要入口 | 默认配置节点 / 外部依赖 |
 | --- | --- | --- | --- |
 | `Fast.Runtime` | ASP.NET Core 共享上下文、配置与 MVC 扩展 | `AddConfigurableOptions<T>()`、`AddMvcFilter()` | 通常由其他 Fast.NET 包传递引用 |
@@ -42,6 +44,25 @@ builder.Services.AddSwaggerDocuments(builder.Configuration);
 ```
 
 顺序约束只有在模块之间存在实际依赖时才重要。最明确的一项是：`AddDynamicApplication()` 必须位于 MVC 控制器注册之后。
+
+## 控制台输出
+
+从 `Fast.Runtime` 3.5.29 起，可通过 `MAppContext.ConsoleWrite` 分段设置控制台颜色并输出文本：
+
+```csharp
+MAppContext.ConsoleWrite(e =>
+{
+    e.ForegroundColor = ConsoleColor.Blue;
+    e.WriteLine();
+    e.WriteLine("Fast.NET");
+});
+```
+
+回调接收 `Fast.Runtime.ConsoleWriter`，支持 `ForegroundColor`、`BackgroundColor`、`Write`、`WriteLine` 和 `ResetColor()`。写入器自动记录进入回调时的前景色和背景色，并在 `finally` 中恢复；`ResetColor()` 可在回调中提前恢复这组颜色。同一输出流上的回调串行执行，也支持嵌套调用；回调必须同步完成，回调或写入异常继续向调用方传播。`Console.IsOutputRedirected` 为 `true` 时忽略颜色设置，仅输出文本，不生成 ANSI 颜色码。
+
+`Fast.NET.Core` 3.5.35 的启动横幅及 Runtime、OpenApi、SqlSugar 的直接诊断输出均使用此入口，适配 Windows CMD、PowerShell、Windows Terminal 和 Linux 终端。横幅保留原有文字、ASCII Logo 和颜色语义，启动时间使用 `Blue`，Logo 使用 `Green`，Gitee 地址使用 `Red`，说明文字使用 `Magenta`。`Fast.IaaS` 3.5.26 继续面向 `netstandard2.1`，使用 `src/IaaS/Internals/ConsoleWriter.cs` 中的内部写入器，保持独立包兼容性，不引入 Runtime 依赖。
+
+`Fast.Logging` 继续通过 `ConsoleFormatter` 接收的 `TextWriter` 写入，由 `ConsoleLoggerProvider` 负责终端适配、必要的 ANSI 解析和日志队列输出。格式化器不直接修改 `Console.ForegroundColor`；`LoggerColorBehavior.Default` 在输出重定向时停止生成颜色码，ANSI 支持由 Provider 处理，不仅根据重定向状态判断。
 
 ## 依赖注入注册约定
 

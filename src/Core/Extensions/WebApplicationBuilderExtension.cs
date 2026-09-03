@@ -56,18 +56,14 @@ public static class WebApplicationBuilderExtension
 
     static void UseDefault()
     {
-        var useColor = !Console.IsOutputRedirected;
-        var sb = new StringBuilder();
-        if (useColor)
-            sb.Append("\u001b[1m\u001b[34m");
-        sb.Append(Environment.NewLine);
-        sb.Append($"Fast.NET 程序启动时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        sb.Append(Environment.NewLine);
-        if (useColor)
-            sb.Append("\u001b[39m\u001b[22m\u001b[49m");
-        if (useColor)
-            sb.Append("\u001b[1m\u001b[32m");
-        sb.Append(@"
+        MAppContext.ConsoleWrite(console =>
+        {
+            console.ForegroundColor = ConsoleColor.Blue;
+            console.WriteLine();
+            console.WriteLine($"Fast.NET 程序启动时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+
+            console.ForegroundColor = ConsoleColor.Green;
+            console.WriteLine(@"
       ______                _         _   _   ______   _______ 
      |  ____|              | |       | \ | | |  ____| |__   __|
      | |__     __ _   ___  | |_      |  \| | | |__       | |   
@@ -75,27 +71,17 @@ public static class WebApplicationBuilderExtension
      | |     | (_| | \__ \ | |_   _  | |\  | | |____     | |   
      |_|      \__,_| |___/  \__| (_) |_| \_| |______|    |_|   
 ");
-        if (useColor)
-            sb.Append("\u001b[39m\u001b[22m\u001b[49m");
-        if (useColor)
-            sb.Append("\u001b[1m\u001b[31m");
-        sb.Append(Environment.NewLine);
-        sb.Append(Environment.NewLine);
-        sb.Append("    Gitee：https://gitee.com/FastDotnet/Fast.NET");
-        sb.Append(Environment.NewLine);
-        sb.Append(Environment.NewLine);
-        if (useColor)
-            sb.Append("\u001b[39m\u001b[22m\u001b[49m");
-        if (useColor)
-            sb.Append("\u001b[1m\u001b[35m");
-        sb.Append("    持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
-        sb.Append(Environment.NewLine);
-        sb.Append(Environment.NewLine);
-        sb.Append("期待您的PR，让.NET更好！");
-        sb.Append(Environment.NewLine);
-        if (useColor)
-            sb.Append("\u001b[39m\u001b[22m\u001b[49m");
-        Console.WriteLine(sb.ToString());
+
+            console.ForegroundColor = ConsoleColor.Red;
+            console.WriteLine();
+            console.WriteLine("    Gitee：https://gitee.com/FastDotnet/Fast.NET");
+            console.WriteLine();
+
+            console.ForegroundColor = ConsoleColor.Magenta;
+            console.WriteLine("    持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
+            console.WriteLine();
+            console.WriteLine("期待您的PR，让.NET更好！");
+        });
     }
 
     /// <summary>

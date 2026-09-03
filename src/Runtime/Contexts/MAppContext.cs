@@ -121,6 +121,34 @@ public static class MAppContext
     }
 
     /// <summary>
+    /// 同步写入控制台并自动恢复原始前景色和背景色
+    /// </summary>
+    /// <param name="action">使用颜色与文本输出上下文的同步回调</param>
+    /// <remarks>
+    /// 同一输出流上的写入回调串行执行，回调结束或抛出异常时均恢复原始颜色
+    /// 输出重定向时忽略颜色设置并仅写入文本，回调异常继续向调用方传播
+    /// </remarks>
+    /// <exception cref="ArgumentNullException"><paramref name="action"/> 为 <see langword="null"/></exception>
+    public static void ConsoleWrite(Action<ConsoleWriter> action)
+    {
+        ArgumentNullException.ThrowIfNull(action);
+
+        var output = Console.Out;
+        lock (output)
+        {
+            var writer = new ConsoleWriter(output);
+            try
+            {
+                action(writer);
+            }
+            finally
+            {
+                writer.ResetColor();
+            }
+        }
+    }
+
+    /// <summary>
     /// 处理获取对象异常问题
     /// </summary>
     /// <param name="action">要执行的操作委托</param>
