@@ -42,7 +42,7 @@ UploadNuget.bat publish-one Fast.Cache
 
 ## Publish results
 
-The script checks both the NuGet exit code and diagnostic output. With `--skip-duplicate`, an existing package can return exit code 0, so that code alone does not count as a successful publication. NuGet diagnostics use English for stable classification; script prompts remain Chinese.
+The script checks both the NuGet exit code and diagnostic output. With `--skip-duplicate`, an existing package can return exit code 0, so that code alone does not count as a successful publication. The script sets `DOTNET_CLI_UI_LANGUAGE=zh-CN` within its local scope for Simplified Chinese diagnostics and restores the caller's setting on exit. Classification recognizes both Chinese and English success, duplicate-package, warning, and error diagnostics. Unlocalized content, such as HTTP methods and status names, may remain in English.
 
 | Result | Color | Meaning |
 | --- | --- | --- |

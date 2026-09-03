@@ -189,7 +189,7 @@ flowchart TB
 | [`Fast.Swagger`](https://www.nuget.org/packages/Fast.Swagger) | Swagger 文档、分组、安全定义与过滤器 | .NET 8–10 | [`src/Swagger`](src/Swagger) |
 | [`Fast.UnifyResult`](https://www.nuget.org/packages/Fast.UnifyResult) | RESTful 统一响应、异常处理与数据验证 | .NET 8–10 | [`src/UnifyResult`](src/UnifyResult) |
 
-`Fast.OpenApi` 生成的 TypeScript 客户端使用独立的 `import type`、显式 `Promise<T>` 返回类型，并将缺少明确 Schema 的值映射为 `unknown`，可直接配合 `verbatimModuleSyntax` 与当前 Fast ESLint Config 规则使用。
+`Fast.OpenApi` 生成的 TypeScript 客户端使用独立的 `import type` 和显式 `Promise<T>` 返回类型。返回非泛型 `Task` 或 `ValueTask` 的接口映射为 `Promise<void>`。`Download`、`Export` 接口保留文件响应：Web 端使用 `AxiosResponse<Blob>`，移动端兼容 `Blob`、`ArrayBuffer` 或临时文件路径 `string`；`autoDownloadFile` 参数默认值为 `true`，调用方可关闭。其他缺少明确 Schema 的值仍映射为 `unknown`。生成结果可直接配合 `verbatimModuleSyntax` 与当前 Fast ESLint Config 规则使用。
 
 ## 仓库结构
 

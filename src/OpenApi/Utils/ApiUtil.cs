@@ -23,6 +23,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace Fast.OpenApi;
 
@@ -127,6 +128,8 @@ public static partial class OpenApiUtil
                 var refSchemas = new HashSet<string>();
                 // 仅在当前模块包含上传接口时生成 Axios 上传进度类型导入。
                 var hasUpload = false;
+                // 仅在当前模块包含下载或导出接口时生成 Axios 响应类型导入。
+                var hasFileDownload = false;
 
                 for (var i = 0; i < curPaths.Count; i++)
                 {
@@ -154,6 +157,18 @@ public static partial class OpenApiUtil
 
                     // 响应数据类型
                     var responseType = DisposeSchemaType(apiInfo.Method.Responses?.Code200?.Content?.Json?.Schema, refSchemas);
+                    if (apiActionEnum is HttpRequestActionEnum.Download or HttpRequestActionEnum.Export)
+                    {
+                        responseType = hasWeb ? "AxiosResponse<Blob>" : "AxiosResponse<Blob | ArrayBuffer | string>";
+                        hasFileDownload = true;
+                    }
+                    else if (string.IsNullOrWhiteSpace(responseType)
+                             && apiDescription.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor
+                             && (controllerActionDescriptor.MethodInfo.ReturnType == typeof(Task)
+                                 || controllerActionDescriptor.MethodInfo.ReturnType == typeof(ValueTask)))
+                    {
+                        responseType = "void";
+                    }
 
                     var methodInfo = apiInfo.Method;
                     var isFormData = methodInfo?.RequestBody?.Content?.FormData != null;
@@ -267,6 +282,16 @@ public static partial class OpenApiUtil
                         }
                     }
 
+                    if (apiActionEnum is HttpRequestActionEnum.Download or HttpRequestActionEnum.Export)
+                    {
+                        if (methodInfo?.Parameters?.Count > 0 || !string.IsNullOrWhiteSpace(requestDataType))
+                        {
+                            contentSb.Append(", ");
+                        }
+
+                        contentSb.Append("autoDownloadFile = true");
+                    }
+
                     contentSb.Append(scriptLanguage == ScriptLanguageEnum.TypeScript
                         ? $$"""
                             ): Promise<{{(string.IsNullOrWhiteSpace(responseType) ? "unknown" : responseType)}}> {
@@ -344,7 +369,7 @@ public static partial class OpenApiUtil
                     {
                         contentSb.Append("""
                                                responseType: "blob",
-                                               autoDownloadFile: true,
+                                               autoDownloadFile,
                                          """);
                         contentSb.Append(Environment.NewLine);
                     }
@@ -405,9 +430,20 @@ public static partial class OpenApiUtil
                         }
 
                         var imports = new List<string> {"import { axiosUtil } from \"@fast-china/axios\";"};
+                        var axiosTypeImports = new List<string>();
                         if (hasUpload)
                         {
-                            imports.Add("import type { AxiosProgressEvent } from \"axios\";");
+                            axiosTypeImports.Add("AxiosProgressEvent");
+                        }
+
+                        if (hasFileDownload)
+                        {
+                            axiosTypeImports.Add("AxiosResponse");
+                        }
+
+                        if (axiosTypeImports.Count > 0)
+                        {
+                            imports.Add($"import type {{ {string.Join(", ", axiosTypeImports)} }} from \"axios\";");
                         }
 
                         imports.AddRange(externalImports);

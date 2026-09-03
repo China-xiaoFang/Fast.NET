@@ -1,6 +1,9 @@
 @echo off
 setlocal EnableExtensions DisableDelayedExpansion
 
+REM 仅在脚本内使用简体中文诊断，退出时由 endlocal 恢复调用方设置。
+set "DOTNET_CLI_UI_LANGUAGE=zh-CN"
+
 for /f "tokens=2 delims=:" %%C in ('chcp') do set "ORIGINAL_CODE_PAGE=%%C"
 set "ORIGINAL_CODE_PAGE=%ORIGINAL_CODE_PAGE: =%"
 chcp 936 >nul
@@ -315,7 +318,7 @@ if defined PACKAGE_PATH call :PushPackage "%PACKAGE_PATH%"
 exit /b 0
 
 :PushPackage
-REM 保留 NuGet 的重复版本跳过行为；固定英文诊断，同时检查退出码与输出内容。
+REM 保留 NuGet 的重复版本跳过行为；同时识别中英文诊断并检查退出码。
 echo.
 echo 正在发布 %~nx1...
 set "PUSH_RESULT=error"
@@ -325,7 +328,7 @@ set "PUSH_HAS_SUCCESS="
 set "PUSH_LOG_FILE=%TEMP%\Fast.NET-nuget-push-%RANDOM%-%RANDOM%.log"
 if exist "%PUSH_LOG_FILE%" goto :CreatePushLog
 
-dotnet nuget push "%~f1" --api-key "%NUGET_API_KEY%" --source "%NUGET_SOURCE%" --skip-duplicate --force-english-output >"%PUSH_LOG_FILE%" 2>&1
+dotnet nuget push "%~f1" --api-key "%NUGET_API_KEY%" --source "%NUGET_SOURCE%" --skip-duplicate >"%PUSH_LOG_FILE%" 2>&1
 set "PUSH_EXIT_CODE=%ERRORLEVEL%"
 if not exist "%PUSH_LOG_FILE%" goto :PushPackageResult
 type "%PUSH_LOG_FILE%"
@@ -333,22 +336,22 @@ if errorlevel 1 goto :PushPackageResult
 if not "%PUSH_EXIT_CODE%"=="0" goto :PushPackageResult
 
 REM 部分 NuGet 错误只写入日志；不能仅凭退出码为 0 判断成功。
-findstr /i /r /c:"^[ ]*error[ :]" "%PUSH_LOG_FILE%" >nul
+findstr /i /r /c:"^[ ]*error[ :]" /c:"^[ ]*错误" "%PUSH_LOG_FILE%" >nul
 if errorlevel 2 goto :PushPackageResult
 if not errorlevel 1 goto :PushPackageResult
 
-findstr /i /l /c:"Your package was pushed." "%PUSH_LOG_FILE%" >nul
+findstr /i /l /c:"Your package was pushed." /c:"已推送包。" "%PUSH_LOG_FILE%" >nul
 if errorlevel 2 goto :PushPackageResult
 if not errorlevel 1 set "PUSH_HAS_SUCCESS=1"
 
-findstr /i /r /c:"^[ ]*warn[ :]" /c:"^[ ]*warning[ :]" "%PUSH_LOG_FILE%" >nul
+findstr /i /r /c:"^[ ]*warn[ :]" /c:"^[ ]*warning[ :]" /c:"^[ ]*警告" "%PUSH_LOG_FILE%" >nul
 if errorlevel 2 goto :PushPackageResult
 if not errorlevel 1 (
     set "PUSH_RESULT=warning"
     goto :PushPackageResult
 )
 
-findstr /i /l /c:"already exists at feed" /c:"already exists and is valid" "%PUSH_LOG_FILE%" >nul
+findstr /i /l /c:"already exists at feed" /c:"already exists and is valid" /c:"处已存在包" "%PUSH_LOG_FILE%" >nul
 if errorlevel 2 goto :PushPackageResult
 if not errorlevel 1 (
     set "PUSH_RESULT=skipped"
