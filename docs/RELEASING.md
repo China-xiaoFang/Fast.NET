@@ -38,6 +38,21 @@ UploadNuget.bat publish-all
 UploadNuget.bat publish-one Fast.Cache
 ```
 
-`publish-all` builds, packs, and publishes all 17 current packages. `publish-one` builds and packs everything, then publishes only the specified package ID. Running `UploadNuget.bat` without arguments opens the interactive configuration and package-selection menu. Every publishing mode lists the selected package scope and requires the exact confirmation `PUBLISH` before calling `dotnet nuget push`.
+`publish-all` builds, packs, and publishes all 17 current packages. `publish-one` builds and packs everything, then publishes only the specified package ID. Running `UploadNuget.bat` without arguments opens the interactive configuration and package-selection menu, where another package can be selected after a single-package push. The script lists the selected packages and source before calling `dotnet nuget push`.
+
+## Publish results
+
+The script checks both the NuGet exit code and diagnostic output. With `--skip-duplicate`, an existing package can return exit code 0, so that code alone does not count as a successful publication. NuGet diagnostics use English for stable classification; script prompts remain Chinese.
+
+| Result | Color | Meaning |
+| --- | --- | --- |
+| Success | Green | Exit code 0 with an explicit publication confirmation and no warnings, errors, or duplicate messages |
+| Already exists, skipped | Yellow | Exit code 0 with only existing versions skipped; excluded from the success count |
+| Warning | Yellow | A warning, mixed success and skips across the package and its symbols, or an unconfirmed overall result |
+| Failure | Red | A nonzero exit code or an error diagnostic, even if the command returns 0 |
+
+The summary counts each push attempt as success, skip, warning, or failure and lists packages requiring attention. The script returns `0` for success or skips only, `2` for warnings without failures, and `1` if any attempt fails. Ending an interactive session also shows the summary when its only results were skips or warnings.
+
+The summary groups counts and package names by result, using the corresponding color and one package per line, including successful packages. System PowerShell applies colors through the console API and restores the original color afterward. Redirected output and systems without PowerShell use plain text without generated ANSI escape sequences.
 
 Never store an API key in the repository, scripts, logs, shell history, or issues. Clear the process environment variable after publishing, then verify package metadata, README rendering, dependencies, and symbol status on NuGet.org.

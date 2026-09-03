@@ -32,6 +32,7 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 
 ### Fixed
 
+- `UploadNuget.bat` now checks NuGet diagnostics as well as exit codes, reports existing packages as skipped, separates warnings and partial symbol results from confirmed success, and groups all results with one package per line. Success is green, skips and warnings are yellow, and failures are red; redirected output remains plain text. Exit codes are `0` for success/skips only, `2` for warnings, and `1` for failures.
 - Replaced bare ANSI output in startup banners and direct diagnostics across `Fast.NET.Core` 3.5.35, `Fast.Runtime` 3.5.29, `Fast.OpenApi` 3.5.37, `Fast.SqlSugar` 3.5.64, and `Fast.IaaS` 3.5.26 with `ConsoleWriter`. Banner wording, the ASCII logo, and color meanings are preserved, redirected output remains plain text, and colors are restored even when output fails. The existing `Fast.Logging` formatter and `ConsoleLoggerProvider` pipeline are unchanged.
 - Fast.IaaS tree building now supports partial node sets whose parent nodes are not included and uses parent lookups to avoid repeated collection scans during recursive construction.
 - `Fast.Logging` now restores foreground and background state after independently colored log segments.

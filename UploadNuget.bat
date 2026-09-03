@@ -5,11 +5,16 @@ for /f "tokens=2 delims=:" %%C in ('chcp') do set "ORIGINAL_CODE_PAGE=%%C"
 set "ORIGINAL_CODE_PAGE=%ORIGINAL_CODE_PAGE: =%"
 chcp 936 >nul
 
+REM 颜色输出使用系统 PowerShell；不可用时保留纯文本提示。
+set "COLOR_OUTPUT_AVAILABLE="
+where powershell.exe >nul 2>&1
+if not errorlevel 1 set "COLOR_OUTPUT_AVAILABLE=1"
+
 REM 将控制台切换为简体中文代码页，确保中文提示可以正常显示；退出前会恢复原代码页。
 REM 固定在脚本所在的仓库根目录执行，避免从其他目录启动时找不到解决方案。
 pushd "%~dp0" >nul
 if errorlevel 1 (
-    echo [错误] 无法进入脚本所在目录：%~dp0
+    call :WriteStatus Red "[错误] 无法进入脚本所在目录：%~dp0"
     if defined ORIGINAL_CODE_PAGE chcp %ORIGINAL_CODE_PAGE% >nul
     endlocal & exit /b 1
 )
@@ -29,6 +34,11 @@ set "MAX_PACKAGE_INDEX=10"
 set "UPLOAD_SELECTION="
 set "SELECTED_PACKAGE="
 set "SUCCESS_COUNT=0"
+set "SUCCESS_FILES="
+set "SKIPPED_COUNT=0"
+set "SKIPPED_FILES="
+set "WARNING_COUNT=0"
+set "WARNING_FILES="
 set "ERROR_COUNT=0"
 set "ERROR_FILES="
 set "MISSING_PACKAGE_COUNT=0"
@@ -40,13 +50,13 @@ if not defined NUGET_SOURCE set "NUGET_SOURCE=https://api.nuget.org/v3/index.jso
 REM 开始前检查 .NET SDK 和解决方案文件。
 where dotnet >nul 2>&1
 if errorlevel 1 (
-    echo [错误] 未找到 dotnet 命令，请安装 global.json 指定的 .NET SDK。
+    call :WriteStatus Red "[错误] 未找到 dotnet 命令，请安装 global.json 指定的 .NET SDK。"
     set "EXIT_CODE=1"
     goto :Finish
 )
 
 if not exist "%SOLUTION_FILE%" (
-    echo [错误] 未找到解决方案：%SOLUTION_FILE%
+    call :WriteStatus Red "[错误] 未找到解决方案：%SOLUTION_FILE%"
     set "EXIT_CODE=1"
     goto :Finish
 )
@@ -67,7 +77,7 @@ if /i "%RUN_MODE%"=="publish-all" (
 )
 if /i "%RUN_MODE%"=="publish-one" (
     if not defined REQUESTED_PACKAGE_ID (
-        echo [错误] publish-one 模式必须指定 PackageId。
+        call :WriteStatus Red "[错误] publish-one 模式必须指定 PackageId。"
         echo 示例：UploadNuget.bat publish-one Fast.Cache
         set "EXIT_CODE=1"
         goto :Finish
@@ -75,7 +85,7 @@ if /i "%RUN_MODE%"=="publish-one" (
     goto :BuildAndPack
 )
 
-echo [错误] 未知运行模式：%RUN_MODE%
+call :WriteStatus Red "[错误] 未知运行模式：%RUN_MODE%"
 call :ShowUsage
 set "EXIT_CODE=1"
 goto :Finish
@@ -96,7 +106,7 @@ echo.
 echo [1/3] 正在还原解决方案...
 dotnet restore "%SOLUTION_FILE%"
 if errorlevel 1 (
-    echo [错误] 解决方案还原失败。
+    call :WriteStatus Red "[错误] 解决方案还原失败。"
     set "EXIT_CODE=1"
     goto :Finish
 )
@@ -105,7 +115,7 @@ echo.
 echo [2/3] 正在使用 %BUILD_CONFIGURATION% 配置构建解决方案...
 dotnet build "%SOLUTION_FILE%" --configuration "%BUILD_CONFIGURATION%" --no-restore
 if errorlevel 1 (
-    echo [错误] 构建失败，未执行打包和发布。
+    call :WriteStatus Red "[错误] 构建失败，未执行打包和发布。"
     set "EXIT_CODE=1"
     goto :Finish
 )
@@ -114,7 +124,7 @@ echo.
 echo [3/3] 正在将 NuGet 包输出到 %PACKAGE_DIR%...
 dotnet pack "%SOLUTION_FILE%" --configuration "%BUILD_CONFIGURATION%" --no-build --no-restore --property:WarnOnPackingNonPackableProject=false
 if errorlevel 1 (
-    echo [错误] 打包失败，未执行发布。
+    call :WriteStatus Red "[错误] 打包失败，未执行发布。"
     set "EXIT_CODE=1"
     goto :Finish
 )
@@ -125,13 +135,13 @@ echo 当前项目版本对应的 NuGet 包：
 for /r "%SOURCE_DIR%" %%P in (*.csproj) do call :RegisterProjectPackage "%%~fP"
 
 if not "%MISSING_PACKAGE_COUNT%"=="0" (
-    echo [错误] 有 %MISSING_PACKAGE_COUNT% 个预期包文件不存在。
+    call :WriteStatus Red "[错误] 有 %MISSING_PACKAGE_COUNT% 个预期包文件不存在。"
     set "EXIT_CODE=1"
     goto :Finish
 )
 
 if "%PACKAGE_COUNT%"=="0" (
-    echo [错误] 没有找到可发布的 NuGet 包。
+    call :WriteStatus Red "[错误] 没有找到可发布的 NuGet 包。"
     set "EXIT_CODE=1"
     goto :Finish
 )
@@ -143,7 +153,7 @@ if /i "%RUN_MODE%"=="pack" goto :SkipPublish
 if /i "%RUN_MODE%"=="publish-all" goto :PreparePublish
 if /i "%RUN_MODE%"=="publish-one" (
     if not defined SELECTED_PACKAGE (
-        echo [错误] 未找到指定的 PackageId：%REQUESTED_PACKAGE_ID%
+        call :WriteStatus Red "[错误] 未找到指定的 PackageId：%REQUESTED_PACKAGE_ID%"
         set "EXIT_CODE=1"
         goto :Finish
     )
@@ -158,12 +168,14 @@ echo [1] 发布当前全部 NuGet 包
 echo [11-%MAX_PACKAGE_INDEX%] 发布上方列表中的单个包
 call :ReadNumericSelection
 if errorlevel 1 (
-    echo [错误] 请输入有效的数字选项。
+    call :WriteStatus Red "[错误] 请输入有效的数字选项。"
     goto :SelectPublishMode
 )
 
 if "%UPLOAD_SELECTION%"=="0" (
     if not "%SUCCESS_COUNT%"=="0" goto :PublishSummary
+    if not "%SKIPPED_COUNT%"=="0" goto :PublishSummary
+    if not "%WARNING_COUNT%"=="0" goto :PublishSummary
     if not "%ERROR_COUNT%"=="0" goto :PublishSummary
     goto :SkipPublish
 )
@@ -171,7 +183,7 @@ if "%UPLOAD_SELECTION%"=="1" goto :PreparePublish
 
 call set "SELECTED_PACKAGE=%%PACKAGE_%UPLOAD_SELECTION%%%"
 if not defined SELECTED_PACKAGE (
-    echo [错误] 包序号不存在：%UPLOAD_SELECTION%
+    call :WriteStatus Red "[错误] 包序号不存在：%UPLOAD_SELECTION%"
     goto :SelectPublishMode
 )
 
@@ -179,7 +191,7 @@ if not defined SELECTED_PACKAGE (
 REM 优先读取当前环境中的 API Key；未设置时再使用 PowerShell 隐藏输入。
 if not defined NUGET_API_KEY call :ReadNuGetApiKey
 if not defined NUGET_API_KEY (
-    echo [错误] NuGet API Key 不能为空，已取消发布。
+    call :WriteStatus Red "[错误] NuGet API Key 不能为空，已取消发布。"
     set "EXIT_CODE=1"
     goto :Finish
 )
@@ -212,11 +224,13 @@ for /l %%I in (11,1,%MAX_PACKAGE_INDEX%) do call :PushPackageByIndex %%I
 
 :PublishSummary
 echo.
-echo 发布完成，成功 %SUCCESS_COUNT% 个，失败 %ERROR_COUNT% 个。
-if not "%ERROR_COUNT%"=="0" (
-    echo 发布失败的包：%ERROR_FILES%
-    set "EXIT_CODE=1"
-)
+echo 发布完成：
+call :WriteStatus Green "[成功] %SUCCESS_COUNT% 个" "%SUCCESS_FILES%"
+call :WriteStatus Yellow "[跳过] 已存在 %SKIPPED_COUNT% 个" "%SKIPPED_FILES%"
+call :WriteStatus Yellow "[警告] %WARNING_COUNT% 个" "%WARNING_FILES%"
+call :WriteStatus Red "[失败] %ERROR_COUNT% 个" "%ERROR_FILES%"
+if not "%WARNING_COUNT%"=="0" set "EXIT_CODE=2"
+if not "%ERROR_COUNT%"=="0" set "EXIT_CODE=1"
 goto :Finish
 
 :SkipPublish
@@ -233,19 +247,19 @@ for /f "usebackq delims=" %%I in (`dotnet msbuild "%~1" -nologo -getProperty:Pac
 for /f "usebackq delims=" %%V in (`dotnet msbuild "%~1" -nologo -getProperty:PackageVersion`) do if not defined CURRENT_PACKAGE_VERSION set "CURRENT_PACKAGE_VERSION=%%V"
 
 if not defined CURRENT_PACKAGE_ID (
-    echo [错误] 无法读取项目的 PackageId：%~1
+    call :WriteStatus Red "[错误] 无法读取项目的 PackageId：%~1"
     set /a MISSING_PACKAGE_COUNT+=1
     exit /b 0
 )
 if not defined CURRENT_PACKAGE_VERSION (
-    echo [错误] 无法读取项目的 PackageVersion：%~1
+    call :WriteStatus Red "[错误] 无法读取项目的 PackageVersion：%~1"
     set /a MISSING_PACKAGE_COUNT+=1
     exit /b 0
 )
 
 set "CURRENT_PACKAGE_PATH=%PACKAGE_DIR%\%CURRENT_PACKAGE_ID%.%CURRENT_PACKAGE_VERSION%.nupkg"
 if not exist "%CURRENT_PACKAGE_PATH%" (
-    echo [错误] 缺少包文件：%CURRENT_PACKAGE_PATH%
+    call :WriteStatus Red "[错误] 缺少包文件：%CURRENT_PACKAGE_PATH%"
     set /a MISSING_PACKAGE_COUNT+=1
     exit /b 0
 )
@@ -289,7 +303,7 @@ exit /b 0
 
 :ReadNuGetApiKeyPlainText
 REM 极少数没有 PowerShell 的环境只能使用明文输入，并明确给出安全提示。
-echo [警告] 未找到 PowerShell，输入的 API Key 将显示在控制台中。
+call :WriteStatus Yellow "[警告] 未找到 PowerShell，输入的 API Key 将显示在控制台中。"
 set /p "NUGET_API_KEY=请输入 NuGet API Key："
 exit /b 0
 
@@ -301,19 +315,92 @@ if defined PACKAGE_PATH call :PushPackage "%PACKAGE_PATH%"
 exit /b 0
 
 :PushPackage
-REM dotnet nuget push 默认会同时处理同目录下的符号包，并跳过服务端已有版本。
+REM 保留 NuGet 的重复版本跳过行为；固定英文诊断，同时检查退出码与输出内容。
 echo.
 echo 正在发布 %~nx1...
-dotnet nuget push "%~f1" --api-key "%NUGET_API_KEY%" --source "%NUGET_SOURCE%" --skip-duplicate
-if errorlevel 1 (
+set "PUSH_RESULT=error"
+set "PUSH_HAS_SUCCESS="
+
+:CreatePushLog
+set "PUSH_LOG_FILE=%TEMP%\Fast.NET-nuget-push-%RANDOM%-%RANDOM%.log"
+if exist "%PUSH_LOG_FILE%" goto :CreatePushLog
+
+dotnet nuget push "%~f1" --api-key "%NUGET_API_KEY%" --source "%NUGET_SOURCE%" --skip-duplicate --force-english-output >"%PUSH_LOG_FILE%" 2>&1
+set "PUSH_EXIT_CODE=%ERRORLEVEL%"
+if not exist "%PUSH_LOG_FILE%" goto :PushPackageResult
+type "%PUSH_LOG_FILE%"
+if errorlevel 1 goto :PushPackageResult
+if not "%PUSH_EXIT_CODE%"=="0" goto :PushPackageResult
+
+REM 部分 NuGet 错误只写入日志；不能仅凭退出码为 0 判断成功。
+findstr /i /r /c:"^[ ]*error[ :]" "%PUSH_LOG_FILE%" >nul
+if errorlevel 2 goto :PushPackageResult
+if not errorlevel 1 goto :PushPackageResult
+
+findstr /i /l /c:"Your package was pushed." "%PUSH_LOG_FILE%" >nul
+if errorlevel 2 goto :PushPackageResult
+if not errorlevel 1 set "PUSH_HAS_SUCCESS=1"
+
+findstr /i /r /c:"^[ ]*warn[ :]" /c:"^[ ]*warning[ :]" "%PUSH_LOG_FILE%" >nul
+if errorlevel 2 goto :PushPackageResult
+if not errorlevel 1 (
+    set "PUSH_RESULT=warning"
+    goto :PushPackageResult
+)
+
+findstr /i /l /c:"already exists at feed" /c:"already exists and is valid" "%PUSH_LOG_FILE%" >nul
+if errorlevel 2 goto :PushPackageResult
+if not errorlevel 1 (
+    set "PUSH_RESULT=skipped"
+    REM 主包成功但符号包已存在时，只能记为部分完成，不能记为全部跳过或成功。
+    if defined PUSH_HAS_SUCCESS set "PUSH_RESULT=warning"
+    goto :PushPackageResult
+)
+
+REM 没有明确成功标记的零退出码也需要人工检查。
+set "PUSH_RESULT=warning"
+if defined PUSH_HAS_SUCCESS set "PUSH_RESULT=success"
+
+:PushPackageResult
+if exist "%PUSH_LOG_FILE%" del /q "%PUSH_LOG_FILE%" >nul 2>&1
+if "%PUSH_RESULT%"=="error" (
     set /a ERROR_COUNT+=1
     set "ERROR_FILES=%ERROR_FILES% %~nx1"
-    echo [错误] 发布失败：%~nx1
-) else (
-    set /a SUCCESS_COUNT+=1
-    echo [成功] 已发布：%~nx1
+    call :WriteStatus Red "[错误] 发布失败：%~nx1"
+    exit /b 0
 )
+if "%PUSH_RESULT%"=="warning" (
+    set /a WARNING_COUNT+=1
+    set "WARNING_FILES=%WARNING_FILES% %~nx1"
+    call :WriteStatus Yellow "[警告] 发布存在警告、部分跳过或结果未确认，请检查上方输出：%~nx1"
+    exit /b 0
+)
+if "%PUSH_RESULT%"=="skipped" (
+    set /a SKIPPED_COUNT+=1
+    set "SKIPPED_FILES=%SKIPPED_FILES% %~nx1"
+    call :WriteStatus Yellow "[跳过] 包版本已存在：%~nx1"
+    exit /b 0
+)
+set /a SUCCESS_COUNT+=1
+set "SUCCESS_FILES=%SUCCESS_FILES% %~nx1"
+call :WriteStatus Green "[成功] 已发布：%~nx1"
 exit /b 0
+
+:WriteStatus
+REM 文本通过环境变量传入 PowerShell，避免把消息内容当作命令解析。
+setlocal DisableDelayedExpansion
+set "FAST_NUGET_STATUS_COLOR=%~1"
+set "FAST_NUGET_STATUS_TEXT=%~2"
+set "FAST_NUGET_STATUS_FILES=%~3"
+if not defined COLOR_OUTPUT_AVAILABLE goto :WriteStatusPlain
+powershell.exe -NoLogo -NoProfile -NonInteractive -Command "$ErrorActionPreference = 'Stop'; [Console]::OutputEncoding = [Text.Encoding]::GetEncoding(936); $useColor = -not [Console]::IsOutputRedirected; $originalColor = [Console]::ForegroundColor; try { if ($useColor) { [Console]::ForegroundColor = [ConsoleColor]$env:FAST_NUGET_STATUS_COLOR }; [Console]::WriteLine($env:FAST_NUGET_STATUS_TEXT); foreach ($file in ($env:FAST_NUGET_STATUS_FILES -split ' ')) { if ($file) { [Console]::WriteLine('  - ' + $file) } } } finally { if ($useColor) { [Console]::ForegroundColor = $originalColor } }" 2>nul
+if errorlevel 1 goto :WriteStatusPlain
+endlocal & exit /b 0
+
+:WriteStatusPlain
+echo %FAST_NUGET_STATUS_TEXT%
+for %%F in (%FAST_NUGET_STATUS_FILES%) do echo   - %%F
+endlocal & exit /b 0
 
 :ShowUsage
 echo 使用方式：

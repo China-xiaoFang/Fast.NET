@@ -47,19 +47,17 @@ public static partial class OpenApiUtil
 
         try
         {
+            MAppContext.ConsoleWrite(console =>
             {
-                MAppContext.ConsoleWrite(console =>
-                {
-                    console.BackgroundColor = ConsoleColor.Black;
-                    console.ForegroundColor = ConsoleColor.Green;
-                    console.Write("info");
-                    console.ResetColor();
-                    console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                    console.BackgroundColor = ConsoleColor.Black;
-                    console.ForegroundColor = ConsoleColor.DarkGray;
-                    console.WriteLine("      开始生成 Open Api 文件...");
-                });
-            }
+                console.BackgroundColor = ConsoleColor.Black;
+                console.ForegroundColor = ConsoleColor.Green;
+                console.Write("info");
+                console.ResetColor();
+                console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                console.BackgroundColor = ConsoleColor.Black;
+                console.ForegroundColor = ConsoleColor.DarkGray;
+                console.WriteLine("      开始生成 Open Api 文件...");
+            });
 
             // 复制调用方集合，避免为补充默认分组而意外修改外部状态
             var groups = groupList?.ToList() ?? ["All Groups"];
@@ -105,19 +103,17 @@ public static partial class OpenApiUtil
                     .ConfigureAwait(false);
             }
 
+            MAppContext.ConsoleWrite(console =>
             {
-                MAppContext.ConsoleWrite(console =>
-                {
-                    console.BackgroundColor = ConsoleColor.Black;
-                    console.ForegroundColor = ConsoleColor.Green;
-                    console.Write("info");
-                    console.ResetColor();
-                    console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
-                    console.BackgroundColor = ConsoleColor.Black;
-                    console.ForegroundColor = ConsoleColor.DarkGray;
-                    console.WriteLine("      生成 Open Api 文件成功。");
-                });
-            }
+                console.BackgroundColor = ConsoleColor.Black;
+                console.ForegroundColor = ConsoleColor.Green;
+                console.Write("info");
+                console.ResetColor();
+                console.WriteLine($": {DateTime.Now:yyyy-MM-dd HH:mm:ss.fffffff zzz dddd}");
+                console.BackgroundColor = ConsoleColor.Black;
+                console.ForegroundColor = ConsoleColor.DarkGray;
+                console.WriteLine("      生成 Open Api 文件成功。");
+            });
         }
         catch (Exception ex)
         {
