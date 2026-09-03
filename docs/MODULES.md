@@ -60,7 +60,22 @@ MAppContext.ConsoleWrite(e =>
 
 The callback receives a `Fast.Runtime.ConsoleWriter` with `ForegroundColor`, `BackgroundColor`, `Write`, `WriteLine`, and `ResetColor()`. The writer captures both colors on entry and restores them in `finally`; `ResetColor()` restores the same colors within the callback. Callbacks sharing an output stream execute serially and support nesting. Callbacks must complete synchronously, and callback or write exceptions propagate to the caller. When `Console.IsOutputRedirected` is `true`, color assignments are ignored and only text is written, without generated ANSI color codes.
 
-Startup banners in `Fast.NET.Core` 3.5.35 and direct diagnostics in Runtime, OpenApi, and SqlSugar use this entry point for Windows CMD, PowerShell, Windows Terminal, and Linux terminals. Banner wording, the ASCII logo, and color meanings are preserved: the startup time is `Blue`, the ASCII logo is `Green`, the Gitee address is `Red`, and the descriptive text is `Magenta`. `Fast.IaaS` 3.5.26 remains a standalone `netstandard2.1` package and uses its internal writer in `src/IaaS/Internals/ConsoleWriter.cs` without a Runtime dependency.
+Startup banners in `Fast.NET.Core` and direct diagnostics in Runtime, OpenApi, and SqlSugar use this entry point for Windows CMD, PowerShell, Windows Terminal, and Linux terminals. `Fast.IaaS` 3.5.26 remains a standalone `netstandard2.1` package and uses its internal writer in `src/IaaS/Internals/ConsoleWriter.cs` without a Runtime dependency.
+
+In `Fast.NET.Core` 3.5.36, `builder.Initialize()` prints application and host information before the ASCII logo. Application names and versions come from the entry assembly; framework versions come from the Core assembly. Both display the informational version with any `+` build metadata removed alongside the assembly version; unavailable names or versions use `Unknown`. The environment name comes from `builder.Environment`, and the startup timestamp is the local time when the banner is written (`yyyy-MM-dd HH:mm:ss`).
+
+| Output | Color |
+| --- | --- |
+| Information labels | `DarkGray` |
+| Application name, host name, operating system, OS platform/architecture, process architecture | `Gray` |
+| .NET runtime description and Fast.NET framework versions | `Cyan` |
+| Application versions and ASCII logo | `Green` |
+| Environment name | `Green` for Production, `Yellow` for Development, `Magenta` otherwise |
+| Startup time | `White` |
+| Gitee address | `Red` |
+| Usage reminder, framework description, learning messages, and PR invitation | `Magenta` |
+
+The banner also updates indentation and spacing and adds a lawful-use reminder and learning messages. Redirected output contains the same text without generated color codes; the writer restores the original colors after output.
 
 `Fast.Logging` continues to write through the `TextWriter` supplied to its `ConsoleFormatter`. `ConsoleLoggerProvider` handles terminal adaptation, ANSI parsing where needed, and queued console writes. The formatter does not change `Console.ForegroundColor`; `LoggerColorBehavior.Default` suppresses generated colors for redirected output, while ANSI support is handled by the provider rather than inferred solely from redirection.
 

@@ -20,6 +20,8 @@
 // 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
 // ------------------------------------------------------------------------
 
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,7 +46,7 @@ public static class WebApplicationBuilderExtension
     public static WebApplicationBuilder Initialize(this WebApplicationBuilder builder)
     {
         // 运行控制台输出
-        UseDefault();
+        UseDefault(builder.Environment);
 
         FastContext.WebHostEnvironment = builder.Environment;
 
@@ -54,33 +56,111 @@ public static class WebApplicationBuilderExtension
         return builder;
     }
 
-    static void UseDefault()
+    static void UseDefault(IWebHostEnvironment environment)
     {
+        var coreAssembly = typeof(WebApplicationBuilderExtension).Assembly;
+        var appAssembly = Assembly.GetEntryAssembly();
+
+        // 获取框架版本和程序集版本
+        var coreVersion = coreAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                              ?.InformationalVersion.Split('+')[0]
+                          ?? "Unknown";
+        var coreAssemblyVersion = coreAssembly.GetName()
+                                      .Version?.ToString()
+                                  ?? "Unknown";
+
+        // 获取应用版本和程序集版本
+        var appVersion = appAssembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                             ?.InformationalVersion.Split('+')[0]
+                         ?? "Unknown";
+        var appAssemblyVersion = appAssembly?.GetName()
+                                     .Version?.ToString()
+                                 ?? "Unknown";
+
         MAppContext.ConsoleWrite(console =>
         {
             console.ForegroundColor = ConsoleColor.Blue;
             console.WriteLine();
-            console.WriteLine($"Fast.NET 程序启动时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("应用名称          ：");
+            console.ForegroundColor = ConsoleColor.Gray;
+            console.WriteLine(appAssembly?.GetName()
+                                  .Name
+                              ?? "Unknown");
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write(".NET 运行时版本   ：");
+            console.ForegroundColor = ConsoleColor.Cyan;
+            console.WriteLine(RuntimeInformation.FrameworkDescription);
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("Fast.NET 框架版本 ：");
+            console.ForegroundColor = ConsoleColor.Cyan;
+            console.WriteLine($"v{coreVersion}（程序集：v{coreAssemblyVersion}）");
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("Fast.NET 程序版本 ：");
+            console.ForegroundColor = ConsoleColor.Green;
+            console.WriteLine($"v{appVersion}（程序集：v{appAssemblyVersion}）");
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("运行环境          ：");
+            console.ForegroundColor = environment.IsProduction() ? ConsoleColor.Green :
+                environment.IsDevelopment() ? ConsoleColor.Yellow : ConsoleColor.Magenta;
+            console.WriteLine(environment.EnvironmentName);
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("主机名称          ：");
+            console.ForegroundColor = ConsoleColor.Gray;
+            console.WriteLine(Environment.MachineName);
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("操作系统          ：");
+            console.ForegroundColor = ConsoleColor.Gray;
+            console.WriteLine(RuntimeInformation.OSDescription);
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("系统架构          ：");
+            console.ForegroundColor = ConsoleColor.Gray;
+            console.WriteLine($"{Environment.OSVersion.Platform.ToString()} {RuntimeInformation.OSArchitecture.ToString()}");
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("进程架构          ：");
+            console.ForegroundColor = ConsoleColor.Gray;
+            console.WriteLine(RuntimeInformation.ProcessArchitecture.ToString());
+
+            console.ForegroundColor = ConsoleColor.DarkGray;
+            console.Write("程序启动时间      ：");
+            console.ForegroundColor = ConsoleColor.White;
+            console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+
+            console.WriteLine();
 
             console.ForegroundColor = ConsoleColor.Green;
             console.WriteLine(@"
-      ______                _         _   _   ______   _______ 
-     |  ____|              | |       | \ | | |  ____| |__   __|
-     | |__     __ _   ___  | |_      |  \| | | |__       | |   
-     |  __|   / _` | / __| | __|     | . ` | |  __|      | |   
-     | |     | (_| | \__ \ | |_   _  | |\  | | |____     | |   
-     |_|      \__,_| |___/  \__| (_) |_| \_| |______|    |_|   
+        ______                _         _   _   ______   _______ 
+       |  ____|              | |       | \ | | |  ____| |__   __|
+       | |__     __ _   ___  | |_      |  \| | | |__       | |   
+       |  __|   / _` | / __| | __|     | . ` | |  __|      | |   
+       | |     | (_| | \__ \ | |_   _  | |\  | | |____     | |   
+       |_|      \__,_| |___/  \__| (_) |_| \_| |______|    |_|   
 ");
 
             console.ForegroundColor = ConsoleColor.Red;
             console.WriteLine();
-            console.WriteLine("    Gitee：https://gitee.com/FastDotnet/Fast.NET");
+            console.WriteLine("      Gitee：https://gitee.com/FastDotnet/Fast.NET");
             console.WriteLine();
 
             console.ForegroundColor = ConsoleColor.Magenta;
-            console.WriteLine("    持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
+            console.WriteLine("      请勿用于违反我国法律的项目上！");
+            console.WriteLine("      持续集百家所长，完善与丰富本框架基础设施，为.NET生态增加一种选择！");
+            console.WriteLine();
+            console.WriteLine("      接受自己的平庸和普通，是成长的必修课。");
+            console.WriteLine("      当你的能力还撑不起你的野心时，你就需要静下心来 好好学习。");
             console.WriteLine();
             console.WriteLine("期待您的PR，让.NET更好！");
+            console.WriteLine();
         });
     }
 

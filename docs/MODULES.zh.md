@@ -60,7 +60,22 @@ MAppContext.ConsoleWrite(e =>
 
 回调接收 `Fast.Runtime.ConsoleWriter`，支持 `ForegroundColor`、`BackgroundColor`、`Write`、`WriteLine` 和 `ResetColor()`。写入器自动记录进入回调时的前景色和背景色，并在 `finally` 中恢复；`ResetColor()` 可在回调中提前恢复这组颜色。同一输出流上的回调串行执行，也支持嵌套调用；回调必须同步完成，回调或写入异常继续向调用方传播。`Console.IsOutputRedirected` 为 `true` 时忽略颜色设置，仅输出文本，不生成 ANSI 颜色码。
 
-`Fast.NET.Core` 3.5.35 的启动横幅及 Runtime、OpenApi、SqlSugar 的直接诊断输出均使用此入口，适配 Windows CMD、PowerShell、Windows Terminal 和 Linux 终端。横幅保留原有文字、ASCII Logo 和颜色语义，启动时间使用 `Blue`，Logo 使用 `Green`，Gitee 地址使用 `Red`，说明文字使用 `Magenta`。`Fast.IaaS` 3.5.26 继续面向 `netstandard2.1`，使用 `src/IaaS/Internals/ConsoleWriter.cs` 中的内部写入器，保持独立包兼容性，不引入 Runtime 依赖。
+`Fast.NET.Core` 的启动横幅及 Runtime、OpenApi、SqlSugar 的直接诊断输出均使用此入口，适配 Windows CMD、PowerShell、Windows Terminal 和 Linux 终端。`Fast.IaaS` 3.5.26 继续面向 `netstandard2.1`，使用 `src/IaaS/Internals/ConsoleWriter.cs` 中的内部写入器，保持独立包兼容性，不引入 Runtime 依赖。
+
+`Fast.NET.Core` 3.5.36 中，`builder.Initialize()` 在 ASCII Logo 前输出应用及宿主信息。应用名称和版本取自入口程序集，框架版本取自 Core 程序集；两者均同时显示去除 `+` 构建元数据后的信息版本与程序集版本，无法获取的名称或版本使用 `Unknown`。运行环境取自 `builder.Environment`，启动时间为输出横幅时的本地时间，格式为 `yyyy-MM-dd HH:mm:ss`。
+
+| 输出内容 | 颜色 |
+| --- | --- |
+| 信息字段标签 | `DarkGray` |
+| 应用名称、主机名称、操作系统、系统平台与架构、进程架构 | `Gray` |
+| .NET 运行时描述、Fast.NET 框架版本 | `Cyan` |
+| 应用版本、ASCII Logo | `Green` |
+| 运行环境名称 | Production 为 `Green`，Development 为 `Yellow`，其他环境为 `Magenta` |
+| 程序启动时间 | `White` |
+| Gitee 地址 | `Red` |
+| 使用提示、框架说明、学习寄语及 PR 邀请 | `Magenta` |
+
+横幅同时调整缩进和空行，并增加合法使用提示及学习寄语。输出重定向时保留相同文本，不生成颜色码；输出结束后由写入器恢复原始颜色。
 
 `Fast.Logging` 继续通过 `ConsoleFormatter` 接收的 `TextWriter` 写入，由 `ConsoleLoggerProvider` 负责终端适配、必要的 ANSI 解析和日志队列输出。格式化器不直接修改 `Console.ForegroundColor`；`LoggerColorBehavior.Default` 在输出重定向时停止生成颜色码，ANSI 支持由 Provider 处理，不仅根据重定向状态判断。
 

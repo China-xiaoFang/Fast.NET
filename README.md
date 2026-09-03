@@ -117,6 +117,8 @@ app.Run();
 
 `Fast.Runtime` 3.5.29 provides `MAppContext.ConsoleWrite` to restore the original foreground and background colors after a synchronous callback, with plain text for redirected output. Startup banners and direct diagnostics now use this writer. See [console output](docs/MODULES.md#console-output) for usage and the logging pipeline.
 
+`Fast.NET.Core` 3.5.36 expands the `builder.Initialize()` startup banner with application and framework versions, .NET runtime, environment, host, operating system, architectures, and local startup time. See the module guide above for version sources and colors.
+
 This release updates 15 SDK packages; the two serialization packages retain their existing versions. Modules that reference `Fast.Runtime` require 3.5.29 or later; upgrade installed modules together using the versions in [CHANGELOG](CHANGELOG.md).
 
 For each module's default configuration section and optional parameters, see its `*SettingsOptions` types and extension method XML documentation.
