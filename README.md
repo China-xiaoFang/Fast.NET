@@ -121,7 +121,9 @@ app.Run();
 
 `Fast.IaaS` 3.5.27 fixes `TimeSpanExtension.ToDescription()` at exact one-minute, one-hour, and one-day boundaries, preserving the corresponding unit instead of rolling it down to zero in the next smaller unit.
 
-This release updates 15 SDK packages; the two serialization packages retain their existing versions. Modules that reference `Fast.Runtime` require 3.5.29 or later; upgrade installed modules together using the versions in [CHANGELOG](CHANGELOG.md).
+`Fast.Runtime` 3.5.30 makes its HTTP-context extensions safe outside an active request, relies on trusted forwarded-header processing for remote addresses, and removes the misleading `LanIpv4()` and `LanIpv6()` APIs. `Fast.NET.Core` 3.5.38 returns `HttpRequestMethodEnum.Unknown` when no request context is available, while `Fast.SqlSugar` 3.5.65 tolerates unavailable request audit metadata.
+
+This release updates 15 SDK packages; the two serialization packages retain their existing versions. Modules that reference `Fast.Runtime` require 3.5.30 or later; upgrade installed modules together using the versions in [CHANGELOG](CHANGELOG.md).
 
 For each module's default configuration section and optional parameters, see its `*SettingsOptions` types and extension method XML documentation.
 

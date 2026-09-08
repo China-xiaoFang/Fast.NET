@@ -88,6 +88,6 @@ public interface IBaseRecordEntity : IDatabaseEntity
     /// <summary>
     /// 记录表创建
     /// </summary>
-    /// <param name="httpContext">当前请求上下文</param>
+    /// <param name="httpContext">当前请求上下文；非请求环境中可以为 <see langword="null"/></param>
     void RecordCreate(HttpContext httpContext);
 }

@@ -83,11 +83,11 @@ public class BaseRecordEntity : IBaseRecordEntity
         var userAgentInfo = httpContext.RequestUserAgentInfo();
         var wanInfo = httpContext.RemoteIpv4Info();
 
-        Device = userAgentInfo.Device;
-        OS = userAgentInfo.OS;
-        Browser = userAgentInfo.Browser;
-        Province = wanInfo.Province;
-        City = wanInfo.City;
-        Ip = wanInfo.Ip;
+        Device = userAgentInfo?.Device;
+        OS = userAgentInfo?.OS;
+        Browser = userAgentInfo?.Browser;
+        Province = wanInfo?.Province;
+        City = wanInfo?.City;
+        Ip = wanInfo?.Ip;
     }
 }

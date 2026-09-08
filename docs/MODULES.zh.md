@@ -4,7 +4,7 @@
 
 Fast.NET 由 17 个可独立发布的 NuGet 包组成。除 `Fast.IaaS` 外，主要模块面向 .NET 8、.NET 9 和 .NET 10；`Fast.IaaS` 面向 .NET Standard 2.1。
 
-本次发布同步更新 15 个 SDK 包，并更新引用 `Fast.Runtime` 3.5.29 的模块依赖版本；两个序列化包沿用原版本。升级时请按 [CHANGELOG](../CHANGELOG.md) 中的包版本清单同步更新已安装的模块。
+本次发布同步更新 15 个 SDK 包，并更新引用 `Fast.Runtime` 3.5.30 的模块依赖版本；两个序列化包沿用原版本。升级时请按 [CHANGELOG](../CHANGELOG.md) 中的包版本清单同步更新已安装的模块。
 
 | 包 | 用途 | 主要入口 | 默认配置节点 / 外部依赖 |
 | --- | --- | --- | --- |
@@ -29,6 +29,8 @@ Fast.NET 由 17 个可独立发布的 NuGet 包组成。除 `Fast.IaaS` 外，�
 `Fast.OpenApi` 生成的 TypeScript 客户端使用独立的 `import type` 和显式 `Promise<T>` 返回类型。返回非泛型 `Task` 或 `ValueTask` 的接口映射为 `Promise<void>`。`Download`、`Export` 接口保留文件响应：Web 端使用 `AxiosResponse<Blob>`，移动端使用 `AxiosResponse<Blob | ArrayBuffer | string>`，兼容浏览器 Blob、二进制缓冲区和原生临时文件路径。`autoDownloadFile` 参数默认值为 `true`；传入 `false` 时仅返回文件响应，不请求自动保存。其他缺少明确 Schema 的值仍映射为 `unknown`。生成结果兼容 `verbatimModuleSyntax` 与当前 Fast ESLint Config 规则。生成的 Web 端与移动端 multipart 上传方法还会暴露可选的 Axios `onUploadProgress` 回调。
 
 `Fast.IaaS` 3.5.27 修复 `ToDescription()` 的整数时间边界：一分钟输出 `01分00秒`，一小时输出 `01时00分00秒`，一天输出 `01天00时00分00秒`。
+
+`Fast.Runtime` 3.5.30 在请求生命周期外能够安全处理不可用的 `HttpContext`。`LocalIpv4()`、`LocalIpv6()` 返回服务器连接端地址，`RemoteIpv4()`、`RemoteIpv6()` 返回经过可信 `UseForwardedHeaders` 中间件处理后的 `Connection.RemoteIpAddress`；语义不准确的 `LanIpv4()`、`LanIpv6()` 已删除。`Fast.NET.Core` 3.5.38 在请求上下文不存在时返回 `HttpRequestMethodEnum.Unknown`，`Fast.SqlSugar` 3.5.65 在请求审计信息不可用时保留空字段。
 
 ## 推荐注册顺序
 

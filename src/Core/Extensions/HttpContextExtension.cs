@@ -34,9 +34,12 @@ public static class HttpContextExtension
     /// 获取请求方式
     /// </summary>
     /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>获取到的请求方式</returns>
+    /// <returns>获取到的请求方式；当前请求上下文为空时返回 <see cref="HttpRequestMethodEnum.Unknown"/></returns>
     public static HttpRequestMethodEnum GetRequestMethod(this HttpContext httpContext)
     {
+        if (httpContext == null)
+            return HttpRequestMethodEnum.Unknown;
+
         return httpContext.Request.Method switch
         {
             "GET" => HttpRequestMethodEnum.Get,

@@ -33,6 +33,13 @@ namespace System;
 public enum HttpRequestMethodEnum
 {
     /// <summary>
+    /// 未知请求
+    /// </summary>
+    /// <remarks>当前不在 HTTP 请求上下文中，或请求方式无法识别</remarks>
+    [Description("未知请求")]
+    Unknown = 0,
+
+    /// <summary>
     /// Get 请求
     /// </summary>
     /// <remarks>用于从服务器获取资源。GET 请求将参数附加在 URL 后面，通过查询字符串传递给服务器。GET 请求是幂等的，即多次相同的 GET 请求应该返回相同的结果</remarks>

@@ -121,7 +121,9 @@ app.Run();
 
 `Fast.IaaS` 3.5.27 修复 `TimeSpanExtension.ToDescription()` 在恰好一分钟、一小时和一天时丢失对应单位的问题，避免向较小单位回绕后显示为零。
 
-本次发布同步更新 15 个 SDK 包，两个序列化包沿用原版本。引用 `Fast.Runtime` 的模块要求 3.5.29 或更高版本；升级时请按 [CHANGELOG](CHANGELOG.md) 中的版本清单同步更新已安装的模块。
+`Fast.Runtime` 3.5.30 使 HTTP 上下文扩展在非请求环境中安全返回默认值，远程地址仅使用可信转发头中间件处理后的结果，并删除语义不准确的 `LanIpv4()` 和 `LanIpv6()`。`Fast.NET.Core` 3.5.38 在请求上下文不可用时返回 `HttpRequestMethodEnum.Unknown`，`Fast.SqlSugar` 3.5.65 允许请求审计信息缺失。
+
+本次发布同步更新 15 个 SDK 包，两个序列化包沿用原版本。引用 `Fast.Runtime` 的模块要求 3.5.30 或更高版本；升级时请按 [CHANGELOG](CHANGELOG.md) 中的版本清单同步更新已安装的模块。
 
 各模块的默认配置节点和可选参数以对应源码中的 `*SettingsOptions` 与扩展方法 XML 文档为准。
 

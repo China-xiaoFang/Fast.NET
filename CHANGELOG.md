@@ -6,12 +6,14 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 
 ### Breaking changes
 
+- `Fast.Runtime` 3.5.30 removes the misleading `HttpContext.LanIpv4()` and `HttpContext.LanIpv6()` extension methods. Use `LocalIpv4()`/`LocalIpv6()` for the server endpoint or `RemoteIpv4()`/`RemoteIpv6()` for the remote endpoint after trusted forwarded-header processing.
 - Primary SDK packages now target .NET 8, .NET 9, and .NET 10. .NET 6 and .NET 7 assets are no longer produced.
 - Repository builds use C# 14 and the .NET 10 SDK.
 - `RetryUtil.InvokeAsync` now awaits retry callbacks, invokes the fallback for suppressed terminal failures, and accepts a cancellation token.
 
 ### Added
 
+- `HttpRequestMethodEnum.Unknown` represents calls made without an active HTTP request context; `GetRequestMethod()` returns it instead of throwing when the context is unavailable.
 - `Fast.Runtime` 3.5.29 adds `MAppContext.ConsoleWrite` with a `ConsoleWriter` callback for segmented text and color output, automatic foreground/background restoration, serialized synchronous callbacks, and nested writes. `Fast.IaaS` includes an internal writer while retaining its standalone `netstandard2.1` target.
 - Central NuGet dependency management through `Directory.Packages.props`.
 - GitHub CI for restore, dependency auditing, build, packaging, and artifact upload.
@@ -21,18 +23,19 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 ### Changed
 
 - Updated `Fast.NET.Core` from 3.5.35 to 3.5.36. The `builder.Initialize()` banner now displays application identity, application/framework informational and assembly versions, .NET runtime, environment, host, OS, OS/process architectures, and local startup time. Environment values use distinct colors; startup time is now `White`. The banner also adjusts spacing and adds a lawful-use reminder and learning messages while retaining `MAppContext.ConsoleWrite` color restoration and plain redirected output.
-- Updated `Mapster` and `Mapster.DependencyInjection` to 10.0.12, `MiniExcel` to 1.45.0, `SQLitePCLRaw.bundle_e_sqlite3` to 3.0.5, `SqlSugarCore` to 5.1.4.218, and `Swashbuckle.AspNetCore` to 10.2.3.
+- Updated `Mapster` and `Mapster.DependencyInjection` to 10.0.12, `MiniExcel` to 1.45.0, `SQLitePCLRaw.bundle_e_sqlite3` to 3.0.5, `SqlSugarCore` to 5.1.4.220, and `Swashbuckle.AspNetCore` to 10.2.3.
 - Updated ASP.NET Core package references to 8.0.30, 9.0.19, and 10.0.11 for their corresponding target frameworks.
 - Migrated `Fast.Swagger` custom filters and security registration to the Microsoft.OpenApi 2.x API required by Swashbuckle 10.
 - Established `FAST-AES-256-GCM-V1` as the initial cross-language password-based AES payload for `Fast.IaaS`.
 - Simplified XML documentation by removing type references already conveyed by signatures, inheriting existing implementation contracts, and retaining links to related APIs and constraints.
 - Marked internal leaf implementations and JSON converters as sealed where inheritance is not supported.
-- Incremented 15 SDK package versions; the two serialization packages retain their existing versions. Current package versions: `Fast.Cache` 3.5.32, `Fast.Consul` 3.5.8, `Fast.NET.Core` 3.5.37, `Fast.DependencyInjection` 3.5.28, `Fast.DynamicApplication` 3.5.34, `Fast.EventBus` 3.5.27, `Fast.IaaS` 3.5.27, `Fast.JwtBearer` 3.5.39, `Fast.Logging` 3.5.31, `Fast.Mapster` 3.5.26, `Fast.OpenApi` 3.5.38, `Fast.Runtime` 3.5.29, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.64, `Fast.Swagger` 3.5.33, and `Fast.UnifyResult` 3.5.32.
-- Packages referencing `Fast.Runtime` now require 3.5.29 or later. Upgrade installed Fast.NET modules to the versions listed above together to keep transitive dependencies aligned.
+- Incremented 15 SDK package versions; the two serialization packages retain their existing versions. Current package versions: `Fast.Cache` 3.5.33, `Fast.Consul` 3.5.9, `Fast.NET.Core` 3.5.38, `Fast.DependencyInjection` 3.5.29, `Fast.DynamicApplication` 3.5.35, `Fast.EventBus` 3.5.28, `Fast.IaaS` 3.5.28, `Fast.JwtBearer` 3.5.40, `Fast.Logging` 3.5.32, `Fast.Mapster` 3.5.27, `Fast.OpenApi` 3.5.39, `Fast.Runtime` 3.5.30, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.65, `Fast.Swagger` 3.5.34, and `Fast.UnifyResult` 3.5.33.
+- Packages referencing `Fast.Runtime` now require 3.5.30 or later. Upgrade installed Fast.NET modules to the versions listed above together to keep transitive dependencies aligned.
 - Incremented `I18nTranslateTool` to 1.0.1 and moved its `MiniExcel` version into central package management.
 
 ### Fixed
 
+- `Fast.Runtime` 3.5.30, `Fast.NET.Core` 3.5.38, `Fast.SqlSugar` 3.5.65, and `Fast.UnifyResult` 3.5.33 now handle a missing HTTP context outside the request lifecycle without null-reference failures. Remote addresses rely exclusively on `Connection.RemoteIpAddress` after trusted `UseForwardedHeaders` processing instead of reading forwarding headers directly, and record entities tolerate unavailable user-agent and IP metadata.
 - `UploadNuget.bat` now uses Simplified Chinese CLI diagnostics within the script, classifies redirected UTF-8 NuGet output before converting it to CMD CP936, and displays skipped results in dark gray. With PowerShell unavailable, output remains plain text and a zero exit code is conservatively reported as a warning because detailed diagnostics cannot be classified.
 - `Fast.IaaS` 3.5.27 now includes the correct unit when `TimeSpanExtension.ToDescription()` receives exactly one minute, one hour, or one day, producing `01分00秒`, `01时00分00秒`, or `01天00时00分00秒` respectively.
 - `Fast.OpenApi` 3.5.38 now generates `Promise<void>` and calls `axiosUtil.request<void>` for actions returning non-generic `Task` or `ValueTask`. `Download` and `Export` actions retain their file response and expose an `autoDownloadFile` parameter that defaults to `true`: Web clients use `AxiosResponse<Blob>`, while mobile clients allow `AxiosResponse<Blob | ArrayBuffer | string>`. Missing response schemas for other value-returning actions continue to use `unknown`.

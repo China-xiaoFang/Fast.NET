@@ -4,7 +4,7 @@
 
 Fast.NET consists of 17 independently published NuGet packages. The primary modules target .NET 8, .NET 9, and .NET 10; `Fast.IaaS` targets .NET Standard 2.1.
 
-This release updates 15 SDK packages, including the dependency versions of modules that reference `Fast.Runtime` 3.5.29; the two serialization packages retain their existing versions. Upgrade installed modules together using the package versions in [CHANGELOG](../CHANGELOG.md).
+This release updates 15 SDK packages, including the dependency versions of modules that reference `Fast.Runtime` 3.5.30; the two serialization packages retain their existing versions. Upgrade installed modules together using the package versions in [CHANGELOG](../CHANGELOG.md).
 
 | Package | Purpose | Main entry point | Default configuration / external dependency |
 | --- | --- | --- | --- |
@@ -29,6 +29,8 @@ This release updates 15 SDK packages, including the dependency versions of modul
 `Fast.OpenApi` generates TypeScript clients with separate `import type` declarations and explicit `Promise<T>` return types. Actions returning non-generic `Task` or `ValueTask` use `Promise<void>`. `Download` and `Export` actions retain their response: Web clients use `AxiosResponse<Blob>`, while mobile clients allow `AxiosResponse<Blob | ArrayBuffer | string>` for browser blobs, binary buffers, or native temporary file paths. Their `autoDownloadFile` parameter defaults to `true`; set it to `false` to receive the file response without requesting automatic saving. Other values without a concrete schema remain `unknown`. The output is compatible with `verbatimModuleSyntax` and the current Fast ESLint Config rules. Generated Web and mobile multipart upload methods also expose an optional Axios `onUploadProgress` callback.
 
 `Fast.IaaS` 3.5.27 formats exact `TimeSpan` boundaries correctly through `ToDescription()`: one minute is `01分00秒`, one hour is `01时00分00秒`, and one day is `01天00时00分00秒`.
+
+`Fast.Runtime` 3.5.30 safely handles an unavailable `HttpContext` outside the request lifecycle. `LocalIpv4()` and `LocalIpv6()` return the server endpoint, while `RemoteIpv4()` and `RemoteIpv6()` return `Connection.RemoteIpAddress` after trusted `UseForwardedHeaders` processing. The misleading `LanIpv4()` and `LanIpv6()` methods have been removed. `Fast.NET.Core` 3.5.38 returns `HttpRequestMethodEnum.Unknown` when no request context exists, and `Fast.SqlSugar` 3.5.65 leaves unavailable request audit fields empty.
 
 ## Recommended registration order
 

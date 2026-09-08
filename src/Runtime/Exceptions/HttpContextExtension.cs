@@ -102,7 +102,7 @@ public static class HttpContextExtension
     /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/></returns>
     public static TAttribute GetMetadata<TAttribute>(this HttpContext httpContext) where TAttribute : class
     {
-        return httpContext.GetEndpoint()
+        return httpContext?.GetEndpoint()
             ?.Metadata.GetMetadata<TAttribute>();
     }
 
@@ -128,7 +128,7 @@ public static class HttpContextExtension
     /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/></returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)
     {
-        return httpContext.GetEndpoint()
+        return httpContext?.GetEndpoint()
             ?.Metadata.GetMetadata(attributeType);
     }
 
@@ -159,152 +159,81 @@ public static class HttpContextExtension
     }
 
     /// <summary>
-    /// 局域网 IPv4 地址
-    /// </summary>
-    /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>局域网 IPv4 地址</returns>
-    public static string LanIpv4(this HttpContext httpContext)
-    {
-        var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
-        if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetwork})
-        {
-            return remoteIpAddress.ToString();
-        }
-
-        // localhost 的 IPv6 回环地址为 ::1，按当前方法的地址族进行转换
-        if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && remoteIpAddress.ToString() == "::1")
-        {
-            return "127.0.0.1";
-        }
-
-        return string.Empty;
-    }
-
-    /// <summary>
-    /// 局域网 IPv6 地址
-    /// </summary>
-    /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>局域网 IPv6 地址</returns>
-    public static string LanIpv6(this HttpContext httpContext)
-    {
-        var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
-        if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetworkV6})
-        {
-            return remoteIpAddress.ToString();
-        }
-
-        return string.Empty;
-    }
-
-    /// <summary>
     /// 本机 IPv4 地址
     /// </summary>
     /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>本机 IPv4 地址</returns>
+    /// <returns>本机 IPv4 地址；当前请求上下文为空时返回空字符串</returns>
     public static string LocalIpv4(this HttpContext httpContext)
     {
-        var localIpAddress = httpContext.Connection.LocalIpAddress;
-        // localhost 的 IPv6 回环地址为 ::1，按当前方法的地址族进行转换
-        if (localIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && localIpAddress.ToString() == "::1")
-        {
-            return "127.0.0.1";
-        }
+        var localIpAddress = httpContext?.Connection.LocalIpAddress;
 
-        return httpContext.Connection.LocalIpAddress?.MapToIPv4()
-            .ToString();
+        if (localIpAddress != null && IPAddress.IsLoopback(localIpAddress))
+            return IPAddress.Loopback.ToString();
+
+        return localIpAddress?.MapToIPv4()
+                   .ToString()
+               ?? string.Empty;
     }
 
     /// <summary>
     /// 本机 IPv6 地址
     /// </summary>
     /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>本机 IPv6 地址</returns>
+    /// <returns>本机 IPv6 地址；当前请求上下文为空时返回空字符串</returns>
     public static string LocalIpv6(this HttpContext httpContext)
     {
-        return httpContext.Connection.LocalIpAddress?.MapToIPv6()
-            .ToString();
+        return httpContext?.Connection.LocalIpAddress?.MapToIPv6()
+                   .ToString()
+               ?? string.Empty;
     }
 
     /// <summary>
-    /// 远程 IPv4 地址
+    /// 获取经过可信代理处理后的远程 IPv4 地址
     /// </summary>
     /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>远程 IPv4 地址</returns>
+    /// <returns>远程 IPv4 地址；当前请求上下文为空或远程地址不是 IPv4 时返回空字符串</returns>
     public static string RemoteIpv4(this HttpContext httpContext)
     {
-        if (httpContext == null)
-            return string.Empty;
+        var remoteIpAddress = httpContext?.Connection.RemoteIpAddress;
 
-        var remoteIpv4 = string.Empty;
-
-        // Nginx 反向代理场景优先读取转发地址头
-        if (httpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
-        {
-            if (IPAddress.TryParse(header1, out var ipv4) && ipv4.AddressFamily == AddressFamily.InterNetwork)
-            {
-                remoteIpv4 = ipv4.ToString();
-            }
-        }
-
-        // 启用受信任代理后，优先读取代理传递的客户端 IP 地址
-        if (httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
-        {
-            if (IPAddress.TryParse(header2, out var ipv4) && ipv4.AddressFamily == AddressFamily.InterNetwork)
-            {
-                remoteIpv4 = ipv4.ToString();
-            }
-        }
-
-        if (string.IsNullOrEmpty(remoteIpv4))
-        {
-            var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
-            // localhost 的 IPv6 回环地址为 ::1，按当前方法的地址族进行转换
-            if (remoteIpAddress is {AddressFamily: AddressFamily.InterNetworkV6} && remoteIpAddress.ToString() == "::1")
-            {
-                remoteIpv4 = "127.0.0.1";
-            }
-            else
-            {
-                remoteIpv4 = remoteIpAddress?.MapToIPv4()
-                    .ToString();
-            }
-        }
-
-        return remoteIpv4;
+        return FormatIpAddress(remoteIpAddress, AddressFamily.InterNetwork);
     }
 
     /// <summary>
-    /// 远程 IPv6 地址
+    /// 获取经过可信代理处理后的远程 IPv6 地址
     /// </summary>
     /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>远程 IPv6 地址</returns>
+    /// <returns>远程 IPv6 地址；当前请求上下文为空或远程地址不是 IPv6 时返回空字符串</returns>
     public static string RemoteIpv6(this HttpContext httpContext)
     {
-        if (httpContext == null)
+        var remoteIpAddress = httpContext?.Connection.RemoteIpAddress;
+
+        return FormatIpAddress(remoteIpAddress, AddressFamily.InterNetworkV6);
+    }
+
+    /// <summary>
+    /// 格式化指定地址族的 IP 地址
+    /// </summary>
+    /// <param name="ipAddress">IP 地址</param>
+    /// <param name="addressFamily">目标地址族</param>
+    /// <returns>格式化后的 IP 地址；地址为空或地址族不匹配时返回空字符串</returns>
+    private static string FormatIpAddress(IPAddress ipAddress, AddressFamily addressFamily)
+    {
+        if (ipAddress == null)
             return string.Empty;
 
-        var remoteIpv4 = httpContext.Connection.RemoteIpAddress?.MapToIPv6()
-            .ToString();
+        if (ipAddress.AddressFamily == addressFamily)
+            return ipAddress.ToString();
 
-        // Nginx 反向代理场景优先读取转发地址头
-        if (httpContext.Request.Headers.TryGetValue("X-Real-IP", out var header1))
-        {
-            if (IPAddress.TryParse(header1, out var ipv6) && ipv6.AddressFamily == AddressFamily.InterNetworkV6)
-            {
-                remoteIpv4 = ipv6.ToString();
-            }
-        }
+        // localhost 的 IPv6 回环地址按 IPv4 地址返回
+        if (addressFamily == AddressFamily.InterNetwork && IPAddress.IPv6Loopback.Equals(ipAddress))
+            return IPAddress.Loopback.ToString();
 
-        // 启用受信任代理后，优先读取代理传递的客户端 IP 地址
-        if (httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var header2))
-        {
-            if (IPAddress.TryParse(header2, out var ipv6) && ipv6.AddressFamily == AddressFamily.InterNetworkV6)
-            {
-                remoteIpv4 = ipv6.ToString();
-            }
-        }
+        if (addressFamily == AddressFamily.InterNetwork && ipAddress.IsIPv4MappedToIPv6)
+            return ipAddress.MapToIPv4()
+                .ToString();
 
-        return remoteIpv4 ?? string.Empty;
+        return string.Empty;
     }
 
     /// <summary>
@@ -323,9 +252,12 @@ public static class HttpContextExtension
     /// </summary>
     /// <remarks>注：如果需要正常解析，需要引用 "UAParser" 程序集，否则会返回 <see langword="null"/></remarks>
     /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>请求用户代理信息（User-Agent）</returns>
+    /// <returns>请求用户代理信息（User-Agent）；当前请求上下文为空时返回 <see langword="null"/></returns>
     public static UserAgentInfo RequestUserAgentInfo(this HttpContext httpContext)
     {
+        if (httpContext == null)
+            return null;
+
         // 同一请求内优先复用 HttpContext.Items 中的解析结果
         var userAgentObj = httpContext.Items[nameof(Fast) + nameof(UserAgentInfo)];
 
@@ -408,7 +340,7 @@ public static class HttpContextExtension
     /// <remarks>自带内存缓存，缓存过期时间为 24 小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
     /// <param name="httpContext">当前请求上下文</param>
     /// <param name="ip">要的 IP 地址信息，默认为 <see langword="null"/>，如果为 <see langword="null"/>，默认获取当前远程的 IPv4 地址</param>
-    /// <returns>远程 IPv4 地址信息</returns>
+    /// <returns>远程 IPv4 地址信息；当前请求上下文为空时返回 <see langword="null"/></returns>
     public static WanNetIPInfo RemoteIpv4Info(this HttpContext httpContext, string ip = null)
     {
         return httpContext.RemoteIpv4InfoAsync(ip)
@@ -423,10 +355,11 @@ public static class HttpContextExtension
     /// <remarks>自带内存缓存，缓存过期时间为 24 小时（注：需要注入内存缓存，如不注入，则默认不走缓存）</remarks>
     /// <param name="httpContext">当前请求上下文</param>
     /// <param name="ip">要的 IP 地址信息，默认为 <see langword="null"/>，如果为 <see langword="null"/>，默认获取当前远程的 IPv4 地址</param>
-    /// <returns>表示异步远程 IPv4 地址信息的任务，任务结果为远程 IPv4 地址信息</returns>
+    /// <returns>表示异步远程 IPv4 地址信息的任务；当前请求上下文为空时，任务结果为 <see langword="null"/></returns>
     public static async Task<WanNetIPInfo> RemoteIpv4InfoAsync(this HttpContext httpContext, string ip = null)
     {
-        ArgumentNullException.ThrowIfNull(httpContext);
+        if (httpContext == null)
+            return null;
 
         // 同一请求内优先复用 HttpContext.Items 中的解析结果
         var wanNetIPInfoObj = httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)];
@@ -604,10 +537,10 @@ public static class HttpContextExtension
     /// 获取 控制器/Action 描述器
     /// </summary>
     /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>获取到的 控制器/Action 描述器</returns>
+    /// <returns>获取到的 控制器/Action 描述器；当前请求上下文为空时返回 <see langword="null"/></returns>
     public static ControllerActionDescriptor GetControllerActionDescriptor(this HttpContext httpContext)
     {
-        return httpContext.GetEndpoint()
+        return httpContext?.GetEndpoint()
             ?.Metadata.FirstOrDefault(u => u is ControllerActionDescriptor) as ControllerActionDescriptor;
     }
 
@@ -632,6 +565,9 @@ public static class HttpContextExtension
     /// <returns>表示异步读取 Body 内容的任务，任务结果为读取到的 Body 内容</returns>
     public static async Task<string> ReadBodyContentAsync(this HttpRequest httpRequest)
     {
+        if (httpRequest == null)
+            return null;
+
         httpRequest.Body.Seek(0, SeekOrigin.Begin);
 
         using var reader = new StreamReader(httpRequest.Body, Encoding.UTF8, true, 1024, true);
@@ -717,6 +653,9 @@ public static class HttpContextExtension
     public static void SetResponseStatusCodes(this HttpContext httpContext, int statusCode, int[] return200StatusCodes = null,
         int[][] adaptStatusCodes = null)
     {
+        if (httpContext == null)
+            return;
+
         // 篡改响应状态码
         if (adaptStatusCodes is {Length: > 0})
         {

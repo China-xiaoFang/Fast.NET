@@ -83,7 +83,7 @@ internal static class HttpContextExtension
     /// <returns>当前终结点上匹配的特性实例；不存在时返回 <see langword="null"/></returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)
     {
-        return httpContext.GetEndpoint()
+        return httpContext?.GetEndpoint()
             ?.Metadata.GetMetadata(attributeType);
     }
 }
