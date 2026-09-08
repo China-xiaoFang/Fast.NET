@@ -570,18 +570,27 @@ public static class JwtBearerUtil
         if (!_isValid)
             return;
 
+        if (!accessTokenObj.TryGetPayloadValue<long>(JwtRegisteredClaimNames.Exp, out var expiresAt))
+            return;
+
+        // 黑名单有效期必须覆盖 Token 验证的 ClockSkew 容错窗口
+        var blacklistExpiration = DateTimeOffset.FromUnixTimeSeconds(expiresAt)
+                                  + TimeSpan.FromSeconds(Penetrates.JWTSettings.ClockSkew ?? 5);
         var nowTime = DateTimeOffset.UtcNow;
+        var blacklistLifetime = blacklistExpiration - nowTime;
+        if (blacklistLifetime <= TimeSpan.Zero)
+            return;
+
         var distributedCache = httpContext?.RequestServices.GetService<IDistributedCache>();
 
         // 标记失效
         if (distributedCache != null)
         {
             await distributedCache.SetStringAsync(CreateTokenCacheKey(AccessTokenBlacklistCacheKeyPrefix, expiredToken),
-                    nowTime.Ticks.ToString(),
-                    new DistributedCacheEntryOptions
+                    nowTime.Ticks.ToString(), new DistributedCacheEntryOptions
                     {
-                        AbsoluteExpiration = DateTimeOffset.FromUnixTimeSeconds(
-                            accessTokenObj.GetPayloadValue<long>(JwtRegisteredClaimNames.Exp))
+                        // 使用相对过期时间，避免检查后写入前跨过绝对过期点
+                        AbsoluteExpirationRelativeToNow = blacklistLifetime
                     }, httpContext.RequestAborted)
                 .ConfigureAwait(false);
         }
