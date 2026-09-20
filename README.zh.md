@@ -6,6 +6,8 @@
 
 <h1 align="center">Fast.NET</h1>
 
+**[使用文档](http://docs.fastdotnet.cn/dotnet/) · [官方网站](http://fastdotnet.com)**
+
 <p align="center">
   面向现代 .NET 应用的模块化基础设施 SDK
 </p>
@@ -115,7 +117,7 @@ app.MapControllers();
 app.Run();
 ```
 
-`Fast.Runtime` 3.5.29 提供 `MAppContext.ConsoleWrite`，在同步回调结束后自动恢复控制台前景色和背景色，输出重定向时使用纯文本。启动横幅和直接诊断输出已统一使用该写入器，使用示例与日志链路见[控制台输出](docs/MODULES.zh.md#控制台输出)。
+`Fast.Runtime` 3.5.29 提供 `MAppContext.ConsoleWrite`，在同步回调结束后自动恢复控制台前景色和背景色，输出重定向时使用纯文本。启动横幅和直接诊断输出已统一使用该写入器，使用示例与日志链路见[控制台输出](http://docs.fastdotnet.cn/dotnet/MODULES.zh#控制台输出)。
 
 `Fast.NET.Core` 3.5.36 扩展 `builder.Initialize()` 启动横幅，展示应用与框架版本、.NET 运行时、运行环境、主机、操作系统、系统与进程架构以及本地启动时间。版本来源和颜色说明见上述模块手册。
 
@@ -237,8 +239,8 @@ dotnet pack Fast.NET.sln -c Release --no-build --no-restore -p:WarnOnPackingNonP
 
 ## 文档与协作
 
-- [快速开始](docs/GETTING_STARTED.zh.md)
-- [模块目录](docs/MODULES.zh.md)
+- [快速开始](http://docs.fastdotnet.cn/dotnet/GETTING_STARTED.zh)
+- [模块目录](http://docs.fastdotnet.cn/dotnet/MODULES.zh)
 - [架构说明](docs/ARCHITECTURE.zh.md)
 - [注释与公共 API 文档规范](docs/COMMENTING_GUIDE.zh.md)
 - [发布指南](docs/RELEASING.zh.md)

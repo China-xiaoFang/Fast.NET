@@ -6,6 +6,8 @@
 
 <h1 align="center">Fast.NET</h1>
 
+**[Documentation](http://docs.fastdotnet.cn/dotnet/) · [Official website](http://fastdotnet.com)**
+
 <p align="center">
   A modular infrastructure SDK for modern .NET applications
 </p>
@@ -115,7 +117,7 @@ app.MapControllers();
 app.Run();
 ```
 
-`Fast.Runtime` 3.5.29 provides `MAppContext.ConsoleWrite` to restore the original foreground and background colors after a synchronous callback, with plain text for redirected output. Startup banners and direct diagnostics now use this writer. See [console output](docs/MODULES.md#console-output) for usage and the logging pipeline.
+`Fast.Runtime` 3.5.29 provides `MAppContext.ConsoleWrite` to restore the original foreground and background colors after a synchronous callback, with plain text for redirected output. Startup banners and direct diagnostics now use this writer. See [console output](http://docs.fastdotnet.cn/dotnet/MODULES#console-output) for usage and the logging pipeline.
 
 `Fast.NET.Core` 3.5.36 expands the `builder.Initialize()` startup banner with application and framework versions, .NET runtime, environment, host, operating system, architectures, and local startup time. See the module guide above for version sources and colors.
 
@@ -237,8 +239,8 @@ Builds don't implicitly create packages. `UploadNuget.bat` explicitly restores, 
 
 ## Documentation and collaboration
 
-- [Getting started](docs/GETTING_STARTED.md)
-- [Module catalog](docs/MODULES.md)
+- [Getting started](http://docs.fastdotnet.cn/dotnet/GETTING_STARTED)
+- [Module catalog](http://docs.fastdotnet.cn/dotnet/MODULES)
 - [Architecture guide](docs/ARCHITECTURE.md)
 - [Comments and public API documentation](docs/COMMENTING_GUIDE.md)
 - [Release guide](docs/RELEASING.md)

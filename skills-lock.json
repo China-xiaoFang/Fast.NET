@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "skills": {
+    "csharp-refactoring": {
+      "source": "dotnet/skills",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "plugins/dotnet/skills/csharp-refactoring/SKILL.md",
+      "computedHash": "a27fe6484098b92baad602212929127a22de04a417babdce5cb0163352247bc6"
+    },
+    "run-tests": {
+      "source": "dotnet/skills",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "plugins/dotnet-test/skills/run-tests/SKILL.md",
+      "computedHash": "7ac1852f86bdf20489b17aa13dcf7657a44e3b545bb70c4efb38ce1793c20738"
+    },
+    "scaffold-dotnet-test-project": {
+      "source": "dotnet/skills",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "plugins/dotnet-test/skills/scaffold-dotnet-test-project/SKILL.md",
+      "computedHash": "74573b5f147dc13a2661fc312be32cfa23a55977bc2ff98516dc77bf6c790e09"
+    }
+  }
+}
