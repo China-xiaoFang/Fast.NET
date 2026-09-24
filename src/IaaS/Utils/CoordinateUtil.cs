@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System;
 
@@ -72,7 +57,7 @@ public static class CoordinateUtil
     /// <returns>纬度偏移计算公式</returns>
     private static double TransformLat(double x, double y)
     {
-        var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.Sqrt(Math.Abs(x));
+        double ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.Sqrt(Math.Abs(x));
         ret += (20.0 * Math.Sin(6.0 * x * pi) + 20.0 * Math.Sin(2.0 * x * pi)) * 2.0 / 3.0;
         ret += (20.0 * Math.Sin(y * pi) + 40.0 * Math.Sin(y / 3.0 * pi)) * 2.0 / 3.0;
         ret += (160.0 * Math.Sin(y / 12.0 * pi) + 320 * Math.Sin(y * pi / 30.0)) * 2.0 / 3.0;
@@ -88,7 +73,7 @@ public static class CoordinateUtil
     /// <returns>经度偏移计算公式</returns>
     private static double TransformLng(double x, double y)
     {
-        var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.Sqrt(Math.Abs(x));
+        double ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.Sqrt(Math.Abs(x));
         ret += (20.0 * Math.Sin(6.0 * x * pi) + 20.0 * Math.Sin(2.0 * x * pi)) * 2.0 / 3.0;
         ret += (20.0 * Math.Sin(x * pi) + 40.0 * Math.Sin(x / 3.0 * pi)) * 2.0 / 3.0;
         ret += (150.0 * Math.Sin(x / 12.0 * pi) + 300.0 * Math.Sin(x / 30.0 * pi)) * 2.0 / 3.0;
@@ -108,24 +93,24 @@ public static class CoordinateUtil
             return (wgLat, wgLng);
 
         // 偏移量计算
-        var dLat = TransformLat(wgLng - 105.0, wgLat - 35.0);
-        var dLng = TransformLng(wgLng - 105.0, wgLat - 35.0);
+        double dLat = TransformLat(wgLng - 105.0, wgLat - 35.0);
+        double dLng = TransformLng(wgLng - 105.0, wgLat - 35.0);
 
         // 纬度弧度化
-        var radLat = wgLat / 180.0 * pi;
+        double radLat = wgLat / 180.0 * pi;
 
         // 椭球体修正系数
-        var magic = Math.Sin(radLat);
+        double magic = Math.Sin(radLat);
         magic = 1 - ee * magic * magic;
-        var sqrtMagic = Math.Sqrt(magic);
+        double sqrtMagic = Math.Sqrt(magic);
 
         // 调整偏移量为实际经纬度偏移
         dLat = dLat * 180.0 / (a * (1 - ee) / (magic * sqrtMagic) * pi);
         dLng = dLng * 180.0 / (a / sqrtMagic * Math.Cos(radLat) * pi);
 
         // 返回加上偏移后的 GCJ-02 坐标
-        var mgLat = wgLat + dLat;
-        var mgLng = wgLng + dLng;
+        double mgLat = wgLat + dLat;
+        double mgLng = wgLng + dLng;
         return (mgLat, mgLng);
     }
 
@@ -142,11 +127,11 @@ public static class CoordinateUtil
             return (mgLat, mgLng);
 
         // 先将 GCJ-02 坐标正向转换到 WGS-84 坐标
-        var (lat1, lng1) = WGS84ToGCJ02(mgLat, mgLng);
+        (double lat1, double lng1) = WGS84ToGCJ02(mgLat, mgLng);
 
         // 偏移量
-        var dLat = lat1 - mgLat;
-        var dLng = lng1 - mgLng;
+        double dLat = lat1 - mgLat;
+        double dLng = lng1 - mgLng;
 
         // WGS-84 近似值 = GCJ-02 坐标 - 偏移量
         return (mgLat - dLat, mgLng - dLng);

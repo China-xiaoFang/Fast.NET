@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Reflection;
 using SqlSugar;
@@ -46,7 +31,8 @@ public static class SqlSugarPageExtension
         {
             PageIndex = pagedResult.PageIndex,
             PageSize = pagedResult.PageSize,
-            Rows = pagedResult.Rows.Select(selectExpression)
+            Rows = pagedResult
+                .Rows.Select(selectExpression)
                 .ToList(),
             TotalRows = pagedResult.TotalRows,
             TotalPage = pagedResult.TotalPage,
@@ -72,10 +58,11 @@ public static class SqlSugarPageExtension
     /// <param name="queryable">要继续构建的查询对象</param>
     /// <param name="input">PagedInput 通用 SqlSugar 分页输入</param>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    /// <returns>SqlSugar 分页扩展</returns>
+    /// <returns>查询记录与分页信息；禁用分页时恰好达到上限仍允许返回，超过上限抛出异常。</returns>
     public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
     {
-        return queryable.SugarPaged(input)
+        return queryable
+            .SugarPaged(input)
             .ToPagedList(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
@@ -97,11 +84,12 @@ public static class SqlSugarPageExtension
     /// <param name="queryable">要继续构建的查询对象</param>
     /// <param name="input">PagedInput 通用 SqlSugar 分页输入</param>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    /// <returns>表示异步 SqlSugar 分页扩展的任务，任务结果为 SqlSugar 分页扩展</returns>
+    /// <returns>包含查询记录与分页信息的任务；非分页查询超过配置上限时抛出异常。</returns>
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
         PagedInput input)
     {
-        return await queryable.SugarPaged(input)
+        return await queryable
+            .SugarPaged(input)
             .ToPagedListAsync(input.PageIndex, input.PageSize, input.EnablePaged);
     }
 
@@ -113,15 +101,17 @@ public static class SqlSugarPageExtension
     /// <param name="pageSize">每页记录数</param>
     /// <param name="enablePaged">是否启用分页查询</param>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    /// <returns>SqlSugar 分页扩展</returns>
-    public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable, int pageIndex,
-        int pageSize = 20, bool enablePaged = true)
+    /// <returns>查询记录与分页信息；禁用分页时恰好达到上限仍允许返回，超过上限抛出异常。</returns>
+    public static PagedResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> queryable,
+        int pageIndex,
+        int pageSize = 20,
+        bool enablePaged = true)
     {
         if (enablePaged)
         {
-            var totalRows = 0;
-            var rows = queryable.ToPageList(pageIndex, pageSize, ref totalRows);
-            var totalPage = (int) Math.Ceiling(totalRows / (double) pageSize);
+            int totalRows = 0;
+            List<TEntity> rows = queryable.ToPageList(pageIndex, pageSize, ref totalRows);
+            int totalPage = (int)Math.Ceiling(totalRows / (double)pageSize);
 
             return new PagedResult<TEntity>
             {
@@ -136,11 +126,15 @@ public static class SqlSugarPageExtension
         }
         else
         {
-            var rows = queryable.Take(SqlSugarContext.MaxNotPageSize)
+            int limit = SqlSugarContext.MaxNotPageSize;
+            if (limit < 1 || limit == int.MaxValue)
+                throw new InvalidOperationException("MaxNotPageSize 必须是 1 至 int.MaxValue - 1 的整数。");
+            var rows = queryable
+                .Take(limit + 1)
                 .ToList();
-            if (rows.Count >= SqlSugarContext.MaxNotPageSize)
+            if (rows.Count > limit)
             {
-                throw new SqlSugarException($"当前查询数据量超过 {SqlSugarContext.MaxNotPageSize} 条，请使用分页查询或缩小查询范围。");
+                throw new SqlSugarException($"当前查询数据量超过 {limit} 条，请使用分页查询或缩小查询范围。");
             }
 
             return new PagedResult<TEntity>
@@ -164,15 +158,17 @@ public static class SqlSugarPageExtension
     /// <param name="pageSize">每页记录数</param>
     /// <param name="enablePaged">是否启用分页查询</param>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    /// <returns>表示异步 SqlSugar 分页扩展的任务，任务结果为 SqlSugar 分页扩展</returns>
+    /// <returns>包含查询记录与分页信息的任务；非分页查询超过配置上限时抛出异常。</returns>
     public static async Task<PagedResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> queryable,
-        int pageIndex, int pageSize = 20, bool enablePaged = true)
+        int pageIndex,
+        int pageSize = 20,
+        bool enablePaged = true)
     {
         if (enablePaged)
         {
             RefAsync<int> totalRows = 0;
-            var rows = await queryable.ToPageListAsync(pageIndex, pageSize, totalRows);
-            var totalPage = (int) Math.Ceiling(totalRows.Value / (double) pageSize);
+            List<TEntity> rows = await queryable.ToPageListAsync(pageIndex, pageSize, totalRows);
+            int totalPage = (int)Math.Ceiling(totalRows.Value / (double)pageSize);
 
             return new PagedResult<TEntity>
             {
@@ -187,11 +183,15 @@ public static class SqlSugarPageExtension
         }
         else
         {
-            var rows = await queryable.Take(SqlSugarContext.MaxNotPageSize)
+            int limit = SqlSugarContext.MaxNotPageSize;
+            if (limit < 1 || limit == int.MaxValue)
+                throw new InvalidOperationException("MaxNotPageSize 必须是 1 至 int.MaxValue - 1 的整数。");
+            List<TEntity> rows = await queryable
+                .Take(limit + 1)
                 .ToListAsync();
-            if (rows.Count >= SqlSugarContext.MaxNotPageSize)
+            if (rows.Count > limit)
             {
-                throw new SqlSugarException($"当前查询数据量超过 {SqlSugarContext.MaxNotPageSize} 条，请使用分页查询或缩小查询范围。");
+                throw new SqlSugarException($"当前查询数据量超过 {limit} 条，请使用分页查询或缩小查询范围。");
             }
 
             return new PagedResult<TEntity>
@@ -218,9 +218,10 @@ public static class SqlSugarPageExtension
     public static ISugarQueryable<TEntity> SugarPaged<TEntity>(this ISugarQueryable<TEntity> queryable, PagedInput input)
     {
         // 这里必须要判断，字段是否存在于 TEntity 中，不然会执行到 Db 层面的报错
-        var type = typeof(TEntity);
+        Type type = typeof(TEntity);
 
-        var properties = type.GetProperties()
+        var properties = type
+            .GetProperties()
             .Select(sl => new
             {
                 propertyInfo = sl,
@@ -238,12 +239,13 @@ public static class SqlSugarPageExtension
         {
             var searchList = new List<KeyValuePair<WhereType, ConditionalModel>>();
 
-            var index = 0;
+            int index = 0;
 
-            foreach (var item in properties.Where(wh => wh.sugarSearchValueAttribute != null)
+            foreach (var item in properties
+                         .Where(wh => wh.sugarSearchValueAttribute != null)
                          .ToList())
             {
-                var whereType = WhereType.Or;
+                WhereType whereType = WhereType.Or;
                 if (index == 0)
                 {
                     whereType = WhereType.And;
@@ -288,7 +290,8 @@ public static class SqlSugarPageExtension
             // 如果两个时间都存在，则使用范围搜索，如果只存在一个，则使用 >= 或者 <=
             var searchList = new List<KeyValuePair<WhereType, ConditionalModel>>();
 
-            foreach (var item in properties.Where(wh => wh.sugarSearchTimeAttribute != null)
+            foreach (var item in properties
+                         .Where(wh => wh.sugarSearchTimeAttribute != null)
                          .ToList())
             {
                 if (time1 != null && time2 != null)
@@ -351,7 +354,7 @@ public static class SqlSugarPageExtension
             }
         }
 
-        foreach (var searchInput in input.SearchList)
+        foreach (PagedSearchInput searchInput in input.SearchList)
         {
             var item = properties.FirstOrDefault(f =>
                 f.propertyInfo.Name.Equals(searchInput.EnField, StringComparison.InvariantCultureIgnoreCase));
@@ -373,7 +376,7 @@ public static class SqlSugarPageExtension
                 throw new SqlSugarException($"类型 [{type.Name}] 中的搜索字段 [{searchInput.ChField}] 是一个导航属性！");
             }
 
-            var conditionalType = searchInput.Type switch
+            ConditionalType conditionalType = searchInput.Type switch
             {
                 PagedSearchTypeEnum.Equal => ConditionalType.Equal,
                 PagedSearchTypeEnum.NotEqual => ConditionalType.NoEqual,
@@ -403,7 +406,7 @@ public static class SqlSugarPageExtension
 
         var orderList = new List<OrderByModel>();
 
-        foreach (var sortInput in input.SortList)
+        foreach (PagedSortInput sortInput in input.SortList)
         {
             var item = properties.FirstOrDefault(f =>
                 f.propertyInfo.Name.Equals(sortInput.EnField, StringComparison.InvariantCultureIgnoreCase));

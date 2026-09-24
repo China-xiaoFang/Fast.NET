@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Globalization;
 using System.Text.Json;
@@ -45,7 +30,7 @@ public static class JsonUtils
 
         // 读取文件内容
         using var streamReader = new StreamReader(path);
-        var json = streamReader.ReadToEnd();
+        string json = streamReader.ReadToEnd();
 
         // 将 JSON 文本解析为节点树
         return ParseJson(json);
@@ -63,7 +48,7 @@ public static class JsonUtils
         var dictionary = new Dictionary<string, string>();
 
         using var doc = JsonDocument.Parse(json, options);
-        var root = doc.RootElement;
+        JsonElement root = doc.RootElement;
 
         VisitJsonElement(root, dictionary);
 
@@ -84,68 +69,71 @@ public static class JsonUtils
             case JsonValueKind.Undefined:
                 break;
             case JsonValueKind.Null:
-            {
-                dictionary.TryAdd(currentPath, null);
-            }
+                {
+                    dictionary.TryAdd(currentPath, null);
+                }
                 break;
             // 对象
             case JsonValueKind.Object:
-            {
-                foreach (var property in root.EnumerateObject())
                 {
-                    var newPath = string.IsNullOrWhiteSpace(currentPath) ? property.Name : $"{currentPath}:{property.Name}";
-                    VisitJsonElement(property.Value, dictionary, newPath);
+                    foreach (JsonProperty property in root.EnumerateObject())
+                    {
+                        string newPath = string.IsNullOrWhiteSpace(currentPath)
+                            ? property.Name
+                            : $"{currentPath}:{property.Name}";
+                        VisitJsonElement(property.Value, dictionary, newPath);
+                    }
                 }
-            }
                 break;
             // 数组
             case JsonValueKind.Array:
-            {
-                for (var index = 0; index < root.GetArrayLength(); index++)
                 {
-                    var newPath = string.IsNullOrWhiteSpace(currentPath) ? $"{index}" : $"{currentPath}:{index}";
-                    VisitJsonElement(root[index], dictionary, newPath);
+                    for (int index = 0; index < root.GetArrayLength(); index++)
+                    {
+                        string newPath = string.IsNullOrWhiteSpace(currentPath) ? $"{index}" : $"{currentPath}:{index}";
+                        VisitJsonElement(root[index], dictionary, newPath);
+                    }
                 }
-            }
                 break;
             // 字符串
             case JsonValueKind.String:
-            {
-                // 去除转义字符
-                var unescapedValue = root.GetString()
-                    ?.Replace("\\", "");
-                dictionary.TryAdd(currentPath, unescapedValue);
-            }
+                {
+                    // 去除转义字符
+                    string unescapedValue = root
+                        .GetString()
+                        ?.Replace("\\", "");
+                    dictionary.TryAdd(currentPath, unescapedValue);
+                }
                 break;
             case JsonValueKind.Number:
-            {
-                if (root.TryGetInt32(out var intVal))
                 {
-                    dictionary.TryAdd(currentPath, intVal.ToString());
+                    if (root.TryGetInt32(out int intVal))
+                    {
+                        dictionary.TryAdd(currentPath, intVal.ToString());
+                    }
+                    else if (root.TryGetDouble(out double doubleVal))
+                    {
+                        dictionary.TryAdd(currentPath, doubleVal.ToString(CultureInfo.InvariantCulture));
+                    }
+                    else if (root.TryGetInt64(out long longVal))
+                    {
+                        dictionary.TryAdd(currentPath, longVal.ToString());
+                    }
+                    else
+                    {
+                        dictionary.TryAdd(currentPath, root.GetRawText());
+                    }
                 }
-                else if (root.TryGetDouble(out var doubleVal))
-                {
-                    dictionary.TryAdd(currentPath, doubleVal.ToString(CultureInfo.InvariantCulture));
-                }
-                else if (root.TryGetInt64(out var longVal))
-                {
-                    dictionary.TryAdd(currentPath, longVal.ToString());
-                }
-                else
-                {
-                    dictionary.TryAdd(currentPath, root.GetRawText());
-                }
-            }
                 break;
             case JsonValueKind.True:
-            {
-                dictionary.TryAdd(currentPath, true.ToString());
-            }
+                {
+                    dictionary.TryAdd(currentPath, true.ToString());
+                }
                 break;
             case JsonValueKind.False:
-            {
-                dictionary.TryAdd(currentPath, false.ToString());
-            }
+                {
+                    dictionary.TryAdd(currentPath, false.ToString());
+                }
                 break;
         }
     }

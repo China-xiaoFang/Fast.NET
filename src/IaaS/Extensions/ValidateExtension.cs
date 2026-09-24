@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System;
 using System.Collections.Generic;
@@ -282,7 +267,8 @@ public static class ValidateExtension
     {
         if (!str.StartsWith("1"))
         {
-            str = str.TrimStart('8', '6')
+            str = str
+                .TrimStart('8', '6')
                 .TrimStart('0');
         }
 
@@ -315,10 +301,12 @@ public static class ValidateExtension
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool IsIdCard18(this string str)
     {
-        if (!long.TryParse(str.Remove(17), out var n)
+        if (!long.TryParse(str.Remove(17), out long n)
             || n < Math.Pow(10, 16)
-            || !long.TryParse(str.Replace('x', '0')
-                .Replace('X', '0'), out _))
+            || !long.TryParse(str
+                    .Replace('x', '0')
+                    .Replace('X', '0'),
+                out _))
         {
             return false; //数字验证
         }
@@ -330,7 +318,8 @@ public static class ValidateExtension
             return false; //省份验证
         }
 
-        var birth = str.Substring(6, 8)
+        string birth = str
+            .Substring(6, 8)
             .Insert(6, "-")
             .Insert(4, "-");
         if (!DateTime.TryParse(birth, out _))
@@ -338,21 +327,23 @@ public static class ValidateExtension
             return false; //生日验证
         }
 
-        var arrVarIfyCode = "1,0,x,9,8,7,6,5,4,3,2".Split(',');
-        var wi = "7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2".Split(',');
-        var ai = str.Remove(17)
+        string[] arrVarIfyCode = "1,0,x,9,8,7,6,5,4,3,2".Split(',');
+        string[] wi = "7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2".Split(',');
+        char[] ai = str
+            .Remove(17)
             .ToCharArray();
-        var sum = 0;
-        for (var i = 0; i < 17; i++)
+        int sum = 0;
+        for (int i = 0; i < 17; i++)
         {
             sum += int.Parse(wi[i])
                    * int.Parse(ai[i]
                        .ToString());
         }
 
-        Math.DivRem(sum, 11, out var y);
+        Math.DivRem(sum, 11, out int y);
         return arrVarIfyCode[y]
-               == str.Substring(17, 1)
+               == str
+                   .Substring(17, 1)
                    .ToLower();
     }
 
@@ -363,7 +354,7 @@ public static class ValidateExtension
     /// <returns>满足条件时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
     public static bool IsIdCard15(this string str)
     {
-        if (!long.TryParse(str, out var n) || n < Math.Pow(10, 14))
+        if (!long.TryParse(str, out long n) || n < Math.Pow(10, 14))
         {
             return false; //数字验证
         }
@@ -375,7 +366,8 @@ public static class ValidateExtension
             return false; //省份验证
         }
 
-        var birth = str.Substring(6, 6)
+        string birth = str
+            .Substring(6, 6)
             .Insert(4, "-")
             .Insert(2, "-");
         return DateTime.TryParse(birth, out _);
@@ -435,7 +427,7 @@ public static class ValidateExtension
             return false;
         //列举一些特殊字符串
         const string badChars = "@,*,#,$,!,+,',=,--,%,^,&,?,(,), <,>,[,],{,},/,\\,;,:,\",\"\",delete,update,drop,alert,select";
-        var arrBadChar = badChars.Split(',');
+        string[] arrBadChar = badChars.Split(',');
         return arrBadChar.Any(t => !str.Contains(t));
     }
 
@@ -548,19 +540,20 @@ public static class ValidateExtension
             return false;
 
         // 移除所有非数字字符，只保留数字部分
-        var cleanStr = new string(str.Where(char.IsDigit)
+        string cleanStr = new(str
+            .Where(char.IsDigit)
             .ToArray());
 
         // 检查日期长度
         if (cleanStr.Length == 4 || cleanStr.Length == 6 || cleanStr.Length == 8)
         {
             // 提取年份部分
-            var year = int.Parse(cleanStr[..4]);
+            int year = int.Parse(cleanStr[..4]);
 
             // 如果字符串长度大于等于 6，提取月份部分
             if (cleanStr.Length >= 6)
             {
-                var month = int.Parse(cleanStr.Substring(4, 2));
+                int month = int.Parse(cleanStr.Substring(4, 2));
 
                 // 验证月份是否在合法范围内
                 if (month < 1 || month > 12)
@@ -569,7 +562,7 @@ public static class ValidateExtension
                 // 如果字符串长度为 8，提取日部分
                 if (cleanStr.Length == 8)
                 {
-                    var day = int.Parse(cleanStr.Substring(6, 2));
+                    int day = int.Parse(cleanStr.Substring(6, 2));
 
                     // 验证日是否在合法范围内，考虑月份的天数
                     if (day < 1 || day > DateTime.DaysInMonth(year, month))

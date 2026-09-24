@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Text;
 using System.Text.RegularExpressions;
@@ -51,13 +36,15 @@ internal static class TP
     public static string Wrapper(string title, string description, params string[] items)
     {
         var stringBuilder = new StringBuilder();
-        stringBuilder.Append($"┏━━━━━━━━━━━  {title} ━━━━━━━━━━━")
+        stringBuilder
+            .Append($"┏━━━━━━━━━━━  {title} ━━━━━━━━━━━")
             .AppendLine();
 
         // 添加描述
         if (!string.IsNullOrWhiteSpace(description))
         {
-            stringBuilder.Append($"┣ {description}")
+            stringBuilder
+                .Append($"┣ {description}")
                 .AppendLine()
                 .Append("┣ ")
                 .AppendLine();
@@ -66,39 +53,44 @@ internal static class TP
         // 添加项
         if (items != null && items.Length > 0)
         {
-            var propMaxLength = items.Where(u => _lazyRegex.Value.IsMatch(u))
+            int propMaxLength = items
+                .Where(u => _lazyRegex.Value.IsMatch(u))
                 .DefaultIfEmpty(string.Empty)
-                .Max(u => _lazyRegex.Value.Match(u)
+                .Max(u => _lazyRegex
+                    .Value.Match(u)
                     .Groups["prop"].Value.Length);
 
             // 控制项名称对齐空白占位数
             propMaxLength += propMaxLength >= 5 ? 10 : 5;
 
             // 遍历每一项并进行正则表达式匹配
-            for (var i = 0; i < items.Length; i++)
+            for (int i = 0; i < items.Length; i++)
             {
-                var item = items[i];
+                string item = items[i];
 
                 // 判断是否匹配 ##xxx##
                 if (_lazyRegex.Value.IsMatch(item))
                 {
-                    var match = _lazyRegex.Value.Match(item);
-                    var prop = match.Groups["prop"].Value;
-                    var content = match.Groups["content"].Value;
+                    Match match = _lazyRegex.Value.Match(item);
+                    string prop = match.Groups["prop"].Value;
+                    string content = match.Groups["content"].Value;
 
-                    var propTitle = $"{prop}：";
-                    stringBuilder.Append($"┣ {PadRight(propTitle, propMaxLength)}{content}")
+                    string propTitle = $"{prop}：";
+                    stringBuilder
+                        .Append($"┣ {PadRight(propTitle, propMaxLength)}{content}")
                         .AppendLine();
                 }
                 else
                 {
-                    stringBuilder.Append($"┣ {item}")
+                    stringBuilder
+                        .Append($"┣ {item}")
                         .AppendLine();
                 }
             }
         }
 
-        stringBuilder.Append($"┗━━━━━━━━━━━  {title} ━━━━━━━━━━━")
+        stringBuilder
+            .Append($"┗━━━━━━━━━━━  {title} ━━━━━━━━━━━")
             .AppendLine();
         return stringBuilder.ToString();
     }
@@ -113,7 +105,7 @@ internal static class TP
     public static string WrapperRectangle(string[] lines, int align = 0, int pad = 20)
     {
         // 计算矩形框的宽度，取所有字符串中最长的长度，再乘以 2
-        var width = lines.Max(GetLength) + pad;
+        int width = lines.Max(GetLength) + pad;
 
         // 创建一个 StringBuilder 对象
         var stringBuilder = new StringBuilder();
@@ -122,11 +114,11 @@ internal static class TP
         stringBuilder.AppendLine("+" + new string('-', width - 2) + "+");
 
         // 遍历每个字符串，并添加到 StringBuilder 对象中
-        foreach (var line in lines)
+        foreach (string line in lines)
         {
             // 当前字符串的长度
-            var len = GetLength(line);
-            var padding = align switch
+            int len = GetLength(line);
+            int padding = align switch
             {
                 -1 => 2,
                 0 => (width - len - 2) / 2,
@@ -165,15 +157,15 @@ internal static class TP
     private static string PadRight(string str, int totalByteCount)
     {
         var coding = Encoding.GetEncoding("gbk");
-        var dcount = 0;
+        int dcount = 0;
 
-        foreach (var character in str.ToCharArray())
+        foreach (char character in str)
         {
             if (coding.GetByteCount(character.ToString()) == 2)
                 dcount++;
         }
 
-        var w = str.PadRight(totalByteCount - dcount);
+        string w = str.PadRight(totalByteCount - dcount);
         return w;
     }
 

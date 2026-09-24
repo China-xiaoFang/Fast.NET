@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System;
 using System.Collections.Generic;
@@ -137,14 +122,16 @@ public static class CryptoUtil
     /// <returns>带标准头尾的 PEM 文本</returns>
     private static string ToPem(string label, byte[] value)
     {
-        var encoded = Convert.ToBase64String(value);
+        string encoded = Convert.ToBase64String(value);
         var builder = new StringBuilder(encoded.Length + 64);
-        builder.Append("-----BEGIN ")
+        builder
+            .Append("-----BEGIN ")
             .Append(label)
             .AppendLine("-----");
-        for (var index = 0; index < encoded.Length; index += 64)
+        for (int index = 0; index < encoded.Length; index += 64)
             builder.AppendLine(encoded.Substring(index, Math.Min(64, encoded.Length - index)));
-        builder.Append("-----END ")
+        builder
+            .Append("-----END ")
             .Append(label)
             .Append("-----");
         return builder.ToString();
@@ -162,15 +149,15 @@ public static class CryptoUtil
         if (value == null)
             throw new ArgumentNullException(nameof(value));
 
-        var header = $"-----BEGIN {label}-----";
-        var footer = $"-----END {label}-----";
-        var trimmed = value.Trim();
+        string header = $"-----BEGIN {label}-----";
+        string footer = $"-----END {label}-----";
+        string trimmed = value.Trim();
         if (!trimmed.StartsWith(header, StringComparison.Ordinal) || !trimmed.EndsWith(footer, StringComparison.Ordinal))
             throw new CryptographicException($"需要 {label} PEM 格式的密钥。");
 
-        var content = trimmed.Substring(header.Length, trimmed.Length - header.Length - footer.Length);
+        string content = trimmed.Substring(header.Length, trimmed.Length - header.Length - footer.Length);
         var encoded = new StringBuilder(content.Length);
-        foreach (var character in content)
+        foreach (char character in content)
         {
             if (!char.IsWhiteSpace(character))
                 encoded.Append(character);
@@ -194,11 +181,16 @@ public static class CryptoUtil
     private static byte[] EncodeRsaPrivateKey(RSAParameters parameters)
     {
         // PrivateKeyInfo = version || rsaEncryption AlgorithmIdentifier || OCTET STRING(RSAPrivateKey)
-        var algorithm = EncodeDerSequence(EncodeDer(0x06, RSA_ENCRYPTION_OID), EncodeDer(0x05, Array.Empty<byte>()));
+        byte[] algorithm = EncodeDerSequence(EncodeDer(0x06, RSA_ENCRYPTION_OID), EncodeDer(0x05, Array.Empty<byte>()));
         // RSAPrivateKey 使用 PKCS#1 规定的 CRT 参数顺序，version=0 表示双素数 RSA
-        var privateKey = EncodeDerSequence(EncodeDerInteger(0), EncodeDerInteger(parameters.Modulus),
-            EncodeDerInteger(parameters.Exponent), EncodeDerInteger(parameters.D), EncodeDerInteger(parameters.P),
-            EncodeDerInteger(parameters.Q), EncodeDerInteger(parameters.DP), EncodeDerInteger(parameters.DQ),
+        byte[] privateKey = EncodeDerSequence(EncodeDerInteger(0),
+            EncodeDerInteger(parameters.Modulus),
+            EncodeDerInteger(parameters.Exponent),
+            EncodeDerInteger(parameters.D),
+            EncodeDerInteger(parameters.P),
+            EncodeDerInteger(parameters.Q),
+            EncodeDerInteger(parameters.DP),
+            EncodeDerInteger(parameters.DQ),
             EncodeDerInteger(parameters.InverseQ));
         return EncodeDerSequence(EncodeDerInteger(0), algorithm, EncodeDer(0x04, privateKey));
     }
@@ -210,9 +202,9 @@ public static class CryptoUtil
     /// <returns>SubjectPublicKeyInfo DER 字节</returns>
     private static byte[] EncodeRsaPublicKey(RSAParameters parameters)
     {
-        var algorithm = EncodeDerSequence(EncodeDer(0x06, RSA_ENCRYPTION_OID), EncodeDer(0x05, Array.Empty<byte>()));
+        byte[] algorithm = EncodeDerSequence(EncodeDer(0x06, RSA_ENCRYPTION_OID), EncodeDer(0x05, Array.Empty<byte>()));
         // SubjectPublicKeyInfo 的 BIT STRING 内嵌 PKCS#1 RSAPublicKey(modulus, publicExponent)
-        var publicKey = EncodeDerSequence(EncodeDerInteger(parameters.Modulus), EncodeDerInteger(parameters.Exponent));
+        byte[] publicKey = EncodeDerSequence(EncodeDerInteger(parameters.Modulus), EncodeDerInteger(parameters.Exponent));
         return EncodeDerSequence(algorithm, EncodeDerBitString(publicKey));
     }
 
@@ -223,11 +215,11 @@ public static class CryptoUtil
     /// <returns>可导入 <see cref="RSA"/> 的完整私钥参数</returns>
     private static RSAParameters ReadRsaPrivateKey(byte[] value)
     {
-        var outer = ReadSingleDerSequence(value);
+        DerReader outer = ReadSingleDerSequence(value);
         // 严格消费 PrivateKeyInfo 版本和算法标识，拒绝把其他算法的 PKCS#8 当作 RSA 导入
         outer.ReadInteger();
         ReadAlgorithmIdentifier(outer, RSA_ENCRYPTION_OID, null);
-        var privateKey = ReadSingleDerSequence(outer.ReadValue(0x04));
+        DerReader privateKey = ReadSingleDerSequence(outer.ReadValue(0x04));
         privateKey.ReadInteger();
         var parameters = new RSAParameters
         {
@@ -252,9 +244,9 @@ public static class CryptoUtil
     /// <returns>可导入 <see cref="RSA"/> 的公钥参数</returns>
     private static RSAParameters ReadRsaPublicKey(byte[] value)
     {
-        var outer = ReadSingleDerSequence(value);
+        DerReader outer = ReadSingleDerSequence(value);
         ReadAlgorithmIdentifier(outer, RSA_ENCRYPTION_OID, null);
-        var publicKey = ReadSingleDerSequence(outer.ReadBitString());
+        DerReader publicKey = ReadSingleDerSequence(outer.ReadBitString());
         var parameters = new RSAParameters {Modulus = publicKey.ReadInteger(), Exponent = publicKey.ReadInteger()};
         publicKey.EnsureEmpty();
         outer.EnsureEmpty();
@@ -269,11 +261,12 @@ public static class CryptoUtil
     /// <returns>PKCS#8 DER 字节</returns>
     private static byte[] EncodeEcPrivateKey(ECParameters parameters, CurveInfo curve)
     {
-        var point = EncodeEcPoint(parameters.Q, curve.CoordinateLength);
+        byte[] point = EncodeEcPoint(parameters.Q, curve.CoordinateLength);
         // ECPrivateKey 同时保存私钥标量 D 和显式公钥点，确保 .NET 与 Web Crypto 均可导入
-        var privateKey = EncodeDerSequence(EncodeDerInteger(1), EncodeDer(0x04, PadLeft(parameters.D, curve.CoordinateLength)),
+        byte[] privateKey = EncodeDerSequence(EncodeDerInteger(1),
+            EncodeDer(0x04, PadLeft(parameters.D, curve.CoordinateLength)),
             EncodeDer(0xA1, EncodeDerBitString(point)));
-        var algorithm = EncodeDerSequence(EncodeDer(0x06, EC_PUBLIC_KEY_OID), EncodeDer(0x06, curve.ObjectIdentifier));
+        byte[] algorithm = EncodeDerSequence(EncodeDer(0x06, EC_PUBLIC_KEY_OID), EncodeDer(0x06, curve.ObjectIdentifier));
         return EncodeDerSequence(EncodeDerInteger(0), algorithm, EncodeDer(0x04, privateKey));
     }
 
@@ -285,7 +278,7 @@ public static class CryptoUtil
     /// <returns>SubjectPublicKeyInfo DER 字节</returns>
     private static byte[] EncodeEcPublicKey(ECParameters parameters, CurveInfo curve)
     {
-        var algorithm = EncodeDerSequence(EncodeDer(0x06, EC_PUBLIC_KEY_OID), EncodeDer(0x06, curve.ObjectIdentifier));
+        byte[] algorithm = EncodeDerSequence(EncodeDer(0x06, EC_PUBLIC_KEY_OID), EncodeDer(0x06, curve.ObjectIdentifier));
         return EncodeDerSequence(algorithm, EncodeDerBitString(EncodeEcPoint(parameters.Q, curve.CoordinateLength)));
     }
 
@@ -297,17 +290,17 @@ public static class CryptoUtil
     /// <returns>包含私钥标量和未压缩公钥点的 EC 参数</returns>
     private static ECParameters ReadEcPrivateKey(byte[] value, CurveInfo curve)
     {
-        var outer = ReadSingleDerSequence(value);
+        DerReader outer = ReadSingleDerSequence(value);
         outer.ReadInteger();
         ReadAlgorithmIdentifier(outer, EC_PUBLIC_KEY_OID, curve.ObjectIdentifier);
-        var privateKey = ReadSingleDerSequence(outer.ReadValue(0x04));
+        DerReader privateKey = ReadSingleDerSequence(outer.ReadValue(0x04));
         privateKey.ReadInteger();
-        var d = PadLeft(privateKey.ReadValue(0x04), curve.CoordinateLength);
+        byte[] d = PadLeft(privateKey.ReadValue(0x04), curve.CoordinateLength);
         ECPoint point = default;
-        var hasPublicKey = false;
+        bool hasPublicKey = false;
         while (privateKey.HasData)
         {
-            var tag = privateKey.PeekTag();
+            byte tag = privateKey.PeekTag();
             if (tag == 0xA0)
             {
                 // RFC 5915 允许私钥内部重复携带曲线参数；外层 PKCS#8 已完成曲线 OID 校验，因此跳过该可选字段
@@ -339,9 +332,9 @@ public static class CryptoUtil
     /// <returns>包含未压缩公钥点的 EC 参数</returns>
     private static ECParameters ReadEcPublicKey(byte[] value, CurveInfo curve)
     {
-        var outer = ReadSingleDerSequence(value);
+        DerReader outer = ReadSingleDerSequence(value);
         ReadAlgorithmIdentifier(outer, EC_PUBLIC_KEY_OID, curve.ObjectIdentifier);
-        var point = ReadEcPoint(outer.ReadBitString(), curve.CoordinateLength);
+        ECPoint point = ReadEcPoint(outer.ReadBitString(), curve.CoordinateLength);
         outer.EnsureEmpty();
         return new ECParameters {Curve = curve.Curve, Q = point};
     }
@@ -354,7 +347,7 @@ public static class CryptoUtil
     private static DerReader ReadSingleDerSequence(byte[] value)
     {
         var reader = new DerReader(value);
-        var sequence = reader.ReadSequence();
+        DerReader sequence = reader.ReadSequence();
         reader.EnsureEmpty();
         return sequence;
     }
@@ -367,7 +360,7 @@ public static class CryptoUtil
     /// <param name="expectedParameter">预期参数 OID；RSA 使用 <c>null</c> 表示可选 NULL</param>
     private static void ReadAlgorithmIdentifier(DerReader outer, byte[] expectedAlgorithm, byte[] expectedParameter)
     {
-        var algorithm = outer.ReadSequence();
+        DerReader algorithm = outer.ReadSequence();
         if (!CryptographicOperations.FixedTimeEquals(algorithm.ReadValue(0x06), expectedAlgorithm))
             throw new CryptographicException("密钥算法标识与请求的算法不匹配。");
 
@@ -397,9 +390,9 @@ public static class CryptoUtil
     /// <returns><c>0x04 || X || Y</c> 格式的点</returns>
     private static byte[] EncodeEcPoint(ECPoint point, int coordinateLength)
     {
-        var x = PadLeft(point.X, coordinateLength);
-        var y = PadLeft(point.Y, coordinateLength);
-        var value = new byte[1 + coordinateLength * 2];
+        byte[] x = PadLeft(point.X, coordinateLength);
+        byte[] y = PadLeft(point.Y, coordinateLength);
+        byte[] value = new byte[1 + coordinateLength * 2];
         value[0] = 0x04;
         Buffer.BlockCopy(x, 0, value, 1, coordinateLength);
         Buffer.BlockCopy(y, 0, value, 1 + coordinateLength, coordinateLength);
@@ -417,8 +410,8 @@ public static class CryptoUtil
         if (value.Length != 1 + coordinateLength * 2 || value[0] != 0x04)
             throw new CryptographicException("仅支持未压缩格式的 NIST EC 公钥点。");
 
-        var x = new byte[coordinateLength];
-        var y = new byte[coordinateLength];
+        byte[] x = new byte[coordinateLength];
+        byte[] y = new byte[coordinateLength];
         Buffer.BlockCopy(value, 1, x, 0, coordinateLength);
         Buffer.BlockCopy(value, 1 + coordinateLength, y, 0, coordinateLength);
         return new ECPoint {X = x, Y = y};
@@ -451,13 +444,13 @@ public static class CryptoUtil
     /// <returns>DER SEQUENCE</returns>
     private static byte[] EncodeDerSequence(params byte[][] values)
     {
-        var contentLength = 0;
-        foreach (var value in values)
+        int contentLength = 0;
+        foreach (byte[] value in values)
             contentLength += value.Length;
 
-        var content = new byte[contentLength];
-        var offset = 0;
-        foreach (var value in values)
+        byte[] content = new byte[contentLength];
+        int offset = 0;
+        foreach (byte[] value in values)
         {
             Buffer.BlockCopy(value, 0, content, offset, value.Length);
             offset += value.Length;
@@ -475,7 +468,7 @@ public static class CryptoUtil
     {
         if (value < 0 || value > 127)
             throw new ArgumentOutOfRangeException(nameof(value));
-        return EncodeDer(0x02, new[] {(byte) value});
+        return EncodeDer(0x02, new[] {(byte)value});
     }
 
     /// <summary>
@@ -488,17 +481,17 @@ public static class CryptoUtil
         if (value == null)
             throw new CryptographicException("密钥参数不完整。");
 
-        var offset = 0;
+        int offset = 0;
         while (offset < value.Length && value[offset] == 0)
             offset++;
-        var normalized = new byte[value.Length - offset];
+        byte[] normalized = new byte[value.Length - offset];
         Buffer.BlockCopy(value, offset, normalized, 0, normalized.Length);
         if (normalized.Length == 0)
             normalized = new byte[] {0};
         if ((normalized[0] & 0x80) != 0)
         {
             // DER INTEGER 是有符号数；最高位为 1 时补一个零字节，防止无符号参数被解释为负数
-            var positive = new byte[normalized.Length + 1];
+            byte[] positive = new byte[normalized.Length + 1];
             Buffer.BlockCopy(normalized, 0, positive, 1, normalized.Length);
             normalized = positive;
         }
@@ -513,7 +506,7 @@ public static class CryptoUtil
     /// <returns>DER BIT STRING</returns>
     private static byte[] EncodeDerBitString(byte[] value)
     {
-        var content = new byte[value.Length + 1];
+        byte[] content = new byte[value.Length + 1];
         Buffer.BlockCopy(value, 0, content, 1, value.Length);
         return EncodeDer(0x03, content);
     }
@@ -529,25 +522,25 @@ public static class CryptoUtil
         byte[] length;
         if (content.Length < 128)
         {
-            length = new[] {(byte) content.Length};
+            length = new[] {(byte)content.Length};
         }
         else
         {
             // 长形式只编码表示长度所必需的非零高位字节，满足 DER 最短形式要求
             var lengthBytes = new List<byte>();
-            var remaining = content.Length;
+            int remaining = content.Length;
             while (remaining > 0)
             {
-                lengthBytes.Insert(0, (byte) (remaining & 0xFF));
+                lengthBytes.Insert(0, (byte)(remaining & 0xFF));
                 remaining >>= 8;
             }
 
-            lengthBytes.Insert(0, (byte) (0x80 | lengthBytes.Count));
+            lengthBytes.Insert(0, (byte)(0x80 | lengthBytes.Count));
             length = lengthBytes.ToArray();
         }
 
-        var result = new byte[1 + length.Length + content.Length];
-        result[0] = (byte) tag;
+        byte[] result = new byte[1 + length.Length + content.Length];
+        result[0] = (byte)tag;
         Buffer.BlockCopy(length, 0, result, 1, length.Length);
         Buffer.BlockCopy(content, 0, result, 1 + length.Length, content.Length);
         return result;
@@ -564,15 +557,15 @@ public static class CryptoUtil
         if (value == null)
             throw new CryptographicException("密钥参数不完整。");
 
-        var offset = 0;
+        int offset = 0;
         while (offset < value.Length && value[offset] == 0)
             offset++;
-        var normalized = new byte[value.Length - offset];
+        byte[] normalized = new byte[value.Length - offset];
         Buffer.BlockCopy(value, offset, normalized, 0, normalized.Length);
         if (normalized.Length > length)
             throw new CryptographicException("密钥参数长度无效。");
         // EC 坐标和私钥标量是固定字段长度，左侧补零不会改变大端整数值
-        var result = new byte[length];
+        byte[] result = new byte[length];
         Buffer.BlockCopy(normalized, 0, result, length - normalized.Length, normalized.Length);
         return result;
     }
@@ -673,14 +666,14 @@ public static class CryptoUtil
         /// <returns>移除仅用于正号的前导零后的大端无符号整数</returns>
         internal byte[] ReadInteger()
         {
-            var value = ReadValue(0x02);
+            byte[] value = ReadValue(0x02);
             if (value.Length == 0 || (value[0] & 0x80) != 0)
                 throw new CryptographicException("DER INTEGER 必须是非负整数。");
             if (value.Length > 1 && value[0] == 0)
             {
                 if ((value[1] & 0x80) == 0)
                     throw new CryptographicException("DER INTEGER 不是最短编码。");
-                var result = new byte[value.Length - 1];
+                byte[] result = new byte[value.Length - 1];
                 Buffer.BlockCopy(value, 1, result, 0, result.Length);
                 return result;
             }
@@ -694,10 +687,10 @@ public static class CryptoUtil
         /// <returns>不包含“未使用位数”前缀字节的内容</returns>
         internal byte[] ReadBitString()
         {
-            var value = ReadValue(0x03);
+            byte[] value = ReadValue(0x03);
             if (value.Length == 0 || value[0] != 0)
                 throw new CryptographicException("仅支持字节对齐的 DER BIT STRING。");
-            var result = new byte[value.Length - 1];
+            byte[] result = new byte[value.Length - 1];
             Buffer.BlockCopy(value, 1, result, 0, result.Length);
             return result;
         }
@@ -712,10 +705,10 @@ public static class CryptoUtil
             if (!HasData || _value[_offset++] != expectedTag)
                 throw new CryptographicException($"DER 数据缺少预期标签 0x{expectedTag:X2}。");
 
-            var length = ReadLength();
+            int length = ReadLength();
             if (length > _value.Length - _offset)
                 throw new CryptographicException("DER 字段长度超出输入范围。");
-            var result = new byte[length];
+            byte[] result = new byte[length];
             Buffer.BlockCopy(_value, _offset, result, 0, length);
             _offset += length;
             return result;
@@ -739,17 +732,17 @@ public static class CryptoUtil
             if (!HasData)
                 throw new CryptographicException("DER 长度字段意外结束。");
 
-            var first = _value[_offset++];
+            byte first = _value[_offset++];
             if ((first & 0x80) == 0)
                 return first;
 
             // DER 禁止 BER 的不定长度；本工具也拒绝超过 Int32 范围的超大字段
-            var count = first & 0x7F;
+            int count = first & 0x7F;
             if (count == 0 || count > 4 || count > _value.Length - _offset)
                 throw new CryptographicException("DER 长度字段无效。");
 
-            var length = 0;
-            for (var index = 0; index < count; index++)
+            int length = 0;
+            for (int index = 0; index < count; index++)
                 length = checked((length << 8) | _value[_offset++]);
             // 小于 128 的长度必须使用单字节短形式，拒绝存在多种表示的非规范输入
             if (length < 128)
@@ -773,7 +766,7 @@ public static class CryptoUtil
         if (length < 0 || length > 65536)
             throw new ArgumentOutOfRangeException(nameof(length), "长度必须介于 0 和 65,536 之间。");
 
-        var bytes = new byte[length];
+        byte[] bytes = new byte[length];
         using var randomNumberGenerator = RandomNumberGenerator.Create();
         randomNumberGenerator.GetBytes(bytes);
         return bytes;
@@ -813,13 +806,14 @@ public static class CryptoUtil
         using var mi = MD5.Create();
 
         // 将输入字符串转换为 UTF-8 字节
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
 
         // 计算原始摘要字节
-        var hashBytes = mi.ComputeHash(contentBytes);
+        byte[] hashBytes = mi.ComputeHash(contentBytes);
 
         // BitConverter 生成带连字符的十六进制文本，移除分隔符后统一转换为小写
-        return BitConverter.ToString(hashBytes)
+        return BitConverter
+            .ToString(hashBytes)
             .Replace("-", string.Empty)
             .ToLowerInvariant();
     }
@@ -840,9 +834,10 @@ public static class CryptoUtil
             throw new ArgumentNullException(nameof(str));
 
         using var sha1 = SHA1.Create();
-        var contentBytes = Encoding.UTF8.GetBytes(str);
-        var hashBytes = sha1.ComputeHash(contentBytes);
-        return BitConverter.ToString(hashBytes)
+        byte[] contentBytes = Encoding.UTF8.GetBytes(str);
+        byte[] hashBytes = sha1.ComputeHash(contentBytes);
+        return BitConverter
+            .ToString(hashBytes)
             .Replace("-", string.Empty);
     }
 
@@ -860,9 +855,10 @@ public static class CryptoUtil
         if (content == null)
             throw new ArgumentNullException(nameof(content));
 
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
         using var sha256 = SHA256.Create();
-        return BitConverter.ToString(sha256.ComputeHash(contentBytes))
+        return BitConverter
+            .ToString(sha256.ComputeHash(contentBytes))
             .Replace("-", string.Empty);
     }
 
@@ -876,7 +872,7 @@ public static class CryptoUtil
         if (content == null)
             throw new ArgumentNullException(nameof(content));
 
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
         using var sha256 = SHA256.Create();
         return sha256.ComputeHash(contentBytes);
     }
@@ -895,9 +891,10 @@ public static class CryptoUtil
         if (content == null)
             throw new ArgumentNullException(nameof(content));
 
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
         using var sha384 = SHA384.Create();
-        return BitConverter.ToString(sha384.ComputeHash(contentBytes))
+        return BitConverter
+            .ToString(sha384.ComputeHash(contentBytes))
             .Replace("-", string.Empty);
     }
 
@@ -911,7 +908,7 @@ public static class CryptoUtil
         if (content == null)
             throw new ArgumentNullException(nameof(content));
 
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
         using var sha384 = SHA384.Create();
         return sha384.ComputeHash(contentBytes);
     }
@@ -930,9 +927,10 @@ public static class CryptoUtil
         if (content == null)
             throw new ArgumentNullException(nameof(content));
 
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
         using var sha512 = SHA512.Create();
-        return BitConverter.ToString(sha512.ComputeHash(contentBytes))
+        return BitConverter
+            .ToString(sha512.ComputeHash(contentBytes))
             .Replace("-", string.Empty);
     }
 
@@ -946,7 +944,7 @@ public static class CryptoUtil
         if (content == null)
             throw new ArgumentNullException(nameof(content));
 
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
         using var sha512 = SHA512.Create();
         return sha512.ComputeHash(contentBytes);
     }
@@ -969,19 +967,20 @@ public static class CryptoUtil
             throw new ArgumentNullException(nameof(key));
 
         // HMAC 直接使用调用方密钥的 UTF-8 字节，不再经过额外的密钥派生或截断
-        var keyBytes = Encoding.UTF8.GetBytes(key);
+        byte[] keyBytes = Encoding.UTF8.GetBytes(key);
         if (keyBytes.Length == 0)
             throw new ArgumentException("HMAC 密钥不能为空。", nameof(key));
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
 
         try
         {
             // 使用 HMAC-SHA-256 计算固定 32 字节认证标签
             using var hmac = new HMACSHA256(keyBytes);
-            var tagBytes = hmac.ComputeHash(contentBytes);
+            byte[] tagBytes = hmac.ComputeHash(contentBytes);
 
             // BitConverter 默认包含连字符，移除后统一输出小写十六进制
-            return BitConverter.ToString(tagBytes)
+            return BitConverter
+                .ToString(tagBytes)
                 .Replace("-", string.Empty)
                 .ToLowerInvariant();
         }
@@ -1006,19 +1005,20 @@ public static class CryptoUtil
             throw new ArgumentNullException(nameof(key));
 
         // HMAC 直接使用调用方密钥的 UTF-8 字节，不再经过额外的密钥派生或截断
-        var keyBytes = Encoding.UTF8.GetBytes(key);
+        byte[] keyBytes = Encoding.UTF8.GetBytes(key);
         if (keyBytes.Length == 0)
             throw new ArgumentException("HMAC 密钥不能为空。", nameof(key));
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
 
         try
         {
             // 使用 HMAC-SHA-384 计算固定 48 字节认证标签
             using var hmac = new HMACSHA384(keyBytes);
-            var tagBytes = hmac.ComputeHash(contentBytes);
+            byte[] tagBytes = hmac.ComputeHash(contentBytes);
 
             // BitConverter 默认包含连字符，移除后统一输出小写十六进制
-            return BitConverter.ToString(tagBytes)
+            return BitConverter
+                .ToString(tagBytes)
                 .Replace("-", string.Empty)
                 .ToLowerInvariant();
         }
@@ -1043,19 +1043,20 @@ public static class CryptoUtil
             throw new ArgumentNullException(nameof(key));
 
         // HMAC 直接使用调用方密钥的 UTF-8 字节，不再经过额外的密钥派生或截断
-        var keyBytes = Encoding.UTF8.GetBytes(key);
+        byte[] keyBytes = Encoding.UTF8.GetBytes(key);
         if (keyBytes.Length == 0)
             throw new ArgumentException("HMAC 密钥不能为空。", nameof(key));
-        var contentBytes = Encoding.UTF8.GetBytes(content);
+        byte[] contentBytes = Encoding.UTF8.GetBytes(content);
 
         try
         {
             // 使用 HMAC-SHA-512 计算固定 64 字节认证标签
             using var hmac = new HMACSHA512(keyBytes);
-            var tagBytes = hmac.ComputeHash(contentBytes);
+            byte[] tagBytes = hmac.ComputeHash(contentBytes);
 
             // BitConverter 默认包含连字符，移除后统一输出小写十六进制
-            return BitConverter.ToString(tagBytes)
+            return BitConverter
+                .ToString(tagBytes)
                 .Replace("-", string.Empty)
                 .ToLowerInvariant();
         }
@@ -1080,7 +1081,9 @@ public static class CryptoUtil
     /// <param name="outputLength">派生密钥长度，范围为 1 至 1,024 字节</param>
     /// <returns>指定长度的派生密钥</returns>
     /// <exception cref="ArgumentOutOfRangeException">密码、盐、迭代次数或输出长度超出允许范围</exception>
-    public static byte[] PBKDF2SHA256(string password, byte[] salt, int iterations = DEFAULT_PBKDF2_ITERATIONS,
+    public static byte[] PBKDF2SHA256(string password,
+        byte[] salt,
+        int iterations = DEFAULT_PBKDF2_ITERATIONS,
         int outputLength = 32)
     {
         if (salt == null)
@@ -1091,7 +1094,7 @@ public static class CryptoUtil
             throw new ArgumentNullException(nameof(password));
 
         // PBKDF2 按 UTF-8 处理密码，并限制输入大小以避免异常参数占用过多内存
-        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
         if (passwordBytes.Length == 0)
             throw new ArgumentException("密码不能为空。", nameof(password));
         if (passwordBytes.Length > MAXIMUM_PASSWORD_BYTES)
@@ -1127,7 +1130,7 @@ public static class CryptoUtil
             throw new ArgumentNullException(nameof(password));
 
         // 密码哈希独立校验输入，不依赖通用 PBKDF2 入口的实现细节
-        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
         if (passwordBytes.Length == 0)
             throw new ArgumentException("密码不能为空。", nameof(password));
         if (passwordBytes.Length > MAXIMUM_PASSWORD_BYTES)
@@ -1137,7 +1140,7 @@ public static class CryptoUtil
                 $"PBKDF2 迭代次数必须介于 {MINIMUM_PBKDF2_ITERATIONS} 和 {MAXIMUM_PBKDF2_ITERATIONS} 之间。");
 
         // 每个密码独立生成盐，防止相同密码产生相同的持久化结果，并提高预计算攻击成本
-        var salt = new byte[16];
+        byte[] salt = new byte[16];
         using (var randomNumberGenerator = RandomNumberGenerator.Create())
         {
             randomNumberGenerator.GetBytes(salt);
@@ -1153,11 +1156,13 @@ public static class CryptoUtil
             }
 
             // 协议字段使用无填充 Base64Url，避免持久化文本包含路径或表单敏感字符
-            var encodedSalt = Convert.ToBase64String(salt)
+            string encodedSalt = Convert
+                .ToBase64String(salt)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
-            var encodedKey = Convert.ToBase64String(derivedKey)
+            string encodedKey = Convert
+                .ToBase64String(derivedKey)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
@@ -1188,24 +1193,26 @@ public static class CryptoUtil
         try
         {
             // 先验证协议版本和字段数量，再执行高成本 PBKDF2
-            var parts = passwordHash.Split(':');
-            if (parts.Length != 4 || parts[0] != PASSWORD_HASH_PREFIX || !int.TryParse(parts[1], out var iterations))
+            string[] parts = passwordHash.Split(':');
+            if (parts.Length != 4 || parts[0] != PASSWORD_HASH_PREFIX || !int.TryParse(parts[1], out int iterations))
                 return false;
             if (iterations < MINIMUM_PBKDF2_ITERATIONS || iterations > MAXIMUM_PBKDF2_ITERATIONS)
                 return false;
 
             // 严格解码盐字段，并拒绝填充、标准 Base64 字符和非规范尾部位
-            var encodedSalt = parts[2];
+            string encodedSalt = parts[2];
             if (encodedSalt.IndexOf('=') >= 0
                 || encodedSalt.IndexOf('+') >= 0
                 || encodedSalt.IndexOf('/') >= 0
                 || encodedSalt.Length % 4 == 1)
                 return false;
-            var normalizedSalt = encodedSalt.Replace('-', '+')
+            string normalizedSalt = encodedSalt
+                .Replace('-', '+')
                 .Replace('_', '/');
             normalizedSalt = normalizedSalt.PadRight(normalizedSalt.Length + (4 - normalizedSalt.Length % 4) % 4, '=');
-            var salt = Convert.FromBase64String(normalizedSalt);
-            var canonicalSalt = Convert.ToBase64String(salt)
+            byte[] salt = Convert.FromBase64String(normalizedSalt);
+            string canonicalSalt = Convert
+                .ToBase64String(salt)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
@@ -1213,17 +1220,19 @@ public static class CryptoUtil
                 return false;
 
             // 对派生密钥字段执行相同的规范 Base64Url 校验
-            var encodedKey = parts[3];
+            string encodedKey = parts[3];
             if (encodedKey.IndexOf('=') >= 0
                 || encodedKey.IndexOf('+') >= 0
                 || encodedKey.IndexOf('/') >= 0
                 || encodedKey.Length % 4 == 1)
                 return false;
-            var normalizedKey = encodedKey.Replace('-', '+')
+            string normalizedKey = encodedKey
+                .Replace('-', '+')
                 .Replace('_', '/');
             normalizedKey = normalizedKey.PadRight(normalizedKey.Length + (4 - normalizedKey.Length % 4) % 4, '=');
             expected = Convert.FromBase64String(normalizedKey);
-            var canonicalKey = Convert.ToBase64String(expected)
+            string canonicalKey = Convert
+                .ToBase64String(expected)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
@@ -1286,8 +1295,8 @@ public static class CryptoUtil
         if (outputLength < 1 || outputLength > 255 * 32)
             throw new ArgumentOutOfRangeException(nameof(outputLength), "输出长度必须介于 1 和 8,160 字节之间。");
 
-        var actualSalt = salt == null || salt.Length == 0 ? new byte[32] : salt;
-        var actualInfo = info ?? Array.Empty<byte>();
+        byte[] actualSalt = salt == null || salt.Length == 0 ? new byte[32] : salt;
+        byte[] actualInfo = info ?? Array.Empty<byte>();
         byte[] pseudorandomKey;
         // Extract 阶段先把任意长度输入压缩成固定 32 字节伪随机密钥
         using (var extract = new HMACSHA256(actualSalt))
@@ -1297,20 +1306,20 @@ public static class CryptoUtil
 
         try
         {
-            var output = new byte[outputLength];
-            var previous = Array.Empty<byte>();
-            var offset = 0;
-            var blockIndex = 1;
+            byte[] output = new byte[outputLength];
+            byte[] previous = Array.Empty<byte>();
+            int offset = 0;
+            int blockIndex = 1;
             // Expand 阶段按 T(n) = HMAC(PRK, T(n-1) || info || n) 逐块生成输出
             while (offset < output.Length)
             {
-                var blockInput = new byte[previous.Length + actualInfo.Length + 1];
+                byte[] blockInput = new byte[previous.Length + actualInfo.Length + 1];
                 Buffer.BlockCopy(previous, 0, blockInput, 0, previous.Length);
                 Buffer.BlockCopy(actualInfo, 0, blockInput, previous.Length, actualInfo.Length);
-                blockInput[blockInput.Length - 1] = (byte) blockIndex;
+                blockInput[blockInput.Length - 1] = (byte)blockIndex;
                 using var expand = new HMACSHA256(pseudorandomKey);
                 previous = expand.ComputeHash(blockInput);
-                var copyLength = Math.Min(previous.Length, output.Length - offset);
+                int copyLength = Math.Min(previous.Length, output.Length - offset);
                 Buffer.BlockCopy(previous, 0, output, offset, copyLength);
                 offset += copyLength;
                 blockIndex++;
@@ -1339,7 +1348,10 @@ public static class CryptoUtil
     /// <param name="cipherMode">对称加密使用的密码块模式</param>
     /// <param name="paddingMode">对称加密使用的填充模式</param>
     /// <returns>使用 AES 算法对给定字符串进行加密</returns>
-    public static string AESEncrypt(string dataStr, string key, string vector, CipherMode cipherMode = CipherMode.CBC,
+    public static string AESEncrypt(string dataStr,
+        string key,
+        string vector,
+        CipherMode cipherMode = CipherMode.CBC,
         PaddingMode paddingMode = PaddingMode.PKCS7)
     {
         if (string.IsNullOrWhiteSpace(dataStr))
@@ -1382,9 +1394,9 @@ public static class CryptoUtil
         }
 
         // 将输入的字符串、密钥和向量转换为字节数组
-        var dataBytes = Encoding.UTF8.GetBytes(dataStr);
-        var keyBytes = Encoding.UTF8.GetBytes(key);
-        var vectorBytes = Encoding.UTF8.GetBytes(vector);
+        byte[] dataBytes = Encoding.UTF8.GetBytes(dataStr);
+        byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+        byte[] vectorBytes = Encoding.UTF8.GetBytes(vector);
 
         // 创建 AES 实例并设置加密模式和填充模式
         using var aesAlg = Aes.Create();
@@ -1392,7 +1404,7 @@ public static class CryptoUtil
         aesAlg.Padding = paddingMode;
 
         // 创建加密器对象，并使用密钥和向量初始化
-        using var encryption = aesAlg.CreateEncryptor(keyBytes, vectorBytes);
+        using ICryptoTransform encryption = aesAlg.CreateEncryptor(keyBytes, vectorBytes);
 
         // 创建内存流和加密流，将加密数据写入加密流
         using var msEncrypt = new MemoryStream();
@@ -1401,7 +1413,7 @@ public static class CryptoUtil
         csEncrypt.FlushFinalBlock();
 
         // 获取加密后的字节数组并转换为 Base64 编码字符串
-        var array = msEncrypt.ToArray();
+        byte[] array = msEncrypt.ToArray();
         return Convert.ToBase64String(array);
     }
 
@@ -1414,7 +1426,10 @@ public static class CryptoUtil
     /// <param name="cipherMode">对称加密使用的密码块模式</param>
     /// <param name="paddingMode">对称加密使用的填充模式</param>
     /// <returns>使用 AES 算法对给定的 Base64 编码字符串进行解密</returns>
-    public static string AESDecrypt(string dataStr, string key, string vector, CipherMode cipherMode = CipherMode.CBC,
+    public static string AESDecrypt(string dataStr,
+        string key,
+        string vector,
+        CipherMode cipherMode = CipherMode.CBC,
         PaddingMode paddingMode = PaddingMode.PKCS7)
     {
         if (string.IsNullOrWhiteSpace(dataStr))
@@ -1457,9 +1472,9 @@ public static class CryptoUtil
         }
 
         // 将输入的 Base64 字符串、密钥和向量转换为字节数组
-        var dataBytes = Convert.FromBase64String(dataStr);
-        var keyBytes = Encoding.UTF8.GetBytes(key);
-        var vectorBytes = Encoding.UTF8.GetBytes(vector);
+        byte[] dataBytes = Convert.FromBase64String(dataStr);
+        byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+        byte[] vectorBytes = Encoding.UTF8.GetBytes(vector);
 
         // 创建 AES 实例并设置解密模式和填充模式
         using var aesAlg = Aes.Create();
@@ -1467,7 +1482,7 @@ public static class CryptoUtil
         aesAlg.Padding = paddingMode;
 
         // 创建解密器对象，并使用密钥和向量初始化
-        using var decryption = aesAlg.CreateDecryptor(keyBytes, vectorBytes);
+        using ICryptoTransform decryption = aesAlg.CreateDecryptor(keyBytes, vectorBytes);
 
         // 创建内存流和解密流，将解密数据写入解密流
         using var msDecryption = new MemoryStream(dataBytes);
@@ -1494,22 +1509,22 @@ public static class CryptoUtil
         const int nonceLength = 12;
         const int tagLength = 16;
 
-        var plaintextBytes = Encoding.UTF8.GetBytes(dataStr);
-        var keyMaterialBytes = Encoding.UTF8.GetBytes(key);
+        byte[] plaintextBytes = Encoding.UTF8.GetBytes(dataStr);
+        byte[] keyMaterialBytes = Encoding.UTF8.GetBytes(key);
         byte[] keyBytes;
         using (var sha256 = SHA256.Create())
         {
             keyBytes = sha256.ComputeHash(keyMaterialBytes);
         }
 
-        var nonce = new byte[nonceLength];
+        byte[] nonce = new byte[nonceLength];
         using (var randomNumberGenerator = RandomNumberGenerator.Create())
         {
             randomNumberGenerator.GetBytes(nonce);
         }
 
-        var tag = new byte[tagLength];
-        var ciphertext = new byte[plaintextBytes.Length];
+        byte[] tag = new byte[tagLength];
+        byte[] ciphertext = new byte[plaintextBytes.Length];
 
         try
         {
@@ -1528,7 +1543,7 @@ public static class CryptoUtil
         }
 
         // 格式：[1 字节版本][12 字节随机 nonce][16 字节认证标签][密文]
-        var payload = new byte[1 + nonceLength + tagLength + ciphertext.Length];
+        byte[] payload = new byte[1 + nonceLength + tagLength + ciphertext.Length];
         payload[0] = formatVersion;
         Buffer.BlockCopy(nonce, 0, payload, 1, nonceLength);
         Buffer.BlockCopy(tag, 0, payload, 1 + nonceLength, tagLength);
@@ -1554,18 +1569,21 @@ public static class CryptoUtil
         const int nonceLength = 12;
         const int tagLength = 16;
 
-        var payload = Convert.FromBase64String(dataStr);
+        byte[] payload = Convert.FromBase64String(dataStr);
         if (payload.Length < 1 + nonceLength + tagLength || payload[0] != supportedVersion)
             throw new CryptographicException("AES-GCM 密文格式无效或版本不受支持。");
 
-        var nonce = payload.AsSpan(1, nonceLength)
+        byte[] nonce = payload
+            .AsSpan(1, nonceLength)
             .ToArray();
-        var tag = payload.AsSpan(1 + nonceLength, tagLength)
+        byte[] tag = payload
+            .AsSpan(1 + nonceLength, tagLength)
             .ToArray();
-        var ciphertext = payload.AsSpan(1 + nonceLength + tagLength)
+        byte[] ciphertext = payload
+            .AsSpan(1 + nonceLength + tagLength)
             .ToArray();
-        var plaintext = new byte[ciphertext.Length];
-        var keyMaterialBytes = Encoding.UTF8.GetBytes(key);
+        byte[] plaintext = new byte[ciphertext.Length];
+        byte[] keyMaterialBytes = Encoding.UTF8.GetBytes(key);
         byte[] keyBytes;
         using (var sha256 = SHA256.Create())
         {
@@ -1610,13 +1628,13 @@ public static class CryptoUtil
             throw new ArgumentNullException(nameof(password));
 
         // 此入口独立校验并编码密码，避免依赖其他 PBKDF2 公共方法的行为
-        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
         if (passwordBytes.Length == 0)
             throw new ArgumentException("密码不能为空。", nameof(password));
         if (passwordBytes.Length > MAXIMUM_PASSWORD_BYTES)
             throw new ArgumentOutOfRangeException(nameof(password), $"UTF-8 密码不能超过 {MAXIMUM_PASSWORD_BYTES} 字节。");
 
-        var plaintextBytes = Encoding.UTF8.GetBytes(dataStr);
+        byte[] plaintextBytes = Encoding.UTF8.GetBytes(dataStr);
         if (plaintextBytes.Length > MAXIMUM_PLAINTEXT_BYTES)
             throw new ArgumentOutOfRangeException(nameof(dataStr), $"UTF-8 明文不能超过 {MAXIMUM_PLAINTEXT_BYTES} 字节。");
         if (iterations < MINIMUM_PBKDF2_ITERATIONS || iterations > MAXIMUM_PBKDF2_ITERATIONS)
@@ -1624,8 +1642,8 @@ public static class CryptoUtil
                 $"PBKDF2 迭代次数必须介于 {MINIMUM_PBKDF2_ITERATIONS} 和 {MAXIMUM_PBKDF2_ITERATIONS} 之间。");
 
         // 盐保证相同密码不会派生相同密钥；nonce 保证同一派生密钥下的每次 GCM 加密都具有唯一输入
-        var salt = new byte[16];
-        var nonce = new byte[12];
+        byte[] salt = new byte[16];
+        byte[] nonce = new byte[12];
         using (var randomNumberGenerator = RandomNumberGenerator.Create())
         {
             randomNumberGenerator.GetBytes(salt);
@@ -1639,9 +1657,9 @@ public static class CryptoUtil
             keyBytes = deriveBytes.GetBytes(32);
         }
 
-        var ciphertext = new byte[plaintextBytes.Length];
-        var tag = new byte[16];
-        var additionalDataBytes = Encoding.UTF8.GetBytes(PASSWORD_ENCRYPTION_PREFIX);
+        byte[] ciphertext = new byte[plaintextBytes.Length];
+        byte[] tag = new byte[16];
+        byte[] additionalDataBytes = Encoding.UTF8.GetBytes(PASSWORD_ENCRYPTION_PREFIX);
 
         try
         {
@@ -1654,24 +1672,31 @@ public static class CryptoUtil
             aesGcm.Encrypt(nonce, plaintextBytes, ciphertext, tag, additionalDataBytes);
 
             // Web Crypto 把认证标签追加在密文后，因此这里采用相同顺序以保证 TypeScript/.NET 互操作
-            var ciphertextAndTag = new byte[ciphertext.Length + tag.Length];
+            byte[] ciphertextAndTag = new byte[ciphertext.Length + tag.Length];
             Buffer.BlockCopy(ciphertext, 0, ciphertextAndTag, 0, ciphertext.Length);
             Buffer.BlockCopy(tag, 0, ciphertextAndTag, ciphertext.Length, tag.Length);
 
             // 每个二进制字段独立编码为无填充 Base64Url，与 TypeScript 协议保持一致
-            var encodedSalt = Convert.ToBase64String(salt)
+            string encodedSalt = Convert
+                .ToBase64String(salt)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
-            var encodedNonce = Convert.ToBase64String(nonce)
+            string encodedNonce = Convert
+                .ToBase64String(nonce)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
-            var encodedCiphertext = Convert.ToBase64String(ciphertextAndTag)
+            string encodedCiphertext = Convert
+                .ToBase64String(ciphertextAndTag)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
-            return string.Join(":", PASSWORD_ENCRYPTION_PREFIX, iterations.ToString(), encodedSalt, encodedNonce,
+            return string.Join(":",
+                PASSWORD_ENCRYPTION_PREFIX,
+                iterations.ToString(),
+                encodedSalt,
+                encodedNonce,
                 encodedCiphertext);
         }
         finally
@@ -1700,7 +1725,7 @@ public static class CryptoUtil
             throw new ArgumentNullException(nameof(password));
 
         // 解密入口独立校验密码字节边界，不依赖其他 PBKDF2 或密码哈希方法
-        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
         if (passwordBytes.Length == 0)
             throw new ArgumentException("密码不能为空。", nameof(password));
         if (passwordBytes.Length > MAXIMUM_PASSWORD_BYTES)
@@ -1711,8 +1736,8 @@ public static class CryptoUtil
         try
         {
             // 在执行高成本 PBKDF2 前先验证固定字段数、协议版本和迭代次数字段
-            var parts = payload.Split(':');
-            if (parts.Length != 5 || parts[0] != PASSWORD_ENCRYPTION_PREFIX || !int.TryParse(parts[1], out var iterations))
+            string[] parts = payload.Split(':');
+            if (parts.Length != 5 || parts[0] != PASSWORD_ENCRYPTION_PREFIX || !int.TryParse(parts[1], out int iterations))
                 throw new CryptographicException("AES-GCM 密码载荷格式无效或版本不受支持。");
 
             if (iterations < MINIMUM_PBKDF2_ITERATIONS || iterations > MAXIMUM_PBKDF2_ITERATIONS)
@@ -1720,17 +1745,19 @@ public static class CryptoUtil
                     $"PBKDF2 迭代次数必须介于 {MINIMUM_PBKDF2_ITERATIONS} 和 {MAXIMUM_PBKDF2_ITERATIONS} 之间。");
 
             // 严格解码盐字段，并校验其无填充 Base64Url 表示是否规范
-            var encodedSalt = parts[2];
+            string encodedSalt = parts[2];
             if (encodedSalt.IndexOf('=') >= 0
                 || encodedSalt.IndexOf('+') >= 0
                 || encodedSalt.IndexOf('/') >= 0
                 || encodedSalt.Length % 4 == 1)
                 throw new FormatException("盐字段不是有效的 Base64Url。");
-            var normalizedSalt = encodedSalt.Replace('-', '+')
+            string normalizedSalt = encodedSalt
+                .Replace('-', '+')
                 .Replace('_', '/');
             normalizedSalt = normalizedSalt.PadRight(normalizedSalt.Length + (4 - normalizedSalt.Length % 4) % 4, '=');
-            var salt = Convert.FromBase64String(normalizedSalt);
-            var canonicalSalt = Convert.ToBase64String(salt)
+            byte[] salt = Convert.FromBase64String(normalizedSalt);
+            string canonicalSalt = Convert
+                .ToBase64String(salt)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
@@ -1738,17 +1765,19 @@ public static class CryptoUtil
                 throw new FormatException("盐字段不是规范的 Base64Url 编码。");
 
             // nonce 与盐使用相同的严格 Base64Url 解析规则
-            var encodedNonce = parts[3];
+            string encodedNonce = parts[3];
             if (encodedNonce.IndexOf('=') >= 0
                 || encodedNonce.IndexOf('+') >= 0
                 || encodedNonce.IndexOf('/') >= 0
                 || encodedNonce.Length % 4 == 1)
                 throw new FormatException("nonce 字段不是有效的 Base64Url。");
-            var normalizedNonce = encodedNonce.Replace('-', '+')
+            string normalizedNonce = encodedNonce
+                .Replace('-', '+')
                 .Replace('_', '/');
             normalizedNonce = normalizedNonce.PadRight(normalizedNonce.Length + (4 - normalizedNonce.Length % 4) % 4, '=');
-            var nonce = Convert.FromBase64String(normalizedNonce);
-            var canonicalNonce = Convert.ToBase64String(nonce)
+            byte[] nonce = Convert.FromBase64String(normalizedNonce);
+            string canonicalNonce = Convert
+                .ToBase64String(nonce)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
@@ -1756,18 +1785,21 @@ public static class CryptoUtil
                 throw new FormatException("nonce 字段不是规范的 Base64Url 编码。");
 
             // 密文和认证标签作为一个字段传输，解码后再按固定 16 字节标签拆分
-            var encodedCiphertext = parts[4];
+            string encodedCiphertext = parts[4];
             if (encodedCiphertext.IndexOf('=') >= 0
                 || encodedCiphertext.IndexOf('+') >= 0
                 || encodedCiphertext.IndexOf('/') >= 0
                 || encodedCiphertext.Length % 4 == 1)
                 throw new FormatException("密文字段不是有效的 Base64Url。");
-            var normalizedCiphertext = encodedCiphertext.Replace('-', '+')
+            string normalizedCiphertext = encodedCiphertext
+                .Replace('-', '+')
                 .Replace('_', '/');
             normalizedCiphertext = normalizedCiphertext.PadRight(
-                normalizedCiphertext.Length + (4 - normalizedCiphertext.Length % 4) % 4, '=');
-            var ciphertextAndTag = Convert.FromBase64String(normalizedCiphertext);
-            var canonicalCiphertext = Convert.ToBase64String(ciphertextAndTag)
+                normalizedCiphertext.Length + (4 - normalizedCiphertext.Length % 4) % 4,
+                '=');
+            byte[] ciphertextAndTag = Convert.FromBase64String(normalizedCiphertext);
+            string canonicalCiphertext = Convert
+                .ToBase64String(ciphertextAndTag)
                 .TrimEnd('=')
                 .Replace('+', '-')
                 .Replace('/', '_');
@@ -1777,9 +1809,9 @@ public static class CryptoUtil
             if (salt.Length != 16 || nonce.Length != 12 || ciphertextAndTag.Length < 16)
                 throw new CryptographicException("AES-GCM 密码载荷字段长度无效。");
 
-            var ciphertextLength = ciphertextAndTag.Length - 16;
-            var ciphertext = new byte[ciphertextLength];
-            var tag = new byte[16];
+            int ciphertextLength = ciphertextAndTag.Length - 16;
+            byte[] ciphertext = new byte[ciphertextLength];
+            byte[] tag = new byte[16];
             // TypeScript Web Crypto 返回 ciphertext || tag；拆分后交给 .NET AesGcm 的独立参数
             Buffer.BlockCopy(ciphertextAndTag, 0, ciphertext, 0, ciphertextLength);
             Buffer.BlockCopy(ciphertextAndTag, ciphertextLength, tag, 0, tag.Length);
@@ -1790,7 +1822,7 @@ public static class CryptoUtil
                 keyBytes = deriveBytes.GetBytes(32);
             }
 
-            var additionalDataBytes = Encoding.UTF8.GetBytes(PASSWORD_ENCRYPTION_PREFIX);
+            byte[] additionalDataBytes = Encoding.UTF8.GetBytes(PASSWORD_ENCRYPTION_PREFIX);
 
 #if NET8_0_OR_GREATER
             using var aesGcm = new AesGcm(keyBytes, tag.Length);
@@ -1836,7 +1868,7 @@ public static class CryptoUtil
 
         using var rsa = RSA.Create();
         rsa.KeySize = modulusLength;
-        var parameters = rsa.ExportParameters(true);
+        RSAParameters parameters = rsa.ExportParameters(true);
         // 显式编码 PKCS#8/SPKI，避免 netstandard2.1 缺少 PEM 便捷 API，并保持与 Web Crypto 的格式一致
         return new PemKeyPair(ToPem("PRIVATE KEY", EncodeRsaPrivateKey(parameters)),
             ToPem("PUBLIC KEY", EncodeRsaPublicKey(parameters)));
@@ -1854,7 +1886,7 @@ public static class CryptoUtil
         if (dataStr == null)
             throw new ArgumentNullException(nameof(dataStr));
 
-        var dataBytes = Encoding.UTF8.GetBytes(dataStr);
+        byte[] dataBytes = Encoding.UTF8.GetBytes(dataStr);
         using var rsa = RSA.Create();
         rsa.ImportParameters(ReadRsaPublicKey(FromPem(publicKeyPem, "PUBLIC KEY")));
         return Convert.ToBase64String(rsa.Encrypt(dataBytes, RSAEncryptionPadding.OaepSHA256));
@@ -1890,7 +1922,7 @@ public static class CryptoUtil
         if (dataStr == null)
             throw new ArgumentNullException(nameof(dataStr));
 
-        var dataBytes = Encoding.UTF8.GetBytes(dataStr);
+        byte[] dataBytes = Encoding.UTF8.GetBytes(dataStr);
         using var rsa = RSA.Create();
         rsa.ImportParameters(ReadRsaPrivateKey(FromPem(privateKeyPem, "PRIVATE KEY")));
         return Convert.ToBase64String(rsa.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pss));
@@ -1912,8 +1944,8 @@ public static class CryptoUtil
         if (signature == null)
             throw new ArgumentNullException(nameof(signature));
 
-        var dataBytes = Encoding.UTF8.GetBytes(dataStr);
-        var signatureBytes = Convert.FromBase64String(signature);
+        byte[] dataBytes = Encoding.UTF8.GetBytes(dataStr);
+        byte[] signatureBytes = Convert.FromBase64String(signature);
         using var rsa = RSA.Create();
         rsa.ImportParameters(ReadRsaPublicKey(FromPem(publicKeyPem, "PUBLIC KEY")));
         return rsa.VerifyData(dataBytes, signatureBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
@@ -1931,9 +1963,9 @@ public static class CryptoUtil
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="namedCurve"/> 不受支持</exception>
     public static PemKeyPair GenerateECDSAKeyPair(string namedCurve = "P-256")
     {
-        var curve = GetCurveInfo(namedCurve);
+        CurveInfo curve = GetCurveInfo(namedCurve);
         using var ecdsa = ECDsa.Create(curve.Curve);
-        var parameters = ecdsa.ExportParameters(true);
+        ECParameters parameters = ecdsa.ExportParameters(true);
         return new PemKeyPair(ToPem("PRIVATE KEY", EncodeEcPrivateKey(parameters, curve)),
             ToPem("PUBLIC KEY", EncodeEcPublicKey(parameters, curve)));
     }
@@ -1952,8 +1984,8 @@ public static class CryptoUtil
         if (dataStr == null)
             throw new ArgumentNullException(nameof(dataStr));
 
-        var dataBytes = Encoding.UTF8.GetBytes(dataStr);
-        var curve = GetCurveInfo(namedCurve);
+        byte[] dataBytes = Encoding.UTF8.GetBytes(dataStr);
+        CurveInfo curve = GetCurveInfo(namedCurve);
         using var ecdsa = ECDsa.Create();
         ecdsa.ImportParameters(ReadEcPrivateKey(FromPem(privateKeyPem, "PRIVATE KEY"), curve));
         return Convert.ToBase64String(ecdsa.SignData(dataBytes, curve.HashAlgorithm));
@@ -1976,9 +2008,9 @@ public static class CryptoUtil
         if (signature == null)
             throw new ArgumentNullException(nameof(signature));
 
-        var dataBytes = Encoding.UTF8.GetBytes(dataStr);
-        var signatureBytes = Convert.FromBase64String(signature);
-        var curve = GetCurveInfo(namedCurve);
+        byte[] dataBytes = Encoding.UTF8.GetBytes(dataStr);
+        byte[] signatureBytes = Convert.FromBase64String(signature);
+        CurveInfo curve = GetCurveInfo(namedCurve);
         using var ecdsa = ECDsa.Create();
         ecdsa.ImportParameters(ReadEcPublicKey(FromPem(publicKeyPem, "PUBLIC KEY"), curve));
         return ecdsa.VerifyData(dataBytes, signatureBytes, curve.HashAlgorithm);
@@ -1996,9 +2028,9 @@ public static class CryptoUtil
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="namedCurve"/> 不受支持</exception>
     public static PemKeyPair GenerateECDHKeyPair(string namedCurve = "P-256")
     {
-        var curve = GetCurveInfo(namedCurve);
+        CurveInfo curve = GetCurveInfo(namedCurve);
         using var ecdh = ECDiffieHellman.Create(curve.Curve);
-        var parameters = ecdh.ExportParameters(true);
+        ECParameters parameters = ecdh.ExportParameters(true);
         return new PemKeyPair(ToPem("PRIVATE KEY", EncodeEcPrivateKey(parameters, curve)),
             ToPem("PUBLIC KEY", EncodeEcPublicKey(parameters, curve)));
     }
@@ -2015,25 +2047,29 @@ public static class CryptoUtil
     /// <exception cref="PlatformNotSupportedException">运行时不支持原始 ECDH 密钥协商</exception>
     public static byte[] DeriveECDHSecret(string privateKeyPem, string publicKeyPem, string namedCurve = "P-256")
     {
-        var curve = GetCurveInfo(namedCurve);
+        CurveInfo curve = GetCurveInfo(namedCurve);
         using var privateKey = ECDiffieHellman.Create();
         using var publicKey = ECDiffieHellman.Create();
         privateKey.ImportParameters(ReadEcPrivateKey(FromPem(privateKeyPem, "PRIVATE KEY"), curve));
         publicKey.ImportParameters(ReadEcPublicKey(FromPem(publicKeyPem, "PUBLIC KEY"), curve));
 
-        var method = typeof(ECDiffieHellman).GetMethod("DeriveRawSecretAgreement", BindingFlags.Instance | BindingFlags.Public,
-            null, new[] {typeof(ECDiffieHellmanPublicKey)}, null);
+        MethodInfo method = typeof(ECDiffieHellman).GetMethod("DeriveRawSecretAgreement",
+            BindingFlags.Instance | BindingFlags.Public,
+            null,
+            new[] {typeof(ECDiffieHellmanPublicKey)},
+            null);
         if (method == null)
             throw new PlatformNotSupportedException("当前运行时不支持原始 ECDH 共享秘密。");
 
         try
         {
             // netstandard2.1 参考程序集没有该 API，因此在支持它的现代运行时上通过反射调用
-            return (byte[]) method.Invoke(privateKey, new object[] {publicKey.PublicKey});
+            return (byte[])method.Invoke(privateKey, new object[] {publicKey.PublicKey});
         }
         catch (TargetInvocationException exception) when (exception.InnerException != null)
         {
-            ExceptionDispatchInfo.Capture(exception.InnerException)
+            ExceptionDispatchInfo
+                .Capture(exception.InnerException)
                 .Throw();
             throw;
         }
@@ -2050,7 +2086,7 @@ public static class CryptoUtil
     /// <exception cref="CryptographicException">密钥格式、曲线或密钥协商无效</exception>
     public static byte[] DeriveECDHKeySHA256(string privateKeyPem, string publicKeyPem, string namedCurve = "P-256")
     {
-        var curve = GetCurveInfo(namedCurve);
+        CurveInfo curve = GetCurveInfo(namedCurve);
         using var privateKey = ECDiffieHellman.Create();
         using var publicKey = ECDiffieHellman.Create();
         privateKey.ImportParameters(ReadEcPrivateKey(FromPem(privateKeyPem, "PRIVATE KEY"), curve));

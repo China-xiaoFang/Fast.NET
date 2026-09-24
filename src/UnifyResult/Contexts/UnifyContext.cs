@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Collections;
 using System.Reflection;
@@ -73,47 +58,89 @@ public static class UnifyContext
         return code switch
         {
             // 处理 400 状态码
-            StatusCodes.Status400BadRequest => GetRestfulResult(StatusCodes.Status400BadRequest, false, data,
-                message ?? "400 请求无效", httpContext),
+            StatusCodes.Status400BadRequest => GetRestfulResult(StatusCodes.Status400BadRequest,
+                false,
+                data,
+                message ?? "400 请求无效",
+                httpContext),
             // 处理 401 状态码
-            StatusCodes.Status401Unauthorized => GetRestfulResult(StatusCodes.Status401Unauthorized, false, data,
-                message ?? "401 未经授权", httpContext),
+            StatusCodes.Status401Unauthorized => GetRestfulResult(StatusCodes.Status401Unauthorized,
+                false,
+                data,
+                message ?? "401 未经授权",
+                httpContext),
             // 处理 403 状态码
-            StatusCodes.Status403Forbidden => GetRestfulResult(StatusCodes.Status403Forbidden, false, data,
-                message ?? "403 无操作权限", httpContext),
+            StatusCodes.Status403Forbidden => GetRestfulResult(StatusCodes.Status403Forbidden,
+                false,
+                data,
+                message ?? "403 无操作权限",
+                httpContext),
             // 处理 404 状态码
-            StatusCodes.Status404NotFound => GetRestfulResult(StatusCodes.Status404NotFound, false, data, message ?? "404 无效的地址",
+            StatusCodes.Status404NotFound => GetRestfulResult(StatusCodes.Status404NotFound,
+                false,
+                data,
+                message ?? "404 无效的地址",
                 httpContext),
             // 处理 405 状态码
-            StatusCodes.Status405MethodNotAllowed => GetRestfulResult(StatusCodes.Status405MethodNotAllowed, false, data,
-                message ?? "405 方法不被允许", httpContext),
+            StatusCodes.Status405MethodNotAllowed => GetRestfulResult(StatusCodes.Status405MethodNotAllowed,
+                false,
+                data,
+                message ?? "405 方法不被允许",
+                httpContext),
             // 处理 409 状态码
-            StatusCodes.Status409Conflict => GetRestfulResult(StatusCodes.Status409Conflict, false, data, message ?? "409 请求冲突",
+            StatusCodes.Status409Conflict => GetRestfulResult(StatusCodes.Status409Conflict,
+                false,
+                data,
+                message ?? "409 请求冲突",
                 httpContext),
             // 处理 410 状态码
-            StatusCodes.Status410Gone => GetRestfulResult(StatusCodes.Status410Gone, false, data, message ?? "410 资源已失效或永久删除",
+            StatusCodes.Status410Gone => GetRestfulResult(StatusCodes.Status410Gone,
+                false,
+                data,
+                message ?? "410 资源已失效或永久删除",
                 httpContext),
             // 处理 415 状态码
-            StatusCodes.Status415UnsupportedMediaType => GetRestfulResult(StatusCodes.Status415UnsupportedMediaType, false, data,
-                message ?? "415 不支持的媒体类型", httpContext),
+            StatusCodes.Status415UnsupportedMediaType => GetRestfulResult(StatusCodes.Status415UnsupportedMediaType,
+                false,
+                data,
+                message ?? "415 不支持的媒体类型",
+                httpContext),
             // 处理 422 状态码
-            StatusCodes.Status422UnprocessableEntity => GetRestfulResult(StatusCodes.Status422UnprocessableEntity, false, data,
-                message ?? "422 请求语义错误，参数验证失败", httpContext),
+            StatusCodes.Status422UnprocessableEntity => GetRestfulResult(StatusCodes.Status422UnprocessableEntity,
+                false,
+                data,
+                message ?? "422 请求语义错误，参数验证失败",
+                httpContext),
             // 处理 429 状态码
-            StatusCodes.Status429TooManyRequests => GetRestfulResult(StatusCodes.Status429TooManyRequests, false, data,
-                message ?? "429 频繁请求", httpContext),
+            StatusCodes.Status429TooManyRequests => GetRestfulResult(StatusCodes.Status429TooManyRequests,
+                false,
+                data,
+                message ?? "429 频繁请求",
+                httpContext),
             // 处理 500 状态码
-            StatusCodes.Status500InternalServerError => GetRestfulResult(StatusCodes.Status500InternalServerError, false, data,
-                message ?? "500 服务器内部错误", httpContext),
+            StatusCodes.Status500InternalServerError => GetRestfulResult(StatusCodes.Status500InternalServerError,
+                false,
+                data,
+                message ?? "500 服务器内部错误",
+                httpContext),
             // 处理 502 状态码
-            StatusCodes.Status502BadGateway => GetRestfulResult(StatusCodes.Status502BadGateway, false, data,
-                message ?? "502 网关错误", httpContext),
+            StatusCodes.Status502BadGateway => GetRestfulResult(StatusCodes.Status502BadGateway,
+                false,
+                data,
+                message ?? "502 网关错误",
+                httpContext),
             // 处理 503 状态码
-            StatusCodes.Status503ServiceUnavailable => GetRestfulResult(StatusCodes.Status503ServiceUnavailable, false, data,
-                message ?? "503 服务不可用", httpContext),
+            StatusCodes.Status503ServiceUnavailable => GetRestfulResult(StatusCodes.Status503ServiceUnavailable,
+                false,
+                data,
+                message ?? "503 服务不可用",
+                httpContext),
             // 处理 504 状态码
-            StatusCodes.Status504GatewayTimeout => GetRestfulResult(StatusCodes.Status504GatewayTimeout, false, data,
-                message ?? "504 网关超时", httpContext),
+            StatusCodes.Status504GatewayTimeout => GetRestfulResult(StatusCodes.Status504GatewayTimeout,
+                false,
+                data,
+                message ?? "504 网关超时",
+                httpContext),
             _ => GetRestfulResult(StatusCodes.Status500InternalServerError, false, data, message, httpContext)
         };
     }
@@ -127,11 +154,14 @@ public static class UnifyContext
     /// <param name="message">要记录或返回的消息</param>
     /// <param name="httpContext">当前请求上下文</param>
     /// <returns>获取到的规范化 RESTful 风格返回值</returns>
-    public static RestfulResult<object> GetRestfulResult(int code, bool success, object data, object message,
+    public static RestfulResult<object> GetRestfulResult(int code,
+        bool success,
+        object data,
+        object message,
         HttpContext httpContext)
     {
         // 从请求响应头部中获取时间戳
-        var timestamp = httpContext.UnifyResponseTimestamp();
+        long timestamp = httpContext.UnifyResponseTimestamp();
 
         return new RestfulResult<object>
         {
@@ -151,18 +181,21 @@ public static class UnifyContext
     /// <param name="unifyResult">可用的规范化结果提供器；跳过处理时为 <see langword="null"/></param>
     /// <param name="isWebRequest">是否需要从请求服务中解析结果提供器</param>
     /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
-    internal static bool CheckSucceededNonUnify(HttpContext httpContext, MethodInfo method, out IUnifyResultProvider unifyResult,
+    internal static bool CheckSucceededNonUnify(HttpContext httpContext,
+        MethodInfo method,
+        out IUnifyResultProvider unifyResult,
         bool isWebRequest = true)
     {
         // 判断返回类型是否包含了规范化处理的返回类型
-        var isSkip = method.GetRealReturnType()
+        bool isSkip = method
+            .GetRealReturnType()
             .HasImplementedRawGeneric(UnifyResultType);
 
-        var nonUnifyAttributeType = typeof(NonUnifyAttribute);
+        Type nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
         // 使用 IsAssignableFrom 同时识别 NonUnifyAttribute 及其自定义派生特性
-        var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
-        var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
+        Type producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
+        Type iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
         if (!isSkip
             && method.CustomAttributes.Any(a =>
                 nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
@@ -180,7 +213,8 @@ public static class UnifyContext
 
         // OData 自行协商响应格式，不能套用普通 MVC 的统一结果结构
         if (!isSkip
-            && method.ReflectedType?.Assembly.GetName()
+            && method
+                .ReflectedType?.Assembly.GetName()
                 .Name?.StartsWith("Microsoft.AspNetCore.OData")
             == true)
         {
@@ -216,20 +250,21 @@ public static class UnifyContext
     internal static bool CheckFailedNonUnify(HttpContext httpContext, MethodInfo method, out IUnifyResultProvider unifyResult)
     {
         // 使用 IsAssignableFrom 同时识别框架特性及其自定义派生特性
-        var nonUnifyAttributeType = typeof(NonUnifyAttribute);
+        Type nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
-        var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
-        var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
+        Type producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
+        Type iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
 
-        var isSkip = !method.CustomAttributes.Any(a =>
-                         nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
-                         || producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
-                         || iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
-                     && method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
+        bool isSkip = !method.CustomAttributes.Any(a =>
+                          nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
+                          || producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
+                          || iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
+                      && method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
 
         // OData 自行协商响应格式，不能套用普通 MVC 的统一结果结构
         if (!isSkip
-            && method.ReflectedType?.Assembly.GetName()
+            && method
+                .ReflectedType?.Assembly.GetName()
                 .Name?.StartsWith("Microsoft.AspNetCore.OData")
             == true)
         {
@@ -255,24 +290,26 @@ public static class UnifyContext
     /// <param name="method">当前动作方法</param>
     /// <param name="unifyResponse">可用的规范化响应提供器；跳过处理时为 <see langword="null"/></param>
     /// <returns>应跳过规范化处理时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
-    internal static bool CheckResponseNonUnify(HttpContext httpContext, MethodInfo method,
+    internal static bool CheckResponseNonUnify(HttpContext httpContext,
+        MethodInfo method,
         out IUnifyResponseProvider unifyResponse)
     {
         // 使用 IsAssignableFrom 同时识别框架特性及其自定义派生特性
-        var nonUnifyAttributeType = typeof(NonUnifyAttribute);
+        Type nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
-        var producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
-        var iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
+        Type producesResponseTypeAttributeType = typeof(ProducesResponseTypeAttribute);
+        Type iApiResponseMetadataProviderType = typeof(IApiResponseMetadataProvider);
 
-        var isSkip = !method.CustomAttributes.Any(a =>
-                         nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
-                         || producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
-                         || iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
-                     && method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
+        bool isSkip = !method.CustomAttributes.Any(a =>
+                          nonUnifyAttributeType.IsAssignableFrom(a.AttributeType)
+                          || producesResponseTypeAttributeType.IsAssignableFrom(a.AttributeType)
+                          || iApiResponseMetadataProviderType.IsAssignableFrom(a.AttributeType))
+                      && method.ReflectedType?.IsDefined(nonUnifyAttributeType, true) == true;
 
         // OData 自行协商响应格式，不能套用普通 MVC 的统一结果结构
         if (!isSkip
-            && method.ReflectedType?.Assembly.GetName()
+            && method
+                .ReflectedType?.Assembly.GetName()
                 .Name?.StartsWith("Microsoft.AspNetCore.OData")
             == true)
         {
@@ -300,17 +337,17 @@ public static class UnifyContext
     internal static bool CheckStatusCodeNonUnify(HttpContext httpContext, out IUnifyResultProvider unifyResult)
     {
         // 获取终点路由特性
-        var endpointFeature = httpContext.Features.Get<IEndpointFeature>();
+        IEndpointFeature endpointFeature = httpContext.Features.Get<IEndpointFeature>();
         if (endpointFeature == null)
         {
             unifyResult = null;
             return true;
         }
 
-        var nonUnifyAttributeType = typeof(NonUnifyAttribute);
+        Type nonUnifyAttributeType = typeof(NonUnifyAttribute);
 
         // 判断终点路由是否存在 NonUnifyAttribute 特性
-        var isSkip = httpContext.GetMetadata(nonUnifyAttributeType) != null;
+        bool isSkip = httpContext.GetMetadata(nonUnifyAttributeType) != null;
 
         // 判断终点路由是否存在 NonUnifyAttribute 特性
         if (!isSkip && endpointFeature.Endpoint?.Metadata.GetMetadata(nonUnifyAttributeType) != null)
@@ -320,7 +357,8 @@ public static class UnifyContext
 
         // 判断请求头部是否包含 odata.metadata=
         if (!isSkip
-            && httpContext.Request.Headers["accept"]
+            && httpContext
+                .Request.Headers["accept"]
                 .ToString()
                 .Contains("odata.metadata=", StringComparison.OrdinalIgnoreCase))
         {
@@ -329,7 +367,8 @@ public static class UnifyContext
 
         // 判断请求头部是否包含 odata.streaming=
         if (!isSkip
-            && httpContext.Request.Headers["accept"]
+            && httpContext
+                .Request.Headers["accept"]
                 .ToString()
                 .Contains("odata.streaming=", StringComparison.OrdinalIgnoreCase))
         {
@@ -359,7 +398,7 @@ public static class UnifyContext
         data = null;
 
         // 排除以下结果，跳过规范化处理
-        var isDataResult = result switch
+        bool isDataResult = result switch
         {
             ViewResult => false,
             PartialViewResult => false,
@@ -415,10 +454,12 @@ public static class UnifyContext
             {
                 _modelState = modelState;
                 // 将验证错误整理为字典并序列化为 JSON
-                validationResults = modelState.Where(u => modelState[u.Key]!.ValidationState == ModelValidationState.Invalid)
-                    .ToDictionary(u => u.Key, u => modelState[u.Key]
-                        ?.Errors.Select(c => c.ErrorMessage)
-                        .ToArray());
+                validationResults = modelState
+                    .Where(u => modelState[u.Key]!.ValidationState == ModelValidationState.Invalid)
+                    .ToDictionary(u => u.Key,
+                        u => modelState[u.Key]
+                            ?.Errors.Select(c => c.ErrorMessage)
+                            .ToArray());
             }
             // 如果是 ValidationProblemDetails 特殊类型
             else if (errors is ValidationProblemDetails validation)
@@ -436,7 +477,7 @@ public static class UnifyContext
                 message = JsonSerializer.Serialize(resultDictionary, _validationSerializerOptions);
 
                 // 模型状态可能没有错误项；避免用 First() 将原始验证失败覆盖成新的异常
-                var firstError = resultDictionary.FirstOrDefault(pair => pair.Value?.Length > 0);
+                KeyValuePair<string, string[]> firstError = resultDictionary.FirstOrDefault(pair => pair.Value?.Length > 0);
                 firstErrorProperty = firstError.Key;
                 firstErrorMessage = firstError.Value?.FirstOrDefault();
             }
@@ -473,9 +514,9 @@ public static class UnifyContext
         object errors = null;
         object data = null;
 
-        var statusCode = StatusCodes.Status500InternalServerError;
+        int statusCode = StatusCodes.Status500InternalServerError;
         // 判断是否是验证异常
-        var isValidationException = false;
+        bool isValidationException = false;
 
         Exception exception = null;
 

@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -36,8 +21,8 @@ public interface IJwtBearerHandle
     /// </summary>
     /// <remarks>
     /// 调用此方法前，框架已完成令牌验证和自动刷新。返回 <see langword="false"/> 或抛出异常时
-    /// 框架将调用 <see cref="AuthorizeFailHandle"/>；该方法未提供响应时调用
-    /// <see cref="AuthorizationHandlerContext.Fail()"/>
+    /// 框架先调用 <see cref="AuthorizationHandlerContext.Fail()"/>，再调用
+    /// <see cref="AuthorizeFailHandle"/> 生成可选的 MVC 响应。
     /// </remarks>
     /// <param name="context">当前授权处理上下文</param>
     /// <param name="httpContext">当前请求上下文</param>
@@ -48,8 +33,8 @@ public interface IJwtBearerHandle
     /// 创建身份验证失败时的自定义响应数据
     /// </summary>
     /// <remarks>
-    /// 返回非 <see langword="null"/> 数据时，框架以 HTTP 401 状态码写入该数据；返回
-    /// <see langword="null"/> 时调用 <see cref="AuthorizationHandlerContext.Fail()"/>
+    /// 授权始终保持失败。MVC 过滤器上下文可将非 null 结果写为 HTTP 401；
+    /// 普通端点和 SignalR 由各自的授权管线处理拒绝响应，不强行写入 MVC Result。
     /// </remarks>
     /// <param name="context">当前授权处理上下文</param>
     /// <param name="httpContext">当前请求上下文</param>
@@ -64,24 +49,27 @@ public interface IJwtBearerHandle
     /// 返回 <see langword="false"/> 或抛出异常时，框架将调用 <see cref="PermissionFailHandle"/>
     /// </remarks>
     /// <param name="context">当前授权处理上下文</param>
-    /// <param name="requirement">当前待验证的授权要求</param>
+    /// <param name="requirement">Fast 自身的权限要求；不用于代替角色、声明或第三方策略验证</param>
     /// <param name="httpContext">当前请求上下文</param>
     /// <returns>权限检查通过时返回 <see langword="true"/>；返回 <see langword="false"/> 或抛出异常时进入失败处理</returns>
-    Task<bool> PermissionHandle(AuthorizationHandlerContext context, IAuthorizationRequirement requirement,
+    Task<bool> PermissionHandle(AuthorizationHandlerContext context,
+        IAuthorizationRequirement requirement,
         HttpContext httpContext);
 
     /// <summary>
     /// 创建权限检查失败时的自定义响应数据
     /// </summary>
     /// <remarks>
-    /// 返回非 <see langword="null"/> 数据时，框架以 HTTP 403 状态码写入该数据；返回
-    /// <see langword="null"/> 时调用 <see cref="AuthorizationHandlerContext.Fail()"/>
+    /// 权限始终保持失败。MVC 过滤器上下文可将非 null 结果写为 HTTP 403；
+    /// 普通端点和 SignalR 由各自的授权管线处理拒绝响应，不强行写入 MVC Result。
     /// </remarks>
     /// <param name="context">当前授权处理上下文</param>
     /// <param name="requirement">验证失败的授权要求</param>
     /// <param name="httpContext">当前请求上下文</param>
     /// <param name="exception">权限检查抛出的异常；没有捕获到异常时为 <see langword="null"/></param>
     /// <returns>自定义响应数据；使用默认失败处理时返回 <see langword="null"/></returns>
-    Task<object> PermissionFailHandle(AuthorizationHandlerContext context, IAuthorizationRequirement requirement,
-        HttpContext httpContext, Exception exception);
+    Task<object> PermissionFailHandle(AuthorizationHandlerContext context,
+        IAuthorizationRequirement requirement,
+        HttpContext httpContext,
+        Exception exception);
 }

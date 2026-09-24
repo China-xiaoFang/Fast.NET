@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Text;
 using System.Text.Json;
@@ -39,7 +24,8 @@ public static partial class OpenApiUtil
     internal static string DisposeSchemaRefKey(string refKey, HashSet<string> refSchemas = null)
     {
         // 获取 $ref 最后一个/后的 Name
-        refKey = refKey?.Split("/")
+        refKey = refKey
+            ?.Split("/")
             .LastOrDefault();
 
         return DisposeSchemaRefName(refKey, refSchemas);
@@ -85,22 +71,22 @@ public static partial class OpenApiUtil
         }
         else if (string.Equals(schema.Type, "array", StringComparison.OrdinalIgnoreCase))
         {
-            var itemType = DisposeSchemaType(schema.Items, refSchemas) ?? "unknown";
+            string itemType = DisposeSchemaType(schema.Items, refSchemas) ?? "unknown";
             schemaType = itemType.Contains(" | ", StringComparison.Ordinal) || itemType.Contains(" & ", StringComparison.Ordinal)
                 ? $"({itemType})[]"
                 : $"{itemType}[]";
         }
-        else if (TryDisposeAdditionalProperties(schema.AdditionalProperties, refSchemas, out var additionalPropertiesType))
+        else if (TryDisposeAdditionalProperties(schema.AdditionalProperties, refSchemas, out string additionalPropertiesType))
         {
             schemaType = $"Record<string, {additionalPropertiesType}>";
         }
         else if (schema.Properties?.Count > 0)
         {
-            var propertyTypes = schema.Properties.Select(property =>
+            IEnumerable<string> propertyTypes = schema.Properties.Select(property =>
             {
-                var propertyName = JsonSerializer.Serialize(property.Key);
-                var optional = schema.Required?.Contains(property.Key) == true ? "" : "?";
-                var propertyType = DisposeSchemaType(property.Value, refSchemas) ?? "unknown";
+                string propertyName = JsonSerializer.Serialize(property.Key);
+                string optional = schema.Required?.Contains(property.Key) == true ? "" : "?";
+                string propertyType = DisposeSchemaType(property.Value, refSchemas) ?? "unknown";
                 return $"{propertyName}{optional}: {propertyType};";
             });
             schemaType = $"{{ {string.Join(" ", propertyTypes)} }}";
@@ -150,11 +136,11 @@ public static partial class OpenApiUtil
         if (string.IsNullOrWhiteSpace(refName))
             return null;
 
-        var baseType = FindBaseTypeMapping(refName);
+        string baseType = FindBaseTypeMapping(refName);
         if (baseType != null)
             return baseType;
 
-        var typeMapping =
+        OpenApiImportTypeMappingSettingsOptions typeMapping =
             Penetrates.OpenApiSettings.ImportTypeMappings.FirstOrDefault(mapping =>
                 refName.StartsWith(mapping.Name, StringComparison.Ordinal));
         if (typeMapping == null)
@@ -163,8 +149,8 @@ public static partial class OpenApiUtil
             return refName;
         }
 
-        var remainingName = refName[typeMapping.Name.Length..];
-        var remainingType = DisposeSchemaRefName(remainingName, refSchemas);
+        string remainingName = refName[typeMapping.Name.Length..];
+        string remainingType = DisposeSchemaRefName(remainingName, refSchemas);
         if (typeMapping.RefSchema?.Count > 0)
             refSchemas?.UnionWith(typeMapping.RefSchema);
 
@@ -183,7 +169,8 @@ public static partial class OpenApiUtil
         }
         else
         {
-            result = string.Format(System.Globalization.CultureInfo.InvariantCulture, typeMapping.MappingName,
+            result = string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                typeMapping.MappingName,
                 remainingType ?? string.Empty);
         }
 
@@ -212,10 +199,12 @@ public static partial class OpenApiUtil
     /// <param name="separator">TypeScript 类型分隔符。</param>
     /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合。</param>
     /// <returns>TypeScript 组合类型。</returns>
-    private static string DisposeCompositeSchemaType(IEnumerable<OpenApiDocumentSchemaPropertyDto> schemas, string separator,
+    private static string DisposeCompositeSchemaType(IEnumerable<OpenApiDocumentSchemaPropertyDto> schemas,
+        string separator,
         HashSet<string> refSchemas)
     {
-        var schemaTypes = schemas.Where(schema => !string.Equals(schema.Type, "null", StringComparison.OrdinalIgnoreCase))
+        var schemaTypes = schemas
+            .Where(schema => !string.Equals(schema.Type, "null", StringComparison.OrdinalIgnoreCase))
             .Select(schema => DisposeSchemaType(schema, refSchemas))
             .Where(type => !string.IsNullOrWhiteSpace(type) && type != "null")
             .Distinct(StringComparer.Ordinal)
@@ -238,7 +227,8 @@ public static partial class OpenApiUtil
     /// <param name="refSchemas">用于解析引用的 OpenAPI 架构集合。</param>
     /// <param name="type">附加属性的 TypeScript 类型。</param>
     /// <returns>存在附加属性定义时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
-    private static bool TryDisposeAdditionalProperties(JsonElement additionalProperties, HashSet<string> refSchemas,
+    private static bool TryDisposeAdditionalProperties(JsonElement additionalProperties,
+        HashSet<string> refSchemas,
         out string type)
     {
         type = null;
@@ -248,7 +238,8 @@ public static partial class OpenApiUtil
                 type = "unknown";
                 return true;
             case JsonValueKind.Object:
-                var schema = additionalProperties.Deserialize<OpenApiDocumentSchemaPropertyDto>(_openApiSerializerOptions);
+                OpenApiDocumentSchemaPropertyDto schema =
+                    additionalProperties.Deserialize<OpenApiDocumentSchemaPropertyDto>(_openApiSerializerOptions);
                 type = DisposeSchemaType(schema, refSchemas) ?? "unknown";
                 return true;
             default:
@@ -265,7 +256,10 @@ public static partial class OpenApiUtil
     /// <param name="enumSchemas">枚举声明</param>
     /// <returns>生成的外部声明导入、本地声明导入和本地引用声明</returns>
     internal static (List<string> externalImports, List<string> schemaImports, HashSet<string> refSchemas) GenerateSchemaImport(
-        bool hasWeb, string dirName, HashSet<string> refSchemas, List<ComponentSchemaDto> enumSchemas)
+        bool hasWeb,
+        string dirName,
+        HashSet<string> refSchemas,
+        List<ComponentSchemaDto> enumSchemas)
     {
         if (refSchemas == null || refSchemas.Count == 0)
             return ([], [], []);
@@ -274,33 +268,40 @@ public static partial class OpenApiUtil
         var schemaImports = new List<string>();
         var newRefSchemas = new HashSet<string>();
 
-        var schemaMapping = Penetrates.OpenApiSettings.ImportSchemaMappings.Where(wh => refSchemas.Contains(wh.Name))
+        var schemaMapping = Penetrates
+            .OpenApiSettings.ImportSchemaMappings.Where(wh => refSchemas.Contains(wh.Name))
             .ToList();
         if (schemaMapping.Count != 0)
         {
-            var schemaMappingGroup = schemaMapping.GroupBy(gb => hasWeb ? gb.WebImportPath : gb.MobileImportPath)
+            var schemaMappingGroup = schemaMapping
+                .GroupBy(gb => hasWeb ? gb.WebImportPath : gb.MobileImportPath)
                 .ToList();
-            foreach (var item in schemaMappingGroup.OrderBy(ob => ob.Key, StringComparer.OrdinalIgnoreCase))
+            foreach (IGrouping<string, OpenApiImportSchemaMappingSettingsOptions> item in schemaMappingGroup.OrderBy(ob => ob.Key,
+                         StringComparer.OrdinalIgnoreCase))
             {
                 if (!string.IsNullOrWhiteSpace(item.Key))
                 {
-                    var importNames = string.Join(", ", item.OrderBy(ob => ob.Name, StringComparer.Ordinal)
-                        .Select(sl => sl.Name));
+                    string importNames = string.Join(", ",
+                        item
+                            .OrderBy(ob => ob.Name, StringComparer.Ordinal)
+                            .Select(sl => sl.Name));
                     externalImports.Add($$"""import type { {{importNames}} } from "{{item.Key}}";""");
                 }
             }
         }
 
-        foreach (var refSchema in refSchemas.Where(wh => schemaMapping.All(a => a.Name != wh))
+        foreach (string refSchema in refSchemas
+                     .Where(wh => schemaMapping.All(a => a.Name != wh))
                      .Where(wh => enumSchemas.All(a => a.Name != wh))
                      .OrderBy(ob => ob, StringComparer.OrdinalIgnoreCase))
         {
-            var importPath = string.IsNullOrWhiteSpace(dirName) ? $"./{refSchema}" : $"./{dirName}/{refSchema}";
+            string importPath = string.IsNullOrWhiteSpace(dirName) ? $"./{refSchema}" : $"./{dirName}/{refSchema}";
             schemaImports.Add($$"""import type { {{refSchema}} } from "{{importPath}}";""");
             newRefSchemas.Add(refSchema);
         }
 
-        schemaImports.AddRange(enumSchemas.Where(wh => refSchemas.Contains(wh.Name))
+        schemaImports.AddRange(enumSchemas
+            .Where(wh => refSchemas.Contains(wh.Name))
             .OrderBy(ob => ob.Name, StringComparer.OrdinalIgnoreCase)
             .Select(sl => sl.ImportPath));
 
@@ -328,10 +329,11 @@ public static partial class OpenApiUtil
         try
         {
             // 获取文档 Dto 声明
-            var dtoSchemas = openApiDocument.Components.Schemas.Where(wh => wh.Value.Enum == null)
+            var dtoSchemas = openApiDocument
+                .Components.Schemas.Where(wh => wh.Value.Enum == null)
                 .ToList();
 
-            foreach (var dtoSchema in dtoSchemas)
+            foreach (KeyValuePair<string, OpenApiDocumentComponentSchemaDto> dtoSchema in dtoSchemas)
             {
                 if (string.IsNullOrWhiteSpace(dtoSchema.Key))
                     continue;
@@ -362,24 +364,26 @@ public static partial class OpenApiUtil
 
                 var schemaDto = new ComponentSchemaDto {Name = dtoSchema.Key, Content = new StringBuilder(), RefSchemas = []};
 
-                var schemaDescription = dtoSchema.Value.Description?.Replace("\r\n", "\r\n * ");
+                string schemaDescription = dtoSchema.Value.Description?.Replace("\r\n", "\r\n * ");
 
-                var properties = dtoSchema.Value.Properties ?? new Dictionary<string, OpenApiDocumentSchemaPropertyDto>();
-                var componentSchema = ConvertSchema(dtoSchema.Value);
-                var generateTypeAlias = properties.Count == 0
-                                        && (!string.IsNullOrWhiteSpace(componentSchema.Ref)
-                                            || componentSchema.Items != null
-                                            || componentSchema.AllOf?.Count > 0
-                                            || componentSchema.AnyOf?.Count > 0
-                                            || componentSchema.OneOf?.Count > 0
-                                            || componentSchema.AdditionalProperties.ValueKind is JsonValueKind.True
-                                                or JsonValueKind.Object
-                                            || (!string.IsNullOrWhiteSpace(componentSchema.Type)
-                                                && !string.Equals(componentSchema.Type, "unknown",
-                                                    StringComparison.OrdinalIgnoreCase)));
+                IDictionary<string, OpenApiDocumentSchemaPropertyDto> properties =
+                    dtoSchema.Value.Properties ?? new Dictionary<string, OpenApiDocumentSchemaPropertyDto>();
+                OpenApiDocumentSchemaPropertyDto componentSchema = ConvertSchema(dtoSchema.Value);
+                bool generateTypeAlias = properties.Count == 0
+                                         && (!string.IsNullOrWhiteSpace(componentSchema.Ref)
+                                             || componentSchema.Items != null
+                                             || componentSchema.AllOf?.Count > 0
+                                             || componentSchema.AnyOf?.Count > 0
+                                             || componentSchema.OneOf?.Count > 0
+                                             || componentSchema.AdditionalProperties.ValueKind is JsonValueKind.True
+                                                 or JsonValueKind.Object
+                                             || (!string.IsNullOrWhiteSpace(componentSchema.Type)
+                                                 && !string.Equals(componentSchema.Type,
+                                                     "unknown",
+                                                     StringComparison.OrdinalIgnoreCase)));
                 if (generateTypeAlias)
                 {
-                    var schemaType = DisposeSchemaType(componentSchema, schemaDto.RefSchemas) ?? "unknown";
+                    string schemaType = DisposeSchemaType(componentSchema, schemaDto.RefSchemas) ?? "unknown";
                     schemaDto.Content.Append($"""
                                               /**
                                                * {schemaDescription}
@@ -399,7 +403,7 @@ public static partial class OpenApiUtil
                                           """);
 
                 // 判断是否存在分页
-                var hasPaged = Penetrates.OpenApiSettings.PagedSchemaProperties.All(properties.ContainsKey);
+                bool hasPaged = Penetrates.OpenApiSettings.PagedSchemaProperties.All(properties.ContainsKey);
                 if (hasPaged)
                 {
                     schemaDto.Content.Append(" extends PagedInput ");
@@ -409,14 +413,15 @@ public static partial class OpenApiUtil
                 schemaDto.Content.Append(" {");
 
                 // 属性
-                foreach (var property in properties)
+                foreach (KeyValuePair<string, OpenApiDocumentSchemaPropertyDto> property in properties)
                 {
                     // 判断是否为分页属性
                     if (Penetrates.OpenApiSettings.PagedSchemaProperties.Contains(property.Key))
                         continue;
 
                     // 获取属性描述
-                    var propertyDescription = property.Value.Description?.Replace("\r\n\r\n", "\r\n")
+                    string propertyDescription = property
+                        .Value.Description?.Replace("\r\n\r\n", "\r\n")
                         .Replace("\r\n", "\r\n	 * ");
 
                     schemaDto.Content.Append(Environment.NewLine);
@@ -427,7 +432,7 @@ public static partial class OpenApiUtil
                                                 {(property.Value.ReadOnly ? "readonly " : "")}{property.Key}?: 
                                               """);
 
-                    var propertyType = DisposeSchemaType(property.Value, schemaDto.RefSchemas) ?? "unknown";
+                    string propertyType = DisposeSchemaType(property.Value, schemaDto.RefSchemas) ?? "unknown";
                     schemaDto.Content.Append($"{propertyType};");
                 }
 
@@ -470,8 +475,12 @@ public static partial class OpenApiUtil
     /// <param name="enumSchemas">枚举声明</param>
     /// <param name="scriptLanguage">脚本语言</param>
     /// <returns>表示异步写入 OpenAPI 文档声明文件的任务</returns>
-    internal static async Task WriteOpenApiDocumentSchemaFile(bool hasWeb, string rootDir, OpenApiDocumentDto openApiDocument,
-        ComponentSchemaDto schemaDto, List<ComponentSchemaDto> dtoSchemas, List<ComponentSchemaDto> enumSchemas,
+    internal static async Task WriteOpenApiDocumentSchemaFile(bool hasWeb,
+        string rootDir,
+        OpenApiDocumentDto openApiDocument,
+        ComponentSchemaDto schemaDto,
+        List<ComponentSchemaDto> dtoSchemas,
+        List<ComponentSchemaDto> enumSchemas,
         ScriptLanguageEnum scriptLanguage)
     {
         // JavaScript 版本不生成 TypeScript 类型声明
@@ -481,14 +490,16 @@ public static partial class OpenApiUtil
         try
         {
             // 排除递归的问题
-            var refSchemas = schemaDto.RefSchemas.Where(wh => wh != schemaDto.Name)
+            var refSchemas = schemaDto
+                .RefSchemas.Where(wh => wh != schemaDto.Name)
                 .ToList();
 
-            var (externalImports, schemaImports, newRefSchemas) = GenerateSchemaImport(hasWeb, null, refSchemas.ToHashSet(),
-                enumSchemas);
-            var imports = externalImports.Concat(schemaImports)
+            (List<string> externalImports, List<string> schemaImports, HashSet<string> newRefSchemas) =
+                GenerateSchemaImport(hasWeb, null, refSchemas.ToHashSet(), enumSchemas);
+            var imports = externalImports
+                .Concat(schemaImports)
                 .ToList();
-            var content = imports.Count > 0
+            string content = imports.Count > 0
                 ? $"""
                    {string.Join(Environment.NewLine, imports)}
 
@@ -500,11 +511,16 @@ public static partial class OpenApiUtil
 
 
             // 处理引用文件
-            foreach (var refSchema in newRefSchemas)
+            foreach (string refSchema in newRefSchemas)
             {
                 // 从声明集合中查找
-                var childrenSchemaDto = dtoSchemas.Single(s => s.Name == refSchema);
-                await WriteOpenApiDocumentSchemaFile(hasWeb, rootDir, openApiDocument, childrenSchemaDto, dtoSchemas, enumSchemas,
+                ComponentSchemaDto childrenSchemaDto = dtoSchemas.Single(s => s.Name == refSchema);
+                await WriteOpenApiDocumentSchemaFile(hasWeb,
+                    rootDir,
+                    openApiDocument,
+                    childrenSchemaDto,
+                    dtoSchemas,
+                    enumSchemas,
                     scriptLanguage);
             }
         }

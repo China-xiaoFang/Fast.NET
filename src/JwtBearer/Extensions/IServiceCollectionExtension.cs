@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using Fast.Runtime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,12 +14,11 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Fast.JwtBearer;
 
 /// <summary>
-/// 为 <see cref="IServiceCollection"/> 提供动态 API 扩展方法
+/// 为 <see cref="IServiceCollection"/> 提供 JWT Bearer 配置、认证与授权扩展
 /// </summary>
 [SuppressSniffer]
 public static class IServiceCollectionExtension
@@ -47,12 +31,14 @@ public static class IServiceCollectionExtension
     /// <param name="configuration">用于读取模块设置的配置</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
-    public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection AddJwtBearerSetting(this IServiceCollection services,
+        IConfiguration configuration,
         string section = "JWTSettings")
     {
         services.AddConfigurableOptions<JWTSettingsOptions>(section);
 
-        Penetrates.JWTSettings = configuration.GetSection(section)
+        Penetrates.JWTSettings = configuration
+            .GetSection(section)
             .Get<JWTSettingsOptions>()
             .LoadPostConfigure();
 
@@ -94,14 +80,16 @@ public static class IServiceCollectionExtension
     /// <param name="configuration">用于读取模块设置的配置</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
-    public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services,
+        IConfiguration configuration,
         string section = "JWTSettings")
     {
         Debugging.Info("Registering jwt bearer......");
 
         services.AddJwtBearerSetting(configuration, section);
 
-        services.AddAuthentication(options =>
+        services
+            .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -111,13 +99,14 @@ public static class IServiceCollectionExtension
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
 
                 // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行
-                var onMessageReceived = options.Events.OnMessageReceived;
+                Func<MessageReceivedContext, Task> onMessageReceived = options.Events.OnMessageReceived;
                 options.Events.OnMessageReceived = async context =>
                 {
                     await onMessageReceived(context);
 
                     if (!string.IsNullOrEmpty(context.Token)
-                        || context.HttpContext.GetEndpoint()
+                        || context
+                            .HttpContext.GetEndpoint()
                             ?.Metadata.GetMetadata<HubMetadata>()
                         == null)
                     {
@@ -125,7 +114,8 @@ public static class IServiceCollectionExtension
                     }
 
                     // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求
-                    var accessToken = context.Request.Query["access_token"]
+                    string accessToken = context
+                        .Request.Query["access_token"]
                         .ToString();
                     if (!string.IsNullOrEmpty(accessToken))
                     {
@@ -151,7 +141,8 @@ public static class IServiceCollectionExtension
 
         services.AddJwtBearerSetting(optionAction);
 
-        services.AddAuthentication(options =>
+        services
+            .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -161,13 +152,14 @@ public static class IServiceCollectionExtension
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
 
                 // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行
-                var onMessageReceived = options.Events.OnMessageReceived;
+                Func<MessageReceivedContext, Task> onMessageReceived = options.Events.OnMessageReceived;
                 options.Events.OnMessageReceived = async context =>
                 {
                     await onMessageReceived(context);
 
                     if (!string.IsNullOrEmpty(context.Token)
-                        || context.HttpContext.GetEndpoint()
+                        || context
+                            .HttpContext.GetEndpoint()
                             ?.Metadata.GetMetadata<HubMetadata>()
                         == null)
                     {
@@ -175,7 +167,8 @@ public static class IServiceCollectionExtension
                     }
 
                     // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求
-                    var accessToken = context.Request.Query["access_token"]
+                    string accessToken = context
+                        .Request.Query["access_token"]
                         .ToString();
                     if (!string.IsNullOrEmpty(accessToken))
                     {
@@ -194,28 +187,15 @@ public static class IServiceCollectionExtension
     /// <param name="configuration">用于读取模块设置的配置</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：JWTSettings</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
-    public static IServiceCollection AddJwtBearer(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection AddJwtBearer(this IServiceCollection services,
+        IConfiguration configuration,
         string section = "JWTSettings")
     {
         Debugging.Info("Registering jwt bearer......");
 
         services.AddJwtBearerSetting(configuration, section);
 
-        // 解析当前请求使用的 JWT 验证处理器
-        var jwtBearerHandle =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
-
-        if (jwtBearerHandle != null)
-        {
-            // JWT 验证处理器按请求作用域解析，避免跨请求共享状态
-            services.AddScoped(typeof(IJwtBearerHandle), jwtBearerHandle);
-        }
-
-        // 注册授权策略提供器
-        services.TryAddSingleton<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();
-
-        // 注册策略授权处理程序
-        services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
+        RegisterAuthorizationServices(services);
 
         // 未显式标记匿名访问的端点统一要求授权
         if (Penetrates.JWTSettings.Enable.HasValue && Penetrates.JWTSettings.Enable.Value)
@@ -223,7 +203,8 @@ public static class IServiceCollectionExtension
             services.Configure<MvcOptions>(options => { options.Filters.Add(new AuthorizeFilter()); });
         }
 
-        services.AddAuthentication(options =>
+        services
+            .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -233,13 +214,14 @@ public static class IServiceCollectionExtension
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
 
                 // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行
-                var onMessageReceived = options.Events.OnMessageReceived;
+                Func<MessageReceivedContext, Task> onMessageReceived = options.Events.OnMessageReceived;
                 options.Events.OnMessageReceived = async context =>
                 {
                     await onMessageReceived(context);
 
                     if (!string.IsNullOrEmpty(context.Token)
-                        || context.HttpContext.GetEndpoint()
+                        || context
+                            .HttpContext.GetEndpoint()
                             ?.Metadata.GetMetadata<HubMetadata>()
                         == null)
                     {
@@ -247,7 +229,8 @@ public static class IServiceCollectionExtension
                     }
 
                     // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求
-                    var accessToken = context.Request.Query["access_token"]
+                    string accessToken = context
+                        .Request.Query["access_token"]
                         .ToString();
                     if (!string.IsNullOrEmpty(accessToken))
                     {
@@ -269,21 +252,7 @@ public static class IServiceCollectionExtension
     {
         services.AddJwtBearerSetting(optionAction);
 
-        // 解析当前请求使用的 JWT 验证处理器
-        var jwtBearerHandle =
-            MAppContext.EffectiveTypes.FirstOrDefault(f => typeof(IJwtBearerHandle).IsAssignableFrom(f) && !f.IsInterface);
-
-        if (jwtBearerHandle != null)
-        {
-            // JWT 验证处理器按请求作用域解析，避免跨请求共享状态
-            services.AddScoped(typeof(IJwtBearerHandle), jwtBearerHandle);
-        }
-
-        // 注册授权策略提供器
-        services.TryAddSingleton<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();
-
-        // 注册策略授权处理程序
-        services.TryAddSingleton<IAuthorizationHandler, AppAuthorizationHandler>();
+        RegisterAuthorizationServices(services);
 
         // 未显式标记匿名访问的端点统一要求授权
         if (Penetrates.JWTSettings.Enable.HasValue && Penetrates.JWTSettings.Enable.Value)
@@ -291,7 +260,8 @@ public static class IServiceCollectionExtension
             services.Configure<MvcOptions>(options => { options.Filters.Add(new AuthorizeFilter()); });
         }
 
-        services.AddAuthentication(options =>
+        services
+            .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -301,13 +271,14 @@ public static class IServiceCollectionExtension
                 options.TokenValidationParameters = JwtBearerUtil.CreateTokenValidationParameters(Penetrates.JWTSettings);
 
                 // 保留调用方已配置的 Token 提取逻辑，并确保其优先执行
-                var onMessageReceived = options.Events.OnMessageReceived;
+                Func<MessageReceivedContext, Task> onMessageReceived = options.Events.OnMessageReceived;
                 options.Events.OnMessageReceived = async context =>
                 {
                     await onMessageReceived(context);
 
                     if (!string.IsNullOrEmpty(context.Token)
-                        || context.HttpContext.GetEndpoint()
+                        || context
+                            .HttpContext.GetEndpoint()
                             ?.Metadata.GetMetadata<HubMetadata>()
                         == null)
                     {
@@ -315,7 +286,8 @@ public static class IServiceCollectionExtension
                     }
 
                     // 仅补充从标准 access_token 查询参数提取 Token，不改变 Hub 端点的授权要求
-                    var accessToken = context.Request.Query["access_token"]
+                    string accessToken = context
+                        .Request.Query["access_token"]
                         .ToString();
                     if (!string.IsNullOrEmpty(accessToken))
                     {
@@ -325,5 +297,63 @@ public static class IServiceCollectionExtension
             });
 
         return services;
+    }
+
+    /// <summary>注册 Fast 策略，不覆盖已有自定义提供器的非 Fast 策略。</summary>
+    private static void RegisterAuthorizationServices(IServiceCollection services)
+    {
+        // 显式注册优先；扫描只接受闭合、可实例化的类型，多个候选不依赖程序集枚举顺序。
+        if (!services.Any(descriptor => !descriptor.IsKeyedService && descriptor.ServiceType == typeof(IJwtBearerHandle)))
+        {
+            Type[] handles = MAppContext
+                .EffectiveTypes.Where(type =>
+                    typeof(IJwtBearerHandle).IsAssignableFrom(type)
+                    && type.IsClass
+                    && !type.IsAbstract
+                    && !type.ContainsGenericParameters)
+                .ToArray();
+            if (handles.Length > 1)
+                throw new InvalidOperationException("发现多个 IJwtBearerHandle 实现，请显式注册所需处理器。");
+            if (handles.Length == 1)
+                services.AddScoped(typeof(IJwtBearerHandle), handles[0]);
+        }
+
+        services.AddAuthorization();
+        ServiceDescriptor current = services.Last(descriptor => descriptor.ServiceType == typeof(IAuthorizationPolicyProvider)
+                                                                && !descriptor.IsKeyedService);
+        if (current.ImplementationType != typeof(AppAuthorizationPolicyProvider))
+        {
+            // 使用独立 keyed 描述符保留原生命周期及释放责任，不创建第二个服务容器。
+            string key = AppAuthorizationPolicyProvider.FallbackServiceKey;
+            ServiceDescriptor fallback;
+            if (current.ImplementationInstance != null)
+                fallback = new ServiceDescriptor(typeof(IAuthorizationPolicyProvider), key, current.ImplementationInstance);
+            else if (current.ImplementationFactory != null)
+                fallback = new ServiceDescriptor(typeof(IAuthorizationPolicyProvider),
+                    key,
+                    (provider, _) => current.ImplementationFactory(provider),
+                    current.Lifetime);
+            else
+                fallback = new ServiceDescriptor(typeof(IAuthorizationPolicyProvider),
+                    key,
+                    current.ImplementationType,
+                    current.Lifetime);
+            foreach (ServiceDescriptor descriptor in services
+                         .Where(item => item.ServiceType == typeof(IAuthorizationPolicyProvider) && !item.IsKeyedService)
+                         .ToArray())
+                services.Remove(descriptor);
+            services.Add(fallback);
+            services.Add(ServiceDescriptor.Describe(typeof(IAuthorizationPolicyProvider),
+                typeof(AppAuthorizationPolicyProvider),
+                current.Lifetime));
+        }
+
+        if (!services.Any(descriptor => !descriptor.IsKeyedService
+                                        && descriptor.ServiceType == typeof(IAuthorizationHandler)
+                                        && descriptor.ImplementationType == typeof(AppAuthorizationHandler)))
+        {
+            // 令牌刷新先于标准角色/声明验证执行；其他处理器全部保留。
+            services.Insert(0, ServiceDescriptor.Singleton<IAuthorizationHandler, AppAuthorizationHandler>());
+        }
     }
 }

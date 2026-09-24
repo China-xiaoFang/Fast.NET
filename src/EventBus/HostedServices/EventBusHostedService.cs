@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Collections.Concurrent;
 using System.Reflection;
@@ -75,37 +60,42 @@ internal sealed class EventBusHostedService : BackgroundService
     /// <param name="serviceProvider">服务提供器</param>
     /// <param name="eventSourceStorer">事件源存储器</param>
     /// <param name="eventSubscribers">事件订阅者集合</param>
-    public EventBusHostedService(ILogger<EventBusService> logger, IServiceProvider serviceProvider,
-        IEventSourceStorer eventSourceStorer, IEnumerable<IEventSubscriber> eventSubscribers)
+    public EventBusHostedService(ILogger<EventBusService> logger,
+        IServiceProvider serviceProvider,
+        IEventSourceStorer eventSourceStorer,
+        IEnumerable<IEventSubscriber> eventSubscribers)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
         _eventSourceStorer = eventSourceStorer;
         Monitor = serviceProvider.GetService<IEventHandlerMonitor>();
 
-        var bindingAttr = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+        BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
         // 逐条获取事件处理程序并进行包装
-        foreach (var eventSubscriber in eventSubscribers)
+        foreach (IEventSubscriber eventSubscriber in eventSubscribers)
         {
             // 获取事件订阅者类型
-            var eventSubscriberType = eventSubscriber.GetType();
+            Type eventSubscriberType = eventSubscriber.GetType();
 
             // 查找所有公开且贴有 [EventSubscribe] 的实例方法
-            var eventHandlerMethods = eventSubscriberType.GetMethods(bindingAttr)
+            IEnumerable<MethodInfo> eventHandlerMethods = eventSubscriberType
+                .GetMethods(bindingAttr)
                 .Where(u => u.IsDefined(typeof(EventSubscribeAttribute), false));
 
             // 遍历所有事件订阅者处理方法
-            foreach (var eventHandlerMethod in eventHandlerMethods)
+            foreach (MethodInfo eventHandlerMethod in eventHandlerMethods)
             {
                 // 将方法转换成 Func<EventHandlerExecutingContext, Task> 委托
-                var handler = (Func<EventHandlerExecutingContext, Task>) eventHandlerMethod.CreateDelegate(
-                    typeof(Func<EventHandlerExecutingContext, Task>), eventSubscriber);
+                var handler = (Func<EventHandlerExecutingContext, Task>)eventHandlerMethod.CreateDelegate(
+                    typeof(Func<EventHandlerExecutingContext, Task>),
+                    eventSubscriber);
 
                 // 处理同一个事件处理程序支持多个事件Id的情况
-                var eventSubscribeAttributes = eventHandlerMethod.GetCustomAttributes<EventSubscribeAttribute>(false);
+                IEnumerable<EventSubscribeAttribute> eventSubscribeAttributes =
+                    eventHandlerMethod.GetCustomAttributes<EventSubscribeAttribute>(false);
 
                 // 逐条包装并添加到 _eventHandlers 集合中
-                foreach (var eventSubscribeAttribute in eventSubscribeAttributes)
+                foreach (EventSubscribeAttribute eventSubscribeAttribute in eventSubscribeAttributes)
                 {
                     var wrapper = new EventHandlerWrapper(eventSubscribeAttribute.EventId)
                     {
@@ -153,7 +143,7 @@ internal sealed class EventBusHostedService : BackgroundService
     private async Task BackgroundProcessing(CancellationToken stoppingToken)
     {
         // 从事件存储器中读取一条
-        var eventSource = await _eventSourceStorer.ReadAsync(stoppingToken);
+        IEventSource eventSource = await _eventSourceStorer.ReadAsync(stoppingToken);
 
         // 处理动态新增/删除事件订阅器
         if (eventSource is EventSubscribeOperateSource subscribeOperateSource)
@@ -171,7 +161,8 @@ internal sealed class EventBusHostedService : BackgroundService
         }
 
         // 查找事件Id匹配的事件处理程序
-        var eventHandlersThatShouldRun = _eventHandlers.Where(t => t.Key.ShouldRun(eventSource.EventId))
+        var eventHandlersThatShouldRun = _eventHandlers
+            .Where(t => t.Key.ShouldRun(eventSource.EventId))
             .OrderByDescending(u => u.Value.Order)
             .Select(u => u.Key)
             .ToList();
@@ -190,10 +181,15 @@ internal sealed class EventBusHostedService : BackgroundService
 
         using var processingTokenSource =
             CancellationTokenSource.CreateLinkedTokenSource(stoppingToken, eventSource.CancellationToken);
-        var processingToken = processingTokenSource.Token;
+        CancellationToken processingToken = processingTokenSource.Token;
 
-        async Task InvokeAsync(Func<Task> action, int numRetries, int retryTimeout = 1000, bool finalThrow = true,
-            Type[] exceptionTypes = null, Func<Exception, Task> fallbackPolicy = null, Action<int, int> retryAction = null)
+        async Task InvokeAsync(Func<Task> action,
+            int numRetries,
+            int retryTimeout = 1000,
+            bool finalThrow = true,
+            Type[] exceptionTypes = null,
+            Func<Exception, Task> fallbackPolicy = null,
+            Action<int, int> retryAction = null)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -206,7 +202,7 @@ internal sealed class EventBusHostedService : BackgroundService
             }
 
             // 存储总的重试次数
-            var totalNumRetries = numRetries;
+            int totalNumRetries = numRetries;
 
             while (true)
             {
@@ -263,11 +259,13 @@ internal sealed class EventBusHostedService : BackgroundService
         async Task HandleEventAsync(EventHandlerWrapper eventHandlerThatShouldRun)
         {
             // 获取特性信息，可能为 null
-            var eventSubscribeAttribute = eventHandlerThatShouldRun.Attribute;
+            EventSubscribeAttribute eventSubscribeAttribute = eventHandlerThatShouldRun.Attribute;
 
             // 创建执行前上下文
             var eventHandlerExecutingContext =
-                new EventHandlerExecutingContext(eventSource, properties, eventHandlerThatShouldRun.HandlerMethod,
+                new EventHandlerExecutingContext(eventSource,
+                    properties,
+                    eventHandlerThatShouldRun.HandlerMethod,
                     eventSubscribeAttribute) {ExecutingTime = DateTime.Now};
 
             // 执行异常对象
@@ -284,13 +282,14 @@ internal sealed class EventBusHostedService : BackgroundService
                 }
 
                 // 判断是否自定义了重试失败回调服务
-                var fallbackPolicyService = eventSubscribeAttribute?.FallbackPolicy == null
+                IEventFallbackPolicy fallbackPolicyService = eventSubscribeAttribute?.FallbackPolicy == null
                     ? null
                     : _serviceProvider.GetService(eventSubscribeAttribute.FallbackPolicy) as IEventFallbackPolicy;
 
                 // 调用事件处理程序并配置出错执行重试
                 await InvokeAsync(() => eventHandlerThatShouldRun.Handler!(eventHandlerExecutingContext),
-                    eventSubscribeAttribute?.NumRetries ?? 0, eventSubscribeAttribute?.RetryTimeout ?? 1000,
+                    eventSubscribeAttribute?.NumRetries ?? 0,
+                    eventSubscribeAttribute?.RetryTimeout ?? 1000,
                     exceptionTypes: eventSubscribeAttribute?.ExceptionTypes,
                     fallbackPolicy: fallbackPolicyService == null
                         ? null
@@ -321,7 +320,9 @@ internal sealed class EventBusHostedService : BackgroundService
                 if (Monitor != null)
                 {
                     var eventHandlerExecutedContext =
-                        new EventHandlerExecutedContext(eventSource, properties, eventHandlerThatShouldRun.HandlerMethod,
+                        new EventHandlerExecutedContext(eventSource,
+                            properties,
+                            eventHandlerThatShouldRun.HandlerMethod,
                             eventSubscribeAttribute) {ExecutedTime = DateTime.Now, Exception = executionException};
 
                     try
@@ -330,8 +331,10 @@ internal sealed class EventBusHostedService : BackgroundService
                     }
                     catch (Exception ex)
                     {
-                        Log(LogLevel.Error, "Error occurred in event handler monitor for {EventId}.",
-                            new object[] {eventSource.EventId}, ex);
+                        Log(LogLevel.Error,
+                            "Error occurred in event handler monitor for {EventId}.",
+                            new object[] {eventSource.EventId},
+                            ex);
                     }
                 }
 
@@ -340,6 +343,7 @@ internal sealed class EventBusHostedService : BackgroundService
         }
 
         // 同一事件的订阅器并行执行，但等待全部完成以观察异常并让有界通道形成有效背压
+        using var dispatchScope = EventDispatchScope.Enter(_eventSourceStorer);
         await Task.WhenAll(eventHandlersThatShouldRun.Select(HandleEventAsync));
     }
 
@@ -350,7 +354,7 @@ internal sealed class EventBusHostedService : BackgroundService
     private void ManageEventSubscribers(EventSubscribeOperateSource subscribeOperateSource)
     {
         // 获取实际订阅事件Id
-        var eventId = subscribeOperateSource.SubscribeEventId;
+        string eventId = subscribeOperateSource.SubscribeEventId;
 
         // 确保事件订阅Id与传入特性的 EventId 一致
         if (subscribeOperateSource.Attribute != null && subscribeOperateSource.Attribute.EventId != eventId)
@@ -370,11 +374,12 @@ internal sealed class EventBusHostedService : BackgroundService
             };
 
             // 追加到集合中
-            var succeeded = _eventHandlers.TryAdd(wrapper, wrapper);
+            bool succeeded = _eventHandlers.TryAdd(wrapper, wrapper);
 
             if (succeeded)
             {
-                Log(LogLevel.Information, "Subscriber with event ID <{EventId}> was appended successfully.",
+                Log(LogLevel.Information,
+                    "Subscriber with event ID <{EventId}> was appended successfully.",
                     new object[] {eventId});
             }
         }
@@ -382,16 +387,17 @@ internal sealed class EventBusHostedService : BackgroundService
         else if (subscribeOperateSource.Operate == EventSubscribeOperates.Remove)
         {
             // 删除所有匹配事件Id的处理程序
-            foreach (var wrapper in _eventHandlers.Keys)
+            foreach (EventHandlerWrapper wrapper in _eventHandlers.Keys)
             {
                 if (wrapper.EventId != eventId)
                     continue;
 
-                var succeeded = _eventHandlers.TryRemove(wrapper, out _);
+                bool succeeded = _eventHandlers.TryRemove(wrapper, out _);
                 if (!succeeded)
                     continue;
 
-                Log(LogLevel.Warning, "Subscriber<{Name}> with event ID <{EventId}> was remove.",
+                Log(LogLevel.Warning,
+                    "Subscriber<{Name}> with event ID <{EventId}> was remove.",
                     new object[] {wrapper.HandlerMethod?.Name, eventId});
             }
         }
@@ -416,8 +422,8 @@ internal sealed class EventBusHostedService : BackgroundService
         if (!enabled)
             return;
 
-        var nowTicks = DateTime.UtcNow.Ticks;
-        var previousTicks = Interlocked.Read(ref _lastGCCollectTicks);
+        long nowTicks = DateTime.UtcNow.Ticks;
+        long previousTicks = Interlocked.Read(ref _lastGCCollectTicks);
         if (previousTicks != 0
             && nowTicks - previousTicks
             <= TimeSpan.FromSeconds(GC_COLLECT_INTERVAL_SECONDS)

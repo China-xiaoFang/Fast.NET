@@ -1,15 +1,39 @@
 # Changelog
 
-All notable changes to Fast.NET are documented in this file. The repository follows independent package versioning; a release entry must name every affected package.
+All notable changes to this project are documented in this file.
 
-## Unreleased
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
-### Breaking changes
+This repository uses independent package versions; each release entry lists the affected packages and their versions. Comparison links require identified release refs. No comparison baseline is recorded for the first dated entry; use the repository history linked below.
 
-- `Fast.Runtime` 3.5.30 removes the misleading `HttpContext.LanIpv4()` and `HttpContext.LanIpv6()` extension methods. Use `LocalIpv4()`/`LocalIpv6()` for the server endpoint or `RemoteIpv4()`/`RemoteIpv6()` for the remote endpoint after trusted forwarded-header processing.
-- Primary SDK packages now target .NET 8, .NET 9, and .NET 10. .NET 6 and .NET 7 assets are no longer produced.
-- Repository builds use C# 14 and the .NET 10 SDK.
-- `RetryUtil.InvokeAsync` now awaits retry callbacks, invokes the fallback for suppressed terminal failures, and accepts a cancellation token.
+## 2026-09-22
+
+### Documentation and Tooling
+
+- Correct localized Fast.Docs links and retain minimal README examples.
+- Align public-contract comments and agent guidance; keep licenses and `.editorconfig` unchanged.
+
+### Package Versions
+
+| PackageId                             | Version  |
+| ------------------------------------- | -------- |
+| `Fast.Cache`                          | `3.5.34` |
+| `Fast.Consul`                         | `3.5.10` |
+| `Fast.NET.Core`                       | `3.5.39` |
+| `Fast.DependencyInjection`            | `3.5.30` |
+| `Fast.DynamicApplication`             | `3.5.36` |
+| `Fast.EventBus`                       | `3.5.29` |
+| `Fast.IaaS`                           | `3.5.29` |
+| `Fast.JwtBearer`                      | `3.5.42` |
+| `Fast.Logging`                        | `3.5.33` |
+| `Fast.Mapster`                        | `3.5.28` |
+| `Fast.OpenApi`                        | `3.5.40` |
+| `Fast.Runtime`                        | `3.5.31` |
+| `Fast.Serialization.Newtonsoft.Json`  | `3.5.26` |
+| `Fast.Serialization.System.Text.Json` | `3.5.21` |
+| `Fast.SqlSugar`                       | `3.5.66` |
+| `Fast.Swagger`                        | `3.5.35` |
+| `Fast.UnifyResult`                    | `3.5.34` |
 
 ### Added
 
@@ -22,6 +46,10 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 
 ### Changed
 
+- `Fast.Runtime` 3.5.30 removes the misleading `HttpContext.LanIpv4()` and `HttpContext.LanIpv6()` extension methods. Use `LocalIpv4()`/`LocalIpv6()` for the server endpoint or `RemoteIpv4()`/`RemoteIpv6()` for the remote endpoint after trusted forwarded-header processing.
+- Primary SDK packages now target .NET 8, .NET 9, and .NET 10. .NET 6 and .NET 7 assets are no longer produced.
+- Repository builds use C# 14 and the .NET 10 SDK.
+- `RetryUtil.InvokeAsync` now awaits retry callbacks, invokes the fallback for suppressed terminal failures, and accepts a cancellation token.
 - Updated `Fast.NET.Core` from 3.5.35 to 3.5.36. The `builder.Initialize()` banner now displays application identity, application/framework informational and assembly versions, .NET runtime, environment, host, OS, OS/process architectures, and local startup time. Environment values use distinct colors; startup time is now `White`. The banner also adjusts spacing and adds a lawful-use reminder and learning messages while retaining `MAppContext.ConsoleWrite` color restoration and plain redirected output.
 - Updated `Mapster` and `Mapster.DependencyInjection` to 10.0.12, `MiniExcel` to 1.45.0, `SQLitePCLRaw.bundle_e_sqlite3` to 3.0.5, `SqlSugarCore` to 5.1.4.220, and `Swashbuckle.AspNetCore` to 10.2.3.
 - Updated ASP.NET Core package references to 8.0.30, 9.0.19, and 10.0.11 for their corresponding target frameworks.
@@ -29,12 +57,18 @@ All notable changes to Fast.NET are documented in this file. The repository foll
 - Established `FAST-AES-256-GCM-V1` as the initial cross-language password-based AES payload for `Fast.IaaS`.
 - Simplified XML documentation by removing type references already conveyed by signatures, inheriting existing implementation contracts, and retaining links to related APIs and constraints.
 - Marked internal leaf implementations and JSON converters as sealed where inheritance is not supported.
-- Incremented 15 SDK package versions; the two serialization packages retain their existing versions. Current package versions: `Fast.Cache` 3.5.33, `Fast.Consul` 3.5.9, `Fast.NET.Core` 3.5.38, `Fast.DependencyInjection` 3.5.29, `Fast.DynamicApplication` 3.5.35, `Fast.EventBus` 3.5.28, `Fast.IaaS` 3.5.28, `Fast.JwtBearer` 3.5.41, `Fast.Logging` 3.5.32, `Fast.Mapster` 3.5.27, `Fast.OpenApi` 3.5.39, `Fast.Runtime` 3.5.30, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.65, `Fast.Swagger` 3.5.34, and `Fast.UnifyResult` 3.5.33.
+- Incremented 15 SDK package versions; the two serialization packages retain their existing versions. Package versions recorded by that earlier source baseline: `Fast.Cache` 3.5.33, `Fast.Consul` 3.5.9, `Fast.NET.Core` 3.5.38, `Fast.DependencyInjection` 3.5.29, `Fast.DynamicApplication` 3.5.35, `Fast.EventBus` 3.5.28, `Fast.IaaS` 3.5.28, `Fast.JwtBearer` 3.5.41, `Fast.Logging` 3.5.32, `Fast.Mapster` 3.5.27, `Fast.OpenApi` 3.5.39, `Fast.Runtime` 3.5.30, `Fast.Serialization.Newtonsoft.Json` 3.5.25, `Fast.Serialization.System.Text.Json` 3.5.20, `Fast.SqlSugar` 3.5.65, `Fast.Swagger` 3.5.34, and `Fast.UnifyResult` 3.5.33.
 - Packages referencing `Fast.Runtime` now require 3.5.30 or later. Upgrade installed Fast.NET modules to the versions listed above together to keep transitive dependencies aligned.
 - Incremented `I18nTranslateTool` to 1.0.1 and moved its `MiniExcel` version into central package management.
 
 ### Fixed
 
+- Only certify Fast-owned authorization requirements; preserve third-party policies/handlers, deny missing Fast permission implementations, and retain failure state for non-MVC resources.
+- Add IRefreshTokenReplayStore and a Redis SET NX implementation; generic distributed get/set no longer pretends to provide cross-instance atomic consumption. The memory implementation is process-local only.
+- Preserve decimal JSON precision; require explicit ownership for background scoped services; configure the Redis options consumed by the cache directly.
+- Align named DI with registered interface services and reject abstract/ambiguous automatic handler registrations; fail fast on nested writes to a full dispatch queue.
+- Swap Redis clients only after successful construction; retain borrowed retired clients until cache disposal. Nonpaged SQL limits allow exactly N rows and probe N + 1.
+- Propagate observed caller cancellation from RetryUtil before fallback handling, including finalThrow=false.
 - `Fast.JwtBearer` 3.5.41 now keeps revoked access tokens blacklisted through the configured JWT `ClockSkew` window. Cache writes use the remaining relative lifetime and skip tokens whose `exp + ClockSkew` has already elapsed, preventing Redis from rejecting an absolute expiration that is no longer in the future.
 - `Fast.Runtime` 3.5.30, `Fast.NET.Core` 3.5.38, `Fast.SqlSugar` 3.5.65, and `Fast.UnifyResult` 3.5.33 now handle a missing HTTP context outside the request lifecycle without null-reference failures. Remote addresses rely exclusively on `Connection.RemoteIpAddress` after trusted `UseForwardedHeaders` processing instead of reading forwarding headers directly, and record entities tolerate unavailable user-agent and IP metadata.
 - `UploadNuget.bat` now uses Simplified Chinese CLI diagnostics within the script, classifies redirected UTF-8 NuGet output before converting it to CMD CP936, and displays skipped results in dark gray. With PowerShell unavailable, output remains plain text and a zero exit code is conservatively reported as a warning because detailed diagnostics cannot be classified.

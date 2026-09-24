@@ -1,27 +1,20 @@
-[简体中文](README.zh.md) | [**English**](README.md)
+[简体中文](./README.zh.md) | **English**
 
 <p align="center">
-  <img src="Fast.png" width="160" alt="Fast.NET Logo" />
+	<img src="./Fast.png" width="128" alt="Fast.NET Logo" />
 </p>
 
 <h1 align="center">Fast.NET</h1>
 
-**[Documentation](http://docs.fastdotnet.cn/dotnet/) · [Official website](http://fastdotnet.com)**
-
 <p align="center">
-  A modular infrastructure SDK for modern .NET applications
+	<a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/v/Fast.NET.Core?logo=nuget" alt="NuGet version" /></a>
+	<a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/dt/Fast.NET.Core" alt="NuGet downloads" /></a>
+	<a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License" /></a>
 </p>
 
-<p align="center">
-  <a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/v/Fast.NET.Core.svg?label=Fast.NET.Core&logo=nuget" alt="NuGet version" /></a>
-  <a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/dt/Fast.NET.Core.svg?logo=nuget" alt="NuGet downloads" /></a>
-  <img src="https://img.shields.io/badge/.NET-8.0%20%7C%209.0%20%7C%2010.0-512BD4?logo=dotnet" alt="Supported .NET versions" />
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="Apache-2.0 License" /></a>
-</p>
+A modular infrastructure SDK for modern .NET applications, composed through independent NuGet packages.
 
-Fast.NET is a set of composable .NET infrastructure libraries covering web application initialization, dependency injection, caching, event handling, logging, object mapping, authentication, data access, serialization, dynamic APIs, unified responses, Swagger/OpenAPI, and Consul integration. Every capability is delivered as an independent NuGet package, so applications reference only the modules they need.
-
-> Fast.NET is not an all-or-nothing framework. It is a family of SDK components with a consistent design and configuration experience for ASP.NET Core, Worker Services, and other modern .NET applications supported by each module.
+**[Documentation](http://docs.fastdotnet.cn/en-US/backend/fast-net/) · [Official website](http://fastdotnet.com)**
 
 ## Why Fast.NET
 
@@ -46,9 +39,7 @@ Fast.NET is a set of composable .NET infrastructure libraries covering web appli
 
 ## Quick start
 
-### 1. Install the modules you need
-
-Fast.NET does not require an umbrella package. Select the NuGet packages needed by your application:
+Install the three modules used by this starter in an existing ASP.NET Core project:
 
 ```bash
 dotnet add package Fast.NET.Core
@@ -56,78 +47,28 @@ dotnet add package Fast.Serialization.System.Text.Json
 dotnet add package Fast.Swagger
 ```
 
-Add Redis caching, JWT authentication, or SqlSugar only when needed:
-
-```bash
-dotnet add package Fast.Cache
-dotnet add package Fast.JwtBearer
-dotnet add package Fast.SqlSugar
-```
-
-> `Fast.Serialization.System.Text.Json` and `Fast.Serialization.Newtonsoft.Json` expose serialization extensions with the same style. Most applications should choose one according to their serialization stack.
-
-### 2. Register services
-
-The following ASP.NET Core example combines several modules. Keep only the registrations for packages installed by your application.
-
 ```csharp
-using Fast.Cache;
-using Fast.DependencyInjection;
-using Fast.DynamicApplication;
-using Fast.EventBus;
-using Fast.JwtBearer;
-using Fast.Logging;
-using Fast.Mapster;
 using Fast.NET.Core;
-using Fast.OpenApi;
 using Fast.Serialization;
-using Fast.SqlSugar;
 using Fast.Swagger;
-using Fast.UnifyResult;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Initialize();
-builder.AddCorsAccessor();
-
 builder.Services.AddSerialization();
-builder.Services.AddGzipCompression();
-builder.Services.AddMapster();
-builder.Services.AddDependencyInjection();
-builder.Services.AddEventBus();
-builder.Services.AddCache();
-builder.Services.AddLoggingService(builder.Configuration);
-builder.Services.AddSqlSugar(builder.Configuration, builder.Environment);
-builder.Services.AddJwtBearer(builder.Configuration);
-builder.Services.AddUnifyResult();
 builder.Services.AddControllers();
-builder.Services.AddDynamicApplication();
 builder.Services.AddSwaggerDocuments(builder.Configuration);
-builder.Services.AddOpenApi(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.EnableBuffering();
-app.UseRouting();
 app.UseSwaggerDocuments();
 app.MapControllers();
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
 app.Run();
 ```
 
-`Fast.Runtime` 3.5.29 provides `MAppContext.ConsoleWrite` to restore the original foreground and background colors after a synchronous callback, with plain text for redirected output. Startup banners and direct diagnostics now use this writer. See [console output](http://docs.fastdotnet.cn/dotnet/MODULES#console-output) for usage and the logging pipeline.
-
-`Fast.NET.Core` 3.5.36 expands the `builder.Initialize()` startup banner with application and framework versions, .NET runtime, environment, host, operating system, architectures, and local startup time. See the module guide above for version sources and colors.
-
-`Fast.IaaS` 3.5.27 fixes `TimeSpanExtension.ToDescription()` at exact one-minute, one-hour, and one-day boundaries, preserving the corresponding unit instead of rolling it down to zero in the next smaller unit.
-
-`Fast.Runtime` 3.5.30 makes its HTTP-context extensions safe outside an active request, relies on trusted forwarded-header processing for remote addresses, and removes the misleading `LanIpv4()` and `LanIpv6()` APIs. `Fast.NET.Core` 3.5.38 returns `HttpRequestMethodEnum.Unknown` when no request context is available, while `Fast.SqlSugar` 3.5.65 tolerates unavailable request audit metadata.
-
-This release updates 15 SDK packages; the two serialization packages retain their existing versions. Modules that reference `Fast.Runtime` require 3.5.30 or later; upgrade installed modules together using the versions in [CHANGELOG](CHANGELOG.md).
-
-For each module's default configuration section and optional parameters, see its `*SettingsOptions` types and extension method XML documentation.
+This example does not register a database, Redis or background jobs. Add other modules and their configuration only when needed. Module versions are maintained independently; review [CHANGELOG](./CHANGELOG.md) before upgrading.
 
 ## Architecture
 
@@ -204,7 +145,6 @@ Fast.NET/
 ├─ src/                         # 17 independently published SDK modules
 ├─ docs/                        # Bilingual usage, architecture, and release guides
 ├─ .github/                     # GitHub CI workflow
-├─ translateTool/               # Vue i18n text extraction and update tool
 ├─ Directory.Build.props        # Shared target, package, and repository metadata
 ├─ Directory.Packages.props     # Central NuGet dependency versions
 ├─ global.json                  # .NET SDK selection policy
@@ -239,8 +179,8 @@ Builds don't implicitly create packages. `UploadNuget.bat` explicitly restores, 
 
 ## Documentation and collaboration
 
-- [Getting started](http://docs.fastdotnet.cn/dotnet/GETTING_STARTED)
-- [Module catalog](http://docs.fastdotnet.cn/dotnet/MODULES)
+- [Getting started](http://docs.fastdotnet.cn/en-US/backend/fast-net/guide)
+- [Module catalog](http://docs.fastdotnet.cn/en-US/backend/fast-net/modules/)
 - [Architecture guide](docs/ARCHITECTURE.md)
 - [Comments and public API documentation](docs/COMMENTING_GUIDE.md)
 - [Release guide](docs/RELEASING.md)
@@ -249,16 +189,21 @@ Builds don't implicitly create packages. `UploadNuget.bat` explicitly restores, 
 - [Support policy](SUPPORT.md)
 - [Code of conduct](CODE_OF_CONDUCT.md)
 - [Changelog](CHANGELOG.md)
-- [Localization tool](translateTool/README.md)
 - [Commit history](https://gitee.com/FastDotnet/Fast.NET/commits/master)
 - [Issue tracker](https://gitee.com/FastDotnet/Fast.NET/issues)
 - [Pull requests](https://gitee.com/FastDotnet/Fast.NET/pulls)
 
 Before submitting code, build every affected target framework and keep public Chinese and English documentation synchronized.
 
-## License
+## Copyright, license and use
 
-Fast.NET is released under the [Apache License 2.0](LICENSE). Use, modification, and distribution must comply with the license and applicable laws.
+Copyright © 2018-Now 小方. This project uses [Apache License 2.0](./LICENSE). Use, modification, distribution and commercial use are permitted subject to its terms.
+
+When redistributing, provide the license, mark modified files and preserve applicable copyright, attribution and supplied NOTICE information as required. This summary does not replace the license or impose additional UI attribution.
+
+Users are responsible for the legal compliance and authorization of their own modifications, deployment, data processing and operations. This reminder is not an additional license condition.
+
+Except as required by applicable law or agreed in writing, the software is provided on an "AS IS" basis. Sections 7 and 8 govern warranty disclaimers and liability limits. Providing the project does not endorse downstream activities or assume users' contractual commitments. This statement does not exclude liability that cannot lawfully be excluded.
 
 ## Maintainer
 

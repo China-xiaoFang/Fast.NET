@@ -55,7 +55,7 @@ An effective pull request should:
 
 1. Address one clear problem without unrelated formatting changes.
 2. Explain motivation, design decisions, compatibility impact, and validation results.
-3. Highlight breaking changes and provide migration guidance.
+3. Explain current API behavior and update callers, tests, and documentation.
 4. Link the related issue when one exists.
 5. Use a clear commit message, such as `fix: prevent duplicate cache population` or `feat: add an infrastructure module`.
 

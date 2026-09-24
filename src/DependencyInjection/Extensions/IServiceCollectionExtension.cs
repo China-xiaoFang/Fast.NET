@@ -1,26 +1,10 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
-using System.Collections.Concurrent;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fast.DependencyInjection;
@@ -32,9 +16,14 @@ namespace Fast.DependencyInjection;
 public static class IServiceCollectionExtension
 {
     /// <summary>
-    /// 类型名称集合
+    /// 当前进程唯一宿主的命名服务映射
     /// </summary>
-    private static readonly ConcurrentDictionary<string, Type> TypeNamedCollection = new();
+    private static readonly Dictionary<string, NamedServiceRegistration> NamedTypes = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// 当前进程唯一宿主中存在歧义的命名服务别名
+    /// </summary>
+    private static readonly HashSet<string> AmbiguousNamedAliases = new(StringComparer.Ordinal);
 
     /// <summary>
     /// 添加依赖注入服务
@@ -45,42 +34,61 @@ public static class IServiceCollectionExtension
     {
         Debugging.Info("Registering dependency injection......");
 
-        var IDependencyType = typeof(IDependency);
+        Type dependencyType = typeof(IDependency);
+        var assemblies = MAppContext.Assemblies.ToHashSet();
+        var lifetimeInterfaces = new HashSet<Type>
+        {
+            typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency)
+        };
+
+        var namedRegistrations = new List<NamedServiceRegistration>();
 
         // 获取程序集需要依赖注入的类型
-        var injectTypes = MAppContext.EffectiveTypes.Where(wh =>
-            IDependencyType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract);
-
-        var lifetimeInterfaces = new[] {typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency)};
+        Type[] injectTypes = MAppContext
+            .EffectiveTypes.Where(wh => dependencyType.IsAssignableFrom(wh) && wh.IsClass && !wh.IsInterface && !wh.IsAbstract)
+            .OrderBy(value => value.FullName, StringComparer.Ordinal)
+            .ToArray();
 
         // 执行依赖注入
-        foreach (var type in injectTypes)
+        foreach (Type type in injectTypes)
         {
-            var interfaces = type.GetInterfaces();
+            Type[] interfaces = type
+                .GetInterfaces()
+                .OrderBy(value => value.FullName, StringComparer.Ordinal)
+                .ToArray();
 
             // 获取所有能注册的接口
-            var canInjectInterfaces = interfaces.Where(u => u != typeof(IDisposable)
-                                                            && u != typeof(IAsyncDisposable)
-                                                            && u != typeof(IDependency)
-                                                            && !lifetimeInterfaces.Contains(u)
-                                                            && MAppContext.Assemblies.Contains(u.Assembly)
-                                                            && ((!type.IsGenericType && !u.IsGenericType)
-                                                                || (type.IsGenericType
-                                                                    && u.IsGenericType
-                                                                    && type.GetGenericArguments()
-                                                                        .Length
-                                                                    == u.GetGenericArguments()
-                                                                        .Length)));
+            Type[] canInjectInterfaces = interfaces
+                .Where(u => u != typeof(IDisposable)
+                            && u != typeof(IAsyncDisposable)
+                            && u != typeof(IDependency)
+                            && !lifetimeInterfaces.Contains(u)
+                            && assemblies.Contains(u.Assembly)
+                            && (!type.ContainsGenericParameters
+                                || (u.IsGenericType
+                                    && u.ContainsGenericParameters
+                                    && type.GetGenericArguments()
+                                        .Length
+                                    == u.GetGenericArguments()
+                                        .Length)))
+                .ToArray();
 
             // 获取生存周期类型
-            var dependencyType = interfaces.Last(u => lifetimeInterfaces.Contains(u));
+            Type[] dependencies = interfaces
+                .Where(lifetimeInterfaces.Contains)
+                .ToArray();
+            if (dependencies.Length != 1)
+                throw new InvalidOperationException($"类型 {type.FullName} 必须声明且只能声明一个生命周期标记。");
+            Type lifetimeType = dependencies[0];
 
             // 注册服务
-            RegisterService(services, dependencyType, type, canInjectInterfaces);
+            RegisterService(services, lifetimeType, type, canInjectInterfaces);
 
             // 缓存类型注册
-            TypeNamedCollection.TryAdd(type.Name, type);
+            namedRegistrations.Add(new NamedServiceRegistration(FixedGenericType(type), lifetimeType));
         }
+
+        BuildNamedTypes(namedRegistrations);
 
         // 注册命名服务（接口多实现）
         RegisterNamedService<ITransientDependency>(services);
@@ -97,61 +105,94 @@ public static class IServiceCollectionExtension
     /// <param name="dependencyType">用于确定服务生命周期的依赖标记类型</param>
     /// <param name="type">类型</param>
     /// <param name="canInjectInterfaces">能被注册的接口</param>
-    private static void RegisterService(IServiceCollection services, Type dependencyType, Type type,
+    private static void RegisterService(IServiceCollection services,
+        Type dependencyType,
+        Type type,
         IEnumerable<Type> canInjectInterfaces)
     {
         // 立即执行接口筛选，避免重复枚举，并用于判断是否存在可注册的业务接口
-        var interfaces = canInjectInterfaces.ToArray();
+        Type[] interfaces = canInjectInterfaces.ToArray();
+        Type fixedType = FixedGenericType(type);
+        ServiceLifetime lifetime = TryGetServiceLifetime(dependencyType);
 
-        // 未实现业务接口时按具体类型注册，支持直接注入仅包含生命周期标记的实现类
-        if (interfaces.Length == 0)
+        // 开放泛型不支持 factory 注册，保留实现类直接映射的容器约定
+        if (fixedType.ContainsGenericParameters)
         {
-            Register(services, dependencyType, type);
+            if (interfaces.Length > 1)
+                throw new InvalidOperationException($"开放泛型 {fixedType.FullName} 实现了多个业务接口，无法在 Microsoft DI 中共享同一实例。");
+
+            if (interfaces.Length == 0)
+            {
+                services.Add(ServiceDescriptor.Describe(fixedType, fixedType, lifetime));
+                return;
+            }
+
+            foreach (Type inter in interfaces)
+            {
+                services.Add(ServiceDescriptor.Describe(FixedGenericType(inter), fixedType, lifetime));
+            }
+
             return;
         }
 
-        // 一个实现可同时暴露多个业务接口，并共享同一生命周期规则
-        foreach (var inter in interfaces)
+        // 具体类型是唯一实例入口，业务接口只做定向别名
+        services.Add(ServiceDescriptor.Describe(fixedType, fixedType, lifetime));
+
+        foreach (Type inter in interfaces)
         {
-            Register(services, dependencyType, type, inter);
+            Type fixedInter = FixedGenericType(inter);
+            services.Add(ServiceDescriptor.Describe(fixedInter, provider => provider.GetRequiredService(fixedType), lifetime));
         }
     }
 
     /// <summary>
-    /// 注册类型
-    /// </summary>
-    /// <param name="services">服务</param>
-    /// <param name="dependencyType">用于确定服务生命周期的依赖标记类型</param>
-    /// <param name="type">类型</param>
-    /// <param name="inter">接口</param>
-    private static void Register(IServiceCollection services, Type dependencyType, Type type, Type inter = null)
-    {
-        // 修复泛型注册类型
-        var fixedType = FixedGenericType(type);
-        var fixedInter = inter == null ? null : FixedGenericType(inter);
-        var lifetime = TryGetServiceLifetime(dependencyType);
-
-        if (fixedInter == null)
-        {
-            services.Add(ServiceDescriptor.Describe(fixedType, fixedType, lifetime));
-        }
-        else
-        {
-            services.Add(ServiceDescriptor.Describe(fixedInter, fixedType, lifetime));
-        }
-    }
-
-    /// <summary>
-    /// 修复泛型类型注册类型问题
+    /// 将包含未绑定参数的泛型规范化为定义，保留闭合泛型和嵌套类型。
     /// </summary>
     /// <param name="type">类型</param>
-    /// <returns>修复泛型类型注册类型问题</returns>
+    /// <returns>用于服务注册的原类型或泛型定义</returns>
     private static Type FixedGenericType(Type type)
     {
-        if (!type.IsGenericType)
-            return type;
+        return type.IsGenericType && type.ContainsGenericParameters ? type.GetGenericTypeDefinition() : type;
+    }
 
-        return type.Assembly.GetType($"{type.Namespace}.{type.Name}");
+    /// <summary>
+    /// 构建命名服务映射
+    /// </summary>
+    /// <param name="registrations">命名服务注册</param>
+    private static void BuildNamedTypes(IEnumerable<NamedServiceRegistration> registrations)
+    {
+        NamedTypes.Clear();
+        AmbiguousNamedAliases.Clear();
+
+        foreach (NamedServiceRegistration registration in registrations)
+        {
+            Type implementation = registration.Implementation;
+            string canonicalName = implementation.AssemblyQualifiedName ?? implementation.FullName ?? implementation.Name;
+            NamedTypes.Add(canonicalName, registration);
+
+            AddNamedAlias(implementation.FullName, registration);
+            AddNamedAlias(implementation.Name, registration);
+        }
+    }
+
+    /// <summary>
+    /// 添加无歧义的命名服务别名
+    /// </summary>
+    /// <param name="alias">别名</param>
+    /// <param name="registration">命名服务注册</param>
+    private static void AddNamedAlias(string alias, NamedServiceRegistration registration)
+    {
+        if (string.IsNullOrWhiteSpace(alias) || AmbiguousNamedAliases.Contains(alias))
+            return;
+
+        if (NamedTypes.TryGetValue(alias, out NamedServiceRegistration existingRegistration)
+            && existingRegistration == registration)
+            return;
+        if (NamedTypes.TryAdd(alias, registration))
+            return;
+
+        NamedTypes.Remove(alias);
+        AmbiguousNamedAliases.Add(alias);
     }
 
     /// <summary>
@@ -161,19 +202,25 @@ public static class IServiceCollectionExtension
     /// <typeparam name="TDependency">要注册的依赖服务类型</typeparam>
     private static void RegisterNamedService<TDependency>(IServiceCollection services) where TDependency : IDependency
     {
-        var lifetime = TryGetServiceLifetime(typeof(TDependency));
+        ServiceLifetime lifetime = TryGetServiceLifetime(typeof(TDependency));
 
         // 注册命名服务
-        services.Add(ServiceDescriptor.Describe(typeof(Func<string, TDependency, object>), provider =>
-        {
-            object ResolveService(string named, TDependency _)
+        services.Add(ServiceDescriptor.Describe(typeof(Func<string, TDependency, object>),
+            provider =>
             {
-                var isRegister = TypeNamedCollection.TryGetValue(named, out var serviceType);
-                return isRegister ? provider.GetService(serviceType) : null;
-            }
+                object ResolveService(string named, TDependency _)
+                {
+                    if (!NamedTypes.TryGetValue(named, out NamedServiceRegistration registration)
+                        || registration.Dependency != typeof(TDependency))
+                        return null;
+                    if (registration.Implementation.ContainsGenericParameters)
+                        throw new InvalidOperationException("开放泛型命名服务需要明确类型参数，请通过闭合接口解析。");
+                    return provider.GetService(registration.Implementation);
+                }
 
-            return (Func<string, TDependency, object>) ResolveService;
-        }, lifetime));
+                return (Func<string, TDependency, object>)ResolveService;
+            },
+            lifetime));
     }
 
     /// <summary>
@@ -183,21 +230,19 @@ public static class IServiceCollectionExtension
     /// <returns>根据依赖接口类型解析 ServiceLifetime 对象</returns>
     private static ServiceLifetime TryGetServiceLifetime(Type dependencyType)
     {
-        if (dependencyType == typeof(ITransientDependency))
+        return dependencyType switch
         {
-            return ServiceLifetime.Transient;
-        }
-
-        if (dependencyType == typeof(IScopedDependency))
-        {
-            return ServiceLifetime.Scoped;
-        }
-
-        if (dependencyType == typeof(ISingletonDependency))
-        {
-            return ServiceLifetime.Singleton;
-        }
-
-        throw new InvalidCastException("Invalid service registration lifetime.");
+            _ when dependencyType == typeof(ITransientDependency) => ServiceLifetime.Transient,
+            _ when dependencyType == typeof(IScopedDependency) => ServiceLifetime.Scoped,
+            _ when dependencyType == typeof(ISingletonDependency) => ServiceLifetime.Singleton,
+            _ => throw new InvalidCastException("Invalid service registration lifetime.")
+        };
     }
+
+    /// <summary>
+    /// 命名服务注册
+    /// </summary>
+    /// <param name="Implementation">实现类型</param>
+    /// <param name="Dependency">生命周期标记类型</param>
+    private readonly record struct NamedServiceRegistration(Type Implementation, Type Dependency);
 }

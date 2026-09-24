@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -78,7 +63,7 @@ public static class MAppContext
     public static readonly IEnumerable<Type> ProjectEffectiveTypes;
 
     /// <summary>
-    /// 未托管的对象集合
+    /// 应用级显式登记的可释放对象集合
     /// </summary>
     public static ConcurrentBag<IDisposable> UnmanagedObjects { get; private set; }
 
@@ -91,11 +76,12 @@ public static class MAppContext
         var entryAssembly = Assembly.GetEntryAssembly();
 
         // 获取入口程序集版本号
-        AssemblyVersion = entryAssembly?.GetName()
+        AssemblyVersion = entryAssembly
+            ?.GetName()
             .Version?.ToString();
 
         // 获取应用运行库
-        var runtimeLibraries = entryAssembly.GetEntryRuntimeLibraries();
+        List<DependencyLibrary> runtimeLibraries = entryAssembly.GetEntryRuntimeLibraries();
         RuntimeLibraries = runtimeLibraries;
 
         // 获取所有程序集
@@ -107,16 +93,17 @@ public static class MAppContext
             .ToList());
 
         // 获取有效的类型集合
-        Types = Assemblies.SelectMany(assembly => assembly.GetAssemblyTypes())
+        Types = Assemblies
+            .SelectMany(assembly => assembly.GetAssemblyTypes())
             .ToList();
 
         // 获取排除使用了 SuppressSnifferAttribute 特性的类型
-        var suppressSnifferAttributeType = typeof(SuppressSnifferAttribute);
-        EffectiveTypes = Assemblies.SelectMany(assembly =>
-                assembly.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)))
+        Type suppressSnifferAttributeType = typeof(SuppressSnifferAttribute);
+        EffectiveTypes = Assemblies
+            .SelectMany(assembly => assembly.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)))
             .ToList();
-        ProjectEffectiveTypes = ProjectAssemblies.SelectMany(assembly =>
-                assembly.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)))
+        ProjectEffectiveTypes = ProjectAssemblies
+            .SelectMany(assembly => assembly.GetAssemblyTypes(wh => !wh.IsDefined(suppressSnifferAttributeType, false)))
             .ToList();
     }
 
@@ -133,7 +120,7 @@ public static class MAppContext
     {
         ArgumentNullException.ThrowIfNull(action);
 
-        var output = Console.Out;
+        TextWriter output = Console.Out;
         lock (output)
         {
             var writer = new ConsoleWriter(output);
@@ -177,7 +164,7 @@ public static class MAppContext
         // 默认后缀
         const string defaultSuffix = "Options";
 
-        var optionsType = typeof(TOptions);
+        Type optionsType = typeof(TOptions);
 
         // 判断是否已 “Options” 结尾
         return optionsType.Name.EndsWith(defaultSuffix, StringComparison.Ordinal)
@@ -192,33 +179,34 @@ public static class MAppContext
     /// <param name="rootServices">应用根服务提供器</param>
     /// <param name="internalServices">框架内部使用的服务注册集合</param>
     /// <param name="httpContext">当前请求上下文</param>
-    /// <returns>解析后的服务提供器</returns>
-    public static IServiceProvider GetServiceProvider(Type serviceType, IServiceProvider rootServices,
-        IServiceCollection internalServices, HttpContext httpContext)
+    /// <returns>请求所属的服务提供器，或已确认单例服务的根提供器</returns>
+    /// <exception cref="InvalidOperationException">没有可用容器，或在非请求环境未提供非单例服务的显式作用域</exception>
+    /// <remarks>不再创建隐式作用域；后台任务应持有并释放自己创建的作用域。</remarks>
+    public static IServiceProvider GetServiceProvider(Type serviceType,
+        IServiceProvider rootServices,
+        IServiceCollection internalServices,
+        HttpContext httpContext)
     {
-        // 第一选择，判断是否是单例注册且单例服务不为空，如果是直接返回根服务提供器
-        if (rootServices != null
-            && internalServices.Where(u =>
-                    u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
-                .Any(u => u.Lifetime == ServiceLifetime.Singleton))
-            return rootServices;
+        ArgumentNullException.ThrowIfNull(serviceType);
 
-        // 第二选择是获取 HttpContext 对象的 RequestServices
+        // 优先获取 HttpContext 对象的 RequestServices
         if (httpContext?.RequestServices != null)
             return httpContext.RequestServices;
 
-        // 第三选择，创建新的作用域并返回服务提供器
-        if (rootServices != null)
-        {
-            var scoped = rootServices.CreateScope();
-            UnmanagedObjects.Add(scoped);
-            return scoped.ServiceProvider;
-        }
+        if (rootServices == null)
+            throw new InvalidOperationException("根服务容器尚未初始化，不能临时构造第二个服务容器。");
 
-        // 第四选择，构建新的服务对象（性能最差）
-        var serviceProvider = internalServices.BuildServiceProvider();
-        UnmanagedObjects.Add(serviceProvider);
-        return serviceProvider;
+        // 与 DI 的最后注册、闭合类型优先语义保持一致，不能因较早的 singleton 注册绕过当前 scoped 合同。
+        ServiceDescriptor descriptor =
+            internalServices?.LastOrDefault(item => !item.IsKeyedService && item.ServiceType == serviceType);
+        if (descriptor == null && serviceType.IsConstructedGenericType)
+            descriptor = internalServices?.LastOrDefault(item => !item.IsKeyedService
+                                                                 && item.ServiceType == serviceType.GetGenericTypeDefinition());
+        if (descriptor?.Lifetime == ServiceLifetime.Singleton)
+            return rootServices;
+
+        throw new InvalidOperationException(
+            "非请求环境解析非单例服务时，请由调用方创建并释放作用域，通过 scope.ServiceProvider 直接解析，或传给 FastContext.GetService 的 serviceProvider 参数。");
     }
 
     /// <summary>
@@ -229,7 +217,8 @@ public static class MAppContext
     /// <returns>获取到的当前程序启动 Uri 信息</returns>
     public static Uri GetCurrentStartupUri(IServer server)
     {
-        var addresses = server?.Features.Get<IServerAddressesFeature>()
+        string addresses = server
+            ?.Features.Get<IServerAddressesFeature>()
             ?.Addresses.FirstOrDefault();
 
         if (string.IsNullOrEmpty(addresses))
@@ -289,12 +278,12 @@ public static class MAppContext
     }
 
     /// <summary>
-    /// 释放所有未托管的对象
+    /// 释放显式登记的应用级对象；不能用于清理其他请求或任务拥有的作用域。
     /// </summary>
     public static void DisposeUnmanagedObjects()
     {
         // 逐个移除后再释放，避免 Clear() 丢弃遍历期间并发加入但尚未释放的对象
-        while (UnmanagedObjects.TryTake(out var dsp))
+        while (UnmanagedObjects.TryTake(out IDisposable dsp))
         {
             dsp.Dispose();
         }

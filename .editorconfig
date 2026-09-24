@@ -1,161 +1,266 @@
-﻿
+# Fast .NET 推荐配置
+# 适用于现代 C# 项目；文件范围命名空间需要 C# 10 或更高版本。
+# 仅统一编辑与代码风格，不设置目标框架、语言版本、Nullable 或构建告警策略。
+
 root = true
 
+# 通用文本规则
 [*]
 charset = utf-8
+end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# C# 与 Razor
+[*.{cs,csx,razor,cshtml}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# MSBuild、资源与 XML
+[*.{csproj,fsproj,vbproj,props,targets,nuspec,resx,xml,config,xaml,axaml}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# JSON 与 YAML
+[*.{json,jsonc,yml,yaml}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# Markdown 行末双空格可用于显式换行。
 [*.md]
 trim_trailing_whitespace = false
 
-[*.bat]
-charset = unset
+# Windows 批处理使用 CRLF。
+[*.{bat,cmd}]
 end_of_line = crlf
 
-[*.{appxmanifest,axml,build,config,csproj,dbml,discomap,dtd,jsproj,lsproj,njsproj,nuspec,proj,props,resw,resx,StyleCop,targets,tasks,vbproj,xml,xsd}]
-indent_style = tab
-indent_size = tab
-tab_width = 4
+[*.cs]
 
-[*.{asax,ascx,aspx,axaml,cs,cshtml,htm,html,master,paml,razor,skin,vb,xaml,xamlx,xoml}]
-indent_style = space
-indent_size = 4
-tab_width = 4
+# 自有源码文件头；第三方源码保留原有版权与许可声明。
+# 模板正文不包含 //，使用 \n 表示换行；IDE0073 提供检查与修复。
+file_header_template = Copyright © 2018-Now 小方\nSPDX-License-Identifier: Apache-2.0\n\n本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。\n本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。\n版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
+dotnet_diagnostic.IDE0073.severity = suggestion
 
-[*]
+# using 与命名空间
+# System 命名空间优先，using 分组之间不添加空行。
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:suggestion
+csharp_style_namespace_declarations = file_scoped:suggestion
 
-# Microsoft .NET properties
-csharp_preferred_modifier_order = public, private, protected, internal, file, new, static, abstract, virtual, sealed, readonly, override, extern, unsafe, volatile, async, required:suggestion
-csharp_space_after_cast = true
-csharp_style_prefer_utf8_string_literals = true:suggestion
-csharp_style_var_elsewhere = true:suggestion
-csharp_style_var_for_built_in_types = true:suggestion
-csharp_style_var_when_type_is_apparent = true:suggestion
-dotnet_naming_rule.constants_rule.import_to_resharper = True
-dotnet_naming_rule.constants_rule.resharper_description = Constant fields (not private)
-dotnet_naming_rule.constants_rule.resharper_guid = 669e5282-fb4b-4e90-91e7-07d269d04b60
-dotnet_naming_rule.constants_rule.severity = none
-dotnet_naming_rule.constants_rule.style = all_upper_style
-dotnet_naming_rule.constants_rule.symbols = constants_symbols
-dotnet_naming_rule.private_constants_rule.import_to_resharper = True
-dotnet_naming_rule.private_constants_rule.resharper_description = Constant fields (private)
-dotnet_naming_rule.private_constants_rule.resharper_guid = 236f7aa5-7b06-43ca-bf2a-9b31bfcff09a
-dotnet_naming_rule.private_constants_rule.severity = none
-dotnet_naming_rule.private_constants_rule.style = all_upper_style
-dotnet_naming_rule.private_constants_rule.symbols = private_constants_symbols
-dotnet_naming_rule.private_instance_fields_rule.import_to_resharper = True
-dotnet_naming_rule.private_instance_fields_rule.resharper_description = Instance fields (private)
-dotnet_naming_rule.private_instance_fields_rule.resharper_guid = 4a98fdf6-7d98-4f5a-afeb-ea44ad98c70c
-dotnet_naming_rule.private_instance_fields_rule.severity = none
-dotnet_naming_rule.private_instance_fields_rule.style = lower_camel_case_style_1
-dotnet_naming_rule.private_instance_fields_rule.symbols = private_instance_fields_symbols
-dotnet_naming_rule.private_static_fields_rule.import_to_resharper = True
-dotnet_naming_rule.private_static_fields_rule.resharper_description = Static fields (private)
-dotnet_naming_rule.private_static_fields_rule.resharper_guid = f9fce829-e6f4-4cb2-80f1-5497c44f51df
-dotnet_naming_rule.private_static_fields_rule.severity = none
-dotnet_naming_rule.private_static_fields_rule.style = lower_camel_case_style
-dotnet_naming_rule.private_static_readonly_rule.import_to_resharper = True
-dotnet_naming_rule.private_static_readonly_rule.resharper_description = Static readonly fields (private)
-dotnet_naming_rule.private_static_readonly_rule.resharper_guid = 15b5b1f1-457c-4ca6-b278-5615aedc07d3
-dotnet_naming_rule.private_static_readonly_rule.severity = none
-dotnet_naming_rule.private_static_readonly_rule.style = lower_camel_case_style
-dotnet_naming_rule.public_fields_rule.import_to_resharper = True
-dotnet_naming_rule.public_fields_rule.resharper_description = Instance fields (not private)
-dotnet_naming_rule.public_fields_rule.resharper_guid = 53eecf85-d821-40e8-ac97-fdb734542b84
-dotnet_naming_rule.public_fields_rule.severity = none
-dotnet_naming_rule.public_fields_rule.style = m_upper_camel_case_style
-dotnet_naming_rule.public_fields_rule.symbols = public_fields_symbols
-dotnet_naming_rule.public_static_fields_rule.import_to_resharper = True
-dotnet_naming_rule.public_static_fields_rule.resharper_description = Static fields (not private)
-dotnet_naming_rule.public_static_fields_rule.resharper_guid = 70345118-4b40-4ece-937c-bbeb7a0b2e70
-dotnet_naming_rule.public_static_fields_rule.severity = none
-dotnet_naming_rule.public_static_fields_rule.style = m_upper_camel_case_style
-dotnet_naming_rule.static_readonly_rule.import_to_resharper = True
-dotnet_naming_rule.static_readonly_rule.resharper_description = Static readonly fields (not private)
-dotnet_naming_rule.static_readonly_rule.resharper_guid = c873eafb-d57f-481d-8c93-77f6863c2f88
-dotnet_naming_rule.static_readonly_rule.severity = none
-dotnet_naming_rule.static_readonly_rule.style = upper_camel_case_style
-dotnet_naming_style.all_upper_style.capitalization = all_upper
-dotnet_naming_style.all_upper_style.word_separator = _
-dotnet_naming_style.lower_camel_case_style.capitalization = camel_case
-dotnet_naming_style.m_upper_camel_case_style.capitalization = pascal_case
-dotnet_naming_style.m_upper_camel_case_style.required_prefix = m
-dotnet_naming_style.upper_camel_case_style.capitalization = pascal_case
-dotnet_naming_style.lower_camel_case_style_1.capitalization = camel_case
-dotnet_naming_style.lower_camel_case_style_1.required_prefix = _
-dotnet_naming_symbols.constants_symbols.applicable_accessibilities = public,internal,protected,protected_internal,private_protected
-dotnet_naming_symbols.constants_symbols.applicable_kinds = field
-dotnet_naming_symbols.constants_symbols.required_modifiers = const
-dotnet_naming_symbols.constants_symbols.resharper_applicable_kinds = constant_field
-dotnet_naming_symbols.constants_symbols.resharper_required_modifiers = any
-dotnet_naming_symbols.private_constants_symbols.applicable_accessibilities = private
-dotnet_naming_symbols.private_constants_symbols.applicable_kinds = field
-dotnet_naming_symbols.private_constants_symbols.required_modifiers = const
-dotnet_naming_symbols.private_constants_symbols.resharper_applicable_kinds = constant_field
-dotnet_naming_symbols.private_constants_symbols.resharper_required_modifiers = any
-dotnet_naming_symbols.private_instance_fields_symbols.applicable_accessibilities = private
-dotnet_naming_symbols.private_instance_fields_symbols.applicable_kinds = field
-dotnet_naming_symbols.private_instance_fields_symbols.resharper_applicable_kinds = field,readonly_field
-dotnet_naming_symbols.private_instance_fields_symbols.resharper_required_modifiers = instance
-dotnet_naming_symbols.public_fields_symbols.applicable_accessibilities = public,internal,protected,protected_internal,private_protected
-dotnet_naming_symbols.public_fields_symbols.applicable_kinds = field
-dotnet_naming_symbols.public_fields_symbols.resharper_applicable_kinds = field,readonly_field
-dotnet_naming_symbols.public_fields_symbols.resharper_required_modifiers = instance
-dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:none
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:none
-dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:none
+# 修饰符与成员访问
+# 非接口成员显式声明可见性，不添加多余的 this. 限定。
+csharp_preferred_modifier_order = public, private, protected, internal, file, static, extern, new, virtual, abstract, sealed, override, readonly, unsafe, required, volatile, async:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_readonly_field = true:suggestion
+
+# 类型表达
+# 使用 C# 关键字类型；右侧类型明显时使用 var，其余场景优先显式类型。
 dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
 dotnet_style_predefined_type_for_member_access = true:suggestion
-dotnet_style_qualification_for_event = false:suggestion
-dotnet_style_qualification_for_field = false:suggestion
-dotnet_style_qualification_for_method = false:suggestion
-dotnet_style_qualification_for_property = false:suggestion
-dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
 
-# ReSharper properties
+# 大括号与换行
+# 使用 Allman 布局，控制语句保留大括号。
+csharp_prefer_braces = true:suggestion
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# 缩进
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = one_less_than_current
+
+# 空格
+csharp_space_around_binary_operators = before_and_after
+csharp_space_after_cast = false
+csharp_space_after_comma = true
+csharp_space_before_comma = false
+csharp_space_after_dot = false
+csharp_space_before_dot = false
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_before_open_square_brackets = false
+csharp_space_between_square_brackets = false
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_parentheses = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+
+# 单行成员
+# 保留简洁的单行块与自动属性，不将多条普通语句合并到同一行。
+csharp_preserve_single_line_blocks = true
+csharp_preserve_single_line_statements = false
+csharp_style_expression_bodied_properties = when_on_single_line:suggestion
+csharp_style_expression_bodied_accessors = when_on_single_line:suggestion
+
+# 风格提示
+# 仅设置风格诊断，不覆盖正确性、安全性或可空性诊断。
+dotnet_diagnostic.IDE0005.severity = suggestion
+dotnet_diagnostic.IDE0055.severity = suggestion
+dotnet_diagnostic.IDE1006.severity = suggestion
+
+# 命名风格
+# 类型、常规成员和常量采用 PascalCase；接口采用 I 前缀。
+# 私有/内部实例字段采用 _camelCase，私有/内部静态字段采用 s_camelCase。
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_naming_style.interface_case.capitalization = pascal_case
+dotnet_naming_style.interface_case.required_prefix = I
+dotnet_naming_style.instance_field_case.capitalization = camel_case
+dotnet_naming_style.instance_field_case.required_prefix = _
+dotnet_naming_style.static_field_case.capitalization = camel_case
+dotnet_naming_style.static_field_case.required_prefix = s_
+
+# 类型与命名空间；class、struct 分别包含对应的 record 类型。
+dotnet_naming_symbols.types.applicable_kinds = namespace, class, struct, enum, delegate
+dotnet_naming_symbols.types.applicable_accessibilities = *
+dotnet_naming_rule.types_pascal.symbols = types
+dotnet_naming_rule.types_pascal.style = pascal_case
+dotnet_naming_rule.types_pascal.severity = suggestion
+
+# 接口
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+dotnet_naming_rule.interfaces_prefixed.symbols = interfaces
+dotnet_naming_rule.interfaces_prefixed.style = interface_case
+dotnet_naming_rule.interfaces_prefixed.severity = suggestion
+
+# 属性、方法、事件与局部函数
+dotnet_naming_symbols.members.applicable_kinds = property, method, event, local_function
+dotnet_naming_symbols.members.applicable_accessibilities = *
+dotnet_naming_rule.members_pascal.symbols = members
+dotnet_naming_rule.members_pascal.style = pascal_case
+dotnet_naming_rule.members_pascal.severity = suggestion
+
+# 公开及受保护字段不添加 m 或下划线前缀。
+dotnet_naming_symbols.visible_fields.applicable_kinds = field
+dotnet_naming_symbols.visible_fields.applicable_accessibilities = public, protected, protected_internal, private_protected
+dotnet_naming_rule.visible_fields_pascal.symbols = visible_fields
+dotnet_naming_rule.visible_fields_pascal.style = pascal_case
+dotnet_naming_rule.visible_fields_pascal.severity = suggestion
+
+# 私有/内部字段；静态字段由下方更具体的规则处理。
+dotnet_naming_symbols.implementation_fields.applicable_kinds = field
+dotnet_naming_symbols.implementation_fields.applicable_accessibilities = private, internal
+dotnet_naming_rule.implementation_fields_underscore.symbols = implementation_fields
+dotnet_naming_rule.implementation_fields_underscore.style = instance_field_case
+dotnet_naming_rule.implementation_fields_underscore.severity = suggestion
+
+dotnet_naming_symbols.implementation_static_fields.applicable_kinds = field
+dotnet_naming_symbols.implementation_static_fields.applicable_accessibilities = private, internal
+dotnet_naming_symbols.implementation_static_fields.required_modifiers = static
+dotnet_naming_rule.implementation_static_fields_prefixed.symbols = implementation_static_fields
+dotnet_naming_rule.implementation_static_fields_prefixed.style = static_field_case
+dotnet_naming_rule.implementation_static_fields_prefixed.severity = suggestion
+
+# 字段常量与局部常量
+dotnet_naming_symbols.constants.applicable_kinds = field, local
+dotnet_naming_symbols.constants.applicable_accessibilities = *
+dotnet_naming_symbols.constants.required_modifiers = const
+dotnet_naming_rule.constants_pascal.symbols = constants
+dotnet_naming_rule.constants_pascal.style = pascal_case
+dotnet_naming_rule.constants_pascal.severity = suggestion
+
+# const 隐含 static，交集规则确保私有/内部常量仍采用 PascalCase。
+dotnet_naming_symbols.implementation_constants.applicable_kinds = field
+dotnet_naming_symbols.implementation_constants.applicable_accessibilities = private, internal
+dotnet_naming_symbols.implementation_constants.required_modifiers = const
+dotnet_naming_rule.implementation_constants_pascal.symbols = implementation_constants
+dotnet_naming_rule.implementation_constants_pascal.style = pascal_case
+dotnet_naming_rule.implementation_constants_pascal.severity = suggestion
+
+# 普通参数与局部变量采用 camelCase；record 位置参数采用 PascalCase。
+# 不以统一 parameter 规则覆盖这两类不同语义的命名。
+
+# ReSharper / Rider 格式补充
+# 行宽是折行目标，配合工具的 Wrap long lines 设置使用。
 resharper_csharp_max_line_length = 130
-resharper_csharp_stick_comment = false
-resharper_csharp_wrap_before_binary_opsign = true
-resharper_keep_existing_embedded_arrangement = false
-resharper_keep_existing_expr_member_arrangement = false
-resharper_keep_existing_initializer_arrangement = false
-resharper_keep_existing_linebreaks = false
-resharper_nested_ternary_style = compact
-resharper_place_accessorholder_attribute_on_same_line = false
-resharper_place_field_attribute_on_same_line = false
-resharper_place_simple_accessor_on_single_line = false
-resharper_place_simple_embedded_statement_on_same_line = false
-resharper_space_within_single_line_array_initializer_braces = false
-resharper_use_indent_from_vs = false
-resharper_wrap_chained_binary_expressions = chop_if_long
-resharper_wrap_chained_binary_patterns = chop_if_long
-resharper_wrap_chained_method_calls = chop_always
-resharper_wrap_linq_expressions = chop_always
 
-# ReSharper inspection severities
-resharper_arrange_redundant_parentheses_highlighting = hint
+# 按配置重新安排换行，不锁定已有语句、表达式体和初始化器的布局。
+resharper_csharp_keep_existing_linebreaks = false
+resharper_csharp_keep_existing_embedded_arrangement = false
+resharper_csharp_keep_existing_expr_member_arrangement = false
+resharper_csharp_keep_existing_initializer_arrangement = false
+
+# 链式方法逐项换行，点号位于新行；属性与后续方法之间不额外断行。
+resharper_csharp_wrap_chained_method_calls = chop_always
+resharper_csharp_wrap_before_first_method_call = true
+resharper_csharp_wrap_after_dot_in_method_calls = false
+resharper_csharp_wrap_after_property_in_chained_method_calls = false
+resharper_csharp_wrap_linq_expressions = chop_always
+
+# 长参数列表和长表达式分项换行；二元运算符位于新行开头。
+resharper_csharp_wrap_parameters_style = chop_if_long
+resharper_csharp_wrap_arguments_style = chop_if_long
+resharper_csharp_wrap_before_binary_opsign = true
+resharper_csharp_wrap_chained_binary_expressions = chop_if_long
+resharper_csharp_wrap_before_binary_pattern_op = true
+resharper_csharp_wrap_chained_binary_patterns = chop_if_long
+resharper_csharp_nested_ternary_style = compact
+
+# 类型及成员特性独立成行。
+resharper_csharp_place_type_attribute_on_same_line = false
+resharper_csharp_place_method_attribute_on_same_line = false
+resharper_csharp_place_accessorholder_attribute_on_same_line = false
+resharper_csharp_place_field_attribute_on_same_line = false
+
+# 自动属性保持单行；带实现的块体成员和控制语句分行。
+resharper_csharp_place_abstract_accessorholder_on_single_line = true
+resharper_csharp_place_simple_accessorholder_on_single_line = false
+resharper_csharp_place_simple_accessor_on_single_line = false
+resharper_csharp_place_simple_method_on_single_line = false
+resharper_csharp_place_simple_embedded_statement_on_same_line = false
+resharper_csharp_place_simple_embedded_block_on_same_line = false
+
+# 注释跟随代码缩进，单行初始化表达式的大括号内侧不额外加空格。
+resharper_csharp_stick_comment = false
+resharper_csharp_space_within_single_line_array_initializer_braces = false
+
+# ReSharper / Rider 风格提示
+resharper_inconsistent_naming_highlighting = hint
 resharper_arrange_this_qualifier_highlighting = hint
 resharper_arrange_type_member_modifiers_highlighting = hint
 resharper_arrange_type_modifiers_highlighting = hint
-resharper_assign_null_to_not_null_attribute_highlighting = none
 resharper_built_in_type_reference_style_for_member_access_highlighting = hint
 resharper_built_in_type_reference_style_highlighting = hint
-resharper_class_never_instantiated_global_highlighting = none
-resharper_class_with_virtual_members_never_inherited_global_highlighting = none
-resharper_collection_never_updated_global_highlighting = none
-resharper_convert_to_primary_constructor_highlighting = hint
-resharper_inconsistent_naming_highlighting = none
-resharper_member_can_be_protected_global_highlighting = none
-resharper_redundant_base_qualifier_highlighting = warning
 resharper_suggest_var_or_type_built_in_types_highlighting = hint
 resharper_suggest_var_or_type_elsewhere_highlighting = hint
 resharper_suggest_var_or_type_simple_types_highlighting = hint
+resharper_redundant_base_qualifier_highlighting = hint
 
-[*.{appxmanifest,asax,ascx,aspx,axaml,axml,build,config,cs,cshtml,csproj,dbml,discomap,dtd,htm,html,jsproj,lsproj,master,njsproj,nuspec,paml,proj,props,razor,resw,resx,skin,StyleCop,targets,tasks,vb,vbproj,xaml,xamlx,xml,xoml,xsd}]
-indent_style = space
-indent_size = 4
-tab_width = 4
+# 生成代码不要求文件头，ReSharper Code Cleanup 跳过这些文件。
+[*.{g,g.i,generated,designer,Designer}.cs]
+generated_code = true
+file_header_template = unset
+dotnet_diagnostic.IDE0073.severity = none
+resharper_substitution_for_cleanup_profile = * => skip
 
-# Add copyright file header
-file_header_template = ------------------------------------------------------------------------\nApache开源许可证\n\n版权所有 © 2018-Now 小方\n\n许可授权：\n本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。\n在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：\n1.所有软件副本或主要部分必须保留本版权声明及本许可协议。\n2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。\n3.修改或衍生作品须明确标注原作者及原软件出处。\n\n特别声明：\n- 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。\n- 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。\n- 包括但不限于数据丢失、业务中断等情况。\n\n免责条款：\n禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。\n对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。\n------------------------------------------------------------------------
+[**/{bin,obj}/**]
+generated_code = true
+file_header_template = unset
+dotnet_diagnostic.IDE0073.severity = none
+resharper_substitution_for_cleanup_profile = * => skip

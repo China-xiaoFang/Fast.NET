@@ -1,27 +1,20 @@
-[**简体中文**](README.zh.md) | [English](README.md)
+**简体中文** | [English](./README.md)
 
 <p align="center">
-  <img src="Fast.png" width="160" alt="Fast.NET Logo" />
+	<img src="./Fast.png" width="128" alt="Fast.NET Logo" />
 </p>
 
 <h1 align="center">Fast.NET</h1>
 
-**[使用文档](http://docs.fastdotnet.cn/dotnet/) · [官方网站](http://fastdotnet.com)**
-
 <p align="center">
-  面向现代 .NET 应用的模块化基础设施 SDK
+	<a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/v/Fast.NET.Core?logo=nuget" alt="NuGet version" /></a>
+	<a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/dt/Fast.NET.Core" alt="NuGet downloads" /></a>
+	<a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License" /></a>
 </p>
 
-<p align="center">
-  <a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/v/Fast.NET.Core.svg?label=Fast.NET.Core&logo=nuget" alt="NuGet version" /></a>
-  <a href="https://www.nuget.org/packages/Fast.NET.Core"><img src="https://img.shields.io/nuget/dt/Fast.NET.Core.svg?logo=nuget" alt="NuGet downloads" /></a>
-  <img src="https://img.shields.io/badge/.NET-8.0%20%7C%209.0%20%7C%2010.0-512BD4?logo=dotnet" alt="Supported .NET versions" />
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="Apache-2.0 License" /></a>
-</p>
+面向现代 .NET 应用的模块化基础设施 SDK，以独立 NuGet 包按需组合。
 
-Fast.NET 是一组可按需组合的 .NET 基础设施库，覆盖 Web 应用初始化、依赖注入、缓存、事件总线、日志、对象映射、认证、数据访问、序列化、动态 API、统一响应、Swagger/OpenAPI 与 Consul 集成。每项能力都以独立 NuGet 包交付，应用只需引用真正需要的模块。
-
-> Fast.NET 不是一个必须整体引入的“大而全”框架。它更像一组具有一致设计和配置体验的 SDK 组件，可用于 ASP.NET Core、Worker Service，以及适合对应模块的其他现代 .NET 应用。
+**[使用文档](http://docs.fastdotnet.cn/zh-CN/backend/fast-net/) · [官方网站](http://fastdotnet.com)**
 
 ## 为什么选择 Fast.NET
 
@@ -46,9 +39,7 @@ Fast.NET 是一组可按需组合的 .NET 基础设施库，覆盖 Web 应用初
 
 ## 快速开始
 
-### 1. 安装所需模块
-
-Fast.NET 没有强制性的总包。请选择实际需要的 NuGet 包：
+在已有 ASP.NET Core 项目中安装最小示例所需的三个模块：
 
 ```bash
 dotnet add package Fast.NET.Core
@@ -56,78 +47,28 @@ dotnet add package Fast.Serialization.System.Text.Json
 dotnet add package Fast.Swagger
 ```
 
-例如，需要 Redis 缓存、JWT 认证或 SqlSugar 时，再分别安装：
-
-```bash
-dotnet add package Fast.Cache
-dotnet add package Fast.JwtBearer
-dotnet add package Fast.SqlSugar
-```
-
-> `Fast.Serialization.System.Text.Json` 与 `Fast.Serialization.Newtonsoft.Json` 提供相同风格的序列化扩展。通常根据项目技术选型选择其中一个。
-
-### 2. 注册服务
-
-下面展示一个组合多个模块的 ASP.NET Core 示例。只保留项目实际安装的模块即可。
-
 ```csharp
-using Fast.Cache;
-using Fast.DependencyInjection;
-using Fast.DynamicApplication;
-using Fast.EventBus;
-using Fast.JwtBearer;
-using Fast.Logging;
-using Fast.Mapster;
 using Fast.NET.Core;
-using Fast.OpenApi;
 using Fast.Serialization;
-using Fast.SqlSugar;
 using Fast.Swagger;
-using Fast.UnifyResult;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Initialize();
-builder.AddCorsAccessor();
-
 builder.Services.AddSerialization();
-builder.Services.AddGzipCompression();
-builder.Services.AddMapster();
-builder.Services.AddDependencyInjection();
-builder.Services.AddEventBus();
-builder.Services.AddCache();
-builder.Services.AddLoggingService(builder.Configuration);
-builder.Services.AddSqlSugar(builder.Configuration, builder.Environment);
-builder.Services.AddJwtBearer(builder.Configuration);
-builder.Services.AddUnifyResult();
 builder.Services.AddControllers();
-builder.Services.AddDynamicApplication();
 builder.Services.AddSwaggerDocuments(builder.Configuration);
-builder.Services.AddOpenApi(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.EnableBuffering();
-app.UseRouting();
 app.UseSwaggerDocuments();
 app.MapControllers();
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
 app.Run();
 ```
 
-`Fast.Runtime` 3.5.29 提供 `MAppContext.ConsoleWrite`，在同步回调结束后自动恢复控制台前景色和背景色，输出重定向时使用纯文本。启动横幅和直接诊断输出已统一使用该写入器，使用示例与日志链路见[控制台输出](http://docs.fastdotnet.cn/dotnet/MODULES.zh#控制台输出)。
-
-`Fast.NET.Core` 3.5.36 扩展 `builder.Initialize()` 启动横幅，展示应用与框架版本、.NET 运行时、运行环境、主机、操作系统、系统与进程架构以及本地启动时间。版本来源和颜色说明见上述模块手册。
-
-`Fast.IaaS` 3.5.27 修复 `TimeSpanExtension.ToDescription()` 在恰好一分钟、一小时和一天时丢失对应单位的问题，避免向较小单位回绕后显示为零。
-
-`Fast.Runtime` 3.5.30 使 HTTP 上下文扩展在非请求环境中安全返回默认值，远程地址仅使用可信转发头中间件处理后的结果，并删除语义不准确的 `LanIpv4()` 和 `LanIpv6()`。`Fast.NET.Core` 3.5.38 在请求上下文不可用时返回 `HttpRequestMethodEnum.Unknown`，`Fast.SqlSugar` 3.5.65 允许请求审计信息缺失。
-
-本次发布同步更新 15 个 SDK 包，两个序列化包沿用原版本。引用 `Fast.Runtime` 的模块要求 3.5.30 或更高版本；升级时请按 [CHANGELOG](CHANGELOG.md) 中的版本清单同步更新已安装的模块。
-
-各模块的默认配置节点和可选参数以对应源码中的 `*SettingsOptions` 与扩展方法 XML 文档为准。
+该示例不注册数据库、Redis 或后台任务；其他模块按需安装，并按模块手册配置。模块版本独立维护，升级前查看 [CHANGELOG](./CHANGELOG.md)。
 
 ## 项目架构
 
@@ -202,9 +143,8 @@ flowchart TB
 ```text
 Fast.NET/
 ├─ src/                         # 17 个可独立发布的 SDK 模块
-├─ docs/                        # 中英文入门、架构、模块和发布文档
+├─ docs/                        # 架构、注释规范与发布维护文档
 ├─ .github/                     # GitHub CI 工作流
-├─ translateTool/               # Vue 国际化文案提取与回写工具
 ├─ Directory.Build.props        # 统一目标框架、打包和仓库元数据
 ├─ Directory.Packages.props     # 集中管理 NuGet 依赖版本
 ├─ global.json                  # .NET SDK 选择策略
@@ -239,8 +179,8 @@ dotnet pack Fast.NET.sln -c Release --no-build --no-restore -p:WarnOnPackingNonP
 
 ## 文档与协作
 
-- [快速开始](http://docs.fastdotnet.cn/dotnet/GETTING_STARTED.zh)
-- [模块目录](http://docs.fastdotnet.cn/dotnet/MODULES.zh)
+- [快速开始](http://docs.fastdotnet.cn/zh-CN/backend/fast-net/guide)
+- [模块目录](http://docs.fastdotnet.cn/zh-CN/backend/fast-net/modules/)
 - [架构说明](docs/ARCHITECTURE.zh.md)
 - [注释与公共 API 文档规范](docs/COMMENTING_GUIDE.zh.md)
 - [发布指南](docs/RELEASING.zh.md)
@@ -249,16 +189,21 @@ dotnet pack Fast.NET.sln -c Release --no-build --no-restore -p:WarnOnPackingNonP
 - [支持策略](SUPPORT.md)
 - [行为准则](CODE_OF_CONDUCT.md)
 - [变更记录](CHANGELOG.md)
-- [国际化工具](translateTool/README.zh.md)
 - [更新记录](https://gitee.com/FastDotnet/Fast.NET/commits/master)
 - [问题反馈](https://gitee.com/FastDotnet/Fast.NET/issues)
 - [参与贡献](https://gitee.com/FastDotnet/Fast.NET/pulls)
 
 提交代码前请至少完成受影响目标框架的构建验证，并保持中英文公共文档同步。
 
-## 许可证
+## 版权、许可证与使用声明
 
-Fast.NET 基于 [Apache License 2.0](LICENSE) 开源。使用、修改和分发本项目时，请遵守许可证及适用法律。
+版权所有 © 2018-Now 小方。本项目依据 [Apache License 2.0](./LICENSE) 开源；在遵守许可证的前提下，可以使用、修改和分发本软件，包括商业使用。
+
+再分发时，应按许可证要求提供许可证副本、对修改的文件作出显著说明，并保留适用的版权和归属声明；包含需要保留的 NOTICE 信息时一并处理。本说明不替代正式许可证，也不额外要求在产品界面展示作者或项目标识。
+
+使用者应就自身使用、二次开发、部署、数据处理及运营活动遵守适用法律和第三方合法权益，自行取得依法需要的授权。上述内容为合规提醒，不构成附加许可条件。
+
+除适用法律另有规定或另有书面约定外，本软件按“原样”提供；保证排除与责任限制以许可证第 7、8 条为准。提供本项目不代表原作者为使用者的二次开发和运营活动背书，也不当然承担其对第三方作出的合同承诺。本说明不排除依法不得排除的责任。
 
 ## 维护者
 

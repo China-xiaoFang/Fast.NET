@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -38,11 +23,11 @@ internal sealed class EnumJsonConverter : JsonConverter
         else
         {
             // 获取枚举类型
-            var enumType = value.GetType();
-            var underlyingType = Nullable.GetUnderlyingType(enumType) ?? enumType;
+            Type enumType = value.GetType();
+            Type underlyingType = Nullable.GetUnderlyingType(enumType) ?? enumType;
 
             // 按枚举底层类型的 TypeCode 分派数值转换逻辑
-            var typeCode = Type.GetTypeCode(underlyingType);
+            TypeCode typeCode = Type.GetTypeCode(underlyingType);
 
             // 判断是否为 long 类型
             if (typeCode == TypeCode.Int64)
@@ -63,13 +48,13 @@ internal sealed class EnumJsonConverter : JsonConverter
         if (reader.TokenType == JsonToken.Null)
             return null;
 
-        var underlyingType = Nullable.GetUnderlyingType(objectType) ?? objectType;
+        Type underlyingType = Nullable.GetUnderlyingType(objectType) ?? objectType;
 
         if (reader.TokenType == JsonToken.String)
         {
             var jToken = JToken.ReadFrom(reader);
-            var enumValueStr = jToken.Value<string>();
-            if (Enum.TryParse(underlyingType, enumValueStr, out var enumValue))
+            string enumValueStr = jToken.Value<string>();
+            if (Enum.TryParse(underlyingType, enumValueStr, out object enumValue))
             {
                 return enumValue;
             }
@@ -81,229 +66,229 @@ internal sealed class EnumJsonConverter : JsonConverter
             switch (Type.GetTypeCode(underlyingType))
             {
                 case TypeCode.SByte:
-                {
-                    var value = Convert.ToSByte(reader.Value);
-
-                    sbyte flagValues = 0;
-                    foreach (var enumValue in Enum.GetValues(underlyingType))
                     {
-                        flagValues |= Convert.ToSByte(enumValue);
-                    }
+                        sbyte value = Convert.ToSByte(reader.Value);
 
-                    if ((value & flagValues) == value)
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        sbyte flagValues = 0;
+                        foreach (object enumValue in Enum.GetValues(underlyingType))
+                        {
+                            flagValues |= Convert.ToSByte(enumValue);
+                        }
 
-                    if (Enum.IsDefined(underlyingType, value))
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        if ((value & flagValues) == value)
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
-                    if (value == 0)
-                    {
-                        return null;
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
+
+                        // 数值不是已定义的枚举成员且为 0 时，按 null 处理
+                        if (value == 0)
+                        {
+                            return null;
+                        }
                     }
-                }
                     break;
                 case TypeCode.Byte:
-                {
-                    var value = Convert.ToByte(reader.Value);
-
-                    byte flagValues = 0;
-                    foreach (var enumValue in Enum.GetValues(underlyingType))
                     {
-                        flagValues |= Convert.ToByte(enumValue);
-                    }
+                        byte value = Convert.ToByte(reader.Value);
 
-                    if ((value & flagValues) == value)
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        byte flagValues = 0;
+                        foreach (object enumValue in Enum.GetValues(underlyingType))
+                        {
+                            flagValues |= Convert.ToByte(enumValue);
+                        }
 
-                    if (Enum.IsDefined(underlyingType, value))
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        if ((value & flagValues) == value)
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
-                    if (value == 0)
-                    {
-                        return null;
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
+
+                        // 数值不是已定义的枚举成员且为 0 时，按 null 处理
+                        if (value == 0)
+                        {
+                            return null;
+                        }
                     }
-                }
                     break;
                 case TypeCode.Int16:
-                {
-                    var value = Convert.ToInt16(reader.Value);
-
-                    short flagValues = 0;
-                    foreach (var enumValue in Enum.GetValues(underlyingType))
                     {
-                        flagValues |= Convert.ToInt16(enumValue);
-                    }
+                        short value = Convert.ToInt16(reader.Value);
 
-                    if ((value & flagValues) == value)
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        short flagValues = 0;
+                        foreach (object enumValue in Enum.GetValues(underlyingType))
+                        {
+                            flagValues |= Convert.ToInt16(enumValue);
+                        }
 
-                    if (Enum.IsDefined(underlyingType, value))
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        if ((value & flagValues) == value)
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
-                    if (value == 0)
-                    {
-                        return null;
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
+
+                        // 数值不是已定义的枚举成员且为 0 时，按 null 处理
+                        if (value == 0)
+                        {
+                            return null;
+                        }
                     }
-                }
                     break;
                 case TypeCode.UInt16:
-                {
-                    var value = Convert.ToUInt16(reader.Value);
-
-                    ushort flagValues = 0;
-                    foreach (var enumValue in Enum.GetValues(underlyingType))
                     {
-                        flagValues |= Convert.ToUInt16(enumValue);
-                    }
+                        ushort value = Convert.ToUInt16(reader.Value);
 
-                    if ((value & flagValues) == value)
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        ushort flagValues = 0;
+                        foreach (object enumValue in Enum.GetValues(underlyingType))
+                        {
+                            flagValues |= Convert.ToUInt16(enumValue);
+                        }
 
-                    if (Enum.IsDefined(underlyingType, value))
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        if ((value & flagValues) == value)
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
-                    if (value == 0)
-                    {
-                        return null;
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
+
+                        // 数值不是已定义的枚举成员且为 0 时，按 null 处理
+                        if (value == 0)
+                        {
+                            return null;
+                        }
                     }
-                }
                     break;
                 case TypeCode.Int32:
-                {
-                    var value = Convert.ToInt32(reader.Value);
-
-                    var flagValues = 0;
-                    foreach (var enumValue in Enum.GetValues(underlyingType))
                     {
-                        flagValues |= Convert.ToInt32(enumValue);
-                    }
+                        int value = Convert.ToInt32(reader.Value);
 
-                    if ((value & flagValues) == value)
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        int flagValues = 0;
+                        foreach (object enumValue in Enum.GetValues(underlyingType))
+                        {
+                            flagValues |= Convert.ToInt32(enumValue);
+                        }
 
-                    if (Enum.IsDefined(underlyingType, value))
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        if ((value & flagValues) == value)
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
-                    if (value == 0)
-                    {
-                        return null;
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
+
+                        // 数值不是已定义的枚举成员且为 0 时，按 null 处理
+                        if (value == 0)
+                        {
+                            return null;
+                        }
                     }
-                }
                     break;
                 case TypeCode.UInt32:
-                {
-                    var value = Convert.ToUInt32(reader.Value);
-
-                    uint flagValues = 0;
-                    foreach (var enumValue in Enum.GetValues(underlyingType))
                     {
-                        flagValues |= Convert.ToUInt32(enumValue);
-                    }
+                        uint value = Convert.ToUInt32(reader.Value);
 
-                    if ((value & flagValues) == value)
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        uint flagValues = 0;
+                        foreach (object enumValue in Enum.GetValues(underlyingType))
+                        {
+                            flagValues |= Convert.ToUInt32(enumValue);
+                        }
 
-                    if (Enum.IsDefined(underlyingType, value))
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        if ((value & flagValues) == value)
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
-                    if (value == 0)
-                    {
-                        return null;
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
+
+                        // 数值不是已定义的枚举成员且为 0 时，按 null 处理
+                        if (value == 0)
+                        {
+                            return null;
+                        }
                     }
-                }
                     break;
                 case TypeCode.Int64:
-                {
-                    var value = Convert.ToInt64(reader.Value);
-
-                    long flagValues = 0;
-                    foreach (var enumValue in Enum.GetValues(underlyingType))
                     {
-                        flagValues |= Convert.ToInt64(enumValue);
-                    }
+                        long value = Convert.ToInt64(reader.Value);
 
-                    if ((value & flagValues) == value)
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        long flagValues = 0;
+                        foreach (object enumValue in Enum.GetValues(underlyingType))
+                        {
+                            flagValues |= Convert.ToInt64(enumValue);
+                        }
 
-                    if (Enum.IsDefined(underlyingType, value))
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        if ((value & flagValues) == value)
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
-                    if (value == 0)
-                    {
-                        return null;
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
+
+                        // 数值不是已定义的枚举成员且为 0 时，按 null 处理
+                        if (value == 0)
+                        {
+                            return null;
+                        }
                     }
-                }
                     break;
                 case TypeCode.UInt64:
-                {
-                    var value = Convert.ToUInt64(reader.Value);
-
-                    ulong flagValues = 0;
-                    foreach (var enumValue in Enum.GetValues(underlyingType))
                     {
-                        flagValues |= Convert.ToUInt64(enumValue);
-                    }
+                        ulong value = Convert.ToUInt64(reader.Value);
 
-                    if ((value & flagValues) == value)
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        ulong flagValues = 0;
+                        foreach (object enumValue in Enum.GetValues(underlyingType))
+                        {
+                            flagValues |= Convert.ToUInt64(enumValue);
+                        }
 
-                    if (Enum.IsDefined(underlyingType, value))
-                    {
-                        return Enum.ToObject(underlyingType, value);
-                    }
+                        if ((value & flagValues) == value)
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
 
-                    // 数值不是已定义的枚举成员且为 0 时，按 null 处理
-                    if (value == 0)
-                    {
-                        return null;
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
+
+                        // 数值不是已定义的枚举成员且为 0 时，按 null 处理
+                        if (value == 0)
+                        {
+                            return null;
+                        }
                     }
-                }
                     break;
                 case TypeCode.Boolean:
-                {
-                    var value = Convert.ToBoolean(reader.Value);
-                    if (Enum.IsDefined(underlyingType, value))
                     {
-                        return Enum.ToObject(underlyingType, value);
+                        bool value = Convert.ToBoolean(reader.Value);
+                        if (Enum.IsDefined(underlyingType, value))
+                        {
+                            return Enum.ToObject(underlyingType, value);
+                        }
                     }
-                }
                     break;
             }
         }

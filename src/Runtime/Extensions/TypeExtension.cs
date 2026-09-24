@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Reflection;
 using System.Reflection.Emit;
@@ -41,14 +26,16 @@ public static class TypeExtension
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_设置_属性名
-        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{propertyInfo.Name}", null,
-            new[] {typeof(object), typeof(object)}, typeof(TypeExtensions).Module);
+        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{propertyInfo.Name}",
+            null,
+            new[] {typeof(object), typeof(object)},
+            typeof(TypeExtensions).Module);
 
         // 获取动态方法的 IL 生成器
-        var ilGenerator = setterMethod.GetILGenerator();
+        ILGenerator ilGenerator = setterMethod.GetILGenerator();
 
         // 获取属性的设置方法，并允许非公开访问
-        var setMethod = propertyInfo.GetSetMethod(true);
+        MethodInfo setMethod = propertyInfo.GetSetMethod(true);
 
         ArgumentNullException.ThrowIfNull(setMethod);
 
@@ -74,7 +61,7 @@ public static class TypeExtension
         // 从动态方法返回
         ilGenerator.Emit(OpCodes.Ret);
 
-        return (Action<object, object>) setterMethod.CreateDelegate(typeof(Action<object, object>));
+        return (Action<object, object>)setterMethod.CreateDelegate(typeof(Action<object, object>));
     }
 
     /// <summary>
@@ -88,11 +75,13 @@ public static class TypeExtension
         ArgumentNullException.ThrowIfNull(fieldInfo);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_设置_字段名
-        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{fieldInfo.Name}", null,
-            new[] {typeof(object), typeof(object)}, typeof(TypeExtensions).Module);
+        var setterMethod = new DynamicMethod($"{type.FullName}_Set_{fieldInfo.Name}",
+            null,
+            new[] {typeof(object), typeof(object)},
+            typeof(TypeExtensions).Module);
 
         // 获取动态方法的 IL 生成器
-        var ilGenerator = setterMethod.GetILGenerator();
+        ILGenerator ilGenerator = setterMethod.GetILGenerator();
 
         ilGenerator.Emit(OpCodes.Ldarg_0);
         ilGenerator.Emit(OpCodes.Castclass, type);
@@ -116,7 +105,7 @@ public static class TypeExtension
         // 从动态方法返回
         ilGenerator.Emit(OpCodes.Ret);
 
-        return (Action<object, object>) setterMethod.CreateDelegate(typeof(Action<object, object>));
+        return (Action<object, object>)setterMethod.CreateDelegate(typeof(Action<object, object>));
     }
 
     /// <summary>
@@ -131,14 +120,17 @@ public static class TypeExtension
         ArgumentNullException.ThrowIfNull(propertyInfo.DeclaringType);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_获取_属性名
-        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{propertyInfo.Name}", typeof(object), new[] {typeof(object)},
-            typeof(TypeExtensions).Module, true);
+        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{propertyInfo.Name}",
+            typeof(object),
+            new[] {typeof(object)},
+            typeof(TypeExtensions).Module,
+            true);
 
         // 获取动态方法的 IL 生成器
-        var ilGenerator = dynamicMethod.GetILGenerator();
+        ILGenerator ilGenerator = dynamicMethod.GetILGenerator();
 
         // 获取属性的获取方法，并允许非公开访问
-        var getMethod = propertyInfo.GetGetMethod(true);
+        MethodInfo getMethod = propertyInfo.GetGetMethod(true);
 
         ArgumentNullException.ThrowIfNull(getMethod);
 
@@ -158,7 +150,7 @@ public static class TypeExtension
         // 从动态方法返回
         ilGenerator.Emit(OpCodes.Ret);
 
-        return (Func<object, object>) dynamicMethod.CreateDelegate(typeof(Func<object, object>));
+        return (Func<object, object>)dynamicMethod.CreateDelegate(typeof(Func<object, object>));
     }
 
     /// <summary>
@@ -173,11 +165,14 @@ public static class TypeExtension
         ArgumentNullException.ThrowIfNull(fieldInfo.DeclaringType);
 
         // 创建一个新的动态方法，并为其命名，命名格式为类型全名_获取_字段名
-        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{fieldInfo.Name}", typeof(object), new[] {typeof(object)},
-            typeof(TypeExtensions).Module, true);
+        var dynamicMethod = new DynamicMethod($"{type.FullName}_Get_{fieldInfo.Name}",
+            typeof(object),
+            new[] {typeof(object)},
+            typeof(TypeExtensions).Module,
+            true);
 
         // 获取动态方法的 IL 生成器
-        var ilGenerator = dynamicMethod.GetILGenerator();
+        ILGenerator ilGenerator = dynamicMethod.GetILGenerator();
 
         // 将目标对象加载到堆栈上，并将其转换为字段的声明类型
         ilGenerator.Emit(OpCodes.Ldarg_0);
@@ -195,6 +190,6 @@ public static class TypeExtension
         // 从动态方法返回
         ilGenerator.Emit(OpCodes.Ret);
 
-        return (Func<object, object>) dynamicMethod.CreateDelegate(typeof(Func<object, object>));
+        return (Func<object, object>)dynamicMethod.CreateDelegate(typeof(Func<object, object>));
     }
 }

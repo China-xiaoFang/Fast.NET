@@ -1,26 +1,12 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
@@ -47,8 +33,12 @@ public static class LoggingContext
     /// <param name="withTraceId">with Trace 的唯一标识</param>
     /// <param name="withStackFrame">是否在日志中包含调用堆栈位置</param>
     /// <returns>输出标准日志消息</returns>
-    public static string OutputStandardMessage(LogMessage logMsg, string dateFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz dddd",
-        bool isConsole = false, bool disableColors = true, bool withTraceId = false, bool withStackFrame = false)
+    public static string OutputStandardMessage(LogMessage logMsg,
+        string dateFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz dddd",
+        bool isConsole = false,
+        bool disableColors = true,
+        bool withTraceId = false,
+        bool withStackFrame = false)
     {
         if (logMsg.Message is null)
             return null;
@@ -57,9 +47,9 @@ public static class LoggingContext
         var formatString = new StringBuilder();
 
         // 获取日志级别对应控制台的颜色
-        var disableConsoleColor = !isConsole || disableColors;
-        var logLevelColors = GetLogLevelConsoleColors(logMsg.LogLevel, disableConsoleColor);
-        var logLevelMessageColors = GetLogLevelMessageConsoleColors(logMsg.LogLevel, disableConsoleColor);
+        bool disableConsoleColor = !isConsole || disableColors;
+        ConsoleColors logLevelColors = GetLogLevelConsoleColors(logMsg.LogLevel, disableConsoleColor);
+        ConsoleColors logLevelMessageColors = GetLogLevelMessageConsoleColors(logMsg.LogLevel, disableConsoleColor);
 
         _ = AppendWithColor(formatString, GetLogLevelString(logMsg.LogLevel), logLevelColors);
         formatString.Append(": ");
@@ -67,7 +57,8 @@ public static class LoggingContext
         formatString.Append(' ');
         formatString.Append(logMsg.UseUtcTimestamp ? "U" : "L");
         formatString.Append(' ');
-        _ = AppendWithColor(formatString, logMsg.LogName,
+        _ = AppendWithColor(formatString,
+            logMsg.LogName,
             disableConsoleColor ? new ConsoleColors(null, null) : new ConsoleColors(ConsoleColor.Cyan, ConsoleColor.DarkCyan));
 
         if (logMsg.EventId != null)
@@ -82,7 +73,8 @@ public static class LoggingContext
         if (withTraceId && !string.IsNullOrWhiteSpace(logMsg.TraceId))
         {
             formatString.Append(' ');
-            _ = AppendWithColor(formatString, $"'{logMsg.TraceId}'",
+            _ = AppendWithColor(formatString,
+                $"'{logMsg.TraceId}'",
                 disableConsoleColor ? new ConsoleColors(null, null) : new ConsoleColors(ConsoleColor.Gray, ConsoleColor.Black));
         }
 
@@ -92,15 +84,16 @@ public static class LoggingContext
         if (withStackFrame)
         {
             var stackTrace = new StackTrace();
-            var stackFrames = stackTrace.GetFrames();
-            var pos = isConsole ? 6 : 5;
+            StackFrame[] stackFrames = stackTrace.GetFrames();
+            int pos = isConsole ? 6 : 5;
             if (stackFrames.Length > pos)
             {
-                var targetMethod = stackFrames.Where((_, i) => i == pos)
+                MethodBase targetMethod = stackFrames
+                    .Where((_, i) => i == pos)
                     .First()
                     .GetMethod();
-                var declaringType = targetMethod?.DeclaringType;
-                var targetAssembly = declaringType?.Assembly;
+                Type declaringType = targetMethod?.DeclaringType;
+                Assembly targetAssembly = declaringType?.Assembly;
 
                 formatString.Append(PadLeftAlign($"[{targetAssembly?.GetName().Name}.dll] {targetMethod}"));
                 formatString.AppendLine();
@@ -108,15 +101,16 @@ public static class LoggingContext
         }
 
         // 消息颜色和前缀对齐在同一步完成，避免 ANSI 控制符影响缩进计算
-        _ = AppendWithColor(formatString, PadLeftAlign(logMsg.Message),
+        _ = AppendWithColor(formatString,
+            PadLeftAlign(logMsg.Message),
             disableConsoleColor ? new ConsoleColors(null, null) : logLevelMessageColors);
 
         // 如果包含异常信息，则创建新一行写入
         if (logMsg.Exception != null)
         {
-            var EXCEPTION_SEPARATOR_WITH_COLOR = AppendWithColor(null, EXCEPTION_SEPARATOR, logLevelMessageColors)
+            string EXCEPTION_SEPARATOR_WITH_COLOR = AppendWithColor(null, EXCEPTION_SEPARATOR, logLevelMessageColors)
                 .ToString();
-            var exceptionMessage =
+            string exceptionMessage =
                 $"{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}{Environment.NewLine}{AppendWithColor(null, logMsg.Exception.ToString(), logLevelMessageColors)}{Environment.NewLine}{EXCEPTION_SEPARATOR_WITH_COLOR}";
 
             formatString.Append(PadLeftAlign(exceptionMessage));
@@ -133,9 +127,10 @@ public static class LoggingContext
     /// <returns>将日志内容进行对齐</returns>
     private static string PadLeftAlign(string message)
     {
-        var newMessage = string.Join(Environment.NewLine, message
-            .Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None)
-            .Select(line => string.Empty.PadLeft(6, ' ') + line));
+        string newMessage = string.Join(Environment.NewLine,
+            message
+                .Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None)
+                .Select(line => string.Empty.PadLeft(6, ' ') + line));
 
         return newMessage;
     }

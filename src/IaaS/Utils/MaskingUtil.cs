@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System;
 using System.Linq;
@@ -96,12 +81,12 @@ public static class MaskingUtil
         if (string.IsNullOrWhiteSpace(email))
             return email;
 
-        var index = email.IndexOf('@');
+        int index = email.IndexOf('@');
         if (index <= 0)
             return email;
 
-        var user = email[..index];
-        var domain = email[index..];
+        string user = email[..index];
+        string domain = email[index..];
 
         return user.Length switch
         {
@@ -137,9 +122,9 @@ public static class MaskingUtil
 
         string[] keys = ["省", "市", "区", "县", "乡", "镇", "街道", "社区"];
 
-        foreach (var key in keys)
+        foreach (string key in keys)
         {
-            var index = address.IndexOf(key, StringComparison.Ordinal);
+            int index = address.IndexOf(key, StringComparison.Ordinal);
             if (index > 0 && index + 1 < address.Length)
                 return address[..(index + 1)] + "****";
         }
@@ -167,8 +152,8 @@ public static class MaskingUtil
         // 第三个字符是分隔符时保留前两位及分隔符，其余字符全部脱敏
         if (carNumber.Length >= 3 && separators.Contains(carNumber[2]))
         {
-            var head = carNumber[..3];
-            var tailLen = carNumber.Length - 3;
+            string head = carNumber[..3];
+            int tailLen = carNumber.Length - 3;
             return head + new string('*', tailLen);
         }
 
@@ -186,7 +171,7 @@ public static class MaskingUtil
         if (string.IsNullOrWhiteSpace(ip))
             return ip;
 
-        var parts = ip.Split('.');
+        string[] parts = ip.Split('.');
         if (parts.Length != 4)
             return ip;
 

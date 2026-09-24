@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using Fast.Runtime;
 using Microsoft.AspNetCore.Authorization;
@@ -40,124 +25,111 @@ internal sealed class AppAuthorizationHandler : IAuthorizationHandler
     {
         var filterContext = context.Resource as AuthorizationFilterContext;
         var hubInvocationContext = context.Resource as HubInvocationContext;
-        var httpContext = filterContext?.HttpContext
-                          ?? context.Resource as HttpContext ?? hubInvocationContext?.Context.GetHttpContext();
+        HttpContext httpContext = filterContext?.HttpContext
+                                  ?? context.Resource as HttpContext ?? hubInvocationContext?.Context.GetHttpContext();
+        AppAuthorizeRequirement[] requirements = context
+            .PendingRequirements.OfType<AppAuthorizeRequirement>()
+            .ToArray();
+        // 与 HTTP 无关的第三方资源策略继续交给其自身处理器。
+        if (httpContext == null)
+        {
+            if (requirements.Length > 0)
+                context.Fail();
+            return;
+        }
 
-        // 获取 JWT 处理类
-        var jwtBearerHandle = (hubInvocationContext?.ServiceProvider ?? httpContext?.RequestServices)
-            ?.GetService<IJwtBearerHandle>();
-
-        // 自动刷新 Token 逻辑
+        IJwtBearerHandle jwtBearerHandle = (hubInvocationContext?.ServiceProvider ?? httpContext.RequestServices)
+            .GetService<IJwtBearerHandle>();
         if (!await JwtBearerUtil.AutoRefreshTokenAsync(context, httpContext))
         {
-            // 退出 Swagger 登录
-            httpContext?.SignOutToSwagger();
-            await AuthorizeFailHandle(null);
+            context.Fail();
+            httpContext.SignOutToSwagger();
+            if (jwtBearerHandle != null)
+                SetMvcFailure(await jwtBearerHandle.AuthorizeFailHandle(context, httpContext, null),
+                    StatusCodes.Status401Unauthorized);
             return;
         }
 
-        // 获取所有未成功验证的需求
-        var pendingRequirements = context.PendingRequirements;
-
-        if (jwtBearerHandle == null)
+        if (jwtBearerHandle != null)
         {
-            foreach (var requirement in pendingRequirements)
-            {
-                context.Succeed(requirement);
-            }
-
-            return;
-        }
-
-        Exception authorizeException = null;
-
-        bool isAuthorizeSuccess;
-        try
-        {
-            isAuthorizeSuccess = await jwtBearerHandle.AuthorizeHandle(context, httpContext);
-        }
-        catch (Exception ex)
-        {
-            isAuthorizeSuccess = false;
-            authorizeException = ex;
-        }
-
-        // 授权检测
-        if (!isAuthorizeSuccess)
-        {
-            await AuthorizeFailHandle(authorizeException);
-            return;
-        }
-
-        // 判断是否跳过权限检查
-        if (httpContext.GetEndpoint()
-                ?.Metadata.GetMetadata<AllowForbiddenAttribute>()
-            != null)
-        {
-            foreach (var requirement in pendingRequirements)
-            {
-                context.Succeed(requirement);
-            }
-
-            return;
-        }
-
-        foreach (var requirement in pendingRequirements)
-        {
-            bool isPermissionSuccess;
-            Exception permissionException = null;
-
+            Exception authorizeException = null;
+            bool authorized;
             try
             {
-                isPermissionSuccess = await jwtBearerHandle.PermissionHandle(context, requirement, httpContext);
+                authorized = await jwtBearerHandle.AuthorizeHandle(context, httpContext);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                isPermissionSuccess = false;
-                permissionException = ex;
+                authorized = false;
+                authorizeException = exception;
             }
 
-            // 权限检测
-            if (isPermissionSuccess)
+            if (!authorized)
             {
-                context.Succeed(requirement);
+                // 自定义响应不代替失败状态，其他处理器不能重新把本次拒绝变成成功。
+                context.Fail();
+                SetMvcFailure(await jwtBearerHandle.AuthorizeFailHandle(context, httpContext, authorizeException),
+                    StatusCodes.Status401Unauthorized);
+                return;
+            }
+        }
+
+        bool skipFastPermission = httpContext
+                                      .GetEndpoint()
+                                      ?.Metadata.GetMetadata<AllowForbiddenAttribute>()
+                                  != null;
+        PermissionAttribute permissionMetadata = httpContext
+            .GetEndpoint()
+            ?.Metadata.GetMetadata<PermissionAttribute>();
+        // 仅含 Roles/Claims 的组合策略不经过默认策略提供器；仍执行显式 Fast 权限钩子，
+        // 但这一附加检查的成功不能替第三方要求调用 Succeed。
+        if (requirements.Length == 0 && (jwtBearerHandle != null || permissionMetadata != null))
+            requirements = [new AppAuthorizeRequirement()];
+        foreach (AppAuthorizeRequirement requirement in requirements)
+        {
+            // 只确认 Fast 自己拥有的要求，绝不替角色、声明或第三方策略调用 Succeed。
+            if (skipFastPermission || (jwtBearerHandle == null && requirement.Policies.Length == 0 && permissionMetadata == null))
+            {
+                if (context.Requirements.Contains(requirement))
+                    context.Succeed(requirement);
                 continue;
             }
 
-            var result = await jwtBearerHandle.PermissionFailHandle(context, requirement, httpContext, permissionException);
-
-            if (result != null)
-            {
-                // 存在自定义处理结果，则返回 403 状态码
-                filterContext.Result = new JsonResult(result) {StatusCode = StatusCodes.Status403Forbidden};
-            }
-            else
-            {
-                context.Fail();
-            }
-        }
-
-        return;
-
-        async Task AuthorizeFailHandle(Exception exception)
-        {
             if (jwtBearerHandle == null)
             {
                 context.Fail();
-                return;
+                continue;
             }
 
-            var result = await jwtBearerHandle.AuthorizeFailHandle(context, httpContext, exception);
+            Exception permissionException = null;
+            bool permitted;
+            try
+            {
+                permitted = await jwtBearerHandle.PermissionHandle(context, requirement, httpContext);
+            }
+            catch (Exception exception)
+            {
+                permitted = false;
+                permissionException = exception;
+            }
 
+            if (permitted)
+            {
+                if (context.Requirements.Contains(requirement))
+                    context.Succeed(requirement);
+                continue;
+            }
+
+            context.Fail();
+            SetMvcFailure(await jwtBearerHandle.PermissionFailHandle(context, requirement, httpContext, permissionException),
+                StatusCodes.Status403Forbidden);
+        }
+
+        void SetMvcFailure(object result, int statusCode)
+        {
+            // 非 MVC 资源不强行写 MVC Result；授权中间件和 SignalR 使用已记录的失败状态。
             if (filterContext != null && result != null)
-            {
-                // 存在自定义处理结果，则返回 401 状态码
-                filterContext.Result = new JsonResult(result) {StatusCode = StatusCodes.Status401Unauthorized};
-            }
-            else
-            {
-                context.Fail();
-            }
+                filterContext.Result = new JsonResult(result) {StatusCode = statusCode};
         }
     }
 }

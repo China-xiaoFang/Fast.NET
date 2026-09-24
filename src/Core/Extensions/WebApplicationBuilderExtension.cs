@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -61,9 +46,10 @@ public static class WebApplicationBuilderExtension
         var appAssembly = Assembly.GetEntryAssembly();
 
         // 获取应用程序集版本
-        var appVersion = appAssembly?.GetName()
-                             .Version?.ToString()
-                         ?? "Unknown";
+        string appVersion = appAssembly
+                                ?.GetName()
+                                .Version?.ToString()
+                            ?? "Unknown";
 
         MAppContext.ConsoleWrite(console =>
         {
@@ -172,15 +158,15 @@ public static class WebApplicationBuilderExtension
                 FastContext.HostEnvironment = FastContext.WebHostEnvironment = hostContext.HostingEnvironment;
 
                 // 处理命令行启动参数 公共 JSON 文件地址
-                var publicJsonPath = hostContext.Configuration["publicJsonPath"];
+                string publicJsonPath = hostContext.Configuration["publicJsonPath"];
 
                 if (!string.IsNullOrWhiteSpace(publicJsonPath))
                 {
                     // 根据,分割
-                    var publicJsonPathArr = publicJsonPath.Split(",");
+                    string[] publicJsonPathArr = publicJsonPath.Split(",");
                     if (publicJsonPathArr.Length > 0)
                     {
-                        foreach (var jsonPath in publicJsonPathArr)
+                        foreach (string jsonPath in publicJsonPathArr)
                         {
                             if (!string.IsNullOrWhiteSpace(jsonPath) && Path.IsPathRooted(jsonPath))
                             {
@@ -202,15 +188,15 @@ public static class WebApplicationBuilderExtension
                 FastContext.HostEnvironment = hostContext.HostingEnvironment;
 
                 // 处理命令行启动参数 公共 JSON 文件地址
-                var publicJsonPath = hostContext.Configuration["publicJsonPath"];
+                string publicJsonPath = hostContext.Configuration["publicJsonPath"];
 
                 if (!string.IsNullOrWhiteSpace(publicJsonPath))
                 {
                     // 根据,分割
-                    var publicJsonPathArr = publicJsonPath.Split(",");
+                    string[] publicJsonPathArr = publicJsonPath.Split(",");
                     if (publicJsonPathArr.Length > 0)
                     {
-                        foreach (var jsonPath in publicJsonPathArr)
+                        foreach (string jsonPath in publicJsonPathArr)
                         {
                             if (!string.IsNullOrWhiteSpace(jsonPath) && Path.IsPathRooted(jsonPath))
                             {
@@ -290,18 +276,21 @@ public static class WebApplicationBuilderExtension
     private static void AddJsonFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
     {
         // 获取根配置
-        var configuration = configurationBuilder as ConfigurationManager ?? configurationBuilder.Build();
+        IConfigurationRoot configuration = configurationBuilder as ConfigurationManager ?? configurationBuilder.Build();
 
         // 获取程序执行目录
-        var executeDirectory = AppContext.BaseDirectory;
+        string executeDirectory = AppContext.BaseDirectory;
 
         // 获取自定义配置扫描目录
-        var configurationScanDirectories = (configuration.GetSection("ConfigurationScanDirectories")
-                                                .Get<string[]>()
-                                            ?? Array.Empty<string>()).Select(u => Path.Combine(executeDirectory, u));
+        IEnumerable<string> configurationScanDirectories = (configuration
+                                                                .GetSection("ConfigurationScanDirectories")
+                                                                .Get<string[]>()
+                                                            ?? Array.Empty<string>()).Select(u =>
+            Path.Combine(executeDirectory, u));
 
         // 扫描执行目录及自定义配置目录下的 *.json 文件
-        var jsonFiles = new[] {executeDirectory}.Concat(configurationScanDirectories)
+        var jsonFiles = new[] {executeDirectory}
+            .Concat(configurationScanDirectories)
             .Concat(InternalConfigurationScanDirectories.Where(Directory.Exists))
             .SelectMany(u => Directory.GetFiles(u, "*.json", SearchOption.TopDirectoryOnly))
             .ToList();
@@ -311,31 +300,33 @@ public static class WebApplicationBuilderExtension
             return;
 
         // 获取环境变量名，如果没找到，则读取 NETCORE_ENVIRONMENT 环境变量信息识别（用于非 Web 环境）
-        var envName = hostEnvironment?.EnvironmentName ?? Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT") ?? "Unknown";
+        string envName = hostEnvironment?.EnvironmentName
+                         ?? Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT") ?? "Unknown";
 
         // 处理控制台应用程序
-        var _excludeJsonPrefixArr = hostEnvironment == null
+        IEnumerable<string> _excludeJsonPrefixArr = hostEnvironment == null
             ? excludeJsonPrefixArr.Where(u => !u.Equals("appsettings"))
             : excludeJsonPrefixArr;
 
         // 将所有文件进行分组
-        var jsonFilesGroups = SplitConfigFileNameToGroups(jsonFiles)
+        IEnumerable<IGrouping<string, string>> jsonFilesGroups = SplitConfigFileNameToGroups(jsonFiles)
             .Where(u => !_excludeJsonPrefixArr.Contains(u.Key, StringComparer.OrdinalIgnoreCase)
                         && !u.Any(c => runtimeJsonSuffixArr.Any(z => c.EndsWith(z, StringComparison.OrdinalIgnoreCase))));
 
         // 遍历所有配置分组
-        foreach (var group in jsonFilesGroups)
+        foreach (IGrouping<string, string> group in jsonFilesGroups)
         {
             // 限制查找的 json 文件组
-            var limitFileNames = new[] {$"{group.Key}.json", $"{group.Key}.{envName}.json"};
+            string[] limitFileNames = new[] {$"{group.Key}.json", $"{group.Key}.{envName}.json"};
 
             // 查找默认配置和环境配置
-            var files = group.Where(u => limitFileNames.Contains(Path.GetFileName(u), StringComparer.OrdinalIgnoreCase))
+            IOrderedEnumerable<string> files = group
+                .Where(u => limitFileNames.Contains(Path.GetFileName(u), StringComparer.OrdinalIgnoreCase))
                 .OrderBy(u => Path.GetFileName(u)
                     .Length);
 
             // 循环加载
-            foreach (var jsonFile in files)
+            foreach (string jsonFile in files)
             {
                 configurationBuilder.AddJsonFile(jsonFile, true, true);
             }
@@ -355,7 +346,8 @@ public static class WebApplicationBuilderExtension
         static string Function(string file)
         {
             // 根据 . 分隔
-            var fileNameParts = Path.GetFileName(file)
+            string[] fileNameParts = Path
+                .GetFileName(file)
                 .Split('.', StringSplitOptions.RemoveEmptyEntries);
             if (fileNameParts.Length == 2)
                 return fileNameParts[0];

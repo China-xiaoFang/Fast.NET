@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.ComponentModel;
 using System.Diagnostics;
@@ -60,7 +45,7 @@ public static class MachineUtil
         if (IsMacOS())
         {
             // 使用 sw_vers 命令获取 MacOS 的版本信息，并提取操作系统版本号
-            var output = ShellUtil.Bash("sw_vers | awk 'NR<=2{printf \"%s \", $NF}'");
+            string output = ShellUtil.Bash("sw_vers | awk 'NR<=2{printf \"%s \", $NF}'");
             if (output != null)
             {
                 // 去除百分号并返回版本信息
@@ -73,7 +58,7 @@ public static class MachineUtil
         if (IsUnix())
         {
             // 使用 /etc/os-release 文件中的 VERSION_ID 获取 Linux 发行版的版本号
-            var output = ShellUtil.Bash("awk -F= '/^VERSION_ID/ {print $2}' /etc/os-release | tr -d '\"'");
+            string output = ShellUtil.Bash("awk -F= '/^VERSION_ID/ {print $2}' /etc/os-release | tr -d '\"'");
             return output ?? string.Empty;
         }
 
@@ -91,7 +76,7 @@ public static class MachineUtil
         {
             // MacOS 获取系统启动时间：sysctl -n kern.boottime | awk '{print $4}' | tr -d ','
             // 返回：1705379131
-            var output = ShellUtil
+            string output = ShellUtil
                 .Bash("date -r $(sysctl -n kern.boottime | awk '{print $4}' | tr -d ',') +\"%Y-%m-%d %H:%M:%S\"")
                 .Trim();
             return DateTime.Parse(output, CultureInfo.InvariantCulture);
@@ -100,7 +85,8 @@ public static class MachineUtil
         if (IsUnix())
         {
             // 使用 awk 命令来获取 Linux 系统的 uptime 信息
-            var output = ShellUtil.Bash("date -d \"$(awk -F. '{print $1}' /proc/uptime) second ago\" +\"%Y-%m-%d %H:%M:%S\"")
+            string output = ShellUtil
+                .Bash("date -d \"$(awk -F. '{print $1}' /proc/uptime) second ago\" +\"%Y-%m-%d %H:%M:%S\"")
                 .Trim();
             return DateTime.Parse(output, CultureInfo.InvariantCulture);
         }
@@ -120,7 +106,8 @@ public static class MachineUtil
                     "-NoProfile -Command (Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToString('yyyyMMddHHmmss')");
             }
 
-            var timeValue = output.Replace("LastBootUpTime=", string.Empty)
+            string timeValue = output
+                .Replace("LastBootUpTime=", string.Empty)
                 .Trim()
                 .Split('.', StringSplitOptions.RemoveEmptyEntries)[0];
 
@@ -135,11 +122,11 @@ public static class MachineUtil
     /// <returns>获取到的系统运行时间描述</returns>
     public static string GetSystemRunTimes(string format = "dd\\ \\天\\ hh\\ \\时\\ mm\\ \\分\\ ss\\ \\秒")
     {
-        var dateTime = DateTime.Now;
+        DateTime dateTime = DateTime.Now;
 
-        var startTime = GetSystemStartTime();
+        DateTime startTime = GetSystemStartTime();
 
-        var diffTime = dateTime - startTime;
+        TimeSpan diffTime = dateTime - startTime;
 
         return diffTime.ToString(format);
     }
@@ -169,11 +156,11 @@ public static class MachineUtil
     /// <returns>获取到的当前进程运行时间描述</returns>
     public static string GetProgramRunTimes(string format = "dd\\ \\天\\ hh\\ \\时\\ mm\\ \\分\\ ss\\ \\秒")
     {
-        var dateTime = DateTime.Now;
+        DateTime dateTime = DateTime.Now;
 
-        var startTime = GetProgramStartTime();
+        DateTime startTime = GetProgramStartTime();
 
-        var diffTime = dateTime - startTime;
+        TimeSpan diffTime = dateTime - startTime;
 
         return diffTime.ToString(format);
     }
@@ -189,13 +176,13 @@ public static class MachineUtil
         if (IsMacOS())
         {
             // 使用 top 命令获取获取 CPU 使用率（用户和系统占用总和）
-            var output = ShellUtil.Bash("top -l 1 | grep \"CPU usage\" | awk '{print $3 + $5}'");
+            string output = ShellUtil.Bash("top -l 1 | grep \"CPU usage\" | awk '{print $3 + $5}'");
             rates.Add(decimal.Parse(output, CultureInfo.InvariantCulture));
         }
         else if (IsUnix())
         {
             // 通过解析 '/proc/stat' 文件来计算 CPU 使用率
-            var output = ShellUtil.Bash(
+            string output = ShellUtil.Bash(
                 "awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat)");
             rates.Add(decimal.Parse(output, CultureInfo.InvariantCulture));
         }
@@ -215,7 +202,8 @@ public static class MachineUtil
                     "-NoProfile -Command Get-CimInstance Win32_Processor | ForEach-Object { $_.LoadPercentage }");
             }
 
-            rates.AddRange(output.Replace("LoadPercentage", string.Empty)
+            rates.AddRange(output
+                .Replace("LoadPercentage", string.Empty)
                 .Trim()
                 .Split(["\r", "\n"], StringSplitOptions.RemoveEmptyEntries)
                 .Select(sl =>
@@ -242,7 +230,7 @@ public static class MachineUtil
         // 获取当前进程对象
         var process = Process.GetCurrentProcess();
 
-        var startTime = DateTime.UtcNow;
+        DateTime startTime = DateTime.UtcNow;
         TimeSpan startUsage;
         try
         {
@@ -258,7 +246,7 @@ public static class MachineUtil
 
         process.Refresh();
 
-        var endTime = DateTime.UtcNow;
+        DateTime endTime = DateTime.UtcNow;
         TimeSpan endUsage;
         try
         {
@@ -271,8 +259,8 @@ public static class MachineUtil
         }
 
         // 计算在延迟期间 CPU 使用的时间（单位：微秒）
-        var usedMs = (endUsage - startUsage).TotalMilliseconds;
-        var totalMs = (endTime - startTime).TotalMilliseconds;
+        double usedMs = (endUsage - startUsage).TotalMilliseconds;
+        double totalMs = (endTime - startTime).TotalMilliseconds;
 
         if (totalMs <= 0 || usedMs <= 0)
         {
@@ -280,7 +268,7 @@ public static class MachineUtil
         }
 
         // 考虑多核，计算总 CPU 时间的比例
-        var usageTotal = (decimal) (usedMs / (Environment.ProcessorCount * totalMs) * 100);
+        decimal usageTotal = (decimal)(usedMs / (Environment.ProcessorCount * totalMs) * 100);
 
         // 四舍五入保留两位小数
         return Math.Round(usageTotal, 2, MidpointRounding.AwayFromZero);
@@ -299,11 +287,11 @@ public static class MachineUtil
         if (IsMacOS())
         {
             // 获取总内存：sysctl 命令返回的值为字节，转换为 MB
-            var output1 = ShellUtil.Bash("sysctl -n hw.memsize | awk '{printf \"%.2f\", $1/1024/1024}'");
+            string output1 = ShellUtil.Bash("sysctl -n hw.memsize | awk '{printf \"%.2f\", $1/1024/1024}'");
             total = decimal.Parse(output1.Replace("%", string.Empty), CultureInfo.InvariantCulture);
 
             // 获取已用内存：top 命令中显示物理内存的使用情况，PhysMem 返回可用内存和已用内存的合计，单位为 KB
-            var output2 = ShellUtil.Bash("top -l 1 -s 0 | awk '/PhysMem/ {print $6+$8}'");
+            string output2 = ShellUtil.Bash("top -l 1 -s 0 | awk '/PhysMem/ {print $6+$8}'");
             free = decimal.Parse(output2, CultureInfo.InvariantCulture);
 
             used = total - free;
@@ -311,9 +299,9 @@ public static class MachineUtil
         else if (IsUnix())
         {
             // 使用 `awk` 命令从 `/proc/meminfo` 获取总内存和可用内存，单位为 KB
-            var output = ShellUtil.Bash(
+            string output = ShellUtil.Bash(
                 "awk '/MemTotal/ {total=$2} /MemAvailable/ {available=$2} END {print total,available}' /proc/meminfo");
-            var memory = output.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] memory = output.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (memory.Length == 2)
             {
                 // 解析总内存，已用内存，可用内存
@@ -339,13 +327,14 @@ public static class MachineUtil
                     "-NoProfile -Command (Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty FreePhysicalMemory).ToString() + ',' + (Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty TotalVisibleMemorySize).ToString()");
             }
 
-            var lines = output.Trim()
+            string[] lines = output
+                .Trim()
                 .Split([",", "\r", "\n"], StringSplitOptions.RemoveEmptyEntries);
 
             // 提取并解析内存信息：总内存和可用内存（单位：KB）
-            var freeMemoryParts = lines[0]
+            string[] freeMemoryParts = lines[0]
                 .Split("=", StringSplitOptions.RemoveEmptyEntries);
-            var totalMemoryParts = lines[1]
+            string[] totalMemoryParts = lines[1]
                 .Split("=", StringSplitOptions.RemoveEmptyEntries);
 
             total = decimal.Parse(totalMemoryParts.Length > 1 ? totalMemoryParts[1] : totalMemoryParts[0],
@@ -388,14 +377,14 @@ public static class MachineUtil
             decimal ByteToMB(string line)
             {
                 // 解析文件中的内存值，VmRSS: 123456 kB
-                var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length < 3)
                 {
                     return 0;
                 }
 
-                var value = Convert.ToDecimal(parts[1]);
-                var unit = parts[2]
+                decimal value = Convert.ToDecimal(parts[1]);
+                string unit = parts[2]
                     .ToLower();
 
                 return unit switch
@@ -408,9 +397,9 @@ public static class MachineUtil
             }
 
             // 过读取 /proc/self/status 文件获取 Linux 系统内存信息
-            var lines = File.ReadAllLines("/proc/self/status");
+            string[] lines = File.ReadAllLines("/proc/self/status");
 
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
                 // 物理内存
                 if (line.StartsWith("VmRSS:"))
@@ -468,25 +457,27 @@ public static class MachineUtil
 
         if (IsMacOS())
         {
-            var output = ShellUtil.Bash(@"df -m | awk '/^\/dev\/disk/ {print $1,$2,$3,$4,$5}'");
-            var disks = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            string output = ShellUtil.Bash(@"df -m | awk '/^\/dev\/disk/ {print $1,$2,$3,$4,$5}'");
+            string[] disks = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
             if (disks.Length < 1)
                 return diskInfos;
-            foreach (var item in disks)
+            foreach (string item in disks)
             {
-                var disk = item.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                string[] disk = item.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 if (disk.Length >= 5)
                 {
                     var diskInfo = new DiskInfo
                     {
                         DiskName = disk[0],
-                        TypeName = ShellUtil.Bash("diskutil info " + disk[0] + " | awk '/File System Personality/ {print $4}'")
+                        TypeName = ShellUtil
+                            .Bash("diskutil info " + disk[0] + " | awk '/File System Personality/ {print $4}'")
                             .Replace("\n", string.Empty),
                         TotalSize = Math.Round(long.Parse(disk[1]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         Used = Math.Round(long.Parse(disk[2]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailableFreeSpace = Math.Round(long.Parse(disk[3]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailablePercent = decimal.Parse(disk[4]
-                            .Replace("%", ""), CultureInfo.InvariantCulture)
+                                .Replace("%", ""),
+                            CultureInfo.InvariantCulture)
                     };
                     diskInfos.Add(diskInfo);
                 }
@@ -494,13 +485,13 @@ public static class MachineUtil
         }
         else if (IsUnix())
         {
-            var output = ShellUtil.Bash(@"df -mT | awk '/^\/dev\/(sd|vd|xvd|nvme|sda|vda|mapper)/ {print $1,$2,$3,$4,$5,$6}'");
-            var disks = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            string output = ShellUtil.Bash(@"df -mT | awk '/^\/dev\/(sd|vd|xvd|nvme|sda|vda|mapper)/ {print $1,$2,$3,$4,$5,$6}'");
+            string[] disks = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
             if (disks.Length >= 1)
             {
-                foreach (var item in disks)
+                foreach (string item in disks)
                 {
-                    var disk = item.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string[] disk = item.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     if (disk.Length < 6)
                         continue;
 
@@ -512,7 +503,8 @@ public static class MachineUtil
                         Used = Math.Round(long.Parse(disk[3]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailableFreeSpace = Math.Round(long.Parse(disk[4]) / 1024M, 2, MidpointRounding.AwayFromZero),
                         AvailablePercent = decimal.Parse(disk[5]
-                            .Replace("%", ""), CultureInfo.InvariantCulture)
+                                .Replace("%", ""),
+                            CultureInfo.InvariantCulture)
                     };
                     diskInfos.Add(diskInfo);
                 }
@@ -521,12 +513,13 @@ public static class MachineUtil
         // Windows
         else
         {
-            var driveList = DriveInfo.GetDrives()
+            IEnumerable<DriveInfo> driveList = DriveInfo
+                .GetDrives()
                 .Where(u => u.IsReady);
 
             const decimal relation = 1024 * 1024 * 1024;
 
-            foreach (var item in driveList)
+            foreach (DriveInfo item in driveList)
             {
                 if (item.DriveType == DriveType.CDRom)
                     continue;

@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Linq.Expressions;
 
@@ -40,14 +25,15 @@ public static class ExpressionExtension
     /// <param name="mergeWay">两个表达式的组合方式</param>
     /// <typeparam name="TSource">源对象类型</typeparam>
     /// <returns>组合两个表达式</returns>
-    public static Expression<TSource> Compose<TSource>(this Expression<TSource> expression, Expression<TSource> extendExpression,
+    public static Expression<TSource> Compose<TSource>(this Expression<TSource> expression,
+        Expression<TSource> extendExpression,
         Func<Expression, Expression, Expression> mergeWay)
     {
-        var parameterExpressionSetter = expression.Parameters
-            .Select((u, i) => new {u, Parameter = extendExpression.Parameters[i]})
+        var parameterExpressionSetter = expression
+            .Parameters.Select((u, i) => new {u, Parameter = extendExpression.Parameters[i]})
             .ToDictionary(d => d.Parameter, d => d.u);
 
-        var extendExpressionBody =
+        Expression extendExpressionBody =
             ParameterReplaceExpressionVisitor.ReplaceParameters(parameterExpressionSetter, extendExpression.Body);
         return Expression.Lambda<TSource>(mergeWay(expression.Body, extendExpressionBody), expression.Parameters);
     }
@@ -86,7 +72,8 @@ public static class ExpressionExtension
     /// <param name="extendExpression">用于根据条件成立再与操作合并两个表达式的表达式</param>
     /// <typeparam name="TSource">源对象类型</typeparam>
     /// <returns>根据条件成立再与操作合并两个表达式</returns>
-    public static Expression<Func<TSource, bool>> AndIf<TSource>(this Expression<Func<TSource, bool>> expression, bool condition,
+    public static Expression<Func<TSource, bool>> AndIf<TSource>(this Expression<Func<TSource, bool>> expression,
+        bool condition,
         Expression<Func<TSource, bool>> extendExpression)
     {
         return condition ? expression.Compose(extendExpression, Expression.AndAlso) : expression;
@@ -101,7 +88,8 @@ public static class ExpressionExtension
     /// <typeparam name="TSource">源对象类型</typeparam>
     /// <returns>根据条件成立再与操作合并两个表达式，支持索引器</returns>
     public static Expression<Func<TSource, int, bool>> AndIf<TSource>(this Expression<Func<TSource, int, bool>> expression,
-        bool condition, Expression<Func<TSource, int, bool>> extendExpression)
+        bool condition,
+        Expression<Func<TSource, int, bool>> extendExpression)
     {
         return condition ? expression.Compose(extendExpression, Expression.AndAlso) : expression;
     }
@@ -140,7 +128,8 @@ public static class ExpressionExtension
     /// <param name="extendExpression">用于根据条件成立再或操作合并两个表达式的表达式</param>
     /// <typeparam name="TSource">源对象类型</typeparam>
     /// <returns>根据条件成立再或操作合并两个表达式</returns>
-    public static Expression<Func<TSource, bool>> OrIf<TSource>(this Expression<Func<TSource, bool>> expression, bool condition,
+    public static Expression<Func<TSource, bool>> OrIf<TSource>(this Expression<Func<TSource, bool>> expression,
+        bool condition,
         Expression<Func<TSource, bool>> extendExpression)
     {
         return condition ? expression.Compose(extendExpression, Expression.OrElse) : expression;
@@ -155,7 +144,8 @@ public static class ExpressionExtension
     /// <typeparam name="TSource">源对象类型</typeparam>
     /// <returns>根据条件成立再或操作合并两个表达式，支持索引器</returns>
     public static Expression<Func<TSource, int, bool>> OrIf<TSource>(this Expression<Func<TSource, int, bool>> expression,
-        bool condition, Expression<Func<TSource, int, bool>> extendExpression)
+        bool condition,
+        Expression<Func<TSource, int, bool>> extendExpression)
     {
         return condition ? expression.Compose(extendExpression, Expression.OrElse) : expression;
     }
@@ -170,7 +160,7 @@ public static class ExpressionExtension
     {
         if (expression.Body is UnaryExpression unaryExpression)
         {
-            return ((MemberExpression) unaryExpression.Operand).Member.Name;
+            return ((MemberExpression)unaryExpression.Operand).Member.Name;
         }
 
         if (expression.Body is MemberExpression memberExpression)

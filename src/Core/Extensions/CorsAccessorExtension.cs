@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using Fast.Runtime;
 using Microsoft.AspNetCore.Builder;
@@ -47,14 +32,15 @@ public static class CorsAccessorExtension
     /// <param name="builder">要配置的跨域策略构建器</param>
     /// <param name="corsAccessorSettings">允许的来源、请求头、方法及凭据配置</param>
     /// <param name="isMiddleware">是否为应用中间件阶段生成策略</param>
-    internal static void SetCorsPolicy(CorsPolicyBuilder builder, CorsAccessorSettingsOptions corsAccessorSettings,
+    internal static void SetCorsPolicy(CorsPolicyBuilder builder,
+        CorsAccessorSettingsOptions corsAccessorSettings,
         bool isMiddleware = false)
     {
         // 判断是否设置了来源，因为 AllowAnyOrigin 不能和 AllowCredentials 一起公用
-        var isNotSetOrigins = corsAccessorSettings.WithOrigins == null || corsAccessorSettings.WithOrigins.Length == 0;
+        bool isNotSetOrigins = corsAccessorSettings.WithOrigins == null || corsAccessorSettings.WithOrigins.Length == 0;
 
         // https://learn.microsoft.com/aspnet/core/signalr/security
-        var isSupportSignalR = isMiddleware && corsAccessorSettings.SignalRSupport == true;
+        bool isSupportSignalR = isMiddleware && corsAccessorSettings.SignalRSupport == true;
 
         // 设置总是允许跨域源配置
         builder.SetIsOriginAllowed(_ => true);
@@ -67,7 +53,8 @@ public static class CorsAccessorExtension
                 builder.AllowAnyOrigin();
         }
         else
-            builder.WithOrigins(corsAccessorSettings.WithOrigins)
+            builder
+                .WithOrigins(corsAccessorSettings.WithOrigins)
                 .SetIsOriginAllowedToAllowWildcardSubdomains();
 
         // 如果没有配置请求标头，则允许所有表头，包含处理 SignalR 情况
@@ -84,7 +71,8 @@ public static class CorsAccessorExtension
             // 解决 SignalR 必须允许 GET POST 问题
             if (isSupportSignalR)
             {
-                builder.WithMethods(corsAccessorSettings.WithMethods.Concat(new[] {"GET", "POST"})
+                builder.WithMethods(corsAccessorSettings
+                    .WithMethods.Concat(new[] {"GET", "POST"})
                     .Distinct(StringComparer.OrdinalIgnoreCase)
                     .ToArray());
             }
@@ -97,11 +85,13 @@ public static class CorsAccessorExtension
             builder.AllowCredentials();
 
         // 配置响应头，如果前端不能获取自定义的 header 信息，必须配置该项，默认配置了 access-token 和 x-access-token，可取消默认行为
-        var exposedHeaders = corsAccessorSettings.FixedClientToken == true ? _defaultExposedHeaders.ToList() : new List<string>();
+        List<string> exposedHeaders =
+            corsAccessorSettings.FixedClientToken == true ? _defaultExposedHeaders.ToList() : new List<string>();
         if (corsAccessorSettings.WithExposedHeaders != null && corsAccessorSettings.WithExposedHeaders.Length > 0)
         {
             exposedHeaders.AddRange(corsAccessorSettings.WithExposedHeaders);
-            exposedHeaders = exposedHeaders.Distinct(StringComparer.OrdinalIgnoreCase)
+            exposedHeaders = exposedHeaders
+                .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
 
@@ -131,7 +121,8 @@ public static class CorsAccessorExtension
     /// <param name="configuration">用于读取模块设置的配置</param>
     /// <param name="section">JSON 配置文件节点的 Key 默认值：CorsAccessorSettings</param>
     /// <returns>返回 <paramref name="services"/>，便于链式调用</returns>
-    public static IServiceCollection AddCorsAccessor(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection AddCorsAccessor(this IServiceCollection services,
+        IConfiguration configuration,
         string section = "CorsAccessorSettings")
     {
         Debugging.Info("Registering for the Cors accessor service......");
@@ -139,7 +130,8 @@ public static class CorsAccessorExtension
         services.AddConfigurableOptions<CorsAccessorSettingsOptions>(section);
 
         // 获取跨域配置选项
-        var corsAccessorSettings = configuration.GetSection(section)
+        CorsAccessorSettingsOptions corsAccessorSettings = configuration
+            .GetSection(section)
             .Get<CorsAccessorSettingsOptions>()
             .LoadPostConfigure();
 

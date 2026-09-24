@@ -12,9 +12,10 @@
 - 每个参数和泛型参数分别提供 `<param>`、`<typeparam>`，包括所有重载。
 - 非 `void` 方法提供 `<returns>`，说明返回值含义以及重要的空值或状态语义。
 - 调用方需要处理的明确异常使用 `<exception>`；高开销、并发、安全和平台限制使用 `<remarks>`。
-- 实现成员已有完整接口或基类契约时使用 `<inheritdoc />`，避免维护两份说明。
+- 实现成员已有完整接口或基类契约时可以使用 `<inheritdoc />`；同时核对生成 XML 与文档站是否正确解析，避免 IDE 提示完整但发布内容缺失。
+- 标识符和参数引用使用 `<see cref="…"/>`、`<paramref name="…"/>`，减少重命名后的说明漂移。
 - 注释提及与代码对应的标识符时，保持代码中的大小写和后缀形式，例如 `UserId`、`用户Id`、`租户Id`，不写成 `UserID`、`用户 ID`。
-- XML 文档标签（包括 `<returns>`）、类型注释和普通 `//` 单行注释不使用末尾标点，统一删除末尾的 `。！？；：，、…,.!?;:`；括号、方括号、分隔线及许可证头部单行注释保持原样。
+- 标点由内容决定：标签型短说明不使用结束标点，完整陈述、原因和限制正常断句。不要按 XML 标签或注释类型批量删除标点；历史许可证头另行维护。
 
 错误示例：
 
@@ -27,11 +28,11 @@ bool Set(string key, object value);
 
 ```csharp
 /// <summary>
-/// 写入指定键的缓存值
+/// 写入指定键的缓存值。
 /// </summary>
 /// <param name="key">缓存键</param>
 /// <param name="value">要写入缓存的值</param>
-/// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/></returns>
+/// <returns>缓存写入成功时返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
 bool Set(string key, object value);
 ```
 

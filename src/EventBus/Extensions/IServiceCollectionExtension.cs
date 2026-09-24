@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -56,32 +41,38 @@ public static class IServiceCollectionExtension
         var entryAssemblyType = MAppContext.EffectiveTypes.ToList();
 
         // 查找所有继承了 IEventSubscriber 的类
-        var iEventSubscriberTypes =
-            entryAssemblyType.Where(wh => typeof(IEventSubscriber).IsAssignableFrom(wh) && !wh.IsInterface);
+        IEnumerable<Type> iEventSubscriberTypes = entryAssemblyType.Where(wh =>
+            typeof(IEventSubscriber).IsAssignableFrom(wh) && wh.IsClass && !wh.IsAbstract && !wh.ContainsGenericParameters);
 
         // 注册事件订阅者
-        foreach (var iEventSubscriberType in iEventSubscriberTypes)
+        foreach (Type iEventSubscriberType in iEventSubscriberTypes)
         {
             services.AddSingleton(typeof(IEventSubscriber), iEventSubscriberType);
         }
 
-        // 查找继承了 IEventHandlerMonitor 的类
-        var iEventHandlerMonitorType =
-            entryAssemblyType.FirstOrDefault(f => typeof(IEventHandlerMonitor).IsAssignableFrom(f) && !f.IsInterface);
-
-        // 注册事件监视器
-        if (iEventHandlerMonitorType != null)
+        if (!services.Any(descriptor => !descriptor.IsKeyedService && descriptor.ServiceType == typeof(IEventHandlerMonitor)))
         {
-            services.AddSingleton(typeof(IEventHandlerMonitor), iEventHandlerMonitorType);
+            Type[] monitors = entryAssemblyType
+                .Where(type =>
+                    typeof(IEventHandlerMonitor).IsAssignableFrom(type)
+                    && type.IsClass
+                    && !type.IsAbstract
+                    && !type.ContainsGenericParameters)
+                .ToArray();
+            if (monitors.Length > 1)
+                throw new InvalidOperationException("发现多个 IEventHandlerMonitor 实现，请显式注册所需监视器。");
+            if (monitors.Length == 1)
+                services.AddSingleton(typeof(IEventHandlerMonitor), monitors[0]);
         }
 
         // 查找继承了 IEventFallbackPolicy 的类
-        var iEventFallbackPolicyTypes = entryAssemblyType.Where(f =>
-                typeof(IEventFallbackPolicy).IsAssignableFrom(f) && f is {IsInterface: false, IsAbstract: false})
+        var iEventFallbackPolicyTypes = entryAssemblyType
+            .Where(f => typeof(IEventFallbackPolicy).IsAssignableFrom(f)
+                        && f is {IsClass: true, IsAbstract: false, ContainsGenericParameters: false})
             .ToList();
 
         // 特性保存的是具体策略类型，因此必须同时按具体类型注册，否则运行时按 Type 解析始终得到 null
-        foreach (var fallbackPolicyType in iEventFallbackPolicyTypes)
+        foreach (Type fallbackPolicyType in iEventFallbackPolicyTypes)
         {
             services.AddSingleton(fallbackPolicyType);
         }
@@ -92,7 +83,8 @@ public static class IServiceCollectionExtension
         services.AddHostedService(serviceProvider =>
         {
             // 创建事件总线后台服务对象
-            var eventBusHostedService = ActivatorUtilities.CreateInstance<EventBusHostedService>(serviceProvider);
+            EventBusHostedService eventBusHostedService =
+                ActivatorUtilities.CreateInstance<EventBusHostedService>(serviceProvider);
 
             // 订阅未察觉任务异常事件
             eventBusHostedService.UnobservedTaskException += (_, _) => { };

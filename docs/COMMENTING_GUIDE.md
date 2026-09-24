@@ -14,7 +14,7 @@ Every `public` or `protected` API and every interface member must use C# XML doc
 - Use `<exception>` for exceptions callers are expected to handle and `<remarks>` for cost, concurrency, security, or platform constraints.
 - Use `<inheritdoc />` when an implementation already has a complete interface or base-class contract.
 - Preserve identifier casing and suffixes when comments refer to code names, for example `UserId`, `用户Id`, and `租户Id`, rather than `UserID` or `用户 ID`.
-- Do not end XML documentation tags (including `<returns>`), type comments, or ordinary `//` comments with `。！？；：，、…,.!?;:`. Preserve parentheses, brackets, separators, and single-line license headers.
+- Let content determine punctuation: short labels normally omit terminal punctuation; complete statements, reasons and constraints use normal punctuation. Do not bulk-strip punctuation or rewrite license headers.
 
 Bad:
 
@@ -27,11 +27,11 @@ Preferred:
 
 ```csharp
 /// <summary>
-/// Stores a value under the specified cache key
+/// Stores a value under the specified cache key.
 /// </summary>
 /// <param name="key">The cache key</param>
 /// <param name="value">The value to store</param>
-/// <returns><see langword="true"/> when the value is stored successfully; otherwise <see langword="false"/></returns>
+/// <returns><see langword="true"/> when the value is stored successfully; otherwise <see langword="false"/>.</returns>
 bool Set(string key, object value);
 ```
 
@@ -46,3 +46,9 @@ Comments are valuable for:
 - Code that looks simplifiable but is constrained by a protocol or framework contract.
 
 Do not retain commented-out code, ownerless `TODO` items, or conversational placeholders. Version control already preserves historical implementations.
+
+Use `<see cref="…"/>` and `<paramref name="…"/>` for symbol and parameter references. Review generated XML as well as editor tooltips when using `<inheritdoc/>`.
+
+## Punctuation and scope
+
+Short labels normally omit terminal punctuation. Complete statements, reasons and constraints use normal punctuation. Do not bulk-remove punctuation from XML documentation or ordinary comments; existing license headers are maintained separately. Public SDK contracts need more detail than internal implementation comments.

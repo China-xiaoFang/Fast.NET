@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Globalization;
 using System.Text;
@@ -107,7 +92,7 @@ internal sealed class FileLoggingWriter : IDisposable
     /// <returns>日志文件名</returns>
     private string GetBaseFileName()
     {
-        var fileName = _fileLoggerProvider.FileName;
+        string fileName = _fileLoggerProvider.FileName;
 
         // 如果配置了日志文件名格式化程序，则先处理再返回
         if (_options.FileNameRule != null)
@@ -122,24 +107,24 @@ internal sealed class FileLoggingWriter : IDisposable
     private void GetCurrentFileName()
     {
         // 获取日志基础文件名并将其缓存
-        var baseFileName = GetBaseFileName();
+        string baseFileName = GetBaseFileName();
         __LastBaseFileName = baseFileName;
 
         // 是否配置了日志文件最大存储大小
         if (_options.FileSizeLimitBytes > 0)
         {
             // 定义文件查找通配符
-            var logFileMask = Path.GetFileNameWithoutExtension(baseFileName) + "*" + Path.GetExtension(baseFileName);
+            string logFileMask = Path.GetFileNameWithoutExtension(baseFileName) + "*" + Path.GetExtension(baseFileName);
 
             // 获取文件路径
-            var logDirName = Path.GetDirectoryName(baseFileName);
+            string logDirName = Path.GetDirectoryName(baseFileName);
 
             // 如果没有配置文件路径则默认放置根目录
             if (string.IsNullOrEmpty(logDirName))
                 logDirName = Directory.GetCurrentDirectory();
 
             // 在当前目录下根据文件通配符查找所有匹配的文件
-            var logFiles = Directory.Exists(logDirName)
+            string[] logFiles = Directory.Exists(logDirName)
                 ? Directory.GetFiles(logDirName, logFileMask, SearchOption.TopDirectoryOnly)
                 : [];
 
@@ -147,7 +132,8 @@ internal sealed class FileLoggingWriter : IDisposable
             if (logFiles.Length > 0)
             {
                 // 根据文件名和最后更新时间获取最近操作的文件
-                var lastFileInfo = logFiles.Select(fName => new FileInfo(fName))
+                FileInfo lastFileInfo = logFiles
+                    .Select(fName => new FileInfo(fName))
                     .OrderByDescending(fInfo => fInfo.Name)
                     .ThenByDescending(fInfo => fInfo.LastWriteTime)
                     .First();
@@ -170,7 +156,7 @@ internal sealed class FileLoggingWriter : IDisposable
     private string GetNextFileName()
     {
         // 获取日志基础文件名
-        var baseFileName = GetBaseFileName();
+        string baseFileName = GetBaseFileName();
 
         // 如果文件不存在或没有达到 FileSizeLimitBytes 限制大小，则返回基础文件名
         if (!File.Exists(baseFileName)
@@ -179,21 +165,21 @@ internal sealed class FileLoggingWriter : IDisposable
             return baseFileName;
 
         // 获取日志基础文件名和当前日志文件名
-        var currentFileIndex = 0;
-        var baseFileNameOnly = Path.GetFileNameWithoutExtension(baseFileName);
-        var currentFileNameOnly = Path.GetFileNameWithoutExtension(_fileName);
+        int currentFileIndex = 0;
+        string baseFileNameOnly = Path.GetFileNameWithoutExtension(baseFileName);
+        string currentFileNameOnly = Path.GetFileNameWithoutExtension(_fileName);
 
         // 解析日志文件名【递增】部分
-        var suffix = currentFileNameOnly != null && currentFileNameOnly.StartsWith(baseFileNameOnly, StringComparison.Ordinal)
+        string suffix = currentFileNameOnly != null && currentFileNameOnly.StartsWith(baseFileNameOnly, StringComparison.Ordinal)
             ? currentFileNameOnly[baseFileNameOnly.Length..]
             : null;
-        if (suffix?.Length > 0 && int.TryParse(suffix, NumberStyles.None, CultureInfo.InvariantCulture, out var parsedIndex))
+        if (suffix?.Length > 0 && int.TryParse(suffix, NumberStyles.None, CultureInfo.InvariantCulture, out int parsedIndex))
         {
             currentFileIndex = parsedIndex;
         }
 
         // 【递增】部分 +1
-        var nextFileIndex = currentFileIndex + 1;
+        int nextFileIndex = currentFileIndex + 1;
 
         // 如果配置了最大【递增】数，则超出自动从头开始（覆盖写入）
         if (_options.MaxRollingFiles > 0)
@@ -202,9 +188,9 @@ internal sealed class FileLoggingWriter : IDisposable
         }
 
         // 返回下一个匹配的日志文件名（完整路径）
-        var nextFileName = baseFileNameOnly
-                           + (nextFileIndex > 0 ? nextFileIndex.ToString(CultureInfo.InvariantCulture) : "")
-                           + Path.GetExtension(baseFileName);
+        string nextFileName = baseFileNameOnly
+                              + (nextFileIndex > 0 ? nextFileIndex.ToString(CultureInfo.InvariantCulture) : "")
+                              + Path.GetExtension(baseFileName);
         return Path.Combine(Path.GetDirectoryName(baseFileName), nextFileName);
     }
 
@@ -254,7 +240,11 @@ internal sealed class FileLoggingWriter : IDisposable
 
             // 创建文件流，允许其他进程读取但不允许写入，避免日志数据竞争
             // 不使用 FileOptions.WriteThrough，在 Linux/macOS 上会映射为 O_SYNC 导致严重性能下降
-            _fileStream = new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read, 4096,
+            _fileStream = new FileStream(_fileName,
+                FileMode.OpenOrCreate,
+                FileAccess.ReadWrite,
+                FileShare.Read,
+                4096,
                 FileOptions.None);
 
             // 删除超出滚动日志限制的文件
@@ -277,7 +267,7 @@ internal sealed class FileLoggingWriter : IDisposable
     /// </summary>
     private void CheckForNewLogFile()
     {
-        var openNewFile = IsMaxFileSizeThresholdReached() || IsBaseFileNameChanged() || IsFileDeletedExternally();
+        bool openNewFile = IsMaxFileSizeThresholdReached() || IsBaseFileNameChanged() || IsFileDeletedExternally();
 
         // 重新创建新文件并写入
         if (openNewFile)
@@ -309,7 +299,7 @@ internal sealed class FileLoggingWriter : IDisposable
         {
             if (_options.FileNameRule != null)
             {
-                var baseFileName = GetBaseFileName();
+                string baseFileName = GetBaseFileName();
 
                 if (baseFileName != __LastBaseFileName)
                 {
@@ -341,22 +331,23 @@ internal sealed class FileLoggingWriter : IDisposable
             return;
 
         // 处理 Windows 和 Linux 路径分隔符不一致问题
-        var fName = fileInfo.FullName.Replace('\\', '/');
+        string fName = fileInfo.FullName.Replace('\\', '/');
 
         // 将当前文件名存储到集合中
-        var succeed = _fileLoggerProvider._rollingFileNames.TryAdd(fName, fileInfo);
+        bool succeed = _fileLoggerProvider._rollingFileNames.TryAdd(fName, fileInfo);
 
         // 判断超出限制的文件自动删除
         if (succeed && _fileLoggerProvider._rollingFileNames.Count > _options.MaxRollingFiles)
         {
             // 根据最后写入时间删除过时日志
-            var dropFiles = _fileLoggerProvider._rollingFileNames.OrderBy(u => u.Value.LastWriteTimeUtc)
+            IEnumerable<KeyValuePair<string, FileInfo>> dropFiles = _fileLoggerProvider
+                ._rollingFileNames.OrderBy(u => u.Value.LastWriteTimeUtc)
                 .Take(_fileLoggerProvider._rollingFileNames.Count - _options.MaxRollingFiles);
 
             // 遍历所有需要删除的文件
-            foreach (var rollingFile in dropFiles)
+            foreach (KeyValuePair<string, FileInfo> rollingFile in dropFiles)
             {
-                var removeSucceed = _fileLoggerProvider._rollingFileNames.TryRemove(rollingFile.Key, out _);
+                bool removeSucceed = _fileLoggerProvider._rollingFileNames.TryRemove(rollingFile.Key, out _);
                 if (!removeSucceed)
                     continue;
 
@@ -435,10 +426,10 @@ internal sealed class FileLoggingWriter : IDisposable
         if (_textWriter == null && _fileStream == null)
             return;
 
-        var textWriter = _textWriter;
+        StreamWriter textWriter = _textWriter;
         _textWriter = null;
 
-        var fileStream = _fileStream;
+        FileStream fileStream = _fileStream;
         _fileStream = null;
 
         textWriter?.Dispose();

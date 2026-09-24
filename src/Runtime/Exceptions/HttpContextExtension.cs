@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System.Globalization;
 using System.Net;
@@ -30,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 
 namespace Fast.Runtime;
 
@@ -52,7 +38,8 @@ public static class HttpContextExtension
     /// <summary>
     /// IP 信息查询锁分片，限制锁对象数量并保证同一缓存键串行回源
     /// </summary>
-    private static readonly SemaphoreSlim[] _ipLookupLocks = Enumerable.Range(0, IP_LOOKUP_LOCK_COUNT)
+    private static readonly SemaphoreSlim[] _ipLookupLocks = Enumerable
+        .Range(0, IP_LOOKUP_LOCK_COUNT)
         .Select(_ => new SemaphoreSlim(1, 1))
         .ToArray();
 
@@ -79,11 +66,11 @@ public static class HttpContextExtension
     /// <returns>获取到的规范化响应时间戳</returns>
     public static long UnifyResponseTimestamp(this HttpContext httpContext)
     {
-        var timestampStr = httpContext?.Response.Headers[nameof(Fast) + "-NET-Timestamp"];
+        StringValues? timestampStr = httpContext?.Response.Headers[nameof(Fast) + "-NET-Timestamp"];
 
         if (string.IsNullOrEmpty(timestampStr))
         {
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
             // 将请求开始时间写入响应头，供耗时统计复用
             httpContext.UnifyResponseTimestamp(timestamp);
@@ -102,7 +89,8 @@ public static class HttpContextExtension
     /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/></returns>
     public static TAttribute GetMetadata<TAttribute>(this HttpContext httpContext) where TAttribute : class
     {
-        return httpContext?.GetEndpoint()
+        return httpContext
+            ?.GetEndpoint()
             ?.Metadata.GetMetadata<TAttribute>();
     }
 
@@ -114,7 +102,8 @@ public static class HttpContextExtension
     /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/></returns>
     public static object GetMetadata(this EndpointMetadataCollection metadata, Type attributeType)
     {
-        return metadata?.GetType()
+        return metadata
+            ?.GetType()
             .GetMethod(nameof(EndpointMetadataCollection.GetMetadata))
             ?.MakeGenericMethod(attributeType)
             .Invoke(metadata, null);
@@ -128,7 +117,8 @@ public static class HttpContextExtension
     /// <returns>匹配的特性实例；未找到时返回 <see langword="null"/></returns>
     public static object GetMetadata(this HttpContext httpContext, Type attributeType)
     {
-        return httpContext?.GetEndpoint()
+        return httpContext
+            ?.GetEndpoint()
             ?.Metadata.GetMetadata(attributeType);
     }
 
@@ -165,12 +155,13 @@ public static class HttpContextExtension
     /// <returns>本机 IPv4 地址；当前请求上下文为空时返回空字符串</returns>
     public static string LocalIpv4(this HttpContext httpContext)
     {
-        var localIpAddress = httpContext?.Connection.LocalIpAddress;
+        IPAddress localIpAddress = httpContext?.Connection.LocalIpAddress;
 
         if (localIpAddress != null && IPAddress.IsLoopback(localIpAddress))
             return IPAddress.Loopback.ToString();
 
-        return localIpAddress?.MapToIPv4()
+        return localIpAddress
+                   ?.MapToIPv4()
                    .ToString()
                ?? string.Empty;
     }
@@ -182,7 +173,8 @@ public static class HttpContextExtension
     /// <returns>本机 IPv6 地址；当前请求上下文为空时返回空字符串</returns>
     public static string LocalIpv6(this HttpContext httpContext)
     {
-        return httpContext?.Connection.LocalIpAddress?.MapToIPv6()
+        return httpContext
+                   ?.Connection.LocalIpAddress?.MapToIPv6()
                    .ToString()
                ?? string.Empty;
     }
@@ -194,7 +186,7 @@ public static class HttpContextExtension
     /// <returns>远程 IPv4 地址；当前请求上下文为空或远程地址不是 IPv4 时返回空字符串</returns>
     public static string RemoteIpv4(this HttpContext httpContext)
     {
-        var remoteIpAddress = httpContext?.Connection.RemoteIpAddress;
+        IPAddress remoteIpAddress = httpContext?.Connection.RemoteIpAddress;
 
         return FormatIpAddress(remoteIpAddress, AddressFamily.InterNetwork);
     }
@@ -206,7 +198,7 @@ public static class HttpContextExtension
     /// <returns>远程 IPv6 地址；当前请求上下文为空或远程地址不是 IPv6 时返回空字符串</returns>
     public static string RemoteIpv6(this HttpContext httpContext)
     {
-        var remoteIpAddress = httpContext?.Connection.RemoteIpAddress;
+        IPAddress remoteIpAddress = httpContext?.Connection.RemoteIpAddress;
 
         return FormatIpAddress(remoteIpAddress, AddressFamily.InterNetworkV6);
     }
@@ -230,7 +222,8 @@ public static class HttpContextExtension
             return IPAddress.Loopback.ToString();
 
         if (addressFamily == AddressFamily.InterNetwork && ipAddress.IsIPv4MappedToIPv6)
-            return ipAddress.MapToIPv4()
+            return ipAddress
+                .MapToIPv4()
                 .ToString();
 
         return string.Empty;
@@ -259,7 +252,7 @@ public static class HttpContextExtension
             return null;
 
         // 同一请求内优先复用 HttpContext.Items 中的解析结果
-        var userAgentObj = httpContext.Items[nameof(Fast) + nameof(UserAgentInfo)];
+        object userAgentObj = httpContext.Items[nameof(Fast) + nameof(UserAgentInfo)];
 
         if (userAgentObj != null)
         {
@@ -267,15 +260,16 @@ public static class HttpContextExtension
         }
 
         // 获取用户代理字符串
-        var userAgent = httpContext.RequestUserAgent();
+        string userAgent = httpContext.RequestUserAgent();
 
         try
         {
             // 判断是否安装了 UAParser 程序集
-            var uaParserAssembly = MAppContext.Assemblies.SingleOrDefault(s => s.GetName()
-                                                                                   .Name?.Equals("UAParser",
-                                                                                       StringComparison.Ordinal)
-                                                                               == true);
+            Assembly uaParserAssembly = MAppContext.Assemblies.SingleOrDefault(s => s
+                                                                                        .GetName()
+                                                                                        .Name?.Equals("UAParser",
+                                                                                            StringComparison.Ordinal)
+                                                                                    == true);
 
             if (uaParserAssembly == null)
             {
@@ -283,7 +277,7 @@ public static class HttpContextExtension
             }
 
             // 加载 UAParser 的 Parser 类型
-            var uaParserParserType = uaParserAssembly.GetType("UAParser.Parser");
+            Type uaParserParserType = uaParserAssembly.GetType("UAParser.Parser");
 
             if (uaParserParserType == null)
             {
@@ -291,7 +285,7 @@ public static class HttpContextExtension
             }
 
             // 加载 Parser 类型 的 GetDefault() 方法
-            var uaParserParserGetDefaultMethod =
+            MethodInfo uaParserParserGetDefaultMethod =
                 uaParserParserType.GetMethod("GetDefault", BindingFlags.Public | BindingFlags.Static);
 
             if (uaParserParserGetDefaultMethod == null)
@@ -300,10 +294,10 @@ public static class HttpContextExtension
             }
 
             // 调用 Parser 类型 的 GetDefault() 方法
-            var parser = uaParserParserGetDefaultMethod.Invoke(null, new object[] {null});
+            object parser = uaParserParserGetDefaultMethod.Invoke(null, new object[] {null});
 
             // Parse 是唯一匹配的公共实例方法，按名称获取即可兼容 UAParser 的可选依赖加载方式
-            var uaParserParserParseMethod = uaParserParserType.GetMethod("Parse");
+            MethodInfo uaParserParserParseMethod = uaParserParserType.GetMethod("Parse");
 
             if (uaParserParserParseMethod == null)
             {
@@ -343,7 +337,8 @@ public static class HttpContextExtension
     /// <returns>远程 IPv4 地址信息；当前请求上下文为空时返回 <see langword="null"/></returns>
     public static WanNetIPInfo RemoteIpv4Info(this HttpContext httpContext, string ip = null)
     {
-        return httpContext.RemoteIpv4InfoAsync(ip)
+        return httpContext
+            .RemoteIpv4InfoAsync(ip)
             .ConfigureAwait(false)
             .GetAwaiter()
             .GetResult();
@@ -362,7 +357,7 @@ public static class HttpContextExtension
             return null;
 
         // 同一请求内优先复用 HttpContext.Items 中的解析结果
-        var wanNetIPInfoObj = httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)];
+        object wanNetIPInfoObj = httpContext.Items[nameof(Fast) + nameof(WanNetIPInfo)];
 
         if (wanNetIPInfoObj != null)
         {
@@ -375,7 +370,7 @@ public static class HttpContextExtension
         WanNetIPInfo result;
 
         // 获取内存缓存服务
-        var _memoryCache = httpContext.RequestServices.GetService<IMemoryCache>();
+        IMemoryCache _memoryCache = httpContext.RequestServices.GetService<IMemoryCache>();
 
         if (_memoryCache == null)
         {
@@ -384,12 +379,13 @@ public static class HttpContextExtension
         }
         else
         {
-            var cacheKey = $"{nameof(Fast)}.NET:Http:RemoteIpv4Info:{ip}";
+            string cacheKey = $"{nameof(Fast)}.NET:Http:RemoteIpv4Info:{ip}";
 
             // 同一缓存键始终映射到同一锁分片，避免重复回源和按 IP 永久累积锁对象
-            var semaphoreSlim = GetIpLookupLock(cacheKey);
+            SemaphoreSlim semaphoreSlim = GetIpLookupLock(cacheKey);
 
-            await semaphoreSlim.WaitAsync(httpContext.RequestAborted)
+            await semaphoreSlim
+                .WaitAsync(httpContext.RequestAborted)
                 .ConfigureAwait(false);
             try
             {
@@ -421,8 +417,8 @@ public static class HttpContextExtension
     /// <returns>用于串行化同一缓存键回源操作的信号量</returns>
     private static SemaphoreSlim GetIpLookupLock(string cacheKey)
     {
-        var hashCode = StringComparer.Ordinal.GetHashCode(cacheKey);
-        return _ipLookupLocks[(int) ((uint) hashCode % (uint) _ipLookupLocks.Length)];
+        int hashCode = StringComparer.Ordinal.GetHashCode(cacheKey);
+        return _ipLookupLocks[(int)((uint)hashCode % (uint)_ipLookupLocks.Length)];
     }
 
     /// <summary>
@@ -451,45 +447,49 @@ public static class HttpContextExtension
 
         try
         {
-            using var response = await _ipLookupHttpClient.SendAsync(request, timeoutTokenSource.Token)
+            using HttpResponseMessage response = await _ipLookupHttpClient
+                .SendAsync(request, timeoutTokenSource.Token)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             // 目标 IP 查询服务固定返回 GBK 字节流，不能依赖响应头推断编码
-            var responseBytes = await response.Content.ReadAsByteArrayAsync(timeoutTokenSource.Token)
+            byte[] responseBytes = await response
+                .Content.ReadAsByteArrayAsync(timeoutTokenSource.Token)
                 .ConfigureAwait(false);
-            var responseContent = Encoding.GetEncoding("GBK")
+            string responseContent = Encoding
+                .GetEncoding("GBK")
                 .GetString(responseBytes);
 
-            var ipInfoDictionary = JsonSerializer.Deserialize<IDictionary<string, string>>(responseContent);
+            IDictionary<string, string> ipInfoDictionary =
+                JsonSerializer.Deserialize<IDictionary<string, string>>(responseContent);
             if (ipInfoDictionary == null)
                 return result;
 
-            if (ipInfoDictionary.TryGetValue("ip", out var resIp))
+            if (ipInfoDictionary.TryGetValue("ip", out string resIp))
             {
                 result.Ip = resIp;
             }
 
-            if (ipInfoDictionary.TryGetValue("pro", out var resPro))
+            if (ipInfoDictionary.TryGetValue("pro", out string resPro))
             {
                 result.Province = resPro;
             }
 
-            if (ipInfoDictionary.TryGetValue("proCode", out var resProCode))
+            if (ipInfoDictionary.TryGetValue("proCode", out string resProCode))
             {
                 result.ProvinceZipCode = resProCode;
             }
 
-            if (ipInfoDictionary.TryGetValue("city", out var resCity))
+            if (ipInfoDictionary.TryGetValue("city", out string resCity))
             {
                 result.City = resCity;
             }
 
-            if (ipInfoDictionary.TryGetValue("cityCode", out var resCityCode))
+            if (ipInfoDictionary.TryGetValue("cityCode", out string resCityCode))
             {
                 result.CityZipCode = resCityCode;
             }
 
-            if (ipInfoDictionary.TryGetValue("addr", out var resAddress))
+            if (ipInfoDictionary.TryGetValue("addr", out string resAddress))
             {
                 result.Address = resAddress;
             }
@@ -540,7 +540,8 @@ public static class HttpContextExtension
     /// <returns>获取到的 控制器/Action 描述器；当前请求上下文为空时返回 <see langword="null"/></returns>
     public static ControllerActionDescriptor GetControllerActionDescriptor(this HttpContext httpContext)
     {
-        return httpContext?.GetEndpoint()
+        return httpContext
+            ?.GetEndpoint()
             ?.Metadata.FirstOrDefault(u => u is ControllerActionDescriptor) as ControllerActionDescriptor;
     }
 
@@ -571,7 +572,7 @@ public static class HttpContextExtension
         httpRequest.Body.Seek(0, SeekOrigin.Begin);
 
         using var reader = new StreamReader(httpRequest.Body, Encoding.UTF8, true, 1024, true);
-        var body = await reader.ReadToEndAsync();
+        string body = await reader.ReadToEndAsync();
 
         httpRequest.Body.Seek(0, SeekOrigin.Begin);
         return body;
@@ -584,10 +585,11 @@ public static class HttpContextExtension
     /// <returns>完整请求地址</returns>
     public static string RequestUrlAddress(this HttpContext httpContext)
     {
-        var request = httpContext?.Request;
+        HttpRequest request = httpContext?.Request;
         if (request != null)
         {
-            return new StringBuilder().Append(request.Scheme)
+            return new StringBuilder()
+                .Append(request.Scheme)
                 .Append("://")
                 .Append(request.Host)
                 .Append(request.PathBase)
@@ -608,7 +610,8 @@ public static class HttpContextExtension
     {
         if (httpRequest != null)
         {
-            return new StringBuilder().Append(httpRequest.Scheme)
+            return new StringBuilder()
+                .Append(httpRequest.Scheme)
                 .Append("://")
                 .Append(httpRequest.Host)
                 .Append(httpRequest.PathBase)
@@ -628,10 +631,11 @@ public static class HttpContextExtension
     /// <returns>来源地址</returns>
     public static string RefererUrlAddress(this HttpContext httpContext, string refererHeaderKey = "Referer")
     {
-        var request = httpContext?.Request;
+        HttpRequest request = httpContext?.Request;
         if (request != null)
         {
-            return request.Headers[refererHeaderKey]
+            return request
+                .Headers[refererHeaderKey]
                 .ToString();
         }
 
@@ -650,7 +654,9 @@ public static class HttpContextExtension
     /// <param name="statusCode">HTTP 状态码</param>
     /// <param name="return200StatusCodes">设置返回 200 状态码列表。只支持 400+(404 除外) 状态码</param>
     /// <param name="adaptStatusCodes">适配（篡改）状态码。只支持 400+(404 除外) 状态码</param>
-    public static void SetResponseStatusCodes(this HttpContext httpContext, int statusCode, int[] return200StatusCodes = null,
+    public static void SetResponseStatusCodes(this HttpContext httpContext,
+        int statusCode,
+        int[] return200StatusCodes = null,
         int[][] adaptStatusCodes = null)
     {
         if (httpContext == null)
@@ -659,7 +665,7 @@ public static class HttpContextExtension
         // 篡改响应状态码
         if (adaptStatusCodes is {Length: > 0})
         {
-            var adaptStatusCode = adaptStatusCodes.FirstOrDefault(f => f[0] == statusCode);
+            int[] adaptStatusCode = adaptStatusCodes.FirstOrDefault(f => f[0] == statusCode);
             if (adaptStatusCode is {Length: > 0} && adaptStatusCode[0] > 0)
             {
                 httpContext.Response.StatusCode = adaptStatusCode[1];

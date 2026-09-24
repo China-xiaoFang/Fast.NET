@@ -1,24 +1,9 @@
-// ------------------------------------------------------------------------
-// Apache开源许可证
+// Copyright © 2018-Now 小方
+// SPDX-License-Identifier: Apache-2.0
 // 
-// 版权所有 © 2018-Now 小方
-// 
-// 许可授权：
-// 本协议授予任何获得本软件及其相关文档（以下简称“软件”）副本的个人或组织。
-// 在遵守本协议条款的前提下，享有使用、复制、修改、合并、发布、分发、再许可、销售软件副本的权利：
-// 1.所有软件副本或主要部分必须保留本版权声明及本许可协议。
-// 2.软件的使用、复制、修改或分发不得违反适用法律或侵犯他人合法权益。
-// 3.修改或衍生作品须明确标注原作者及原软件出处。
-// 
-// 特别声明：
-// - 本软件按“原样”提供，不提供任何形式的明示或暗示的保证，包括但不限于对适销性、适用性和非侵权的保证。
-// - 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件导致的任何直接或间接损失的责任。
-// - 包括但不限于数据丢失、业务中断等情况。
-// 
-// 免责条款：
-// 禁止利用本软件从事危害国家安全、扰乱社会秩序或侵犯他人合法权益等违法活动。
-// 对于基于本软件二次开发所引发的任何法律纠纷及责任，作者不承担任何责任。
-// ------------------------------------------------------------------------
+// 本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。
+// 本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。
+// 版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
 
 using System;
 using System.Globalization;
@@ -38,7 +23,7 @@ public static class DateTimeExtension
     /// <returns>得到问好</returns>
     public static string GetSayHello(this DateTime dateTime)
     {
-        var hour = dateTime.Hour;
+        int hour = dateTime.Hour;
         if (hour < 6)
             return "凌晨好！";
         if (hour < 9)
@@ -83,7 +68,7 @@ public static class DateTimeExtension
     /// <returns>获取到的上月的第一天</returns>
     public static DateTime GetUpMonthFirstDay(this DateTime dateTime)
     {
-        var nowDate = dateTime.AddMonths(-1);
+        DateTime nowDate = dateTime.AddMonths(-1);
         return new DateTime(nowDate.Year, nowDate.Month, 01, 00, 00, 00); // 该方法可以指定，年、月、日
     }
 
@@ -105,8 +90,8 @@ public static class DateTimeExtension
     /// <returns>时间范围的起始时间和结束时间</returns>
     public static (DateTime startTime, DateTime lastTime) GetCurWeekDay(this DateTime dateTime)
     {
-        var startTime = dateTime.AddDays(0 - Convert.ToInt16(dateTime.DayOfWeek) + 1);
-        var lastTime = dateTime.AddDays(6 - Convert.ToInt16(dateTime.DayOfWeek) + 1);
+        DateTime startTime = dateTime.AddDays(0 - Convert.ToInt16(dateTime.DayOfWeek) + 1);
+        DateTime lastTime = dateTime.AddDays(6 - Convert.ToInt16(dateTime.DayOfWeek) + 1);
         return (new DateTime(startTime.Year, startTime.Month, startTime.Day, 0, 0, 0),
             new DateTime(lastTime.Year, lastTime.Month, lastTime.Day, 23, 59, 59));
     }
@@ -118,8 +103,8 @@ public static class DateTimeExtension
     /// <returns>时间范围的起始时间和结束时间</returns>
     public static (DateTime startTime, DateTime lastTime) GetUpWeekDay(this DateTime dateTime)
     {
-        var startTime = dateTime.AddDays(0 - Convert.ToInt16(dateTime.DayOfWeek) - 6);
-        var lastTime = dateTime.AddDays(6 - Convert.ToInt16(dateTime.DayOfWeek) - 6);
+        DateTime startTime = dateTime.AddDays(0 - Convert.ToInt16(dateTime.DayOfWeek) - 6);
+        DateTime lastTime = dateTime.AddDays(6 - Convert.ToInt16(dateTime.DayOfWeek) - 6);
         return (new DateTime(startTime.Year, startTime.Month, startTime.Day, 0, 0, 0),
             new DateTime(lastTime.Year, lastTime.Month, lastTime.Day, 23, 59, 59));
     }
@@ -142,7 +127,7 @@ public static class DateTimeExtension
     /// <returns>时间范围的起始时间和结束时间</returns>
     public static (DateTime startTime, DateTime lastTime) GetUpDay(this DateTime dateTime)
     {
-        var internalDate = dateTime.AddDays(-1);
+        DateTime internalDate = dateTime.AddDays(-1);
         return (new DateTime(internalDate.Year, internalDate.Month, internalDate.Day, 0, 0, 0),
             new DateTime(internalDate.Year, internalDate.Month, internalDate.Day, 23, 59, 59));
     }
@@ -163,7 +148,7 @@ public static class DateTimeExtension
 
         const string zodiac = "鼠牛虎兔龙蛇马羊猴鸡狗猪";
 
-        var year = calendar.GetSexagenaryYear(dateTime);
+        int year = calendar.GetSexagenaryYear(dateTime);
 
         return zodiac.Substring(calendar.GetTerrestrialBranch(year) - 1, 1);
     }
@@ -180,7 +165,7 @@ public static class DateTimeExtension
             return "";
         }
 
-        var monthDay = dateTime.ToString("MMdd");
+        string monthDay = dateTime.ToString("MMdd");
 
         if (dateTime.Month == 1 && dateTime.Day < 20)
         {
@@ -193,9 +178,9 @@ public static class DateTimeExtension
         };
         string[] atoms = {"水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "魔羯座"};
 
-        var result = "未知";
+        string result = "未知";
 
-        for (var i = 0; i < atomBound.Length - 1; i++)
+        for (int i = 0; i < atomBound.Length - 1; i++)
         {
             if (string.Compare(atomBound[i], monthDay, StringComparison.Ordinal) > 1
                 || string.Compare(atomBound[i + 1], monthDay, StringComparison.Ordinal) <= 0)
@@ -219,7 +204,7 @@ public static class DateTimeExtension
             return -1;
         }
 
-        var lifeNum = GetSum(dateTime.Year) + GetSum(dateTime.Month) + GetSum(dateTime.Day);
+        int lifeNum = GetSum(dateTime.Year) + GetSum(dateTime.Month) + GetSum(dateTime.Day);
 
         while (lifeNum > 9)
         {
@@ -231,7 +216,8 @@ public static class DateTimeExtension
 
     private static int GetSum(int num)
     {
-        var b = num.ToString()
+        char[] b = num
+            .ToString()
             .ToCharArray();
         return b.Sum(t => Convert.ToInt32(t.ToString()));
     }
