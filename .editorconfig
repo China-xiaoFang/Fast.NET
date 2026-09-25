@@ -41,7 +41,7 @@ end_of_line = crlf
 
 # 自有源码文件头；第三方源码保留原有版权与许可声明。
 # 模板正文不包含 //，使用 \n 表示换行；IDE0073 提供检查与修复。
-file_header_template = Copyright © 2018-Now 小方\nSPDX-License-Identifier: Apache-2.0\n\n本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。\n本软件按“原样”提供；保证排除和责任限制以许可证及适用法律为准。\n版权来源、合法使用与二次开发责任说明见仓库根目录 README.zh.md。
+file_header_template = Copyright © 2018-Present 小方\nSPDX-License-Identifier: Apache-2.0\n\n本文件依据 Apache License 2.0 授权，完整条款见仓库根目录 LICENSE。\n本软件按“原样”提供，相关免责声明及责任限制以许可证及适用法律为准。\n版权来源、合法使用与二次开发责任说明见仓库根目录 README.md。
 dotnet_diagnostic.IDE0073.severity = suggestion
 
 # using 与命名空间
